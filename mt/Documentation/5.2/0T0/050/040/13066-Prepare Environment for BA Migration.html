@@ -1,0 +1,95 @@
+<content type="text/html" title="Prepare Environment for BA Migration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Prepare your hosts for migration.</p>
+        </div>
+      </div>
+      <p><span style="line-height: 1.5;">After you have <a title="Prepare BA Migration Plan" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0T0/050/030">prepared your migration plan</a>, prepare your environment.&nbsp;</span> </p>
+      <div id="section_2"
+      class="mt-page-section"><span id="Install_5.x.x_BA_Server_and_Licenses"></span> 
+        <h2 class="editable">Install 5.x.x BA Server and Licenses</h2>
+        <p>Complete these steps to install the 5.x.x BA Server and licenses.</p>
+        <p class="pentaho-note">If you are going to install the 5.x.x BA Server on the same machine as the 4.8.x one, consider keeping the 4.8.x version of BA Server running as you install the 5.x.x BA server to avoid port conflicts. When you use the Wizard to install the 5.x.x
+          BA Server, it senses what ports are being used used at the time of installation and, if the port is used, it assigns a different port for the newly installed BA Server. If the 5.x.x and 4.8.x BA Servers run on different ports, they can both
+          run at the same time. This is helpful during the Verify BA Migration step, which occurs later in these instructions, because you will need to run both systems at the same time to verify that content has migrated from the 4.8.x system to the
+          5.x.x one.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Install the 5.x.x version of the BA Server. See Select BA Installation Options to determine the best installation option. Make sure that you install the samples as well.</li>
+          <li>Install the license keys and modify the startup scripts as needed. To avoid problems with the Migration Tool and to avoid any of your changes being overwritten, the 5.x.x server should be in a &quot;pristine&quot; state; do not configure the
+            system further, just modify the startup scripts and install the license keys.&nbsp;</li>
+          <li class="li step">Make sure that you have an environment&nbsp;variable set for&nbsp;<span class="filepath style-wrap">$</span> <span class="filepath style-wrap">PENTAHO_INSTALLED_LICENSE_PATH</span> . The variable should be set to the path where your licenses are
+            installed.&nbsp;</li>
+          <li>To verify that the BA Server was installed properly, start the BA Server and log in as the admin user. Make sure to clear your browser's cache if necessary, but do not make any additional changes. If you have any problems starting the BA Server,
+            fix the problem before proceeding further.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Download_and_Install_the_Migration_Tool"></span> 
+        <h2 class="editable">Download and Install the Migration Tool</h2>
+        <p>The Migration Tool automates the data migration process. The Export Data and Import Data sections provide details on how to use the Migration Tool to perform the migration process.</p>
+        <p class="pentaho-note">The installation program for the Migration Tool requires the currently supported version of Oracle Java. We recommend that you download and install the Migration Tool on the same computer where the 5.x.x version of the server is installed because
+          Java will have already been installed on that computer during the installation process.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Download the <span class="filepath style-wrap">pentaho-platform-migrator-5.x.x-dist.zip</span>  file from the
+            <a class="link-https" title="https://support.pentaho.com/home" rel="external nofollow" href="https://support.pentaho.com/home" target="_blank">Customer Support Portal</a>  on the computer where the 5.x.x version of the server has been installed.</li>
+          <li>Unzip the file using the unzip program of your choice. It does not matter where you unzip it.</li>
+          <li>If you use Windows, open the <strong>Command Prompt</strong>  window. If you use Linux, open the <strong>Terminal </strong> window.</li>
+          <li>Install the Migration Tool by doing one of the following.
+            <ol start="1" style="list-style-type: lower-alpha;">
+              <li>If you use Windows, enter this command: <span class="filepath style-wrap">install.bat</span> </li>
+              <li>If you use Linux, enter this command: <span class="filepath style-wrap">./install.sh</span> </li>
+            </ol>
+          </li>
+          <li>Read the EULA that appears. Select <strong>I accept the terms of this license agreement</strong>, then click <strong>Next</strong> .</li>
+          <li>Indicate where you want the file to be unpacked. It doesn't matter where you download the file. Click the <strong>Next </strong> button.&nbsp;</li>
+          <li>The <strong>Installation Progress </strong> window appears. Progress bars indicate the status of the process. When the process is complete, click <strong>Quit </strong> to exit.</li>
+          <li>If the 4.8.x version of the BA Server is on another computer, you need to install a copy of the Migration Tool there. The 4.8.x version of the BA Server runs on Java 1.6. You can run the Migration Tool on Java 1.6, but the installation program
+            for the Migration Tool requires Java 1.7. So, to address that issue, we recommend that you copy the Migration Tool directories and files that you already unpacked and installed on the 5.x.x system to the 4.8.x one.&nbsp;</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Increase_Memory_Allocated_to_the_4.8.x_Server"></span> 
+        <h2 class="editable">Increase Memory Allocated to the 4.8.x Server</h2>
+        <p>The Migration Tool requires 2 gigabytes of RAM to run. Since the Migration Tool launches a mini-version of the server, the Migration Tool uses the same memory that you have allocated for the server. Since the 4.8.x version of the BA Server had
+          less memory allocated by default, you will need to check the memory settings for the server, then make adjustments if necessary.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Review the instructions in the Changing the Java VM Memory Limits that is in version 5.x of Infocenter for your operating system and installation type. Then do these things.&nbsp;
+            <ol start="1" style="list-style-type: lower-alpha;">
+              <li>Complete the steps for stopping the server.</li>
+              <li>Ensure that the memory settings for the minimum and maximum Java heap size parameters (-Xms and -Xmx) are both set to at least 2048m or higher. If the parameters are greater than 2048, leave as is, only make changes if the setting is less
+                than 2048.</li>
+            </ol>
+          </li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li>Windows Example:&nbsp;</li>
+        </ul> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export CATALINA_OPTS=&quot;-Xms2048m -Xmx2048m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</pre>
+        <ul class="pentaho-list-unordered">
+          <li>Linux Example:&nbsp;</li>
+        </ul> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export JAVA OPTS=&quot;-Dpentaho.installed.licenses.file=/opt/pentaho/.installedLicenses.xml -Xms2048m Xmx2048m -XX-MaxPermSize=256m -Dsun.rmi.dyc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</pre>
+        <ol class="pentaho-list-ordered" start="2">
+          <li class="li step"><span class="ph cmd">Restart the 4.8.x version of the server and verify that it starts correctly.</span> </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_5.x.x_BA_Server_and_Licenses" rel="internal">Install 5.x.x BA Server and Licenses</a>  </li>
+      <li> <a href="#Download_and_Install_the_Migration_Tool" rel="internal">Download and Install the Migration Tool</a>  </li>
+      <li> <a href="#Increase_Memory_Allocated_to_the_4.8.x_Server" rel="internal">Increase Memory Allocated to the 4.8.x Server</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,87 @@
+<content type="text/html" title="Install Drivers with the JDBC Distribution Tool">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Download and install your JDBC drivers to your Pentaho servers.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Download_Drivers_and_Install_with_the_JDBC_Distribution_Tool"></span> 
+        <h2 class="editable">Download Drivers and Install with the JDBC Distribution Tool</h2>
+        <p>To connect to a database, including the BA Repository or DI Repository database, you will need to download and install a JDBC driver to the appropriate places for Pentaho components as well as on the the web application server that contains the
+          Pentaho Server(s). Fortunately, the JDBC Distribution Tool makes this process easy.&nbsp;</p>
+        <p class="pentaho-note">Due to licensing restrictions, Pentaho cannot redistribute some third-party database drivers. This is why you have to download the file yourself and install it yourself.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Download a <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0D0/160/010">JDBC driver</a>  JAR from your database vendor or a third-party driver developer.</span> </li>
+          <li class="li step"><span class="ph cmd">Copy the JDBC driver JAR you just downloaded to the<span class="filepath style-wrap"> pentaho/jdbc-distribution</span>  directory.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Open a cmd prompt or shell tool, navigate to&nbsp;the <span class="filepath style-wrap">pentaho/jdbc-distribution</span>  directory and enter one of the following:</span> 
+          </li>
+        </ol>
+        <p class="li step"><strong><span class="ph cmd">&#8203;Windows:</span> </strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">distribute-files.bat <name of JDBC driver JAR></pre>
+        <p class="li step"><strong>Linux:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./distribute-files.sh <name of JDBC driver JAR></pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li class="li step">If you have run this utility as part of the installation process, you are done. Go to the next step of the installation instructions.</li>
+          <li class="li step">If you have run this utility so that you can connect to a new repository, restart the BA or DI Server and Design tools, then try to connect to the new repository. If you cannot connect, verify that the drivers are installed as shown in this
+            table.&nbsp;<span class="ph cmd">Restart your Pentaho Server(s) and Client tools.</span> </li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+          <caption>List of Products and Corresponding Locations for JDBC Drivers</caption>
+          <thead>
+            <tr>
+              <th scope="col" style="width: 255px;">Server or Design Tool</th>
+              <th scope="col" style="width: 390px;">Directory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 255px;">Business Analytics (BA) Server</td>
+              <td style="width: 419px;">pentaho/server/biserver-ee/tomcat/lib</td>
+            </tr>
+            <tr>
+              <td style="width: 255px;">Data Integration (DI) Server</td>
+              <td style="width: 419px;">pentaho/server/data-integration-server/tomcat/lib</td>
+            </tr>
+            <tr>
+              <td style="width: 255px;">Pentaho Data Integration (Spoon)</td>
+              <td style="width: 419px;">pentaho/design-tools/data-integration/lib</td>
+            </tr>
+            <tr>
+              <td style="width: 255px;">Pentaho Report Designer (PRD)</td>
+              <td style="width: 419px;">pentaho/design-tools/report-designer/lib/jdbc</td>
+            </tr>
+            <tr>
+              <td style="width: 255px;">Pentaho Aggregation Designer (PAD)</td>
+              <td style="width: 419px;">pentaho/design-tools/aggregation-designer/drivers</td>
+            </tr>
+            <tr>
+              <td style="width: 255px;">Pentaho Schema Workbench (PSW)</td>
+              <td style="width: 419px;">pentaho/design-tools/schema-workbench/drivers</td>
+            </tr>
+            <tr>
+              <td style="width: 255px;">Pentaho Metadata Editor (PME)</td>
+              <td style="width: 419px;">pentaho/design-tools/metadata-editor/libext/JDBC</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Download_Drivers_and_Install_with_the_JDBC_Distribution_Tool" rel="internal">Download Drivers and Install with the JDBC Distribution Tool</a>  </li>
+    </ol>
+  </body>
+</content>

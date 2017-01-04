@@ -1,0 +1,207 @@
+<content type="text/html" title="Export Data from 4.4.x DI Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to export data from the 4.4.x DI Server.</p>
+        </div>
+      </div>
+      <p>After you have prepared your environment, export data from the old version of the server.&nbsp;</p>
+      <div class="topic task nested1" id="stop_old_server">
+        <div id="section_2" class="mt-page-section"><span id="Stop_Old_Version_of_the_Server"></span> 
+          <h2 class="editable">Stop Old Version of the Server</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Stop the old version of the DI Server, as well as the web application server.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="migration_tool">
+        <div id="section_3" class="mt-page-section"><span id="Use_Migration_Tool_to_Export_Data_From_Old_Version_of_the_Server"></span> 
+          <h2 class="editable">Use Migration Tool to Export Data From Old Version of the Server</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Use the Migration Tool to export transformation, job, schedule, system configuration, user, role, and shareable object, such as partitions, slave servers, and cluster information from the old server. The
+                <a title="Prepare DI Migration Plan"
+                rel="internal" href="http://help.pentaho.com/Documentation/5.3/0T0/050/030">Prepare Upgrade Plan</a>  step outlines what the Migration Tool exports. Exported data is saved in a migration bundle file. A log file that contains additional details about the extraction process is also stored in the migration bundle
+                file. After you complete the tasks in this section, you will import this migration bundle file. Instructions for that appear in the next section of this documentation.</p>
+              <p class="p">To use the Migration Tool to import data, complete these steps.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">If you have not done so already, identify the paths to the pentaho-solutions directory, where the DI Server is deployed, as well as paths to additional servlets or jar files that you want to export.</span> </li>
+              <li class="li step"><span class="ph cmd">Open a <strong class="ph b">Terminal</strong>  or <span class="ph uicontrol">Command Prompt </span> window, then navigate to the directory where the Migration Tool is installed.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Issue a command in the <span class="ph uicontrol">Terminal</span>  or <span class="ph uicontrol">Command Prompt</span>  windows that indicates the action you want the Migration Tool to perform, as well as the locations
+                to the pentaho-solutions directory, the DI Server is deployed, and optionally any additional servlets and jar files that you want to migrate. Also indicate where you want the Migration Tool to place the migration bundle file. </span>  The
+                Migration Tool command contains these parameters:
+                <ul class="ul" id="migration_tool__ul_sr5_bzk_cl">
+                  <li class="li"><strong class="ph b">--export:</strong>  Indicates this is an export command. This parameter is required if you want to export a migration bundle file.</li>
+                  <li class="li"><strong class="ph b">--migration-bundle-file:</strong>  Specifies the directory where you want the migration file to be stored. This parameter is optional. If you do not supply it, the migration bundle file is stored in the same directory
+                    where the Migration Tool is installed.</li>
+                  <li class="li"><strong class="ph b">--pentaho-solutions-dir:</strong>  Indicates the path to the <span class="ph filepath">pentaho-solutions</span>  directory for the old version of the DI Server. This parameter is required.</li>
+                  <li class="li"><strong class="ph b">--pentaho-war:</strong>  Indicates the path to place where the old version of the DI Server is deployed. This parameter is required.</li>
+                  <li class="li"><strong class="ph b">--extra-paths:</strong>  Indicates the files in your classpath that are needed to run the DI Server. Files in the classpath include JDBC drivers, the servlet.api file, and any relevant configuration folders. Whether
+                    you include this parameter depends on the platform on which your DI Server is deployed. <em class="ph i"><u class="ph u">If your DI Server is deployed on Tomcat</u>, do NOT include the extra-paths parameter because the classpaths are sensed by the Migration Tool when you run it. <u class="ph u">If your DI Server is deployed on another web application server</u>, use the extra-paths parameter to the files indicated in your classpath.&nbsp;</em> </li>
+                </ul>
+                <ol class="ol substeps" id="migration_tool__substeps_ez5_3rg_xk" type="a">
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">Windows: </strong> Enter a migration command that follows this format in the <span class="ph uicontrol">Command Prompt</span>  window that uses the parameters described at the beginning of this
+                    step. The command should be formatted like this example.</span>  <strong class="ph b">Command Example:</strong>  <pre class="pre codeblock">
+migrator.bat --export --migration-bundle-file=C:\Users\pentaho\migration.zip --pentaho-solutions-dir=C:\Users\pentaho\server\data-integration-server\pentaho-solutions --pentaho-war=C:\Users\pentaho\server\data-integration-server\tomcat\webapps\di-pentaho
+</pre> </li>
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">Linux: </strong> Enter a command that follows this format in the <span class="ph uicontrol">Terminal</span>  window that uses the parameters described at the beginning of this step. The command
+                    should be formatted like this example.</span>  <strong class="ph b">Command Example:</strong>  <pre class="pre codeblock">
+./migrator.sh --export --migration-bundle-file=/Users/mycompany/migration.zip --pentaho-solutions-dir=/Users/mycompany/pentaho/server/data-integration-server/pentaho-solutions --pentaho-war=/Users/mycompany/pentaho/server/data-integration-server/tomcat/webapps/di-pentaho 
+</pre> </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd">The Migrator Tool runs. The progress of the tool is displayed in the <span class="ph uicontrol">Command Prompt</span>  or <span class="ph uicontrol">Terminal </span> window.</span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="verify_migration">
+        <div id="section_4" class="mt-page-section"><span id="Verify_Export_Process"></span> 
+          <h2 class="editable">Verify Export Process</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To verify that the migration bundle has been created properly and that data was extracted, do these things.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Open a <strong class="ph b">Terminal</strong>  or <strong class="ph b">Command Prompt</strong>  window and navigate to the directory where the migration bundle file is stored.&nbsp; </span> </li>
+              <li class="li step"><span class="ph cmd">Verify that the bundle exists and that the file size is not zero.</span> </li>
+              <li class="li step"><span class="ph cmd">Navigate to the directory where the Migration Tool was installed. The <span class="ph filepath">migrator.log</span>  file should appear. The <span class="ph filepath">migrator.log</span>  file contains a log of the export
+                process.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">migrator.log</span>  file and note any failures or errors. If any failures or errors exist, you might need to migrate that data manually. </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Close the file,<em class="ph i"> then rename the <span class="ph filepath">migrator.log</span>  file to something else.</em>  It is very important that you do this. If you do not rename the file, the <span class="ph filepath">migrator.log</span>                 file will be overwritten when you perform the tasks in the
+                <a title="Import Data to 5.x.x DI Server" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0T0/050/060">Import Data to New Server</a>  step. We suggest that you name the file something meaningful to you, like <span class="ph filepath">migrator_di_export_09212013.log</span> .</span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="manual_migration">
+        <div id="section_5" class="mt-page-section"><span id="Manually_Migrate_Additional_Data"></span> 
+          <h2 class="editable">Manually Migrate Additional Data</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">These types of items must be manually migrated to the new server.</p>
+              <div class="p">
+                <ul class="ul" id="manual_migration__ul_nrl_pwh_pl">
+                  <li class="li">
+                    <a class="xref" href="#jdbc" shape="rect">Migrate JDBC Drivers</a> 
+                  </li>
+                  <li class="li">
+                    <a class="xref" href="#memory" shape="rect">Migrate Memory Settings</a> 
+                  </li>
+                  <li class="li">
+                    <a class="xref" href="#configuration" shape="rect">Additional Configuration File Changes</a> 
+                  </li>
+                  <li class="li">
+                    <a class="xref" href="#others" shape="rect">Other Possible Customizations</a> 
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="jdbc">
+            <div id="section_6" class="mt-page-section"><span id="Manually_Migrate_JDBC_Drivers"></span> 
+              <h3 class="editable">Manually Migrate JDBC Drivers</h3>
+              <div class="body taskbody">
+                <div class="section context">You must manually copy design tools JDBC dirvers from the old location to the new one. The following table lists the driver, old location, and the new one.
+                  <div class="p">
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="jdbc__table_tj2_2zh_pl" rules="all" summary="">
+                        <caption><span class="tablecap">Table 1. JDBC Drivers to Manually Copy</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th class="entry" colspan="1" id="d82002e372" rowspan="1" valign="top" width="33.33333333333333%">Component</th>
+                            <th class="entry" colspan="1" id="d82002e375" rowspan="1" valign="top" width="33.33333333333333%">Driver Location in Version 4.4.x</th>
+                            <th class="entry" colspan="1" id="d82002e378" rowspan="1" valign="top" width="33.33333333333333%">Driver Location in Version 5.x.x</th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d82002e372" rowspan="1" valign="top" width="33.33333333333333%">DI Server</td>
+                            <td class="entry" colspan="1" headers="d82002e375" rowspan="1" valign="top" width="33.33333333333333%">pentaho/server/data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/lib/</td>
+                            <td class="entry" colspan="1" headers="d82002e378" rowspan="1" valign="top" width="33.33333333333333%">pentaho/server/data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/lib/</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d82002e372" rowspan="1" valign="top" width="33.33333333333333%">Spoon</td>
+                            <td class="entry" colspan="1" headers="d82002e375" rowspan="1" valign="top" width="33.33333333333333%">pentaho/design-tools/data-integration/libext/JDBC/</td>
+                            <td class="entry" colspan="1" headers="d82002e378" rowspan="1" valign="top" width="33.33333333333333%">pentaho/design-tools/data-integration/lib/</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="memory">
+            <div id="section_7" class="mt-page-section"><span id="Manually_Adjust_Memory_Settings"></span> 
+              <h3 class="editable">Manually Adjust Memory Settings</h3>
+              <div class="body taskbody">
+                <div class="section context">If your memory settings for the DI Server is greater than the default, you will need to adjust it. For information on how to adjust memory settings, see the
+                  <a class="xref external" shape="rect" target="_blank" rel="external nofollow"
+                  href="http://infocenter.pentaho.com/help/topic/performance_tuning_guide/topic_memory_limit_adjust.html">Changing the Java VM Memory Limits</a>  section.</div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="configuration">
+            <div id="section_8" class="mt-page-section"><span id="Manually_Migrate_Additional_Configuration_Settings"></span> 
+              <h3 class="editable">Manually Migrate Additional Configuration Settings</h3>
+              <div class="body taskbody">
+                <div class="section context">Configuration settings are migrated by the Migration Tool as indicated in the What Is Migrated subsection in
+                  <a title="Prepare DI Migration Plan" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0T0/050/030">Prepare DI Migration Plan</a> . If there are additional customizations that you want to migrate, complete these steps.</div>
+                <ol class="ol steps" id="configuration__steps_mvs_khv_pl">
+                  <li class="li step"><span class="ph cmd">Back up copies of your old and new configuration files.</span> </li>
+                  <li class="li step"><span class="ph cmd">Use the File Diff tool of your choice to compare the old and new versions of the configuration file.</span> </li>
+                  <li class="li step"><span class="ph cmd">If there are specific customizations that you made in the old version of the configuration file that did not migrate, manually make them in the new file. Proceed with caution when doing this.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="others">
+            <div id="section_9" class="mt-page-section"><span id="Manually_Migrate_Other_Customizations"></span> 
+              <h3 class="editable">Manually Migrate Other Customizations</h3>
+              <div class="body taskbody">
+                <div class="section context">Because of the nature of the software, many customizations can be made. The following presents examples of other customizations you might have made to the old system that would need to be migrated to the new one.
+                  <div class="p">
+                    <ul class="ul" id="others__ul_n3z_h5f_1l">
+                      <li class="li">Custom scheduler: If you are using a different implementation of user settings or a scheduler that you have written or have customized, you will need to migrate those manually.</li>
+                      <li class="li">Community plugins: If available, you will need to install new versions of these plugins. If you have written a plugin, thoroughly test the plugin to ensure that it works with the new version of the system.</li>
+                      <li class="li">Other web applications: If you have other web applications that have been installed with Pentaho, you must manually update them.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Stop_Old_Version_of_the_Server" rel="internal">Stop Old Version of the Server</a>  </li>
+      <li> <a href="#Use_Migration_Tool_to_Export_Data_From_Old_Version_of_the_Server" rel="internal">Use Migration Tool to Export Data From Old Version of the Server</a>  </li>
+      <li> <a href="#Verify_Export_Process" rel="internal">Verify Export Process</a>  </li>
+      <li>
+        <a href="#Manually_Migrate_Additional_Data" rel="internal">Manually Migrate Additional Data</a> 
+        <ol>
+          <li> <a href="#Manually_Migrate_JDBC_Drivers" rel="internal">Manually Migrate JDBC Drivers</a>  </li>
+          <li> <a href="#Manually_Adjust_Memory_Settings" rel="internal">Manually Adjust Memory Settings</a>  </li>
+          <li> <a href="#Manually_Migrate_Additional_Configuration_Settings" rel="internal">Manually Migrate Additional Configuration Settings</a>  </li>
+          <li> <a href="#Manually_Migrate_Other_Customizations" rel="internal">Manually Migrate Other Customizations</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

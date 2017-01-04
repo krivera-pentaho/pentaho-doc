@@ -1,0 +1,185 @@
+<content type="text/html" title="Analyzer Module APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="mt-page-summary">
+      <div class="mt-page-overview">Details the methods for analyzer.AnalyzerModule, which allows for the deployment and control of Analyzer in a DOM element.</div>
+    </div>
+    <div class="yui3-u yui3-u-3-4" id="main">
+      <div class="content">
+        <div id="section_1" class="mt-page-section"><span id="analyzer.AnalyzerModule_Class"></span> 
+          <h2 class="editable">analyzer.AnalyzerModule Class</h2>
+          <p>This module allows for deploying and controlling Analyzer in a DOM element. A global collection is maintained for each AnalyzerModule which is initialized, available at <code>window.analyzerModules.</code></p>
+          <div id="section_2" class="mt-page-section"><span id="Methods"></span> 
+            <h3 class="editable">Methods</h3>
+          </div>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="constructor_(_options_)"></span> 
+          <h2 class="editable">constructor ( options )</h2>
+          <p>Creates an iframe child of the provided parent element. Also, it generates a URL query string based on the provided module options, plus <code>catalog</code>&nbsp;<code> </code>and <code>cube</code>, or <code>reportPath</code>. Other options
+            include required parameters, as well as parameters which are provided by Analyzer's JavaScript API. Refer to the
+            <a title="https://help.pentaho.com/Documentation/7.0/0R0/070/030" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/030">API documentation</a>  for a full list of supported options.</p>
+          <p>The Analyzer Module will fill the height and width to 100% of the parent container.</p>
+          <p>The <code>reportPath</code> option parameter is the repository path to the existing Analyzer report to be opened. If <code>reportPath</code> is not present, then <code>catalog</code>&nbsp;<code> </code>and <code>cube</code>&nbsp; must have values
+            to create a new Analyzer report. If all three option parameters are present, then <code>reportPath</code>&nbsp;<code> </code>takes precedence and the module will attempt to open an existing report located at the path indicated. If <code>reportPath</code>&nbsp;
+            is not present, and <code>catalog</code>&nbsp;<code> </code>and <code>cube</code>&nbsp;<code> </code>are also not present, an error will occur.</p>
+          <p><strong>Parameters:</strong> </p>
+          <ul class="pentaho-list-unordered">
+            <li class="param"><code class="param-name">options&nbsp; </code>(
+              <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object"
+              target="_blank">Object</a> )
+              <div class="param-description">
+                <p>An object with properties which correspond to the available JavaScript API functions, as well as some required properties indicated below.</p>
+                <ul>
+                  <li><code>url&nbsp; </code>(
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"
+                    target="_blank">String</a> )
+                    <div class="param-description">
+                      <p>The URL which points to the root of the Pentaho web application, <code><a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a> </code>.</p>
+                    </div>
+                  </li>
+                  <li><code>parentElement&nbsp; </code>(
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"
+                    target="_blank">String</a>  |
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object"
+                    target="_blank">Object</a> )
+                    <div class="param-description">
+                      <p>The DOM element object or string ID of the DOM element in which to deploy Analyzer.</p>
+                    </div>
+                  </li>
+                  <li><code>catalog&nbsp; </code>(
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"
+                    target="_blank">String</a> )
+                    <div class="param-description">
+                      <p>The catalog to use when creating a new Analyzer report.</p>
+                    </div>
+                  </li>
+                  <li><code>cube&nbsp; </code>(
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"
+                    target="_blank">String</a> )
+                    <div class="param-description">
+                      <p>The cube to use when creating a new Analyzer report.</p>
+                    </div>
+                  </li>
+                  <li><code>reportPath</code> (
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"
+                    target="_blank">String</a>  )
+                    <div class="param-description">
+                      <p>The path which points to an existing Analyzer report to open.</p>
+                    </div>
+                  </li>
+                  <li><code>mode&nbsp; </code>(
+                    <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String"
+                    target="_blank">String</a> )
+                    <div class="param-description">
+                      <p>Mode in which to open Analyzer. Valid options include <code>viewer&nbsp; </code>and <code>editor</code>. Defaults to <code>viewer</code>.</p>
+                    </div>
+                  </li>
+                  <li><code>onAnalyzerReady</code> (
+                    <a class="link-https" target="_blank" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">Function</a> )
+                    <div class="param-description">
+                      <p>Callback function to execute once Analyzer has finished initializing.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var options = { &quot;url&quot; : &quot;http://localhost:8080/pentaho&quot;, &quot;parentElement&quot; : &quot;parentElementId&quot;, &quot;catalog&quot; : &quot;ExampleCatalog&quot;, &quot;cube&quot; : &quot;ExampleCube&quot;, &quot;mode&quot; : &quot;editor&quot;, &quot;disableFilterPanel&quot; : &quot;true&quot;, &quot;removeFieldLayout&quot; : &quot;true&quot;, &quot;removeFieldList&quot; : &quot;true&quot;, &quot;removeHeaderBar&quot; : &quot;true&quot;, &quot;removeMainToolbar&quot; : &quot;true&quot;, &quot;removeRedoButton&quot; : &quot;true&quot; }
+new analyzerModule(options);</pre> </div>
+        <div id="section_4" class="mt-page-section"><span id="dispose_()"></span> 
+          <h2 class="editable">dispose ()</h2>
+          <p>Removes the iframe and releases all of its resources.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.dispose()</pre> </div>
+        <div id="section_5" class="mt-page-section"><span id="getApi_()"></span> 
+          <h2 class="editable">getApi ()</h2>
+          <p>Returns the reference to the Analyzer API for the loaded object. This method is not safe to use until the
+            <a title="Introduction to Analyzer JavaScript APIs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/010">onAnalyzerReady</a>  function has been called.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.getApi()</pre> </div>
+        <div id="section_6" class="mt-page-section"><span id="getOptions_()"></span> 
+          <h2 class="editable">getOptions ()</h2>
+          <p>Returns the options used to render.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.getOptions()</pre> </div>
+        <div id="section_7" class="mt-page-section"><span id="getParentElement_()"></span> 
+          <h2 class="editable">getParentElement ()</h2>
+          <p>Returns the parent element of the iframe.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.getParentElement()</pre> </div>
+        <div id="section_8" class="mt-page-section"><span id="getUrl_()"></span> 
+          <h2 class="editable">getUrl ()</h2>
+          <p>Returns the URL generated for the iframe.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.getUrl()</pre> </div>
+        <div id="section_9" class="mt-page-section"><span id="hide_()"></span> 
+          <h2 class="editable">hide ()</h2>
+          <p>Hides the Analyzer module when it is visible.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.hide()</pre> </div>
+        <div id="section_10" class="mt-page-section"><span id="reset_()"></span> 
+          <h2 class="editable">reset ()</h2>
+          <p>Resets the state of the report back to the most recently saved state.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.reset()</pre> </div>
+        <div id="section_11" class="mt-page-section"><span id="show_()"></span> 
+          <h2 class="editable">show ()</h2>
+          <div class="meta">
+            <p>Shows the Analyzer module when it has been hidden via the
+              <a title="Analyzer Module APIs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/Analyzer_Module_APIs#hide_()">hide()</a>  method.</p>
+          </div>
+          <div class="example">
+            <p><strong>Example:</strong> </p>
+            <div class="example-content">
+              <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">analyzerModule.show()</pre>
+            </div>
+          </div>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="validateParams_(_options_)_Boolean"></span> 
+          <h2 class="editable">validateParams ( options )
+            <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean"
+            target="_blank">Boolean</a> 
+          </h2>
+          <p>Validates the required parameters for the Analyzer module.</p>
+          <p><strong>Parameters:</strong> </p>
+          <ul>
+            <li><code>options&nbsp; </code>(
+              <a class="link-https" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object"
+              target="_blank">Object</a> )</li>
+          </ul>
+          <div class="returns">
+            <p><strong>Returns:</strong> </p>
+            <ul class="pentaho-list-unordered">
+              <li><span class="type"><a class="crosslink link-https" target="_blank" title="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" rel="external nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> </span> </li>
+            </ul>
+          </div>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">validateParams(options);</pre>
+        </div>
+      </div>
+    </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#analyzer.AnalyzerModule_Class" rel="internal">analyzer.AnalyzerModule Class</a> 
+        <ol>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#constructor_(_options_)" rel="internal">constructor ( options )</a>  </li>
+      <li> <a href="#dispose_()" rel="internal">dispose ()</a>  </li>
+      <li> <a href="#getApi_()" rel="internal">getApi ()</a>  </li>
+      <li> <a href="#getOptions_()" rel="internal">getOptions ()</a>  </li>
+      <li> <a href="#getParentElement_()" rel="internal">getParentElement ()</a>  </li>
+      <li> <a href="#getUrl_()" rel="internal">getUrl ()</a>  </li>
+      <li> <a href="#hide_()" rel="internal">hide ()</a>  </li>
+      <li> <a href="#reset_()" rel="internal">reset ()</a>  </li>
+      <li> <a href="#show_()" rel="internal">show ()</a>  </li>
+      <li> <a href="#validateParams_(_options_)_Boolean" rel="internal">validateParams ( options ) Boolean</a>  </li>
+    </ol>
+  </body>
+</content>

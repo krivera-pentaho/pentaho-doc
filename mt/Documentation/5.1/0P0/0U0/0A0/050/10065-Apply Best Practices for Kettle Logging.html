@@ -1,0 +1,39 @@
+<content type="text/html" title="Apply Best Practices for Kettle Logging">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides best practices information for Kettle Logging.</p>
+        </div>
+      </div>
+      <p>Kettle logging provides extensive flexibility that allows you to determine log locations, granularity, as well as what information is captured.&nbsp; Here are a best practices for setting up logging in your environment. &nbsp;For more information
+        on logging, see the
+        <a title="Logging and Monitoring Operations" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/0U0/0A0">Logging and Monitoring Operations</a>  article. &nbsp;</p>
+      <ul class="pentaho-list-unordered">
+        <li><strong>Store logs in a centralized database.</strong> &nbsp; By default, log files are stored locally. &nbsp;Spoon, Carte, and DI Server logs are stored separately.&nbsp; To make log information easier to find, place logs in a central database.&nbsp;
+          As an added bonus, centralized logging makes it easier to use&nbsp;PDI&rsquo;s&nbsp;performance monitoring more effectively.</li>
+        <li><strong>Obtain Full Insert Accesses for Tables</strong> .&nbsp; Logging can fail if you do not have the appropriate accesses. &nbsp;Having the appropriate accesses minimizes this risk.&nbsp; To learn more about table access, consult the documentation
+          for your database.</li>
+        <li><strong>Install&nbsp;JDBC&nbsp;Drivers Locally and on Each Server</strong> .&nbsp; This helps you avoid <em>Driver not found</em> &nbsp;errors. &nbsp;
+          <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0D0/160/010">A list of supported drivers appears here</a> .</li>
+        <li><strong>Use Implied Schemas When Possible.</strong> &nbsp; Implied schemas result in fewer places to troubleshoot should logging fail.&nbsp; Of course, you can still specify a schema if needed.</li>
+        <li><strong>Make templates for transformation and job files</strong> .&nbsp; Include logging configurations in the template so that they can be reused with ease.</li>
+        <li><strong>Use Kettle Global Logging Variables When Possible</strong> .&nbsp; To avoid the work of adding logging variables to each transformation or job, consider using global logging variables instead.&nbsp; You can override logging variables by
+          adding information to individual transformations or jobs as needed.</li>
+      </ul>
+      <p>If you choose to use the <span class="filepath style-wrap">kettle.properties</span>  file observe the following best practices.</p>
+      <ul class="pentaho-list-unordered">
+        <li><strong>Backup your kettle.properties files.&nbsp;&nbsp;</strong> If you are making many changes to the Kettle.properties file, consider backing up the file first.&nbsp; This will make it easier to restore should issues occur.</li>
+        <li><strong>Maintain a Master Copy of the kettle.properties file.&nbsp;&nbsp;</strong> It is usually easiest to use the kettle.properties file for Spoon, then to overwrite the Carte and DI Server copies if changes are made.&nbsp; Make sure that values
+          that might change, such as directory paths, are maintained however.</li>
+        <li><strong>Test Thoroughly</strong> .&nbsp; Test your settings by saving your <span class="filepath style-wrap">kettle.properties</span>  file locally, then restarting spoon.&nbsp; Make sure the <span class="filepath style-wrap">kettle.properties</span>           file loads properly.&nbsp; Execute a transformation or job that uses the settings.&nbsp; Try executing the transformation locally and remotely on the DI Server to ensure that log variables reference the same places.</li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

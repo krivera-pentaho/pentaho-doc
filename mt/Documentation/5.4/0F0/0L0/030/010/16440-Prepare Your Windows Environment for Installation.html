@@ -1,0 +1,225 @@
+<content type="text/html" title="Prepare Your Windows Environment for Installation">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to prepare your computers for installation.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Create_Windows_Directory_Structure"></span> 
+        <h2 class="editable">Create Windows Directory Structure</h2>
+        <div class="body taskbody">
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Log into the machine on which you will run the BA Server. </span> </li>
+            <li class="li step"><span class="ph cmd">Create this directory path.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">pentaho\server\data-integration-server</pre> </li>
+            <li class="li step"><span class="ph cmd">Verify that you have the appropriate permissions to read, write, and execute commands in the directories you created.</span> </li>
+          </ol>
+        </div> <span id="Install_Java"></span> <span id="Install_Java-15858"></span> 
+        <h2 class="title topictitle2">Install Java&nbsp;</h2>
+        <p class="p">Install a supported version of Java.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Check the <a class="xref" title="Documentation/5.1/0D0/160/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0D0/160/000">Supported Technologies</a>  list to see which version of Java&nbsp;Pentaho&nbsp;supports.</span> </li>
+          <li class="li step">Download&nbsp;the supported version of the JRE or JDK <span class="ph cmd"><span class="ph cmd"><a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">from the Oracle site</a>  and install it.&nbsp;</span> </span> 
+          </li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Install_the_Web_Application_Server"></span> 
+        <h2 class="editable">Install the Web Application Server</h2>
+        <p class="p">The DI&nbsp;Server can be deployed on either the Tomcat or JBoss web application server. By default, DI&nbsp;Server software is configured for Tomcat. This means that if you choose to use Tomcat, you will need to make fewer configuration changes
+          than you would if you choose to use JBoss.</p>
+        <p class="p">You must install the web application server yourself. If you already have a Tomcat or JBoss web application server installed and you want to deploy the DI&nbsp;Server on it, please skip this step.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">To download and install the web application software, use the instructions in the documentation for the web application server of your choice. We recommend that you install the web application server in the <span class="ph filepath">pentaho\server\data-integration-server</span>             directory.</li>
+          <li class="li step">Verify the web application server is installed correctly by starting it and viewing the default page. If the web application server does not start, troubleshoot it using the web application server's documentation before you continue with the
+            DI&nbsp;Server installation process.</li>
+          <li class="li step">Stop the web application server.</li>
+        </ol> <span id="Install_the_DI_Repository_Host_Database"></span> <span id="Install_the_DI_Repository_Host_Database-15858"></span> 
+        <h2>Install the DI Repository Host Database</h2>
+        <p class="p">The DI&nbsp;Repository houses data needed for Pentaho tools to provide scheduling and security functions. &nbsp;It also stores&nbsp;transformations and jobs.&nbsp; You can host the DI Repository on these databases.</p>
+        <ul class="pentaho-list-unordered">
+          <li class="p">PostgreSQL</li>
+          <li class="p">MySQL</li>
+          <li class="p">Oracle</li>
+          <li class="p">MS SQL Server</li>
+        </ul>
+        <p class="p">To install the DI Repository's host database, do these things.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Check the <a title="Review Supported Technologies" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0D0/160">Supported Technologies</a>  section&nbsp;to determine which versions of databases&nbsp;Pentaho supports.</span> </li>
+          <li class="li step">Download and install the database of your choice.&nbsp;</li>
+          <li class="li step"><span class="ph cmd">Verify that the database is installed correctly.</span> </li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Download_and_Unpack_Installation_Files"></span> 
+        <h2 class="editable">Download and Unpack Installation Files</h2>
+        <p class="p">The Pentaho DI Server software, data files, and examples are stored in pre-packaged <span class="ph filepath">.zip</span>  files. You will need to manually copy these files to correct directories.&nbsp;</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Download the following installation file from the&nbsp;<a title="Help and Support Resources" rel="internal" href="http://help.pentaho.com/Documentation/5.2/Get_Help_and_Support/001">Pentaho&nbsp;Customer Support Portal</a> &nbsp;in the archive build folder.</span> </li>
+        </ol>
+        <ul class="pentaho-list-unordered" style="margin-left: 40px;">
+          <li class="li">DI Server Installation File: <span class="filepath style-wrap"><span class="ph filepath">pdi-manual-ee-server-</span> </span> 5.4.0<span class="filepath style-wrap"><span class="ph filepath">-</span> <span class="ph filepath">dist.zip</span> </span> 
+          </li>
+        </ul>
+        <ol class="pentaho-list-ordered" start="2">
+          <li class="li step"><span class="ph cmd">Unzip the DI&nbsp;Server Installation file.</span> </li>
+          <li class="li step"><span class="ph cmd">To unpack the file, run <span class="ph cmd"><span class="ph cmd"><span class="ph cmd"><span class="ph cmd"><span class="filepath style-wrap">install.bat<span style="display: none;">&nbsp;</span> &#8203;</span> .&nbsp;&nbsp;
+            <span
+            style="line-height: 1.5;">The<strong> IZPak&nbsp;</strong> window&nbsp;appears. &nbsp;</span> 
+              </span> 
+              </span> 
+              </span> 
+              </span> 
+              </span> 
+          </li>
+          <li class="li step"><span class="ph cmd"><span class="ph cmd"><span class="ph cmd"><span class="ph cmd"><span class="ph cmd"><span style="line-height: 1.5;">Read the license agreement, select&nbsp;</span> <strong class="ph b" style="line-height: 1.5;">I accept the terms of this license agreement</strong> 
+            <span
+            style="line-height: 1.5;">, and click&nbsp;</span> <strong class="ph b" style="line-height: 1.5;">Next</strong> <span style="line-height: 1.5;">.</span> </span> 
+              </span> 
+              </span> 
+              </span> 
+              </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">In the&nbsp;<strong>Select the installation path&nbsp;</strong> text box, enter the place where you want to create the <span class="filepath style-wrap">pentaho </span> directory,&nbsp;then click&nbsp;<strong>Next</strong> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">A message indicating that a target directory will be created appears. &nbsp;Click <strong>OK</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">When the installation progress is complete&nbsp;click <strong class="ph b">Quit</strong> .</span> </li>
+        </ol>
+        <div id="section_5" class="mt-page-section"><span id="Put_Files_in_Directories"></span> 
+          <h3 class="editable">Put Files in Directories</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Navigate to the pentaho&nbsp;directory where you unpacked the files, unzip the zip files and place their conents&nbsp;in the appropriate directories listed below.
+              <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 640px; table-layout: fixed;"
+              title="Pentaho Table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 218px;">File</th>
+                    <th scope="col" style="width: 398px;">Unzip the Contents of the File&nbsp;to This&nbsp;Directory</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 218px;">license-installer.zip</td>
+                    <td style="width: 398px;"><span class="ph filepath">pentaho\server</span> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 218px;">pentaho-data.zip</td>
+                    <td style="width: 398px;"><span class="ph filepath">pentaho\server\data-integration-server</span> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 218px;">pentaho-solutions.zip</td>
+                    <td style="width: 398px;"><span class="ph filepath">pentaho\server\data-integration-server</span> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li>Copy these files to the following directories.&#8203;
+              <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 637px; table-layout: fixed;" title="Pentaho Table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 227px;">File</th>
+                    <th scope="col" style="width: 387px;">Copy Files to This Directory</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 227px;">pentaho-di.war</td>
+                    <td style="width: 387px;">
+                      <ul class="ul">
+                        <li class="li"><strong class="ph b">Tomcat:</strong>  <span class="ph filepath">pentaho\server\data-integration-server\<your tomcat installation directory>\webapps</span> </li>
+                        <li class="li"><strong class="ph b">JBoss:</strong>  <span class="ph filepath">pentaho\server\data-integration-server\<your jboss installation directory>\standalone\deployments</span> </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 227px;">pentaho-style.war</td>
+                    <td style="width: 387px;">
+                      <ul class="ul">
+                        <li class="li"><strong class="ph b">Tomcat:</strong>  <span class="ph filepath">pentaho\server\data-integration-server\<your tomcat installation directory>\webapps</span> </li>
+                        <li class="li"><strong class="ph b">JBoss:</strong>  <span class="ph filepath">pentaho\server\data-integration-server\<your jboss installation directory>\standalone\deployments</span> </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 227px;">PentahoBIPlatform_OSS_Licenses.html</td>
+                    <td style="width: 387px;"><span class="ph filepath">pentaho/server/data-integration-server</span> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ol>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Verify_Directory_Structure"></span> 
+          <h3 class="editable">Verify Directory Structure</h3>
+          <p class="li step">Verify that the files have been placed in the following places by comparing the following directory structure with yours.</p>
+          <p class="pentaho-note">If your web application server is not in the <span class="ph filepath">pentaho/server/data-integration-server</span>  directory, the <span class="ph filepath">pentaho-di.war</span>  and <span class="ph filepath">pentaho-style.war</span>  files
+            should appear where you've chosen to install your web application server.</p>
+          <p class="li step"><strong class="ph b">Tomcat File Locations:</strong> </p>
+          <ul class="ul choices">
+            <li class="li choice"><span class="ph filepath"><your home directory>\.pentaho</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\license-installer</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\license-installer</span>  \<span class="mt-font-courier-new">lib</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\<your tomcat installation directory>\webapps\pentaho-di.war</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\<your tomcat installation directory>\webapps\pentaho-style.war</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\data</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\pentaho-solutions</span> </li>
+          </ul>
+          <p class="li choice"><strong class="ph b">JBoss File Locations:</strong> </p>
+          <ul class="ul choices">
+            <li class="li choice"><span class="ph filepath"><your home directory>\.pentaho</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\license-installer</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\license-installer</span>  \<span class="mt-font-courier-new">lib</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\<your jboss installation directory>\standalone\deployments\pentaho-di.war</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\<your jboss installation directory>\standalone\deployments\pentaho-style.war</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\data</span> </li>
+            <li class="li choice"><span class="ph filepath">pentaho\server\data-integration-server\</span> <span class="ph filepath">pentaho-solutions</span> </li>
+          </ul> <span id="Set_Environment_Variables"></span> <span id="Set_Environment_Variables-15858"></span> 
+          <h2>Set Environment Variables</h2>
+          <p class="p">Set the <span class="filepath style-wrap"><span class="ph filepath">PENTAHO_JAVA_HOME</span> </span> &nbsp; and&nbsp;<span class="filepath style-wrap"><span class="ph filepath">PENTAHO_INSTALLED_LICENSE_PATH</span> </span> &nbsp;environment&nbsp;variables.&nbsp;If
+            you do not set these variables, Pentaho will not start correctly.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step"><span class="ph cmd">Set the path of the <span class="ph filepath"><span class="filepath style-wrap">PENTAHO_JAVA_HOME</span>  </span> variable&nbsp;to the path of your Java&nbsp;installation, like this.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PENTAHO_JAVA_HOME=C:\Program Files\Java\jdk7</pre>              </li>
+            <li class="li step"><span class="ph cmd">Set the path of the <span class="ph filepath"><span class="filepath style-wrap">PENTAHO_INSTALLED_LICENSE_PATH</span> </span> &nbsp;variable&nbsp;to the path that contains your installed licenses, like this.</span> 
+              <pre
+              class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PENTAHO_INSTALLED_LICENSE_PATH=C:\Users\pentaho\.pentaho\.installedLicenses.xml</pre>
+            </li>
+            <li class="li step"><strong>Optional</strong> : If you are using Instaview, set the path for the&nbsp;MONETDB_INSTALL_DIR variable to the path for&nbsp;the MonetDB location like this. <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">MONETDB_INSTALL_DIR=C:\PE0A28~1\monetdb</pre>              </li>
+            <li class="li step"><span class="ph cmd">Verify the variables have been properly set.</span> </li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Next_Step"></span> 
+        <h2 class="editable">Next Step</h2>
+        <p>You've finished preparing your environment. &nbsp;Go to
+          <a title="Configure Your Repository Database" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0L0/035">Configure&nbsp;Your Repository Database</a>  to continue.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Create_Windows_Directory_Structure" rel="internal">Create Windows Directory Structure</a>  </li>
+      <li> <a href="#Install_Java" rel="internal">Install Java&nbsp;</a>  </li>
+      <li> <a href="#Install_the_Web_Application_Server" rel="internal">Install the Web Application Server</a>  </li>
+      <li> <a href="#Install_the_DI_Repository_Host_Database" rel="internal">Install the DI Repository Host Database</a>  </li>
+      <li>
+        <a href="#Download_and_Unpack_Installation_Files" rel="internal">Download and Unpack Installation Files</a> 
+        <ol>
+          <li> <a href="#Put_Files_in_Directories" rel="internal">Put Files in Directories</a>  </li>
+          <li> <a href="#Verify_Directory_Structure" rel="internal">Verify Directory Structure</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Set_Environment_Variables" rel="internal">Set Environment Variables</a>  </li>
+      <li> <a href="#Next_Step" rel="internal">Next Step</a>  </li>
+    </ol>
+  </body>
+</content>

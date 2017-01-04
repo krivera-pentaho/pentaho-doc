@@ -1,0 +1,217 @@
+<content type="text/html" title="Start and Stop the Pentaho Server for Configuration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="body taskbody">
+      <div class="section context">
+        <p>Whether you are working with the Pentaho User Console or&nbsp;Pentaho&nbsp;Data Integration,&nbsp;you must have the Pentaho Server running. There may be times when you need to manage these components individually, stopping the Pentaho&nbsp;Server&nbsp;to
+          perform system maintenance and restarting it after you are done. As part of installing Pentaho, we provide&nbsp;different ways to help you start and stop the components depending on the operating system your particular installation&nbsp;method.&nbsp;</p>
+        <p class="pentaho-note">If you installed Pentaho software using your own web application server, such as JBoss,&nbsp;use the information in this section as a guide to create a custom way to start and stop these components.</p>
+        <p><strong>Audience:</strong> &nbsp;IT administrators who know where data is stored, how to connect to it, details about the computing environment, and how to use the command line to issue commands for Microsoft Windows,&nbsp;Linux, or Microsoft OS.</p>
+        <p>Below are instructions for starting and stopping the Pentaho Server depending on your operating system and installation method.&nbsp;</p>
+      </div>
+    </div>
+    <div class="topic task nested1" id="f7548781-3455-42f7-8239-2ff79b25c6de__start_menu_windows">
+      <div id="section_1" class="mt-page-section"><span id="Starting_and_Stopping_the_Pentaho_Server_on_Windows"></span> 
+        <h2 class="editable">Starting and Stopping the Pentaho&nbsp;Server on Windows</h2>
+        <p>Below are instructions and recommendations for managing the Pentaho&nbsp;Server on Windows, depending on your installation method.</p>
+        <div id="section_2" class="mt-page-section"><span id="Pentaho_Installation_Wizard"></span> 
+          <h3 class="editable">Pentaho Installation Wizard</h3>
+          <p><span style="font-size: 16px; font-weight: normal; line-height: inherit;">If you ran the </span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;">Pentaho</span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;"> Installation Wizard on Windows, then the&nbsp;</span> 
+            <span
+            style="font-size: 16px; font-weight: normal; line-height: inherit;">Pentaho</span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;">&nbsp;Server is deployed in an Apache Tomcat application server. You can manage both the </span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;">Pentaho</span> 
+              <span
+              style="font-size: 16px; font-weight: normal; line-height: inherit;">&nbsp;and Tomcat servers by clicking </span> <span class="ph uicontrol" style="font-size: 16px; line-height: inherit;">Start</span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;"> > </span> <span class="ph uicontrol"
+                style="font-size: 16px; line-height: inherit;">All Programs</span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;"> > </span> <span class="ph uicontrol" style="font-size: 16px; line-height: inherit;">Pentaho Enterprise Edition</span> 
+                <span
+                style="font-size: 16px; font-weight: normal; line-height: inherit;"> > </span> <span class="ph uicontrol" style="font-size: 16px; line-height: inherit;">Server Management</span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;"> and selecting one of these menu items:</span> </p>
+          <div
+          class="body taskbody">
+            <div class="section context">
+              <ul class="ul">
+                <li class="li"><strong>Start Pentaho Server</strong> </li>
+                <li class="li"><strong>Stop Pentaho Server</strong> </li>
+              </ul>
+              <p class="p">The installation&nbsp;wizard also registered the Pentaho Server, as well as the Pentaho&nbsp;Repository, as services. These services are set to run automatically, enabling them to start and stop when the computer running them boots up or
+                shuts down. You can use the Windows Services applet found in the Control Panel to start and stop the Pentaho Server&nbsp;and the Pentaho Repository.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Start</span>  > <span class="ph uicontrol">Control Panel</span>  > <span class="ph uicontrol">Administrative Tools</span>  > <span class="ph uicontrol">Services</span> . </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">Services</span>  window, right-click on one of these services in the list and take the appropriate action:</span> 
+                <ul class="ul" style="list-style-type: disc;">
+                  <li class="li">Pentaho&nbsp;Server</li>
+                  <li class="li">Data Integration</li>
+                  <li class="li">Pentaho Repository</li>
+                </ul>
+              </li>
+            </ol>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="topic task nested1" id="f7548781-3455-42f7-8239-2ff79b25c6de__task_individual_service_control_scripts_Windows">
+      <div id="section_3" class="mt-page-section"><span id="Manual_Installation_Using_Your_Own_Respository"></span> 
+        <h3 class="editable">Manual Installation Using Your Own Respository</h3>
+        <div class="body taskbody">
+          <div class="section context">
+            <p>If you installed Pentaho using your own repository,&nbsp;we provide individual control scripts to start and stop the Pentaho Server and Pentaho Repository. Here is where you can find the individual control scripts.</p>
+            <p class="p"><strong class="ph b">Pentaho Server </strong> </p>
+            <ul class="ul">
+              <li class="li">
+                <p><code>/pentaho/server/pentaho-server/start-pentaho.bat</code> and <code>stop-pentaho.bat</code></p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="p"><strong class="ph b">Pentaho Repository</strong> </p>
+    <ul class="ul">
+      <li class="li">Installing Pentaho using your own repository&nbsp;enables you to install PostgreSQL, MySQL, MS SQL Server, or Oracle as the repository. Consult the documentation for the relational&nbsp;data base management system (RDBMS)&nbsp;you selected for information
+        about starting and stopping the repository.</li>
+      <li class="li"><span style="line-height: 1.4;">The Pentaho Repository must be started before the Pentaho&nbsp;Server.</span> &nbsp;</li>
+    </ul>
+    <div class="topic task nested1" id="f7548781-3455-42f7-8239-2ff79b25c6de__task_master_service_control_scripts">
+      <div id="section_4" class="mt-page-section"><span id="Starting_and_Stopping_the_Pentaho_Server_on_Linux"></span> 
+        <h2 class="editable">Starting and Stopping the Pentaho Server on Linux</h2>
+        <p>Below are instructions and recommendations for managing the Pentaho&nbsp;Server on Linux, depending on your installation method. Additionally, we provide an example of how you can create&nbsp;a script to start the server and repository when booting
+          up&nbsp;and stop them when shutting down.</p>
+        <div id="section_5" class="mt-page-section"><span id="Pentaho_Installation_Wizard_2"></span> 
+          <h3 class="editable">Pentaho Installation Wizard</h3>
+          <div class="body taskbody">
+            <div class="section context">
+              <p>When you ran the installation wizard on Linux, the Pentaho&nbsp;Server is deployed in an included Apache Tomcat application server. You can control the Tomcat server using the start and stop scripts that come with the Pentaho installation.
+                This script is also used as an easy way to start and stop the Pentaho Server and the PostgreSQL repository.&nbsp;You can find this script at <span class="ph filepath">/pentaho/ctlscript.sh</span> .</p>
+              <p class="p">Here is a list of the script arguments and services you can use.</p>
+              <div class="p">
+                <p><span class="ph uicontrol">Arguments</span> </p>
+                <ul class="ul" id="f7548781-3455-42f7-8239-2ff79b25c6de__task_master_service_control_scripts__ul_l53_4fz_vk">
+                  <li class="li"><span class="ph filepath">start</span> </li>
+                  <li class="li"><span class="ph filepath">stop</span> </li>
+                  <li class="li"><span class="ph filepath">restart</span> </li>
+                  <li class="li"><span class="ph filepath">status</span> </li>
+                  <li class="li"><span class="ph filepath">help</span> </li>
+                </ul>
+              </div>
+              <div class="p">
+                <p><span class="ph uicontrol">Services</span> </p>
+                <ul class="ul" id="f7548781-3455-42f7-8239-2ff79b25c6de__task_master_service_control_scripts__ul_inn_qfz_vk">
+                  <li class="li"><span class="ph filepath">pentahoserver</span> </li>
+                  <li class="li"><span class="ph filepath">postgressql</span> </li>
+                </ul>
+              </div>
+            </div>
+            <div class="example">
+              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./ctlscript.sh start pentahoserver</pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./ctlscript.sh status pentahoserver</pre>              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./ctlscript.sh status postgressql</pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./ctlscript.sh help</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="topic task nested1" id="f7548781-3455-42f7-8239-2ff79b25c6de__task_individual_service_control_scripts_Linux">
+      <div id="section_6" class="mt-page-section"><span id="Manual_Installation_Using_Your_Own_Repository"></span> 
+        <h3 class="editable">Manual Installation Using Your Own Repository</h3>
+        <div class="body taskbody">
+          <div class="section context">
+            <p>If you installed Pentaho using your own repository, Pentaho provides individual control scripts to start and stop the Tomcat application server, Pentaho Server, and Pentaho Repository. Here is where you can find the individual control scripts.</p>
+            <p class="p"><strong class="ph b">Pentaho Server </strong> </p>
+            <ul>
+              <li class="li"><span class="ph filepath">pentaho/server/pentaho-server/start-pentaho.sh and stop-pentaho.sh</span> </li>
+            </ul>
+            <p class="p"><strong class="ph b">Pentaho Repository</strong> </p>
+            <ul class="ul">
+              <li class="li">Installing with your own repository&nbsp;enables you to install PostgreSQL, MySQL, MS SQL Server, or Oracle&nbsp;as the Pentaho repository. Consult the documentation for the&nbsp;relational data base management system (RDBMS) you selected
+                for information about starting and stopping the repository.</li>
+              <li class="li"><span style="line-height: 1.4;">The Pentaho Repository must be started before the </span> <span style="line-height: 1.4;">Pentaho</span> <span style="line-height: 1.4;"> Server.</span> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="topic task nested1" id="f7548781-3455-42f7-8239-2ff79b25c6de__task_starting_ba_server_on_boot_linux">
+      <div id="section_7" class="mt-page-section"><span id="Pentaho_Installation_Wizard_or_Manual_Installation:_Starting_on_Boot"></span> 
+        <h3 class="editable">Pentaho&nbsp;Installation Wizard or Manual Installation: Starting on Boot</h3>
+        <p><span style="font-size: 16px; font-weight: normal; line-height: inherit;">The installation wizard and manual installation&nbsp;do not provide a way to start the </span> <span style="font-size: 16px; font-weight: normal; line-height: inherit;">Pentaho</span> 
+          <span
+          style="font-size: 16px; font-weight: normal; line-height: inherit;"> Repository and </span> Pentaho<span style="font-size: 16px; font-weight: normal; line-height: inherit;"> Server automatically on boot. They also do not stop automatically at shutdown. Here are examples of how you might approach creating a script to start at boot and stop at shutdown.</span> </p>
+        <div class="body taskbody">
+          <div class="section context">
+            <ul>
+              <li class="p">This procedure assumes that you are running the Pentaho Server under the <code class="ph codeph">pentaho</code> local user account. If you are using a different account to start these services, substitute it in the script in step 2.</li>
+              <li class="p">This script also assumes you are using the PostgreSQL repository. Where <code class="ph codeph">postgresql</code> appears in this script, change it to reflect the RDBMS you are using as a repository, either MySQL or Oracle.</li>
+              <li class="p">This script was tested on Red Hat Enterprise Linux. You may have to modify the details of the script if you use a different distribution of Linux or other Unix-like operating system, different shells, or different <span class="ph filepath">init</span>                 systems.</li>
+            </ul>
+          </div>
+          <ol class="ol steps">
+            <li class="li step">
+              <p>With root permissions, create a file in <span class="ph filepath">/etc/init.d/</span>  named <span class="ph filepath">pentaho</span>  or named <span class="ph filepath">pdi</span>, depending on your needs.</p>
+            </li>
+            <li class="li step"><span class="ph cmd">Using a text editor, copy the following content into the new pentaho script. If running the solution repository on the same machine as the server, change <code class="ph codeph">postgresql</code> to the name of the <span class="ph filepath">init</span>               script for your database. If running the solution repository on the a remote computer, remove <code class="ph codeph">postgresql</code> entirely. You may also have to adjust the paths to the Pentaho Server scripts to match your situation.</span> 
+              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">#!/bin/sh
+### BEGIN INIT INFO
+# Provides: start-pentaho stop-pentaho
+# Required-Start: networking postgresql
+# Required-Stop: postgresql
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Description: Pentaho Server
+### END INIT INFO
+case &quot;$1&quot; in
+&quot;start&quot;)
+su - pentaho -c &quot;/home/pentaho/pentaho/server/pentaho-server/start-pentaho.sh&quot;
+;;
+&quot;stop&quot;)
+su - pentaho -c &quot;/home/pentaho/pentaho/server/pentaho-server/stop-pentaho.sh&quot;
+;;
+*)
+echo &quot;Usage: $0 { start | stop }&quot;
+;;
+esac
+exit 0</pre> </li>
+            <li class="li step"><span class="ph cmd">Save the file and close the text editor</span> </li>
+            <li class="li step"><span class="ph cmd">Open <span class="ph filepath">/home/pentaho/pentaho/server/pentaho-server/start-pentaho.sh</span> .</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Change the last <code class="ph codeph">if</code> statement to match the this example:</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">if [ &quot;$?&quot; = 0 ]; then
+  cd &quot;$DIR/tomcat/bin&quot;
+  export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;
+  env JAVA_HOME=$_PENTAHO_JAVA_HOME sh ./startup.sh
+fi</pre> </li>
+            <li class="li step"><span class="ph cmd">Save the file and close the text editor.</span> </li>
+            <li class="li step"><span class="ph cmd">Make the <span class="ph filepath">init</span>  script executable.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">chmod +x /etc/init.d/pentaho</pre>              </li>
+            <li class="li step"><span class="ph cmd">Add the Pentaho <span class="ph filepath">init</span>  script to the standard run levels by using the <code class="ph codeph">update-rc.d </code>command, so that it runs when the system starts, and stops when the system
+              is shut down or rebooted.</span>  This command may not exist on your computer if it is not Debian-based. If that is the case, consult your distribution documentation or contact your distribution's support department to determine how to add
+              <span class="ph filepath">init</span>  scripts to the default run levels. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">update-rc.d pentaho defaults</pre> </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Starting_and_Stopping_the_Pentaho_Server_on_Windows" rel="internal">Starting and Stopping the Pentaho&nbsp;Server on Windows</a> 
+        <ol>
+          <li> <a href="#Pentaho_Installation_Wizard" rel="internal">Pentaho Installation Wizard</a>  </li>
+          <li> <a href="#Manual_Installation_Using_Your_Own_Respository" rel="internal">Manual Installation Using Your Own Respository</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Starting_and_Stopping_the_Pentaho_Server_on_Linux" rel="internal">Starting and Stopping the Pentaho Server on Linux</a> 
+        <ol>
+          <li> <a href="#Pentaho_Installation_Wizard_2" rel="internal">Pentaho Installation Wizard</a>  </li>
+          <li> <a href="#Manual_Installation_Using_Your_Own_Repository" rel="internal">Manual Installation Using Your Own Repository</a>  </li>
+          <li> <a href="#Pentaho_Installation_Wizard_or_Manual_Installation:_Starting_on_Boot" rel="internal">Pentaho&nbsp;Installation Wizard or Manual Installation: Starting on Boot</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,61 @@
+<content type="text/html" title="VFS Properties">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section refsyn">
+          <p><span class="ph synph"><span class="ph var">vfs</span>  <span class="ph delim">.</span>  <span class="ph var">scheme</span>  <span class="ph delim">.</span>  <span class="ph var">property</span>  <span class="ph delim">.</span>  <span class="ph var">host</span> </span> 
+          </p>
+          <p class="p">The <strong class="ph b">vfs</strong>  subpart is required to identify this as a virtual filesystem configuration property. The <strong class="ph b">scheme</strong>  subpart represents the VFS driver's scheme (or VFS type), such as http, sftp,
+            or zip. The <strong class="ph b">property</strong>  subpart is the name of a VFS driver's ConfigBuilder's setter (the specific VFS element that you want to set). The <strong class="ph b">host</strong>  optionally defines a specific IP address
+            or hostname that this setting applies to.</p>
+          <p class="p">You must consult each scheme's API reference to determine which properties you can create variables for. Apache provides VFS scheme documentation at
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://commons.apache.org/vfs/apidocs/index.html">http://commons.apache.org/vfs/apidocs/index.html</a> . The <strong class="ph b">org.apache.commons.vfs.provider</strong>  package lists each of the configurable VFS providers (ftp, http, sftp, etc.). Each provider has a <strong class="ph b">FileSystemConfigBuilder</strong>             class that in turn has <strong class="ph b">set*(FileSystemOptions, Object)</strong>  methods. If a method's second parameter is a <strong class="ph b">String</strong>  or a <strong class="ph b">number</strong>  (Integer, Long, etc.) then you
+            can create a PDI variable to set the value for VFS dialogues.</p>
+        </div>
+        <div class="section">
+          <p class="p">The table below explains VFS properties for the SFTP scheme. Each property must be declared as a PDI variable and preceded by the <strong class="ph b">vfs.sftp</strong>  prefix as defined above.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  All of these properties are optional.</div>
+          <div class="p">
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="550b3dc7-02b3-4d3e-ab31-71b6fe7ead75__d91130e102" valign="top">SFTP VFS Property</th>
+                    <th class="entry" id="550b3dc7-02b3-4d3e-ab31-71b6fe7ead75__d91130e105" valign="top">Purpose</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">compression</td>
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">Specifies whether zlib compression is used for the destination files. Possible values are <strong class="ph b">zlib</strong>  and <strong class="ph b">none</strong> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">identity</td>
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">The private key file (fully qualified local or remote path and filename) to use for host authentication.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">authkeypassphrase</td>
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">The passphrase for the private key specified by the <strong class="ph b">identity</strong>  property.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">StrictHostKeyChecking</td>
+                    <td class="entry" headers="d91130e102 d91130e105 " valign="top">If this is set to <strong class="ph b">no</strong>, the certificate of any remote host will be accepted. If set to <strong class="ph b">yes</strong>, the remote host must exist in the known hosts file (~/.ssh/known_hosts).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="example">
+          <img alt="File:/vfs_settings.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/3370/vfs_settings.png?revision=1" />
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/0Y0/090/010/000/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0L0/0Y0/090/010/000/000">Configure SFTP VFS</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

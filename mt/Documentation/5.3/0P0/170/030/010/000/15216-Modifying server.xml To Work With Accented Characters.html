@@ -1,0 +1,22 @@
+<content type="text/html" title="Modifying server.xml To Work With Accented Characters">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">This procedure is only necessary if you plan to use character sets that include accents, such as Spanish and French.</div>
+        <div class="section context">
+          <p class="p">Follow the instructions below to implement accented character set support. Change the paths to match your configuration.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Stop the Tomcat service.</span>  <pre class="pre codeblock">sudo /etc/init.d/tomcat stop</pre> </li>
+          <li class="li step"> <span class="ph cmd">Open the <span class="ph filepath">/tomcat/server/conf/server.xml</span>  file with a text editor.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Locate each <strong class="ph b">Connector</strong>  node (typically there are four in a default Tomcat configuration) and add a <strong class="ph b">URIEncoding=&quot;UTF-8&quot; </strong>  parameter to it, as shown below:</span>             <pre class="pre codeblock"><Connector URIEncoding=&quot;UTF-8&quot; port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;
+               connectionTimeout=&quot;20000&quot;
+               redirectPort=&quot;8443&quot; /></pre> </li>
+          <li class="li step"> <span class="ph cmd">Save and close the file, then restart the Tomcat service.</span>  <pre class="pre codeblock">sudo /etc/init.d/tomcat start</pre> </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

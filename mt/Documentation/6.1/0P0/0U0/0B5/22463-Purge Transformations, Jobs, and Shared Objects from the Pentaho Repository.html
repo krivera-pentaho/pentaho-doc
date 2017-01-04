@@ -1,0 +1,140 @@
+<content type="text/html" title="Purge Transformations, Jobs, and Shared Objects from the Pentaho Repository">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to use the purge utility to permanently delete content, revisions,&nbsp;and shared objects from the&nbsp;Pentaho Repository.</p>
+        </div>
+      </div>
+      <p>The Purge Utility allows you to permanently delete shared objects&nbsp;(servers, clusters, and databases) stored in the&nbsp;Pentaho Repository as well as&nbsp;content&nbsp;(transformations and jobs). &nbsp;You can also delete revision information
+        for content and shared objects.</p>
+      <p class="pentaho-caution">Purging is permanent.&nbsp; Purged items cannot be restored.&nbsp;</p>
+      <p>To use the Purge Utility, complete these steps.</p>
+      <ol class="pentaho-list-ordered">
+        <li>Make sure the&nbsp;Pentaho Repository is running.</li>
+        <li>Open a shell tool, command prompt window, or terminal window, and navigate to the <span class="filepath style-wrap">pentaho/design-tools/data-integration directory.</span> </li>
+        <li>At the prompt enter the purge utility command. &nbsp;The format for the command, a table that describes each parameter, and parameter examples follow. &nbsp;</li>
+      </ol>
+      <p class="pentaho-note">The command&nbsp;must contain the <span class="filepath style-wrap">url</span>, <span class="filepath style-wrap">user</span>, and&nbsp;<span class="filepath style-wrap">password </span> parameters, as well as one of these parameters:&nbsp;
+        <span
+        class="filepath style-wrap">versionCount</span>,&nbsp;<span class="filepath style-wrap">purgeBeforeDate</span>,&nbsp;<span class="filepath style-wrap">purgeFiles</span>,&nbsp;<span class="filepath style-wrap">purgeRevisions</span> .</p>
+      <p><strong>Windows:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">purge-utility.bat [-url] [-user] [-password] [-purgeSharedObjects][-versionCount] 
+[-purgeBeforeDate] [-purgeFiles] [-purgeRevisions] [-logFileName] [-logLevel]</pre>
+      <p><strong>&#8203;Linux: </strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">purge-utility.sh [-url] [-user] [-password] [-purgeSharedObjects] [-versionCount] 
+[-purgeBeforeDate] [-purgeFiles] [-purgeRevisions] [-logFileName] [-logLevel]</pre>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th style="width: 120px;">Option</th>
+            <th style="width: 114px;">Required?</th>
+            <th style="width: 300px;">Description</th>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-url</span> </td>
+            <td style="width: 114px;">Y</td>
+            <td style="width: 594px;">URL address for the&nbsp;Pentaho Repository. &nbsp;This is a required parameter. &nbsp;By default, the DI Server is installed at this URL:
+              <a class="external" href="http://localhost:9080/pentaho-di" rel="freeklink" title="http://localhost:9080/pentaho-di">http://localhost:9080/pentaho-di</a> . &nbsp;</td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-user</span> </td>
+            <td style="width: 114px;">Y</td>
+            <td style="width: 594px;">Username for an account that can access the DI Server as an administrator. This is a required parameter. &nbsp;</td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-password</span> </td>
+            <td style="width: 114px;">Y</td>
+            <td style="width: 594px;">Password for the account used to access the DI Server. &nbsp;This is a required parameter. &nbsp;</td>
+          </tr>
+          <tr>
+            <td style="width: 120px;">-<span class="filepath style-wrap">purgeSharedObjects</span> </td>
+            <td style="width: 114px;">
+              <p>N</p>
+            </td>
+            <td style="width: 594px;">When set&nbsp;to <span class="filepath style-wrap">TRUE</span>, the parameter purges shared objects from the repository. &nbsp;This parameter must be used with the <span class="filepath style-wrap">purgefile</span>  parameter. &nbsp;If you
+              try to purge shared objects without including the <span class="filepath style-wrap">purgefile</span> &nbsp;parameter in the command line, an error occurs. If you set the <span class="filepath style-wrap">purgeSharedObjects </span> parameter
+              to <span class="filepath style-wrap">FALSE</span>, it does not purge shared objects. If you include the <span class="filepath style-wrap">purgeSharedObjects</span>  parameter in the command, but you don't set it to <span class="filepath style-wrap">TRUE </span> or
+              <span class="filepath style-wrap">FALSE</span>, the Purge Utility will assume that it is set to <span class="filepath style-wrap">TRUE.</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-versionCount</span> </td>
+            <td colspan="1" rowspan="4" style="width: 114px;">
+              <p>You must include <strong>only&nbsp;one</strong>  of these: <span class="filepath style-wrap">versionCount, purgeBeforeDate, purgeFiles, or purgeRevisions</span> </p>
+            </td>
+            <td style="width: 594px;">Deletes entire version history except the for last <span class="filepath style-wrap">versionCount </span> versions. &nbsp;Set this value to an integer. &nbsp;&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-purgeBeforeDate</span> </td>
+            <td style="width: 594px;">Deletes all versions before <span class="filepath style-wrap">purgeBeforeDate</span> . &nbsp;The format for the date must be mm/dd/yyyy.&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-purgeFiles</span> </td>
+            <td style="width: 594px;">When set to <span class="filepath style-wrap">TRUE</span>, transformations and jobs are permanently and physically removed. Note that shared objects (such as database connections) are NOT removed.&nbsp; If you want to also remove shared objects,
+              include the <span class="filepath style-wrap">purgeSharedObject</span> &nbsp;parameter as well. If you set the&nbsp;<span class="filepath style-wrap">purgeFiles&nbsp;</span> parameter to&nbsp;<span class="filepath style-wrap">FALSE</span>,
+              it does not purge files.&nbsp;&nbsp;If you include the <span class="filepath style-wrap">purgeFiles </span> parameter in the command, but you don't set it to&nbsp;<span class="filepath style-wrap">TRUE&nbsp;</span> or&nbsp;<span class="filepath style-wrap">FALSE</span>,
+              the Purge Utility will assume that it is set to&nbsp;<span class="filepath style-wrap">TRUE.</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-purgeRevisions</span> </td>
+            <td style="width: 594px;">When set to <span class="filepath style-wrap">TRUE</span>, all revisions are purged, but the current file remains unchanged. &nbsp;If you set the&nbsp;<span class="filepath style-wrap">purgeRevisions&nbsp;</span> parameter to&nbsp;<span class="filepath style-wrap">FALSE</span>,
+              it does not purge revisions. &nbsp;If you include the <span class="filepath style-wrap">purgeRevisions </span> parameter in the command, but you don't set it to&nbsp;<span class="filepath style-wrap">TRUE&nbsp;</span> or&nbsp;<span class="filepath style-wrap">FALSE</span>,
+              the Purge Utility will assume that it is set to&nbsp;<span class="filepath style-wrap">TRUE.</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 120px;">-<span class="filepath style-wrap">logFileName</span> </td>
+            <td style="width: 114px;">N</td>
+            <td style="width: 594px;">Allows you to specify the file name for the log file. &nbsp;If this parameter is not present, the log is written to a file that has this name format: <span class="filepath style-wrap">purge-utility-log-YYYYMMdd-HHmmss.txt</span> . &nbsp;
+              <span
+              class="filepath style-wrap">YYYYMMdd-HHmmss</span>  indicates the date and time that the log file was created (e.g. <span class="filepath style-wrap">purge-utility-log-20140313-154741.txt</span> ).</td>
+          </tr>
+          <tr>
+            <td style="width: 120px;"><span class="filepath style-wrap">-logLevel</span> </td>
+            <td style="width: 114px;">N</td>
+            <td style="width: 594px;">Indicates the types and levels of detail the logs should contain. &nbsp;Values are: <span class="filepath style-wrap">ALL</span>, <span class="filepath style-wrap">DEBUG</span>, <span class="filepath style-wrap">ERROR</span>, <span class="filepath style-wrap">FATAL</span>,
+              <span class="filepath style-wrap">TRACE</span>, <span class="filepath style-wrap">INFO</span>, <span class="filepath style-wrap">OFF</span>, and <span class="filepath style-wrap">WARN</span> . &nbsp;By default the log is set to <span class="filepath style-wrap">INFO</span> .
+              &nbsp;Check the&nbsp;Log4J documentation for more details on the logging framework definitions: &nbsp;
+              <a class="link-https" style="line-height: 1.5;" rel="external nofollow" href="https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/Level.html"
+              target="_blank">https://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/Level.html</a> .</td>
+          </tr>
+        </tbody>
+      </table>
+      <ul>
+        <li>
+          <p>In this example, only the last five revisions of transformations and jobs are NOT deleted. &nbsp;All previous revisions are deleted.</p>
+        </li>
+      </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">purge-utility.bat -url=http://localhost:9080/pentaho-di -user=jdoe -password=mypassword -versionCount=5</pre>
+      <ul>
+        <li>
+          <p>In the example that follows all revisions before 01/11/2009 are deleted. &nbsp;Logging is set to the WARN level.</p>
+        </li>
+      </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">purge-utility.bat -url=http://localhost:9080/pentaho-di -user=jdoe -password=mypassword -purgeBeforeDate=01/11/2009 -logLevel=WARN</pre>
+      <ul>
+        <li>
+          <p><span class="tx">In this example, all transformations, jobs, and shared objects&nbsp;are deleted. &nbsp;Note that you do not need to set the <span class="filepath style-wrap">purgeFiles&nbsp;</span> and <span class="filepath style-wrap">purgeSharedObjects&nbsp;</span> parameters
+            to <span class="filepath style-wrap">TRUE </span> for this command to work. &nbsp;Logging is turned OFF.</span> 
+          </p>
+        </li>
+      </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">purge-utility.bat -url=http://localhost:9080/pentaho-di -user=jdoe -password=mypassword -purgeFiles -purgeSharedObjects -logLevel=OFF</pre>
+      <ol class="pentaho-list-ordered" start="4">
+        <li>When finished, examine the logs to see if there were any issues or problems with the purge. &nbsp;</li>
+        <li>To see the results of the purge process, disconnect, then reconnect to the&nbsp;Pentaho Repository. &nbsp;In the<strong> Repository Explorer</strong>, in the <strong>Browse </strong> tab, verify that the items you specified in your purge utility
+          command were purged. &nbsp;</li>
+      </ol>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

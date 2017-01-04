@@ -1,0 +1,489 @@
+<content type="text/html" title="Contribute Additional Step and Job Entry Analyzers to the Pentaho Metaverse">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+      <h2 class="editable">Overview</h2>
+      <p>The Pentaho Metaverse provides metadata lineage capabilities for the Pentaho Universe. Pentaho Data Integration (PDI) is a major source of lineage information. The metaverse mines metadata and builds a connected relationship model among all the
+        pieces it knows about. The end result is a graph model which allows for lineage (finding where/what contributed to something) and impact analysis (determining what would be affected downstream if something where changed). The metaverse leverages
+        OSGi (blueprints) to allow for modularity and extensibility. Therefore, if something is not supported out-of-the-box by the metaverse, the metaverse can accept components via OSGi bundles which extend its capabilities.</p>
+      <p>Kettle supports <em>transformations</em>  and <em>jobs</em>, each of which is composed of smaller bite-sized operations. A transformation is made up of <em>steps</em>  and a job is made up of <em>job entries</em> . Conceptually, these can be thought
+        of as <em>analogs</em> . Kettle provides hundreds of unique steps and job entries which each perform a specific task. As far as the metaverse is concerned, each one of these steps and job entries is a potential source of metadata with respect to
+        lineage.</p>
+      <p>The metaverse is composed of <em>analyzers</em>  which are responsible for mining lineage information from a specific &quot;thing.&quot; There are <em>document analyzers</em>  which know how to extract the lineage information from documents. PDI produces
+        two document types, transformations (KTR) and jobs (KJB), and for each there is a corresponding document analyzer. Each one analyzes the sub-components, the steps comprising a transformation and the job entries comprising a job, and assigns each
+        subcomponent a specific step analyzer or job entry analyzer if one exists for the implementation of BaseStepMeta.</p>
+      <p>The out-of-the-box set of analyzers is limited. In the case of a step or job entry not having a corresponding analyzer, there is a generic fallback analyzer. To contribute a new step or job entry analyzer to the system, you can implement the required
+        interface(s) and register a service via OSGI (blueprints) to become available to the system.</p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Examples"></span> 
+      <h2 class="editable">Examples</h2>
+      <p>The preferred approach to adding a step analyzer is through OSGi. We realize that there are many legacy PDI plugins which provide steps and job entries. While it is not part of this project to convert these plugins to OSGi for the purpose of contributing
+        analyzers, you can add step analyzers to an existing PDI plugin. Jump down to the section dedicated to this purpose.</p>
+      <p>This example will outline the steps taken to create the
+        <a class="external-link" href="https://github.com/pentaho/pentaho-metaverse-ee/tree/master/sample" rel="nofollow">sample-metaverse-bundle</a> . It demonstrates how to create a new step analyzer for the Table Input Step.</p>
+      <div id="section_3" class="mt-page-section"><span id="Create_a_New_Maven_Project"></span> 
+        <h3 class="editable">Create a New Maven Project</h3>
+        <p>The easiest way to get started is to use the karaf-bundle-archetype to create a new Maven project which generates a bundle artifact which works in a Karaf container.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mvn archetype:generate \
+  -DarchetypeGroupId=org.apache.karaf.archetypes \
+  -DarchetypeArtifactId=karaf-bundle-archetype \
+  -DarchetypeVersion=2.2.11 \
+  -DgroupId=your.company \
+  -DartifactId=your-artifact-id \
+  -Dversion=1.0-SNAPSHOT \
+  -Dpackage=your.company.package \</pre> </div>
+        </div>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Add_Dependencies"></span> 
+        <h3 class="editable">Add Dependencies</h3>
+        <p>Add maven dependencies to pentaho-metaverse-api and kettle jars in your pom.xml file.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><dependency>
+  <groupId>pentaho</groupId>
+  <artifactId>pentaho-metaverse-api</artifactId>
+  <version>6.0-SNAPSHOT</version>
+  <type>bundle</type>
+</dependency>
+<dependency>
+  <groupId>pentaho-kettle</groupId>
+  <artifactId>kettle-core</artifactId>
+  <version>6.0-SNAPSHOT</version>
+</dependency>
+<dependency>
+  <groupId>pentaho-kettle</groupId>
+  <artifactId>kettle-engine</artifactId>
+  <version>6.0-SNAPSHOT</version>
+</dependency></pre> </div>
+        </div>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Create_a_Class_which_Implements_IStepAnalyzer"></span> 
+        <h3 class="editable">Create a Class which Implements IStepAnalyzer</h3>
+        <p>At a minimum, you will need to create a java class which implements the IStepAnalyzer interface (for a job entry analyzer, you would implement IJobEntryAnalyzer). The IStepAnalyzer interface only requires that you implement the analyzer and getSupportedSteps
+          methods. It is pretty black-box and doesn't do much to make the developer's life much easier. Step analyzers follow a common pattern:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Model the step itself in the graph as a node.</li>
+          <li>Link all stream fields which are inputs into the step to that node, if any.</li>
+          <li>Determine the outputs of the step, if any, then create and link those nodes to the step node.</li>
+          <li>Add links to the fields which the step actually uses, if any.</li>
+          <li>Add links from the input fields to the output fields.</li>
+        </ul>
+        <p>Virtually, all implementations would benefit by extending the common base class StepAnalyzer which provides a common implementation for all of those common tasks. Below, is a simple
+          <a class="external-link" href="https://github.com/pentaho/pentaho-metaverse-ee/blob/master/sample/src/main/java/com/pentaho/metaverse/sample/DummyStepAnalyzer.java"
+          rel="nofollow">implementation of a step analyzer for the Dummy step</a> . There is nothing special about this step which warrants a custom step analyzer, but for the purpose of this document we will add a custom property to the step node. This is done in the
+          customAnalyzer method:</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public class DummyStepAnalyzer extends StepAnalyzer<DummyTransMeta> {
+  @Override
+  protected Set<StepField> getUsedFields( DummyTransMeta meta ) {
+    // no incoming fields are used by the Dummy step
+    return null;
+  }
+  @Override
+  protected void customAnalyze( DummyTransMeta meta, IMetaverseNode rootNode ) throws MetaverseAnalyzerException {
+    // add any custom properties or relationships here
+    rootNode.setProperty( &quot;do_nothing&quot;, true );
+  }
+  @Override
+  public Set<Class<? extends BaseStepMeta>> getSupportedSteps() {
+    Set<Class<? extends BaseStepMeta>> supportedSteps = new HashSet<>();
+    supportedSteps.add( DummyTransMeta.class );
+    return supportedSteps;
+  }
+}</pre> </div>
+        </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Create_the_Blueprint_Configuration"></span> 
+        <h3 class="editable">Create the Blueprint Configuration</h3>
+        <p>
+          <a class="external-link" href="http://aries.apache.org/modules/blueprint.html" rel="nofollow">Blueprint</a>  provides a dependency injection framework for OSGi. The metaverse has two injection points. It has a reference list of all services registered in the container for both the IStepAnalyzer interfaces and the IJobEntryAnalyzer interfaces.
+          When the container detects a new service which provides an implementation of one of those interfaces, the metaverse sees it and adds it to its set of known analyzers. The next time a step which implements the particular class you care about,
+          such as 'DummyTransMeta' in our example, is analyzed, your new StepAnalyzers will be used and your override methods will be called.</p>
+        <p>Create a blueprint.xml file in src/main/resources/OSGI-INF/blueprint/ folder. (Create the folders, if needed.)</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<blueprint xmlns=&quot;http://www.osgi.org/xmlns/blueprint/v1.0.0&quot;
+           xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+           xsi:schemaLocation=&quot;
+             http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+             &quot;>
+
+	<!-- Define a bean for our new step analyzer -->
+	<bean id=&quot;dummyStepAnalyzer&quot;/>
+
+	<!--
+  	  Define our analyzer as a service. This will allow it to be automatically added to the reference-list ultimately used
+  	  by the TransformationAnalyzer to determine if there is a custom analyzer for a particular BaseStepMeta impl
+  	  (DummyTransMeta in this case).
+	-->
+	<service id=&quot;dummyStepAnalyzerService&quot;
+         interface=&quot;org.pentaho.metaverse.api.analyzer.kettle.step.IStepAnalyzer&quot;
+         ref=&quot;dummyStepAnalyzer&quot;/>
+</blueprint></pre> </div>
+        </div>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Build_and_Test_Your_Bundle"></span> 
+        <h3 class="editable">Build and Test Your Bundle</h3>
+        <p>1. Build your bundle with Maven and have it installed into your local Maven repository. Once there, you can test it out in the Pentaho di-server.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mvn install</pre> </div>
+        </div>
+        <p>2. Start up the Pentaho data-integration in debug mode. Once started, ssh into the running karaf container.&nbsp;<em>The ssh credentials are &quot;karaf&quot;/&quot;karaf&quot;.</em> </p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">OPT=&quot;$OPT -Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005&quot; ./spoon.sh
+# from another terminal window...
+ssh -p 8102 karaf@localhost
+# when prompted, password = karaf</pre> </div>
+        </div>
+        <p>3. Install your bundle from the maven repository.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># make sure the pentaho-metaverse feature is installed
+admin@root> features:list | grep pentaho-metaverse
+[installed  ] [6.0-SNAPSHOT   ] pentaho-metaverse                      repo-0
+# install from local maven repository &amp; start your bundle
+admin@root> install mvn:pentaho/sample-metaverse-bundle/6.0-SNAPSHOT
+Bundle ID: 241
+admin@root> start 241
+Starting the bundle</pre> </div>
+        </div>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="See_it_in_Action!"></span> 
+        <h3 class="editable">See it in Action!</h3>
+        <p>It is assumed that you have set up your system for data lineage. If you have not already done so, see
+          <a rel="internal" title="Data Lineage" href="/Documentation/6.0/0L0/0Y0/Data_Lineage#Setup">&quot;Setup&quot;</a>  for data lineage.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Save a transformation which contains a step you want to explore with the analyzer. (In the sample, use the table input step).</li>
+          <li>Connect a remote debugger to PDI on port 5005. Enter a breakpoint in your step analyzer's implementation.</li>
+          <li>Execute your transformation from PDI.</li>
+          <li>You should hit your breakpoint when the step you are exploring is assessed by the transformation analyzer. The execution will generate a GraphML file (along with an execution profile) for the transformation. You can find these files in <strong>data-integration/pentaho-lineage-output/</strong> <strong><em><Date of execution>/original/path/to/the/file/</em> </strong> .
+            You can use a tool such as yEd to view the GraphML files.</li>
+        </ol>
+        <p class="pentaho-note">Working with yEd can be difficult. We have created a configuration for yEd to help ease the pain of viewing these graphs which you can access here:
+          <a class="external-link" href="https://github.com/pentaho/pentaho-tackle-box/tree/master/yed" rel="nofollow">https://github.com/pentaho/pentaho-tackle-box/tree/master/yed</a> . Read the README text file for help.</p>
+        <p class="pentaho-note">In yEd, you will need to apply a layout to view the graph properly. Otherwise, all of the nodes will overlap each other.</p>
+      </div>
+    </div>
+    <div id="section_9" class="mt-page-section"><span id="Different_Types_of_Step_Analyzers"></span> 
+      <h2 class="editable">Different Types of Step Analyzers</h2>
+      <p>In the process of implementing custom step analyzers, we discovered a few generic patterns based on the type of step.</p>
+      <ul class="pentaho-list-unordered">
+        <li>First, there are the traditional steps which just take some input fields, manipulate them in some fashion, and then output them.</li>
+        <li>The second type are the input and output steps. These steps use an external resource (file, database, web service, etc) to read or write data.</li>
+        <li>The last is a more specific type of the second, and one which requires a logical connection to an external resource, typically a database or noSql data store.</li>
+      </ul>
+      <p>These patterns are the basis for the three main base classes you might consider extending when implementing a custom step analyzer.</p>
+      <div id="section_10" class="mt-page-section"><span id="Field_Manipulation"></span> 
+        <h3 class="editable">Field Manipulation</h3>
+        <p>If the step you are writing a custom analyzer for is just a traditional step which manipulates data or fields to produce different outputs than inputs, then you should extend your step analyzer. An example of this kind of step analyzer would be
+          <a class="external-link" href="https://github.com/pentaho/pentaho-metaverse-ee/blob/master/core/src/main/java/com/pentaho/metaverse/analyzer/kettle/step/stringscut/StringsCutStepAnalyzer.java" rel="nofollow">Strings cut</a> . It is much easier to understand the graph model when looking at it.</p>
+        <p>Below is the basic graph model for the Strings cut step:
+          <img alt="strings_cut.png" class="internal default" style="width: 664px; height: 541px;" width="664px" height="541px" src="http://help.pentaho.com/@api/deki/files/6978/strings_cut.png?size=bestfit&amp;width=664&amp;height=541&amp;revision=1"
+          />
+        </p>
+        <p>In this example, three fields are inputs into the step: 'FirstName', 'LastName', and 'Middle Name'. Four fields are derived as the outputs: 'FirstName', 'LastName', 'MI' (middle initial), and 'Middle Name'. In the example below, the Strings Cut
+          step uses just the Middle Name input field to create the 'MI' output field from the first character.</p>
+        <p>
+          <img alt="StringCutDialog.png" class="internal default" style="width: 600px; height: 291px;" width="600px" height="291px" src="http://help.pentaho.com/@api/deki/files/6979/StringCutDialog.png?size=bestfit&amp;width=600&amp;height=291&amp;revision=1"
+          />
+        </p>
+        <p>Looking at the graph above, you can see that there are four 'derives' links corresponding to the four output fields. The 'Middle Name' input field results in two derive links to both the 'Middle Name' and the 'MI' output fields. The base StepAnalyzer
+          will create the inputs and outputs (fields and links) for you, but it is up to you to inform the base analyzer about the fields to use and which fields derive other fields.</p>
+        <p>Override the getUsedFields method to supply the fields used by the step. In the example above, the only input field used by the step is 'Middle Name'.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Override
+protected Set<StepField> getUsedFields( StringCutMeta meta ) {
+  HashSet<StepField> usedFields = new HashSet<>();
+  for ( String fieldInString : meta.getFieldInStream() ) {
+    usedFields.addAll( createStepFields( fieldInString, getInputs() ) );
+  }
+  return usedFields;
+}</pre> </div>
+        </div>
+        <p>To supply the non-passthrough derives links and operation information, override the getChangeRecords method. In the above example, the non-passthrough derives link from the 'Middle Name' input field to the 'MI' output field is created from this
+          override method.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Override
+public Set<ComponentDerivationRecord> getChangeRecords( StringCutMeta meta ) throws MetaverseAnalyzerException {
+  Set<ComponentDerivationRecord> changeRecords = new HashSet<>();
+  for ( int i = 0; i < meta.getFieldInStream().length; i++ ) {
+    String fieldInString = meta.getFieldInStream()[i];
+    String fieldOutString = meta.getFieldOutStream()[i];
+    if ( fieldOutString == null || fieldOutString.length() < 1 ) {
+      fieldOutString = fieldInString;
+    }
+ 
+    ComponentDerivationRecord changeRecord = new ComponentDerivationRecord( fieldInString, fieldOutString, ChangeType.DATA );
+    String changeOperation = fieldInString + &quot; -> [ substring [ &quot; + meta.getCutFrom()[i] + &quot;, &quot;
+        + meta.getCutTo()[i] + &quot; ] ] -> &quot; + fieldOutString;
+    changeRecord.addOperation( new Operation( Operation.CALC_CATEGORY, ChangeType.DATA,
+      DictionaryConst.PROPERTY_TRANSFORMS, changeOperation ) );
+    changeRecords.add( changeRecord );
+  }
+  return changeRecords;
+}</pre> </div>
+        </div>
+        <p>By default, the implementation determines if a field is a passthrough field or not. If this logic isn't sufficient for your step, then override the isPassthrough method like the StringsCutStepAnalyzer does. The default logic assumes that if there
+          is an output field with an identical name as an input field, then it is a passthrough.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/**
+ * Determines if a field is considered a passthrough field or not. In this case, if we're not using the field, it's
+ * a passthrough. If we are using the field, then it is only a passthrough if we're renaming the field on which we
+ * perform the operation(s).
+ *
+ * @param originalFieldName The name of the incoming field
+ * @return true if this field is a passthrough (i.e. no operations are performed on it), false otherwise
+ */
+@Override
+protected boolean isPassthrough( StepField originalFieldName ) {
+  String[] inFields = baseStepMeta.getFieldInStream();
+  String origFieldName = originalFieldName.getFieldName();
+  for ( int i = 0; i < inFields.length; i++ ) {
+    if ( inFields[i].equals( origFieldName ) &amp;&amp; Const.isEmpty( baseStepMeta.getFieldOutStream()[i] ) ) {
+      return false;
+    }
+  }
+  return true;
+}</pre> </div>
+        </div>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="External_Resource_(input.2Foutput)"></span> 
+        <h3 class="editable">External Resource (input/output)</h3>
+        <p>If you are writing a custom analyzer for a step which reads or writes data from an external source like a file, extend ExternalResourceStepAnalyzer. An example analyzer that extends this is
+          <a class="external-link" href="https://github.com/pentaho/pentaho-metaverse-ee/blob/master/core/src/main/java/com/pentaho/metaverse/analyzer/kettle/step/textfileoutput/TextFileOutputStepAnalyzer.java"
+          rel="nofollow">TextFileOutputStepAnalyzer</a> .</p>
+        <p>
+          <img alt="externalresourcegraph.png" class="internal default" style="width: 651px; height: 351px;" width="651px" height="351px" src="http://help.pentaho.com/@api/deki/files/6980/externalresourcegraph.png?size=bestfit&amp;width=651&amp;height=351&amp;revision=1"
+          />
+        </p>
+        <p>Above is a typical file-based output step graph diagram (CSV would be very similar). This kind of step analyzer is different in that it creates resource nodes for fields and files which it touches (the yellow boxes). To accomplish this in a custom
+          step analyzer, there are a few steps you must take. First, you must implement the abstract methods defined in&nbsp;ExternalResourceStepAnalyzer:</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent">
+            <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Override
+public String getResourceInputNodeType() {
+  return null;
+}
+ 
+@Override
+public String getResourceOutputNodeType() {
+  return DictionaryConst.NODE_TYPE_FILE_FIELD;
+}
+ 
+@Override
+public boolean isOutput() {
+  return true;
+}
+ 
+@Override
+public boolean isInput() {
+  return false;
+}
+ 
+@Override
+public IMetaverseNode createResourceNode( IExternalResourceInfo resource ) throws MetaverseException {
+  return createFileNode( resource.getName(), descriptor );
+}</pre>
+          </div>
+        </div>
+        <p>Next, you need to create a class which implements&nbsp;IStepExternalResourceConsumer. You will want to extend the base class&nbsp;BaseStepExternalResourceConsumer to help make your job a bit easier. External Resource Consumers are used in two
+          places: once when the execution profiles are generated to determine what resources are read from/written to, and once by the step analyzers. In your blueprint.xml file, you will need to define the bean, publish the service, and inject the bean
+          into your step analyzer:</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent">
+            <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- Define the bean for the step analyzer, inject the external resource consumer -->
+<bean id=&quot;TextFileOutputStepAnalyzer&quot;
+      class=&quot;org.pentaho.metaverse.analyzer.kettle.step.textfileoutput.TextFileOutputStepAnalyzer&quot;>
+  <property name=&quot;externalResourceConsumer&quot; ref=&quot;textFileOutputERC&quot;/>
+</bean>
+
+<!--
+  Define our analyzer as a service. This will allow it to be automatically added to the reference-list ultimately used
+  by the TransformationAnalyzer to determine if there is a custom analyzer for a particular BaseStepMeta impl
+  (TableInputMeta in this case).
+-->
+<service id=&quot;textFileOutputStepAnalyzerService&quot;
+         interface=&quot;org.pentaho.metaverse.api.analyzer.kettle.step.IStepAnalyzer&quot;
+         ref=&quot;TextFileOutputStepAnalyzer&quot;/>
+
+<!-- Define the external resource consumer bean -->
+<bean id=&quot;textFileOutputERC&quot; scope=&quot;singleton&quot;
+      class=&quot;org.pentaho.metaverse.analyzer.kettle.step.textfileoutput.TextFileOutputExternalResourceConsumer&quot;/>
+
+<!--
+  Define the external resource consumer as a service so it will get added to the reference-list of all IStepExternalResourceConsumer's.
+-->
+<service id=&quot;textFileOutputERCService&quot;
+         interface=&quot;org.pentaho.metaverse.api.analyzer.kettle.step.IStepExternalResourceConsumer&quot;
+         ref=&quot;textFileOutputERC&quot;/></pre>
+          </div>
+        </div>
+        <p>The custom logic portions of the TextFileOutputStepAnalyer are in the fields it uses, and this logic determines the fields which are actually written to the file.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent">
+            <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Override
+protected Set<StepField> getUsedFields( TextFileOutputMeta meta ) {
+  Set<StepField> usedFields = new HashSet<>();
+  // we only &quot;use&quot; one field IF we are getting the file to write to from a field in the stream
+  if ( meta.isFileNameInField() ) {
+    usedFields.addAll( createStepFields( meta.getFileNameField(), getInputs() ) );
+  }
+  return usedFields;
+}
+ 
+ 
+@Override
+public Set<String> getOutputResourceFields( TextFileOutputMeta meta ) {
+  // TextFileOutput doesn't force you to write all input fields out to the file, you can pick which ones you want.
+  // The default impl of this method assumes you want all inputs.
+  Set<String> fields = new HashSet<>();
+  TextFileField[] outputFields = meta.getOutputFields();
+  for ( int i = 0; i < outputFields.length; i++ ) {
+    TextFileField outputField = outputFields[ i ];
+    fields.add( outputField.getName() );
+  }
+  return fields;
+}</pre>
+          </div>
+        </div>
+      </div>
+      <div id="section_12" class="mt-page-section"><span id="Connection-Based_External_Resource"></span> 
+        <h3 class="editable">Connection-Based External Resource</h3>
+        <p>If the step you are writing a custom analyzer for is using a connection like a database connection, then you should extend ConnectionExternalResourceStepAnalyzer. An example of this type of analyzer is
+          <a class="external-link" href="https://github.com/pentaho/pentaho-metaverse-ee/blob/master/core/src/main/java/com/pentaho/metaverse/analyzer/kettle/step/tableoutput/TableOutputStepAnalyzer.java"
+          rel="nofollow">TableOutputStepAnalyzer</a> . Connection-based analyzers are just a more specific type of step analyzer than the external resource step analyzers. It is an external resource analyzer which also has a connection analyzer and understands the concept
+          of a table.</p>
+        <p>All IStepAnalyzers can optionally support the notion of a property called connectionAnalyzer. A <em>connection analyzer</em>  is a specific type of analyzer. Its job is to build the relationships and nodes for an external connection. Some examples
+          of connection analyzers are for traditional databases, noSQL databases, HDFS, etc. The metaverse exposes two IDatabaseConnection analyzers for reuse in external bundles (like the one outlined here). You can inject either stepDatabaseConnectionAnalyzer
+          or jobEntryConnectionAnalyzer into your analyzer by grabbing hold of a reference to the exposed service (see below). If you need a custom connectionAnalyzer, you can implement your own and use that in your bundle.</p>
+        <div class="code panel"
+        style="border-width: 1px;">
+          <div class="codeContent panelContent">
+            <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+  If you are defining your resource in a separate bundle, grab a reference to the IDatabaseConnectionAnalyzer
+  for steps provided by the core pentaho-metaverse bundle.
+  This will be injected into analyzer (TableOutputStepAnalyzer)
+-->
+<reference id=&quot;stepDatabaseConnectionAnalyzerRef&quot;
+           interface=&quot;org.pentaho.metaverse.api.analyzer.kettle.IDatabaseConnectionAnalyzer&quot;
+           component-name=&quot;stepDatabaseConnectionAnalyzer&quot;
+           availability=&quot;mandatory&quot;/>
+
+ 
+<!--
+  Declare our sample analyzer(TableOutputStepAnalyzer) bean. Inject the stepDatabaseConnectionAnalyzer so it can
+  use the same one that the TableOutputStepAnalyzer uses.
+-->
+<bean id=&quot;tableOutputStepAnalyzer&quot; class=&quot;org.pentaho.metaverse.analyzer.kettle.step.tableoutput.TableOutputStepAnalyzer&quot;>
+  <property name=&quot;connectionAnalyzer&quot; ref=&quot;stepDatabaseConnectionAnalyzerRef&quot;/>
+  <property name=&quot;externalResourceConsumer&quot; ref=&quot;tableOutputERC&quot;/>
+</bean>
+
+ 
+<!--
+  Define our analyzer as a service. This will allow it to be automatically added to the reference-list ultimately used
+  by the TransformationAnalyzer to determine if there is a custom analyzer for a particular BaseStepMeta impl
+  (TableOutputMeta in this case).
+-->
+<service id=&quot;tableOutputStepAnalyzerService&quot;
+         interface=&quot;org.pentaho.metaverse.api.analyzer.kettle.step.IStepAnalyzer&quot;
+         ref=&quot;tableOutputStepAnalyzer&quot;/>
+
+ 
+ 
+<!-- Configure the TableOutputExternalResourceConsumer and service  -->
+<bean id=&quot;tableOutputERC&quot; scope=&quot;singleton&quot;
+      class=&quot;org.pentaho.metaverse.analyzer.kettle.step.tableoutput.TableOutputExternalResourceConsumer&quot;/>
+<service id=&quot;tableOutputERCService&quot;
+         interface=&quot;org.pentaho.metaverse.api.analyzer.kettle.step.IStepExternalResourceConsumer&quot;
+         ref=&quot;tableOutputERC&quot;/></pre>
+          </div>
+        </div>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="Adding_Analyzers_from_Existing_PDI_Plug-ins_(non-OSGi)"></span> 
+        <h3 class="editable">Adding Analyzers from Existing PDI Plug-ins (non-OSGi)</h3>
+        <p>Some of the steps from the above procedure remain the same. You still need to
+          <a class="external-link" href="http://iwiki.pentaho.com/pages/viewpage.action?pageId=29951507#ContributeadditionalStepJobEntryAnalyzerstothePentahoMetaverse-dependency"
+          rel="nofollow">add a compile-time dependency</a>  to the pentaho-metaverse-api jar and you still need to
+          <a class="external-link" href="http://iwiki.pentaho.com/pages/viewpage.action?pageId=29951507#ContributeadditionalStepJobEntryAnalyzerstothePentahoMetaverse-stepAnalyzerImpl"
+          rel="nofollow">create your StepAnalyzer class</a> .</p>
+        <p>The main difference is how you register your analyzer with the rest of the metaverse analyzers. Since this isn't an OSGi bundle, the blueprint configuration is not an option. Instead, you will have to create a KettleLifecyclePlugin which instantiates
+          your analyzer class and registers it with PentahoSystem.</p>
+        <p>There is an example of how this process works in a branch on my github repo (a fork of the load-text-from-file-plugin originally written by Matt Burgess). Here is the branch, but we will reference specific files in that branch in the following
+          snippets&nbsp;
+          <a class="external-link" href="https://github.com/rfellows/load-text-from-file-plugin/tree/BACKLOG-3147" rel="nofollow">https://github.com/rfellows/load-text-from-file-plugin/tree/BACKLOG-3147</a> .</p>
+        <ul class="pentaho-list-unordered">
+          <li>The step analyzer class:&nbsp;
+            <a class="external-link" href="https://github.com/rfellows/load-text-from-file-plugin/blob/BACKLOG-3147/src/main/java/org/pentaho/di/trans/steps/loadtextfromfile/LoadTextFromFileAnalyzer.java" rel="nofollow">https://github.com/rfellows/load-text-from-file-plugin/blob/BACKLOG-3147/src/main/java/org/pentaho/di/trans/steps/loadtextfromfile/LoadTextFromFileAnalyzer.java</a> 
+          </li>
+          <li>The external resource consumer class:&nbsp;
+            <a class="external-link" href="https://github.com/rfellows/load-text-from-file-plugin/blob/BACKLOG-3147/src/main/java/org/pentaho/di/trans/steps/loadtextfromfile/LoadTextFromFileExternalResourceConsumer.java"
+            rel="nofollow">https://github.com/rfellows/load-text-from-file-plugin/blob/BACKLOG-3147/src/main/java/org/pentaho/di/trans/steps/loadtextfromfile/LoadTextFromFileExternalResourceConsumer.java</a> 
+          </li>
+          <li>The life cycle listener:&nbsp;
+            <a class="external-link" href="https://github.com/rfellows/load-text-from-file-plugin/blob/BACKLOG-3147/src/main/java/org/pentaho/di/trans/steps/loadtextfromfile/LoadTextPluginLifecycleListener.java" rel="nofollow">https://github.com/rfellows/load-text-from-file-plugin/blob/BACKLOG-3147/src/main/java/org/pentaho/di/trans/steps/loadtextfromfile/LoadTextPluginLifecycleListener.java</a> 
+          </li>
+        </ul>
+        <p>The life cycle listener is a new plug-in:</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@LifecyclePlugin( id = &quot;LoadTextFromFilePlugin&quot;, name = &quot;LoadTextFromFilePlugin&quot; )
+public class LoadTextPluginLifecycleListener implements LifecycleListener {
+  LoadTextFromFileAnalyzer analyzer;
+  LoadTextFromFileExternalResourceConsumer consumer;
+  @Override
+  public void onStart( LifeEventHandler lifeEventHandler ) throws LifecycleException {
+    // instantiate a new analyzer
+    analyzer = new LoadTextFromFileAnalyzer();
+    // construct the external resource consumer for the files that it reads from
+    consumer = new LoadTextFromFileExternalResourceConsumer(); 
+    analyzer.setExternalResourceConsumer( consumer );
+    // register the analyzer with PentahoSystem. this also adds it to the service reference list that contains ALL IStepAnalyzers registered
+    PentahoSystem.registerObject( analyzer );
+    // register the consumer with PentahoSystem. this also adds it to the service reference list that contains ALL IStepExternalResourceConsumers registered
+    PentahoSystem.registerObject( consumer );
+  }
+ 
+  @Override
+  public void onExit( LifeEventHandler lifeEventHandler ) throws LifecycleException {
+  }
+}</pre> </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Examples" rel="internal">Examples</a> 
+        <ol>
+          <li> <a href="#Create_a_New_Maven_Project" rel="internal">Create a New Maven Project</a>  </li>
+          <li> <a href="#Add_Dependencies" rel="internal">Add Dependencies</a>  </li>
+          <li> <a href="#Create_a_Class_which_Implements_IStepAnalyzer" rel="internal">Create a Class which Implements IStepAnalyzer</a>  </li>
+          <li> <a href="#Create_the_Blueprint_Configuration" rel="internal">Create the Blueprint Configuration</a>  </li>
+          <li> <a href="#Build_and_Test_Your_Bundle" rel="internal">Build and Test Your Bundle</a>  </li>
+          <li> <a href="#See_it_in_Action!" rel="internal">See it in Action!</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Different_Types_of_Step_Analyzers" rel="internal">Different Types of Step Analyzers</a> 
+        <ol>
+          <li> <a href="#Field_Manipulation" rel="internal">Field Manipulation</a>  </li>
+          <li> <a href="#External_Resource_(input.2Foutput)" rel="internal">External Resource (input/output)</a>  </li>
+          <li> <a href="#Connection-Based_External_Resource" rel="internal">Connection-Based External Resource</a>  </li>
+          <li> <a href="#Adding_Analyzers_from_Existing_PDI_Plug-ins_(non-OSGi)" rel="internal">Adding Analyzers from Existing PDI Plug-ins (non-OSGi)</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

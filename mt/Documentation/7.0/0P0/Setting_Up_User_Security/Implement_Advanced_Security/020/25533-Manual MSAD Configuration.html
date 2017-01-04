@@ -1,0 +1,112 @@
+<content type="text/html" title="Manual MSAD Configuration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>Before making any edits to your&nbsp;Pentaho&nbsp;security configuration, you must manually switch from&nbsp;Pentaho&nbsp;default security to&nbsp;LDAP&nbsp;security.&nbsp;The&nbsp;LDAP&nbsp;Properties&nbsp;reference article contains supplemental
+        information for&nbsp;LDAP&nbsp;values.</p>
+      <div class="section">
+        <div id="section_1" class="mt-page-section"><span id="Switching_to_LDAP_Security"></span> 
+          <h2 class="editable">Switching to LDAP Security</h2>
+          <ol>
+            <li>Stop the DI Server.</li>
+            <li>Change the&nbsp;<span class="mt-font-courier-new"><strong>securities.properties</strong> </span> &nbsp;file located in&nbsp;<span class="mt-font-courier-new"><strong>/pentaho-solutions/system</strong> </span> &nbsp; folder from&nbsp;<span class="mt-font-courier-new"><strong>provider=jackrabbit</strong> </span> &nbsp;to&nbsp;
+              <span
+              class="mt-font-courier-new"><strong>provider=ldap</strong> </span> 
+            </li>
+            <li>Save and close the file.</li>
+            <li>Restart the DI Server.&nbsp;</li>
+          </ol>
+        </div>
+        <div id="section_2" class="mt-page-section"><span id="Making_MSAD_Configuration_File_Changes"></span> 
+          <h2 class="editable">Making&nbsp;MSAD&nbsp;Configuration File Changes&nbsp;</h2>
+          <p>To make Microsoft Active Directory (MSAD) configuration file changes, you need to edit this file: &nbsp;</p>
+          <p><span class="mt-font-courier-new"><strong>applicationContext-pentaho-security-ldap.xml</strong> </span> </p>
+          <p>The server does not recognize any difference among&nbsp;LDAP-based&nbsp;directory servers, including Active Directory. However, the way that you modify certain&nbsp;LDAP-specific&nbsp;files will probably be different for&nbsp;MSAD&nbsp;than
+            for more traditional&nbsp;LDAP&nbsp;implementations.</p>
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Binding"></span> 
+        <h2 class="editable">Binding</h2>
+        <p>MSAD allows you to uniquely specify users in two ways (Kerberos&nbsp;notion or Windows domain notion), in addition to the standard DN. If the standard DN is not working, try one of the following&nbsp;two methods. Each of the following examples
+          is shown in the context of the <code>userDn</code> property of the Spring Security <code>DefaultSpringSecurityContextSource</code> bean.</p>
+        <p class="pentaho-note">The examples in this section use <code>D<span class="rangySelectionBoundary" id="selectionBoundary_1471466722226_6214258583040726" style="line-height:0;display:none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1471466722129_37520247090754716" style="line-height:0;display:none;">&#65279;</span> efaultSpringSecurityContextSource</code>.
+          You may need to use the same notation (Kerberos or Windows domain) in all of your DN patterns.</p>
+        <p>The following code block is an example of the&nbsp;<strong>Kerberos notation</strong>  for
+          <a class="link-mailto" href="mailto:pentahoadmin@mycompany.com" rel="freeklink" title="mailto:pentahoadmin@mycompany.com">pentahoadmin@mycompany.com</a> :</p>
+        <p class="p">File: <code>applicationContext-security-ldap.properties</code></p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">contextSource.providerUrl=ldap\://mycompany\:389
+contextSource.userDn=pentahoadmin@mycompany.com
+contextSource.password=omitted</pre>
+        <p>The following code block is an example of the&nbsp;<strong>Windows domain notation</strong>  for <code>MYCOMPANY\pentahoadmin</code>:</p>
+        <p class="p">File: <code>applicationContext-security-ldap.properties</code></p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">contextSource.providerUrl=ldap\://mycompany\:389
+contextSource.userDn=MYCOMPANY\pentahoadmin
+contextSource.password=omitted</pre> </div>
+      <div id="section_4" class="mt-page-section"><span id="Referrals"></span> 
+        <h2 class="editable">Referrals</h2>
+        <p>If more than one Active Directory instance is serving folder&nbsp;information, it may be necessary to enable referral&nbsp;the&nbsp;following code block. This is accomplished by modifying the <code>DefaultSpringSecurityContextSource</code>&nbsp;bean:</p>
+        <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;contextSource&quot; class=&quot;org.springframework.security.ldap.DefaultSpringSecurityContextSource&quot;>
+    <constructor-arg value=&quot;${contextSource.providerUrl}&quot;/>
+    <property name=&quot;userDn&quot; value=&quot;${contextSource.userDn}&quot;/>
+    <property name=&quot;password&quot; value=&quot;${contextSource.password}&quot;/>
+    <property name=&quot;referral&quot; value=&quot;follow&quot; />
+</bean></pre> </div>
+      <div id="section_5" class="mt-page-section"><span id="User_DN_Patterns_vs._User_Searches"></span> 
+        <h2 class="editable">User DN Patterns vs. User Searches</h2>
+        <p>In the <code>LdapAuthenticator</code> implementations provided by Spring Security (<code>BindAuthenticator</code> for instance), you must either specify a <code>userDnPatterns</code>, or a <code>userSearch</code>, or both. If you are using the
+          Kerberos or Windows domain notation, you should use <code>userDnPatterns</code> exclusively in your <code>LdapAuthenticator</code>.</p>
+        <p class="pentaho-note">The reason for suggesting <code><span class="rangySelectionBoundary" id="selectionBoundary_1471466540620_2136455862592357" style="line-height:0;display:none;">&#65279;</span> userDnPatterns<span class="rangySelectionBoundary" id="selectionBoundary_1471466540540_062096003659181775" style="line-height:0;display:none;">&#65279;</span> <strong class="ph b"><span class="rangySelectionBoundary" id="selectionBoundary_1471466531638_4429144489072961" style="line-height:0;display:none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1471466531527_4128761267392884" style="line-height:0;display:none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1471466530139_8150483029572242" style="line-height:0;display:none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1471466530042_9770834117471621" style="line-height:0;display:none;">&#65279;</span> </strong> </code>          when using Kerberos or Windows domain notation is that the <code>LdapUserSearch</code> implementations do not give the control over the DN that <code>userDnPatterns</code> does. The <code>LdapUserSearch</code> implementations try to derive the
+          DN in the standard format, which might not work in Active Directory.</p>
+        <p>However, the&nbsp;<code>LdapUserDetailsService</code> requires an <code>LdapUserSearch</code> for its constructor.</p>
+        <p>The following code block is an example of the <strong>User DN Pattern</strong> :</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;authenticator&quot;
+class=&quot;org.springframework.security.providers.ldap.authenticator.BindAuthenticator&quot;>
+<constructor-arg> 
+    <ref local=&quot;contextSource&quot;/> 
+    </constructor-arg> 
+    <propertyname=&quot;userDnPatterns&quot;> 
+    <list>
+    <value>{0}@mycompany.com
+    </value>
+ <!-- and/or --> 
+    <value>domain\{0}</value>
+    </list> 
+    </property> 
+</bean></pre>
+        <p>In user searches, the <code>sAMAccountName</code> attribute should be used as the user name. The <code>searchSubtree</code> property (which influences the <code>SearchControls</code>) should most likely be true. Otherwise, it searches the specified
+          base plus one level down.</p>
+        <p>The following code block is an example of the&nbsp;<strong>User Search</strong> :</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;userSearch&quot;
+class=&quot;org.springframework.security.ldap.search.FilterBasedLdapUserSearch&quot;>
+    <constructor-arg index=&quot;0&quot; value=&quot;DC=mycompany,DC=com&quot; />
+    <constructor-arg index=&quot;1&quot;>    
+    <value>(sAMAccountName={0})</value>
+    </constructor-arg> <constructor-arg index=&quot;2&quot;>
+    <ref local=&quot;contextSource&quot; />
+    </constructor-arg> 
+    <property name=&quot;searchSubtree&quot; value=&quot;true&quot;/> 
+</bean></pre> </div>
+      <div id="section_6" class="mt-page-section"><span id="Nested_Groups"></span> 
+        <h2 class="editable">Nested Groups</h2>
+        <p>You can remove nested or transitive groups out of Active Directory. In the LDAP popular group filter, enter the following LDAP filter for MSAD nested groups:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">(member:1.2.840.113556.1.4.1941:={0})</pre>
+        <p>This will search down the whole tree of nested groups.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Switching_to_LDAP_Security" rel="internal">Switching to LDAP Security</a>  </li>
+      <li> <a href="#Making_MSAD_Configuration_File_Changes" rel="internal">Making&nbsp;MSAD&nbsp;Configuration File Changes&nbsp;</a>  </li>
+      <li> <a href="#Binding" rel="internal">Binding</a>  </li>
+      <li> <a href="#Referrals" rel="internal">Referrals</a>  </li>
+      <li> <a href="#User_DN_Patterns_vs._User_Searches" rel="internal">User DN Patterns vs. User Searches</a>  </li>
+      <li> <a href="#Nested_Groups" rel="internal">Nested Groups</a>  </li>
+    </ol>
+  </body>
+</content>

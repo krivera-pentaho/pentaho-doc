@@ -1,0 +1,429 @@
+<content type="text/html" title="RefreshEngine">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div id="main">
+      <div id="section_1" class="mt-page-section"><span id="cdf.dashboard.RefreshEngine"></span> 
+        <h2 class="editable"><span class="ancestors"><a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf">cdf</a> <a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf.dashboard">.dashboard</a> .</span> 
+          <span>RefreshEngine</span> 
+        </h2>
+        <p>Class that manages the periodic refresh of components.</p>
+        <p> <strong>AMD Module</strong>  </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([&quot;cdf/dashboard/RefreshEngine&quot;], function(RefreshEngine) { /* code goes here */ });</pre>
+        <div id="section_2" class="mt-page-section"><span id="Constructor"></span> 
+          <h3 class="editable">Constructor</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#.RefreshEngine"> new RefreshEngine(dashboard) </a> 
+                </td>
+                <td>
+                  <p>Class that manages the periodic refresh of components.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Methods"></span> 
+          <h3 class="editable">Methods</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#fireGlobalRefresh"> fireGlobalRefresh() </a> 
+                </td>
+                <td>
+                  <p>Updates all components that do not have a valid refresh period.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#fireRefresh"> fireRefresh() </a> 
+                </td>
+                <td>
+                  <p>Pops up due items from the queue, refreshes components and sets the next timeout.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#getRefreshPeriod"> getRefreshPeriod(component) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </td>
+                <td>
+                  <p>Gets the refresh period for a component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#processComponent"> processComponent(component) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Removes and adds the given component into the refresh queue restarting the timer if it is the first in the queue.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#processComponents"> processComponents() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Clears the queue, adds all the dashboard components into the queue, and restarts the timer.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#registerComponent"> registerComponent(component, refreshPeriod) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Sets a components refresh period and clears it from the queue.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#setGlobalRefresh"> setGlobalRefresh(refreshPeriod) </a> 
+                </td>
+                <td>
+                  <p>Sets the global refresh period.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="h3">Constructor Details</p>
+          <table id=".RefreshEngine">
+            <thead>
+              <tr>
+                <th><strong>new RefreshEngine</strong> (dashboard) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Builds a new refresh engine for the provided dashboard.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L16">dashboard/RefreshEngine.js, line 16</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> dashboard : <code><a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf.dashboard.Dashboard">cdf.dashboard.Dashboard</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The dashboard instance to be managed by the refresh engine.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="h3">Methods Details</p>
+          <table id="fireGlobalRefresh">
+            <thead>
+              <tr>
+                <th><strong>fireGlobalRefresh</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Called when a valid <code>globalRefreshPeriod</code> exists. It updates all components that do not have a valid refresh period.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L389">dashboard/RefreshEngine.js, line 389</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="fireRefresh">
+            <thead>
+              <tr>
+                <th><strong>fireRefresh</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Pops up due items from the queue, refreshes components and sets the next timeout.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L370">dashboard/RefreshEngine.js, line 370</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="getRefreshPeriod">
+            <thead>
+              <tr>
+                <th><strong>getRefreshPeriod</strong> (component) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Gets the refresh period for a component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L326">dashboard/RefreshEngine.js, line 326</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> component : <code><a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The target component.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </td>
+                        <td>
+                          <p>The components refresh period value or the value of <code>NO_REFRESH</code>.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="processComponent">
+            <thead>
+              <tr>
+                <th><strong>processComponent</strong> (component) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Removes and adds the given component into the refresh queue. If the component is the first in the sorted queue, {cdf.dashboard.RefreshEngine.restartTimer|restartTimer} is executed.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L342">dashboard/RefreshEngine.js, line 342</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> component : <code><a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The component to process.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>true</code> after the component was correctly processed.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="processComponents">
+            <thead>
+              <tr>
+                <th><strong>processComponents</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Clears the queue, adds all the dashboard components into the queue, and restarts the timer.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L357">dashboard/RefreshEngine.js, line 357</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>true</code> after the components are processed.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="registerComponent">
+            <thead>
+              <tr>
+                <th><strong>registerComponent</strong> (component, refreshPeriod) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code>                  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Sets a components refresh period and clears it from the queue.
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf.dashboard.RefreshEngine#processComponent"><code>processComponent</code></a>  must be called to activate the refresh timer for the component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L308">dashboard/RefreshEngine.js, line 308</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> component : <code><a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The component to register.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> refreshPeriod : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The associated refresh period.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>true</code> if registration succeeds, <code>false</code> otherwise.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="setGlobalRefresh">
+            <thead>
+              <tr>
+                <th><strong>setGlobalRefresh</strong> (refreshPeriod) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Sets the global refresh period.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/dashboard/RefreshEngine.js#L406">dashboard/RefreshEngine.js, line 406</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> refreshPeriod : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Refresh period to set.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#cdf.dashboard.RefreshEngine" rel="internal">cdf.dashboard.RefreshEngine</a> 
+        <ol>
+          <li> <a href="#Constructor" rel="internal">Constructor</a>  </li>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

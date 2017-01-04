@@ -1,0 +1,236 @@
+<content type="text/html" title="Import Data to BA Server 5.x.x">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Importing data into BA Server, version 5.x.x.</p>
+        </div>
+      </div>
+      <p><span style="line-height: 1.5;">After you have exported your data from the 4.8.x server and into the migration bundle file, import the data in the migration bundle file into the 5.x.x server.&nbsp;</span> </p>
+      <div id="section_2" class="mt-page-section"><span id="Stop_5.x.x_Version_of_BA_Server"></span> 
+        <h2 class="editable">Stop 5.x.x Version of BA Server</h2>
+        <p><span style="display: none;">&nbsp;</span> Stop the 5.x.x version of the BA server, as well as the web application server. To do this, complete these steps.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Log into the <strong>User Console</strong>  on the 5.x.x version of the server and ensure that any scheduled reports are paused. The reason that you pause the reports is to ensure that when you migrate the reports into the 5.x.x BA Server, they
+            will not start running before you have had a chance to verify that migration has occurred properly.</li>
+          <li>Log out of the <strong>User Console</strong>  and stop the server.</li>
+          <li>Ensure the web application server on which the server is deployed has also been stopped.&nbsp;&nbsp;</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Ensure_5.x.x_BA_Repository_Database_Is_Running"></span> 
+        <h2 class="editable">Ensure 5.x.x BA Repository Database Is Running</h2>
+        <p><span style="display: none;">&nbsp;</span> Ensure the database that houses the 5.x.x version of the BA Repository is running. If it is not, start it.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Use_Migration_Tool_to_Import_Data_to_5.x.x_Server"></span> 
+        <h2 class="editable">Use Migration Tool to Import Data to 5.x.x Server</h2>
+        <p>Use the Migration Tool to import the migration bundle file to the 5.x.x server. The migration bundle file was generated in the previous step. To use the Migration Tool to import data, complete these steps.</p>
+        <ol class="pentaho-list-ordered">
+          <li>If you have not done so already, identify the paths to the <span class="filepath style-wrap">pentaho-solutions</span>  directory, the <span class="filepath style-wrap">pentaho </span> directory that is on your web application server, as well as
+            paths to additional servlets or jar files that you want to export.</li>
+          <li>Open a <strong>Terminal </strong> or <strong>Command Prompt</strong>  window, then navigate to the directory where the Migration Tool is installed.</li>
+          <li>Issue a command in the <strong>Terminal </strong> or <strong>Command Prompt </strong> windows that indicates the action you want the Migration Tool to perform, as well as the locations to the pentaho-solutions directory, the pentaho directory
+            that is on the web application server, and optionally any additional servlets and jar files that you want to migrate. Also indicate where you want the Migration Tool to place the migration bundle file. Complete these steps based on your operating
+            system.&nbsp; The Migration Tool command contains these parameters.</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody> </tbody>
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th style="width: 460px;">Description</th>
+            </tr>
+          </thead>
+          <tbody> </tbody>
+          <tbody>
+            <tr>
+              <td style="width: 189px;">import</td>
+              <td style="width: 487px;">Indicates this is an import command. This parameter is required if you want to import a migration bundle file.</td>
+            </tr>
+            <tr>
+              <td style="width: 189px;">temp-dir</td>
+              <td style="width: 487px;">Specifies the location on the file&nbsp;system to extract the migration bundle to. If the parameter is omitted, the original behavior will be used and the system default temporary directory will be used.</td>
+            </tr>
+            <tr>
+              <td style="width: 189px;">migration-bundle-file</td>
+              <td style="width: 487px;">Specifies the directory where you want the migration file to be stored. This parameter is optional. If you do not supply it, the migration bundle file is stored in the same directory where the Migration Tool is installed.</td>
+            </tr>
+            <tr>
+              <td style="width: 189px;">pentaho-solutions-dir</td>
+              <td style="width: 487px;">Indicates the path to the&nbsp;pentaho-solutions directory for the 5.x.x version of the BA Server. This parameter is required.</td>
+            </tr>
+            <tr>
+              <td style="width: 189px;">pentaho-war</td>
+              <td style="width: 487px;">Indicates the path to pentaho subdirectory in the&nbsp;webapps directory for the 5.x.x version of the BA Server. This parameter is required.</td>
+            </tr>
+            <tr>
+              <td style="width: 189px;">extra-paths</td>
+              <td style="width: 487px;">Indicates the files in your&nbsp;classpath that are needed to run the BA Server. Files in the&nbsp;classpath include&nbsp;JDBC drivers, the servlet.api file, and any relevant configuration folders. Whether you include this parameter depends
+                on the platform on which your BA Server is deployed. If your BA Server is deployed on Tomcat, do NOT include the extra-paths parameter because the&nbsp;classpaths &nbsp;are sensed by the Migration Tool when you run it. If your BA Server
+                is deployed on another web application server, use the extra-paths parameter to the files indicated in your classpath.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Windows</strong> : Enter a command that follows this format in the Command Prompt window. Make sure you specify a unique, but descriptive, name for the migration bundle. Make it different from the one you used during the export process.
+          The command should be formatted like this.</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">migrator.bat --import --migration-bundle-file=C:\migrationBAExport.zip --pentaho-solutions-dir=C:\Users\pentaho\biserver-5.0\biserver-ee\pentaho-solutions --pentaho-war=C:\Users\pentaho\biserver-5.0\biserver-ee\tomcat\webapps\pentaho</pre>
+        <p><strong>Linux</strong> : Enter a command that follows this format in the Terminal window. The command should be formatted like this.&nbsp;</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./migrator.sh --import --migration-bundle-file=/Users/mycompany/migrationBAExport.zip --pentaho-solutions-dir=/Users/mycompany/biserver-4.8/biserver-ee/pentaho-solutions --pentaho-war=/Users/mycompany/biserver-4.8/biserver-ee/tomcat/webapps/pentaho</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>The Migration Tool runs. The progress of the tool is displayed in the <strong>Command Prompt</strong>  or <strong>Terminal </strong> window.</li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Review_Import_Logs"></span> 
+        <h2 class="editable">Review Import Logs</h2>
+        <p><span style="display: none;">&nbsp;</span> To verify that the import occurred properly and that data was imported, do these things.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open a Terminal or Command Prompt window and navigate to the directory where the Migration Tool was installed. The migrator.log file should appear. The migrator.log file contains a log of the import process.</li>
+          <li>Open the migrator.log file and note any failures or errors. If any failures or errors exist, you might need to migrate that data manually.&nbsp;</li>
+          <li>Close the file, then rename the migrator.log file to something else.&nbsp;</li>
+        </ol>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Manually_Migrate_Additional_Data"></span> 
+        <h2 class="editable">Manually Migrate Additional Data</h2>
+        <p>These types of items must be manually migrated to the 5.x.x server.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Migrate JDBC Drivers</li>
+          <li>Migrate Memory Settings</li>
+          <li>Additional Configuration File Changes</li>
+          <li>Other Possible Customizations</li>
+        </ul>
+        <div id="section_7" class="mt-page-section"><span id="Manually_Migrate_JDBC_Drivers"></span> 
+          <h3 class="editable">Manually Migrate JDBC Drivers</h3>
+          <p>You must manually copy design tools JDBC dirvers from the 4.8.x location to the 5.x.x one. The following table lists the driver, 4.8.x location, and the 5.x.x one.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+          title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Design Tool</th>
+                <th>Location in Version 4.8.x</th>
+                <th>Location in Version 5.x.x</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>BA Server&nbsp;</td>
+                <td>pentaho/server/biserver-ee/tomcat/lib/&nbsp;&nbsp;</td>
+                <td>pentaho/server/biserver-ee/tomcat/lib/</td>
+              </tr>
+              <tr>
+                <td>Report Designer&nbsp;
+                  <br style="line-height: 10.28px;" /> &nbsp;</td>
+                <td>pentaho/design-tools/report-designer/lib/jdbc/&nbsp;&nbsp;</td>
+                <td>pentaho/design-tools/report-designer/lib/jdbc/&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Schema Workbench&nbsp;
+                  <br style="line-height: 10.28px;" /> &nbsp;</td>
+                <td>pentaho/design-tools/schema-workbench/drivers/&nbsp;&nbsp;</td>
+                <td>pentaho/design-tools/schema-workbench/drivers/&nbsp;</td>
+              </tr>
+              <tr>
+                <td>Aggregation Designer&nbsp;</td>
+                <td>pentaho/design-tools/agg-designer/drivers/&nbsp;&nbsp;</td>
+                <td>pentaho/design-tools/aggregation-designer/drivers</td>
+              </tr>
+              <tr>
+                <td>
+                  <p style="line-height: 10.28px;">Metadata Editor&nbsp;</p>
+                </td>
+                <td>pentaho/design-tools/metadata-editor/libext/JDBC/&nbsp;&nbsp;
+                  <div>&nbsp;</div>
+                </td>
+                <td>pentaho/design-tools/metadata-editor/libext/JDBC/&nbsp;
+                  <div>&nbsp;</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Manually_Adjust_Memory_Settings"></span> 
+          <h3 class="editable">Manually Adjust Memory Settings</h3>
+          <p>If your memory settings for the BA Server is greater than the default, you will need to adjust it. For information on how to adjust memory settings, see the Changing the Java VM Memory Limits section.</p>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Manually_Adjust_Custom_Security_Settings"></span> 
+          <h3 class="editable">Manually Adjust Custom Security&nbsp;Settings</h3>
+          <p>If you are using a custom security provider such as LDAP or MSAD&nbsp;for your Pentaho system, there are a couple of settings that you will need to update in order to finish your migration successfully.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Locate the <span class="filepath style-wrap">pentaho-solutions/system</span>  directory and open the <span class="filepath style-wrap">repository.spring.properties</span>  file with any text editor.
+              <ol>
+                <li>Change the property for the <span class="filepath style-wrap">singleTenantAdminAuthorityName&nbsp;</span> to match the administrator role that you defined for&nbsp;your custom security provider.</li>
+                <li>Change the property for the&nbsp;<span class="filepath style-wrap">singleTenantAdminUserName</span>  to match the administrator user user you defined for your custom security provider.</li>
+              </ol>
+            </li>
+            <li>Save and close the&nbsp;<span class="filepath style-wrap">repository.spring.properties</span>  file.</li>
+            <li>Locate the <span class="filepath style-wrap">pentaho-solutions/system/data-access</span>  directory and open the <span class="filepath style-wrap">settings.xml</span> &nbsp;file with any text editor.
+              <ol>
+                <li>Find the sections for <span class="filepath style-wrap">data-access-roles</span>  and <span class="filepath style-wrap">data-access-view-roles</span> .</li>
+                <li>Add the custom roles that you want to grant access to as shown here:&nbsp;</li>
+              </ol>
+            </li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- roles with data access permissions -->
+  <data-access-roles>[Your Custom Role(s)]</data-access-roles>
+
+  <!-- users with data access permissions -->
+
+  <!--
+  <data-access-users></data-access-users>
+   -->
+
+  <!-- roles with datasource view permissions -->
+  <data-access-view-roles>Authenticated,[Your Custom Role(s)]</data-access-view-roles></pre>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Save and close the <span class="filepath style-wrap">settings.xml</span>  file.</li>
+          </ol>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Manually_Migrate_Additional_Configuration_Settings"></span> 
+          <h3 class="editable">Manually Migrate Additional Configuration Settings</h3>
+          <p>Configuration settings are migrated by the Migration Tool as indicated in the What Is Migrated subsection in Prepare BA Migration Plan . If there are additional customizations that you want to migrate, complete these steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Back up copies of your 4.8.x and 5.x.x configuration files.</li>
+            <li>Use the File Diff tool of your choice to compare the 4.8.x and 5.x.x versions of the configuration file.</li>
+            <li>If there are specific customizations that you made in the 4.8.x version of the configuration file that did not migrate, manually make them in the 5.x.x file. Proceed with caution when doing this.</li>
+          </ol>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Manually_Migrate_Other_Customizations"></span> 
+          <h3 class="editable">Manually Migrate Other Customizations</h3>
+          <p>Because of the nature of the software, many customizations can be made. The following presents examples of other customizations you might have made to the 4.8.x system that would need to be migrated to the 5.x.x one.</p>
+          <ul class="pentaho-list-unordered">
+            <li>Custom scheduler: If you are using a different implementation of user settings or a scheduler that you have written or have customized, you will need to migrate those manually.</li>
+            <li>Community plugins: If available, you will need to install 5.x.x versions of these plugins. If you have written a plugin, thoroughly test the plugin to ensure that it works with the 5.x.x version of the system.</li>
+            <li>Other web applications: If you have other web applications that have been installed with Pentaho, you must manually update them.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Stop_5.x.x_Version_of_BA_Server" rel="internal">Stop 5.x.x Version of BA Server</a>  </li>
+      <li> <a href="#Ensure_5.x.x_BA_Repository_Database_Is_Running" rel="internal">Ensure 5.x.x BA Repository Database Is Running</a>  </li>
+      <li> <a href="#Use_Migration_Tool_to_Import_Data_to_5.x.x_Server" rel="internal">Use Migration Tool to Import Data to 5.x.x Server</a>  </li>
+      <li> <a href="#Review_Import_Logs" rel="internal">Review Import Logs</a>  </li>
+      <li>
+        <a href="#Manually_Migrate_Additional_Data" rel="internal">Manually Migrate Additional Data</a> 
+        <ol>
+          <li> <a href="#Manually_Migrate_JDBC_Drivers" rel="internal">Manually Migrate JDBC Drivers</a>  </li>
+          <li> <a href="#Manually_Adjust_Memory_Settings" rel="internal">Manually Adjust Memory Settings</a>  </li>
+          <li> <a href="#Manually_Adjust_Custom_Security_Settings" rel="internal">Manually Adjust Custom Security&nbsp;Settings</a>  </li>
+          <li> <a href="#Manually_Migrate_Additional_Configuration_Settings" rel="internal">Manually Migrate Additional Configuration Settings</a>  </li>
+          <li> <a href="#Manually_Migrate_Other_Customizations" rel="internal">Manually Migrate Other Customizations</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

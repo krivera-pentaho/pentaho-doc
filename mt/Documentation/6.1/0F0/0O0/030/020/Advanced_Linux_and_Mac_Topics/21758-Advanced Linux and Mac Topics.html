@@ -1,0 +1,53 @@
+<content type="text/html" title="Advanced Linux and Mac Topics">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+      </div>
+    </div>
+    <p>Complete the instructions in this section only if you have a headless node or if you plan to install on a Mac OS.</p>
+    <div id="section_2" class="mt-page-section"><span id="Prepare_a_Headless_Linux_or_Solaris_Server"></span> 
+      <h2 class="editable">Prepare a Headless Linux or Solaris Server</h2>
+      <p class="p">There are two headless server scenarios that require special procedures on Linux and Solaris systems. One is for a system that has no video card; the other is for a system that has a video card, but does not have an X server installed. In some situations
+        -- particularly if your server doesn't have a video card -- you will have to perform both procedures to properly generate reports with the DI Server.</p>
+      <p class="p"><strong class="ph b">Systems without video cards</strong> </p>
+      <p class="p">The <strong class="ph b">java.awt.headless</strong>  option enables systems without video output and/or human input hardware to execute operations that require them. To set this application server option when the DI Server starts, you will need to
+        modify the startup scripts for either the DI Server, or your Java application server. You do not need to do this now, but you will near the end of these instruction when you perform the
+        <a class="xref" title="Starting DI Server on Linux" rel="internal"
+        href="http://help.pentaho.com/Documentation/6.1/0F0/0O0/040/020">Start DI Server</a>  step. For now, add the following item to the list of CATALINA_OPTS parameters: <strong class="ph b">-Djava.awt.headless=true</strong> .</p>
+      <p class="p">The entire line should look something like this:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export CATALINA_OPTS=&quot;-Djava.awt.headless=true -Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</pre>
+      <p class="p">If you intend to create a DI Server service control script, you must add this parameter to that script's CATALINA_OPTS line.</p>
+      <p class="pentaho-note">If you do not have an X server installed, you must also follow the below instructions.</p>
+      <p class="p"><strong class="ph b">Systems without X11</strong> </p>
+      <p class="p">To generate charts, the Pentaho Reporting engine requires functionality found in X11. If you are unwilling or unable to install an X server, you can install the <strong class="ph b">xvfb</strong>  package instead. xvfb provides X11 framebuffer emulation,
+        which performs all graphical operations in memory instead of sending them to the screen.</p>
+      <p class="p">Use your operating system's package manager to properly install xvfb.</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Adjust_Amount_of_Memory_Mac_OS_Allocates_for_PostgreSQL"></span> 
+      <h2 class="editable">Adjust Amount of Memory Mac OS Allocates for PostgreSQL</h2>
+      <p class="p">If you plan to install the software on a Mac OS, and you choose to use PostgreSQL, you need to increase the amount of memory that the Mac OS allocates for PostgreSQL. You can skip these instructions if you plan to install the software on Windows
+        or Linux.</p>
+      <p class="p">PostgreSQL is the name of the default database that contains audit, schedule and other data that you create. &nbsp;PostgreSQL starts successfully only if your computer has allocated enough memory. Go to
+        <a class="xref external" target="_blank" rel="external nofollow"
+        href="http://www.postgresql.org/docs/devel/static/kernel-resources.html">http://www.postgresql.org/docs/devel/static/kernel-resources.html</a>  and follow the instructions there on how to adjust the memory settings on your computer.&nbsp;</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Prepare_a_Headless_Linux_or_Solaris_Server" rel="internal">Prepare a Headless Linux or Solaris Server</a>  </li>
+      <li> <a href="#Adjust_Amount_of_Memory_Mac_OS_Allocates_for_PostgreSQL" rel="internal">Adjust Amount of Memory Mac OS Allocates for PostgreSQL</a>  </li>
+    </ol>
+  </body>
+</content>

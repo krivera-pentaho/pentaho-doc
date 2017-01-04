@@ -1,0 +1,347 @@
+<content type="text/html" title="Use Oracle as Your Repository Database">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p class="p">Explains how to configure and use Oracle as your BA Repository database.</p>
+        </div>
+      </div>
+      <p class="p">Before you prepare your Business Analytics (BA) Repository, complete the tasks in
+        <a class="xref" title="Documentation/6.1/0F0/0P0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0P0/020">Prepare Environment</a> .</p>
+      <p>The BA Repository resides on the database that you installed during the Prepare Environment step, and consists of four repositories: <em class="ph i">Jackrabbit</em>, <em class="ph i">Quartz</em>, <em class="ph i">Hibernate, </em> and <em>Pentaho Operations Mart</em> .</p>
+      <ul class="ul" id="8ca72d85-6842-4cc7-a840-1b25b94c0382__prepare_solution_repository_platform__ul_ccy_xlm_rj">
+        <li class="li"><em class="ph i">Jackrabbit</em>  contains the solution repository, examples, security data, and content data from reports that you use Pentaho software to create.</li>
+        <li class="li"><em class="ph i">Quartz</em>  holds data that is related to scheduling reports and jobs.</li>
+        <li class="li"><em class="ph i">Hibernate</em>  holds data that is related to audit logging.</li>
+        <li class="li"><em>Pentaho Operations Mart</em>  reports on system usage and performance.</li>
+      </ul>
+      <div id="section_2" class="mt-page-section"><span id="Initialize_Oracle_BA_Repository_Database"></span> 
+        <h2 class="editable">Initialize Oracle BA Repository Database</h2>
+        <p>To initialize Oracle so that it serves as the BA Repository, you will need to run a few SQL scripts to create the Hibernate, Quartz, Pentaho Operations mart, and Jackrabbit (also known as the JCR) databases.</p>
+        <p class="pentaho-note">Use the ASCII character set when you run these scripts. Do not use UTF-8 because there are text string length limitations that might cause the scripts to fail.</p>
+        <p class="p">These sections take you through the steps to initialize the Oracle BA repository database.</p>
+        <div id="section_3" class="mt-page-section"><span id="Step_1:_Change_Default_Passwords"></span> 
+          <h3 class="editable">Step 1:&nbsp;Change Default Passwords</h3>
+          <p>Pentaho recommends that you change the default passwords in the SQL script files. If you are evaluating Pentaho, you might want to skip this step.</p>
+          <p>If you do decide to change the passwords, go to the <span class="filepath style-wrap"><span class="ph filepath">pentaho/server/biserver-ee/data/oracle10g/</span> </span>  directory and use any text editor to change the passwords in these files:</p>
+          <ul class="pentaho-list-unordered">
+            <li class="li"><span class="ph filepath">create_jcr_ora.sql</span> </li>
+            <li class="li"><span class="ph filepath">create_quartz_ora.sql</span> </li>
+            <li class="li"><span class="ph filepath">create_repository_ora.sql</span> </li>
+            <li class="li"><span class="ph filepath">pentaho_mart_oracle.sql</span> </li>
+          </ul>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Step_2:_Run_SQL_Scripts"></span> 
+          <h3 class="editable">Step 2:&nbsp;Run SQL Scripts</h3>
+          <p class="li step"><span class="ph cmd">Once you change the passwords, you will need to run these SQL scripts. You will need administrator permissions on the server in order to run these scripts. The list of&nbsp; SQL scripts is shown in the table below.</span> </p>
+          <p class="pentaho-caution">If you have a different port or different password, make sure that you change the password and port number in these examples to match the ones in your configuration.</p>
+          <p class="li step"><span class="ph cmd">Run these scripts from the <strong>Command Prompt</strong>  window or from a <strong>Terminal </strong> window that runs <strong>SQL*Plus</strong> .</span> </p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table"
+          style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 179px;">Action</th>
+                <th scope="col" style="width: 470px;">SQL Script</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 179px;">Create Quartz</td>
+                <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> start <your filepath>\create_quartz_ora.sql</code></span> </td>
+              </tr>
+              <tr>
+                <td style="width: 179px;">Create Hibernate repository</td>
+                <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> start <your filepath>\create_repository_ora.sql</code></span> </td>
+              </tr>
+              <tr>
+                <td style="width: 179px;">Create Jackrabbit</td>
+                <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> start <your filepath>\create_jcr_ora.sql</code></span> </td>
+              </tr>
+              <tr>
+                <td style="width: 179px;">Create Pentaho Operations mart</td>
+                <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> start <your filepath>\pentaho_mart_oracle.sql</code></span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Step_3:_Verify_Oracle_Initialization"></span> 
+          <h3 class="editable">Step 3:&nbsp;Verify Oracle Initialization</h3>
+          <p>After you run the scripts, this list will help you verify that databases and user roles have been created.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Open the Terminal or Command Prompt window that is running SQL*Plus.</li>
+            <li class="li step">Make sure that users have been created by running SELECT USERNAME FROM DBA_USERS.</li>
+            <li class="li step">If your databases do not appear, go to the beginning of these instructions and try running the scripts again.</li>
+            <li class="li step">Exit from the <strong>SQL*Plus</strong> .</li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Configure_Oracle_BA_Repository_Database"></span> 
+        <h2 class="editable">Configure Oracle BA Repository Database</h2>
+        <p class="p">Now that you have initialized your repository database, you will need to configure Quartz, Hibernate, Jackrabbit, and Pentaho Operations Mart for an Oracle database.</p>
+        <p>By default, the examples in this section are for an Oracle database that runs on port 1521. The default password is also in these examples.</p>
+        <p class="pentaho-caution">If you have a different port or different password, make sure that you change the password and port number in these examples to match the ones in your configuration.</p>
+        <div id="section_7" class="mt-page-section"><span id="Step_1:_Set_Up_Quartz_on_Oracle_BA_Repository_Database"></span> 
+          <h3 class="editable">Step 1:&nbsp;Set Up Quartz on Oracle BA Repository Database</h3>
+          <p>Event information, such as scheduled reports, is stored in the Quartz JobStore. During the installation process, you must indicate where the <strong>JobStore</strong>  is located, by modifying the <span class="filepath style-wrap"><span class="ph filepath">quartz.properties</span> </span> 
+            file.</p>
+          <ol class="pentaho-list-ordered" id="3f2d2327-25c4-4078-b046-05a702be7817__d93e400__d93e419">
+            <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap"><span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/quartz/quartz.properties</span> </span>  file in any text editor.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Locate the <span class="filepath style-wrap">#_replace_jobstore_properties</span>  section and set the <span class="filepath style-wrap">org.quartz.jobStore.driverDelegateClass</span>  as shown here. </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.oracle.OracleDelegate</pre>              </li>
+            <li>Locate the <span class="filepath style-wrap"># Configure Datasources </span> section and set the <span class="filepath style-wrap">org.quartz.dataSource.myDS.jndiURL</span>  equal to <span class="filepath style-wrap">Quartz</span>, like this.
+              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.dataSource.myDS.jndiURL = Quartz</pre> </li>
+            <li class="li step"><span class="ph cmd">Save the file and close the text editor.</span> </li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Step_2:_Set_Hibernate_Settings_for_Oracle"></span> 
+          <h3 class="editable">Step 2:&nbsp;Set Hibernate Settings for Oracle</h3>
+          <p>Modify the hibernate settings file to specify where Pentaho should find the BA Repository&rsquo;s hibernate config file. The hibernate config file specifies driver and connection information, as well as dialects and how to handle connection
+            closes and timeouts.</p>
+          <p class="pentaho-note">The hibernate database is also where the BA Server stores the audit logs that act as source data for the Pentaho Operations Mart.</p>
+          <p>The files in this section are located in the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/hibernate</span>  directory.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">hibernate-settings.xml</span>  file in a text editor. Find the <span class="filepath style-wrap"><config-file></span>  tags and change <span class="filepath style-wrap">postgresql.hibernate.cfg.xml</span>               to <span class="filepath style-wrap">oracle10g.hibernate.cfg.xml</span>  as shown.</span> 
+              <br /> <strong>From:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><config-file>system/hibernate/postgresql.hibernate.cfg.xml</config-file></pre> <strong>To:</strong>               <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><config-file>system/hibernate/oracle10g.hibernate.cfg.xml</config-file></pre> </li>
+            <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+            <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap">oracle10g.hibernate.cfg.xml</span>  file in a text editor.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Make sure that the password and port number match the ones you specified in your configuration. Make changes if necessary, then save and close the file.</span> </li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Step_3:_Replace_Default_Version_of_Audit_Log_File_with_Oracle_Version"></span> 
+          <h3 class="editable">Step 3:&nbsp;Replace Default Version of Audit Log File with Oracle Version</h3>
+          <p class="p">Since you are using Oracle to host the BA Repository, you need to replace the <span class="filepath style-wrap"><span class="ph filepath">audit_sql.xml</span>  </span> file with one that is configured for Oracle.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="p">Locate the&nbsp;<span class="filepath style-wrap"><span class="ph filepath">pentaho-solutions/system/dialects/oracle10g/audit_sql.xml</span> </span>  file.</li>
+            <li class="p">Copy it into the<span class="filepath style-wrap"> <span class="ph filepath">pentaho-solutions/system</span> </span>  directory.</li>
+          </ol>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Step_4:_Modify_Jackrabbit_Repository_Information_for_Oracle"></span> 
+          <h3 class="editable">Step 4:&nbsp;Modify Jackrabbit Repository Information for Oracle</h3>
+          <p>There are parts of code that you will need to alter in order to change the default jackrabbit repository to Oracle.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/jackrabbit</span>  and open the <span class="filepath style-wrap">repository.xml </span> file with any text editor.</li>
+            <li>Following the table below, locate and change the code so that the Oracle lines are <strong>not </strong> commented out, but the PostgreSQL, MS SQL Server, and MySQL lines <strong>are </strong> commented out.</li>
+          </ol>
+          <p class="pentaho-note">If you changed your password when you initialized the database during the
+            <a title="Documentation/6.1/0F0/0P0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0P0/020">Prepare Environment</a>  step, or if your database is on a different port, edit the url and password parameters in each section accordingly.
+            <br /> Replace XE to reflect the name of your schema.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 160px;">Item:</th>
+                <th scope="col" style="width: 475px;">Code Section:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 174px;"><strong>Repository</strong> </td>
+                <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot;/>
+   ...
+    <param name=&quot;tablespace&quot; value=&quot;pentaho_tablespace&quot;/>
+</FileSystem></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 174px;"><strong>DataStore</strong> </td>
+                <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot;/>
+    <param name=&quot;driver&quot; value=&quot;oracle.jdbc.OracleDriver&quot;/>
+    <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+    <param name=&quot;password&quot; value=&quot;password&quot;/>
+    <param name=&quot;databaseType&quot; value=&quot;oracle&quot;/>
+   ...
+  </DataStore></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 174px;"><strong>Workspaces</strong> </td>
+                <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot;/>
+     ...
+      <param name=&quot;tablespace&quot; value=&quot;pentaho_tablespace&quot;/>
+    </FileSystem></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 174px;">
+                  <p><strong>PersistenceManage</strong> r</p>
+                  <p>(1st part)</p>
+                </td>
+                <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.OraclePersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot;/>
+      <param name=&quot;driver&quot; value=&quot;oracle.jdbc.OracleDriver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;oracle&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;pentaho_tablespace&quot;/>
+    </PersistenceManager></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 174px;"><strong>Versioning</strong> </td>
+                <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot;/>
+    ...
+      <param name=&quot;tablespace&quot; value=&quot;pentaho_tablespace&quot;/>
+    </FileSystem></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 174px;">
+                  <p><strong>PersistenceManager</strong> </p>
+                  <p>(2nd part)</p>
+                </td>
+                <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.OraclePersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot;/>
+      <param name=&quot;driver&quot; value=&quot;oracle.jdbc.OracleDriver&quot;/>
+      ...
+      <param name=&quot;tablespace&quot; value=&quot;pentaho_tablespace&quot;/>
+    </PersistenceManager></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Are_you_using_JBoss.3F"></span> 
+          <h3 class="editable">Are you using JBoss?</h3>
+          <p>If you are using JBoss, you can skip the Tomcat section and move on to
+            <a title="Prepare JBoss Connections and Web App Servers" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0K0/060">Prepare JBoss Connections and Web App Servers</a> .</p>
+        </div>
+      </div>
+      <div id="section_12" class="mt-page-section"><span id="Perform_Tomcat-Specific_Connection_Tasks"></span> 
+        <h2 class="editable">Perform Tomcat-Specific Connection Tasks</h2>
+        <p class="p" style="visibility: visible;">After your repository has been configured, you must configure the web application servers to connect to the BA Repository. In this step, JDBC and JNDI connections are made to the Hibernate, Jackrabbit, and Quartz databases.</p>
+        <p class="p" style="visibility: visible;">By default, the BA Server software is configured to be deployed and run on the Tomcat server. As such, connections have already been specified and only the Tomcat context.xml file must be modified.</p>
+        <p class="p">The next couple of sections guide you through the process of working with the JDBC drivers and connection information for Tomcat.</p>
+        <div id="section_13" class="mt-page-section"><span id="Step_1:_Download_Drivers_and_Install_with_the_JDBC_Distribution_Tool"></span> 
+          <h3 class="editable">Step 1:&nbsp;Download Drivers and Install with the JDBC Distribution Tool</h3>
+          <p>To connect to a database, including the&nbsp;Pentaho Repository database, you will need to download and install a JDBC driver to the appropriate places for Pentaho components as well as on the the web application server that contains the Pentaho
+            Server(s). Fortunately, the JDBC Distribution Tool makes this process easy.&nbsp;</p>
+          <p class="pentaho-note">Due to licensing restrictions, Pentaho cannot redistribute some third-party database drivers. This is why you have to download the file yourself and install it yourself.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step"><span class="ph cmd">Download a <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/010">JDBC driver</a>  JAR from your database vendor or a third-party driver developer.</span> </li>
+            <li
+            class="li step"><span class="ph cmd">Copy the JDBC driver JAR you just downloaded to the<span class="filepath style-wrap"> pentaho/jdbc-distribution</span>  directory.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Open a cmd prompt or shell tool, navigate to&nbsp;the <span class="filepath style-wrap">pentaho/jdbc-distribution</span>  directory and enter one of the following:</span> 
+              </li>
+          </ol>
+          <p class="li step"><strong><span class="ph cmd">&#8203;Windows:</span> </strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">distribute-files.bat <name of JDBC driver JAR></pre>
+          <p
+          class="li step"><strong>Linux:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./distribute-files.sh <name of JDBC driver JAR></pre>
+            <ol class="pentaho-list-ordered" start="4">
+              <li class="li step">If you have run this utility as part of the installation process, you are done. Go to the next step of the installation instructions.</li>
+              <li class="li step">If you have run this utility so that you can connect to a new repository, restart the BA or DI Server and Design tools, then try to connect to the new repository. If you cannot connect, verify that the drivers are installed as shown in this
+                table.&nbsp;<span class="ph cmd">Restart your Pentaho Server(s) and Client tools.</span> </li>
+            </ol>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+              <caption>List of Products and Corresponding Locations for JDBC Drivers</caption>
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 255px;">Server or Design Tool</th>
+                  <th scope="col" style="width: 390px;">Directory</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 255px;">Business Analytics (BA) Server</td>
+                  <td style="width: 419px;">pentaho/server/biserver-ee/tomcat/lib</td>
+                </tr>
+                <tr>
+                  <td style="width: 255px;">Data Integration (DI) Server</td>
+                  <td style="width: 419px;">pentaho/server/data-integration-server/tomcat/lib</td>
+                </tr>
+                <tr>
+                  <td style="width: 255px;">Pentaho Data Integration (Spoon)</td>
+                  <td style="width: 419px;">pentaho/design-tools/data-integration/lib</td>
+                </tr>
+                <tr>
+                  <td style="width: 255px;">Pentaho Report Designer (PRD)</td>
+                  <td style="width: 419px;">pentaho/design-tools/report-designer/lib/jdbc</td>
+                </tr>
+                <tr>
+                  <td style="width: 255px;">Pentaho Aggregation Designer (PAD)</td>
+                  <td style="width: 419px;">pentaho/design-tools/aggregation-designer/drivers</td>
+                </tr>
+                <tr>
+                  <td style="width: 255px;">Pentaho Schema Workbench (PSW)</td>
+                  <td style="width: 419px;">pentaho/design-tools/schema-workbench/drivers</td>
+                </tr>
+                <tr>
+                  <td style="width: 255px;">Pentaho Metadata Editor (PME)</td>
+                  <td style="width: 419px;">pentaho/design-tools/metadata-editor/libext/JDBC</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div id="section_14" class="mt-page-section"><span id="Step_2:_Modify_JDBC_Connection_Information_in_the_Tomcat_context.xml_File"></span> 
+          <h3 class="editable">Step 2:&nbsp;Modify JDBC Connection Information in the Tomcat context.xml File</h3>
+          <p>Database connection and network information, such as the username, password, driver class information, IP address or domain name, and port numbers for your BA Repository database are stored in the <span class="ph filepath">context.xml</span>             file. Modify this file to reflect the database connection and network information to reflect your operating environment. You also modify the values for the <span class="ph filepath">validationQuery</span>  parameters in this file if you have
+            chosen to use an BA Repository database other than PostgreSQL.</p>
+          <p class="pentaho-caution">If you have a different port, password, user, driver class information, or IP address, make sure that you change the password and port number in these examples to match the ones in your configuration environment. If needed, replace <span class="filepath style-wrap">XE </span> with
+            the name of your schema.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step"><span class="ph cmd">Consult your database documentation to determine the JDBC class name and connection string for your BA Repository database.</span> </li>
+            <li class="li step"><span class="ph cmd">Go to the&nbsp;<span class="ph filepath">biserver-ee/tomcat/webapps/pentaho/META-INF</span>  directory and open the <span class="ph filepath">context.xml</span>  file with any file editor.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Comment out the resource references that refer to databases other than Oracle, such as PostgreSQL, MS SQL Server, and MySQL. Then, add the following code to the file if it does not already exist. </span> 
+              <p><span class="ph cmd">Be sure to adjust the port numbers and passwords to reflect your environment, if necessary.</span> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWaitMillis=&quot;10000&quot; maxIdle=&quot;5&quot; maxTotal=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Hibernate&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWaitMillis=&quot;10000&quot; maxIdle=&quot;5&quot; maxTotal=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Audit&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;quartz&quot; maxWaitMillis=&quot;10000&quot; maxIdle=&quot;5&quot; maxTotal=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Quartz&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWaitMillis=&quot;10000&quot; maxIdle=&quot;5&quot; maxTotal=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/pentaho_operations_mart&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;pentaho_operations_mart&quot; username=&quot;pentaho_operations_mart&quot; maxWaitMillis=&quot;10000&quot; maxIdle=&quot;5&quot; maxTotal=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/PDI_Operations_Mart&quot;/></pre>              </li>
+            <li class="li step"><span class="ph cmd">Make sure that the <span class="filepath style-wrap">validationQuery </span> variable for your database is set to this: <span class="filepath style-wrap">validationQuery=&quot;select 1 from dual&quot;.</span> </span> 
+            </li>
+            <li class="li step" value="6"><span class="ph cmd">Save the <span class="filepath style-wrap"><span class="ph filepath">context.xml </span> </span> file, then close it. </span> 
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_15" class="mt-page-section"><span id="Next_Steps"></span> 
+        <h2 class="editable">Next Steps</h2>
+        <p>Now it is time to
+          <a title="Start BA Server" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0K0/070"> start your server</a> .</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Initialize_Oracle_BA_Repository_Database" rel="internal">Initialize Oracle BA Repository Database</a> 
+        <ol>
+          <li> <a href="#Step_1:_Change_Default_Passwords" rel="internal">Step 1:&nbsp;Change Default Passwords</a>  </li>
+          <li> <a href="#Step_2:_Run_SQL_Scripts" rel="internal">Step 2:&nbsp;Run SQL Scripts</a>  </li>
+          <li> <a href="#Step_3:_Verify_Oracle_Initialization" rel="internal">Step 3:&nbsp;Verify Oracle Initialization</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Configure_Oracle_BA_Repository_Database" rel="internal">Configure Oracle BA Repository Database</a> 
+        <ol>
+          <li> <a href="#Step_1:_Set_Up_Quartz_on_Oracle_BA_Repository_Database" rel="internal">Step 1:&nbsp;Set Up Quartz on Oracle BA Repository Database</a>  </li>
+          <li> <a href="#Step_2:_Set_Hibernate_Settings_for_Oracle" rel="internal">Step 2:&nbsp;Set Hibernate Settings for Oracle</a>  </li>
+          <li> <a href="#Step_3:_Replace_Default_Version_of_Audit_Log_File_with_Oracle_Version" rel="internal">Step 3:&nbsp;Replace Default Version of Audit Log File with Oracle Version</a>  </li>
+          <li> <a href="#Step_4:_Modify_Jackrabbit_Repository_Information_for_Oracle" rel="internal">Step 4:&nbsp;Modify Jackrabbit Repository Information for Oracle</a>  </li>
+          <li> <a href="#Are_you_using_JBoss.3F" rel="internal">Are you using JBoss?</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Perform_Tomcat-Specific_Connection_Tasks" rel="internal">Perform Tomcat-Specific Connection Tasks</a> 
+        <ol>
+          <li> <a href="#Step_1:_Download_Drivers_and_Install_with_the_JDBC_Distribution_Tool" rel="internal">Step 1:&nbsp;Download Drivers and Install with the JDBC Distribution Tool</a>  </li>
+          <li> <a href="#Step_2:_Modify_JDBC_Connection_Information_in_the_Tomcat_context.xml_File" rel="internal">Step 2:&nbsp;Modify JDBC Connection Information in the Tomcat context.xml File</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Next_Steps" rel="internal">Next Steps</a>  </li>
+    </ol>
+  </body>
+</content>

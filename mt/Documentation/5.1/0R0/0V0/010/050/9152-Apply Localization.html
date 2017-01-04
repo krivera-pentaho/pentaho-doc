@@ -1,0 +1,35 @@
+<content type="text/html" title="Apply Localization">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p"><strong class="ph b">Message Bundles</strong> </p>
+        <p class="p">PDI uses property files for internationalization. Property files reside in the <code class="ph codeph">messages</code> sub-package in the plugin <span class="ph filepath">jar</span>  file.&nbsp;Each property file is specific to a locale. Property
+          files contain translations for message keys that are used in the source code. A <code class="ph codeph">messages</code> sub-package containing locale-specific translations is called a message bundle.</p>
+        <p class="p">Consider the package layout of the sample job entry plugin project. It contains its main Java class in the <code class="ph codeph">org.pentaho.di.sdk.samples.jobentries.demo</code>package, and there is a message bundle containing the localized
+          strings for the <span class="ph filepath">en_US</span>  locale. &nbsp;</p>
+        <br />
+        <img alt="File:/screenshot_messages_bundle.png" class="image internal" id="b50effb1-5baf-4f1f-b364-8668b8832e4c__localization__image_xsb_133_nh" src="http://help.pentaho.com/@api/deki/files/1627/screenshot_messages_bundle.png?revision=1" />
+        <p class="p">Additional property files can be added using the naming pattern <code class="ph codeph">messages_<locale>.properties</code>. PDI core steps and job entries usually come with several localizations. See the shell job entry messages package for an
+          example of more complete <code class="ph codeph">i18n</code>:
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://source.pentaho.org/svnkettleroot/Kettle/tags/4.3.0-stable/src/org/pentaho/di/job/entries/shell/messages/">http://source.pentaho.org/svnkettleroot/Kettle/tags/4.3.0-stable/src/org/pentaho/di/job/entries/shell/messages/</a> .&nbsp;</p>
+        <p class="p"><strong class="ph b">Resolving Localized Strings</strong> </p>
+        <p class="p">The key to resolving localized strings is to use the <code class="ph codeph">getString()</code> methods of
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/i18n/BaseMessages.html"><code class="ph codeph">org.pentaho.di.i18n.BaseMessages</code></a> . PDI follows conventions when using this class, which enables easy integration with the
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Kettle+4+and+the+art+of+internationalization">PDI translator tool</a> .&nbsp;</p>
+        <p class="p">All PDI plugin classes that use localization declare a private static <code class="ph codeph">Class<?> PKG</code> field, and assign a class that lives one package-level above the message bundle package. This is often the main class of the plugin.</p>
+        <p class="p">With the <code class="ph codeph">PKG</code> field defined, the plugin then resolves its localized strings with a call to <code class="ph codeph">BaseMessages.getString(PKG, &ldquo;localization key&rdquo;, ... optional_parameters)</code>. The first
+          argument helps PDI finding the correct message bundle, the second argument is the key to localize, and the optional parameters are injected into the localized string following the Java
+          <a class="xref external" target="_blank" rel="external nofollow"
+          href="http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html">Message Format</a>  conventions.</p>
+        <p class="p"><strong class="ph b">Common Localization Strings</strong> </p>
+        <p class="p">Some strings are commonly used,and have been pulled together into a common message bundle in
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://source.pentaho.org/svnkettleroot/Kettle/tags/4.3.0-stable/src-core/org/pentaho/di/i18n/messages/"><code class="ph codeph">org.pentaho.di.i18n.messages</code></a> . Whenever <code class="ph codeph">BaseMessages</code> cannot find the key in the specified message bundle, PDI looks for the key in the common message bundle.&nbsp;</p>
+        <p class="p"><strong class="ph b">Example</strong> </p>
+        <p class="p">For an example, check the sample
+          <a class="xref" title="Sample Job Entry Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/0V0/010/010/040">Job Entry plugin project</a>, which uses this technique for localized string resolution in its dialog class.&nbsp;</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

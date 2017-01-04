@@ -1,0 +1,109 @@
+<content type="text/html" title="Pentaho Server Issues">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">Follow the suggestions in these topics to help&nbsp;resolve common issues associated with the&nbsp;Pentaho Server:</p>
+        <ul>
+          <li class="p">Publishing Domain&nbsp;to the Pentaho Server Fails</li>
+          <li class="p">Library Conflicts</li>
+          <li class="p">Report Parameters That Include Accented Characters Fail to Validate</li>
+          <li class="p">VFS Provider XML Duplicates</li>
+          <li class="p">Tomcat Logs Report Memory Leaks</li>
+          <li class="p">Windows Domains Will Not Authenticate When Using the JTDS Driver</li>
+        </ul>
+        <div class="body">
+          <p>See Pentaho&nbsp;
+            <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+        </div>
+      </div>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="Publishing_Domain_to_the_Pentaho_Server_Fails"></span> 
+      <h2 class="editable">
+        <strong>Publishing Domain&nbsp;to the Pentaho&nbsp;Server Fails</strong> 
+      </h2>
+      <p>If
+        <a title="Publish a Domain to the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/110/0C0/000/000">publishing a domain&nbsp;to the Pentaho&nbsp;Server</a>  fails, confirm the following statements are true:</p>
+      <ul class="ul" id="e5568975-f085-41b7-8fcb-2909e0c139c7__task_pme_publish_troubleshooting__ul_iyw_dwm_fj">
+        <li class="li">The Pentaho&nbsp;Server is running.</li>
+        <li class="li">Your security access is defined as the Pentaho administrator role. The default is <code>admin</code>.</li>
+        <li class="li">You did not use&nbsp;trailing or leading slashes in the Web Publish URL or Domain Name.</li>
+      </ul>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Library_Conflicts"></span> 
+      <h2 class="editable">Library Conflicts</h2>
+      <p>The Pentaho Server relies on many third-party libraries. These libraries&nbsp;provide everything from database connectivity to specific Java classes. If you have incompatible versions of any of these third-party libraries in your application server's
+        global <code>lib</code> folder, they can cause a variety of problems related to starting and running the Pentaho Server.</p>
+      <p>Determine what versions are correct based on your needs for these third-party libraries.&nbsp;Some known-problematic JARs are:</p>
+      <ul class="ul">
+        <li class="li"><code>commons-collections-3.2.jar</code> (from Pentaho)</li>
+        <li class="li"><code>commons-collections.jar</code> (from JBoss in <span class="ph filepath">/jboss/server/default/lib/</span> )</li>
+        <li class="li"><code>jettison-1.01.jar</code> (from Pentaho)</li>
+        <li class="li"><code>jettison.jar</code> (from JBoss in <span class="ph filepath">/jboss/default/deploy/jbossws.sar</span> )</li>
+      </ul>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Report_Parameters_that_Include_Accented_Characters"></span> 
+      <h2 class="editable">Report Parameters that Include Accented Characters</h2>
+      <div class="body conbody">
+        <p class="p">If you run a report containing parameters with accented characters, you may&nbsp;get an error message which reads, &quot;This parameter value is of an invalid value.&quot;</p>
+        <p class="p">To avoid this error message,&nbsp;modify the Tomcat server to include accented character support. This modification is especially necessary if you plan&nbsp;to use&nbsp;Spanish, French, or any other language that use accented character sets.</p>
+        <div class="section context">
+          <p class="p">The following example shows how to implement accented character set support:</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the Tomcat service.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sudo /etc/init.d/tomcat stop</pre> </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/tomcat/server/conf/server.xml</span>  file in a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Locate each <code>Connector</code>&nbsp;node (typically, there are four in a default Tomcat configuration) and add a&nbsp;<code>URIEncoding=&quot;UTF-8&quot;</code><strong class="ph b">&nbsp;</strong> parameter to it, as shown in the following sample code block:</span>             <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Connector URIEncoding=&quot;UTF-8&quot; port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;
+               connectionTimeout=&quot;20000&quot;
+               redirectPort=&quot;8443&quot; /></pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then restart the Tomcat service.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sudo /etc/init.d/tomcat start</pre>            </li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="VFS_Provider_XML_Duplicates"></span> 
+      <h2 class="editable">VFS Provider XML Duplicates</h2>
+      <p>The <code>vfs-provider.xml</code> configuration file may be present in other application JARs that you have deployed to your Java application server. Having multiple instances of this file will cause classpath errors.</p>
+      <p>To resolve this issue, merge the multiple files into one canonical edition.</p>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Tomcat_Logs_Report_Memory_Leaks"></span> 
+      <h2 class="editable">Tomcat Logs Report Memory Leaks</h2>
+      <p><span style="line-height:1.4;">When shutting down Tomcat, you may see some SEVERE-level warnings similar to the following messages:</span> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearReferencesJdbc
+SEVERE: The web application [/pentaho] registered the JBDC driver [mondrian.olap4j.MondrianOlap4jDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.
+Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [/pentaho] appears to have started a thread named [HSQLDB Timer @49cf9f] but has failed to stop it. This is very likely to create a memory leak.
+Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+SEVERE: The web application [/pentaho] appears to have started a thread named [MySQL Statement Cancellation Timer] but has failed to stop it. This is very likely to create a memory leak.
+Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearThreadLocalMap
+SEVERE: The web application [/pentaho] created a ThreadLocal with key of type [java.lang.InheritableThreadLocal] (value [java.lang.InheritableThreadLocal@a1320e]) and a value of type [org.pentaho.platform.engine.security.session.TrustedSystemStartupSession] (value [org.pentaho.platform.engine.security.session.TrustedSystemStartupSession@111089b]) but failed to remove it when the web application was stopped. This is very likely to create a memory leak.</pre>
+      <p class="p">These warnings report problems&nbsp;with processes&nbsp;that are being removed while the Tomcat server is&nbsp;shutting down. However, they can be significant if you are restarting or redeploying the Pentaho Server web applications.</p>
+      <p class="p">To avoid memory leak issues&nbsp;in redeployment, you should restart Tomcat rather than&nbsp;redeploying or restarting the web application with a live server.</p>
+    </div>
+    <div id="section_6" class="mt-page-section"><span id="Windows_Domains_Will_Not_Authenticate_When_Using_the_JTDS_Driver"></span> 
+      <h2 class="editable">Windows Domains Will Not Authenticate When Using the JTDS Driver</h2>
+      <p class="p">If you are using a JTDS JDBC driver and you want to use a Windows domain user to authenticate to a Microsoft SQL Server, the Windows syntax will not work for specifying the domain and user.</p>
+      <p class="p">The domain must be appended to the end of the URL with a semicolon, as shown in the following example:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">jdbc:jtds:sqlserver://svn-devel.example.com:1533/reportsInProgress;domain=testdomain</pre>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Publishing_Domain_to_the_Pentaho_Server_Fails" rel="internal">Publishing Domain&nbsp;to the Pentaho&nbsp;Server Fails</a>  </li>
+      <li> <a href="#Library_Conflicts" rel="internal">Library Conflicts</a>  </li>
+      <li> <a href="#Report_Parameters_that_Include_Accented_Characters" rel="internal">Report Parameters that Include Accented Characters</a>  </li>
+      <li> <a href="#VFS_Provider_XML_Duplicates" rel="internal">VFS Provider XML Duplicates</a>  </li>
+      <li> <a href="#Tomcat_Logs_Report_Memory_Leaks" rel="internal">Tomcat Logs Report Memory Leaks</a>  </li>
+      <li> <a href="#Windows_Domains_Will_Not_Authenticate_When_Using_the_JTDS_Driver" rel="internal">Windows Domains Will Not Authenticate When Using the JTDS Driver</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,38 @@
+<content type="text/html" title="Remove Security from Data Source Management">
+  <head>
+    <style type="text/css">
+      /*<![CDATA[*/
+      /*]]>*/
+    </style>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>This procedure changes your data source management so that&nbsp;an anonymous user can access it. These steps are necessary to completely remove security from the Pentaho Server. However, this procedure does not remove <strong>all</strong>  security.
+        Start with
+        <a class="xref" title="Remove Security by Enabling Anonymous Access" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_User_Security/Remove_Security_by_Enabling_Anonymous_Access">Remove Security by Enabling Anonymous Access</a>  if you need to remove all security.</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">If you need to,
+          <a target="_blank" title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">stop the Pentaho&nbsp;Server</a> .</li>
+        <li class="li step">Open <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/data-access/settings.xml</span>  file with a text editor.
+          <ol class="ol substeps">
+            <li class="li substep">Find the <span class="ph filepath"><data-access-roles>Administrator</data-access-roles></span> &nbsp;line in the file and change the following text: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Administrator to Anonymous</pre>              </li>
+            <li class="li substep">Find the&nbsp;<span class="ph filepath"><data-access-view-roles>Authenticated,Administrator</data-access-view-roles></span> &nbsp;line in the file and change the following&nbsp;text: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Authenticated,Administrator to Anonymous</pre>              </li>
+            <li class="li substep"><span class="ph cmd">Find the <span class="ph filepath"><data-access-view-users>suzy</data-access-view-users></span> &nbsp;line and change the following&nbsp;text: </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">suzy to anonymousUser</pre>              </li>
+            <li class="li substep">Find the&nbsp;<span class="ph filepath"><data-access-datasource-solution-storage>admin</data-access-datasource-solution-storage></span> &nbsp;line and change the following&nbsp;text: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">admin to anonymousUser</pre>              </li>
+          </ol>
+        </li>
+        <li class="li step">Save and close the file.</li>
+        <li class="li step">Restart the Pentaho&nbsp;Server.</li>
+      </ol>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

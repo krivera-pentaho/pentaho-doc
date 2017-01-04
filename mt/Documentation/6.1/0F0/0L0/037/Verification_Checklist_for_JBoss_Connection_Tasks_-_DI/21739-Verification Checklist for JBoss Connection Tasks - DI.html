@@ -1,0 +1,125 @@
+<content type="text/html" title="Verification Checklist for JBoss Connection Tasks - DI">
+  <body>
+    <p>This checklist for JBoss connection tasks will help you verify that you have completed all items needed before starting the Pentaho DI Server.</p>
+    <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+    title="Pentaho Table">
+      <thead>
+        <tr>
+          <th rowspan="1" scope="col" style="width: 97px;">Task</th>
+          <th rowspan="1" scope="col" style="width: 493px;">Section</th>
+          <th scope="col" style="width: 645px;">Brief&nbsp;Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width: 97px;">1.</td>
+          <td style="width: 493px;">
+            <a title="https://help.pentaho.com/Documentation/6.1/0F0/0K0/060#Install_JDBC_Driver_as_a_Module_in_JBoss" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#Install_JDBC_Driver_as_a_Module_in_JBoss"><strong>Install JDBC Driver as a Module in JBoss</strong> </a> 
+          </td>
+          <td style="width: 645px;">Download the JDBC driver software component to the correct directory, then create <span class="ph filepath">module.xml</span>  files for each database.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">2.</td>
+          <td style="width: 493px;"><strong><a title="Documentation/6.1/0F0/0L0/037#ModuleFileDI" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#ModuleFileDI">Create Module File for DI&nbsp;Repository</a> </strong> </td>
+          <td style="width: 645px;">Create a module&nbsp;file for the database that hosts the DI&nbsp;Repository (either PostgreSQL, MySQL, or Oracle), as well as for HSQLDB.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">3.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#ModuleFileHSQL" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#ModuleFileHSQL"><strong>Create Module File for HSQL Database</strong> </a> 
+          </td>
+          <td style="width: 645px;">Create a module file for the HSQL database. The version of HSQLDB used should be 2.3.2.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">4.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#ModuleFileH2" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#ModuleFileH2"><strong>Create Module File for H2 Database</strong> </a> 
+          </td>
+          <td style="width: 645px;">Create a module file for the H2 database.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">5.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#DefineJNDI" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#DefineJNDI"><strong>Define JNDI Database Connection</strong> </a> 
+          </td>
+          <td style="width: 645px;">Use JNDI to specify port, driver, user name, and password information for the Audit and Quartz databases in&nbsp;your&nbsp;Pentaho Repository.&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">6.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#JBossDeploy" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#JBossDeploy"><strong>Add JBoss Deployment Structure File to pentaho.war</strong> </a> 
+          </td>
+          <td style="width: 645px;">Controls class loading, prevents automatic dependencies from being added, adds dependencies, defines additional modules, changes isolated class loading behavior, and adds additional resource roots to a module.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">7.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#RemoveJNDIRef" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#RemoveJNDIRef"><strong>Remove JNDI Resource References in JBoss</strong> </a> 
+          </td>
+          <td style="width: 645px;">Remove JNDI&nbsp;resource-references in the web.xml file so that&nbsp;the DI&nbsp;Server will operate properly.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">8.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#UpdateJNDIStandards" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#UpdateJNDIStandards"><strong>Update JNDI Data Source Reference to Conform to JBoss Standards</strong> </a> 
+          </td>
+          <td style="width: 645px;">Update files so that referenced JNDI data&nbsp;sources conform to JBoss standards.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">9.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#JBossSunJDK" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#JBossSunJDK"><strong>Enable JBoss Classloader to Load Classes from Sun JDK</strong> </a> 
+          </td>
+          <td style="width: 645px;">Configure the Pentaho Platform in JBoss by adding this list of packages.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">10.</td>
+          <td style="width: 493px;">
+            <a title="https://help.pentaho.com/Documentation/6.1/0F0/0K0/060#Prepare_JBoss_Web_Application_Servers" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#Prepare_JBoss_Web_Application_Servers"><strong>Prepare JBoss Web Application Servers</strong> </a> 
+          </td>
+          <td style="width: 645px;">If you have installed the JBoss web application server, you will need to manually complete the following&nbsp;configuration tasks.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">11.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#IncreaseTimeDeploy" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#IncreaseTimeDeploy"><strong>Increase the Amount of Time JBoss Allows for DI&nbsp;Server Deployment</strong> </a> 
+          </td>
+          <td style="width: 645px;">Since the DI Server deployment takes longer than one minute, you will need to change the&nbsp;default time for deployment by editing the standalone.xml file,&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">12.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#DisableRESTEasy" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#DisableRESTEasy"><strong>Disable the JBoss RESTEasy Scan</strong> </a> 
+          </td>
+          <td style="width: 645px;">Disable the JBoss RESTEasy scan to load pentaho REST services correctly.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">13.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0K0/060#SetLocationDirectory" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#SetLocationDirectory"><strong>Set the Location of the pentaho-solutions Directory&nbsp;</strong> </a> 
+          </td>
+          <td style="width: 645px;">Define the location of the Pentaho solutions directory in the <span class="ph filepath">web.xml</span>  file to deploy JBoss correctly.&nbsp;</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">14.</td>
+          <td style="width: 493px;">
+            <a title="Documentation/6.1/0F0/0L0/037#JBossDefaultMem" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#JBossDefaultMem"><strong>Configure JBoss Settings</strong> </a> 
+          </td>
+          <td style="width: 645px;">Modify the JBoss startup script to match the DI&nbsp;Server's memory resource requirements. If this step is not performed, the DI Server will not start.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">15.</td>
+          <td style="width: 493px;"><strong><a title="https://help.pentaho.com/Documentation/6.1/0F0/0L0/037/#ConfigurePorts" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#ConfigurePorts">Configure http and https Ports on JBoss</a> </strong> </td>
+          <td
+          style="width: 645px;">JBoss needs to be configured to run with the DI Server ports.</td>
+        </tr>
+        <tr>
+          <td style="width: 97px;">16.</td>
+          <td style="width: 493px;"><strong><a title="Documentation/6.1/0F0/0L0/037#FQURLforDI" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/037#FQURLforDI">Configure Fully-Qualified URL for DI Server</a> </strong> </td>
+          <td style="width: 645px;">You can change the DI Server fully-qualified URL.</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

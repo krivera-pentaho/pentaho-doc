@@ -1,0 +1,68 @@
+<content type="text/html" title="Creating Partitioner Plugins">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">PDI uses partitioner plugins for its partitioning feature. Each partitioner plugin implements a specific partitioning method.&nbsp;</p>
+        <br />
+        <img alt="File:/screenshot_mod_partitioning.png" class="image internal" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__creating_partioner_plugins__image_pp3_jg3_nh" src="http://help.pentaho.com/@api/deki/files/4705/screenshot_mod_partitioning.png?revision=1"
+        />
+        <p class="p">For most applications, the Remainder of Division partitioner works well. On the rare occasion that an application would benefit from an additional partitioning method, this section explains how to implement them.</p>
+        <p class="p">This section explains the architecture and programming concepts for creating your own partitioner plugin. We recommended you open and refer to the
+          <a class="xref" title="Sample Partitioner Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/030/030">
+          sample partitioner plugin sources</a>  while following these instructions.</p>
+        <p class="p">A partitioner plugin integrates with PDI by implementing two distinct Java interfaces. Each interface represents a set of responsibilities performed by a PDI partitioner. Each of the interfaces has a base class that implements the bulk of the
+          interface in order to simplify plugin development.</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e54" valign="top" width="35%"><strong class="ph b">Package</strong> </th>
+                <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e60" valign="top" width="25%"><strong class="ph b">Interface</strong> </th>
+                <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e66" valign="top" width="20%"><strong class="ph b">Base Class</strong> </th>
+                <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e72" valign="top" width="20%"><strong class="ph b">Main Responsibilities</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d15939e54 " valign="top" width="35%"><code class="ph codeph">org.pentaho.di.trans </code></td>
+                <td class="entry" headers="d15939e60 " valign="top" width="25%"><code class="ph codeph">Partitioner</code></td>
+                <td class="entry" headers="d15939e66 " valign="top" width="20%"><code class="ph codeph">BasePartitioner</code></td>
+                <td class="entry" headers="d15939e72 " valign="top" width="20%">
+                  <ul class="ul">
+                    <li class="li">Maintain partitioner settings</li>
+                    <li class="li">Serialize partitioner enumerations</li>
+                    <li class="li">Provide access to dialog class</li>
+                    <li class="li">Assign rows to partitions during runtime</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d15939e54 " valign="top" width="35%"><code class="ph codeph">org.pentaho.di.ui.trans.step</code></td>
+                <td class="entry" headers="d15939e60 " valign="top" width="25%"><code class="ph codeph">StepDialogInterface</code></td>
+                <td class="entry" headers="d15939e66 " valign="top" width="20%"><code class="ph codeph">BaseStepDialog</code></td>
+                <td class="entry" headers="d15939e72 " valign="top" width="20%">
+                  <ul class="ul" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__creating_partioner_plugins__ul_lgm_dsx_qh">
+                    <li class="li">Partitioner settings dialog</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><strong class="ph b">Additional Reading</strong> </p>
+        <p class="p">A complete explanation of partitioning in Kettle, including sample transformations, is available here
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://type-exit.org/adventures-with-open-source-bi/2011/09/partitioning-in-kettle/">http://type-exit.org/adventures-with-open-source-bi/2011/09/partitioning-in-kettle/</a> .</p>
+      </div>
+      <div class="related-links">
+        <ul class="pentaho-list-unordered">
+          <li class="link ulchildlink"><strong><a title="Implementing the Partitioner Interface" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/030/000">Implementing the Partitioner Interface</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Implementing the Partitioner Settings Dialog Box" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/030/010">Implementing the Partitioner Settings Dialog Box</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Deploying Partitioner Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/030/020">Deploying Partitioner Plugins</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Sample Partitioner Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/030/030">Sample Partitioner Plugin</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Exploring Existing Partitioners" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/030/040">Exploring Existing Partitioners</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,252 @@
+<content type="text/html" title="Use Kerberos Authentication to Access a MapR Cluster">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Learn how to configure impersonation and spoofing to access MapR Cluster components.</p>
+        </div>
+      </div>
+      <p><span>Setting up impersonation and spoofing is part of <a title="Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster">configuring Pentaho to connect to a Hadoop cluster</a> .</span> </p>
+      <p><span>By default, the Pentaho&nbsp;Server admin user executes transformations and jobs. &nbsp;But, if your transformation or job needs to run on a<span class="apple-converted-space">&nbsp;</span> MapR<span class="apple-converted-space">&nbsp;</span> cluster
+        or access its resources, the Pentaho Server admin might not have an account on the cluster or have the right permissions and accesses.</span> 
+      </p>
+      <p>Using impersonation helps solve&nbsp;this issue. &nbsp;With impersonation, you indicate that a transformation should run using&nbsp;the permissions and accesses of a different&nbsp;Hadoop<span class="apple-converted-space">&nbsp;</span> user. &nbsp;Impersonation
+        leverages the Hadoop user&rsquo;s existing permissions and accesses to provide access to components that run on<span class="apple-converted-space">&nbsp;</span> MapR<span class="apple-converted-space">&nbsp;</span> clusters such as MapReduce, Pig,
+        <span
+        class="apple-converted-space">O</span> ozie,<span class="apple-converted-space">S</span> qoop, Hive, or a directory on<span class="apple-converted-space">&nbsp;</span> HDFS.</p>
+      <p>There are a couple of limitations.</p>
+      <ul class="pentaho-list-unordered">
+        <li>Only the MapR super user can impersonate other users.</li>
+        <li>With Linux, you use <em>impersonation</em>  to specify different proxy users for HDFS, MapReduce, Pig, Sqoop, Oozie, and Pentaho Map Reduce components.</li>
+        <li>With Windows you can only specify a single, <em>spoofed</em>  user.</li>
+      </ul>
+      <p>Instructions for impersonation or spoofing depend on your Spoon client&rsquo;s operating system.</p>
+      <ul class="pentaho-list-unordered">
+        <li> <a href="#prerequisites">Prerequisites for Impersonation and Spoofing for Both Linux and Windows Nodes</a>  </li>
+        <li> <a href="#setUpImpersonationLinux">Set Up Impersonation on Linux Client Node</a>  </li>
+        <li> <a href="#setUpSpoofingWindows">Set Up Spoofing on Windows Client Node</a>  </li>
+      </ul>
+      <div id="section_2" class="mt-page-section"><span id="Prerequisites_for_Impersonation_and_Spoofing"></span> 
+        <h2 class="editable">
+          <a id="prerequisites" name="prerequisites"></a> Prerequisites for Impersonation and Spoofing</h2>
+        <p>Prerequisites for impersonation and spoofing include setting up and configuring the MapR distribution, setting up user accounts, then storing authorization provider credentials and overriding the Kerberos ticket cache.</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#setUpMapRNodes">Set Up MapR Nodes</a>  </li>
+          <li> <a href="#makeMapRActive">Make MapR the Active Hadoop Distribution</a>  </li>
+          <li> <a href="#setUpUserAccounts">Set Up User Accounts</a>  </li>
+          <li> <a href="#storeAuthorizationProvider">Store Authorization Provider Credentials</a>  </li>
+          <li> <a href="#overrideKerberosTicketCache">Override Kerberos Ticket Cache</a>  </li>
+        </ul>
+        <div id="section_3" class="mt-page-section"><span id="Set_Up_MapR_Nodes"></span> 
+          <h3 class="editable">
+            <a id="setUpMapRNodes" name="setUpMapRNodes"></a> Set Up MapR Nodes</h3>
+          <p>Set up a MapR cluster and apply MapR security.&nbsp; See MapR documentation for
+            <a class="external" rel="external nofollow" href="http://doc.mapr.com/display/MapR/Advanced+Installation+Topics" target="_blank">installation</a>  and
+            <a class="external" rel="external nofollow" href="http://doc.mapr.com/display/MapR/Security+Guide" target="_blank">security</a>  instructions. &nbsp;We also recommend that you review the instructions on
+            <a class="external" target="_blank" title="http://doc.mapr.com/display/MapR/Setting+Up+the+Client" rel="external nofollow" href="http://doc.mapr.com/display/MapR/Setting+Up+the+Client">setting up a MapR client</a> .</p>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Make_MapR_the_Active_Hadoop_Distribution"></span> 
+          <h3 class="editable">
+            <a id="makeMapRActive" name="makeMapRActive"></a> Make MapR the Active Hadoop Distribution</h3>
+          <p>Make MapR your active Hadoop distribution and configure it. See Set Active Hadoop Distribution
+            <a class="external" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version" target="_blank">Set Active Hadoop Distribution</a>  and Additional Configuration for MapR Shims
+            <a class="external" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims" target="_blank">Additional configuration for MapR Shims</a>  for more detail.</p>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Set_Up_User_Accounts"></span> 
+          <h3 class="editable">
+            <a id="setUpUserAccounts" name="setUpUserAccounts"></a> Set Up User Accounts</h3>
+          <ul class="pentaho-list-unordered">
+            <li>Set up user accounts for MapR and client nodes.</li>
+            <li>Set up accounts for the users you want to impersonate or spoof on each MapR node. The usernames, passwords, UID, and GID should be the same on each node.</li>
+            <li>For Linux Spoon client and Pentaho&nbsp;Server nodes, set up accounts for the users you want to impersonate The usernames, passwords, UID, and GID should be the same on each node.&nbsp;You do not have to do this for Windows Spoon client or
+              Pentaho&nbsp;Server nodes.</li>
+            <li>On both Windows and Linux nodes, add the impersonated or spoofed users to additional groups, if needed.&nbsp; Do this if users require access to resources restricted to members of a group.&nbsp; Ensure the group names and GIDs are correct
+              and are the same for each node.</li>
+          </ul>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Store_Authorization_Provider_Credentials"></span> 
+          <h3 class="editable">
+            <a id="storeAuthorizationProvider" name="storeAuthorizationProvider"></a> Store Authorization Provider Credentials</h3>
+          <p>Store authorization provider credentials so you do not have to retype usernames, passwords, or other credential information each time you need them for a transformation step or job entry.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>On the Pentaho Server, open the <span class="filepath style-wrap">config.properties</span>  file in <span class="filepath style-wrap">server/pentaho-server/pentaho-solutions/system/kettle/plugins/pentaho-big-data-plugin/hadoop-configurations/[hadoop distribution]</span> .</li>
+          </ol>
+          <p class="pentaho-note" style="margin-left: 0.25in;"><em>[hadoop distribution] is the name of the Hadoop distribution, such as mapr31.</em> </p>
+          <ol class="pentaho-list-ordered">
+            <li value="2">Set the Kerberos Principal property.</li>
+          </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">authentication.kerberos.principal=user@omnicorp.com</pre>
+          <ol class="pentaho-list-ordered">
+            <li value="3">Decide whether to authenticate using a password or a keytab file.</li>
+          </ol>
+          <ul class="pentaho-list-unordered">
+            <li value="2">To authenticate with a password, set the <code>authentication.kerberos.password</code> property.</li>
+          </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">authentication.kerberos.password=userPassword</pre>
+          <p class="pentaho-note" style="margin-left: 0.25in;"><em>Use Kettle encryption to store the password more securely.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </em> </p>
+          <ul class="pentaho-list-unordered">
+            <li value="3">To authenticate with a keytab file, set the <code>authentication.kerberos.keytabLocation</code> property to the keytab file path.</li>
+          </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">authentication.kerberos.keytabLocation=/home/Server14/Kerberos/username.keytab</pre>
+          <p class="pentaho-note" style="margin-left: 0.25in;"><em>If both the authentication.kerberos.password and authentication.kerberos.keytabLocation properties are set, the authentication.kerberos.password property takes precedence.&nbsp; </em> </p>
+          <ol class="pentaho-list-ordered">
+            <li value="4">Assign an ID to the authentication credentials that you just specified (Kerberos Principal and password or keytab), by setting the <code>authentication.kerberos.id</code> property.</li>
+          </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">authentication.kerberos.id=mapr-kerberos</pre>
+          <ol class="pentaho-list-ordered">
+            <li value="5">To use authentication credentials you just specified, set the <code>authentication.superuser.provider</code> to the authentication.kerberos.id.</li>
+          </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">authentication.superuser.provider=mapr-kerberos</pre>
+          <ol class="pentaho-list-ordered">
+            <li value="6">Save and close the file.</li>
+            <li value="7">Repeat this process on Spoon.&nbsp; The <code>config.properties</code> file is in <span class="filepath style-wrap">design-tools/data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[hadoop distribution]</span> .</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Override_Kerberos_Ticket_Cache"></span> 
+          <h3 class="editable">
+            <a id="overrideKerberosTicketCache" name="overrideKerberosTicketCache"></a> Override Kerberos Ticket Cache</h3>
+          <p>If you are logged into the Spoon host machine and your account has already been authenticated using Kerberos, indicate that you want to use the authentication information that is in the <code>config.properties</code> file instead, not the one
+            that has already been saved in the Kerberos ticket cache.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <span class="filepath style-wrap">mapr.login.conf</span>  file on the host.&nbsp; By default, the file is located in <span class="filepath style-wrap">opt/mapr/conf</span> .</li>
+            <li>In the <span class="filepath style-wrap">hadoop_hybrid</span>  section, set <span class="filepath style-wrap">useTicketCache</span>  and<span class="filepath style-wrap"> renewTGT </span> variables to false, like this:&#8203;</li>
+          </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">hadoop_hybrid{
+org.apache.hadoop.security.login.KerberosBugWorkAroundLoginModule optional
+      useTicketCache=false
+      renewTGT=false</pre>
+          <ol class="pentaho-list-ordered">
+            <li value="3">Save and close the <span class="filepath style-wrap">mapr.login.conf</span>  file.</li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Set_Up_Impersonation_on_Linux_Client_Node"></span> 
+        <h2 class="editable">
+          <a id="setUpImpersonationLinux" name="setUpImpersonationLinux"></a> Set Up Impersonation on Linux Client Node</h2>
+        <p>To set up impersonation on a Linux client node, specify proxy users in the <span class="mt-font-courier-new">core-site.xml</span>  file on the Pentaho&nbsp;Server and the <span class="mt-font-courier-new">core-site.xml</span>  file in Spoon.</p>
+        <ol class="pentaho-list-ordered">
+          <li>On the Pentaho Server node, open the <span class="filepath style-wrap">core-site.xml</span>  file in <span class="filepath style-wrap">pentaho-solutions/system/kettle/plugins/pentaho-big-data-plugin/hadoop-configurations/[<em>hadoop distribution</em> ]</span> .</li>
+        </ol>
+        <p class="pentaho-note" style="margin-left: 0.25in;"><em>[hadoop configuration] is the name of the Hadoop distribution, such as mapr31.</em> </p>
+        <ol class="pentaho-list-ordered">
+          <li value="2">Set the usernames in the <span class="filepath style-wrap"><value></span>  tag for the proxy users as needed.&nbsp; The username you use should be recognized by every node in the MapR cluster.</li>
+        </ol>
+        <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <th style="width: 120px; height: 19px;"><strong>Component</strong> </th>
+              <th style="width: 553px; height: 19px;"><strong>Proxy User Property</strong> </th>
+            </tr>
+            <tr>
+              <td style="width: 120px;">HDFS</td>
+              <td style="width: 553px;">pentaho.hdfs.proxy.user</td>
+            </tr>
+            <tr>
+              <td style="width: 120px;">MapReduce</td>
+              <td style="width: 553px;">pentaho.mapreduce.proxy.user</td>
+            </tr>
+            <tr>
+              <td style="width: 120px;">Pig</td>
+              <td style="width: 553px;">pentaho.pig.proxy.user</td>
+            </tr>
+            <tr>
+              <td style="width: 120px;">Sqoop</td>
+              <td style="width: 553px;">pentaho.sqoop.proxy.user</td>
+            </tr>
+            <tr>
+              <td style="width: 120px;">Oozie</td>
+              <td style="width: 553px;">pentaho.oozie.proxy.user</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-left: 0.25in;">Here is an example of modified code.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><configuration>
+<property>
+<name>pentaho.hdfs.proxy.user</name>
+<value>jdoe</value>
+</property>
+<property>
+<name>pentaho.mapreduce.proxy.user</name>
+<value>bmichaels</value>
+</property>
+<property>
+<name>pentaho.pig.proxy.user</name>
+<value>jdoe</value>
+</property>
+<property>
+<name>pentaho.sqoop.proxy.user</name>
+<value>cclarke</value>
+</property>
+<property>
+<name>pentaho.oozie.proxy.user</name>
+<value>jdoe</value>
+</property></pre>
+        <ol class="pentaho-list-ordered">
+          <li value="3">Remove comment tags from proxy properties you want to use.</li>
+          <li value="4">Save and close the file.</li>
+          <li value="5">Repeat this process (Steps 1 through 4) in Spoon.&nbsp; The <span class="mt-font-courier-new">core-site.xml</span>  file is located in <span class="mt-font-courier-new">data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[<em>hadoop distribution</em> ]</span> .</li>
+        </ol>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Set_Up_Spoofing_on_Windows_Client_Node"></span> 
+        <h2 class="editable">
+          <a id="setUpSpoofingWindows" name="setUpSpoofingWindows"></a> Set Up Spoofing on Windows Client Node</h2>
+        <p>To set up spoofing on a Windows client node, indicate the spoofed user in the <span class="mt-font-courier-new">core-site.xml</span>  file.&nbsp;</p>
+        <ol class="pentaho-list-ordered">
+          <li>On the Pentaho Server node, open the <span class="mt-font-courier-new">core-site.xml</span>  file in <span class="mt-font-courier-new">pentaho-solutions/system/kettle/plugins/pentaho-big-data-plugin/hadoop-configurations/[<em>hadoop distribution</em> ]</span> .</li>
+        </ol>
+        <p style="margin-left: 0.25in;"><em>[hadoop distribution] is the name of the Hadoop distribution, such as mapr31.</em> </p>
+        <ol class="pentaho-list-ordered">
+          <li value="2">Add the following text to the file:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property>
+  <name>hadoop.spoofed.user.uid</name>
+  <value>{UID}</value>
+</property>
+<property>
+  <name>hadoop.spoofed.user.gid</name>
+  <value>{GID}</value>
+</property>
+<property>
+  <name>hadoop.spoofed.user.username</name>
+  <value>{id of user who has UID}</value>
+</property></pre>
+        <ul class="pentaho-list-unordered">
+          <li>Replace<span class="uicontrol style-wrap"> {id of user who has UID} </span> with the username the principal in the<span class="filepath style-wrap"> config.properties</span>  file.</li>
+          <li>Replace<span class="uicontrol style-wrap"> {UID}</span>  with the <span class="filepath style-wrap">hadoop.spoofed.user.username</span>  UID.</li>
+          <li>Replace<span class="uicontrol style-wrap"> {GID}</span>  with the<span class="filepath style-wrap"> hadoop.spoofed.user.username</span>  GID.</li>
+        </ul>
+        <ol class="pentaho-list-ordered">
+          <li value="3">Save and close the file.</li>
+          <li value="4">Repeat this process (Steps 1 through 3)&nbsp;for Spoon.&nbsp; In Spoon, the <span class="filepath style-wrap">core-site.xml</span>  file is in <span class="filepath style-wrap">data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[<em>hadoop distribution</em> ]</span> .</li>
+        </ol>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Next_Step"></span> 
+        <h2 class="editable">Next Step</h2>
+        <p>Continue
+          <a title="Set up Pentaho to Connect to a MapR Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_MapR_Cluster">configuring Pentaho to connect to a MapR cluster</a> .</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Prerequisites_for_Impersonation_and_Spoofing" rel="internal">Prerequisites for Impersonation and Spoofing</a> 
+        <ol>
+          <li> <a href="#Set_Up_MapR_Nodes" rel="internal">Set Up MapR Nodes</a>  </li>
+          <li> <a href="#Make_MapR_the_Active_Hadoop_Distribution" rel="internal">Make MapR the Active Hadoop Distribution</a>  </li>
+          <li> <a href="#Set_Up_User_Accounts" rel="internal">Set Up User Accounts</a>  </li>
+          <li> <a href="#Store_Authorization_Provider_Credentials" rel="internal">Store Authorization Provider Credentials</a>  </li>
+          <li> <a href="#Override_Kerberos_Ticket_Cache" rel="internal">Override Kerberos Ticket Cache</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Set_Up_Impersonation_on_Linux_Client_Node" rel="internal">Set Up Impersonation on Linux Client Node</a>  </li>
+      <li> <a href="#Set_Up_Spoofing_on_Windows_Client_Node" rel="internal">Set Up Spoofing on Windows Client Node</a>  </li>
+      <li> <a href="#Next_Step" rel="internal">Next Step</a>  </li>
+    </ol>
+  </body>
+</content>

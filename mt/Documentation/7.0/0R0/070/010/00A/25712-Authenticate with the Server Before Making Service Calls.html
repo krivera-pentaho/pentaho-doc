@@ -1,0 +1,60 @@
+<content type="text/html" title="Authenticate with the Server Before Making Service Calls">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to authenticate before you make&nbsp;service&nbsp;(or REST)&nbsp;calls.</p>
+        </div>
+      </div>
+      <p>The Pentaho Server has a configurable authentication system that authenticates clients that make web service calls.&nbsp;Out-of-the-box, there are two options available: <em>Basic Authentication</em>, also known as <em>Basic-Auth</em>  and <em>Cookie-Based Authentication</em> .</p>
+      <div id="section_2" class="mt-page-section"><span id="Choosing_an_Authentication_Option"></span> 
+        <h2 class="editable">Choosing an Authentication Option</h2>
+        <p class="pentaho-note">Since your system administrator might have implemented another authentication option such as a single sign-on option&nbsp;like CAS, contact your administrator to determine the best option for your installation.&nbsp;</p>
+        <p>Use Cookie-Based Authentication if the client making the web service requests supports cookies and will make more than one service call.&nbsp; Once a cookie is obtained it&nbsp;is reused for subsequent calls.&nbsp; This reduces the burden on the
+          Authentication system and makes the server more efficient.</p>
+        <p>Use Basic Authentication if cookie support is not available or you&rsquo;re only making one call.&nbsp; Basic Authentication re-authenticates with every call made.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Cookie-Based_Authentication"></span> 
+        <h2 class="editable">Cookie-Based Authentication</h2>
+        <p>With Cookie-Based Authentication you set up&nbsp;your client to interact with the server in the same way a web browser does. You first obtain a cookie by calling the login URL.&nbsp; The cookie provided corresponds to a session on the server.
+          Subsequent calls share the original authentication and reuse the same session until it expires.</p>
+        <p class="pentaho-note">The following examples assume the server is deployed with <span class="filepath style-wrap">pentaho </span> as the web application name. If yours has been changed, adjust the URLs accordingly.</p>
+        <p>To obtain an authentication cookie, send a <span class="filepath style-wrap">POST </span> request to <span class="filepath style-wrap">/pentaho/j_spring_security_check</span>  with the following request parameters:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">j_username=[username]</span> </li>
+          <li><span class="filepath style-wrap">j_password=[password]</span> </li>
+        </ul>
+        <p>Success is indicated by a <span class="filepath style-wrap">302 </span> response that redirects to <span class="filepath style-wrap">/pentaho/Home</span> .&nbsp;&nbsp;Failure is indicated by&nbsp;a <span class="filepath style-wrap">302 </span> response
+          that&nbsp;redirects to <span class="filepath style-wrap">/pentaho/Login</span>  with the parameter <span class="filepath style-wrap">login_error=1</span> .</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Basic_Authentication"></span> 
+        <h2 class="editable">Basic Authentication</h2>
+        <p>The Pentaho Server&nbsp;supports Basic Authentication as defined in
+          <a class="external" title="http://tools.ietf.org/html/rfc2617" rel="external nofollow" href="http://tools.ietf.org/html/rfc2617" target="_blank">RFC 2617</a> .&nbsp; Most HTTP tools and libraries support this natively; refer the documentation for your tool for the most appropriate and easiest usage. When using this authentication method, each call to the server must contain an&nbsp;
+          <span
+          class="filepath style-wrap">Authorization </span> HTTP Header with the value <span class="filepath style-wrap">Basic </span> and the Base64 encoded&nbsp;<span class="filepath style-wrap">username </span> and&nbsp;<span class="filepath style-wrap">password&nbsp;</span> separated
+            by a colon (such as <span class="filepath style-wrap">admin:password</span> ). &nbsp;</p>
+        <p>Here is an example.</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Authorization: Basic YWRtaW46cGFzc3dvcmQ=</pre>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Choosing_an_Authentication_Option" rel="internal">Choosing an Authentication Option</a>  </li>
+      <li> <a href="#Cookie-Based_Authentication" rel="internal">Cookie-Based Authentication</a>  </li>
+      <li> <a href="#Basic_Authentication" rel="internal">Basic Authentication</a>  </li>
+    </ol>
+  </body>
+</content>

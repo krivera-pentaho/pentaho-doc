@@ -1,0 +1,535 @@
+<content type="text/html" title="Working with Fields in Analyzer">
+  <body>
+    <div class="mt-page-summary">
+      <div class="mt-page-overview"></div>
+    </div>
+    <div class="section context">
+      <div id="section_1" class="mt-page-section"><span id="Using_Fields_in_Analyzer_Reports"></span> 
+        <h2 class="editable">Using Fields in Analyzer Reports</h2>
+        <p>An Analyzer report is a collection of fields and filters that is displayed in a specific report format. You can think of a report as a file (like a spreadsheet file), except that when you open a report or make a change, the report connects to
+          your database so it displays the latest data. Reports are stored in a repository, so you can access reports from any computer.</p>
+        <p>When you create a new Analyzer report from the ground up, you select a data source first. The data source determines which fields will be available when you build your report. For example, if you choose orders as your analysis area, you most likely
+          will see all fields related to orders.</p>
+        <div id="section_2" class="mt-page-section"><span id="Where_Does_the_Data_Come_From.3F"></span> 
+          <h3 class="editable">Where Does the Data Come From?</h3>
+          <p>Pentaho Analyzer leverages OLAP technology and multi-dimensional query expressions (MDX) to dynamically retrieve data from relational databases (RDBMS). Analyzer is most often used to query data in an organization&rsquo;s data warehouse, which
+            generally consolidates data from multiple source systems into a common place for information analysis and reporting.</p>
+          <p>Pentaho Data Integration (PDI) is a popular tool used for building and populating data warehouses and usable data models. PDI can load data from applications, databases, and spreadsheets within your company, as well as from external and public
+            data sources. Tools like PDI are typically managed by your system administrator.</p>
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Types_of_Fields"></span> 
+        <h2 class="editable">Types of Fields</h2>
+        <p>Examples of fields include 'Sales Revenue', 'Profit Margin' ,'Product Name', 'Region Name', and 'Fiscal Year'. Fields are what define the content of your report. The following types of fields are available:</p>
+        <p><strong>Levels</strong> . Fields, such as Names, Types, and Categories are most often text-based. For example, if you were working for an athletic equipment vendor, you would use 'Product Name' Level in your reports. In this level, you might have
+          'Snow Sports' and 'Cycling' as possible values for the Product Name field. These individual values are often referred to as <em>members </em> of that level.</p>
+        <p><strong>Time Period Fields</strong> : While Time fields are technically Level fields as well, Time fields are critical to nearly all reports and are often regarded as their own category of fields. Time period fields such as 'Fiscal Year' and 'Order
+          Month' are commonly used in reports. Possible values for those fields could be '2004' and 'Jan-2006', respectively.</p>
+        <p><strong>Measures</strong> : Measure fields are numeric and most often represent business metrics. These types of fields are designed for mathematical activities such as summing, dividing, and creating averages. 'Sales Revenue' and 'Profit Margin'
+          are examples of measures.</p>
+        <p>In Analyzer reports, fields are color-coded by type in both the report and the Layout pane. The colors are assigned as follows:</p>
+        <ul class="pentaho-list-unordered">
+          <li>&nbsp;&nbsp;&nbsp; Levels including Time Period fields are defaulted with a yellow background.</li>
+          <li>&nbsp;&nbsp;&nbsp; Measures are defaulted with a blue background.</li>
+        </ul>
+        <p>You can create a report without any knowledge of field types, but knowing how field types work can sometimes help you understand how different charts display data and how filters work together.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="About_Field_Hierarchies"></span> 
+        <h2 class="editable">About Field Hierarchies</h2>
+        <p>Some level fields (time periods, names, types, categories, etc.) belong to field hierarchies. Here are two examples of field hierarchies:</p>
+        <ul>
+          <li>&nbsp;&nbsp;&nbsp; <strong>Product Line</strong> &nbsp; >>Product Name</li>
+          <li>&nbsp;&nbsp;&nbsp; <strong>Year&nbsp; </strong> >>Quarter >>Month >> Week >> Day</li>
+        </ul>
+        <p>The field hierarchies help you in two primary ways. First, it provides a quick and easy way to drill into more details on a report:</p>
+        <ul>
+          <li>Click on a level field on the report, such as <strong>'Fiscal Quarter'</strong>, and then click <strong>Also Show</strong>  from the context menu. If the field is part of a hierarchy, all these fields will be available for selection.</li>
+          <li>Click on a level field value on the report, such as the year <strong>'2007'</strong> . The context menu displays the option <strong>Keep Only 2007</strong>  <strong>And Show Quarters</strong> .</li>
+        </ul>
+        <p>Second, when creating a filter, field hierarchies narrow down the list of available values. For example, if you have a filter Product Line='Snow Sports', then the list of possible choices when you filter Product Names are limited to the products
+          that are part of the Snow Sports product line.</p>
+        <p>Additionally, field hierarchies sometimes control how fields are placed on the report. For example, fields from the same field hierarchy need to be placed on the same axis (row/column) and the report will automatically enforce this rule as you
+          move and arrange your fields.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Viewing_the_Definition_of_a_Field"></span> 
+        <h2 class="editable">Viewing the Definition of a Field</h2>
+        <p>You can view the definition of a level or measure field from the Layout panel and the report in Analyzer. The definition includes those attributes which defined the field when the data model was built.</p>
+        <ul>
+          <li>In the Layout Panel or the report, right-click the field name, then click <strong>Tell me about...</strong>  from the menu. The About dialog box displays for the field. You can view the following information about the field:</li>
+        </ul>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="378" style="table-layout: fixed; width: 995px;" title="Pentaho Table" width="991">
+          <tbody>
+            <tr>
+              <td style="width: 288px;"><strong>Field property</strong> </td>
+              <td style="width: 697px;"><strong>Description</strong> </td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Display Name</td>
+              <td style="width: 697px;">
+                <p>The name of the field as it appears in the Available Fields list and your report. If you
+                  <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Renaming_a_Field">renamed this field </a> in the report, a notification with the original name will display below.</p>
+                <p>If you are assigned the 'Manage Data Sources' permission, you can edit the name for this field. The edited name will display in the Available Fields list, as well as in the Layout pane and the Report pane unless you have <em>renamed </em> the
+                  field.
+                  <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Renaming_a_Field">Renaming a field</a>  within the Layout pane or the report pane will not affect the display name of the field in the Available Fields list.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>
+                <p>The type of field, such as level, time, or measure.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Description</td>
+              <td style="width: 697px;">The description of the field, if any.</td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">MDX</td>
+              <td style="width: 697px;">The formula for the level or field as an MDX statement.</td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Member Properties</td>
+              <td style="width: 697px;">
+                <p>If a field has a number in parenthesis next to it in the Available fields list, such as 'Customer(6)', that means that the dimension has <em>member properties </em> associated with it. When you open the About dialog box, you will also see
+                  a list of the Member Properties in addition to the other details about the field.</p>
+                <p>If you open the field layout, you can see your dimensions in either the Row Labels or Col Headers fields, depending on how you have them oriented. To constrain a dimension by controlling its member properties, right-click on a dimension
+                  in the row label or column header fields, then select Show Properties from the context menu. A sub-menu with all available member properties will appear. Check or un-check the member property boxes to add or remove them from the report.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        &nbsp; </div>
+      <div id="section_6" class="mt-page-section"><span id="Viewing_and_Editing_the_Properties_of_a_Field"></span> 
+        <h2 class="editable">Viewing and Editing the Properties of a Field</h2>
+        <p>You can view the properties of a level or measure field from the Available Fields list in Analyzer. The properties include those attributes which defined the field when the data model was built.</p>
+        <p>
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11841/Analyzer_FieldProperties.png?revision=1" />
+        </p>
+        <p>While most users can view the properties of a field in Analyzer, select users can edit a few of these properties, depending on the type of the field, such as level, time period, or measure. To edit these properties, you must be assigned the 'Manage
+          Data Sources' operation permission in Users and Roles. For more information on setting and maintaining permissions and roles for users, see
+          <a href="/Documentation/7.0/0H0/060/010/040/000" rel="internal" title="Documentation/7.0/0H0/060/010/040/000">Use Pentaho Security</a> .</p>
+        <ul>
+          <li>In the Available Fields list, right-click the field name, then click <strong>Properties</strong>  from the menu. The Properties dialog box displays for the field. You can view or edit the following information about the field:</li>
+        </ul>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="378" style="table-layout: fixed; width: 995px;" title="Pentaho Table" width="991">
+          <tbody>
+            <tr>
+              <td style="width: 288px;"><strong>Field property</strong> </td>
+              <td style="width: 697px;"><strong>Description</strong> </td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Display Name</td>
+              <td style="width: 697px;">
+                <p>The name of the field as it appears in the Available Fields list. If you
+                  <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Renaming_a_Field">renamed this field </a> in the Layout pane or the report pane, a notification with the new name will display below.</p>
+                <p>If you are assigned the 'Manage Data Sources' permission, you can edit the name of this field. The edited name will display in the Available Fields list, as well as in the Layout pane and the Report pane unless you have <em>renamed </em> the
+                  field.
+                  <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Renaming_a_Field">Renaming a field</a>  within the Layout pane or the report pane will not affect the display name of the field in the Available Fields list.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>Aggregation<em> (for measures only)</em> </td>
+              <td>The aggregation type is how the measure combines the data. Use the drop-down list to select an aggregation type from a system-defined list. Options include:
+                <ul>
+                  <li>SUM</li>
+                  <li>AVERAGE</li>
+                  <li>COUNT</li>
+                  <li>COUNT_DISTINCT</li>
+                  <li>MINIMUM</li>
+                  <li>MAXIMUM</li>
+                </ul> Note that COUNT and COUNT-DISTINCT are only applicable for non-numeric fields.</td>
+            </tr>
+            <tr>
+              <td>Format</td>
+              <td>
+                <p>Choose how this level or measure should be formatted, such as currency, general number, percentage, or date. Use the drop-down arrow to select a format from a system-defined list, or type in the field to enter a custom format. Note that
+                  the Format field only displays when the value for the field is a number or a date.</p>
+                <p>See
+                  <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Format_Field_Options">Format Field Options</a>  for more information on selecting the appropriate format for your report.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Description</td>
+              <td style="width: 697px;">The description of the field, if any. This field is always read-only.</td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Type</td>
+              <td style="width: 697px;">
+                <p>The type of field, such as level, time, or measure. This field is always read-only.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">MDX</td>
+              <td style="width: 697px;">The formula for the level or field as an MDX statement. This field is always read-only.</td>
+            </tr>
+            <tr>
+              <td style="width: 288px;">Member Properties</td>
+              <td style="width: 697px;">
+                <p>If a field has a number in parenthesis next to it in the Available fields list, such as 'Customer(6)', then the dimension has <em>member properties </em> associated with it. When you open the Properties dialog box, you will also see a list
+                  of the member properties in addition to other details about the field. This field is always read-only.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_7" class="mt-page-section"><span id="Viewing_a_Level_with_Member_Properties_in_a_Report"></span> 
+          <h3 class="editable">Viewing a Level with Member Properties in a Report</h3>
+          <div class="section context">
+            <p class="p">When a number in parentheses appears next to a dimension in a list of <strong class="ph b">Available fields</strong>, that dimension is associated with specific member properties. You can use these properties to constrain dimensions.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Locate a dimension in the <strong class="ph b">Available fields</strong>  list which includes a number in parentheses, such as <strong>'Customer (6)' </strong> and <strong>'Product (3)'</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Locate the corresponding dimension on your report. Right-click the row or column header for that dimension, then click <strong class="ph b">Show Properties</strong> .</span>  A menu displays the member properties you can
+              choose to appear in the report.</li>
+            <li class="li step"><span class="ph cmd">Select or clear the member property you want in the report, then click <strong class="ph b">OK</strong> .</span> </li>
+          </ol>
+          <div class="section result">Your analyzer report is filtered by the choices you made.</div>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Editing_Measure_Properties"></span> 
+          <h3 class="editable">Editing Measure Properties</h3>
+          <p>When you update the properties on measures in Analyzer, including calculated measures, you are making a change to the data source which will affect all users who are creating reports based on that data source. Such changes require users to be
+            assigned the 'Manage Data Sources' operation permission in Users and Roles. For more detailed information on viewing and editing properties for both base measures and calculated measure, see
+            <a title="Documentation/7.0/0L0/120/030/Working_with_Measures_in_Analyzer"
+            rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Measures_in_Analyzer">Updating Measure Properties</a> .</p>
+        </div>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Renaming_a_Field"></span> 
+        <h2 class="editable">Renaming a Field</h2>
+        <p>To rename a field within a report, do the following:</p>
+        <ol class="pentaho-list-ordered">
+          <li>Right-click the field you want to rename in the report.</li>
+          <li>Select <strong>Edit </strong> or <strong>Column Name and Format</strong>  from the menu to open the Edit dialog box for that field.</li>
+          <li>Enter the new name in the <strong>Name </strong> field. Note that you can also view the original name of the field in this dialog box.</li>
+          <li>Optionally, enter the plural version of the new name (if applicable) in the <strong>Plural Name used within this report</strong>  field. (Plural versions of a field name are useful because the Pentaho interface often uses field names in menus
+            and dialog boxes. If you enter a plural version of the new field name, it automatically will be used in situations where the plural form is grammatically correct.)</li>
+          <li>Click the <strong>OK </strong> button to save the new field name.</li>
+        </ol>
+        <p>Renaming the field only effects the contents of the report. A user can view the original name of the field by
+          <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Viewing_the_Definition_of_a_Field*">viewing the definition of the field</a> .</p>
+        <p class="pentaho-note">To remove a modified (renamed) field name, open the Edit dialog box and delete the existing entries using the Backspace key.</p>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Viewing_the_List_of_Available_Fields"></span> 
+        <h2 class="editable">Viewing the List of Available Fields</h2>
+        <p>You may organize the list in four ways:</p>
+        <ul>
+          <li><strong>By Category (default)</strong> . This grouping is set by an administrator.</li>
+          <li><strong>By Type</strong> . Lets you see the list where all measure fields&nbsp; come first, followed by level fields.</li>
+          <li><strong>A->Z</strong> . Alphabetical order with no grouping.</li>
+          <li><strong>By Schema</strong> . This displays the grouping as defined by the administrator in the cube&rsquo;s underlying schema.</li>
+        </ul>
+        <p>To change the organization, click the <strong>View </strong> button at the top of the pane.</p>
+        <div id="section_11" class="mt-page-section"><span id="Finding_a_Field"></span> 
+          <h3 class="editable">Finding a Field</h3>
+          <p>To find a field, on the <strong>Available fields</strong>  list, type the first characters of the field name in the <strong>Find </strong> box.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section result">
+      <div id="section_12" class="mt-page-section"><span id="Adding_a_Field_to_a_Report"></span> 
+        <h2 class="editable">Adding a Field to a Report</h2>
+        <p>From the <strong>Available fields</strong>  list, you can add fields to a report using the following methods.</p>
+        <ul>
+          <li>Select a field, and drag it into the Report pane. A visual indicator (black line) lets you place the field where you want it.</li>
+          <li>Select a field and drag it to a drop area in the Layout Panel. Note the visual indicator when you drag a field over a valid drop area.</li>
+          <li>Right-click a field and select <strong>Add to Report</strong> .</li>
+          <li>Double-click a field.</li>
+        </ul>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="Moving_Fields_in_a_Report"></span> 
+        <h2 class="editable">Moving Fields in a Report</h2>
+        <p>Sometimes you need to re-arrange the fields which are already in your report. In a table report, the easiest method is to simply drag the field to a new location. In chart mode, open the Layout pane.</p>
+        <p>Option 1: For table reports, drag the field header to the new location. Note that measure fields (blue) will always be placed on the right side.</p>
+        <p>Option 2: To move fields using the Layout pane, do the following:</p>
+        <ol>
+          <li>Select and drag fields within and between the three different drop areas. You can only move a field within zones of the same type: blue for measures and yellow for levels/time periods.</li>
+        </ol>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id="Removing_a_Field"></span> 
+        <h2 class="editable">Removing a Field</h2>
+        <p>Complete one of the following actions to remove a field from a report:</p>
+        <p>Option 1: Drag the field to the lower-right corner (a trash can will appear) or into the Available Fields area.</p>
+        <p>Option 2: Right-click on the name of the field you want to remove, and then select <strong>Remove from Report</strong>  from the menu.</p>
+      </div>
+      <div id="section_15" class="mt-page-section"><span id="Format_Field_Options"></span> 
+        <h2 class="editable">Format Field Options</h2>
+        <p>The Format field for
+          <a title="Working with Fields in Analyzer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/120/030/Working_with_Fields_in_Analyzer#Viewing_and_Editing_the_Properties_of_a_Field">Properties </a> allows users to select values based on numerals and calendar dates. Below is a list of supported numeric and date formats you can select for the field or measure.</p>
+        <p>
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11840/Analyzer_FormatFieldOptions.png?revision=3" />
+        </p>
+        <p>For more detailed information about numeric and date format strings, view
+          <a class="link-https" title="https://msdn.microsoft.com/en-us/library/ms146084.aspx" rel="external nofollow" href="https://msdn.microsoft.com/en-us/library/ms146084.aspx"
+          target="_blank">this article about MDX and format definitions</a> .</p>
+        <p><strong>Numeric fields using '12345.09' as the value:</strong> </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="574" style="table-layout: fixed; width: 745px;" title="Pentaho Table" width="974">
+          <tbody>
+            <tr>
+              <td style="width: 357px;">
+                <p><strong>Format String</strong> </p>
+              </td>
+              <td style="width: 379px;">
+                <p><strong>Result</strong> </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">0</p>
+              </td>
+              <td style="width: 379px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">12345</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">0.00</p>
+              </td>
+              <td style="width: 379px;">12345.09</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">#,##0</p>
+              </td>
+              <td style="width: 379px;">12, 345</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">#,###.00</p>
+              </td>
+              <td style="width: 379px;">12, 345.09</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">-#,###.00</td>
+              <td style="width: 379px;">-12, 345.09</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">(#,###.00)</td>
+              <td style="width: 379px;">(12, 345.09)</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">$ #,##0</p>
+              </td>
+              <td style="width: 379px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">$ 12, 345</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">$ #,##0.00</td>
+              <td style="width: 379px;">$ 12, 345.09</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">$ -#,##0.00</p>
+              </td>
+              <td style="width: 379px;">$ -12, 345.09</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">$ (#,##0.00)</p>
+              </td>
+              <td style="width: 379px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">$ (12, 345.09)</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">$ #,##0.00;(#,##0.00)</td>
+              <td style="width: 379px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">$ 12, 345.09</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">0 %</p>
+              </td>
+              <td style="width: 379px;">1234509 %</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">0.00 %</td>
+              <td style="width: 379px;">1234509.00 %</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">#E+#</td>
+              <td style="width: 379px;">1E+4</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">0.00E+00</td>
+              <td style="width: 379px;">1.23E+04</td>
+            </tr>
+            <tr>
+              <td style="width: 357px;">##0.0E+0</td>
+              <td style="width: 379px;">1.2E+4</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Date fields using 'April 1, 2016, 8:09:06 PM</strong> ' <strong>as the value</strong> :</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 746px; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td style="width: 360px;">
+                <p><strong>Format String</strong> </p>
+              </td>
+              <td style="width: 377px;">
+                <p><strong><em>Example</em> </strong> </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">M/d</p>
+              </td>
+              <td style="width: 377px;">4/1</td>
+            </tr>
+            <tr>
+              <td>M/d/yy</td>
+              <td style="width: 377px;">4/1/16</td>
+            </tr>
+            <tr>
+              <td>MM/dd/yy</td>
+              <td style="width: 377px;">04/01/16</td>
+            </tr>
+            <tr>
+              <td>d-MMM</td>
+              <td style="width: 377px;">1-Apr</td>
+            </tr>
+            <tr>
+              <td>d-MMM-yy</td>
+              <td style="width: 377px;">1-Apr-16</td>
+            </tr>
+            <tr>
+              <td>MMM-yy</td>
+              <td style="width: 377px;">Apr-16</td>
+            </tr>
+            <tr>
+              <td>MMMMM-yy</td>
+              <td style="width: 377px;">April-16</td>
+            </tr>
+            <tr>
+              <td>MMMMM d, yyyy</td>
+              <td style="width: 377px;">April 1, 2016</td>
+            </tr>
+            <tr>
+              <td>M/d/yy h:mm AM/PM</td>
+              <td style="width: 377px;">4/1/2016 8:09 PM</td>
+            </tr>
+            <tr>
+              <td>
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">M/d/yy h:mm</p>
+              </td>
+              <td style="width: 377px;">
+                <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">4/1/2016 20:09</p>
+              </td>
+            </tr>
+            <tr>
+              <td>M/d/yyyy</td>
+              <td style="width: 377px;">4/1/2016</td>
+            </tr>
+            <tr>
+              <td>d-MMM-yyyy</td>
+              <td style="width: 377px;">1-Apr-2016</td>
+            </tr>
+            <tr>
+              <td style="width: 360px;">h:mm</td>
+              <td style="width: 377px;">20:09</td>
+            </tr>
+            <tr>
+              <td style="width: 360px;">h:mm AM/PM</td>
+              <td style="width: 377px;">8:09 PM</td>
+            </tr>
+            <tr>
+              <td style="width: 360px;">h:mm:ss</td>
+              <td style="width: 377px;">20:09:06</td>
+            </tr>
+            <tr>
+              <td style="width: 360px;">h:mm:ss AM/PM</td>
+              <td style="width: 377px;">8:09:06 PM</td>
+            </tr>
+            <tr>
+              <td style="width: 360px;">[h]:mm:ss</td>
+              <td style="width: 377px;">[20]:09:06</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_16" class="mt-page-section"><span id="Managing_Fields_in_Large_Reports"></span> 
+        <h2 class="editable">Managing Fields in Large Reports</h2>
+        <p>You can add fields that have an arbitrary number of values, but large reports will be truncated. Truncated table reports differ from full reports in the following three ways:</p>
+        <ul>
+          <li>The <strong>Report Status Bar</strong>  displays the number of rows/columns shown versus the number of rows/columns in the full report. Cells will be cut until the number of cells is less than or equal to 2000. (This limit can be increased by
+            the administrator.) Rows are cut first, down to a minimum of 10 rows, followed by columns. This technique ensures that you still generate a useful sample of the row values despite the truncation.</li>
+          <li><strong>Subtotals </strong> and <strong>Grand Totals</strong>  do not display in truncated reports.</li>
+          <li>A message at the end of the report informs you of the truncation. Note that the data in the cells does not change because of the truncation.</li>
+        </ul>
+        <p>For charts, there is a maximum value of plot points which can be displayed on any axis. This limit is different depending on the type of chart and based on the amount of data which can reasonably fit on a screen. You can change this limit in <strong>Chart Options</strong> .</p>
+      </div>
+      <div id="section_17" class="mt-page-section"><span id="Troubleshooting:_Your_Report_Does_Not_Display_Data"></span> 
+        <h2 class="editable">Troubleshooting: Your Report Does Not Display Data</h2>
+        <p>In some situations, your report might not display any data. The table below outlines the most likely scenarios and their solutions.</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+        title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td><strong>What you did</strong> </td>
+              <td><strong>What happened</strong> </td>
+              <td><strong>Likely Reason</strong> </td>
+              <td><strong>Example</strong> </td>
+              <td><strong>Solution</strong> </td>
+            </tr>
+            <tr>
+              <td>You added or modified a filter</td>
+              <td>The report returned blank.</td>
+              <td>The filter(s) you added are too restrictive.</td>
+              <td>Your filter only includes the year '1997' but you have sales revenue only for '2005'.</td>
+              <td>Change your filters or change the report options to show rows or columns where the number cell is blank.</td>
+            </tr>
+            <tr>
+              <td>You added a new number field.</td>
+              <td>The report returned blank.</td>
+              <td>There are no values for the number field(s) that in the report.</td>
+              <td>You added the &quot;Quota&quot; field but you have not yet loaded any Quota data into Pentaho.</td>
+              <td>Contact your administrator to: 1) get data loaded into this field OR 2) hide this field.</td>
+            </tr>
+            <tr>
+              <td>You added a new text field. You have no number fields on the report.</td>
+              <td>The report returned blank.</td>
+              <td>You have two or more text fields on the report but in some cases Pentaho Analyzer needs a number field to tie it all together.</td>
+              <td>You have Account Name and Order Status on the report</td>
+              <td>Add a number field.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p>&nbsp;</p>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Using_Fields_in_Analyzer_Reports" rel="internal">Using Fields in Analyzer Reports</a> 
+        <ol>
+          <li> <a href="#Where_Does_the_Data_Come_From.3F" rel="internal">Where Does the Data Come From?</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Types_of_Fields" rel="internal">Types of Fields</a>  </li>
+      <li> <a href="#About_Field_Hierarchies" rel="internal">About Field Hierarchies</a>  </li>
+      <li> <a href="#Viewing_the_Definition_of_a_Field" rel="internal">Viewing the Definition of a Field</a>  </li>
+      <li>
+        <a href="#Viewing_and_Editing_the_Properties_of_a_Field" rel="internal">Viewing and Editing the Properties of a Field</a> 
+        <ol>
+          <li> <a href="#Viewing_a_Level_with_Member_Properties_in_a_Report" rel="internal">Viewing a Level with Member Properties in a Report</a>  </li>
+          <li> <a href="#Editing_Measure_Properties" rel="internal">Editing Measure Properties</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Renaming_a_Field" rel="internal">Renaming a Field</a>  </li>
+      <li>
+        <a href="#Viewing_the_List_of_Available_Fields" rel="internal">Viewing the List of Available Fields</a> 
+        <ol>
+          <li> <a href="#Finding_a_Field" rel="internal">Finding a Field</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Adding_a_Field_to_a_Report" rel="internal">Adding a Field to a Report</a>  </li>
+      <li> <a href="#Moving_Fields_in_a_Report" rel="internal">Moving Fields in a Report</a>  </li>
+      <li> <a href="#Removing_a_Field" rel="internal">Removing a Field</a>  </li>
+      <li> <a href="#Format_Field_Options" rel="internal">Format Field Options</a>  </li>
+      <li> <a href="#Managing_Fields_in_Large_Reports" rel="internal">Managing Fields in Large Reports</a>  </li>
+      <li> <a href="#Troubleshooting:_Your_Report_Does_Not_Display_Data" rel="internal">Troubleshooting: Your Report Does Not Display Data</a>  </li>
+    </ol>
+  </body>
+</content>

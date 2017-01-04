@@ -1,0 +1,151 @@
+<content type="text/html" title="Pentaho Data Service SQL Support Reference and Other Development Considerations">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>SQL Support for the Pentaho Data Service.</p>
+      </div>
+    </div>
+    <p>The Pentaho Data Service is designed to support a subset of SQL clauses and literals that are particularly useful for data blending, optimizations, and other scenarios.&nbsp; The following lists what we support.&nbsp; Limitations are noted near the
+      end of this article.</p>
+    <div id="section_2" class="mt-page-section"><span id="Supported_SQL_Literals"></span> 
+      <h2 class="editable">Supported SQL Literals</h2>
+      <p>The Pentaho Data Service supports the following literals.</p>
+      <ul class="pentaho-list-unordered">
+        <li>Strings have single quotes around them.&nbsp; The escape character for a single quote is another single quote, like this <span class="filepath style-wrap">''.</span> </li>
+        <li>Dates have square brackets around them.&nbsp; The following formats are supported:&nbsp;<span class="filepath style-wrap">[yyyy/MM/dd HH:mm:ss.SSS]</span>,&nbsp;<span class="filepath style-wrap">[yyyy/MM/dd HH:mm:ss] </span> and<span class="filepath style-wrap">&nbsp;[yyyy/MM/dd]</span> .</li>
+        <li>For an <span class="filepath style-wrap">IN </span> list in a SQL statement, the date formats can have single quotes around them and dashes that replace slashes, like thi<span class="filepath style-wrap">s: SELECT * FROM BUILDS WHERE BuildDate IN (&lsquo;2015-03-18&rsquo;, &lsquo;2015-03-22&rsquo;)</span> .&nbsp;
+          Note that you cannot surround a date format with a bracket date in an <span class="filepath style-wrap">IN </span> list.</li>
+        <li><span class="filepath style-wrap">Number </span> and <span class="filepath style-wrap">BigNumber </span> should have no grouping symbols. Use a period to represent a decimal, like this: <span class="filepath style-wrap">123.45.</span> </li>
+        <li>Integers should contain only digits.</li>
+        <li>Boolean values can be <span class="filepath style-wrap">TRUE </span> or <span class="filepath style-wrap">FALSE</span> .</li>
+      </ul>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Supported_SQL_Clauses"></span> 
+      <h2 class="editable">Supported SQL Clauses</h2>
+      <p>The Pentaho Data Service supports the following clauses.</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table" width="674">
+        <tbody>
+          <tr>
+            <th style="width: 132px;">Clause</th>
+            <th style="width: 520px;">What is Supported</th>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">SELECT</span> </td>
+            <td style="width: 520px;">
+              <ul class="pentaho-list-unordered">
+                <li><span class="filepath style-wrap">COUNT(field)</span> </li>
+                <li><span class="filepath style-wrap">COUNT(*)</span> </li>
+                <li><span class="filepath style-wrap">COUNT(DISTINCT field)</span> </li>
+                <li><span class="filepath style-wrap">DISTINCT <fields></span> </li>
+                <li><span class="filepath style-wrap">IIF&nbsp;(condition, true-value or field, false-value or field)</span> </li>
+                <li><span class="filepath style-wrap">CASE WHEN condition THEN true-value ELSE false-value END</span> </li>
+                <li><span class="filepath style-wrap">SUM</span> </li>
+                <li><span class="filepath style-wrap">AVG</span> </li>
+                <li><span class="filepath style-wrap">MIN</span> </li>
+                <li><span class="filepath style-wrap">MAX</span> </li>
+                <li>Aliases with both the <span class="filepath style-wrap">AS</span>  keyword and with one or more spaces separated. For example: <span class="filepath style-wrap">SUM(sales) AS &quot;Total Sales&quot; or SUM(sales) TotalSales</span> </li>
+                <li>Constant expressions are possible. See the Supported SQL Literals section for more details.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">FROM</span> </td>
+            <td style="width: 520px;">
+              <ul class="pentaho-list-unordered">
+                <li>Only one Pentaho Service Name is permitted.</li>
+                <li>You can use aliases for the Pentaho Service Name.</li>
+                <li>You can omit the service name to query from an empty row or you can query from dual, for example <span class="filepath style-wrap">SELECT 1</span>  or <span class="filepath style-wrap">SELECT 1 FROM dual</span>  are the same.&nbsp; (
+                  <span
+                  class="filepath style-wrap">Dual</span> &nbsp;is a special one row, one column table supported by some database vendors.)</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">WHERE</span> </td>
+            <td style="width: 520px;">
+              <ul class="pentaho-list-unordered">
+                <li>Nested Brackets</li>
+                <li>
+                  <p><span class="filepath style-wrap">AND</span>, <span class="filepath style-wrap">OR</span>, <span class="filepath style-wrap">NOT</span>  if followed by brackets. For example: <span class="filepath style-wrap">NOT (A=5 OR C=3)</span> .</p>
+                </li>
+                <li>Precedence is considered.</li>
+                <li>Literals (String and Integer)</li>
+                <li><span class="filepath style-wrap">PARAMETER('parameter-name')='value'</span> .&nbsp; Note that this always evaluates to <span class="filepath style-wrap">TRUE</span>  in the condition.</li>
+                <li><span class="filepath style-wrap">=</span> </li>
+                <li><span class="filepath style-wrap"><</span> </li>
+                <li><span class="filepath style-wrap">></span> </li>
+                <li><span class="filepath style-wrap"><=,&nbsp;=<</span> </li>
+                <li><span class="filepath style-wrap">>=,&nbsp;=></span> </li>
+                <li><span class="filepath style-wrap"><></span> </li>
+                <li><span class="filepath style-wrap">LIKE</span>  is supported.&nbsp; The standard <span class="filepath style-wrap">%</span>  and <span class="filepath style-wrap">?</span>  wildcards are converted to <span class="filepath style-wrap">.*</span>                   and <span class="filepath style-wrap">.</span>  regular expressions.</li>
+                <li><span class="filepath style-wrap">REGEX</span>  matches the regular expression.</li>
+                <li><span class="filepath style-wrap">IS NULL</span> </li>
+                <li><span class="filepath style-wrap">IS NOT NULL</span> </li>
+                <li><span class="filepath style-wrap">IN</span> &nbsp; The syntax for multiple values is: <span class="filepath style-wrap">value, value, value, ...</span> </li>
+                <li>You can put a condition on the <span class="filepath style-wrap">IIF</span>  expression or it's alias if one is used. Use identical string literals for expressions.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">GROUP BY</span> </td>
+            <td style="width: 520px;">
+              <ul>
+                <li>Group on fields are supported, not the <span class="filepath style-wrap">IIF()</span>  function.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">LIMIT</span> </td>
+            <td style="width: 520px;">
+              <ul class="pentaho-list-unordered">
+                <li>You can retrieve a specific amount of rows from a result set using the <span class="filepath style-wrap">LIMIT</span>  keyword. &nbsp;For example, this query returns the first 10 rows (#1-10) from the result set:<span class="filepath style-wrap">SELECT * FROM data_service LIMIT 10;</span> </li>
+                <li>You can also specify an offset for returning as specific amount of rows using the <span class="filepath style-wrap">LIMIT</span>  keyword or <span class="filepath style-wrap">LIMIT/OFFSET</span>  keywords. &nbsp;This&nbsp;queries returns
+                  10 rows from the result set, but the results are&nbsp;offset by five rows so you see&nbsp;results for rows #6 - 15: <span class="filepath style-wrap">SELECT * FROM data_service LIMIT 5, 10;</span> </li>
+                <li>You can also use the <span class="filepath style-wrap">OFFSET</span>  keyword to retrieve the same results: <span class="filepath style-wrap">SELECT * FROM data_service LIMIT 10 OFFSET 5;</span> </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">HAVING</span> </td>
+            <td style="width: 520px;">
+              <ul class="pentaho-list-unordered">
+                <li>Conditions should be placed on the aggregate construct, not the alias.</li>
+                <li>Please use identical strings for the expressions including spaces. For example, if you use put spaces before and after the asterisk for&nbsp; <span class="filepath style-wrap">COUNT( * )</span>  in the <span class="filepath style-wrap">SELECT</span>                   clause, do the same for the <span class="filepath style-wrap">HAVING</span>  clause.</li>
+                <li>Put <span class="filepath style-wrap">HAVING</span>  conditions on aggregations that do not appear in the <span class="filepath style-wrap">SELECT</span>  clause.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 132px;"><span class="filepath style-wrap">ORDER BY</span> </td>
+            <td style="width: 520px;">
+              <ul class="pentaho-list-unordered">
+                <li>You can order on any column even if it is not in the result.</li>
+                <li>You can order on <span class="filepath style-wrap">IIF</span>  or <span class="filepath style-wrap">CASE-WHEN</span>  expressions.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Other_Development_Considerations"></span> 
+      <h2 class="editable">Other Development&nbsp;Considerations</h2>
+      <p>There are a few considerations to keep in mind as you design your data service and transformation.</p>
+      <ul class="pentaho-list-unordered">
+        <li>You cannot <span class="filepath style-wrap">JOIN</span>  one data service virtual table to another.</li>
+        <li>Pentaho Data Services uses the <strong>Memory Group by</strong>  step to group.&nbsp; This step keeps all the groups in memory to avoid sorts that can slow down the data service.&nbsp; But, if you plan to use many groups, watch your memory consumption
+          on the server to make sure you don't exceed its limits.</li>
+        <li>You can't specify the same field twice in the same <span class="filepath style-wrap">SELECT </span> clause.</li>
+        <li>Calculations and functions like string concatenation are not supported.&nbsp; But, you can do these things in the data service transformation.</li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Supported_SQL_Literals" rel="internal">Supported SQL Literals</a>  </li>
+      <li> <a href="#Supported_SQL_Clauses" rel="internal">Supported SQL Clauses</a>  </li>
+      <li> <a href="#Other_Development_Considerations" rel="internal">Other Development&nbsp;Considerations</a>  </li>
+    </ol>
+  </body>
+</content>

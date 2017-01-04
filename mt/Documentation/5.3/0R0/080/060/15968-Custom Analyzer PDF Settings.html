@@ -1,0 +1,56 @@
+<content type="text/html" title="Custom Analyzer PDF Settings">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p class="p">Customize the appearance of PDFs that are exported from Analyzer.</p>
+        </div>
+      </div>
+      <p>There are a number of ways that you can customize the appearance of your company's PDFs that are exported from Analyzer. For example, Analyzer PDF exports can be personalized with a company logo and a cover page, or you can change the default font
+        used to generate PDFs.</p>
+      <div id="section_2" class="mt-page-section"><span id="PDF_Logo_and_Cover_Page_Customization"></span> 
+        <h2 class="editable">PDF Logo and Cover Page Customization</h2>
+        <p>You will need to replace a couple of image files in order to customize the cover page and company logo for your Analyzer PDF exports. These image files need to placed in the <span class="filepath style-wrap"><span class="ph filepath">/pentaho-solutions/system/analyzer/resources/</span>           </span> directory. You then need to update <strong class="ph b">analyzer.properties</strong>  with the names of these images given to the keys below. If the file names are left blank, then no images are used.</p>
+        <ul class="pentaho-list-unordered">
+          <li><strong class="ph b">PDF cover image:</strong>  renderer.pdf.cover.image</li>
+          <li><strong class="ph b">PDF logo image:</strong>  renderer.logo.image</li>
+        </ul>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Setting_a_Default_Font_for_PDF_Exports"></span> 
+        <h2 class="editable">Setting a Default Font for PDF Exports</h2>
+        <p>When displaying data in Analyzer, your reports will use the default browser fonts. However, the PDF export function may not have the same fonts available to it when creating a PDF from your Analyzer report, resulting in output that doesn't look
+          the same way in PDF format as it does in the browser. The default font for PDFs is Helvetica, but you can specify any TrueType font or collection to replace it. Follow the instructions below to specify a different font for PDF exports.</p>
+        <p
+        class="pentaho-note">If you have localized your schema in a language that uses a multi-byte character set (most Asian languages fit into this category), this process is required to make PDF output appear without errors.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Stop the Pentaho User Console and BA Server.</li>
+            <li><span class="ph cmd">Navigate to the<span class="filepath style-wrap"> <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/analyzer/</span> </span>  directory and open the&nbsp;<strong class="ph b">analyzer.properties</strong>               file with any text editor. </span> 
+            </li>
+            <li><span class="ph cmd">Uncomment the <strong class="ph b">renderer.pdf.font.path</strong>  line.</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">renderer.pdf.font.path=C:/WINDOWS/Fonts/MSGOTHIC.TTC,1</pre>              </li>
+            <li><span class="ph cmd">Replace the value of this line with the TrueType font or collection that you want to use as the default.</span>  If you are specifying a collection, you must put a <strong class="ph b">,1</strong>  after the font name, as
+              shown in the above example. This does not apply to individual fonts (TTF files). <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">renderer.pdf.font.path=/usr/share/fonts/truetype/freefont/FreeSans.ttf</pre>              </li>
+            <li>Save and close the file, and restart the BA Server.</li>
+          </ol>
+          <p>Your PDF exports from Analyzer should have the font you specified.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#PDF_Logo_and_Cover_Page_Customization" rel="internal">PDF Logo and Cover Page Customization</a>  </li>
+      <li> <a href="#Setting_a_Default_Font_for_PDF_Exports" rel="internal">Setting a Default Font for PDF Exports</a>  </li>
+    </ol>
+  </body>
+</content>

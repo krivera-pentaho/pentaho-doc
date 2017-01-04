@@ -1,0 +1,38 @@
+<content type="text/html" title="Calculated Dates">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">This task is only useful for result sets that contain date information.</div>
+        <div class="section context">
+          <p class="p">The formula described here will provide a calculated date in a report. Typically you would display a date as a static number or a range, but the process explained below will enable you to display specific dates like &quot;the first Monday of
+            the month&quot; or &quot;every second Wednesday.&quot;</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open an existing report or create a new report and establish a data source and query, then drag your data-driven fields onto the canvas.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select (left click) the text field you want to print the calculated date in; if you do not have a text field dedicated to this task, create one now.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click the <strong class="ph b">Structure</strong>  tab and click <strong class="ph b">value</strong>  in the <strong class="ph b">common</strong>  section under the <strong class="ph b">Attributes</strong>  tab.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click the round green <strong class="ph b">+</strong>  (Add Expression) icon in the <strong class="ph b">Formula</strong>  column.</span>  The <strong class="ph b">Expression</strong>  dialogue will appear. </li>
+          <li class="li step"> <span class="ph cmd">Click the ellipsis (...) to open the <strong class="ph b">Formula Editor</strong>  dialog box.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select <strong class="ph b">Date/Time</strong>  from the <strong class="ph b">Category</strong>  drop-down box.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Double-click the <strong class="ph b">DATEVALUE</strong>  item in the list on the left.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Enter in your DATEVALUE formula, then click <strong class="ph b">OK</strong> .</span>  For more information on DATEVALUE's parameters, see the OASIS reference page for DATEVALUE:
+            <a class="xref external" target="_blank" rel="external nofollow"
+            href="http://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html#DATEVALUE">http://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html#DATEVALUE</a>  and VALUE:
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html#VALUE">http://www.oasis-open.org/committees/download.php/16826/openformula-spec-20060221.html#VALUE</a> . Alternatively you can consult the examples below and modify them for your purposes. </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">Close</strong>  to exit the <strong class="ph b">Expression</strong>  dialog box.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">Preview</strong>  and verify that your date values are properly calculated and formatted. You may have to adjust your query if it does not produce a testable result set.</span>  </li>
+        </ol>
+        <div class="section result">The date values you specified should now appear correctly in your report.</div>
+        <div class="example">
+          <p class="p">Some common calculated date formulas:</p>
+          <div style="margin-bottom: 0;"><strong>1st day of current month</strong> </div><pre class="pre codeblock">=DATEVALUE(DATE(YEAR(NOW());MONTH(NOW());1))</pre>
+          <div style="margin-bottom: 0;"><strong>Sunday of current week</strong> </div><pre class="pre codeblock">=DATEVALUE(DATE(YEAR(NOW());MONTH(NOW());DAY(NOW())-WEEKDAY(Now();2)))</pre>
+          <div style="margin-bottom: 0;"><strong>Saturday of current week</strong> </div><pre class="pre codeblock">=DATEVALUE(DATE(YEAR(NOW());MONTH(NOW());DAY(NOW())-WEEKDAY(Now())+7))</pre>
+          <div style="margin-bottom: 0;"><strong>Current day, date, and time</strong> </div><pre class="pre codeblock">=NOW()</pre>
+          <div style="margin-bottom: 0;"><strong>Current date</strong> </div><pre class="pre codeblock">=TODAY()</pre>
+          <div style="margin-bottom: 0;"><strong>Yesterday's date</strong> </div><pre class="pre codeblock">=DATEVALUE(DATE(YEAR(NOW());MONTH(NOW());DAY(NOW()-1)))</pre> </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

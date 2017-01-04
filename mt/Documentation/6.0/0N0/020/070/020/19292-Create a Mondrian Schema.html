@@ -1,0 +1,58 @@
+<content type="text/html" title="Create a Mondrian Schema">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">In order to complete this process, you should have already connected to your data source in Schema Workbench.</div>
+        <div class="section context">
+          <p class="p">This section explains the basic procedure for creating a barebones Mondrian schema using Schema Workbench. If you are confused about the definition or application of any of the elements discussed below, refer to the
+            <a class="xref" title="Documentation/5.1/0N0/020/0E0"
+            rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0">Mondrian Schema Element Quick Reference</a>  and the individual reference pieces it links to.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">To create a new Mondrian schema, click the New button, or go to the <strong class="ph b">File</strong>  menu, then select <strong class="ph b">New</strong>, then <strong class="ph b">Schema</strong> .</span>  A new schema sub-window
+            will appear. Resize it to fit your preference. </li>
+          <li class="li step"> <span class="ph cmd">It's easier to visualize your physical data model if you have it in front of you. Turn on the JDBC Explorer from the <strong class="ph b">New</strong>  section of the <strong class="ph b">File</strong>  menu and position it according to your preference. If you have a third-party database visualization tool that you are more familiar with, use that instead.</span>             The JDBC Explorer is not interactive; it only shows the table structure of your data source so that you can see at a glance what the names of the columns and rows in it. </li>
+          <li class="li step"> <span class="ph cmd">Typically your first action when creating a schema is to add a cube. Right-click the Schema icon in the schema window, then select <strong class="ph b">Add cube</strong>  from the context menu. Alternatively you can click the New Cube button in the toolbar.</span>             A new default cube will show up in your schema. </li>
+          <li class="li step"> <span class="ph cmd">Give your cube a name.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Add a table by clicking the New Table button, or by right-clicking your cube, then selecting <strong class="ph b">Add Table</strong> .</span>  This will be your fact table. Alternatively you can select <strong class="ph b">View</strong>             or <strong class="ph b">Inline Table</strong>  if these are the data types you need for your fact table. </li>
+          <li class="li step"> <span class="ph cmd">Click the <strong class="ph b">Table</strong>  entry in the <strong class="ph b">name</strong>  field of your new table, and select or type in the name of the table in your physical model that you want to use for this cube's fact table.</span>             </li>
+          <li class="li step"> <span class="ph cmd">Add a dimension by right-clicking the cube, then selecting <strong class="ph b">Add Dimension</strong>, or by clicking the New Dimension button.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Type in a friendly name for this dimension in the <strong class="ph b">name</strong>  field.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select a foreign key for this dimension from the <strong class="ph b">foreignKey</strong>  drop-down box, or just type it into the field.</span>  </li>
+          <li class="li step"> <span class="ph cmd">When you add a dimension, a new hierarchy is automatically created for it. To configure the hierarchy, expand the dimension by clicking the lever icon on the left side of the dimension's tree entry, then click on <strong class="ph b">New Hierarchy 0</strong> . Choose a <strong class="ph b">primaryKey</strong>  or <strong class="ph b">primaryKey Table</strong> .</span>             </li>
+          <li class="li step"> <span class="ph cmd">Add a table to the hierarchy by right-clicking the hierarchy, then selecting <strong class="ph b">Add Table</strong>  from the context menu.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Choose a column for the <strong class="ph b">name</strong>  attribute.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Add a level to the hierarchy by right-clicking the hierarchy, then selecting <strong class="ph b">Add Level</strong>  from the context menu.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Give the level a <strong class="ph b">name</strong>  and choose a <strong class="ph b">column</strong>  for it.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Add a <a class="xref" title="Documentation/5.1/0N0/020/0E0/110" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0/110">member property</a>  to the level by right-clicking the level, then selecting <strong class="ph b">Add Property</strong>  from the context menu.</span>             </li>
+          <li class="li step"> <span class="ph cmd">Give the property a <strong class="ph b">name</strong>  and choose a <strong class="ph b">column</strong>  for it.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Add a measure to the cube by right-clicking the cube and selecting <strong class="ph b">Add Measure</strong>  from the context menu.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Choose a <strong class="ph b">column</strong>  that you want to provide values for, then select an <strong class="ph b">aggregator</strong>  to determine how the values should be calculated.</span>  </li>
+        </ol>
+        <div class="section result">These instructions have shown you how to use Schema Workbench's interface to add and configure basic Mondrian schema elements.</div>
+        <div class="section postreq">
+          <p class="p">When your schema is finished, you should test it with a basic MDX query such as:</p> <pre class="pre codeblock">select {[Dim1].[All Dim1s]} on rows, {[Measures].[Meas1]} on columns from [CubeName]</pre>
+          <p class="p">In order to use your schema as a data source in any Pentaho Business Analytics client tools, you must publish it to the BA Server. To do this, select <strong class="ph b">Publish</strong>  from the <strong class="ph b">File</strong>  menu, then
+            enter in your BA Server connection information and credentials when requested.</p>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/020/070/020/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/070/020/000">Use MDX Mode and Edit a Schema</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/020/070/020/010" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/070/020/010">Add Business Groups</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/020/070/020/020" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/070/020/020">Add Field Descriptions</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/020/070/020/030" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/070/020/030">Build a Schema and Detecting Errors</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

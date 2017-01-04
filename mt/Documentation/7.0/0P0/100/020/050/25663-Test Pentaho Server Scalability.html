@@ -1,0 +1,51 @@
+<content type="text/html" title="Test Pentaho Server Scalability">
+  <body>
+    <div>
+      <div class="body">
+        <div class="section">
+          <p class="p">Improper scalability testing can give you the wrong idea about changes you have made to your Pentaho Server instance.&nbsp;Before testing, ensure that you are reusing sessions, instead of creating successive new sessions. Creating multiple unnecessary
+            sessions causes the Pentaho Server to run out of memory unless the session timeout in <code>web.xml</code> is set extremely low (1 per minute, for instance).&nbsp;The default is 30 minutes.</p>
+          <p class="p">Logging into the Pentaho Server is resource-intensive. You must authenticate the user,&nbsp;create a bunch of session data,&nbsp;and run all startup action sequences, which usually store data in the user's session. So,&nbsp;if&nbsp;during testing,
+            you simply string together a bunch of URLs and ignore the established session, you will create a series of 30-minute sessions and almost certainly run out of memory.</p>
+          <p class="p">The correct way to test the server is to mimic a user's actions from a browser.</p>
+        </div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Sessions_and_URLs"></span> 
+            <h2 class="editable">Sessions and URLs</h2>
+            <p class="p">Most stress test tools (Loadrunner, JMeter, etc.) have session/cookie management options to ensure that they behave like a human user. However, if you're creating your own test scripts, you should follow this process:</p>
+            <ol class="ol">
+              <li class="li">Log into the server.</li>
+              <li class="li">Execute a URL that contains the <code>userid</code>&nbsp;and <code>password</code>&nbsp;parameters (<code>&amp;userid=administrator&amp;password=password</code><span style="font-weight: 600;">&nbsp;</span> for example).</li>
+              <li class="li">Using the same session, submit other URLs without&nbsp;the userid/password.</li>
+            </ol>
+            <p class="p">Use this process for as many users as you need to test with.</p>
+            <p class="p">To log out of a session, you can use the <strong class="ph b"><a class="external" href="http://localhost:8080/pentaho/Logout" rel="freeklink" title="http://localhost:8080/pentaho/Logout">http://localhost:8080/pentaho/Logout</a> </strong>  URL.
+              This will invalidate the session if you append the <code>userid</code> and <code>password</code> values of the logged-in user. Without passing those parameters (or, alternatively, specifying the session ID or cookie) on the Logout URL, you
+              will create another new session instead of closing an old one.</p>
+            <p class="p">This means that two back-to-back <code>wget</code>&nbsp;commands in Linux will create two different HTTP sessions on the server unless one of the following conditions is met:</p>
+            <ol class="ol">
+              <li class="li"><code>-cookies=on</code> is specified for both <code>wget</code> commands</li>
+              <li class="li"><code>-save-cookies</code> is used on the first <code>wget</code> command to save the cookies to a file, and <code>-load-cookies</code>&nbsp;is used on the second <code>wget</code> command to load the session state</li>
+            </ol>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Memory_and_sessions"></span> 
+            <h2 class="editable">Memory and sessions</h2>
+            <p class="p">Out of memory errors can happen because of what your test script is doing, not necessarily because of any weakness in the Pentaho platform. You can see just how robust the the Pentaho platform is by taking a look at a production server's natural
+              (human user) load. The following URL will show you what each day's maximum and present number of HTTP sessions are: <strong class="ph b"><a class="external" href="http://testserver.example.com/pentaho/public/UserService" rel="freeklink" title="http://testserver.example.com/pentaho/public/UserService">http://testserver.example.com/pentah...ic/UserService</a> </strong> .</p>
+            <p class="p">You can see the Java virtual machine memory settings by examining the the options passed to the Tomcat or JBoss start scripts, or by looking at the CATALINA_OPTS&nbsp;system variable, if there is one. The <code>Xms</code>&nbsp;and <code>Xmx</code>&nbsp;options
+              define the minimum and maximum amount of memory assigned to the application server. The default settings are not particularly high, and even if you have adjusted them, take note of the number of sessions it takes to use up all of the memory.
+              Also take note of the fact that closing sessions after an out of memory error will return the memory to the available pool, proving that there are no memory leaks or zombie sessions inherent in the Pentaho platform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Sessions_and_URLs" rel="internal">Sessions and URLs</a>  </li>
+      <li> <a href="#Memory_and_sessions" rel="internal">Memory and sessions</a>  </li>
+    </ol>
+  </body>
+</content>

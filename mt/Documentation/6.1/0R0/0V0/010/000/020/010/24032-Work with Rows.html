@@ -1,0 +1,88 @@
+<content type="text/html" title="Work with Rows">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A row in PDI is represented by a Java object array, <code class="ph codeph">Object[]</code>. Each field value is stored at an index in the row. While the array representation is efficient to pass data around, it is not immediately clear how to
+          determine the field names and types that go with the array. The row array itself does not carry this meta data. Also an object array representing a row usually has empty slots towards its end, so a row can accommodate additional fields efficiently.
+          Consequently, the length of the row array does not equal the amount of fields in the row. The following sections explain how to safely access fields in a row array.</p>
+        <p class="p">PDI uses internal objects that implement
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html"><code class="ph codeph">RowMetaInterface</code></a>  to describe and manipulate row structure. Inside <code class="ph codeph">processRow()</code> a step can retrieve the structure of incoming rows by calling <code class="ph codeph">getInputRowMeta(</code>),
+          which is provided by the <code class="ph codeph">BaseStep</code> class. The step clones the <code class="ph codeph">RowMetaInterface</code> object and passes it to <code class="ph codeph">getFields()</code> of its <span class="filepath style-wrap">meta class</span>           to reflect any changes in row structure caused by the step itself. Now, the step has <code class="ph codeph">RowMetaInterface</code> objects describing both the input and output rows. This illustrates how to use <code class="ph codeph">RowMetaInterface</code>          objects to inspect row structure.&nbsp;</p>
+        <p class="p">There is a similar object that holds information about individual row fields. PDI uses internal objects that implement
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  to describe and manipulate field information, such as field name, data type, format mask, and alike.&nbsp;</p>
+        <p class="p">A step looks for the indexes and types of relevant fields upon first execution of <code class="ph codeph">processRow()</code>. These methods of <code class="ph codeph">RowMetaInterface</code> are useful to achieve this.</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e91" valign="top" width="40%"><strong class="ph b">Method</strong> </th>
+                <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e97" valign="top" width="60%"><strong class="ph b">Purpose</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">indexOfValue(String valueName)</code></td>
+                <td class="entry" headers="d29500e97 " valign="top" width="60%">Given a field name, determine the index of the field in the row.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">getFieldNames()</code></td>
+                <td class="entry" headers="d29500e97 " valign="top" width="60%">Returns an array of field names. The index of a field name matches the field index in the row array.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">searchValueMeta(String valueName)</code></td>
+                <td class="entry" headers="d29500e97 " valign="top" width="60%">Given a field name, determine the meta data for the field.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">getValueMeta(int index)</code></td>
+                <td class="entry" headers="d29500e97 " valign="top" width="60%">Given a field index, determine the meta data for the field.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">getValueMetaList()</code></td>
+                <td class="entry" headers="d29500e97 " valign="top" width="60%">Returns a list of all field descriptions. The index of the field description matches the field index in the row array.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">If a step needs to create copies of rows, use the <code class="ph codeph">cloneRow()</code> methods of <code class="ph codeph">RowMetaInterface</code> to create proper copies. If a step needs to add or remove fields in the row array, use the static
+          helper methods of
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html"><code class="ph codeph">RowDataUtil</code></a> . For example, if a step is adding a field to the row, call <code class="ph codeph">resizeArray()</code>, to add the field. If the array has enough slots, the orignial array is retruned as is. If
+          the array does not have enough slots, a resized copy of the array is returned. If a step needs to create new rows from scratch, use <code class="ph codeph">allocateRowData()</code>, which returns a somewhat over-allocated object array to fit
+          the desired number of fields.</p>
+        <p class="p"><strong class="ph b">Summary Table of Classes and Interfaces for Row Processing</strong> </p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e235" valign="top" width="25%"><strong class="ph b">Class/Interface</strong> </th>
+                <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e241" valign="top" width="75%"><strong class="ph b">Purpose</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d29500e235 " valign="top" width="25%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html"><code class="ph codeph">RowMetaInterface</code> </a> 
+                </td>
+                <td class="entry" headers="d29500e241 " valign="top" width="75%">Describes and manipulates row structure</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d29500e235 " valign="top" width="25%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code> </a> 
+                </td>
+                <td class="entry" headers="d29500e241 " valign="top" width="75%">Describes and manipulates field types and formats</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d29500e235 " valign="top" width="25%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html"><code class="ph codeph">RowDataUtil</code> </a> 
+                </td>
+                <td class="entry" headers="d29500e241 " valign="top" width="75%">Allocates space in row array</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

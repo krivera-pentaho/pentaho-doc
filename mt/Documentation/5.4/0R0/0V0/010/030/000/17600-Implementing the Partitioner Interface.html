@@ -1,0 +1,93 @@
+<content type="text/html" title="Implementing the Partitioner Interface">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Partitioner.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Partitioner.html"><code class="ph codeph">org.pentaho.di.trans.Partitioner</code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class&nbsp;</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/BasePartitioner.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/BasePartitioner.html"><code class="ph codeph">org.pentaho.di.trans.BasePartitioner</code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><code class="ph codeph">Partitioner</code> is the main Java interface that a plugin implements.</p>
+        <p class="p"><strong class="ph b">Keep Track of Partitioner Settings</strong> </p>
+        <p class="p">The implementing class keeps track of partitioner settings using private fields with corresponding <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The <code class="ph codeph">dialog</code> class implementing
+          <code class="ph codeph">PartionerDialogInterface</code> is using these methods to copy the user supplied configuration in and out of the dialog.</p>
+        <p class="p"><code class="ph codeph">public Object clone()</code></p>
+        <p class="p">This method is called when a step containing partitioning configuration is duplicated in Spoon. It needs to return a deep copy of this partitioner object. It is essential that the implementing class creates proper deep copies if the configuration
+          is stored in modifiable objects, such as lists or custom helper objects. The copy is created by calling <code class="ph codeph">super.clone(</code>) and deep-copying any fields the partitioner may have declared.</p>
+        <p class="p"><code class="ph codeph">public Partitioner getInstance()</code></p>
+        <p class="p">This method is required to return a new instance of the partitioner class, with the plugin id and plugin description inherited from the instance upon which this method is called.</p>
+        <p class="p"><strong class="ph b">Serialize Partitioner Settings</strong> </p>
+        <p class="p">The plugin serializes its settings to both XML and a PDI repository.</p>
+        <p class="p"><code class="ph codeph">public String getXML()</code></p>
+        <p class="p">This method is called by PDI whenever the plugin needs to serialize its settings to XML. It is called when saving a transformation in Spoon. The method returns an XML string containing the serialized settings. The string contains a series of XML
+          tags, one tag per setting. The helper class <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code> constructs the XML string.</p>
+        <p class="p"><code class="ph codeph">public void loadXML()</code></p>
+        <p class="p">This method is called by PDI whenever a plugin reads its settings from XML. The XML node containing the plugin settings is passed in as an argument. Again, the helper class <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code> is used
+          to read the settings from the XML node.</p>
+        <p class="p"><code class="ph codeph">public void saveRep()</code></p>
+        <p class="p">This method is called by PDI whenever a plugin saves its settings to a PDI repository. The repository object passed in as the first argument provides a convenient set of methods for serializing settings. The transformation id and step id passed
+          in are used as identifiers when calling the repository serialization methods.</p>
+        <p class="p"><code class="ph codeph">public void readRep()</code></p>
+        <p class="p">This method is called by PDI whenever a plugin needs to read its configuration from a PDI repository. The step id given in the arguments should be used as the identifier when using the repositories serialization methods.</p>
+        <p class="p">When developing plugins, make sure the serialization code is in synch with the settings available from the partitioner plugin dialog. When testing a partitioned step in Spoon, PDI internally saves and loads a copy of the transformation before
+          it is executed.&nbsp;</p>
+        <p class="p"><strong class="ph b">Provide the Name of the Dialog Class</strong> </p>
+        <p class="p">PDI needs to know which class will take care of the settings dialog for the plugin. The interface method <code class="ph codeph">getDialogClassName()</code> must return the name of the class implementing the <code class="ph codeph">StepDialogInterface</code>          for the partitioner.&nbsp;</p>
+        <p class="p"><strong class="ph b">Partition Incoming Rows During Runtime</strong> </p>
+        <p class="p">The class implementing <code class="ph codeph">Partitioner</code> executes the actual logic that distributes the rows to available partitions.</p>
+        <p class="p"><code class="ph codeph">public int getPartition() </code></p>
+        <p class="p">This method is called with the row structure and the actual row as arguments. It returns the partition to which this row is sent. The total number of partitions is available in the inherited field <code class="ph codeph">nrPartitions</code> and
+          the return value is between zero (0, inclusive) and <code class="ph codeph">nrPartitions</code> (exclusive).</p>
+        <p class="p"><strong class="ph b">Interface with the PDI plugin system</strong> </p>
+        <p class="p">In order for PDI to recognize the plugin, the class implementing the <code class="ph codeph">Partitioner</code> interface must also be annotated with the Java annotation
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/core/annotations/PartitionerPlugin.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/core/annotations/PartitionerPlugin.html"><code class="ph codeph">org.pentaho.di.core.annotations.PartitionerPlugin</code></a> .</p>
+        <p class="p">Supply these annotation attributes:</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="3c9fbcc9-6915-44a1-ad7e-2190fcaaee87__implementing_partitioner_interface__table_fyd_lh3_nh" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="3c9fbcc9-6915-44a1-ad7e-2190fcaaee87__d20685e247" valign="top" width="25%"><strong class="ph b">Attribute</strong> </th>
+                <th class="entry" id="3c9fbcc9-6915-44a1-ad7e-2190fcaaee87__d20685e253" valign="top" width="75%"><strong class="ph b">Description</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">id </code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">A globally unique ID for the plugin</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">name</code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">A short label for the plugin</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">description</code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">A longer description for the plugin</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">i18nPackageName</code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">If the <code class="ph codeph">i18nPackageName</code> attribute is supplied in the annotation attributes, the values of name and description are interpreted as <code class="ph codeph">i18n</code> keys. The keys may be supplied in the extended
+                  form&nbsp; <code class="ph codeph">i18n:<packagename></code> key to specify a package that is different from the default package given in the <code class="ph codeph">i18nPackageName</code> attribute.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

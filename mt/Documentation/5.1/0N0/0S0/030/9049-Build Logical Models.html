@@ -1,0 +1,875 @@
+<content type="text/html" title="Build Logical Models">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The most important components that make up a schema are cubes, measures, attributes, and dimensions. Together, these components are often referred to as <em class="ph i">logical models</em> .</p>
+        <p class="p">There are a few key terms that you need to know before you get started with building logical models.</p>
+        <div class="p">
+          <ul class="pentaho-list-unordered" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_logical_models__ul_m1l_pcr_sm">
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_cube" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_cube"><strong class="ph b">Cube</strong> </a> &mdash;a data set describing a one or more processes over a particular time period.</li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_cube__paragraph_fact_table" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_cube__paragraph_fact_table"><strong class="ph b">Fact</strong> </a> &mdash;data representing an individual occurrence of a process; for example, a line item describing the sale of a product to a customer, or a pay period of an employee in a company.</li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_measures" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_measures"><strong class="ph b">Measure</strong> </a> &mdash;a quantity within a cube that you are interested in measuring; for example, unit sales of a product, or the salary of an employee.</li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_attribute_order" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_attribute_order"><strong class="ph b">Attribute</strong> </a> &mdash;a value, possessed by every fact, by which you can divide facts into subsets. For example, you might wish to break down product sales by their color, the gender of the customer, and the store
+              in which the product was sold; color, gender, and store are all attributes.</li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_hier_levels" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_hier_levels"><strong class="ph b">Hierarchies and Levels</strong> </a> &mdash;a <em class="ph i">hierarchy</em>  is a set of members organized into a structure for analysis. A <em class="ph i">level</em>  is a collection of members which have the same distance
+              from the root of the hierarchy.</li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_dimensions" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030#698f702b-cf86-432a-b26e-ac98606f2da9__concept_dimensions"><strong class="ph b">Dimension</strong> </a> &mdash;a grouping of related attributes. For example, name, gender, zip code and eye color are attributes of the customer dimension; color, weight, and manufacturer are attributes of the product
+              dimension.</li>
+          </ul>
+        </div>
+        <p class="p">Take a quick look at the XML definition of a simple schema.</p>
+        <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema name=&quot;Sales&quot; metamodelVersion=&quot;4.0&quot;>
+  <PhysicalSchema>
+    <Table name=&quot;sales&quot;>
+      <ColumnDefs>
+        <CalculatedColumnDef name='customer_id' type=&quot;Integer&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$customer_id</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='gender' type=&quot;String&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$gender</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='the_year' type=&quot;String&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$the_year</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='quarter' type=&quot;String&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$quarter</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='month_of_year' type=&quot;String&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$month_of_year</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='time_id' type=&quot;Numeric&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$time_id</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='unit_sales' type=&quot;Numeric&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$unit_sales</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='store_sales' type=&quot;Numeric&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$store_sales</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='store_cost' type=&quot;Numeric&quot;>
+          <ExpressionView>
+            <SQL dialect='generic'>$store_cost</SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+      </ColumnDefs>
+    </Table>
+  </PhysicalSchema>
+  <Cube name=&quot;Sales&quot;>
+    <Dimensions>
+      <Dimension name=&quot;Customer&quot; table=&quot;sales&quot; key=&quot;Id&quot;>
+        <Attributes>
+          <Attribute name=&quot;Gender&quot; keyColumn=&quot;gender&quot; />
+          <Attribute name=&quot;Id&quot; keyColumn=&quot;customer_id&quot; />
+        </Attributes>
+      </Dimension>
+      <Dimension name=&quot;Time&quot; table=&quot;sales&quot; key=&quot;Day&quot;>
+        <Attributes>
+          <Attribute name=&quot;Year&quot; keyColumn=&quot;the_year&quot; />
+          <Attribute name=&quot;Quarter&quot; >
+            <Key>
+              <Column name=&quot;the_year&quot; />
+              <Column name=&quot;quarter&quot; />
+            </Key>
+            <Name>
+              <Column name=&quot;quarter&quot; />
+            </Name>
+          </Attribute>
+          <Attribute name=&quot;Month&quot; >
+            <Key>
+              <Column name=&quot;the_year&quot; />
+              <Column name=&quot;month_of_year&quot; />
+            </Key>
+            <Name>
+              <Column name=&quot;month_of_year&quot; />
+            </Name>
+          </Attribute>
+          <Attribute name=&quot;Day&quot; keyColumn=&quot;time_id&quot; />
+        </Attributes>
+        <Hierarchies>
+          <Hierarchy name=&quot;Time&quot; hasAll=&quot;false&quot;>
+            <Level attribute=&quot;Year&quot; />
+            <Level attribute=&quot;Quarter&quot; />
+            <Level attribute=&quot;Month&quot; />
+          </Hierarchy>
+        </Hierarchies>
+      </Dimension>
+    </Dimensions>
+    <MeasureGroups>
+      <MeasureGroup name=&quot;Sales&quot; table=&quot;sales&quot;>
+        <Measures>
+          <Measure name=&quot;Unit Sales&quot; column=&quot;unit_sales&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###&quot; />
+          <Measure name=&quot;Store Sales&quot; column=&quot;store_sales&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.##&quot; />
+          <Measure name=&quot;Store Cost&quot; column=&quot;store_cost&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot; />
+        </Measures>
+        <DimensionLinks>
+          <FactLink dimension=&quot;Customer&quot; />
+          <FactLink dimension=&quot;Time&quot; />
+        </DimensionLinks>
+      </MeasureGroup>
+    </MeasureGroups>
+    <CalculatedMembers>
+      <CalculatedMember name=&quot;Profit&quot; dimension=&quot;Measures&quot; formula=&quot;[Measures].[Store Sales] - [Measures].[Store Cost]&quot;>
+        <CalculatedMemberProperty name=&quot;FORMAT_STRING&quot; value=&quot;$#,##0.00&quot; />
+      </CalculatedMember>
+    </CalculatedMembers>
+  </Cube>
+</Schema></pre> </div>
+        <p class="p">This schema contains a single cube, which is named <span class="ph filepath">Sales</span> . This <span class="ph filepath">Sales</span>  cube has two dimensions, <span class="ph filepath">Time</span>, and <span class="ph filepath">Gender</span>,
+          and four measures, <span class="ph filepath">Unit Sales</span>, <span class="ph filepath">Store Sales</span>, <span class="ph filepath">Store Cost</span>, and <span class="ph filepath">Profit</span> .</p>
+        <p class="p">You can write an MDX query on this schema.</p>
+        <div class="p"> <pre class="pre codeblock">
+<code class="ph codeph">SELECT {[Measures].[Unit Sales], [Measures].[Store Sales]} ON COLUMNS,
+  {Descendants([Time].[Yearly].[1997].[Q1])} ON ROWS
+FROM [Sales]
+WHERE [Customer].[Gender].[F] 
+</code></pre> </div>
+        <p class="p">This query refers to the <span class="ph filepath">Sales</span>  cube (<code class="ph codeph">[Sales]</code>), the two dimensions <code class="ph codeph">[Measures]</code>, <code class="ph codeph">[Time]</code>, <code class="ph codeph">[Customer]</code>,
+          the hierarchy <code class="ph codeph">[Time]</code>.<code class="ph codeph">[Yearly]</code>, the attribute <code class="ph codeph">[Customer]</code>.<code class="ph codeph">[Gender]</code>, and various members of those dimensions. The results
+          are as follows:</p>
+        <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[Time]	[Measures].[Unit Sales]	[Measures].[Store Sales]
+[1997].[Q1]	32,910	$69,798.23
+[1997].[Q1].[Jan]	10,932	$23,309.04
+[1997].[Q1].[Feb]	10,266	$21,773.93
+[1997].[Q1].[Mar]	11,712	$24,715.26</pre> </div>
+        <p class="p">Now it is time to take a look at the schema definition in more detail.</p>
+      </div>
+      <div class="topic concept nested1" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_cube">
+        <div id="section_1" class="mt-page-section"><span id="Cube"></span> 
+          <h2 class="editable">Cube</h2>
+          <div class="body conbody">
+            <p class="p">A cube is a named collection of dimensions and measures. A measure group is a collection of measures that have the same fact table. These simple cubes have just one measure group; later, the examples of cubes will have more than one measure
+              group.</p>
+            <p class="p">The dimensions are children of a <code class="ph codeph"><Dimensions></code> holder element. Even though schema order does not matter, typically the dimensions are declared first. Then follow the measures, organized into measure groups and
+              under a <code class="ph codeph"><MeasureGroups></code> holder element.</p>
+            <p class="p">The <code class="ph codeph">[Sales]</code> cube in the previous example has two dimensions. The <code class="ph codeph">[Customer]</code> dimension has attributes <code class="ph codeph">[Gender]</code> and <code class="ph codeph">[Id]</code>;
+              and the <code class="ph codeph">[Time]</code> dimension has attributes <code class="ph codeph">[Year]</code>, <code class="ph codeph">[Quarter]</code>, <code class="ph codeph">[Month]</code> and <code class="ph codeph">[Day]</code>.</p>
+            <p class="p">The<code class="ph codeph">[Sales]</code> cube's measure group is based on the table <span class="ph filepath">sales</span> . Each table used in the logical schema must be declared within the physical schema, and sure enough, the <code class="ph codeph"><PhysicalSchema></code>              element has a child element, <code class="ph codeph"><Table name=&quot;sales&quot;></code>.</p>
+            <p class="p" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_cube__paragraph_fact_table">The <strong class="ph b">fact table</strong>  contains the columns from which measures are calculated. To use these columns, Analyzer for MongoDB needs to know about them, so all of these columns occur somewhere in the <code class="ph codeph"><MeasureGroup></code>              element. The <code class="ph codeph">unit_sales</code>, <code class="ph codeph">store_sales</code> and <code class="ph codeph">store_cost </code>columns each occur within a <code class="ph codeph"><Measure></code> definition; and the
+              <code
+              class="ph codeph">customer_id</code> and <code class="ph codeph">time_id</code> columns each occur within a <code class="ph codeph"><FactLink></code> element, linking the measure group to the <code class="ph codeph">[Customer]</code>and <code class="ph codeph">[Time]</code>                dimensions, respectively.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_measures">
+        <div id="section_2" class="mt-page-section"><span id="Measures"></span> 
+          <h2 class="editable">Measures</h2>
+          <div class="body conbody">
+            <p class="p">Check out the measures defined in the <span class="ph filepath">Sales</span>  cube's one and only measure group.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Measure name=&quot;Unit Sales&quot; column=&quot;unit_sales&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###&quot;/>
+<Measure name=&quot;Store Sales&quot; column=&quot;store_sales&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.##&quot;/>
+<Measure name=&quot;Store Cost&quot; column=&quot;store_cost&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/></pre> </div>
+            <p class="p">Each measure has a name, a column in the fact table, and an aggregator. The aggregator is usually <span class="ph filepath">sum</span>, but <span class="ph filepath">count</span>, <span class="ph filepath">min</span>, <span class="ph filepath">max</span>,
+              <span class="ph filepath">avg</span>, and <span class="ph filepath">distinct-count</span>  are also allowed.</p>
+            <p class="p">The optional data-type attribute specifies how cell values are represented in the cache, and how they are returned through XML for Analysis. The data-type attribute can have the values of <span class="ph filepath">String</span>, <span class="ph filepath">Integer</span>,
+              <span class="ph filepath">Numeric</span>, <span class="ph filepath">Boolean</span>, <span class="ph filepath">Date</span>, <span class="ph filepath">Time</span>, and <span class="ph filepath">Timestamp</span> . The default value is
+              <span
+              class="ph filepath">Numeric</span>, except for the counting measures, which are <span class="ph filepath">Integer</span> .</p>
+            <p class="p">An optional <code class="ph codeph">formatString</code> attribute specifies how the value is to be printed. The output unit sales with no decimal places (since it is an integer) is shown here, and store sales with two decimal places, since
+              it is in a currency value. The ',' and '.' symbols are locale-sensitive, so if you were running in Italian, store sales might appear as &quot;48.123,45&quot;. You can achieve even more effects using advanced format strings.</p>
+            <p class="p">A measure can have a caption attribute be returned by the <code class="ph codeph">Member.getCaption()</code> method instead of the name. If you do not specify a caption, it will default to the measure's name. Defining a specific caption might
+              make sense if you wish to localize the name of the measure as seen by end-users, or if you wish to display special letters (e.g. &Sigma; or &Pi;) in the user interface, as shown in this example.</p>
+            <div class="p"> <pre class="pre codeblock">
+<code class="ph codeph"><Measure name=&quot;Sum X&quot; column=&quot;sum_x&quot; aggregator=&quot;sum&quot; caption=&quot;&amp;#931; X&quot;/></code>
+</pre> </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_attribute_order">
+        <div id="section_3" class="mt-page-section"><span id="Attribute_Order"></span> 
+          <h2 class="editable">
+            <strong class="ph b">Attribute Order</strong> 
+          </h2>
+          <div class="body conbody">
+            <p class="p">The ordinal property of an attribute controls the order in which members are displayed. Usually attributes are sorted by name. If a name is not specified, remember that it will be the key, or the last column in a composite key. Sometimes,
+              the name does not give you the order that you want. The <code class="ph codeph">[Time].[Month]</code> attribute is an example of this.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;Month&quot;>
+<Key>
+<Column name=&quot;the_year&quot;/>
+<Column name=&quot;month&quot;/>
+</Key>
+</Attribute></pre> </div>
+            <p class="p">Like <code class="ph codeph">[Time].[Quarter]</code>, <code class="ph codeph">[Month]</code> has a composite key. Twelve months per year should be covered by the data set, not just twelve months. Unlike <code class="ph codeph">[Quarter]</code>,
+              the name is overridden. Here is what happens when the query executes.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SELECT [Time].[Month].Members on ROWS
+FROM [Sales];
+[Time].[Month].&amp;[2011]&amp;[April]
+[Time].[Month].&amp;[2011]&amp;[August]
+[Time].[Month].&amp;[2011]&amp;[December]
+[Time].[Month].&amp;[2011]&amp;[February]
+[Time].[Month].&amp;[2011]&amp;[January]
+...</pre> </div>
+            <p class="p">The results look entirely arbitrary, but remember that sorting is done by name by default. The query returned what was asked for, but not the desired results, so the key columns need to be sorted like this.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;Month&quot; nameColumn=&quot;month_name&quot; orderByColumn=&quot;month&quot;>
+<Key>
+<Column name=&quot;the_year&quot;/>
+<Column name=&quot;month&quot;/>
+</Key>
+</Attribute></pre> </div>
+            <p class="p">Now, the results are as expected.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[Time].[Month].&amp;[2011]&amp;[January]
+[Time].[Month].&amp;[2011]&amp;[February]
+[Time].[Month].&amp;[2011]&amp;[March]
+[Time].[Month].&amp;[2011]&amp;[April]
+[Time].[Month].&amp;[2011]&amp;[May]
+...</pre> </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_hier_levels">
+        <div id="section_4" class="mt-page-section"><span id="Hierarchies_and_Levels"></span> 
+          <h2 class="editable">Hierarchies and Levels</h2>
+          <div class="body conbody">
+            <p class="p">Some combinations of attributes in a dimension are often used together. For example, a business user viewing a state might often wish to expand it to see the constituent cities. When viewing a month, they might wish to roll up into quarter
+              or year. For such combinations of attributes, it is convenient to create hierarchies.</p>
+            <p class="p">Here is the <code class="ph codeph">[Time]</code> dimension, slightly extended from the earlier example:</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Dimension name=&quot;Time&quot; table=&quot;sales&quot; key=&quot;Day&quot;>
+<Attributes>
+<Attribute name=&quot;Year&quot; column=&quot;the_year&quot;/>
+<Attribute name=&quot;Quarter&quot;>
+<Key>
+<Column name=&quot;the_year&quot;/>
+<Column name=&quot;quarter&quot;/>
+</Key>
+</Attribute>
+<Attribute name=&quot;Month&quot;>
+<Key>
+<Column name=&quot;the_year&quot;/>
+<Column name=&quot;month_of_year&quot;/>
+</Key>
+</Attribute>
+<Attribute name=&quot;Week&quot;>
+<Key>
+<Column name=&quot;the_year&quot;/>
+<Column name=&quot;week_of_year&quot;/>
+</Key>
+</Attribute>
+<Attribute name=&quot;Day&quot; column=&quot;time_id&quot;/>
+</Attributes>
+<Hierarchies>
+<Hierarchy name=&quot;Yearly&quot; hasAll=&quot;false&quot;>
+<Level attribute=&quot;Year&quot;/>
+<Level attribute=&quot;Quarter&quot;/>
+<Level attribute=&quot;Month&quot;/>
+<Level attribute=&quot;Day&quot;/>
+</Hierarchy>
+<Hierarchy name=&quot;Weekly&quot; hasAll=&quot;false&quot;>
+<Level attribute=&quot;Year&quot;/>
+<Level attribute=&quot;Week&quot;/>
+<Level attribute=&quot;Day&quot;/>
+</Hierarchy>
+</Hierarchies>
+</Dimension></pre> </div>
+            <p class="p">You can see that most of the lines of XML in the dimension definition are taken up by attribute definitions. Once the attributes are defined, you can build a hierarchy by choosing which attributes you want, and in which order you want them.
+              In fact, we recommend that when you first design a schema, you just define attributes; let the business users use the cube without any hierarchies defined, and let them tell you which hierarchies are needed.</p>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_all_default_members">
+            <div id="section_5" class="mt-page-section"><span id="(All)_and_Default_Members"></span> 
+              <h3 class="editable">
+                <strong class="ph b">(All) and Default Members</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">By default, every hierarchy contains a top level named <code class="ph codeph">(All)</code>, which contains a single member named <code class="ph codeph">(All {hierarchyName})</code>. This member is parent of all other members of the hierarchy,
+                  and thus represents a grand total. The <code class="ph codeph">(All)</code> member is also the default member of the hierarchy; that is, the member that is used for calculating cell values when the hierarchy is not included on an axis
+                  or in the slicer.</p>
+                <p class="p">Various attributes allow you to control the <code class="ph codeph">(All)</code> level and member. The <code class="ph codeph"><Hierarchy></code> element's <code class="ph codeph">allMemberName</code> and <code class="ph codeph">allLevelName</code>                  attributes override the default names of the <code class="ph codeph">(All)</code> level and <code class="ph codeph">(All)</code> member. If the <code class="ph codeph"><Hierarchy></code> element has <code class="ph codeph">hasAll=&quot;false&quot;</code>,
+                  the <code class="ph codeph">(All)</code> level is suppressed. The default member of that dimension will now be the first member of the first level. For example, in a <code class="ph codeph">Time</code> hierarchy, it will be the first
+                  year in the hierarchy. Changing the default member can be confusing, so you should generally use <code class="ph codeph">hasAll=&quot;true&quot;</code>.</p>
+                <p class="p">You can also set the default member of a hierarchy explicitly. The <code class="ph codeph">defaultMember</code> attribute should be the fully-qualified name of the default member.</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Hierarchy name=&quot;Yearly&quot; hasAll=&quot;false&quot; defaultMember=&quot;[Time].[1997].[Q1].[1]&quot;>
+...
+</Hierarchy></pre> </div>
+                <p class="p">When specified in this way, the default member can even be a calculated member.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_design_attributes">
+            <div id="section_6" class="mt-page-section"><span id="Designing_Attributes_for_Use_in_Hierarchies"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Designing Attributes for Use in Hierarchies</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">Although it is easy to build a hierarchy from existing attributes, the attributes you include in a hierarchy have to be defined with care. Each attribute must be functionally dependent on the attribute of the level below it. Thus, there
+                  needs to be one and only one <code class="ph codeph">Quarter</code> for any given <code class="ph codeph">Month</code>, and one and only one <code class="ph codeph">Year</code> for any given <code class="ph codeph">Quarter</code>. A
+                  <code class="ph codeph">Year-Month-Week-Day</code> hierarchy would not pass muster, because some of the days in Week 5 belong to January, and some to February.</p>
+                <p class="p">Typically some of the attributes in a hierarchy will have composite keys, to achieve the appropriate functional dependency relationships. It is useful to remember that including attributes in a hierarchy does not alter the number of members
+                  of that attribute. In a well-formed hierarchy, each successive level has more members. For example, in a <code class="ph codeph">Year-Quarter-Month-Day</code> hierarchy over ten years, the levels have 10, 40, 120, 3652 members respectively.
+                  If your <code class="ph codeph">Quarter</code> attribute only has four members (because you have forgotten to give it a composite key) the levels have 10, 4, 120 and 3652 members, and that non-increasing sequence should be a sign that
+                  you have done something wrong.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_attribute_hierarchies">
+            <div id="section_7" class="mt-page-section"><span id="Attribute_Hierarchies"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Attribute Hierarchies</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">The MDX language does not know about attributes. It only knows about dimensions, hierarchies, levels, and members. Analyzer for MongoDB gets around that by generating a single-level hierarchy for each attribute, named an attribute hierarchy.</p>
+                <p class="p">Attribute hierarchies do not have any special properties. The effect is as if you manually created the hierarchy, but it saves you the effort of defining lots of hierarchies. The net effect is that you can easily define a dozen or so attributes
+                  and start playing with them in queries before you start even thinking about hierarchies.</p>
+                <p class="p">To control whether an attribute has a hierarchy, use the <code class="ph codeph">hasHierarchy</code> attribute of the <code class="ph codeph"><Attribute></code> element. Other attributes, mostly corresponding directly to similarly-named
+                  attributes of the <code class="ph codeph"><Hierarchy></code> element, are shown in the following table.</p>
+                <div class="p">
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_attribute_hierarchies__table_icx_fyw_sm" rules="all" summary="">
+                      <caption><span class="tablecap">Table 1. Attribute Hierarchy Elements</span> </caption>
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e617" valign="top" width="33.33333333333333%">Hierarchy attribute</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e620" valign="top" width="33.33333333333333%">Attribute attribute</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e623" valign="top" width="33.33333333333333%">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">N/A</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">hasHierarchy</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">Whether an attribute has an attribute-hierarchy.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">name</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">N/A</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">The name of the hierarchy. An attribute hierarchy always has the same name as the attribute.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">hasAll</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">hierarchyHasAll</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">Whether the hierarchy has an (All) level and member.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">allMemberName</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">hierarchyAllMemberName</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">Name of the (All) member. If not specified, the all member is named 'All
+                            <hierarchyName>'.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">allMemberCaption</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">hierarchyAllMemberCaption</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">Caption of the (All) member. If not specified, the member's caption is the same as its name.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">allLevelName</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">hierarchyAllLevelName</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">Name of the (All) level. If not specified, the all level is named (All).</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e617 " valign="top" width="33.33333333333333%">defaultMember</td>
+                          <td class="entry" headers="d3028e620 " valign="top" width="33.33333333333333%">hierarchyDefaultMember</td>
+                          <td class="entry" headers="d3028e623 " valign="top" width="33.33333333333333%">The default member of the hierarchy. If not specified, the default member is the first member of the first level. This is the (All) member, if present.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p class="p">We recommend that you think twice before disabling the <code class="ph codeph">(All)</code> member of an attribute hierarchy, or changing its default member, as this will cause hidden constraints to be in play even when the attribute is
+                  not being displayed on an axis.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_attributes_vs_hierarchies">
+            <div id="section_8" class="mt-page-section"><span id="Attributes_vs._Hierarchies"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Attributes vs. Hierarchies</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">Schema designers should feel encouraged to design dimensions with many attributes. Try not to worry about creating hierarchies at first, but see which combinations of attributes your end-users regularly use together, and consider creating
+                  hierarchies to make those drill paths more convenient. Generally, expect that your end-users will still use the standalone attributes most of the time.</p>
+                <p class="p">Some attributes have <strong class="ph b">within parent</strong>  and <strong class="ph b">without parent</strong>  forms. For example, the <code class="ph codeph">[Time].[Month]</code> attribute has 120 members over ten years, whereas the
+                  <code class="ph codeph">[Time].[Month of Year]</code> has just twelve members. The first can be used to compare whether snow-sleds sold better in December 2013 sales than in December 2012; the second can be used to compare whether snow-sleds
+                  sell better in December or April.</p>
+                <p class="p">You need to define two separate attributes. There is no easy way to define one in terms of the other, or an automatic mapping between them. The best you can do is to use a naming convention, such as <strong class="ph b">Attribute of Parent</strong>,
+                  for all such attributes, so that the correspondence is clear to your end-users.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_schema_short_cuts">
+            <div id="section_9" class="mt-page-section"><span id="Schema_Short_Cuts"></span> 
+              <h3 class="editable">Schema Short Cuts</h3>
+              <div class="body conbody">
+                <p class="p">XML is a suitable language for defining schemas because it can be read and written by both humans and machines. You can hand-write a schema in emacs, vi, notepad, or you can write one in a modeling tool. However, XML can be verbose. This
+                  is less of a problem for tools than for humans typing every character.</p>
+                <p class="p">Several schema short cuts are provided for convenience. These are alternative ways of specifying constructs that are less verbose. They reduce the amount of typing, making sure that simple things look simple, and without reducing the power
+                  of the schema language.</p>
+              </div>
+              <div class="topic concept nested3" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_q3c_1fg_tm">
+                <div id="section_10" class="mt-page-section"><span id="Attribute_as_Shorthand_for_a_Singleton_Nested_Collection"></span> 
+                  <h4 class="editable">
+                    <strong class="ph b">Attribute as Shorthand for a Singleton Nested Collection</strong> 
+                  </h4>
+                  <div class="body conbody">
+                    <p class="p">One common shorthand is to allow an attribute to be used instead of a collection of nested elements, if that collection has only one element. For example, if you are defining an attribute with a simple, non-composite key you could
+                      either write this:</p>
+                    <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;A&quot;>
+<Key>
+<Column>
+</Key>
+</Attribute></pre> </div>
+                    <p class="p">or this:</p>
+                    <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;A&quot; column=&quot;c&quot;/></pre> </div>
+                    <p class="p">These are equivalent, but the second is more concise, and you would probably choose to use it when writing a schema by hand.</p>
+                    <p class="p">If the attribute has a composite key, or if you wish to use the table attribute, you have to use the nested <code class="ph codeph"><Key></code> element:</p>
+                    <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;A&quot;>
+<Key>
+<Column table=&quot;t1&quot; name=&quot;c1&quot;/>
+<Column table=&quot;t2&quot; name=&quot;c2&quot;/>
+</Key>
+</Attribute></pre> </div>
+                    <p class="p">The nested collection in this case is <code class="ph codeph"><Key></code> and a set of <code class="ph codeph"><Column></code> elements, and the attribute is <code class="ph codeph">keyColumn</code>. But the pattern occurs elsewhere
+                      in the schema, as shown by this table.</p>
+                    <div class="p">
+                      <div class="tablenoborder">
+                        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_q3c_1fg_tm__table_unn_ckn_tm" rules="all" summary="">
+                          <caption><span class="tablecap">Table 2. Parent and Nested Elements</span> </caption>
+                          <thead align="left" class="thead">
+                            <tr class="row">
+                              <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e854" valign="top" width="20%">Parent Element</th>
+                              <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e857" valign="top" width="20%">Attribute</th>
+                              <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e860" valign="top" width="20%">Equivalent Nested Element</th>
+                              <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e863" valign="top" width="40%">Description</th>
+                            </tr>
+                          </thead>
+                          <tbody class="tbody">
+                            <tr class="row">
+                              <td class="entry" headers="d3028e854 " valign="top" width="20%">
+                                <Attribute>
+                              </td>
+                              <td class="entry" headers="d3028e857 " valign="top" width="20%">keyColumn</td>
+                              <td class="entry" headers="d3028e860 " valign="top" width="20%">
+                                <Key>
+                              </td>
+                              <td class="entry" headers="d3028e863 " valign="top" width="40%">Column(s) that comprise the key of this attribute.</td>
+                            </tr>
+                            <tr class="row">
+                              <td class="entry" headers="d3028e854 " valign="top" width="20%">
+                                <Attribute>
+                              </td>
+                              <td class="entry" headers="d3028e857 " valign="top" width="20%">nameColumn</td>
+                              <td class="entry" headers="d3028e860 " valign="top" width="20%">
+                                <Name>
+                              </td>
+                              <td class="entry" headers="d3028e863 " valign="top" width="40%">Column that defines the name of members of this attribute. If not specified, the attribute key is used.</td>
+                            </tr>
+                            <tr class="row">
+                              <td class="entry" headers="d3028e854 " valign="top" width="20%">
+                                <Attribute>
+                              </td>
+                              <td class="entry" headers="d3028e857 " valign="top" width="20%">orderByColumn</td>
+                              <td class="entry" headers="d3028e860 " valign="top" width="20%">
+                                <OrderBy>
+                              </td>
+                              <td class="entry" headers="d3028e863 " valign="top" width="40%">Column(s) that define the order of members. If not specified, the attribute key is used.</td>
+                            </tr>
+                            <tr class="row">
+                              <td class="entry" headers="d3028e854 " valign="top" width="20%">
+                                <Attribute>
+                              </td>
+                              <td class="entry" headers="d3028e857 " valign="top" width="20%">captionColumn</td>
+                              <td class="entry" headers="d3028e860 " valign="top" width="20%">
+                                <Caption>
+                              </td>
+                              <td class="entry" headers="d3028e863 " valign="top" width="40%">Column that forms the caption of members. If not specified, the attribute name is used.</td>
+                            </tr>
+                            <tr class="row">
+                              <td class="entry" headers="d3028e854 " valign="top" width="20%">
+                                <Measure>
+                              </td>
+                              <td class="entry" headers="d3028e857 " valign="top" width="20%">column</td>
+                              <td class="entry" headers="d3028e860 " valign="top" width="20%">
+                                <Arguments>
+                              </td>
+                              <td class="entry" headers="d3028e863 " valign="top" width="40%">Column(s) that are the arguments to this measure. When this measure is implemented by generating a SQL expression, these columns become the argument to the SQL aggregate function.</td>
+                            </tr>
+                            <tr class="row">
+                              <td class="entry" headers="d3028e854 " valign="top" width="20%">
+                                <Table>
+                              </td>
+                              <td class="entry" headers="d3028e857 " valign="top" width="20%">keyColumn</td>
+                              <td class="entry" headers="d3028e860 " valign="top" width="20%">
+                                <Key>
+                              </td>
+                              <td class="entry" headers="d3028e863 " valign="top" width="40%">Column(s) that form this Table's key.</td>
+                            </tr>
+                          </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topic concept nested3" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_inherited_attributes">
+                <div id="section_11" class="mt-page-section"><span id="Inherited_Attributes"></span> 
+                  <h4 class="editable">
+                    <strong class="ph b">Inherited Attributes</strong> 
+                  </h4>
+                  <div class="body conbody">
+                    <p class="p">The <code class="ph codeph">table</code> attribute occurs on <code class="ph codeph"><Dimension></code>, <code class="ph codeph"><Attribute></code>, and <code class="ph codeph"><Column></code> elements and, if not present, is inherited
+                      from the enclosing element. This makes definitions more concise if, for example, a dimension is based on a single table.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="topic concept nested3" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_default_values">
+                <div id="section_12" class="mt-page-section"><span id="Default_Values_for_Attributes"></span> 
+                  <h4 class="editable">
+                    <strong class="ph b">Default Values for Attributes</strong> 
+                  </h4>
+                  <div class="body conbody">
+                    <p class="p">Many attributes have default values. For example, the default value of the <code class="ph codeph">type</code> attribute of a <code class="ph codeph"><Dimension></code> element is <span class="ph filepath">OTHER</span> . Default values
+                      are described in the schema reference.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_dimensions">
+        <div id="section_13" class="mt-page-section"><span id="Dimensions"></span> 
+          <h2 class="editable">Dimensions</h2>
+          <div class="body conbody">
+            <p class="p">Dimensions represent a grouping of related attributes. For example, name, gender, zip code and eye color are attributes of the customer dimension; color, weight, and manufacturer are attributes of the product dimension.</p>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_measures_dimensions">
+            <div id="section_14" class="mt-page-section"><span id="The_Measures_Dimension"></span> 
+              <h3 class="editable">
+                <strong class="ph b">The Measures Dimension</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">Measures are treated as members of a special dimension, named <code class="ph codeph">Measures</code>. The dimension has a single hierarchy and a single level.</p>
+                <p class="p">MDX allows you to omit the hierarchy name if a dimension has only one hierarchy, including attribute hierarchies. Therefore <code class="ph codeph">[Measures].[Unit&nbsp;Sales]</code> is a valid shorthand for <code class="ph codeph">[Measures].[Measures].[Unit&nbsp;Sales]</code>.</p>
+                <p class="p">That measures belong to a dimension might seem strange. For example, if you come from a background in relational databases, it seems like declaring that every column is a row. But one of the defining properties of the dimensional model,
+                  and one of its strengths. Because measures are members, you can change the context from one measure to another in a calculation just as easily as you can time period or sales region. It allows for greater reuse of calculations. It also
+                  makes for easier access control, because you can grant on a cell, of which measure is just one coordinate.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_degenerate_dimensions">
+            <div id="section_15" class="mt-page-section"><span id="Degenerate_Dimensions"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Degenerate Dimensions</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">A degenerate dimension is a dimension with data that is contained in the Fact table. MongoDB does not have support for joining collections. Therefore, all dimensions for a MongoDB data source need to be degenerate dimensions. For example,
+                  consider the following fact table:</p>
+                <div class="p">
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_degenerate_dimensions__table_hrx_m1t_tm" rules="all" summary="">
+                      <caption><span class="tablecap">Table 3. Sample Fact Table Showing Degenerate Dimensions</span> </caption>
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1099" valign="top" width="14.285714285714285%">product_id</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1102" valign="top" width="14.285714285714285%">time_id</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1105" valign="top" width="17.857142857142858%">payment_method</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1108" valign="top" width="14.285714285714285%">customer_id</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1111" valign="top" width="10.714285714285714%">store_id</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1115" valign="top" width="14.285714285714285%">item_count</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1118" valign="top" width="14.285714285714285%">dollars</th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1099 " valign="top" width="14.285714285714285%">55</td>
+                          <td class="entry" headers="d3028e1102 " valign="top" width="14.285714285714285%">20040106</td>
+                          <td class="entry" headers="d3028e1105 " valign="top" width="17.857142857142858%">Credit</td>
+                          <td class="entry" headers="d3028e1108 " valign="top" width="14.285714285714285%">123</td>
+                          <td class="entry" headers="d3028e1111 " valign="top" width="10.714285714285714%">22</td>
+                          <td class="entry" headers="d3028e1115 " valign="top" width="14.285714285714285%">3</td>
+                          <td class="entry" headers="d3028e1118 " valign="top" width="14.285714285714285%">$3.54</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1099 " valign="top" width="14.285714285714285%">78</td>
+                          <td class="entry" headers="d3028e1102 " valign="top" width="14.285714285714285%">20040106</td>
+                          <td class="entry" headers="d3028e1105 " valign="top" width="17.857142857142858%">Cash</td>
+                          <td class="entry" headers="d3028e1108 " valign="top" width="14.285714285714285%">89</td>
+                          <td class="entry" headers="d3028e1111 " valign="top" width="10.714285714285714%">22</td>
+                          <td class="entry" headers="d3028e1115 " valign="top" width="14.285714285714285%">1</td>
+                          <td class="entry" headers="d3028e1118 " valign="top" width="14.285714285714285%">$20.00</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1099 " valign="top" width="14.285714285714285%">199</td>
+                          <td class="entry" headers="d3028e1102 " valign="top" width="14.285714285714285%">20040107</td>
+                          <td class="entry" headers="d3028e1105 " valign="top" width="17.857142857142858%">ATM</td>
+                          <td class="entry" headers="d3028e1108 " valign="top" width="14.285714285714285%">3</td>
+                          <td class="entry" headers="d3028e1111 " valign="top" width="10.714285714285714%">22</td>
+                          <td class="entry" headers="d3028e1115 " valign="top" width="14.285714285714285%">2</td>
+                          <td class="entry" headers="d3028e1118 " valign="top" width="14.285714285714285%">$2.99</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1099 " valign="top" width="14.285714285714285%">55</td>
+                          <td class="entry" headers="d3028e1102 " valign="top" width="14.285714285714285%">20040106</td>
+                          <td class="entry" headers="d3028e1105 " valign="top" width="17.857142857142858%">Cash</td>
+                          <td class="entry" headers="d3028e1108 " valign="top" width="14.285714285714285%">122</td>
+                          <td class="entry" headers="d3028e1111 " valign="top" width="10.714285714285714%">22</td>
+                          <td class="entry" headers="d3028e1115 " valign="top" width="14.285714285714285%">1</td>
+                          <td class="entry" headers="d3028e1118 " valign="top" width="14.285714285714285%">$1.18</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p class="p">Notice the <code class="ph codeph">payment_method</code> column. In a relational database, you might choose to have a separate dimension table to represent this data. In MongoDB, because joins are not supported, you cannot model that data
+                  in this way.</p>
+                <p class="p">To create a degenerate dimension, just declare a dimension without a table, and Analyzer for MongoDB will assume that the columns come from the fact table.</p>
+                <div class="p"> <pre class="pre codeblock">
+<code class="ph codeph"><Cube name=&quot;Checkout&quot;>
+
+<!-- The fact table is always necessary. -->
+<Table>
+<Dimension name=&quot;Payment method&quot;>
+<Hierarchy hasAll=&quot;true&quot;>
+
+<!-- No table element here. Fact table is assumed. -->
+<Level name=&quot;Payment method&quot; column=&quot;payment_method&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+
+<!-- other dimensions and measures -->
+</Cube></code></pre> </div>
+                <p class="p">Note that because there is no join, the <code class="ph codeph">foreignKey</code> attribute of Dimension is not necessary, and the Hierarchy element has no <code class="ph codeph"><Table></code> child element or <code class="ph codeph">primaryKey</code>                  attribute.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_time_dimensions">
+            <div id="section_16" class="mt-page-section"><span id="Time_Dimensions"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Time Dimensions</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">Time dimensions based on year/month/week/day are coded differently in the Analyzer for MongoDB schema due to the MDX time related functions such as:</p>
+                <div class="p">
+                  <ul class="ul" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_time_dimensions__ul_g1m_nbt_tm">
+                    <li class="li"><code class="ph codeph">ParallelPeriod([level[, index[, member]]])</code></li>
+                    <li class="li"><code class="ph codeph">PeriodsToDate([level[, member]])</code></li>
+                    <li class="li"><code class="ph codeph">WTD([member])</code></li>
+                    <li class="li"><code class="ph codeph">MTD([member])</code></li>
+                    <li class="li"><code class="ph codeph">QTD([member])</code></li>
+                    <li class="li"><code class="ph codeph">YTD([member])</code></li>
+                    <li class="li"><code class="ph codeph">LastPeriod(index[, member])</code></li>
+                  </ul>
+                </div>
+                <p class="p">Time dimensions have <code class="ph codeph">type=&quot;TimeDimension&quot;</code>. The role of an attribute in a time dimension is indicated by the attributes's <code class="ph codeph">levelType</code> attribute, whose allowable values
+                  are as follows:</p>
+                <div class="p">
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_time_dimensions__table_nr2_wbt_tm" rules="all" summary="">
+                      <caption><span class="tablecap">Table 4. Time Dimension Values</span> </caption>
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1338" valign="top" width="50%"><code class="ph codeph">leveltype</code> Value</th>
+                          <th class="entry" id="698f702b-cf86-432a-b26e-ac98606f2da9__d3028e1343" valign="top" width="50%">Meaning</th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeYears</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level is a year</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeHalfYear</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level is a half-year</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeQuarters</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level is a quarter</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeMonths</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level is a month</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeWeeks</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level is a week</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeDays</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level represents days</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeHours</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level represents hours</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeMinutes</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level represents minutes</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeSeconds</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Level represents seconds</td>
+                        </tr>
+                        <tr>
+                          <td class="entry" headers="d3028e1338 " valign="top" width="50%">TimeUnknown</td>
+                          <td class="entry" headers="d3028e1343 " valign="top" width="50%">Represents an unspecified time period</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p class="p">Here is an example of a time dimension:</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Dimension name=&quot;Time&quot; type=&quot;TimeDimension&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Periods&quot; primaryKey=&quot;dateid&quot;>
+<Table name=&quot;datehierarchy&quot;/>
+<Level name=&quot;Year&quot; column=&quot;year&quot; uniqueMembers=&quot;true&quot; levelType=&quot;TimeYears&quot; type=&quot;Numeric&quot;/>
+<Level name=&quot;Quarter&quot; column=&quot;quarter&quot; uniqueMembers=&quot;false&quot; levelType=&quot;TimeQuarters&quot;/>
+<Level name=&quot;Month&quot; column=&quot;month&quot; uniqueMembers=&quot;false&quot; ordinalColumn=&quot;month&quot; nameColumn=&quot;month_name&quot; levelType=&quot;TimeMonths&quot; type=&quot;Numeric&quot;/>
+<Level name=&quot;Week&quot; column=&quot;week_in_month&quot; uniqueMembers=&quot;false&quot; levelType=&quot;TimeWeeks&quot;/>
+<Level name=&quot;Day&quot; column=&quot;day_in_month&quot; uniqueMembers=&quot;false&quot; ordinalColumn=&quot;day_in_month&quot; nameColumn=&quot;day_name&quot; levelType=&quot;TimeDays&quot; type=&quot;Numeric&quot;/>
+</Hierarchy>
+</Dimension></pre> </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_member_properties">
+            <div id="section_17" class="mt-page-section"><span id="Member_Properties"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Member Properties</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">Member properties are defined by the <code class="ph codeph"><Property></code> element within an <code class="ph codeph"><Attribute></code>.</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;City&quot; keyColumn=&quot;city_id&quot;>
+<Property attribute=&quot;Country&quot;/>
+<Property attribute=&quot;State&quot;/>
+<Property attribute=&quot;City Population&quot; name=&quot;Population&quot;/>
+</Attribute></pre> </div>
+                <p class="p">The <code class="ph codeph">[City]</code> attribute and three properties are defined here. Each property is defined in terms of another attribute in the same dimension. The <code class="ph codeph">State</code> and <code class="ph codeph">Country</code>                  properties inherit the name of the attribute they are defined from; the property created from the<code class="ph codeph"> City Population</code> attribute has an explicit name attribute to rename it to <code class="ph codeph">Population</code>.</p>
+                <p class="p">Since properties are defined from attributes, they are not simple values. They have a key, a name, a caption, and a sort order, just like attributes.</p>
+                <p class="p">The attribute used to define a property must be functionally dependent. It would be illegal to define a property based on the <code class="ph codeph">[Zipcode]</code> attribute, for instance, because there might be more than one zip code
+                  in a given city. But each city has only one value for state, country, and population.</p>
+                <p class="p">You can also supply a nested <code class="ph codeph"><PropertyFormatter></code> element define a property formatter, which is explained later.</p>
+                <p class="p">Once properties have been defined in the schema, all members of that attribute will have those properties. This applies to members of its attribute hierarchy, and also to members of a level of an explicit hierarchy, if that level is based
+                  on that attribute. In an MDX query, you can access those properties via the <code class="ph codeph">member.Properties(&quot;propertyName&quot;)</code> function, for example:</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SELECT {[Measures].[Store Sales]} ON COLUMNS, 
+TopCount( 
+Filter( 
+[Customer].[City].Members, 
+[Customer].[City].CurrentMember.Properties(&quot;Population&quot;) < 
+10000), 
+10, 
+[Measures].[Store Sales]) ON ROWS 
+FROM [Sales]</pre> </div>
+                <p class="p">Analyzer for MongoDB deduces the type of the property expression, if it can. If the property name is a constant string, the type is based upon the type attribute (<code class="ph codeph">String</code>, <code class="ph codeph">Numeric</code>                  or <code class="ph codeph">Boolean</code>) of the property definition. If the property name is an expression - for example, <code class="ph codeph">CurrentMember.Properties(&quot;Popu&quot; + &quot;lation&quot;)</code> - Analyzer for
+                  MongoDB will return an untyped value.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_order_display_levels">
+            <div id="section_18" class="mt-page-section"><span id="Order_and_Display_of_Levels"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Order and Display of Levels</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">Notice in the time hierarchy example above, the <code class="ph codeph">ordinalColumn</code> and <code class="ph codeph">nameColumn</code> attributes on the <code class="ph codeph"><Level></code> element. These affect how levels are displayed
+                  in a result. The <code class="ph codeph">ordinalColumn</code> attribute specifies a column in the <span class="ph filepath">Hierarchy</span>  table that provides the order of the members in a given level, while <code class="ph codeph">nameColumn</code>                  specifies a column that will be displayed.</p>
+                <p class="p">For example, in the Month level above, the date hierarchy table has <code class="ph codeph">month</code> (1 .. 12) and <code class="ph codeph">month_name </code>(January, February, ...) columns. The column value that will be used internally
+                  within MDX is the <code class="ph codeph">month</code> column, so valid member specifications will be of the form:</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[Time].[2005].[Q1].[1].</pre> </div>
+                <p class="p">Members of the <code class="ph codeph">[Month]</code> level will be displayed in the order of January, February, etc.</p>
+                <p class="p">Ordinal columns may be of any data type which can legally be used in an <code class="ph codeph">ORDER BY</code> clause. The scope of ordering is per-parent, so in the example above, the <code class="ph codeph">day_in_month</code> column
+                  should cycle for each month. Values returned by the JDBC driver should be non-null instances of <code class="ph codeph">java.lang.Comparable</code> which yield the desired ordering when their <code class="ph codeph">Comparable.compareTo</code>                  method is named.</p>
+                <p class="p">Levels contain a type attribute, which can have values <code class="ph codeph">String</code>, <code class="ph codeph">Integer</code>, <code class="ph codeph">Numeric</code>, <code class="ph codeph">Boolean</code>, <code class="ph codeph">Date</code>,
+                  <code class="ph codeph">Time</code>, and <code class="ph codeph">Timestamp</code>. The default value is <code class="ph codeph">Numeric</code> because key columns generally have a numeric type.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_level_cardinality">
+            <div id="section_19" class="mt-page-section"><span id="Approximate_Level_Cardinality"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Approximate Level Cardinality</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">The <code class="ph codeph"><Level></code> element allows specifying the optional attribute <code class="ph codeph">approxRowCount</code>. Specifying <code class="ph codeph">approxRowCount</code> can improve performance by reducing the
+                  need to determine level, hierarchy, and dimension cardinality. This can have a significant impact when connecting via XMLA.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="698f702b-cf86-432a-b26e-ac98606f2da9__concept_default_measure_attribute">
+            <div id="section_20" class="mt-page-section"><span id="Default_Measure_Attribute"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Default Measure Attribute</strong> 
+              </h3>
+              <div class="body conbody">
+                <p class="p">The <code class="ph codeph"><Cube></code> element allows specifying the optional attribute of <code class="ph codeph">defaultMeasure</code>.</p>
+                <p class="p">Specifying <code class="ph codeph">defaultMeasure</code> in the <code class="ph codeph"><Cube></code> element allows users to explicitly specify any base measure as a default Measure.</p>
+                <p class="p">Note that if a default measure is not specified, it takes the first measure defined in the cube as the default.</p>
+                <p class="p">Specifying the <code class="ph codeph">defaultMeasure</code> explicitly would be useful in cases where you would want a calculated member to be picked up as the default measure.</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Cube name=&quot;Sales&quot; defaultMeasure=&quot;Unit Sales&quot;>
+...
+<CalculatedMember name=&quot;Profit&quot; dimension=&quot;Measures&quot;>
+<Formula>[Measures].[Store Sales] - [Measures].[Store Cost]</Formula>
+...
+</CalculatedMember>
+</Cube></pre> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Cube" rel="internal">Cube</a>  </li>
+      <li> <a href="#Measures" rel="internal">Measures</a>  </li>
+      <li> <a href="#Attribute_Order" rel="internal">Attribute Order</a>  </li>
+      <li>
+        <a href="#Hierarchies_and_Levels" rel="internal">Hierarchies and Levels</a> 
+        <ol>
+          <li> <a href="#(All)_and_Default_Members" rel="internal">(All) and Default Members</a>  </li>
+          <li> <a href="#Designing_Attributes_for_Use_in_Hierarchies" rel="internal">Designing Attributes for Use in Hierarchies</a>  </li>
+          <li> <a href="#Attribute_Hierarchies" rel="internal">Attribute Hierarchies</a>  </li>
+          <li> <a href="#Attributes_vs._Hierarchies" rel="internal">Attributes vs. Hierarchies</a>  </li>
+          <li>
+            <a href="#Schema_Short_Cuts" rel="internal">Schema Short Cuts</a> 
+            <ol>
+              <li> <a href="#Attribute_as_Shorthand_for_a_Singleton_Nested_Collection" rel="internal">Attribute as Shorthand for a Singleton Nested Collection</a>  </li>
+              <li> <a href="#Inherited_Attributes" rel="internal">Inherited Attributes</a>  </li>
+              <li> <a href="#Default_Values_for_Attributes" rel="internal">Default Values for Attributes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Dimensions" rel="internal">Dimensions</a> 
+        <ol>
+          <li> <a href="#The_Measures_Dimension" rel="internal">The Measures Dimension</a>  </li>
+          <li> <a href="#Degenerate_Dimensions" rel="internal">Degenerate Dimensions</a>  </li>
+          <li> <a href="#Time_Dimensions" rel="internal">Time Dimensions</a>  </li>
+          <li> <a href="#Member_Properties" rel="internal">Member Properties</a>  </li>
+          <li> <a href="#Order_and_Display_of_Levels" rel="internal">Order and Display of Levels</a>  </li>
+          <li> <a href="#Approximate_Level_Cardinality" rel="internal">Approximate Level Cardinality</a>  </li>
+          <li> <a href="#Default_Measure_Attribute" rel="internal">Default Measure Attribute</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

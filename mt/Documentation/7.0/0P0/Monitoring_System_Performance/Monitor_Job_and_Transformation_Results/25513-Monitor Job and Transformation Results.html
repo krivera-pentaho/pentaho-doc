@@ -1,0 +1,71 @@
+<content type="text/html" title="Monitor Job and Transformation Results">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">You can view remotely executed and scheduled job and transformation details, including the date and time that they were run, and their status and results, through the <strong class="ph b">PDI Status</strong>  page. To view it, navigate to the
+          <span
+          class="ph filepath">/pentaho/kettle/status</span>  page on your Pentaho Server (change the host name and port to match your configuration):</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/pentaho/kettle/status</pre>
+        <p class="p">You must be logged in to ensure you are redirected to the login page.</p>
+        <p class="p">You can get to a similar page in Spoon by using the <strong class="ph b">Monitor</strong>  function of a slave server.&nbsp;This page clears when the server is restarted, or at the interval specified by the <code>object_timeout_minutes</code> setting.&nbsp;</p>
+        <div id="section_1" class="mt-page-section"><span id="On_Carte"></span> 
+          <h2 class="editable">On&nbsp;Carte</h2>
+          <p class="p">Any action done through the Carte server embedded in the Pentaho&nbsp;Server is controlled through the <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/kettle/slave-server-config.xml</span>  file.&nbsp;Notice
+            the <strong class="ph b">Configuration details</strong>  table at the bottom of the screen. This shows the three configurable settings for schedule and remote execution logging.</p>
+          <p class="pentaho-note">To make modifications to slave-server-config.xml, you must stop the Pentaho&nbsp;Server.</p>
+          <p class="p">The&nbsp;three configurable options in the <span class="ph filepath">slave-server-config.xml</span>  file&nbsp;are explained&nbsp;in the following table:</p>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="note note">
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" style="color: rgb(0, 0, 0); font-size: 16px; font-style: normal; line-height: inherit;" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="ba701cb2-d3dc-42a9-88c1-989c167ee848__d70139e30" valign="bottom" width="33.333333333333336%">Property</th>
+              <th align="left" class="stentry propvaluehd" id="ba701cb2-d3dc-42a9-88c1-989c167ee848__d70139e33" style="width: 225px;" valign="bottom" width="66.66666666666667%">Values</th>
+              <th align="left" class="stentry propdeschd" id="ba701cb2-d3dc-42a9-88c1-989c167ee848__d70139e36" style="width: 231px;" valign="bottom" width="NaN%">Description</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70139e30" valign="top" width="33.333333333333336%">max_log_lines</td>
+              <td class="stentry propvalue" headers="d70139e33" style="width: 225px;" valign="top" width="66.66666666666667%">Any value of 0 (zero) or greater. 0 indicates that there is no limit.</td>
+              <td class="stentry propdesc" headers="d70139e36" style="width: 231px;" valign="top" width="NaN%">Truncates the execution log when it goes beyond this many lines.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70139e30" valign="top" width="33.333333333333336%">max_log_timeout_minutes</td>
+              <td class="stentry propvalue" headers="d70139e33" style="width: 225px;" valign="top" width="66.66666666666667%">Any value of 0 (zero) or greater. 0 indicates that there is no timeout.</td>
+              <td class="stentry propdesc" headers="d70139e36" style="width: 231px;" valign="top" width="NaN%">Removes lines from each log entry if it is older than this many minutes.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70139e30" valign="top" width="33.333333333333336%">object_timeout_minutes</td>
+              <td class="stentry propvalue" headers="d70139e33" style="width: 225px;" valign="top" width="66.66666666666667%">Any value of 0 (zero) or greater. 0 indicates that there is no timeout.</td>
+              <td class="stentry propdesc" headers="d70139e36" style="width: 231px;" valign="top" width="NaN%">Removes entries from the list if they are older than this many minutes.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="example">
+      <p>The following code block is an example of the&nbsp;<span class="ph filepath">slave-server-config.xml</span>  file:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+  <max_log_lines>0</max_log_lines>
+  <max_log_timeout_minutes>0</max_log_timeout_minutes>
+  <object_timeout_minutes>0</object_timeout_minutes>
+</slave_config></pre>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#On_Carte" rel="internal">On&nbsp;Carte</a>  </li>
+    </ol>
+  </body>
+</content>

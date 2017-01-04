@@ -1,0 +1,681 @@
+<content type="text/html" title="Jobs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides information on web service&nbsp;calls to create, run, and delete jobs. &nbsp;Calls for getting images, statuses and for starting and stopping jobs are also included.</p>
+        </div>
+      </div>
+      <p>Provides web service calls to create, run, and delete jobs. &nbsp;Calls for getting images, statuses and for starting and stopping jobs are also included. &nbsp;</p>
+      <p class="pentaho-note">You will need to modify the example URLs if you are working with the PDI server instead of a standalone Carte server.</p>
+      <p>The following resources are applicable.</p>
+      <ul class="pentaho-list-unordered">
+        <li>/kettle/addJobs</li>
+        <li>/kettle/jobImage</li>
+        <li>/kettle/jobStatus</li>
+        <li><span style="line-height: 1.5;">/kettle/</span> runJob</li>
+        <li>/kettle/startJob</li>
+        <li>/kettle/stopJob&#8203;</li>
+        <li>/kettle/removeJob</li>
+      </ul>
+      <div id="section_2" class="mt-page-section"><span id=".2Fkettle.2FaddJobs"></span> 
+        <h2 class="editable">/kettle/addJobs</h2>
+        <div id="section_3" class="mt-page-section"><span id="Overview_2"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Uploads and executes job configuration XML file.&nbsp;</p>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="POST"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Uploads and executes job configuration XML file. Uploads xml file containing job and job_execution_configuration (wrapped in job_configuration tag) to be executed and executes it. Method relies on the input parameter to determine if xml or html
+            reply should be produced. The job_configuration xml is transferred within request body. <code>Job name of the executed job </code> will be returned in the Response object or <code>message</code> describing error occurred. To determine if the
+            call successful or not you should rely on <code>result</code> parameter in response.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/addJob/?xml=Y</pre>
+          <p>Request body should contain xml containing job_configuration (job + job_execution_configuration wrapped in job_configuration tag).</p>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Parameters"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>xml</td>
+                <td>Boolean flag set to either <code>Y</code> or <code>N</code> describing if xml or html reply should be produced.</td>
+                <td>boolean, optional</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Response_Body"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">element:</td>
+                <td>(custom)</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>text/xml, text/html</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Response wraps job name that was executed or error stack trace if an error occurred. Response has <code>result</code> OK if there were no errors. Otherwise it returns ERROR.</p>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+   <result>OK</result>
+   <message>Job 'dummy_job' was added to the list with id 1e90eca8-4d4c-47f7-8e5c-99ec36525e7c</message>
+   <id>1e90eca8-4d4c-47f7-8e5c-99ec36525e7c</id>
+</webresult></pre> </div>
+        <div id="section_7" class="mt-page-section"><span id="Status_Codes"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed and XML response is returned.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <a name="toString()"> </a> 
+          </p>
+        </div>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id=".2Fkettle.2FjobImage"></span> 
+        <h2 class="editable">/kettle/jobImage</h2>
+        <div id="section_9" class="mt-page-section"><span id="Overview_3"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Generates and returns image of the specified job.&nbsp;</p>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="GET"></span> 
+          <h3 class="editable">GET</h3>
+          <p>Generates PNG image of the specified job currently present on Carte server. Job name and Carte job ID (optional) is used for specifying job to get information for. Response is binary of the PNG image.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/jobImage?name=dummy_job</pre> </div>
+        <div id="section_11" class="mt-page-section"><span id="Parameters_2"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td>Name of the job to be used for image generation.</td>
+                <td>query</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>Carte id of the job to be used for image generation.</td>
+                <td>query, optional</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Response_Body_2"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">binary streak:</td>
+                <td>image</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>image/png</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>A binary PNG image or empty response if no job is found.</p>
+        </div>
+        <div id="section_13" class="mt-page-section"><span id="Status_Codes_2"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <a name="toString()"> </a> 
+          </p>
+        </div>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id=".2Fkettle.2FjobStatus"></span> 
+        <h2 class="editable">/kettle/jobStatus</h2>
+        <div id="section_15" class="mt-page-section"><span id="Overview_4"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Retrieves status of the specified job.</p>
+        </div>
+        <div id="section_16" class="mt-page-section"><span id="GET_2"></span> 
+          <h3 class="editable">GET</h3>
+          <p>Retrieves status of the specified job. Status is returned as HTML or XML output depending on the input parameters. Status contains information about last execution of the job.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/jobStatus/?name=dummy_job&amp;xml=Y</pre> </div>
+        <div id="section_17" class="mt-page-section"><span id="Parameters_3"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td>Name of the job to be used for status generation.</td>
+                <td>query</td>
+              </tr>
+              <tr>
+                <td>xml</td>
+                <td>Boolean flag which defines output format <code>Y</code> forces XML output to be generated. HTML is returned otherwise.</td>
+                <td>boolean, optional</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>Carte id of the job to be used for status generation.</td>
+                <td>query, optional</td>
+              </tr>
+              <tr>
+                <td>from</td>
+                <td>Start line number of the execution log to be included into response.</td>
+                <td>integer, optional</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_18" class="mt-page-section"><span id="Response_Body_3"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">element:</td>
+                <td>(custom)</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>text/xml, text/html</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Response XML or HTML response containing details about the job specified. If an error occurs during method invocation <code>result</code> field of the response will contain <code>ERROR</code> status.</p>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobstatus>
+    <jobname>dummy_job</jobname>
+    <id>a4d54106-25db-41c5-b9f8-73afd42766a6</id>
+    <status_desc>Finished</status_desc>
+    <error_desc/>
+    <logging_string><![CDATA[H4sIAAAAAAAAADMyMDTRNzTUNzRXMDC3MjS2MjJQ0FVIKc3NrYzPyk8CsoNLEotKFPLTFEDc1IrU5NKSzPw8Xi4j4nRm5qUrpOaVFFUqRLuE+vpGxhKj0y0zL7M4IzUFYieybgWNotTi0pwS2+iSotLUWE1iTPNCdrhCGtRsXi4AOMIbLPwAAAA=]]></logging_string>
+    <first_log_line_nr>0</first_log_line_nr>
+    <last_log_line_nr>20</last_log_line_nr>
+    <result>
+      <lines_input>0</lines_input>
+      <lines_output>0</lines_output>
+      <lines_read>0</lines_read>
+      <lines_written>0</lines_written>
+      <lines_updated>0</lines_updated>
+      <lines_rejected>0</lines_rejected>
+      <lines_deleted>0</lines_deleted>
+      <nr_errors>0</nr_errors>
+      <nr_files_retrieved>0</nr_files_retrieved>
+      <entry_nr>0</entry_nr>
+      <result>Y</result>
+      <exit_status>0</exit_status>
+      <is_stopped>N</is_stopped>
+      <log_channel_id/>
+      <log_text>null</log_text>
+      <result-file/>
+      <result-rows/>
+    </result>
+  </jobstatus></pre> </div>
+        <div id="section_19" class="mt-page-section"><span id="Status_Codes_3"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <a name="toString()"> </a> 
+          </p>
+        </div>
+      </div>
+      <div id="section_20" class="mt-page-section"><span id=".2Fkettle.2FrunJob"></span> 
+        <h2 class="editable">/kettle/runJob</h2>
+        <div id="section_21" class="mt-page-section"><span id="Overview_5"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Executes job from enterprise repository.</p>
+        </div>
+        <div id="section_22" class="mt-page-section"><span id="GET_3"></span> 
+          <h3 class="editable">GET</h3>
+          <p>Executes job from enterprise repository. Repository should be configured in configuration.xml file. Response contains <code>ERROR</code> result if error happened during job execution.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/runJob?job=home%2Fadmin%2Fdummy_job&amp;level=Debug</pre> </div>
+        <div id="section_23"
+        class="mt-page-section"><span id="Parameters_4"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>job</td>
+                <td>Full path to the job in repository.</td>
+                <td>query</td>
+              </tr>
+              <tr>
+                <td>level</td>
+                <td>Logging level to be used for job execution (i.e. Debug).</td>
+                <td>query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_24" class="mt-page-section"><span id="Response_Body_4"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">element:</td>
+                <td>(custom)</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>text/xml</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Response contains result of the operation. It is either <code>OK</code> or <code>ERROR</code>. If an error occurred during job execution, response also contains information about the error.</p>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Job started</message>
+      <id>05d919b0-74a3-48d6-84d8-afce359d0449</id>
+    </webresult></pre> </div>
+        <div id="section_25" class="mt-page-section"><span id="Status_Codes_4"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <a name="toString()"> </a> 
+          </p>
+        </div>
+      </div>
+      <div id="section_26" class="mt-page-section"><span id=".2Fkettle.2FstartJob"></span> 
+        <h2 class="editable">/kettle/startJob</h2>
+        <div id="section_27" class="mt-page-section"><span id="Overview_6"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Starts the job.</p>
+        </div>
+        <div id="section_28" class="mt-page-section"><span id="GET_4"></span> 
+          <h3 class="editable">GET</h3>
+          <p>Starts the job. If the job cannot be started, an error is returned.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/startJob/?name=dummy_job&amp;xml=Y</pre> </div>
+        <div id="section_29" class="mt-page-section"><span id="Parameters_5"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td>Name of the job to be executed.</td>
+                <td>query</td>
+              </tr>
+              <tr>
+                <td>xml</td>
+                <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                <td>boolean, optional</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>Carte job ID of the job to be executed. This parameter is optional when xml=Y is used.</td>
+                <td>query, optional</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_30" class="mt-page-section"><span id="Response_Body_5"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">text:</td>
+                <td>HTML</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>text/xml, text/html</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Job [dummy_job] was started.</message>
+      <id>abd61143-8174-4f27-9037-6b22fbd3e229</id>
+    </webresult></pre> </div>
+        <div id="section_31" class="mt-page-section"><span id="Status_Codes_5"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="section_32" class="mt-page-section"><span id=".2Fkettle.2FstopJob"></span> 
+        <h2 class="editable">/kettle/stopJob</h2>
+        <div id="section_33" class="mt-page-section"><span id="Overview_7"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Stops job execution on Carte server.</p>
+          <p>
+            <a name="GET"></a> 
+          </p>
+        </div>
+        <div id="section_34" class="mt-page-section"><span id="GET_5"></span> 
+          <h3 class="editable">GET</h3>
+          <p>Stops job execution on Carte server.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/stopJob/?name=dummy_job&amp;xml=Y</pre> </div>
+        <div id="section_35" class="mt-page-section"><span id="Parameters_6"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td>Name of the job to be stopped.</td>
+                <td>query</td>
+              </tr>
+              <tr>
+                <td>xml</td>
+                <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                <td>boolean, optional</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>Carte job ID of the job to be stopped. This parameter is optional when xml=Y is used.</td>
+                <td>query, optional</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_36" class="mt-page-section"><span id="Response_Body_6"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">text:</td>
+                <td>HTML</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>text/xml, text/html</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Job [dummy_job] stop requested.</message>
+      <id/>
+    </webresult></pre> </div>
+        <div id="section_37" class="mt-page-section"><span id="Status_Codes_6"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+          <dl>
+            <dt>&nbsp;</dt>
+          </dl>
+          <p>
+            <a name="toString()"> </a> 
+          </p>
+        </div>
+      </div>
+      <div id="section_38" class="mt-page-section"><span id=".2Fkettle.2FremoveJob"></span> 
+        <h2 class="editable">/kettle/removeJob</h2>
+        <div id="section_39" class="mt-page-section"><span id="Overview_8"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Remove specified job from Carte server.</p>
+        </div>
+        <div id="section_40" class="mt-page-section"><span id="GET_6"></span> 
+          <h3 class="editable">GET</h3>
+          <p>Remove specified job from Carte server.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/removeJob/?name=dummy_job&amp;xml=Y</pre> </div>
+        <div id="section_41" class="mt-page-section"><span id="Parameters_7"></span> 
+          <h3 class="editable">Parameters</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+                <th>type</th>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td>Name of the job to be removed.</td>
+                <td>query</td>
+              </tr>
+              <tr>
+                <td>xml</td>
+                <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                <td>boolean, optional</td>
+              </tr>
+              <tr>
+                <td>id</td>
+                <td>Carte job ID of the job to be removed. This parameter is optional when xml=Y is used.</td>
+                <td>query, optional</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_42" class="mt-page-section"><span id="Response_Body_7"></span> 
+          <h3 class="editable">Response Body</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <td align="right">text:</td>
+                <td>HTML</td>
+              </tr>
+              <tr>
+                <td align="right">media types:</td>
+                <td>text/xml, text/html</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message/>
+      <id/>
+    </webresult></pre> </div>
+        <div id="section_43" class="mt-page-section"><span id="Status_Codes_7"></span> 
+          <h3 class="editable">Status Codes</h3>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th>code</th>
+                <th>description</th>
+              </tr>
+              <tr>
+                <td>200</td>
+                <td>Request was processed.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal server error occurs during request processing.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <a name="toString()"> </a> 
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fkettle.2FaddJobs" rel="internal">/kettle/addJobs</a> 
+        <ol>
+          <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+          <li> <a href="#POST" rel="internal">POST</a>  </li>
+          <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FjobImage" rel="internal">/kettle/jobImage</a> 
+        <ol>
+          <li> <a href="#Overview_3" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET" rel="internal">GET</a>  </li>
+          <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FjobStatus" rel="internal">/kettle/jobStatus</a> 
+        <ol>
+          <li> <a href="#Overview_4" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_2" rel="internal">GET</a>  </li>
+          <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FrunJob" rel="internal">/kettle/runJob</a> 
+        <ol>
+          <li> <a href="#Overview_5" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_3" rel="internal">GET</a>  </li>
+          <li> <a href="#Parameters_4" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FstartJob" rel="internal">/kettle/startJob</a> 
+        <ol>
+          <li> <a href="#Overview_6" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_4" rel="internal">GET</a>  </li>
+          <li> <a href="#Parameters_5" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body_5" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes_5" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FstopJob" rel="internal">/kettle/stopJob</a> 
+        <ol>
+          <li> <a href="#Overview_7" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_5" rel="internal">GET</a>  </li>
+          <li> <a href="#Parameters_6" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body_6" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes_6" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FremoveJob" rel="internal">/kettle/removeJob</a> 
+        <ol>
+          <li> <a href="#Overview_8" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_6" rel="internal">GET</a>  </li>
+          <li> <a href="#Parameters_7" rel="internal">Parameters</a>  </li>
+          <li> <a href="#Response_Body_7" rel="internal">Response Body</a>  </li>
+          <li> <a href="#Status_Codes_7" rel="internal">Status Codes</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

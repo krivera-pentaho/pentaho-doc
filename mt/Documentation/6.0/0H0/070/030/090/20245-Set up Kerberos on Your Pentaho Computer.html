@@ -1,0 +1,280 @@
+<content type="text/html" title="Set up Kerberos on Your Pentaho Computer">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Instructions for setting up Kerberos on Pentaho computers that will connect to Big Data clusters.</p>
+      </div>
+    </div>
+    <div>
+      <div class="topic task nested1">
+        <p>Instructions for setting up Kerberos on Pentaho computers that will connect to Big Data clusters.</p>
+        <div class="topic task nested2">
+          <div id="section_2" class="mt-page-section"><span id="Configure_Kerberos_on_Linux_and_Mac"></span> 
+            <h2 class="editable">Configure Kerberos on Linux and Mac</h2>
+            <div class="body taskbody">
+              <div class="section context">
+                <div class="p">To configure Linux computers, complete these tasks.</div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_3" class="mt-page-section"><span id="Install_JCE_on_Linux_and_Mac"></span> 
+                <h3 class="editable">Install JCE on Linux and Mac</h3>
+                <div class="body taskbody">
+                  <div class="section context">This step is optional. The KDC configuration includes an AES-256 encryption setting. If you want to use this encryption strength, you will need to install the Java Cryptographic Extension (JCE) files.</div>
+                  <ol class="ol steps">
+                    <li class="li step"><span class="ph cmd">Download the Java Cryptographic Extension (JCE) for the <a class="xref" title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0D0/160/010">currently supported version of Java</a>  from the <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html">Oracle site</a> . </span> </li>
+                    <li class="li step"><span class="ph cmd">Read the installation instructions that are included with the download.</span> </li>
+                    <li class="li step"><span class="ph cmd">Copy the JCE jars to the <span class="ph filepath">java/lib/security</span>  directory where PDI is installed on the Linux machine. </span> 
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_4" class="mt-page-section"><span id="Download_and_Install_Kerberos_on_Linux_and_Mac"></span> 
+                <h3 class="editable">Download and Install Kerberos on Linux and Mac</h3>
+                <div class="body taskbody">
+                  <div class="section context">Download and install a Kerberos . Check your operating system's documentation for further details on how to do this.</div>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_5" class="mt-page-section"><span id="Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Linux_and_Mac"></span> 
+                <h3 class="editable">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux and Mac</h3>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">Modify the Kerberos configuration file to reflect your Realm, KDC, and Admin Server.</p>
+                  </div>
+                  <ol class="ol steps">
+                    <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">krb5.conf</span>  file. By default this file is located in <span class="filepath style-wrap"><span class="ph filepath">/etc/krb5.conf</span> </span>, but it might be somewhere else
+                      on your system.</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">Add your Realm, KDC, and Admin Server information. The information in-between the carats <strong class="ph b">< ></strong>  indicates where you should modify the code to match your specific environment settings.</span>                       <pre class="pre codeblock">
+[libdefaults]
+       default_realm = <strong><YOUR_REALM.COM></strong> 
+...
+[realms]
+<strong><YOUR_REALM.COM></strong> = {
+kdc=<strong><KDC IP Address, or resolvable Hostname></strong> 
+admin_server=<strong><Admin Server IP Address, or resolvable Hostname></strong> 
+...
+}
+[domain_realm]
+<strong><.your_realm.com></strong>  = <strong><YOUR_REALM.COM></strong> 
+<strong><your_realm.com></strong>  = <strong><YOUR_REALM.COM></strong> 
+</pre> </li>
+                    <li class="li step"><span class="ph cmd">Save and close the configuration file.</span> </li>
+                    <li class="li step"><span class="ph cmd">Restart the computer.</span> </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_6" class="mt-page-section"><span id="Synchronize_Clock_on_Linux_and_Mac"></span> 
+                <h3 class="editable">Synchronize Clock on Linux and Mac</h3>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">Synchronize the clock on the Linux with the clock on the Hadoop cluster. This is important because if the clocks are too far apart, then when authentication is attempted, Kerberos will not consider the tickets that are granted to be
+                      valid and the user will not be authenticated.</p>
+                    <p class="p">Consult your operating system's documentation for information on how to properly set your clock.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_7" class="mt-page-section"><span id="Obtain_Kerberos_Ticket_on_Linux_and_Mac"></span> 
+                <h3 class="editable">Obtain Kerberos Ticket on Linux and Mac</h3>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">To obtain a Kerberos ticket, complete these steps.</p>
+                  </div>
+                  <ol class="ol steps">
+                    <li class="li step"><span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  window and type <span class="ph filepath">kinit</span>  at the prompt.</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">When prompted for a password, enter it.</span> </li>
+                    <li class="li step"><span class="ph cmd">The prompt appears again. To ensure that the Kerberos ticket was granted, type <span class="ph filepath">klist</span>  at the prompt.</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">Authentication information appears.</span> </li>
+                  </ol>
+                  <div id="section_8" class="mt-page-section"><span id="Next_Step"></span> 
+                    <h3 class="editable">
+                      <span class="ph cmd">Next Step</span> 
+                    </h3>
+                    <p class="li step"><span class="ph cmd">Go to the <a title="Connect Pentaho to a Secure Cloudera Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/030/090#Set_Up_User_Accounts_and_Ensure_Network_Access_On_Cluster_and_PDI">Set Up User Accounts and Ensure Network Access</a>  section.</span> </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic task nested2">
+          <div id="section_9" class="mt-page-section"><span id="Configure_Kerberos_on_Windows"></span> 
+            <h2 class="editable">Configure Kerberos on Windows</h2>
+            <div class="body taskbody">
+              <div class="section context">
+                <div class="p">To configure Kerberos Windows computers, complete these tasks.</div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_10" class="mt-page-section"><span id="Install_JCE_on_Windows"></span> 
+                <h3 class="editable">Install JCE on Windows</h3>
+                <div class="body taskbody">
+                  <div class="section context">This step is optional. The KDC configuration includes an AES-256 encryption setting. If you want to use this encryption strength, you will need to install the Java Cryptographic Extension (JCE) files.</div>
+                  <ol class="ol steps">
+                    <li class="li step"><span class="ph cmd">Download the Java Cryptographic Extension (JCE) for the <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0D0/160/010" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0D0/160/010">currently supported version of Java</a>  from the <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html">Oracle site</a> . </span> </li>
+                    <li class="li step"><span class="ph cmd">Read the installation instructions that are included with the download.</span> </li>
+                    <li class="li step"><span class="ph cmd">Copy the JCE jars to the <span class="ph filepath">java\lib\security</span>  directory where PDI is installed. </span> 
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_11" class="mt-page-section"><span id="Download_and_Install_Kerberos_on_Windows"></span> 
+                <h3 class="editable">Download and Install Kerberos on Windows</h3>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">Download and install a Kerberos . We recommend that you use the Heimdal implementation of Kerberos, which can be found here:
+                      <a class="xref link-https" target="_blank" rel="external nofollow" href="https://www.secure-endpoints.com/heimdal/">https://www.secure-endpoints.com/heimdal/</a> .</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_12" class="mt-page-section"><span id="Edit_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Windows"></span> 
+                <h3 class="editable">Edit Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows</h3>
+                <div class="body taskbody">
+                  <div class="section context">You will need to modify the Kerberos configuration file to reflect the appropriate realm, KDC, and Admin Server.</div>
+                  <ol class="ol steps">
+                    <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap">krb5.conf</span>  file. By default this file is located in </span> <span class="filepath style-wrap">c:\ProgramData\Kerberos.</span> <span class="ph cmd"> This location might be different on your system.</span> </li>
+                    <li class="li step"><span class="ph cmd">Add the appropriate realm, KDC, and Admin Server information. </span> </li>
+                  </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[libdefaults]
+       default_realm = <YOUR_REALM.COM>
+...
+[realms]
+<YOUR_REALM.COM>= {
+kdc=<KDC IP Address, or resolvable Hostname>
+admin_server=<Admin Server IP Address, or resolvable Hostname>
+...
+}
+[domain_realm]
+<.your_realm.com> = <YOUR_REALM.COM>
+<your_realm.com> = <YOUR_REALM.COM></pre>
+                  <ol class="ol steps" start="3">
+                    <li class="li step"><span class="ph cmd">Save and close the configuration file. </span> </li>
+                    <li class="li step"><span class="ph cmd">Make a copy of the configuration file and place it in the <span class="ph filepath">c:\Windows</span>  directory. Rename the file <span class="ph filepath">krb5.ini</span> .</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">Restart the computer.</span> </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_13" class="mt-page-section"><span id="Synchronize_Clock_on_Windows"></span> 
+                <h3 class="editable">Synchronize Clock on Windows</h3>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">Synchronize the clock on the Windows with the clock on the Hadoop cluster. This is important because if the clocks are too far apart, then when authentication is attempted, Kerberos will not consider the tickets that are granted to
+                      be valid and the user will not be authenticated. The times on the Windows clock and the Hadoop cluster clock must not be greater than the range you entered for the <span class="ph filepath">clockskew</span>  variable in <span class="ph filepath">krb5.conf</span>                       file when you completed the steps in the
+                      <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file" rel="internal" href="http://help.pentaho.com/Draft_Content/Chantel_Archive/Chantel_Work_for_6.0/Use_Kerberos_Authentication_to_Provide_Spoon_Users_Access_to_Hadoop_Cluster#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows </a>  task.</p>
+                    <p class="p">Consult your operating system's documentation for information on how to properly set your clock.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested3">
+              <div id="section_14" class="mt-page-section"><span id="Obtain_Kerberos_Ticket_on_Windows"></span> 
+                <h3 class="editable">Obtain Kerberos Ticket on Windows</h3>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">To obtain a Kerberos ticket, complete these steps.</p>
+                  </div>
+                  <ol class="ol steps">
+                    <li class="li step"><span class="ph cmd">Open a<strong> <span class="ph uicontrol">Command Prompt</span> </strong>  window and type <span class="ph filepath">kinit</span>  at the prompt.</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">When prompted for a password, enter it.</span> </li>
+                    <li class="li step"><span class="ph cmd">The prompt appears again. To ensure that the Kerberos ticket was granted, type <span class="ph filepath">klist</span>  at the prompt.</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">Authentication information appears.&nbsp; <em>Note that if you are using</em> </span> <em> the correct version of Kerberos (Heimdal), the klist command output should not have the &quot;Current LoginId is ...&quot; prompt.</em> </li>
+                  </ol>
+                  <div id="section_15" class="mt-page-section"><span id="Next_Step_2"></span> 
+                    <h3 class="editable">
+                      <span class="ph cmd">Next Step</span> 
+                    </h3>
+                    <p class="li step"><span class="ph cmd">Go to the <a title="Connect Pentaho to a Secure Cloudera Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/030/090#Set_Up_User_Accounts_and_Ensure_Network_Access_On_Cluster_and_PDI">Set Up User Accounts and Ensure Network Access</a>  section.</span> </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="section_16" class="mt-page-section"><span id="Set_Up_User_Accounts_and_Network_Access_(All_OS)"></span> 
+        <h2 class="editable">Set Up User Accounts and Network Access (All OS)</h2>
+        <p>Ensure that user accounts and network access has been granted.&nbsp; Specific tasks include:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span style="color:#000000;">Ensure the ports you plan to use are open between the cluster and computers running Pentaho components, like the DI and BA Servers, and the Spoon, PRD, and PME</span> </li>
+          <li>Make sure each and server computer can use a hostname to access each computer on the cluster. Test to ensure that IP addresses resolve to hostnames using both forward and reverse lookups.</li>
+          <li>Add user account credentials for each Pentaho user needing access to the cluster through the Kerberos database.&nbsp;</li>
+          <li>Make sure the UID and GID for the user that you are running your jobs as on the matches the user UID and GID of that user for every computer of the cluster.</li>
+        </ul>
+      </div>
+      <div id="section_17" class="mt-page-section"><span id="Set_up_Impersonation"></span> 
+        <h2 class="editable">Set up Impersonation</h2>
+        <p>To set up impersonation, see
+          <a title="https://help.pentaho.com/Documentation/6.0/0P0/0W0/090" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0W0/090">Use Impersonation to Set Up a MapR Cluster</a> .</p>
+      </div>
+      <div id="section_18" class="mt-page-section"><span id="Next_Step_3"></span> 
+        <h2 class="editable">Next Step</h2>
+        <p>Continue with the configuration process:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a title="Set up Pentaho to Connect to a Cloudera Cluster" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/030/010">Cloudera (CDH)</a>  </li>
+          <li> <a title="Set up Pentaho to Connect to a Hortonworks Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/030/020">Hortonworks (HDP)</a>  </li>
+          <li> <a title="Set up Pentaho to Connect to an Amazon EMR Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/030/030">Amazon EMR </a>  </li>
+          <li> <a title="Set up Pentaho to Connect to a MapR Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/030/040">Mapr</a>  </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Configure_Kerberos_on_Linux_and_Mac" rel="internal">Configure Kerberos on Linux and Mac</a> 
+        <ol>
+          <li> <a href="#Install_JCE_on_Linux_and_Mac" rel="internal">Install JCE on Linux and Mac</a>  </li>
+          <li> <a href="#Download_and_Install_Kerberos_on_Linux_and_Mac" rel="internal">Download and Install Kerberos on Linux and Mac</a>  </li>
+          <li> <a href="#Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Linux_and_Mac" rel="internal">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux and Mac</a>  </li>
+          <li> <a href="#Synchronize_Clock_on_Linux_and_Mac" rel="internal">Synchronize Clock on Linux and Mac</a>  </li>
+          <li> <a href="#Obtain_Kerberos_Ticket_on_Linux_and_Mac" rel="internal">Obtain Kerberos Ticket on Linux and Mac</a>  </li>
+          <li> <a href="#Next_Step" rel="internal">Next Step</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Configure_Kerberos_on_Windows" rel="internal">Configure Kerberos on Windows</a> 
+        <ol>
+          <li> <a href="#Install_JCE_on_Windows" rel="internal">Install JCE on Windows</a>  </li>
+          <li> <a href="#Download_and_Install_Kerberos_on_Windows" rel="internal">Download and Install Kerberos on Windows</a>  </li>
+          <li> <a href="#Edit_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Windows" rel="internal">Edit Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows</a>  </li>
+          <li> <a href="#Synchronize_Clock_on_Windows" rel="internal">Synchronize Clock on Windows</a>  </li>
+          <li> <a href="#Obtain_Kerberos_Ticket_on_Windows" rel="internal">Obtain Kerberos Ticket on Windows</a>  </li>
+          <li> <a href="#Next_Step_2" rel="internal">Next Step</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Set_Up_User_Accounts_and_Network_Access_(All_OS)" rel="internal">Set Up User Accounts and Network Access (All OS)</a>  </li>
+      <li> <a href="#Set_up_Impersonation" rel="internal">Set up Impersonation</a>  </li>
+      <li> <a href="#Next_Step_3" rel="internal">Next Step</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,852 @@
+<content type="text/html" title="Server">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides web service calls related to servers, such as allocating sockets and ports, getting the list of slaves and registering them, and displaying the initial Carte page.</p>
+        </div>
+      </div>
+      <p><span>Provides web service calls related to servers, such as allocating sockets and ports, getting the list of slaves and registering them, and displaying the initial Carte page.</span> </p>
+      <p class="pentaho-note">You will need to modify the example URLs if you are working with the PDI server instead of a standalone Carte server.</p>
+      <div class="container">
+        <div class="column first last span-20">
+          <p>The following resources are applicable:</p>
+          <ul class="pentaho-list-unordered">
+            <li>/</li>
+            <li>/kettle/allocateSocket</li>
+            <li>/kettle/listSocket</li>
+            <li><span style="line-height: 1.5;">/kettle/</span> nextSequence</li>
+            <li>/kettle/registerSlave&#8203;</li>
+            <li>/kettle/getSlaves</li>
+            <li>/kettle/status</li>
+            <li>/kettle/stopCarte</li>
+          </ul>
+          <div id="section_2" class="mt-page-section"><span id=".2F"></span> 
+            <h2 class="editable">/</h2>
+            <div id="section_3" class="mt-page-section"><span id="Overview_2"></span> 
+              <h3 class="editable">Overview</h3>
+              <p>Displays initial Carte page.</p>
+            </div>
+            <div id="section_4" class="mt-page-section"><span id="GET"></span> 
+              <h3 class="editable">GET</h3>
+              <p>Displays initial Carte page.</p>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /</pre>
+              <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                <h4 class="editable">Response Body</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <td align="right">element:</td>
+                      <td>(custom)</td>
+                    </tr>
+                    <tr>
+                      <td align="right">media types:</td>
+                      <td>text/html</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>HTML response containing content of initial page is returned.</p>
+                <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><html>
+<head><title>Kettle slave server</title>
+<meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/>
+</head>
+<body>
+<h2>Slave server menu</h2>
+<p><a href=&quot;/kettle/status&quot;>Show status</a> <br><p>
+</body>
+</html></pre> </div>
+              <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+                <h4 class="editable">Status Codes</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>code</th>
+                      <th>description</th>
+                    </tr>
+                    <tr>
+                      <td>200</td>
+                      <td>Request was processed.</td>
+                    </tr>
+                    <tr>
+                      <td>500</td>
+                      <td>Internal server error occurs during request processing.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="section_7" class="mt-page-section"><span id=".2Fkettle.2FallocateSocket"></span> 
+            <h2 class="editable">/kettle/allocateSocket&#8203;</h2>
+            <p>The following operations are supported on this resource:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#GETallocateSockets">GET</a>  </li>
+              <li> <a href="#POSTallocateSockets">POST</a>  </li>
+            </ul>
+            <div id="section_8" class="mt-page-section"><span id="Overview_3"></span> 
+              <h3 class="editable">Overview</h3>
+              <p>Allows any client to ask for a port number to use. This is necessary because several slaves can be run on the same host. The method ensures the port number is unique for the host name provided and makes sure the slaves are using valid port
+                numbers. Data communication across a cluster of Carte servers happens through TCP/IP sockets. Slave transformations sometimes open (or listen to) tens to hundreds of sockets. When you want to allocate the port numbers for data communication
+                between slave transformation in a kettle clustering run, you need unique combinations of all the parameters below. <code>port number</code> will be returned in the Response object. If an error occurred you'll receive html output describing
+                the problem. HTTP status code of such response is 500.</p>
+              <p>
+                <a name="GETallocateSockets"></a> 
+              </p>
+            </div>
+            <div id="section_9" class="mt-page-section"><span id="GET_2"></span> 
+              <h3 class="editable">GET</h3>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/allocateSocket/?xml=Y&amp;rangeStart=100&amp;host=locahost&amp;id=clust&amp;trans=my_trans&amp;sourceSlave=slave_1
+  &amp;sourceStep=200&amp;sourceCopy=1&amp;targetSlave=slave_2&amp;targetStep=50&amp;targetCopy=1</pre>
+              <p>
+                <a name="POSTallocateSockets"></a> 
+              </p>
+            </div>
+            <div id="section_10" class="mt-page-section"><span id="POST"></span> 
+              <h3 class="editable">POST</h3>
+              <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/allocateSocket/
+POST body
+xml=Y&amp;rangeStart=100&amp;host=locahost&amp;id=clust&amp;trans=my_trans&amp;sourceSlave=slave_1&amp;sourceStep=200&amp;sourceCopy=1&amp;targetSlave=slave_2&amp;targetStep=50&amp;targetCopy=1</pre>
+              <div id="section_11" class="mt-page-section"><span id="Parameters"></span> 
+                <h4 class="editable">Parameters</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>name</th>
+                      <th>description</th>
+                      <th>type</th>
+                    </tr>
+                    <tr>
+                      <td>xml</td>
+                      <td>Boolean flag set to either <code>Y</code> or <code>N</code> describing if xml or html reply should be produced.</td>
+                      <td>boolean, optional</td>
+                    </tr>
+                    <tr>
+                      <td>rangeStart</td>
+                      <td>Port number to start looking from.</td>
+                      <td>integer</td>
+                    </tr>
+                    <tr>
+                      <td>host</td>
+                      <td>Port's host.</td>
+                      <td>query</td>
+                    </tr>
+                    <tr>
+                      <td>id</td>
+                      <td>Carte container id.</td>
+                      <td>query</td>
+                    </tr>
+                    <tr>
+                      <td>trans</td>
+                      <td>Running transformation id.</td>
+                      <td>query</td>
+                    </tr>
+                    <tr>
+                      <td>sourceSlave</td>
+                      <td>Name of the source slave server.</td>
+                      <td>query</td>
+                    </tr>
+                    <tr>
+                      <td>sourceStep</td>
+                      <td>Port number step used on source slave server.</td>
+                      <td>integer</td>
+                    </tr>
+                    <tr>
+                      <td>sourceCopy</td>
+                      <td>Number of copies of the step on source server.</td>
+                      <td>integer</td>
+                    </tr>
+                    <tr>
+                      <td>targetSlave</td>
+                      <td>Name of the target slave server.</td>
+                      <td>query</td>
+                    </tr>
+                    <tr>
+                      <td>targetStep</td>
+                      <td>Port number step used on target slave server.</td>
+                      <td>integer</td>
+                    </tr>
+                    <tr>
+                      <td>targetCopy</td>
+                      <td>Number of copies of the step on target server.</td>
+                      <td>integer</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="section_12" class="mt-page-section"><span id="Response_Body_2"></span> 
+                <h4 class="editable">Response Body</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <td align="right">element:</td>
+                      <td>(custom)</td>
+                    </tr>
+                    <tr>
+                      <td align="right">media types:</td>
+                      <td>text/xml, text/html</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Response wraps port number that was allocated or error stack trace if an error occurred. Response HTTP code is 200 if there were no errors. Otherwise it is 500.</p>
+                <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><port>100</port></pre> </div>
+              <div id="section_13" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                <h4 class="editable">Status Codes</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>code</th>
+                      <th>description</th>
+                    </tr>
+                    <tr>
+                      <td>200</td>
+                      <td>Request was processed and XML response is returned.</td>
+                    </tr>
+                    <tr>
+                      <td>500</td>
+                      <td>Internal server error occurs during request processing. This might also be caused by missing request parameter.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="section_14" class="mt-page-section"><span id=".2Fkettle.2FlistSocket"></span> 
+            <h2 class="editable">/kettle/listSocket</h2>
+            <p>The following operations are supported on this resource:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#GETlistSockets">GET</a>  </li>
+              <li> <a href="#POSTlistSockets">POST</a>  </li>
+            </ul>
+            <div id="section_15" class="mt-page-section"><span id="Overview_4"></span> 
+              <h3 class="editable">Overview</h3>
+              <p>Gets list of ports for specified host. Method is used for listing all or just open ports for specified host. Response contains port number, which transformation it is (was) used for, current status of the port and last date time used.</p>
+              <p>
+                <a name="GETlistSockets"></a> 
+              </p>
+            </div>
+            <div id="section_16" class="mt-page-section"><span id="GET_3"></span> 
+              <h3 class="editable">GET</h3>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/listSocket/?host=127.0.0.1</pre>
+              <p>
+                <a name="POSTlistSockets"></a> 
+              </p>
+            </div>
+            <div id="section_17" class="mt-page-section"><span id="POST_2"></span> 
+              <h3 class="editable">POST</h3>
+              <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/listSocket/
+POST body
+host=127.0.0.1</pre>
+              <div id="section_18" class="mt-page-section"><span id="Parameters_2"></span> 
+                <h4 class="editable">Parameters</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>name</th>
+                      <th>description</th>
+                      <th>type</th>
+                    </tr>
+                    <tr>
+                      <td>host</td>
+                      <td>Host to get ports for.</td>
+                      <td>query</td>
+                    </tr>
+                    <tr>
+                      <td>onlyOpen</td>
+                      <td>Boolean flag that indicates whether all or only open ports should be returned. Set it to <code>Y</code> to get the list of only currently open ports.</td>
+                      <td>boolean, optional</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="section_19" class="mt-page-section"><span id="Response_Body_3"></span> 
+                <h4 class="editable">Response Body</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <td align="right">text:</td>
+                      <td>HTML</td>
+                    </tr>
+                    <tr>
+                      <td align="right">media types:</td>
+                      <td>text/html</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Response is HTML document listing the ports requested.</p>
+                <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><html>
+  <head><title>List of server sockets on server '127.0.0.1'</title></head>
+  <body>
+  
+  </Found 5 ports for host '127.0.0.1'>
+<p>8088 : Transformation=dummy-trans, crt/Dummy (do nothing) 2.0 --> sll/Dummy (do nothing).0 id=b20bcd03-9682-4327-8c42-b129faabbfe1, allocated=false time=Mon Nov 17 09:31:15 BRT 2014
+8089 : Transformation=dummy-trans, crt/Dummy (do nothing) 2.0 --> sll/Dummy (do nothing).1 id=b20bcd03-9682-4327-8c42-b129faabbfe1, allocated=false time=Mon Nov 17 09:31:15 BRT 2014
+8090 : Transformation=dummy-trans, crt/Dummy (do nothing) 2.0 --> sll/Dummy (do nothing).2 id=b20bcd03-9682-4327-8c42-b129faabbfe1, allocated=false time=Mon Nov 17 09:31:15 BRT 2014
+8091 : Transformation=dummy-trans, crt/Dummy (do nothing) 2.0 --> sll/Dummy (do nothing).3 id=b20bcd03-9682-4327-8c42-b129faabbfe1, allocated=false time=Mon Nov 17 09:31:15 BRT 2014
+8092 : Transformation=dummy-trans, crt/Dummy (do nothing) 2.0 --> sll/Dummy (do nothing).4 id=b20bcd03-9682-4327-8c42-b129faabbfe1, allocated=false time=Mon Nov 17 09:31:15 BRT 2014</p>
+</body>>
+</html>></pre> </div>
+              <div id="section_20" class="mt-page-section"><span id="Status_Codes_3"></span> 
+                <h4 class="editable">Status Codes</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>code</th>
+                      <th>description</th>
+                    </tr>
+                    <tr>
+                      <td>200</td>
+                      <td>Request was processed.</td>
+                    </tr>
+                    <tr>
+                      <td>500</td>
+                      <td>Internal server error occurs during request processing.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div id="section_21" class="mt-page-section"><span id=".2Fkettle.2FnextSequence"></span> 
+            <h2 class="editable">/kettle/nextSequence</h2>
+            <p>The following operations are supported on this resource:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#GETnextSequenceValue">GET</a>  </li>
+              <li> <a href="#POSTnextSequenceValue">POST</a>  </li>
+            </ul>
+            <div id="section_22" class="mt-page-section"><span id="Overview_5"></span> 
+              <h3 class="editable">Overview</h3>
+              <p>Increments specified pre-configured sequence.</p>
+              <p>
+                <a name="GETnextSequenceValue"></a> 
+              </p>
+            </div>
+            <div id="section_23" class="mt-page-section"><span id="GET_4"></span> 
+              <h3 class="editable">GET</h3>
+              <p>Increments specified pre-configured sequence. Method is used for reserving a number of IDs and incrementing a sequence pre-configured in Carte server configuration by specified amount. If no increment value provided 10000 is used by default.</p>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/nextSequence?name=test_seq</pre>
+              <p>
+                <a name="POSTnextSequenceValue"></a> 
+              </p>
+            </div>
+            <div id="section_24" class="mt-page-section"><span id="POST_3"></span> 
+              <h3 class="editable">POST</h3>
+              <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+              <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/nextSequence/
+POST body
+name=test_seq</pre>
+              <div id="section_25" class="mt-page-section"><span id="Parameters_3"></span> 
+                <h4 class="editable">Parameters</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>name</th>
+                      <th>description</th>
+                      <th>type</th>
+                    </tr>
+                    <tr>
+                      <td>name</td>
+                      <td>Name of the sequence specified in Carte configuration file.</td>
+                      <td>Post body</td>
+                    </tr>
+                    <tr>
+                      <td>increment</td>
+                      <td>Parameter used for incrementing sequence. If no parameter specified 10000 is used by default.</td>
+                      <td>Post body</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div id="section_26" class="mt-page-section"><span id="Response_Body_4"></span> 
+                <h4 class="editable">Response Body</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <td align="right">text:</td>
+                      <td>HTML</td>
+                    </tr>
+                    <tr>
+                      <td align="right">media types:</td>
+                      <td>text/xml</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Response XML containing sequence value and the increment value used.</p>
+                <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><seq><value>570000</value><increment>10000</increment></seq></pre> </div>
+              <div
+              id="section_27" class="mt-page-section"><span id="Status_Codes_4"></span> 
+                <h4 class="editable">Status Codes</h4>
+                <table class="pentaho-table">
+                  <tbody>
+                    <tr>
+                      <th>code</th>
+                      <th>description</th>
+                    </tr>
+                    <tr>
+                      <td>200</td>
+                      <td>Request was processed.</td>
+                    </tr>
+                    <tr>
+                      <td>404</td>
+                      <td>If the sequence was not found or error occurred during allocation</td>
+                    </tr>
+                    <tr>
+                      <td>500</td>
+                      <td>Internal server error occurs during request processing.</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <div id="section_28" class="mt-page-section"><span id=".2Fkettle.2FregisterSlave"></span> 
+          <h2 class="editable">/kettle/registerSlave</h2>
+          <div id="section_29" class="mt-page-section"><span id="Overview_6"></span> 
+            <h3 class="editable">Overview</h3>
+            <p>Registers slave server in the master. The method is used to add or update information of slave server.</p>
+          </div>
+          <div id="section_30" class="mt-page-section"><span id="POST_4"></span> 
+            <h3 class="editable">POST</h3>
+            <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/registerSlave/</pre>
+            <p>Request body should contain xml containing slave server description.</p>
+            <div id="section_31" class="mt-page-section"><span id="Response_Body_5"></span> 
+              <h4 class="editable">Response Body</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <td align="right">element:</td>
+                    <td>(custom)</td>
+                  </tr>
+                  <tr>
+                    <td align="right">media types:</td>
+                    <td>text/xml</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>Response contains slave server name or error stack trace if an error occurred. Response has <code>result</code> OK if there were no errors. Otherwise it returns ERROR.</p>
+              <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><SlaveServerDetection>
+<slaveserver>
+<name>Dynamic slave</name>
+<hostname>localhost</hostname>
+<port>901</port>
+<webAppName/>
+<username>cluster</username>
+<password>Encrypted 2be98afc86aa7f2e4cb1aa265cd86aac8</password>
+<proxy_hostname/>
+<proxy_port/>
+<non_proxy_hosts/>
+<master>N</master>
+</slaveserver>
+<active>Y</active>
+<last_active_date/>
+<last_inactive_date/>
+</SlaveServerDetection></pre> </div>
+            <div id="section_32" class="mt-page-section"><span id="Status_Codes_5"></span> 
+              <h4 class="editable">Status Codes</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <th>code</th>
+                    <th>description</th>
+                  </tr>
+                  <tr>
+                    <td>200</td>
+                    <td>Request was processed and XML response is returned.</td>
+                  </tr>
+                  <tr>
+                    <td>500</td>
+                    <td>Internal server error occurs during request processing.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                <a name="toString()"> </a> 
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="section_33" class="mt-page-section"><span id=".2Fkettle.2FgetSlaves"></span> 
+          <h2 class="editable">/kettle/getSlaves</h2>
+          <div id="section_34" class="mt-page-section"><span id="Overview_7"></span> 
+            <h3 class="editable">Overview</h3>
+            <p>Gets list of slave servers. Retrieves list of slave servers which are known to specific server.</p>
+          </div>
+          <div id="section_35" class="mt-page-section"><span id="GET_5"></span> 
+            <h3 class="editable">GET</h3>
+            <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/getSlaves</pre>
+            <div id="section_36" class="mt-page-section"><span id="Response_Body_6"></span> 
+              <h4 class="editable">Response Body</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <td align="right">element:</td>
+                    <td>(custom)</td>
+                  </tr>
+                  <tr>
+                    <td align="right">media types:</td>
+                    <td>text/xml</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>Response contains list of slave servers.</p>
+              <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slaveserverdetections>
+    <slaveserverdetection>
+      <slaveserver>
+        <name>Dynamic slave [localhost:909]</name><hostname>localhost</hostname><port>909</port>
+        <webappname/><username>cluster</username><password>Encrypted 2be98afc86aa7f2e4cb1aa265cd86aac8</password>
+        <proxy_hostname/><proxy_port/><non_proxy_hosts/><master>N</master>
+      </slaveserver>
+      <active>Y</active>
+      <last_active_date>2014/11/17 06:42:28.043</last_active_date>
+      <last_inactive_date>2014/11/17 06:42:27.372</last_inactive_date>
+    </slaveserverdetection>
+  </slaveserverdetections></pre> </div>
+            <div id="section_37" class="mt-page-section"><span id="Status_Codes_6"></span> 
+              <h4 class="editable">Status Codes</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <th>code</th>
+                    <th>description</th>
+                  </tr>
+                  <tr>
+                    <td>200</td>
+                    <td>Request was processed.</td>
+                  </tr>
+                  <tr>
+                    <td>500</td>
+                    <td>Internal server error occurs during request processing.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                <a name="toString()"> </a> 
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="section_38" class="mt-page-section"><span id=".2Fkettle.2Fstatus"></span> 
+          <h2 class="editable">/kettle/status</h2>
+          <p>The following operations are supported on this resource:</p>
+          <ul class="pentaho-list-unordered">
+            <li> <a href="#GETstatus">GET</a>  </li>
+            <li> <a href="#POSTstatus">POST</a>  </li>
+          </ul>
+          <div id="section_39" class="mt-page-section"><span id="Overview_8"></span> 
+            <h3 class="editable">Overview</h3>
+            <p>Retrieves server status. The status contains information about the server itself (OS, memory, etc) and information about jobs and transformations present on the server.</p>
+            <p>
+              <a name="GETstatus"></a> 
+            </p>
+          </div>
+          <div id="section_40" class="mt-page-section"><span id="GET_6"></span> 
+            <h3 class="editable">GET</h3>
+            <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/status/?xml=Y</pre>
+            <p>
+              <a name="POSTstatus"></a> 
+            </p>
+          </div>
+          <div id="section_41" class="mt-page-section"><span id="POST_5"></span> 
+            <h3 class="editable">POST</h3>
+            <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+            <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/status/
+POST body
+xml=Y</pre>
+            <div id="section_42" class="mt-page-section"><span id="Parameters_4"></span> 
+              <h4 class="editable">Parameters</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <th>name</th>
+                    <th>description</th>
+                    <th>type</th>
+                  </tr>
+                  <tr>
+                    <td>xml</td>
+                    <td>Boolean flag which defines output format <code>Y</code> forces XML output to be generated. HTML is returned otherwise.</td>
+                    <td>boolean, optional</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="section_43" class="mt-page-section"><span id="Response_Body_7"></span> 
+              <h4 class="editable">Response Body</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <td align="right">element:</td>
+                    <td>(custom)</td>
+                  </tr>
+                  <tr>
+                    <td align="right">media types:</td>
+                    <td>text/xml, text/html</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>Response XML or HTML response containing details about the transformation specified. If an error occurs during method invocation <code>result</code> field of the response will contain <code>ERROR</code> status.</p>
+              <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><serverstatus>
+        <statusdesc>Online</statusdesc>
+        <memory_free>229093440</memory_free>
+        <memory_total>285736960</memory_total>
+        <cpu_cores>4</cpu_cores>
+        <cpu_process_time>7534848300</cpu_process_time>
+        <uptime>68818403</uptime>
+        <thread_count>45</thread_count>
+        <load_avg>-1.0</load_avg>
+        <os_name>Windows 7</os_name>
+        <os_version>6.1</os_version>
+        <os_arch>amd64</os_arch>
+        <transstatuslist>
+          <transstatus>
+            <transname>Row generator test</transname>
+            <id>56c93d4e-96c1-4fae-92d9-d864b0779845</id>
+            <status_desc>Waiting</status_desc>
+            <error_desc/>
+            <paused>N</paused>
+            <stepstatuslist>
+            </stepstatuslist>
+            <first_log_line_nr>0</first_log_line_nr>
+            <last_log_line_nr>0</last_log_line_nr>
+            <logging_string><![CDATA[]]></logging_string>
+          </transstatus>
+          <transstatus>
+            <transname>dummy-trans</transname>
+            <id>c56961b2-c848-49b8-abde-76c8015e29b0</id>
+            <status_desc>Stopped</status_desc>
+            <error_desc/>
+            <paused>N</paused>
+            <stepstatuslist>
+            </stepstatuslist>
+            <first_log_line_nr>0</first_log_line_nr>
+            <last_log_line_nr>0</last_log_line_nr>
+            <logging_string><![CDATA[]]></logging_string>
+          </transstatus>
+        </transstatuslist>
+        <jobstatuslist>
+          <jobstatus>
+            <jobname>dummy_job</jobname>
+            <id>abd61143-8174-4f27-9037-6b22fbd3e229</id>
+            <status_desc>Stopped</status_desc>
+            <error_desc/>
+            <logging_string><![CDATA[]]></logging_string>
+            <first_log_line_nr>0</first_log_line_nr>
+            <last_log_line_nr>0</last_log_line_nr>
+          </jobstatus>
+        </jobstatuslist>
+      </serverstatus></pre> </div>
+            <div id="section_44" class="mt-page-section"><span id="Status_Codes_7"></span> 
+              <h4 class="editable">Status Codes</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <th>code</th>
+                    <th>description</th>
+                  </tr>
+                  <tr>
+                    <td>200</td>
+                    <td>Request was processed.</td>
+                  </tr>
+                  <tr>
+                    <td>500</td>
+                    <td>Internal server error occurs during request processing.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="section_45" class="mt-page-section"><span id=".2Fkettle.2FstopCarte"></span> 
+          <h2 class="editable">/kettle/stopCarte</h2>
+          <div id="section_46" class="mt-page-section"><span id="Overview_9"></span> 
+            <h3 class="editable">Overview</h3>
+            <p>Stops the Carte server. This method must be set up initially through the CLI and is used for stopping the Carte server.</p>
+          </div>
+          <div id="section_47" class="mt-page-section"><span id="GET_7"></span> 
+            <h3 class="editable">GET</h3>
+            <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET http://localhost:8080/pentaho/kettle/stopCarte</pre>
+            <div id="section_48" class="mt-page-section"><span id="Parameters_5"></span> 
+              <h4 class="editable">Parameters</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <th>name</th>
+                    <th>description</th>
+                    <th>type</th>
+                  </tr>
+                  <tr>
+                    <td>host</td>
+                    <td>Host name where Carte is located.</td>
+                    <td>query</td>
+                  </tr>
+                  <tr>
+                    <td>port</td>
+                    <td>Port number for host.</td>
+                    <td>query</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>HTML response containing status of Carte server returned.</p>
+              <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><html>
+<head><title>Shutdown of Carte requested</title></head>
+<body>
+<h1>Status</h1>
+<p>
+Shutting Down
+</p>
+</body>
+</html></pre> </div>
+            <div id="section_49" class="mt-page-section"><span id="Status_Codes_8"></span> 
+              <h4 class="editable">Status Codes</h4>
+              <table class="pentaho-table">
+                <tbody>
+                  <tr>
+                    <th>code</th>
+                    <th>description</th>
+                  </tr>
+                  <tr>
+                    <td>200</td>
+                    <td>Request was processed.</td>
+                  </tr>
+                  <tr>
+                    <td>500</td>
+                    <td>Internal server error occurs during request processing.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2F" rel="internal">/</a> 
+        <ol>
+          <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FallocateSocket" rel="internal">/kettle/allocateSocket&#8203;</a> 
+        <ol>
+          <li> <a href="#Overview_3" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_2" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FlistSocket" rel="internal">/kettle/listSocket</a> 
+        <ol>
+          <li> <a href="#Overview_4" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_3" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_2" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FnextSequence" rel="internal">/kettle/nextSequence</a> 
+        <ol>
+          <li> <a href="#Overview_5" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_4" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_3" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FregisterSlave" rel="internal">/kettle/registerSlave</a> 
+        <ol>
+          <li> <a href="#Overview_6" rel="internal">Overview</a>  </li>
+          <li>
+            <a href="#POST_4" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Response_Body_5" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_5" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FgetSlaves" rel="internal">/kettle/getSlaves</a> 
+        <ol>
+          <li> <a href="#Overview_7" rel="internal">Overview</a>  </li>
+          <li>
+            <a href="#GET_5" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_6" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_6" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2Fstatus" rel="internal">/kettle/status</a> 
+        <ol>
+          <li> <a href="#Overview_8" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_6" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_5" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_4" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_7" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_7" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FstopCarte" rel="internal">/kettle/stopCarte</a> 
+        <ol>
+          <li> <a href="#Overview_9" rel="internal">Overview</a>  </li>
+          <li>
+            <a href="#GET_7" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_5" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Status_Codes_8" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

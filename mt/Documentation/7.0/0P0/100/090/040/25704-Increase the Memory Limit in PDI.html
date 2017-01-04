@@ -1,0 +1,20 @@
+<content type="text/html" title="Increase the Memory Limit in PDI">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Pentaho Data Integration's startup script uses the default memory settings for your Java environment, which may be insufficient for your work. If you're experiencing an OutOfMemory exception, you must increase the amount of heap space available
+            to PDI by changing the Java options that set memory allocation. Follow the directions below to accomplish this.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Exit Spoon if it is currently running.</span> </li>
+          <li class="li step"><span class="ph cmd">Edit your Spoon startup script and modify the <strong class="ph b">-Xmx</strong>  value so that it specifies a larger upper memory limit.</span>  <pre class="pre codeblock">
+PENTAHO_DI_JAVA_OPTIONS=&quot;-Xmx2g -XX:MaxPermSize=256m&quot;</pre> </li>
+          <li class="li step"><span class="ph cmd">Start Spoon and ensure that there are no memory-related exceptions.</span> </li>
+        </ol>
+        <div class="section result">The Java virtual machine instance that the Pentaho Server uses now has access to more heap space, which should solve OutOfMemory exceptions and increase performance.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

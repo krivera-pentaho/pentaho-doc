@@ -1,0 +1,52 @@
+<content type="text/html" title="Localize a Report">
+  <body>
+    <div class="body taskbody">
+      <div class="section context">
+        <div class="pentaho-overview-hidden">
+          <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+            <h2 class="editable">Overview</h2>
+            <p>This article teaches you how to localize a report created with Report Designer.</p>
+          </div>
+        </div>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">Report Designer can dynamically pull text content from message bundles that contain localized strings. This enables you to localize the static and dynamic text content in a report.</p>
+            <p class="p">The relevant report elements you must work with to dynamically localize a report are: Resource Message, Resource Label, and Resource Field. You'll use these in place of standard report text elements.</p>
+            <p class="p">Follow the below procedure to prepare a report for localization.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Open the report you want to localize.</span> </li>
+            <li class="li step"><span class="ph cmd">Go to the <strong class="ph b">File</strong>  menu and select <strong class="ph b">Resources...</strong> .</span>  The <strong class="ph b">Resource Editor</strong>  window will appear.</li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Create</strong>  to create a new default resource bundle.</span>  A resource details window will appear.</li>
+            <li class="li step"><span class="ph cmd">Type in a file name for your resource file (using a <strong class="ph b">.properties</strong>  extension), and select its content type from the drop-down list.</span>  You should name this properties file without any country
+              or language codes. Pentaho Reporting will default to a non-localized message bundle name if no locale is specified, so the first message bundle you create should be the one you want to use by default. Typically you would use the report name
+              for the resource bundle name. So for an <strong class="ph b">InventoryList.prpt</strong>  report, you would name your resource bundle <strong class="ph b">InventoryList.properties</strong> .</li>
+            <li class="li step"><span class="ph cmd">In the Resource Editor, select the message bundle you just created, then click <strong class="ph b">Edit</strong> .</span>  A text window will appear.</li>
+            <li class="li step"><span class="ph cmd">Enter name/value pairs for all of the Resource Labels you intend to create, with the name of the label on the left and the value on the right, as shown in the example below.</span>  <pre class="pre codeblock">
+title=Sales Report 2011
+companyLabel=Steel Wheels, Inc.</pre> </li>
+            <li class="li step"><span class="ph cmd">Repeat the previous four steps for every locale and language you want to account for, using the appropriate language and country codes in the file names.</span>  Following the example above, the traditional French version
+              of the properties file would be <strong class="ph b">InventoryList_fr_FR.properties</strong> . Refer to the <em class="ph i">Customizing Pentaho Business Analytics</em>  document for more details on message bundle naming conventions.</li>
+            <li class="li step"><span class="ph cmd">Add a Resource Label, Message, or Field to the report canvas.</span> </li>
+            <li class="li step"><span class="ph cmd">With the new element selected, go to the <strong class="ph b">Attributes</strong>  pane.</span> </li>
+            <li class="li step"><span class="ph cmd">Set the name of this replaceable resource in the <strong class="ph b">value</strong>  field.</span>  This must match the name that you specified in your message bundle earlier. To follow the example above, your resource
+              labels should be named <strong class="ph b">title</strong>  and <strong class="ph b">companyLabel</strong> .</li>
+            <li class="li step"><span class="ph cmd">Set the name of the resource bundle that will contain this replaceable resource in the <strong class="ph b">resource-id</strong>  field.</span>  This should <em class="ph i">not</em>  have a .properties extension. Following
+              the example above, this would be <strong class="ph b">InventoryList</strong> .</li>
+          </ol>
+          <div class="section result">Your report will be localized according to your specifications. You can test this by changing the language code for Report Designer through the <strong class="ph b">.environment.designtime.Locale</strong>  variable in the <strong class="ph b">Configuration</strong>             dialogue in the <strong class="ph b">File</strong>  menu.</div>
+        </div>
+        <div class="related-links">
+          <ul class="ullinks">
+            <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/130/0C0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0L0/130/0C0/000">Use Externalized Message Bundles</a> </strong> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

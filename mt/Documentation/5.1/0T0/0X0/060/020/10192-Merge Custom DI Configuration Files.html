@@ -1,0 +1,598 @@
+<content type="text/html" title="Merge Custom DI Configuration Files">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to merge files.</p>
+        </div>
+      </div>
+      <p><span>If you have&nbsp;</span> <strong><span>customized any of these files</span> </strong> <span>, you will have to manually merge them in order to successfully complete the upgrade. We recommend that you make&nbsp;</span> <span><strong>backups</strong> &nbsp;</span> <span>of each of these files before altering them.</span> </p>
+      <p><span>These are the files that you have in</span> <span class="filepath style-wrap">&nbsp;</span> /server-old<span>&nbsp;directory.&nbsp; We recommend copying any of these files that you have customized into a separate folder, merging them using these instructions, then placing them in the appropriate location in your 5.1 instance.</span> </p>
+      <div id="section_2" class="mt-page-section"><span id="Merging_Tool_and_Misc._Configuration_Files"></span> 
+        <h2 class="editable">Merging Tool and Misc. Configuration Files</h2>
+        <p>There are several tool and misc. configuration files that, if you have customized them, will need to be updated in order to make the jump from 5.0.6 to 5.1.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Edit_Mondrian_configuration_file"></span> 
+        <h2 class="editable">Edit Mondrian configuration file</h2>
+        <p>Your Mondrian configuration can be merged by following these steps.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Navigate to the <span class="filepath style-wrap">/pentaho-solutions/system/mondrian </span> directory and open the <span class="filepath style-wrap">mondrian.properties</span>  file with a text editor.</li>
+          <li>Add these properties anywhere within the <span class="filepath style-wrap">mondrian.properties</span>  file. <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mondrian.rolap.maxQueryThreads=20</pre>            </li>
+          <li>Locate the <span class="filepath style-wrap">mondrian.native.filter.enable</span>  property and change the value to <span class="filepath style-wrap">false</span> . <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mondrian.native.filter.enable=false</pre>            </li>
+          <li>Save and close the <span class="filepath style-wrap">mondrian.properties</span>  file.</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="MySQL_Only:_Edit_Jackrabbit_configuration_file"></span> 
+        <h2 class="editable">MySQL Only: Edit&nbsp;Jackrabbit configuration file</h2>
+        <p>If you are using MySQL for your repository, you will need to add a new property in two of the tags in the <span class="filepath style-wrap">repository.xml</span>  file. Note that both tags are commented out by default and are actually duplicates
+          of each other. The new property to be added is bolded below.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Navigate to the <span class="filepath style-wrap">/pentaho-solutions/system/jackrabbit </span> directory and open the <span class="filepath style-wrap">repository.xml</span>  file with a text editor.</li>
+          <li>Locate the <span class="filepath style-wrap">PersistenceManager </span> class tags for MySQL and add the driver parameter in both places. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+<param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/></pre> </li>
+          <li>Save and close the <span class="filepath style-wrap">repository.xml </span> file.</li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Edit_web.xml_configuration_file"></span> 
+        <h2 class="editable">Edit web.xml configuration file</h2>
+        <p>There are a few different things that you will need to add to the <span class="filepath style-wrap">web.xml</span>  for your upgrade: a new filter definition, new filter mapping, a new listener, a new security role, and a new class for the Carte
+          servlet. Some listeners are not present by default: <span class="filepath style-wrap">securitysystemlistener, loaddriverslistener, olap4jsystemlistener.</span> </p>
+        <ol class="pentaho-list-ordered">
+          <li>Navigate to the <span class="filepath style-wrap">/tomcat/webapps/pentaho/WEB-INF </span> directory and open the <span class="filepath style-wrap">web.xml</span>  file with a text editor.</li>
+          <li>Add a new filter definition by finding the existing <span class="filepath style-wrap"><filter></span>  entries and adding this entry. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter>
+    <filter-name>Pentaho Path Decoding Filter</filter-name>
+    <filter-class>org.pentaho.platform.web.http.filters.PentahoPathDecodingFilter</filter-class>
+</filter></pre> </li>
+          <li>Add new filter mapping by finding the <span class="filepath style-wrap"><filter-mapping></span>  entries and adding this entry <strong>after </strong> them. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter-mapping>
+    <filter-name>Pentaho Path Decoding Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping></pre> </li>
+          <li>Add a new listener by finding the <span class="filepath style-wrap"><listener></span>  entries and adding this entry <strong>after </strong> them. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><listener>
+  <listener-class>org.pentaho.platform.web.http.context.PentahoSystemReadyListener</listener-class>
+</listener></pre> </li>
+          <li>Add a new security role by locating the <span class="filepath style-wrap"><error-page></span>  entries and adding this entry <strong>before </strong> them. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><security-role>
+     <description>Non-Existent Role - this prevents direct access to JSPs</description>
+     <role-name>PENTAHO_ADMIN</role-name>
+</security-role></pre> </li>
+          <li>Add this after in the Carte servlet class after the startJobServletClass</li>
+          <div class="pentaho-code-block style-wrap"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><init-param>
+    <param-name>runJobServletClass</param-name>
+    <param-value>com.pentaho.pdi.www.RunJobAsUserServlet</param-value>
+</init-param></pre> </div>
+          <li>Change the <span class="filepath style-wrap"><servlet-class></span>  value in the Carte servlet from <span class="filepath style-wrap"><servlet-class>org.pentaho.di.www.CarteServlet</servlet-class></span> &nbsp; to <span class="filepath style-wrap"><servlet-class>com.pentaho.pdi.www.RoleBoundCarteServlet</servlet-class></span> .</li>
+          <li>Save and close the<span class="filepath style-wrap"> web.xml </span> file.</li>
+        </ol>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Edit_ehcache.xml_File"></span> 
+        <h2 class="editable">Edit ehcache.xml File</h2>
+        <p>There is a new node that you will need to add to the <span class="filepath style-wrap">ehcache.xml </span> file.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Navigate to the <span class="filepath style-wrap">/tomcat/webapps/pentaho/WEB-INF/classes</span>  directory and open the ehcache<span class="filepath style-wrap">.xml</span>  file with a text editor.</li>
+          <li>Add this new node anywhere within <span class="filepath style-wrap"><ehcache></ehcache> tags</span> . <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><cache
+      name=&quot;userRoleListCache&quot;
+      maxEntriesLocalHeap=&quot;2000&quot;
+      eternal=&quot;false&quot;
+      overflowToDisk=&quot;false&quot;
+      timeToIdleSeconds=&quot;300&quot;
+      timeToLiveSeconds=&quot;600&quot;
+      diskPersistent=&quot;false&quot;/></pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Merge_System_Configuration_Files"></span> 
+        <h2 class="editable">Merge&nbsp;System Configuration Files</h2>
+        <p><span>These configuration files have changed for version 5.1. All of these files are located in the&nbsp;</span> pentaho-solutions/system<span class="filepath style-wrap">&nbsp;</span> <span>directory. These sections contain instructions for the changes that you need to make to each individual file.</span> </p>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="applicationContext-pentaho-security.E2.80.90jdbc.xml"></span> 
+        <h2 class="editable">applicationContext-&shy;pentaho-&shy;security&#8208;jdbc.xml</h2>
+        <p>For 5.1, the <span class="filepath style-wrap">ExtraRolesUserRoleListServiceDecorator</span>  bean has been split into two.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">applicationContext-&shy;pentaho-&shy;security&#8208;jdbc.xml</span>  file with a text editor.</li>
+          <li>Replace the old <span class="filepath style-wrap">userRoleListService </span> bean definition with the two new beans as shown below.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property name=&quot;userRoleListService&quot; ref=&quot;jdbcUserRoleListService&quot; />
+<property name=&quot;extraRoles&quot; ref=&quot;extraRoles&quot; />
+...
+</bean></pre> <strong>New Beans:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;extraRoleJdbcUserRoleListService&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.ExtraRolesUserRoleListServiceDecorator&quot;>
+    <property name=&quot;userRoleListService&quot; ref=&quot;jdbcUserRoleListService&quot; />
+    <property name=&quot;extraRoles&quot; ref=&quot;extraRoles&quot; />
+</bean>
+<bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.CachingUserRoleListServiceDecorator&quot;>
+    <constructor-arg ref=&quot;extraRoleJdbcUserRoleListService&quot; />
+    <pen:publish as-type=&quot;INTERFACES&quot;>
+        <pen:attributes>
+        <pen:attr key=&quot;providerName&quot; value=&quot;jdbc&quot;/>
+        </pen:attributes>
+    </pen:publish>
+</bean></pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="applicationContext-spring-security-ldap.xml"></span> 
+        <h2 class="editable">applicationContext-&shy;spring-security-ldap.xml</h2>
+        <p>A new tag is added to the <span class="filepath style-wrap">ldapRoleMapper </span> bean.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">applicationContext-&shy;spring-security-ldap.xml </span> file with a text editor.</li>
+          <li>Replace the old <span class="filepath style-wrap">ldapRoleMapper </span> bean definition with the new bean as shown below.
+            <br /> <strong>Old Bean:</strong> 
+            <bean id=&quot;ldapRoleMapper&quot; <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+              <bean id=&quot;ldapRoleMapper&quot; class=&quot;org.pentaho.platform.engine.security.DefaultLdapRoleMapper&quot;>
+                <constructor-arg>
+                  <ref local=&quot;ldapRoleMap&quot;/>
+                </constructor-arg>
+              </bean>
+              </pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;ldapRoleMapper&quot; class=&quot;org.pentaho.platform.engine.security.DefaultLdapRoleMapper&quot;>
+    <constructor-arg>
+        <ref local=&quot;ldapRoleMap&quot;/>
+    </constructor-arg>
+    <constructor-arg value=&quot;${ldap.allAuthoritiesSearch.roleAttribute}&quot;/>
+</bean></pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="applicationContext-spring-security.xml"></span> 
+        <h2 class="editable">applicationContext-&shy;spring-security.xml</h2>
+        <p>A new attribute needs to be added on the root <span class="filepath style-wrap"><beans></span>  tag.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">applicationContext-&shy;spring-security.xml </span> file with a text editor.</li>
+          <li>Add the following to the top-level <span class="filepath style-wrap"><beans></span>  tag. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">default-lazy-init=&quot;true&quot;</pre>            </li>
+          <li>These two URL Access Definitions have changed in 5.1.
+            <ol>
+              <li>The <span class="filepath style-wrap">objectDefinitionSource</span>  property in the <span class="filepath style-wrap">filterInvocationInterceptor </span> bean has changed. Any customizations made to Role names in this property will have to
+                be recreated in 5.1. Please compare your current value with the latest and merge your changes. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property name=&quot;objectDefinitionSource&quot;>
+<value>
+
+<!--
+Note-the &quot;=Nobody&quot; below is saying that resource URLs with those
+patterns will not be available through a web call.
+-->
+<![CDATA[
+CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+\A/content/common-ui/resources/web/(.+/)*.+\.js.*\Z=Anonymous,Authenticated
+\A/.*require-cfg.js.*\Z=Anonymous,Authenticated
+\A/.*require-js-cfg.js.*\Z=Anonymous,Authenticated
+\A/content/common-ui/resources/web/require.js.*\Z=Anonymous,Authenticated
+\A/content/common-ui/resources/web/require-cfg.js.*\Z=Anonymous,Authenticated
+\A/content/data-access/resources/gwt/.*css\Z=Anonymous,Authenticated
+\A/webcontext.js.*\Z=Anonymous,Authenticated
+....</pre> </li>
+              <li>The<span class="filepath style-wrap"> objectDefinitionSource</span>  property in the <span class="filepath style-wrap">filterInvocationInterceptorForWS </span> bean has the following change. If you have customized Role access to URLs in this
+                property, you will have to do so with this addition.
+                <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property name=&quot;objectDefinitionSource&quot;>
+<value>
+...
+\A/api/.*require-js-cfg.js\Z=Anonymous,Authenticated</pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property name=&quot;objectDefinitionSource&quot;>
+<value>
+...
+\A/api/.*require-cfg.js.*\Z=Anonymous,Authenticated
+\A/api/.*require-js-cfg.js.*\Z=Anonymous,Authenticated
+\A/content/common-ui/resources/web/angular-directives/angular-directives.css\Z=Anonymous,Authenticated</pre> </li>
+            </ol>
+          </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="pentaho.xml"></span> 
+        <h2 class="editable">pentaho.xml</h2>
+        <p>Update the documentation node value in the <span class="filepath style-wrap">pentaho.xml</span>  file.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">pentaho.xml</span>  file with a text editor.</li>
+          <li>Locate the tag for the <span class="filepath style-wrap"><documentation-url></span>  and replace the old one with the new one.
+            <p><strong>Old Node Value:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><documentation-url>docs/InformationMap.html</documentation-url></pre> <strong>New Node Value:</strong>             <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><documentation-url>docs/InformationMap.jsp</documentation-url></pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_12" class="mt-page-section"><span id="pentahoObjects.spring.xml"></span> 
+        <h2 class="editable">pentahoObjects.spring.xml</h2>
+        <p>A number of beans have changed in the <span class="filepath style-wrap">pentahoObjects.spring.xml</span> .</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">pentahoObjects.spring.xml </span> file with a text editor.</li>
+          <li>Find the bean for <span class="filepath style-wrap">IScheduler2 </span> and replace the old bean definition with the new bean as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;IScheduler2&quot; class=&quot;org.pentaho.platform.scheduler2.quartz.QuartzScheduler&quot;
+scope=&quot;singleton&quot;/></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;IScheduler2&quot; class=&quot;org.pentaho.platform.scheduler2.quartz.QuartzScheduler&quot;
+scope=&quot;singleton&quot;>
+    <pen:publish as-type=&quot;INTERFACES&quot;>
+      <pen:attributes>
+          <pen:attr key=&quot;priority&quot; value=&quot;50&quot;/>
+      </pen:attributes>
+    </pen:publish>
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">IDBDatasourceService </span> and replace the old bean definition with the <strong>three </strong> new beans as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;IDBDatasourceService&quot;
+class=&quot;org.pentaho.platform.engine.services.connection.datasource.dbcp.PooledOrJndiDatasourceService&quot;&quot; scope=&quot;singleton&quot;/></pre> <strong>New Beans:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;pooledOrJndiDatasourceService&quot; class=&quot;org.pentaho.platform.engine.services.connection.datasource.dbcp.PooledOrJndiDatasourceService&quot; scope=&quot;singleton&quot; />
+<bean id=&quot;nonPooledOrJndiDatasourceService&quot;
+class=&quot;org.pentaho.platform.engine.services.connection.datasource.dbcp.NonPooledOrJndiDatasourceService&quot; scope=&quot;singleton&quot; />
+<bean id=&quot;IDBDatasourceService&quot;
+class=&quot;org.pentaho.platform.engine.services.connection.datasource.dbcp.DynamicallyPooledOrJndiDatasourceService&quot; scope=&quot;singleton&quot;>
+<property name=&quot;pooledDatasourceService&quot; ref=&quot;pooledOrJndiDatasourceService&quot; />
+<property name=&quot;nonPooledDatasourceService&quot; ref=&quot;nonPooledOrJndiDatasourceService&quot; />
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">IUserRoleListService </span> and replace the old bean definition with the <strong>three </strong> new beans as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean id=&quot;IUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+    ...
+</pen:bean></pre> <strong>New Beans:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean id=&quot;activeUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+    <pen:attributes>
+      <pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+    </pen:attributes>
+</pen:bean>
+
+<!--The system must have access to the jackrabbit version even if another is configured.-->
+<pen:bean id=&quot;systemUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+    <pen:attributes>
+      <pen:attr key=&quot;providerName&quot; value=&quot;jackrabbit&quot;/>
+    </pen:attributes>
+</pen:bean>
+
+<!--A composite bean composed of the activeUserRoleListService and systemUserRoleListService-->
+<bean id=&quot;IUserRoleListService&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.CompositeUserRoleListService&quot;>
+    <constructor-arg>
+        <list>
+            <ref bean=&quot;activeUserRoleListService&quot;/>
+            <ref bean=&quot;systemUserRoleListService&quot;/>
+        </list>
+    </constructor-arg>
+    <pen:publish as-type=&quot;INTERFACES&quot;>
+        <pen:attributes>
+            <pen:attr key=&quot;priority&quot; value=&quot;50&quot;/>
+        </pen:attributes>
+    </pen:publish>
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">UserDetailsService </span> and replace the old bean definition with the <strong>three </strong> new beans as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean id=&quot;UserDetailsService&quot; class=&quot;org.springframework.security.userdetails.UserDetailsService&quot;>
+    ...
+</pen:bean></pre> <strong>New Beans:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean id=&quot;activeUserDetailsService&quot; class=&quot;org.springframework.security.userdetails.UserDetailsService&quot;>
+    <pen:attributes>
+      <pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+    </pen:attributes>
+</pen:bean>
+
+<!--The system must have access to the jackrabbit version even if another is configured.-->
+<pen:bean id=&quot;systemUserDetailsService&quot; class=&quot;org.springframework.security.userdetails.UserDetailsService&quot;>
+    <pen:attributes>
+      <pen:attr  key=&quot;providerName&quot; value=&quot;jackrabbit&quot;/>
+    </pen:attributes>
+</pen:bean>
+
+<!--A composite bean composed of the activeUserDetailsService and systemUserDetailsService-->
+<bean id=&quot;UserDetailsService&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.ChainedUserDetailsService&quot;>
+    <constructor-arg>
+        <list>
+          <ref bean=&quot;activeUserDetailsService&quot;/>
+          <ref bean=&quot;systemUserDetailsService&quot;/>
+        </list>
+    </constructor-arg>
+</bean></pre> </li>
+          <li>These new beans can be added anywhere within the <span class="filepath style-wrap"><beans></beans></span>  tags.
+            <br /> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean class=&quot;org.springframework.security.providers.AuthenticationProvider&quot;>
+    <pen:attributes>
+      <pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+    </pen:attributes>
+<pen:bean class=&quot;org.springframework.security.providers.AuthenticationProvider&quot;>
+    <pen:attributes>
+      <pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+    </pen:attributes>
+    <pen:publish as-type=&quot;ALL&quot;>
+      <pen:attributes>
+        <pen:attr key=&quot;priority&quot; value=&quot;50&quot;/>
+      </pen:attributes>
+    </pen:publish>
+</pen:bean>
+<bean id=&quot;IOlapService&quot; class=&quot;org.pentaho.platform.plugin.action.olap.impl.OlapServiceImpl&quot; scope=&quot;singleton&quot;>
+    <pen:publish as-type=&quot;org.pentaho.platform.plugin.action.olap.IOlapService&quot;/>
+
+    <!--Allows to override some properties form each connection before they are established.-->
+
+    <!--property name=&quot;connectionFilters&quot;>
+        <list>
+          <bean class=&quot;org.pentaho.platform.plugin.action.olap.IOlapConnectionFilter&quot;/>
+        </list>
+    </property->
+
+    <!--Allows to specify a custom class to use as a role implementation for hosted mondrian connections.-->
+
+    <!--property name=&quot;mondrianRole&quot;>
+      <bean class=&quot;mondrian.olap.RoleImpl&quot;/>
+    </property-->
+</bean>
+<bean id=&quot;jdbcDriverTranslationMap&quot; class=&quot;java.util.HashMap&quot;>
+    <pen:publish as-type=&quot;ALL&quot;/>
+    <constructor-arg index=&quot;0&quot; type=&quot;java.util.Map&quot;>
+      <map key--type=&quot;java.lang.String&quot; value-&#8208;type=&quot;java.lang.String&quot;>
+    <entry key=&quot;mondrian4&quot; value=&quot;mondrian&quot;/>
+      </map>
+    </constructor-arg>
+</bean></pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="pentahoServices.spring.xml"></span> 
+        <h2 class="editable">pentahoServices.spring.xml</h2>
+        <p>Update beans for the <span class="filepath style-wrap">org.pentaho.platform.web.http.api.resources</span>  in the <span class="filepath style-wrap">pentahoServices.spring.xml</span>  file.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the<span class="filepath style-wrap"> pentahoServices.spring.xml</span>  file with a text editor.</li>
+          <li>Find the bean for <span class="filepath style-wrap">UserRoleDaoResource </span> and replace the old bean definition with the new bean as shown.
+            <p><strong>Old Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.UserRoleDaoResource&quot; scope=&quot;request&quot;>
+    ...
+</bean></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.UserRoleDaoResource&quot; scope=&quot;request&quot;>
+    <constructor-arg>
+      <pen:bean class=&quot;org.pentaho.platform.security.policy.rolebased.IRoleAuthorizationPolicyRoleBindingDao&quot;/>
+    </constructor-arg>
+<constructor-arg>
+<pen:bean class=&quot;org.pentaho.platform.api.mt.ITenantManager&quot;/>
+</constructor-arg>
+    <constructor-arg>
+       <pen:bean class=&quot;java.util.List&quot;>
+         <pen:attributes>
+        <pen:attr key=&quot;id&quot; value=&quot;singleTenantSystemAuthorities&quot;/>            
+         </pen:attributes>
+    </constructor-arg>
+    <constructor-arg>
+       <pen:bean class=&quot;java.lang.String&quot;>
+         <pen:attributes>
+        <pen:attr key=&quot;id&quot; value=&quot;singleTenantAdminAuthorityName&quot;/>
+         </pen:attributes>
+       </pen:bean>
+    </constructor-arg>
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">UserRoleListResource </span> and replace the old bean definition with the new bean as shown.
+            <p><strong>Old Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.UserRoleListResource&quot; scope=&quot;request&quot;>
+   ...
+</bean></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.UserRoleListResource&quot; scope=&quot;request&quot;>
+    <constructor-arg>
+      <pen:bean class=&quot;java.util.List&quot;>
+      <pen:attributes>
+        <pen:attr key=&quot;id&quot; value=&quot;singleTenantSystemAuthorities&quot;/>
+      </pen:attributes>
+      </pen:bean>
+    </constructor-arg>
+    <constructor-arg>
+      <pen:bean class=&quot;java.lang.String&quot;>
+       <pen:attributes>
+        <pen:attr key=&quot;id&quot; value=&quot;singleTenantAdminAuthorityName&quot;/>
+       </pen:attributes>
+       </pen:bean>
+    </constructor-arg>
+    <constructor-arg>
+       <pen:bean class=&quot;java.lang.String&quot;>
+       <pen:attributes>
+         <pen:attr key=&quot;id&quot; value=&quot;singleTenantAnonymousAuthorityName&quot;/>
+       </pen:attributes>
+       </pen:bean>
+    </constructor-arg>
+    <constructor-arg>
+       <pen:bean class=&quot;java.util.list&quot;>
+       <pen:attributes>
+         <pen:attr key=&quot;id&quot; value=&quot;extraSystemAuthorities&quot;/>
+       </pen:attributes>
+       </pen:bean>
+    </constructor-arg>
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">FileResource</span>  and replace the old bean definition with the new bean as shown.
+            <p><strong>Old Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.FileResource&quot; scope=&quot;request&quot;>
+    <property name=&quot;whitelist&quot; ref=&quot;downloadWhitelist&quot; />
+</bean></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.FileResource&quot; scope=&quot;request&quot;>
+    <property name=&quot;whitelist&quot;><pen:bean class=&quot;org.pentaho.platform.repository.RepositoryDownloadWhitelist&quot; />
+    </property>    
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">RepositoryResource</span>  and replace the old bean definition with the new bean as shown.
+            <p><strong>Old Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.RepositoryResource&quot; scope=&quot;request&quot;>
+    <property name=&quot;whitelist&quot; ref=&quot;downloadWhitelist&quot; />
+</bean></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.RepositoryResource&quot; scope=&quot;request&quot;>
+    <property name=&quot;whitelist&quot;><pen:bean class=&quot;org.pentaho.platform.repository.RepositoryDownloadWhitelist&quot; />
+    </property>
+</bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">AuthorizationActionResource </span> and replace the old bean definition with the new bean as shown.
+            <p><strong>Old Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.AuthorizationActionResource&quot;
+scope=&quot;request&quot;/></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.AuthorizationActionResource&quot; scope=&quot;request&quot;>
+    <constructor-arg>
+    <pen:list class=&quot;org.pentaho.platform.api.engine.IAuthorizationAction&quot;/>
+    </constructor-arg>
+</bean></pre> </li>
+          <li>Add this new bean anywhere between the
+            <beans></beans> tags.
+            <p><strong>Add Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.web.http.api.resources.PasswordResource&quot; scope=&quot;request&quot;/></pre>            </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id="repository.spring.properties"></span> 
+        <h2 class="editable">repository.spring.properties</h2>
+        <p>Add two new properties to the <span class="filepath style-wrap">repository.spring.properties </span> file.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the&nbsp;<span class="filepath style-wrap">repository.spring.properties </span> file with a text editor.</li>
+          <li>Add these two properties to the file. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cache-size=100
+cache-ttl=300</pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_15" class="mt-page-section"><span id="repository.spring.xml"></span> 
+        <h2 class="editable">repository.spring.xml</h2>
+        <p>There are a number of changes that you will need to make to the <span class="filepath style-wrap">repository.spring.xml</span>  file in order to merge your configurations.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the&nbsp;<span class="filepath style-wrap">repository.spring.xml </span> file with a text editor.</li>
+          <li>Search for all instances of <span class="filepath style-wrap">lockHelper </span> and replace it with <span class="filepath style-wrap">ILockHelper</span>  <strong>except</strong>  leave the class shown here as is. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;ILockHelper&quot; class=&quot;org.pentaho.platform.repository2.unified.jcr.DefaultLockHelper&quot;></pre>            </li>
+          <li>Locate these three beans and add the new tag to all <strong>three</strong> :
+            <ul>
+              <li>ITenantManager</li>
+              <li>ILockHelper</li>
+              <li>roleAuthorizationPolicyRoleBindingDao</li>
+            </ul> <strong>New Tag:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:publish as-type=&quot;INTERFACES&quot;/></pre> </li>
+          <li>Locate these beans and add the new child tag to all of them:
+            <ul>
+              <li>repositoryAdminUsername</li>
+              <li>jcrPreAuthenticationToken</li>
+              <li>singleTenantAuthenticatedAuthorityName</li>
+              <li>singleTenantAdminAuthorityName</li>
+              <li>singleTenantAnonymousAuthorityName</li>
+              <li>superAdminAuthorityName</li>
+              <li>superAdminUserName</li>
+              <li>systemTenantAdminUserName</li>
+              <li>systemTenantAdminPassword</li>
+              <li>singleTenantAdminUserName</li>
+            </ul> <strong>New Tag:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:publish as-type=&quot;CLASSES&quot;/></pre> </li>
+          <li>Find the <span class="filepath style-wrap">util:list </span> bean for&nbsp;<span class="filepath style-wrap">singleTenantSystemAuthorities </span> and replace the old bean definition with the new bean as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><util:list id=&quot;singleTenantSystemAuthorities&quot; list-class=&quot;java.util.ArrayList&quot; value-type=&quot;java.lang.String&quot;>
+... 
+</util:list></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;java.util.ArrayList&quot; id=&quot;singleTenantSystemAuthorities&quot;>
+     <constructor-arg>
+      <util:list list-class=&quot;java.util.ArrayList&quot; value-type=&quot;java.lang.String&quot;>
+        <ref bean=&quot;singleTenantAuthenticatedAuthorityName&quot; />
+        <ref bean=&quot;singleTenantAdminAuthorityName&quot; />
+        <ref bean=&quot;singleTenantAnonymousAuthorityName&quot; />
+      </util:list>
+     </constructor-arg>
+     <pen:publish as-type=&quot;INTERFACES&quot;/>
+</bean></pre> </li>
+          <li>Find the&nbsp;<span class="filepath style-wrap">util:list&nbsp;</span> bean for&nbsp;<span class="filepath style-wrap">extraSystemAuthorities&nbsp;</span> and replace the old bean definition with the new bean as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><util:list id=&quot;extraSystemAuthorities&quot; list-class=&quot;java.util.ArrayList&quot; value-type=&quot;java.lang.String&quot;>
+    ...
+  </util:list></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;java.util.ArrayList&quot; id=&quot;extraSystemAuthorities&quot;>
+     <constructor-arg>
+      <util:list list-class=&quot;java.util.ArrayList&quot; value-type=&quot;java.lang.String&quot;>
+        <ref bean=&quot;singleTenantAuthenticatedAuthorityName&quot; />
+        <ref bean=&quot;singleTenantAnonymousAuthorityName&quot; />
+      </util:list>
+     </constructor-arg>
+     <pen:publish as-type=&quot;INTERFACES&quot;/>
+  </bean></pre> </li>
+          <li>Find the <span class="filepath style-wrap">util:list </span> bean for&nbsp;<span class="filepath style-wrap">jcrTemplate&nbsp;</span> and replace the old bean definition with the new bean as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;jcrTemplate&quot; class=&quot;org.pentaho.platform.repository2.unified.jcr.sejcr.PentahoJcrTemplate&quot;>
+    <property name=&quot;sessionFactory&quot; ref=&quot;jcrSessionFactory&quot;/>
+    <property name=&quot;allowCreate&quot; value=&quot;false&quot;/>
+    <property name=&quot;exposeNativeSession&quot; value=&quot;true&quot;/>
+  </bean></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;jcrTemplate&quot; class=&quot;org.pentaho.platform.repository2.unified.jcr.sejcr.PentahoJcrTemplate&quot;>
+    <property name=&quot;sessionFactory&quot; ref=&quot;jcrSessionFactory&quot;/>
+    <property name=&quot;allowCreate&quot; value=&quot;true&quot;/>
+    <property name=&quot;exposeNativeSession&quot; value=&quot;true&quot;/>
+  </bean></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">jcrSessionFactory </span> and add this new property right before the <span class="filepath style-wrap"></bean></span>  tag.
+            <br /> <strong>New Property:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property name=&quot;sessionFactory&quot;>
+      <bean class=&quot;org.pentaho.platform.repository2.unified.jcr.sejcr.GuavaCachePoolPentahoJcrSessionFactory&quot;>
+        <constructor-arg ref=&quot;jcrRepository&quot;/>
+        <constructor-arg><null/></constructor-arg>
+      </bean>
+</property></pre> </li>
+          <li>Find the bean with the id <span class="filepath style-wrap">roleAuthorizationPolicyRoleBindingDaoTarget </span> and remove the <span class="filepath style-wrap"><constructor-arg></span>  tags as shown.
+            <br /> <strong>Old:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><constructor-arg ref=&quot;jcrTemplate&quot;/>
+    <constructor-arg>
+      <null/>
+    </constructor-arg>
+<constructor-arg ref=&quot;immutableRoleBindingMap&quot;/></pre> <strong>New:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><constructor-arg ref=&quot;jcrTemplate&quot;/>
+<constructor-arg ref=&quot;immutableRoleBindingMap&quot;/></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">jcrAdminSessionFactory </span> and add this new property right before the <span class="filepath style-wrap"></bean></span>  tag.
+            <br /> <strong>New Property:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property name=&quot;sessionFactory&quot;>
+      <bean class=&quot;org.pentaho.platform.repository2.unified.jcr.sejcr.GuavaCachePoolPentahoJcrSessionFactory&quot;>
+        <constructor-arg ref=&quot;jcrRepository&quot;/>
+        <constructor-arg><null/></constructor-arg>
+      </bean>
+</property></pre> </li>
+          <li>Add these new beans right before the <span class="filepath style-wrap"></beans></span>  tag.
+            <br /> <strong>New Beans:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;executePermissionRepositoryLifecycleManager&quot;class=&quot;org.pentaho.platform.repository2.unified.lifecycle.ExecutePermissionRepositoryLifecycleManager&quot;>
+  <constructor-arg ref=&quot;roleAuthorizationPolicyRoleBindingDaoTxn&quot; />
+  <constructor-arg ref=&quot;jcrTransactionTemplate&quot;/>
+  <constructor-arg ref=&quot;adminJcrTemplate&quot;/>
+  <constructor-arg ref=&quot;pathConversionHelper&quot;/>
+<property name=&quot;rolesNeedingExecutePermission&quot;>
+  <util:list>
+     <ref bean=&quot;singleTenantAuthenticatedAuthorityName&quot;/>
+     <ref bean=&quot;executePermissionRepositoryLifecycleManager&quot;/>
+     <value>Power User</value>
+  </util:list>
+</property>
+</bean>
+<bean id=&quot;RepositoryFileProxyFactory&quot;class=&quot;org.pentaho.platform.repository2.unified.jcr.RepositoryFileProxyFactory&quot;>
+   <constructor-arg ref=&quot;jcrTemplate&quot;/>
+   <constructor-arg ref=&quot;repositoryFileDao&quot;/>
+</bean>
+<bean class=&quot;java.util.ArrayList&quot; id=&quot;reservedChars&quot;>
+   <constructor-arg>
+     <util:list list-class=&quot;java.util.ArrayList&quot; value-type=&quot;java.lang.Character&quot;>
+       <value>/</value>
+       <value>:</value>
+       <value>[</value>
+       <value>]</value>
+       <value>*</value>
+       <value>'</value>
+       <value>&quot;</value>
+       <value>|</value>
+       <value>&amp;#x9;</value>
+       <value>&amp;#xD;</value>
+       <value>&amp;#xA;</value>
+     </util:list>
+   </constructor-arg>
+   <pen:publish as-type=&quot;INTERFACES&quot;/>
+ </bean></pre> </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_16" class="mt-page-section"><span id="systemListeners.xml"></span> 
+        <h2 class="editable">systemListeners.xml</h2>
+        <p>This file has undergone an extensive reordering in 5.1. &nbsp;<span>You will need to add&nbsp;beans and reorder them in&nbsp;the systemListeners.xml file.</span> </p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the systemListeners.xml file and add the SecuritySystemListener, LoadDriversListener, and olap4jSystemListener beans as shown. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.SecuritySystemListener&quot;/>
+<bean id=&quot;loadDriversListener&quot; class=&quot;org.pentaho.commons.system.LoadDriversListener&quot; />
+<bean id = &quot;olap4jSystemListener&quot; class=&quot;org.pentaho.platform.plugin.action.olap.Olap4jSystemListener&quot;></pre> </li>
+          <li>Find the bean for <span class="filepath style-wrap">pooledDataSourceSystemListener</span>  and replace the old bean with the new bean as shown.
+            <p><strong>Old Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;pooledDataSourceSystemListener&quot;
+class=&quot;org.pentaho.platform.engine.services.connection.datasource.dbcp.PooledDatasourceSystemListener&quot; /></pre>
+            <p><strong>New Bean:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;dynamicallyPooledDataSourceSystemListener&quot; class=&quot;org.pentaho.platform.engine.services.connection.datasource.dbcp.DynamicallyPooledDatasourceSystemListener&quot; /></pre>            </li>
+        </ol>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Add the following bean directly after the <span class="filepath style-wrap">kettleSystemListener</span> . <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;osgiListener&quot; class=&quot;org.pentaho.platform.osgi.OSGIBoot&quot;/></pre>            </li>
+          <li>
+            <div>Reorder your beans so that your merged result looks like the following. If your custom system listener is required to generate content, make sure that it is added before the&nbsp;<span class="filepath style-wrap">quartzSystemListener</span> .
+              Otherwise, place your custom listeners at the end of the list.</div>
+            <div>
+              <ul>
+                <li>kettleSystemListener</li>
+                <li>osgiListener</li>
+                <li>pluginSystemListener</li>
+                <li>SecuritySystemListener</li>
+                <li>jfreeReportSystemListener</li>
+                <li>mondrianSystemListener</li>
+                <li>pooledDataSourceSystemListener</li>
+                <li>chartingSystemListener</li>
+                <li>loadDriversListener</li>
+                <li>olap4jSystemListener</li>
+                <li>quartzSystemListener</li>
+                <li>auditReportingSystemListener</li>
+                <li>versionCheckerSystemListener</li>
+              </ul>
+            </div>
+          </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Merging_Tool_and_Misc._Configuration_Files" rel="internal">Merging Tool and Misc. Configuration Files</a>  </li>
+      <li> <a href="#Edit_Mondrian_configuration_file" rel="internal">Edit Mondrian configuration file</a>  </li>
+      <li> <a href="#MySQL_Only:_Edit_Jackrabbit_configuration_file" rel="internal">MySQL Only: Edit&nbsp;Jackrabbit configuration file</a>  </li>
+      <li> <a href="#Edit_web.xml_configuration_file" rel="internal">Edit web.xml configuration file</a>  </li>
+      <li> <a href="#Edit_ehcache.xml_File" rel="internal">Edit ehcache.xml File</a>  </li>
+      <li> <a href="#Merge_System_Configuration_Files" rel="internal">Merge&nbsp;System Configuration Files</a>  </li>
+      <li> <a href="#applicationContext-pentaho-security.E2.80.90jdbc.xml" rel="internal">applicationContext-&shy;pentaho-&shy;security&#8208;jdbc.xml</a>  </li>
+      <li> <a href="#applicationContext-spring-security-ldap.xml" rel="internal">applicationContext-&shy;spring-security-ldap.xml</a>  </li>
+      <li> <a href="#applicationContext-spring-security.xml" rel="internal">applicationContext-&shy;spring-security.xml</a>  </li>
+      <li> <a href="#pentaho.xml" rel="internal">pentaho.xml</a>  </li>
+      <li> <a href="#pentahoObjects.spring.xml" rel="internal">pentahoObjects.spring.xml</a>  </li>
+      <li> <a href="#pentahoServices.spring.xml" rel="internal">pentahoServices.spring.xml</a>  </li>
+      <li> <a href="#repository.spring.properties" rel="internal">repository.spring.properties</a>  </li>
+      <li> <a href="#repository.spring.xml" rel="internal">repository.spring.xml</a>  </li>
+      <li> <a href="#systemListeners.xml" rel="internal">systemListeners.xml</a>  </li>
+    </ol>
+  </body>
+</content>

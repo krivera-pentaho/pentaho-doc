@@ -1,0 +1,83 @@
+<content type="text/html" title="Workflow Overview">
+  <body>
+    <div class="body conbody">
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>To prepare data for use with the Pentaho Analysis (and Reporting, to a certain extent) client tools, you should follow this basic workflow.</p>
+        </div>
+      </div>
+      <p class="p">To prepare data for use with the Pentaho Analysis (and Reporting, to a certain extent) client tools, you should follow this basic workflow:</p>
+      <div class="section">
+        <div id="section_2" class="mt-page-section"><span id="Design_a_Star_or_Snowflake_Schema"></span> 
+          <h2 class="editable">Design a Star or Snowflake Schema</h2>
+          <p class="p">The entire process starts with a data warehouse. This section will not attempt to explain how to build this structure -- there are entire books on the subject, and an entire consulting industry dedicated to it already. The end result should
+            be data model in the star or snowflake schema pattern. You don't have to worry too much about getting the model exactly right on your first try. Just cover all of your anticipated business needs; part of the process is coming back to the data
+            warehouse design step and making changes to your initial data model after you've discovered what your operational needs are.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_3" class="mt-page-section"><span id="Populate_the_Star.2FSnowflake_Schema"></span> 
+          <h2 class="editable">Populate the Star/Snowflake Schema</h2>
+          <p class="p">Once your data model is designed, the next step is to populate it with actual data, thereby creating your data warehouse. The best tool for this job is Pentaho Data Integration, an enterprise-grade extract, transform, and load (ETL) application.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_4" class="mt-page-section"><span id="Build_a_Mondrian_Schema"></span> 
+          <h2 class="editable">Build a Mondrian Schema</h2>
+          <p class="p">Now that your initial data warehouse project is complete, you must build a Mondrian schema to organize and describe it in terms that Pentaho Analysis can understand. This is also accomplished through Pentaho Data Integration by using the Agile
+            BI plugin. Just connect to your data warehouse and auto-populate your schema with the Modeler graphical interface. Alternatively, you can use Pentaho Schema Workbench to create an analysis schema through a manual process.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_5" class="mt-page-section"><span id="Initial_Testing"></span> 
+          <h2 class="editable">Initial Testing</h2>
+          <p class="p">At this point you should have a multi-dimensional data structure with an appropriate metadata layer. You can now start using Pentaho Analyzer to drill down into your data and see if your first attempt at data modelling was successful. In all
+            likelihood, it will need some adjustment, so take note of all of the schema limitations that you're unhappy with during this initial testing phase.</p>
+          <p class="p">Do not be concerned with performance issues at this time -- just concentrate on the completeness and comprehensiveness of the data model.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_6" class="mt-page-section"><span id="Adjust_and_Repeat_Until_Satisfied"></span> 
+          <h2 class="editable">Adjust and Repeat Until Satisfied</h2>
+          <p class="p">Use the notes you took during the testing phase to redesign your data warehouse and Mondrian schema appropriately. Adjust hierarchies and relational measure aggregation methods. Create virtual cubes for analyzing multiple fact tables by conforming
+            dimensions. Re-test the new implementation and continue to refine the data model until it matches your business needs perfectly.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_7" class="mt-page-section"><span id="Test_for_Performance"></span> 
+          <h2 class="editable">Test for Performance</h2>
+          <p class="p">Once you're satisfied with the design and implementation of your data model, you should try to find performance problems and address them by tuning your data warehouse database, and by creating aggregation tables. The testing can only be reasonably
+            done by hand, using Pentaho Analyzer. Take note of all of the measures that take an unreasonably long time to calculate. Also, enable SQL logging and locate slow-performing queries, and build indexes for optimizing query performance.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_8" class="mt-page-section"><span id="Create_Aggregation_Tables"></span> 
+          <h2 class="editable">Create Aggregation Tables</h2>
+          <p class="p">Using your notes as a guide, create aggregation tables in Pentaho Aggregation Designer to store frequently computed Analyzer reports. Re-test and create new aggregation tables as necessary.</p>
+          <p class="p">If you are working with a relatively small data warehouse or a limited number of dimensions, you may not have a real need for aggregation tables. However, be aware of the possibility that performance issues may come up in the future. Check in
+            with your users occasionally to see if they have any particular concerns about the speed of their BI content.</p>
+        </div>
+      </div>
+      <div class="section">
+        <div id="section_9" class="mt-page-section"><span id="Deploy_to_Production"></span> 
+          <h2 class="editable">Deploy to Production</h2>
+          <p class="p">Your data warehouse and Mondrian schema have been created, tested, and refined. You're now ready to put it all into production. You may need to train or purchase Pentaho training for those in your organization who use Pentaho client tools.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Design_a_Star_or_Snowflake_Schema" rel="internal">Design a Star or Snowflake Schema</a>  </li>
+      <li> <a href="#Populate_the_Star.2FSnowflake_Schema" rel="internal">Populate the Star/Snowflake Schema</a>  </li>
+      <li> <a href="#Build_a_Mondrian_Schema" rel="internal">Build a Mondrian Schema</a>  </li>
+      <li> <a href="#Initial_Testing" rel="internal">Initial Testing</a>  </li>
+      <li> <a href="#Adjust_and_Repeat_Until_Satisfied" rel="internal">Adjust and Repeat Until Satisfied</a>  </li>
+      <li> <a href="#Test_for_Performance" rel="internal">Test for Performance</a>  </li>
+      <li> <a href="#Create_Aggregation_Tables" rel="internal">Create Aggregation Tables</a>  </li>
+      <li> <a href="#Deploy_to_Production" rel="internal">Deploy to Production</a>  </li>
+    </ol>
+  </body>
+</content>

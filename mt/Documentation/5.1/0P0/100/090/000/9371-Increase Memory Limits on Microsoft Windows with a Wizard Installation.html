@@ -1,0 +1,31 @@
+<content type="text/html" title="Increase Memory Limits on Microsoft Windows with a Wizard Installation">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">By default, Tomcat has a relatively low memory allotment. This can cause out-of-memory errors in the BA Server from time to time. The below instructions will explain how to increase the memory so you don't get this error. Instructions are also
+            included for renaming the tomcat6 executable file so that BA Server starts automatically.</p>
+          <p class="p"><strong class="ph b">These instructions are for those who installed Pentaho Business Analytics graphically (as opposed to manually) and are Windows users.</strong> </p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Go to the <strong class="ph b">Windows Search Box</strong>  and enter <span class="ph filepath">C:\Program Files\pentaho\server\biserver-ee\tomcat\bin\shutdown.bat</span>  to shutdown the Pentaho BA Server.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Type <span class="ph filepath">services.msc</span>  into the <strong class="ph b">Windows Search Box</strong> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Find the Pentaho Server name (<strong class="ph b">Pentaho BA Server</strong>  or <strong class="ph b">Pentaho BI Server</strong> ) and open it so you can find the <strong class="ph b">service name</strong> . The <strong class="ph b">service name</strong>  should appear at the top of the first tab (<strong class="ph b">General</strong> ). It will be <strong class="ph b">pentahobaserver</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Go into the bin file (<span class="ph filepath">C:\Program Files\pentaho\server\biserver-ee\tomcat\bin\</span> ) and rename the <strong class="ph b">tomcat6w.exe</strong>  file to match the <strong class="ph b">service name</strong>             (<strong class="ph b">pentahobaserver</strong>  or <strong class="ph b">pentahobiserver</strong> ). This will ensure that the server starts with the software.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">After you have renamed the file, open it by double-clicking on it. This will not open the file, it will allow you to edit it. You may need to right-click and select <span class="ph uicontrol">Run as Administrator</span> .
+            This depends on your user permission settings.</span>  The <strong class="ph b">Properties Window</strong>  will open.</li>
+          <li class="li step"><span class="ph cmd">Select the <strong class="ph b">Java</strong>  tab.</span> </li>
+          <li class="li step"><span class="ph cmd">Set the memory setting to a minimum of <strong class="ph b">4096 M</strong>  and a maximum of <strong class="ph b">6144 M</strong>, depending on your computer's memory capabilities.</span> </li>
+          <li class="li step"><span class="ph cmd">Start the Tomcat server or service.</span> </li>
+        </ol>
+        <div class="section result">Your Tomcat server now has increased minimum and maximum memory limits. You can adjust the <strong class="ph b">JvmMx</strong>  number, which is a parameter that specifies the maximum limit, to a higher number if you prefer. However, if the Java
+          virtual machine refuses to start with increased limits, then you will have to add more RAM to your system, stop some memory-intensive services, or reduce the maximum memory limit to a lower number. This problem occurs when there is not enough
+          contiguous memory available to assign to the JVM.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,141 @@
+<content type="text/html" title="Starting DI Server on Linux">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to start the DI Server.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Install_License_Keys_Using_the_Command_Line_Interface"></span> 
+        <h2 class="editable">Install License Keys Using the Command Line Interface</h2>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Download the .lic file you want to install.</span> </li>
+          <li class="li step"><span class="ph cmd">Copy your .lic files to the DI Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">license-installer</span> &nbsp;directory:&nbsp;</span> &nbsp;pentaho/license-installer</li>
+          <li class="li step"><span class="ph cmd">&nbsp;Run <span class="ph filepath">install_license.sh</span>  with the install switch and the location and name of your .lic file as a parameter. You can specify multiple .lic files separated by spaces. Be sure to use backslashes
+            to escape any spaces in the path or file name, like this:</span> 
+          </li>
+        </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">install_license.sh install /home/<user name>/downloads/Pentaho\ DI\ Enterprise\ Edition.lic</pre>
+        <div class="topic task nested1">
+          <div id="section_3" class="mt-page-section"><span id="Modify_Tomcat_Linux_Startup_Script"></span> 
+            <h2 class="editable">Modify Tomcat Linux&nbsp;Startup Script</h2>
+            <div class="body taskbody">
+              <div class="section context">
+                <p class="p">The Tomcat startup script must be modified to include the <code class="ph codeph">CATALINA_OPTS</code> variable. <code class="ph codeph">CATALINA_OPTS</code> indicates the amount of memory to allocate. It also indicates where Pentaho licenses
+                  are installed.&nbsp;</p>
+              </div>
+            </div>
+            <div class="topic task nested2">
+              <div class="body taskbody">
+                <ol class="pentaho-list-ordered">
+                  <li class="li step"><span class="ph cmd">Make sure the Tomcat web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <code class="ph codeph">ps -A</code> at the prompt. If the server is running, stop
+                    it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">startup.sh</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line directly before the <code class="ph codeph">exec &quot;$PRGDIR&quot;/&quot;$EXECUTABLE&quot; start &quot;$@&quot;</code> line near the end of the file.</span> </li>
+                </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH&quot;</pre>
+                <ol class="pentaho-list-ordered" start="4">
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic task nested1">
+          <div id="section_4" class="mt-page-section"><span id="Modify_JBoss_Linux_Startup_Script"></span> 
+            <h2 class="editable">Modify JBoss&nbsp;Linux Startup Script</h2>
+            <div class="body taskbody">
+              <div class="section context">
+                <p class="p">The JBoss startup script must be modified to include the <code class="ph codeph">JAVA_OPTS</code> variable. <code class="ph codeph">JAVA_OPTS</code> indicates the amount of memory to allocate. It also indicates where Pentaho licenses are
+                  installed. Specific instructions on how to modify the startup script depend on your operating system.</p>
+              </div>
+            </div>
+            <div class="topic task nested2">
+              <div class="body taskbody">
+                <ol class="pentaho-list-ordered">
+                  <li class="li step"><span class="ph cmd">Make sure the JBoss web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <code class="ph codeph">ps -A</code> at the prompt. If the server is running, stop
+                    it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">standalone.conf</span>  file. The file is located in the <span class="ph filepath">bin</span>  subdirectory of your JBoss home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Modify the <code class="ph codeph">Xms</code> memory settings in the <span class="ph filepath">JAVA_OPTS</span>  line to be at least 4096 MB or more, if you have the resources and are concerned with performance. Change
+                    the <code class="ph codeph">Xmx</code> value to at least 6144 MB.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add the following options to the <span class="ph filepath">JAVA_OPTS</span>  line.</span> 
+                  </li>
+                </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">-Djava.awt.headless=true -Djava.io.tmpdir=/tmp/ -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH</pre>
+                <ol class="pentaho-list-ordered" start="5">
+                  <li>Specify options to pass to the Java VM.</li>
+                </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">if [ &quot;x$JAVA_OPTS&quot; = &quot;x&quot; ]; then
+        JAVA_OPTS=&quot;-Xms4096m \
+        -Xmx6144m \
+        -XX:MaxPermSize=256m \
+        -Dsun.rmi.dgc.client.gcInterval=3600000 \
+        -Dsun.rmi.dgc.server.gcInterval=3600000 \
+        <b>-Djava.awt.headless=true \
+        -Djava.io.tmpdir=/tmp/ \
+        -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH</pre>
+                <p class="pentaho-note">You may need to adjust these settings for your environment. For instance, if you do not have a <span class="ph filepath">/tmp/</span>  directory, you may want to change that setting to <span class="ph filepath">/var/tmp/</span>  or some
+                  other location.</p>
+                <ol class="pentaho-list-ordered" start="6">
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Start_DI_Server"></span> 
+          <h2 class="editable">Start DI Server</h2>
+          <div class="topic task nested1">
+            <div class="body taskbody">
+              <ol class="pentaho-list-ordered">
+                <li class="li step"><span class="ph cmd">Run the startup script for your web application server by launching one these files.</span> 
+                  <div class="p">
+                    <ul class="pentaho-list-unordered">
+                      <li class="li"><strong class="ph b">Linux Tomcat:</strong>  Launch the <span class="ph filepath">startup.sh</span> &nbsp;file. The startup.sh file is in the Tomcat <span class="ph filepath">bin</span>  directory.</li>
+                      <li class="li"><strong class="ph b">Linux JBoss:</strong>  Launch the <span class="ph filepath">standalone.sh</span>  file. The standalone.sh&nbsp;file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="li step"><span class="ph cmd">The server starts. There is no GUI for the server, but when you install then start the client tool, which is called Spoon, you can interact with the DI Server from there. When you start Spoon, you will also be prompted to enter your license information. See <a class="xref" title="Install DI Design Tool and Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0H0/030"> Install DI Tools</a>  to learn how to install Spoon and other plugins.</span> </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Problems_Starting_the_DI_Server.3F"></span> 
+          <h2 class="editable">Problems Starting the DI Server?</h2>
+          <p class="li step">Check out our
+            <a title="Introduction" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/000/000">Troubleshooting Guide</a>  for help.</p>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Next_Step"></span> 
+          <h2 class="editable">Next Step</h2>
+          <p class="li step">
+            <a title="Next Steps" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0L0/050">Read the next steps</a> .</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_License_Keys_Using_the_Command_Line_Interface" rel="internal">Install License Keys Using the Command Line Interface</a>  </li>
+      <li> <a href="#Modify_Tomcat_Linux_Startup_Script" rel="internal">Modify Tomcat Linux&nbsp;Startup Script</a>  </li>
+      <li> <a href="#Modify_JBoss_Linux_Startup_Script" rel="internal">Modify JBoss&nbsp;Linux Startup Script</a>  </li>
+      <li> <a href="#Start_DI_Server" rel="internal">Start DI Server</a>  </li>
+      <li> <a href="#Problems_Starting_the_DI_Server.3F" rel="internal">Problems Starting the DI Server?</a>  </li>
+      <li> <a href="#Next_Step" rel="internal">Next Step</a>  </li>
+    </ol>
+  </body>
+</content>

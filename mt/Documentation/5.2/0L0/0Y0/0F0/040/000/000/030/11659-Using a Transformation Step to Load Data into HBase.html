@@ -1,0 +1,138 @@
+<content type="text/html" title="Using a Transformation Step to Load Data into HBase">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">In order to follow along with this tutorial, you will need
+          <ul class="ul" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__ul_jql_jxj_c3">
+            <li class="li">Hadoop</li>
+            <li class="li">Pentaho Data Integration</li>
+            <li class="li">HBase</li>
+          </ul>
+        </div>
+        <div class="section context">
+          <p class="p">This tutorial describes how to use data from a sample flat file to create a HBase table using a PDI transformation. For the sake of brevity, you will use a prepared sample dataset and a simple transformation to prepare and transform your data
+            for HBase loads.</p>
+          <p class="p">If not already running, start Hadoop, PDI, and HBase. Unzip the sample data files and put them in a convenient location:
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/download/attachments/23530622/weblogs_hbase.txt.zip">weblogs_hbase.txt.zip</a> 
+          </p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Create a HBase Table.</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Open the HBase shell by entering <code class="ph codeph">hbase shell</code> at the command line. </span> </li>
+              <li class="li substep"><span class="ph cmd">Create the table in HBase by entering <code class="ph codeph">create 'weblogs', 'pageviews'</code> in the HBase shell. </span>  This creates a table named <span class="ph filepath">weblogs</span>  with a single column
+                family named <span class="ph filepath">pageviews</span> .</li>
+              <li class="li substep"><span class="ph cmd">Close the HBase shell by entering <code class="ph codeph">quit</code>.</span> </li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">From within the Spoon, create a new transformation by selecting <span class="ph uicontrol">File</span>  > <span class="ph uicontrol">New</span>  > <span class="ph uicontrol">Transformation</span> . </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Identify the source where the transformation will get data from.</span>  For this tutorial your source is a text file (.<span class="ph filepath">txt</span> ). From the <span class="ph uicontrol">Input</span>  folder of the
+            <span class="ph uicontrol">Design</span>  palette on the left, add a <span class="ph uicontrol">Text File Input</span>  step to the transformation by dragging it onto the canvas.
+            <img alt="File:/loading_data_into_hbase_add_input_step.png" class="image"
+            id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__loading_data_into_hbase_add_input_step.png" src="File:loading_data_into_hbase_add_input_step.png" />
+          </li>
+          <li class="li step"><span class="ph cmd">Edit the properties of the <span class="ph uicontrol">Text file input</span>  step by double-clicking the icon. </span>  The <span class="ph uicontrol">Text file input</span>  dialog box appears.</li>
+          <li class="li step"><span class="ph cmd">From the <span class="ph uicontrol">File</span>  tab, in the <span class="ph uicontrol">File or Directory</span>  field, click <span class="ph uicontrol">Browse</span>  and navigate to the <span class="ph filepath">weblog_hbase.txt</span>             file. Click <span class="ph uicontrol">Add</span> .</span> 
+            <p class="p">The file appears in the <span class="ph uicontrol">Selected files</span>  pane.</p>
+            <p class="p">
+              <img alt="File:/loading_data_into_hive_step5_result.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__image_dc5_p1h_b3" src="File:loading_data_into_hive_step5_result.png" />
+            </p>
+          </li>
+          <li class="li step"><span class="ph cmd">Configure the contents of the file by switching to the <span class="ph uicontrol">Content</span>  tab.</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Separator</span>, clear the contents and click <span class="ph uicontrol">Insert TAB</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Check the <span class="ph uicontrol">Header</span>  checkbox.</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Format</span>, Select <span class="ph uicontrol">Unix</span>  from the drop-down menu.</span> 
+              </li>
+            </ol>
+            <img alt="File:/loading_data_into_hbase_text_file_input_content_tab.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__loading_data_into_hbase_text_file_input_content_tab" src="File:loading_data_into_hbase_text_file_input_content_tab.png"
+            />
+          </li>
+          <li class="li step"><span class="ph cmd">Configure the input fields.</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">From the <span class="ph uicontrol">Fields</span>  tab, select <span class="ph uicontrol">Get Fields</span>  to populate the list the available fields. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">A dialog box appears asking for <span class="ph uicontrol">Number of sample lines</span> . Enter <span class="ph uicontrol">100</span>  and click <span class="ph uicontrol">OK</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Change the <span class="ph uicontrol">Type</span>  of the field named <span class="ph uicontrol">key</span>  to <span class="ph uicontrol">String</span>  and set the <span class="ph uicontrol">Length</span>  to <span class="ph uicontrol">20</span> .
+                </span> 
+              </li>
+            </ol>
+            <p class="p">
+              <img alt="File:/loading_data_into_hbase_text_file_input_fields_tab.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__loading_data_into_hbase_text_file_input_fields_tab" src="File:loading_data_into_hbase_text_file_input_fields_tab.png"
+              />
+            </p>
+            <p class="p">Click <span class="ph uicontrol">OK</span>  to close the window.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">On the <span class="ph uicontrol">Design</span>  palette, under <span class="ph uicontrol">Big Data</span>, drag the <span class="ph uicontrol">HBase Output</span>  to the canvas. Create a hop to connect your input and
+            <span
+            class="ph uicontrol">HBase Output</span>  step by hovering over the input step and clicking the output connector
+              <img alt="File:/loading_data_into_hbase_step7a.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__loading_data_into_hbase_step7a"
+              src="File:loading_data_into_hbase_step7a.png" />, then drag the connector arrow to the <span class="ph uicontrol">HBase Output</span>  step.</span> 
+              <img alt="File:/loading_data_into_hbase_step7.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__loading_data_into_hbase_step7"
+              src="File:loading_data_into_hbase_step7.png" />
+          </li>
+          <li class="li step"><span class="ph cmd">Edit the <span class="ph uicontrol">HBase Output</span>  step by double-clicking it. You must now enter your Zookeeper host(s) and port number. </span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">For the <span class="ph uicontrol">Zookeeper hosts(s)</span>  field, enter a comma separated list of your HBase Zookeeper Hosts. For local single node clusters use <code class="ph codeph">localhost</code>. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Zookeeper port</span>, enter the port for your Zookeeper hosts. By default this is <code class="ph codeph">2181</code>. </span> 
+              </li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">Create a HBase mapping to tell Pentaho how to store the data in HBase by switching to the <span class="ph uicontrol">Create/Edit mappings</span>  tab and changing these options.</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">HBase table name</span>, select <span class="ph uicontrol">weblogs</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Mapping name</span>, enter <code class="ph codeph">pageviews</code>. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Click <span class="ph uicontrol">Get incoming fields</span> . </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For the alias <span class="ph uicontrol">key</span>  change the <span class="ph uicontrol">Key</span>  column to <span class="ph uicontrol">Y</span>, clear the <span class="ph uicontrol">Column family</span>  and
+                <span
+                class="ph uicontrol">Column name</span>  fields, and set the <span class="ph uicontrol">Type</span>  field to <span class="ph uicontrol">String</span> . Click <span class="ph uicontrol">Save mapping</span> .</span> 
+              </li>
+            </ol>
+            <img alt="File:/loading_data_into_hbase_step9.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__image_3tv_skl_yh" src="File:loading_data_into_hbase_step9.png" />
+          </li>
+          <li class="li step"><span class="ph cmd">Configure the HBase out to use the mapping you just created. </span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Go back to the <span class="ph uicontrol">Configure connection</span>  tab and click <span class="ph uicontrol">Get table names</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">HBase table name</span>, enter <code class="ph codeph">weblogs</code>.</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Click <span class="ph uicontrol">Get mappings for the specified table</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Mapping name</span>, select <span class="ph uicontrol">pageviews</span> . Click <span class="ph uicontrol">OK</span>  to close the window.</span> 
+              </li>
+            </ol> Save the transformation by selecting <span class="ph uicontrol">Save as</span>  from the <span class="ph uicontrol">File</span>  menu. Enter <span class="ph uicontrol">load_hbase.ktr</span>  as the file name within a folder of your choice.</li>
+          <li class="li step"><span class="ph cmd">Run the transformation by clicking the green <span class="ph uicontrol">Run</span>  button on the transformation toolbar
+            <img alt="File:/loading_data_into_hbase_result_run.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__image_zfz_yll_yh"
+            src="File:loading_data_into_hbase_result_run.png" />, or by choosing <span class="ph uicontrol">Action</span>  > <span class="ph uicontrol">Run</span>  from the menu. The <span class="ph uicontrol">Execute a transformation</span>  window opens. Click <span class="ph uicontrol">Launch</span> .</span> 
+            <p class="p">An <span class="ph uicontrol">Execution Results</span>  panel opens at the bottom of the Spoon interface and displays the progress of the transformation as it runs. After a few seconds the transformation finishes successfully.</p>
+            <p class="p">
+              <img alt="File:/loading_data_into_hbase_result.png" class="image" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__image_1wc_dml_yh" src="File:loading_data_into_hbase_result.png" />
+            </p>
+            <p class="p">If any errors occurred the transformation step that failed will be highlighted in red and you can use the <span class="ph uicontrol">Logging</span>  tab to view error messages.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Verify the data was loaded by querying HBase.</span> 
+            <ol class="ol substeps" id="8da38e44-c057-40b2-9d2f-3f93f564c8e2__task_hadoop_loading_data_into_hbase_orig__substeps_4cr_44v_zh" type="a">
+              <li class="li substep"><span class="ph cmd">From the command line, open the HBase shell by entering this command. </span>  <pre class="pre codeblock">
+hbase shell</pre> </li>
+              <li class="li substep"><span class="ph cmd">Query HBase by entering this command.</span>  <pre class="pre codeblock">
+scan 'weblogs', {LIMIT => 10}</pre> </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="section result">
+          <p class="p">Ten rows of data are returned.</p>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

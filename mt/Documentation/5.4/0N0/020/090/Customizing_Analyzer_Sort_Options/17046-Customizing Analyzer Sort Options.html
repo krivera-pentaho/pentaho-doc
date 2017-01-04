@@ -1,0 +1,94 @@
+<content type="text/html" title="Customizing Analyzer Sort Options">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div><span id="s17828"></span> 
+      <div>
+        <div> </div> <span id="Available_Fields_for_Sorting_in_Analyzer"></span> <span id="Available_Fields_for_Sorting_in_Analyzer-17828"></span> 
+        <h2>Available Fields for Sorting in Analyzer</h2>
+        <p>The <strong>Available fields</strong>  list in Analyzer can be sorted using the <strong>View </strong> toggle with the following sorting options:</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+        title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col">UI Label</th>
+              <th scope="col">Description</th>
+              <th scope="col">Sort Option</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>By Category</td>
+              <td>Sorts by folder names.</td>
+              <td><span style="font-family:calibri,sans-serif;"><span style="font-size:10.5pt;">cmdViewCategory</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td>Measure - Level - Time</td>
+              <td>Sorts by the type of field.</td>
+              <td><span style="font-family:calibri,sans-serif;"><span style="font-size:10.5pt;">cmdViewType</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td>A > Z</td>
+              <td>Sorts by field names without any folders.</td>
+              <td><span style="font-family:calibri,sans-serif;"><span style="font-size:10.5pt;">cmdViewName</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td>Schema</td>
+              <td>Sorts in the same order thant is defined in the Mondrian schema file.</td>
+              <td><span style="font-family:calibri,sans-serif;"><span style="font-size:10.5pt;">cmdViewSchema</span> </span> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The default sort used in an Analyzer report is based on the following priority:</p>
+        <ol class="pentaho-list-ordered">
+          <li>A sort specified in an URL takes the highest priority.</li>
+          <li>The last sort option is automatically remembered when a report is reopened.</li>
+          <li>Next comes the annotation value specified on the report's cube in the Mondrian schema file.</li>
+          <li>A system wide setting in analyzer.properties file.</li>
+          <li>Last, the default value of <strong>cmdViewCategory</strong> .</li>
+        </ol> <span id="Specify_the_Sort_Option_with_an_URL"></span> <span id="Specify_the_Sort_Option_with_an_URL-17828"></span> 
+        <h2>Specify the Sort Option with an URL</h2>
+        <p>The sort option can be set in the URL by adding a &quot;fieldListView&quot; query parameter at the end of the URL.&nbsp; For example, you can do something like this in a codeblock in HTML or XML.</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/pentaho/api/repos/xanalyzer/editor?&amp;amp;showFieldList=true&amp;amp;showFieldLayout=true&amp;amp;catalog=SampleData&amp;amp;cube=Quadrant%20Analysis&amp;amp;autoRefresh=true&amp;amp;debug=true&amp;amp;</pre>        <span id="Specify_Sort_Option_with_Annotation"></span> <span id="Specify_Sort_Option_with_Annotation-17828"></span> 
+        <h2>Specify Sort Option with Annotation</h2>
+        <p>To specify the sort option using an annotation, add a Cube-level annotation called &quot;<strong>AnalyzerFieldListView</strong> &quot; in your Mondrian schema file.&nbsp; This annotation must be the first child element under a cube as shown here.</p>
+        <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Cube name=&quot;Quadrant Analysis&quot;>
+    <Annotations>
+              <Annotation name=&quot;AnalyzerFieldListView&quot;>cmdViewName</Annotation>
+    </Annotations>
+    <Table name=&quot;Quadrant_Acuals&quot; />
+    <DimensionUsage name=&quot;Region&quot; source=&quot;Region&quot; />
+    <DimensionUsage name=&quot;Department&quot; source=&quot;Department&quot; />
+    <DimensionUsage name=&quot;Positions&quot; source=&quot;Positions&quot; /></pre> <span id="Specify_the_Sort_Option_through_the_analyzer.properties_file"></span> <span id="Specify_the_Sort_Option_through_the_analyzer.properties_file-17828"></span> 
+        <h2>Specify the Sort Option through the analyzer.properties file</h2>
+        <p>This sort option is specified by setting the cmdViewType for the &quot;report.field.list.view&quot; property.</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># Default field list view mode used to sort the available field
+# list in the editor.  Possible values include: cmdViewCategory,
+# cmdViewType, cmdViewSchema and cmdViewName
+# This can also be overriden on a cube level with the annotation
+# AnalyzerFieldListView
+report.field.list.view=cmdViewType</pre>
+        <br />
+      </div>
+      <br />
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Available_Fields_for_Sorting_in_Analyzer" rel="internal">Available Fields for Sorting in Analyzer</a>  </li>
+      <li> <a href="#Specify_the_Sort_Option_with_an_URL" rel="internal">Specify the Sort Option with an URL</a>  </li>
+      <li> <a href="#Specify_Sort_Option_with_Annotation" rel="internal">Specify Sort Option with Annotation</a>  </li>
+      <li> <a href="#Specify_the_Sort_Option_through_the_analyzer.properties_file" rel="internal">Specify the Sort Option through the analyzer.properties file</a>  </li>
+    </ol>
+  </body>
+</content>

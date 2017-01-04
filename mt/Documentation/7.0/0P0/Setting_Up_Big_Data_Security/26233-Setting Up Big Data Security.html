@@ -1,0 +1,184 @@
+<content type="text/html" title="Setting Up Big Data Security">
+  <head>
+    <style type="text/css">
+      /*<![CDATA[*/
+      
+      #related,
+      .widget {
+        display: none;
+      }
+      
+      .guide-content.static {
+        max-width: 98.5%;
+      }
+      /*]]>*/
+    </style>
+  </head>
+  <body>
+    <p>The security and protection of sensitive data is a major concern of data management today. To assist customers in protecting their data, Pentaho provides two methods of implementing security for the Pentaho Server: Kerberos authentication and secure
+      impersonation. Both methods are secure, and require a user to provide proof of identity to securely connect to a cluster.</p>
+    <div id="section_1" class="mt-page-section"><span id="Kerberos_Authentication_versus_Secure_Impersonation"></span> 
+      <h2 class="editable">Kerberos Authentication versus Secure Impersonation</h2>
+      <p>
+        <a title="Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho">Kerberos authentication</a>  occurs when Pentaho users connect to a Hadoop cluster with a default Kerberos principal. All the Pentaho users connect to the Hadoop cluster with the same Kerberos principal.</p>
+      <p>In
+        <a title="Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Use_Secure_Impersonation_to_Access_a_Cloudera_Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Use_Secure_Impersonation_to_Access_a_Cloudera_Cluster">secure impersonation</a>, users connect to the Hadoop cluster as a proxy user. The Pentaho user ID matches the cluster user ID in a one-on-one mapping, and resources are accessed and processes are executed as the cluster user.</p>
+      <p>Secure impersonation occurs when (1) pre-defined credentials authenticate to a Kerberos server before connecting to the Hadoop cluster, (2) the Pentaho server is configured for secure impersonation, and (3) the Hadoop cluster is secured.</p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Prerequisites"></span> 
+      <h2 class="editable">Prerequisites&nbsp;</h2>
+      <p>For secure impersonation to work, the following conditions must be met:</p>
+      <ul>
+        <li>The Hadoop cluster must be configured with Kerberos security.</li>
+        <li>The Hadoop cluster must have a Kerberos principal that represents Pentaho that can authenticate to the cluster services and have privileges to impersonate.</li>
+        <li>Job or transformation requests must come from the Pentaho Server to the cluster to use secure impersonation.</li>
+        <li>The Hadoop components must support secure impersonation.</li>
+      </ul>
+      <p>Pentaho support for secure impersonation is determined by whether the Hadoop components support secure impersonation. If the Hadoop component does not support secure impersonation, then Kerberos authentication is used.</p>
+      <p class="pentaho-note">The Hadoop administrator is responsible for setting up the cluster users and the Kerberos servers. Refer to the
+        <a class="link-https" title="https://www.cloudera.com/documentation/enterprise/5-7-x/topics/search_sentry_impersonation.html#concept_jrk_lzc_fm"
+        rel="external nofollow" href="https://www.cloudera.com/documentation/enterprise/5-7-x/topics/search_sentry_impersonation.html#concept_jrk_lzc_fm" target="_blank">Cloudera documentation</a>  for instructions on setting up cluster users. Also see the
+        <a class="link-https" title="https://hadoop.apache.org/docs/r3.0.0-alpha1/hadoop-project-dist/hadoop-common/Superusers.html" rel="external nofollow" href="https://hadoop.apache.org/docs/r3.0.0-alpha1/hadoop-project-dist/hadoop-common/Superusers.html"
+        target="_blank">Apache Hadoop security documentation</a> .</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Supported_Components*"></span> 
+      <h2 class="editable">Supported Components*</h2>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="table-layout: fixed; width: 100%;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col">Component</th>
+            <th scope="col">Secure Impersonation Support?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cloudera-Impala</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>HBase</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>HDFS</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Hadoop MapReduce</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Hive</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Oozie</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Pentaho Map Reduce (PMR)**</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Pig Executor</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Carte on Yarn</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Impala</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Sqoop</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td>Spark SQL</td>
+            <td>No</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>* These components are currently only supported for secure impersonation on Cloudera 5.7 or greater.</p>
+      <p>** When running a Pentaho Map Reduce job, you can securely connect to Hive and HBase within the mapper, reducer or combiner.</p>
+      <p>Secure impersonation directly from the following is not supported:</p>
+      <ul>
+        <li>PDI client</li>
+        <li>Scheduled Jobs and Transformations</li>
+        <li>Pentaho Report Designer</li>
+        <li>Pentaho Metadata Editor</li>
+        <li>Kitchen</li>
+        <li>Pan</li>
+        <li>Carte.</li>
+      </ul>
+      <p>When you run a transformation or job to run against the cluster from the PDI client, you cannot use secure impersonation. However, if you execute that job or transformation you created in the PDI client from the Pentaho Server, then you can use
+        secure impersonation.</p>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="How_to_Enable_Secure_Impersonation"></span> 
+      <h2 class="editable">How to Enable Secure Impersonation</h2>
+      <p>Here is how to enable secure impersonation and how the Pentaho Server processes that request. The mapping value <strong>simple </strong> in the shim configuration file turns on the secure impersonation. See the article
+        <a title="Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Use_Secure_Impersonation_to_Access_a_Cloudera_Cluster"
+        rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Use_Secure_Impersonation_to_Access_a_Cloudera_Cluster">Use Secure Impersonation to Access a Cloudera Cluster</a>  for more information on the configuration file.</p>
+      <p>When the Pentaho Server starts, it checks the mapping type value in the configuration file. If the value is <strong>disabled </strong> or <strong>blank</strong>, then the server does not use authentication when connecting to the Hadoop cluster. The
+        Pentaho server cannot log onto a secured cluster if the value is set to disabled or blank. If the value is <strong>simple</strong>, then requests are evaluated for origination from the PDI client tool (Spoon) or from the Pentaho Server. If the
+        request comes from a client tool, then Kerberos authentication is used; if the request comes from the Pentaho Server, then the request is evaluated to see whether the service component supports secure impersonation. If the component does not support
+        secure impersonation, the request uses Kerberos authentication. If the component supports secure impersonation, then the request will use secure impersonation.</p>
+      <p class="pentaho-note">When impersonation is successful, the Pentaho Server log will report &quot;Everything looks good! [Hadoop User] is successfully impersonating as [Pentaho User]. &quot;</p>
+      <p>&nbsp;</p>
+      <div class="mt-page-section" id="section_4">
+        <img alt="Big Data Security Overview" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/12107/Big_Data_Security_Overview.PNG?revision=1" />
+        <p class="pentaho-note">If you change the mapping type value in the configuration file, you must restart the server for it to take effect.</p>
+      </div>
+      <p>&nbsp;</p>
+      <div id="section_5" class="mt-page-section"><span id="User_Guide"></span> 
+        <h4 style="display: none;" class="editable">User Guide</h4>
+        <div id="mt-guide-tabs" class="noindex">
+          <div class="mt-guide-tabs-container mt-tabs" data-page-id="26233" data-tabs-configuration-key="mindtouch#idf.guideTabs" data-user-can-edit="false" data-show-edit-controls="false">
+            <ul class="mt-guide-tabs-selectors">
+              <li class="mt-guide-tab ui-state-default" data-guid="c7218b33-f3ee-ea80-4e56-983f814bedb3" data-template-path="MindTouch/IDF3/Views/Topic_hierarchy" data-template-title="Guide Contents">
+                <a href="#c7218b33-f3ee-ea80-4e56-983f814bedb3" class="mt-guide-tab-link mt-no-scroll">Guide Contents</a> 
+              </li>
+            </ul>
+            <div id="c7218b33-f3ee-ea80-4e56-983f814bedb3" class="mt-guide-content"></div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          /*<![CDATA[*/
+          Deki.Utility.setLoc({
+            "MindTouch.IDF3.label.guide.deletetab.cancel": "Cancel",
+            "MindTouch.IDF3.label.guide.deletetab.delete": "Delete tab",
+            "MindTouch.IDF3.label.guide.deletetab.message": "Are you sure you wish to remove this guide tab?",
+            "MindTouch.IDF3.label.guide.deletetab.title": "Delete tab"
+          }); /*]]>*/
+        </script>
+        <script type="text/javascript">
+          /*<![CDATA[*/
+          Deki.Utility.setLoc({
+            "MindTouch.IDF3.label.guide.tabscrollleft": "Scroll tabs left",
+            "MindTouch.IDF3.label.guide.tabscrollright": "Scroll tabs right",
+            "MindTouch.IDF3.label.reveal.showAll": "Show all",
+            "MindTouch.IDF3.label.reveal.showLess": "Show less"
+          }); /*]]>*/
+        </script>
+      </div>
+    </div>
+  </body>
+  <tail>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/javascript/out/standalone/ui.widget.lsfGuideTabsDisplay.js"></script>
+  </tail>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Kerberos_Authentication_versus_Secure_Impersonation" rel="internal">Kerberos Authentication versus Secure Impersonation</a>  </li>
+      <li> <a href="#Prerequisites" rel="internal">Prerequisites&nbsp;</a>  </li>
+      <li> <a href="#Supported_Components*" rel="internal">Supported Components*</a>  </li>
+      <li>
+        <a href="#How_to_Enable_Secure_Impersonation" rel="internal">How to Enable Secure Impersonation</a> 
+        <ol>
+          <li> <a href="#User_Guide" rel="internal">User Guide</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

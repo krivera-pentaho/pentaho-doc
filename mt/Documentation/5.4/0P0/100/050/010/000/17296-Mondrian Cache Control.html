@@ -1,0 +1,41 @@
+<content type="text/html" title="Mondrian Cache Control">
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">This section contains instructions for configuring and controlling the cache infrastructure that the Pentaho Analysis engine uses for OLAP data. This information is useful for properly updating your OLAP cubes when your data warehouse is refreshed,
+          and for performance-tuning.</p>
+        <div class="note restriction"><span class="restrictiontitle">Restriction:</span>  Most of the advanced cache features explained in this section are for Enterprise Edition deployments only. Within that, most of the Enterprise Edition features of the Analysis engine are only
+          beneficial to large, multi-node OLAP deployments that are performing poorly.</div>
+        <p class="p">The Analysis engine does not ship with a segment cache, but it does have the ability to use third-party cache systems. If you've installed Pentaho Analysis Enterprise Edition, then you have a default configuration for the JBoss <strong class="ph b">Infinispan</strong>           distributed cache, though the actual Infinispan software is not included and must be downloaded separately. Infinispan supports a wide variety of sub-configurations and can be adapted to cache in memory, to the disk, to a relational database,
+          or (the default setting) to a distributed cache cluster.</p>
+        <p class="p">The Infinispan distributed cache is a highly scalable solution that distributes cached data across a self-managed cluster of Mondrian instances. Every Mondrian instance running the Analysis Enterprise Edition plugin on a local network will automatically
+          discover each other using UDP multicast. An arbitrary number of segment data copies are stored across all available nodes. The total size of the cache will be the sum of all of the nodes' capacities, divided by the number of copies to maintain.
+          This is all fully configurable; options are explained later in this section.</p>
+        <p class="p">Other supported segment cache configurations include, but are not limited to:</p>
+        <ul class="ul">
+          <li class="li"><strong class="ph b">Memcached</strong>, which uses an established (extant) Memcached infrastructure to cache and share the segment data among Mondrian peers.</li>
+          <li class="li"><strong class="ph b">Pentaho Platform Delegating Cache</strong>, which relies on the Pentaho BA Server to delegate segment data storage to the BA Server's native caching capabilities, thus leveraging the existing caching configuration. Some
+            people may prefer this configuration because it keeps the BA Server and Analysis engine manageable as a single entity.</li>
+        </ul>
+        <div class="note note"><span class="notetitle">Note:</span>  The Pentaho Platform Delegating Cache is not yet feature-complete. It will be available in a future Business Analytics release, but it is not yet ready for production use.</div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/050/010/000/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/050/010/000/000">Segment Cache Architecture</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/050/010/000/010" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/050/010/000/010">Cache Configuration Files</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/050/010/000/020" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/050/010/000/020">Modify the JGroups Configuration</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/050/010/000/030" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/050/010/000/030">Switch to Another Cache Framework</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

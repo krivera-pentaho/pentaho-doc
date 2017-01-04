@@ -1,0 +1,86 @@
+<content type="text/html" title="Activate CDE">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+      </div>
+    </div>
+    <p>In Pentaho Enterprise Edition 5.4 and higher, CTools is installed for you. Follow the steps below to activate your Community Dashboard Editor (CDE) plugin.</p>
+    <p class="pentaho-note">For Pentaho Community Edition 5.4 and higher, no activation is required.</p>
+    <div id="section_2" class="mt-page-section"><span id="Activating_CDE"></span> 
+      <h2 class="editable">Activating CDE</h2>
+      <p>To activate the CDE plugin, you will need to change the configuration of several .xml files in the Pentaho solutions folder as described below. <span class="ph cmd">Verify that you have the appropriate permissions to read, write, and execute commands in the specified directories in the instructions.</span> </p>
+      <p>These instructions should be executed after the Business Analytics (BA) server has been stopped. For instructions on starting and stopping the BA server,
+        <a title="Documentation/6.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/000">click here</a> .</p>
+      <div id="section_3" class="mt-page-section"><span id="Modify_the_plugin.xml_and_settings.xml_files"></span> 
+        <h3 class="editable">Modify the plugin.xml and settings.xml files</h3>
+        <ol class="pentaho-list-ordered">
+          <li>Log on to the machine on which you will host the BA Server.</li>
+          <li>Locate the <span class="filepath style-wrap">pentaho-solutions/system/pentaho-cdf-dd</span>  folder and open the <span class="filepath style-wrap">plugin.xml</span>  file in a text editor.</li>
+          <li>Locate the following two commented blocks in this file and remove the comment tags from these blocks.&nbsp;</li>
+        </ol> <pre style="margin-left: 40px;">
+<operation>
+    <id>EDIT</id>
+    <perspective>wcdf.edit</perspective>
+</operation>
+</pre> <pre style="margin-left: 40px;">
+<overlays>
+    <overlay id=&quot;launch&quot; resourcebundle=&quot;content/pentaho-cdf-dd/lang/messages&quot;>
+        <button id=&quot;launch_new_cde&quot; label=&quot;${Launcher.CDE}&quot; command=&quot;Home.openFile('${Launcher.CDE}', '${Launcher.CDE_TOOLTIP}', 'api/repos/wcdf/new');$('#btnCreateNew').popover('hide');&quot;/>
+    </overlay>
+    <overlay id=&quot;startup.cde_dashboard&quot;  resourcebundle=&quot;content/pentaho-cdf-dd/lang/messages&quot; priority=&quot;1&quot;>
+        <menubar id=&quot;newmenu&quot;>
+            <menuitem id=&quot;new-cde_dashboard&quot; label=&quot;${Launcher.CDE}&quot; command=&quot;mantleXulHandler.openUrl('${Launcher.CDE}','${Launcher.CDE_TOOLTIP}','api/repos/wcdf/new')&quot; />
+        </menubar>
+    </overlay>
+</overlays>
+</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>Save your changes</li>
+          <li>Locate the <span class="filepath style-wrap">pentaho-solutions/system/pentaho-cdf-dd</span>  and open the <span class="filepath style-wrap">settings.xml</span>  file in a text editor.</li>
+          <li>Locate the block at end of the file, 'Defining the new-toolbar-button' and remove the comments tags from this block.</li>
+        </ol> <pre style="margin-left: 40px;">
+<new-toolbar-button>1,New CDE Dashboard,CDE Dashboard,api/repos/wcdf/new</new-toolbar-button>
+</pre>
+        <ol class="pentaho-list-ordered" start="7">
+          <li>Save your changes.</li>
+          <li>Restart the Pentaho BA server.</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Verify_your_Community_Dashboard_Editor_(CDE)_Activation"></span> 
+        <h3 class="editable">Verify your Community Dashboard Editor (CDE) Activation</h3>
+        <p>To verify CDE is activated, do the following.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Log on to the
+            <a target="_blank" title="Quick Tour of the Pentaho User Console" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0J0/0D0/020">Pentaho User Console</a> .</li>
+          <li>From the Home page, click the <strong>Create New </strong> button.</li>
+          <li>From the menu that displays, select the <strong>New CDE Dashboard</strong>  option. You can now begin creating your first CDE dashboard.</li>
+        </ol>
+        <div id="section_5" class="mt-page-section"><span id="See_Also"></span> 
+          <h4 class="editable">See Also</h4>
+          <ul class="pentaho-list-unordered">
+            <li> <a title="CDE Dashboard Overview" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/CTools/CDE_Dashboard_Overview">CDE Dashboard Overview</a>  </li>
+            <li> <a title="CDE Quick Start Guide" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/CTools/CDE_Quick_Start_Guide">CDE Quick Start Guide</a>  </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Activating_CDE" rel="internal">Activating CDE</a> 
+        <ol>
+          <li> <a href="#Modify_the_plugin.xml_and_settings.xml_files" rel="internal">Modify the plugin.xml and settings.xml files</a>  </li>
+          <li>
+            <a href="#Verify_your_Community_Dashboard_Editor_(CDE)_Activation" rel="internal">Verify your Community Dashboard Editor (CDE) Activation</a> 
+            <ol>
+              <li> <a href="#See_Also" rel="internal">See Also</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

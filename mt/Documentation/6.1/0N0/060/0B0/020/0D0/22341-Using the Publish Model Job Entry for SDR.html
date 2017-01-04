@@ -1,0 +1,109 @@
+<content type="text/html" title="Using the Publish Model Job Entry for SDR">
+  <body>
+    <div>
+      <p>The Publish Model job entry allows you to publish the data model created with the
+        <a title="Documentation/6.1/0N0/060/0B0/020/0A0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/060/0B0/020/0A0">Build Model</a>  job entry so it is available for use on the BA Server. Before publishing the model, you will have the option of sharing the data model with everyone, or a specific user or role.</p>
+      <p>When you are building your job in Pentaho Data Integration (PDI), you will need to place the
+        <font color="#000000"> Build Model</font> job entry <em>before </em> the Publish Model job entry, as shown here in this example, to publish the model properly.</p>
+    </div>
+    <p style="text-align: center;">
+      <a class="thumb" title="SDRBasicWorkflow.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8130/SDRBasicWorkflow.png">
+        <img alt="SDRBasicWorkflow.png" class="internal default" style="width: 604px; height: 56px;" width="604px" height="56px" src="http://help.pentaho.com/@api/deki/files/8130/SDRBasicWorkflow.png?size=bestfit&amp;width=604&amp;height=56&amp;revision=1"
+        />
+      </a> 
+    </p>
+    <p>After it is published to the BA Server, the Data Source Wizard data source has the same name as the model in the Build Model job entry. Note that once the model is published, you won't be able to use the Data Source Wizard to edit the connection information
+      since the connection information for this model is stored in the Build Model job entry in PDI.</p>
+    <div id="section_1" class="mt-page-section"><span id="Using_the_Publish_Model_Job_Entry"></span> 
+      <h2 class="editable">Using the Publish Model Job Entry</h2>
+      <p>Use this job entry to publish the data source created with the
+        <a title="Documentation/6.1/0N0/060/0B0/020/0A0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/060/0B0/020/0A0">
+          <font color="#005da6">Build Model</font>
+        </a> 
+        <a title="Build Model (job entry)" rel="internal" href="http://help.pentaho.com/Draft_Content/Virginia/Working_with_the_Streamlined_Data_Refinery/0B0/020/0A0"> </a> job entry. This task assumes you are in the Job canvas in Pentaho Data Integration.</p>
+      <p>You must have an existing BA Server and
+        <a class="external-link" rel="nofollow" title="Documentation/6.1/0H0/060/010/040/000" href="/Documentation/6.1/0H0/060/010/040/000">permissions</a>  to Publish Content and Manage Data Sources in the BA Server in order to use this job entry. Note that if you are using a data service as the source in your Build Model job entry, you must be connected to a DI repository to successfully
+        publish your model.</p>
+      <ol class="pentaho-list-ordered">
+        <li>In the <strong>Design </strong> tab, click the <strong>Modeling </strong> folder, and then double-click the <strong>Publish Model</strong>  job entry. Alternatively, you can drag the job entry icon to the job canvas.
+          <p style="text-align: center;">
+            <img alt="Publish Model Icon" class="internal default" style="width: 185px; height: 53px;" width="185px" height="53px" src="http://help.pentaho.com/@api/deki/files/8129/PublishModelIcon.PNG?size=bestfit&amp;width=185&amp;height=53&amp;revision=2"
+            />
+          </p>
+        </li>
+        <li>Double-click the <strong>Publish Model</strong>  icon to open the Publish Model dialog box.</li>
+        <li>Enter a name for the entry in the <strong>Entry Name</strong>  field.</li>
+        <li>Optionally, select the <strong>Replace Existing Published Model</strong>  check box to overwrite an existing Data Source Wizard data source and database connection.</li>
+      </ol>
+      <p class="pentaho-note">To successfully complete an SDR job, it is recommended that you select this check box. If this check box is cleared and you attempt to publish a model with the same name, the Publish Data Source job entry will fail.</p>
+      <ol class="pentaho-list-ordered"
+      start="5">
+        <li>Fill in or edit the fields in the BA Server Connection section and then test your connection:</li>
+      </ol>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="164" style="table-layout: fixed;" title="Pentaho Table" width="672">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 150px;">Option</th>
+            <th scope="col" style="width: 475px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 165px;">URL</td>
+            <td style="width: 509px;">The base URL string used to connect to the server.</td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">User Name</td>
+            <td style="width: 509px;">The user name required to access the server.</td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">Password</td>
+            <td style="width: 509px;">The password associated with the provided user name which is passed during the authentication process.</td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">Test Connection button</td>
+            <td style="width: 509px;">Click this button to test the connection to the BA Server using the information provided in the above fields. When you click this button, the system will also check that the associated user is granted the Publish Content and Manage Data Sources&nbsp;permissions.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ol class="pentaho-list-ordered" start="6">
+        <li>Fill in or edit the fields in the Share section:</li>
+      </ol>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="164" style="table-layout: fixed;" title="Pentaho Table" width="672">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 150px;">Field</th>
+            <th scope="col" style="width: 475px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 165px;">Grant Access To</td>
+            <td style="width: 509px;">Grant access to the data model to everyone, specific users, or specific roles.
+              <br class="atl-forced-newline" /> The permission granted is <em>read only</em> . From the drop-down menu, you can select 'Everyone', 'User', or 'Role'. If you select 'User' or 'Role', the User/Role Name field is available.
+              <br class="atl-forced-newline" /> <strong>Note:</strong>  You can use variables to populate this field. The variable can contain one of three values: everyone, user, or role. These values <em>must </em> be lower-case to work properly.</td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">User/Role Name</td>
+            <td style="width: 509px;">Enter the name of the User or Role who will have access to the model.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ol class="pentaho-list-ordered" start="7">
+        <li>When finished, click <strong>OK </strong> to save your changes and close the dialog box, or click <strong>Cancel </strong> to discard your changes and close the dialog box.</li>
+      </ol>
+      <p>This is an example of the Publish Model dialog box.</p>
+      <p style="text-align: center;">
+        <a class="thumb" title="PublishModel.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8128/PublishModel.png">
+          <img alt="PublishModel.png" class="internal default" style="width: 380px; height: 601px;" width="380px" height="601px" src="http://help.pentaho.com/@api/deki/files/8128/PublishModel.png?size=bestfit&amp;width=380&amp;height=601&amp;revision=1"
+          />
+        </a> 
+      </p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Using_the_Publish_Model_Job_Entry" rel="internal">Using the Publish Model Job Entry</a>  </li>
+    </ol>
+  </body>
+</content>

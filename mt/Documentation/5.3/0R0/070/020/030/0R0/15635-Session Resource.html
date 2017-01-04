@@ -1,0 +1,176 @@
+<content type="text/html" title="Session Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Lists the user's current workspace as well as the workspace folder path.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Overview_2"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>The SessionResource service lists the user's current workspace as well as the workspace folder path.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__session_userWorkspaceDir.html">/session/userWorkspaceDir</a>  </li>
+              <li> <a href="#path__session_workspaceDirForUser_-user-.html">/session/workspaceDirForUser/{user}</a>  </li>
+            </ul>
+            <a name="path__session_userWorkspaceDir.html"></a> 
+            <div id="section_3" class="mt-page-section"><span id=".2Fsession.2FuserWorkspaceDir"></span> 
+              <h1 class="editable">/session/userWorkspaceDir</h1>
+              <a name="GET"></a> 
+              <div id="section_4" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns the current user's workspace folder path.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho-di/api/session/userWorkspaceDir</p>
+                <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>String object containing the workspace folder path.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/home/admin/workspace</pre> </div>
+                <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Returns the requested file path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__session_workspaceDirForUser_-user-.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_7" class="mt-page-section"><span id=".2Fsession.2FworkspaceDirForUser.2F.7Buser.7D"></span> 
+              <h1 class="editable">/session/workspaceDirForUser/{user}</h1>
+              <a name="GET"></a> 
+              <div id="section_8" class="mt-page-section"><span id="GET_2"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns the workspace folder path for the selected user.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho-di/api/session/workspaceDirForUser/admin</p>
+                <div id="section_9" class="mt-page-section"><span id="Parameters"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>user</td>
+                        <td>String of the user name.</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_10" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>String object containing the workspace folder path.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">workspace</pre> </div>
+                <div id="section_11" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Returns the workspace file path for the specified user.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>File path failed to be retrieved. This could be caused by an invalid user request.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> 
+              <br /> Generated by
+              <a class="external" rel="external nofollow" href="http://enunciate.codehaus.org" target="_blank">Enunciate</a> .</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fsession.2FuserWorkspaceDir" rel="internal">/session/userWorkspaceDir</a> 
+        <ol>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fsession.2FworkspaceDirForUser.2F.7Buser.7D" rel="internal">/session/workspaceDirForUser/{user}</a> 
+        <ol>
+          <li>
+            <a href="#GET_2" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

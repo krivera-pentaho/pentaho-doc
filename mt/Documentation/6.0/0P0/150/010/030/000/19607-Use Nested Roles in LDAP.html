@@ -1,0 +1,78 @@
+<content type="text/html" title="Use Nested Roles in LDAP">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      /*<![CDATA[*/ < script >
+        (function(i, s, o, g, r, a, m) {
+          i['GoogleAnalyticsObject'] = r;
+          i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+          }, i[r].l = 1 * new Date();
+          a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+          a.async = 1;
+          a.src = g;
+          m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+      ga('create', 'UA-69496435-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    /*]]>*/</script>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">It is possible to nest user roles such that one role includes all of the users of another role. Doing this external to the core LDAP structure prevents recursive directory queries to find all parents of a given child role. Follow the directions
+            below to modify the BA Server to support nested roles for LDAP and MSAD authentication types.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the BA Server or service.</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sh /usr/local/pentaho/server/biserver-ee/stop-pentaho.sh</pre>            </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/applicationContext-spring-security-ldap.xml</span>  file with a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">In the <strong class="ph b">populator</strong>  bean definition, replace <strong class="ph b">DefaultLdapAuthoritiesPopulator</strong>  with <strong class="ph b">NestedLdapAuthoritiesPopulator</strong> </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;populator&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.NestedLdapAuthoritiesPopulator&quot;></pre>            </li>
+          <li class="li step"><span class="ph cmd">Save the file, then edit <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/applicationContext-pentaho-security-ldap.xml</span> .</span>  This and the next step are only necessary if the roles that
+            serve as &quot;parents&quot; to nested roles cannot be returned by a traditional all authorities search.</li>
+          <li class="li step"><span class="ph cmd">Add an <strong class="ph b">extraRoles</strong>  bean to the list of transformers in the <strong class="ph b">ChainedTransformers</strong>  bean, and set properties for each parent role (represented by example_role below).</span>             <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;allAuthoritiesSearch&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.search.GenericLdapSearch&quot;>
+
+    <!-- omitted -->
+    <constructor-arg index=&quot;2&quot;>
+        <bean class=&quot;org.apache.commons.collections.functors.ChainedTransformer&quot;>
+            <constructor-arg index=&quot;0&quot;>
+                <list>
+                    <bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.transform.SearchResultToAttrValueList&quot;>
+
+                        <!-- omitted -->
+                    </bean>
+                    <bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.transform.ExtraRoles&quot;>
+                        <property name=&quot;extraRoles&quot;>
+                            <set>
+                                <value>example_role</value>
+                            </set>
+                        </property>
+                    </bean>
+                    <bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.transform.StringToGrantedAuthority&quot;>
+
+                        <!-- omitted -->
+                    </bean>
+                </list>
+            </constructor-arg>
+        </bean>
+    </constructor-arg>
+</bean></pre> </li>
+          <li class="li step"><span class="ph cmd">Save the file, close your text editor, and start the BA Server.</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sh /usr/local/pentaho/server/biserver-ee/start-pentaho.sh</pre>            </li>
+        </ol>
+        <div class="section result">The BA Server can now efficiently handle nested roles with LDAP or Active Directory authentication.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

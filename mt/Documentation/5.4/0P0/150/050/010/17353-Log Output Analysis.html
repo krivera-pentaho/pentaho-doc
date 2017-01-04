@@ -1,0 +1,34 @@
+<content type="text/html" title="Log Output Analysis">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The information you need to look for in <strong class="ph b">pentaho.log</strong>  in order to troubleshoot security configuration problems should be fairly self-evident. If you are having trouble, consult the examples below.</p>
+        <p class="p">When you request a page that is protected but you are not yet logged in, you should see an exception in the log which looks like this:</p> <pre class="pre codeblock">DEBUG [ExceptionTranslationFilter] Access is denied (user is anonymous);
+            redirecting to authentication entry point org.springframework.security.AccessDeniedException:
+            Access is denied</pre>
+        <p class="p">When the user name and/or password doesn't match what's stored in the back end, you should see a log message like this:</p> <pre class="pre codeblock">WARN [LoggerListener] Authentication event
+            AuthenticationFailureBadCredentialsEvent: suzy; details:
+            org.springframework.security.ui.WebAuthenticationDetails@fffd148a: RemoteIpAddress: 127.0.0.1;
+            SessionId: 976C95033136070E0200D6DA26CB0277; exception: Bad credentials</pre>
+        <p class="p">When the user name and password match, you should see a log message that looks like the example below. After the <strong class="ph b">InteractiveAuthenticationSuccessEvent</strong>, one of the filters will show the roles fetched for the authenticated
+          user. Compare these roles to the page-role mapping found in the <strong class="ph b">filterInvocationInterceptor</strong>  bean in <strong class="ph b">applicationContext-spring-security.xml</strong> .</p> <pre class="pre codeblock">WARN [LoggerListener] Authentication event InteractiveAuthenticationSuccessEvent:
+            suzy; details: org.springframework.security.ui.WebAuthenticationDetails@fffd148a: RemoteIpAddress:
+            127.0.0.1; SessionId: 976C95033136070E0200D6DA26CB0277 DEBUG
+            [HttpSessionContextIntegrationFilter] SecurityContext stored to HttpSession:
+            'org.springframework.security.context.SecurityContextImpl@2b86afeb: Authentication:
+            org.springframework.security.providers.UsernamePasswordAuthenticationToken@2b86afeb: Username:
+            org.springframework.security.userdetails.ldap.LdapUserDetailsImpl@d7f51e; Password: [PROTECTED];
+            Authenticated: true; Details: org.springframework.security.ui.WebAuthenticationDetails@fffd148a:
+            RemoteIpAddress: 127.0.0.1; SessionId: 976C95033136070E0200D6DA26CB0277; Granted
+            Authorities: ROLE_CTO, ROLE_IS, ROLE_AUTHENTICATED'</pre>
+        <p class="p">If you are troubleshooting LDAP problems, look for log output similar to this:</p> <pre class="pre codeblock">DEBUG [DirMgrBindAuthenticator] (LoggingInterceptor) Return value: LdapUserInfo:
+            org.springframework.security.providers.ldap.LdapUserInfo@1f31c64[dn=uid=suzy,ou=users,ou=system,attributes={mail=mail:
+            suzy.pentaho@pentaho.org, uid=uid: suzy, userpassword=userpassword: [B@e17c9c,
+            businesscategory=businesscategory: cn=cto,ou=roles,ou=system, cn=is,ou=roles,ou=system,
+            objectclass=objectClass: organizationalPerson, person, groupOfUniqueNames,
+            inetOrgPerson, top, uniquemember=uniquemember: cn=cto, ou=roles, cn = is , ou = roles,
+            sn=sn: Pentaho, cn=cn: suzy}]</pre> </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,290 @@
+<content type="text/html" title="Localize Folders and Reports">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>You can localize the names and descriptions for reports and folders that appear in the User Console. Localization is helpful if your co-workers work in different countries and speak different languages, but use the console to access the same
+            reports and folders. For example, localization allows German speakers to view report names in German and Americans to view the same report names in English.</p>
+        </div>
+      </div>
+      <p>You can localize the names and descriptions for reports and folders that appear in the User Console. Localization is helpful if your co-workers work in different countries and speak different languages, but use the console to access the same reports
+        and folders. For example, localization allows German speakers to view report names in German and Americans to view the same report names in English.</p>
+      <p class="pentaho-note"><span style="font-size:11px;">Localization <a class="xref external" shape="rect" target="_blank" rel="external nofollow" href="http://community.pentaho.com/marketplace/language-packs/">language packs</a>  have been created through a community initiative that uses an installer built by Webdetails, a Pentaho company. The language packs apply to both EE and CE, and are maintained by community members. The packs are not officially supported by Pentaho.</span> </p>
+      <div class="p">
+        <p>Localization information is stored in the BA Repository, along with other report and folder information. Typically, to localize names and descriptions of reports and folders you do three things.</p>
+        <ul class="ul">
+          <li class="li">Download the report or folder from the BA Repository. Localization information is stored in one or more text files that have the <span class="ph uicontrol">.locale</span>  extension.</li>
+          <li class="li">Add or edit the localization files downloaded with the reports or folders.</li>
+          <li class="li">Re-upload the report or folder, along with the localization files, into the BA Repository.</li>
+        </ul>
+      </div>
+      <p class="p">If you want to create or add a Pentaho localization file, but are unfamiliar with its structure, we recommend that you read
+        <a class="xref" title="Documentation/5.1/000/030#396143be-95ac-4fef-b022-140e74550ac5__file_structure" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/030#396143be-95ac-4fef-b022-140e74550ac5__file_structure">Localization File Structure</a>  first.</p>
+      <div class="topic task nested1" id="396143be-95ac-4fef-b022-140e74550ac5__file_structure">
+        <div id="section_2" class="mt-page-section"><span id="Localization_File_Structure"></span> 
+          <h2 class="editable">Localization File Structure</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">When you download a report or folder from the BA Repository, localization information is stored in a text file that has a <span class="ph filepath">.locale</span>  extension. You add or edit localization files, but must upload them to the
+                BA Repository for the changes to appear in the User Console.</p>
+              <p class="p">Each report and folder that appears in the console should have a default localization file associated with it. The default localization file should indicate the name that appears when you view the name of the report or folder in the console.
+                Optionally, the localization file can contain the report description. The report description appears when you hover the mouse pointer over the report or folder name in the console.</p>
+              <p class="p">If multiple localization files are present, the User Console displays the localization information contained in them if you set the language indicated in the localization file as the default in the console or in your web browser. Otherwise,
+                the information in the default localization file is displayed instead.</p>
+              <p class="p">Localization information appears in two places in a localization file: in the file name and in variables inside the file.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="396143be-95ac-4fef-b022-140e74550ac5__filename_structure">
+            <div id="section_3" class="mt-page-section"><span id="Localization_File_Names"></span> 
+              <h3 class="editable">Localization File Names</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Localization file names consist of several parts that are joined by underscores. This is an example of a localization file name for a folder: <span class="ph filepath">index_es_PA.locale</span> </p>
+                  <p class="p">In folder localization, file names the word <span class="ph filepath">index</span>  appears first, as in the previous example. If the localization file is for a report, the name of the report appears instead of <span class="ph filepath">index</span>,
+                    like this: <span class="ph filepath">Inventory Report_es_PA.prpt.locale</span> </p>
+                  <p class="p">The second and third parts of the file name indicate the two-letter language code and the two-letter country code. Language codes adhere to ISO 639-1; country codes can be found in ISO-3166. In the previous example, <span class="ph filepath">es</span>                     is the language code for Spanish and <span class="ph filepath">PA</span>  is the country code for Panama. A list of often-used language and country codes appears here.</p>
+                  <div class="note note"><span class="notetitle">Note:</span>  Although rarely used, the dialect code can appear after the country code.</div>
+                  <p class="p">File extensions, which appear after the period, indicate the report type and end with <span class="ph filepath">.locale</span> . In the previous example <span class="ph filepath">prpt</span>  indicates the report type.</p>
+                  <p class="p">Language, country, and dialect codes are optional parts of file names. The report type extension should not be included in folder localization file names. Only the report name (or the word <span class="ph filepath">index</span>  for folders)
+                    is required as is the .locale extension. But, if a country code is present, the language code must also be present, and if a dialect code is present, both the language and country codes must be present.</p>
+                  <p class="p">If a localization file name contains no language, country, or dialect code, the console assumes that the file is the default for a report or folder. A default localization file name for a folder looks like this: <span class="ph filepath">index.locale</span> .</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="396143be-95ac-4fef-b022-140e74550ac5__filename_variables">
+            <div id="section_4" class="mt-page-section"><span id="Localization_Variables"></span> 
+              <h3 class="editable">Localization Variables</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <div class="p">Localization files have at least two variables that contain localization information.
+                    <ul class="ul">
+                      <li class="li"><span class="ph uicontrol">file.title</span>  holds the name of the report or folder that appears in the User Console.</li>
+                      <li class="li"><span class="ph uicontrol">file.description</span>  holds the text for the Tool Tip that appears when you hover the mouse pointer over the report or folder name in the User Console.</li>
+                    </ul>
+                  </div>
+                  <p class="p">Here is an example of a localization file for a report.</p> <pre class="pre codeblock">
+#Locale = es
+#Wed Apr 17 13:55:53 EDT 2013
+file.title=Inventario Region 23
+file.description=Lista del inventario de la regi&oacute;n 23</pre>
+                  <div class="note note"><span class="notetitle">Note:</span>  In localization <span class="ph filepath">.properties</span>  files, <span class="ph uicontrol">file.name</span>  and <span class="ph uicontrol">file.url-name</span>  are sometimes used instead of
+                    <span
+                    class="ph uicontrol">file.title</span>  and <span class="ph uicontrol">url-description</span>  is sometimes used instead of the file description.</div>
+                  <p class="p">Before variable values set in the localization file can be displayed, you must adjust either the User Console or your web browser&rsquo;s language so that it matches the localization file&rsquo;s language. You must also upload the localization
+                    file into the BA Repository along with the other report files.</p>
+                  <p class="p">Using the previous example, the User Console displays the value of <span class="ph uicontrol">file.title</span>  (<span class="ph uicontrol">Inventario Region 23</span> ) when you open it. If you hover the mouse pointer over the report
+                    name in the console, a Tool Tip appears that displays the value of <span class="ph uicontrol">file.description</span>  (<span class="ph uicontrol">Lista del inventario de la region 23</span> ).</p>
+                  <div class="note note"><span class="notetitle">Note:</span>  Unicode can be used to display non-Latin languages, such as Chinese or Japanese.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="396143be-95ac-4fef-b022-140e74550ac5__country_and_language_codes_reference">
+            <div id="section_5" class="mt-page-section"><span id="Popularly_Used_Country_and_Location_Codes"></span> 
+              <h3 class="editable">Popularly Used Country and Location Codes</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Language and country codes that are used to construct localization file names appear in standards ISO 639-1 and ISO 3166. Here is a list of popularly used language and country codes.</p>
+                  <div class="p">
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="396143be-95ac-4fef-b022-140e74550ac5__country_and_language_codes_reference__install_decision_table" rules="all" summary="">
+                        <caption><span class="tablecap">Table 1. Popularly Used Country and Location Codes</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th align="center" class="entry" id="396143be-95ac-4fef-b022-140e74550ac5__d7924e263" valign="top" width="25%">Language</th>
+                            <th align="center" class="entry" id="396143be-95ac-4fef-b022-140e74550ac5__d7924e266" valign="top" width="25%">Language Code</th>
+                            <th align="center" class="entry" id="396143be-95ac-4fef-b022-140e74550ac5__d7924e269" valign="top" width="25%">Country</th>
+                            <th align="center" class="entry" id="396143be-95ac-4fef-b022-140e74550ac5__d7924e272" valign="top" width="25%">
+                              <p class="p">Country Code</p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Chinese</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">zh</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">China</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">CN</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Dutch</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">nl</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Netherlands</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">NL</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">French</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">fr</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">France</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">FR</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">German</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">de</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Germany</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">DE</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Italian</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">it</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Italy</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">IT</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Japanese</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">ja</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Japan</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">JP</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Korean</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">ko</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Republic of Korea</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">KR</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Portuguese</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">pt</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Brazil</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">BR</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Portuguese</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">pt</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Portugal</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">PT</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Spanish</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">es</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Argentina</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">AR</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" headers="d7924e263 " valign="top" width="25%">Spanish</td>
+                            <td class="entry" headers="d7924e266 " valign="top" width="25%">es</td>
+                            <td class="entry" headers="d7924e269 " valign="top" width="25%">Spain</td>
+                            <td class="entry" headers="d7924e272 " valign="top" width="25%">ES</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="396143be-95ac-4fef-b022-140e74550ac5__new_default_localization_files">
+        <div id="section_6" class="mt-page-section"><span id="Set_Default_Localization_for_Reports_and_Folders"></span> 
+          <h2 class="editable">Set Default Localization for Reports and Folders</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Complete these steps if you want to set up default localization information.</p>
+            </div>
+            <ol class="ol steps" id="396143be-95ac-4fef-b022-140e74550ac5__new_default_localization_files__default_local_file_steps">
+              <li class="li step"><span class="ph cmd">Download the report or folder to which you want to add localization information. Instructions appear in <a class="xref" title="Documentation/5.1/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_folders_files" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_folders_files">Download Folders and Files</a> . </span> </li>
+              <li class="li step"><span class="ph cmd">Unzip the downloaded report or folder, then determine whether a default localization file already exists. Localization files have a .local extension and are named either <code class="ph codeph">index.locale</code> (for folders) or <code class="ph codeph"><report name>.<report type>.locale</code> for reports. If a default localization file exists you do not need to continue with these steps.</span> </li>
+              <li class="li step"><span class="ph cmd">To add new localization information, you must create a default localization file. Localization file names follow very specific naming conventions. To determine the name of the new localization file, do this.</span> 
+                <ol
+                class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">For folders, the default localization file name convention is <code class="ph codeph">index.locale</code>.</span> </li>
+                  <li class="li substep"><span class="ph cmd">For reports, the default localization file name convention is <code class="ph codeph"><report name>.<report type>.locale</code>. An example of a valid file name is <span class="ph filepath">Inventory Report.prpt.locale</span> .</span> 
+                  </li>
+            </ol>
+            </li>
+            <li class="li step"><span class="ph cmd">Use a text editor to create a blank localization file that has the file name you constructed in the previous step, then save the file in the directory of the folder or report.</span> </li>
+            <li class="li step"><span class="ph cmd">Type the following in the blank file.</span>  <pre class="pre codeblock">
+#Localization File 
+file.title= 
+file.description=</pre> </li>
+            <li class="li step"><span class="ph cmd">Type the name of the report or folder that you want to appear in the User Console after the <span class="ph uicontrol">file.title</span>  variable. Type the name of the report or folder exactly as you want it to appear.</span> 
+              Example: <code class="ph codeph">file.title=Inventario</code></li>
+            <li class="li step"><span class="ph cmd">Type the description for the report or folder after the file.description variable. The value of the <span class="ph uicontrol">file.description</span>  appears when you hover the mouse pointer over the report or folder
+              name in the console. Type the description exactly as you want it to appear.</span>  Example: <code class="ph codeph">file.description=Inventario para El Rey</code></li>
+            <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+            <li class="li step"><span class="ph cmd">Upload the localization file along with other report or folder files into the BA Repository. Instructions for how to do this appear in <a class="xref" title="Documentation/5.1/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_importing_files_folders" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_importing_files_folders">Upload Folders and Files</a> .</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="396143be-95ac-4fef-b022-140e74550ac5__new_localization_files">
+        <div id="section_7" class="mt-page-section"><span id="Localize_for_Additional_Languages"></span> 
+          <h2 class="editable">Localize for Additional Languages</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Complete these steps if you want to display report and folder names and descriptions in a language other than the default. If you want to change the default language displayed only, we recommend that you
+                <a class="xref" title="Documentation/5.1/000/030#396143be-95ac-4fef-b022-140e74550ac5__edit_localization_files"
+                rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/030#396143be-95ac-4fef-b022-140e74550ac5__edit_localization_files">edit the default locale file</a> .</p>
+            </div>
+            <ol class="ol steps" id="396143be-95ac-4fef-b022-140e74550ac5__new_localization_files__new_local_file_steps">
+              <li class="li step"><span class="ph cmd">Download the report or folder to which you want to add localization information. Instructions appear in <a class="xref" title="Documentation/5.1/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_folders_files" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_folders_files">Download Folders and Files</a> .</span> </li>
+              <li class="li step"><span class="ph cmd">Unzip the downloaded report or folder.</span> </li>
+              <li class="li step"><span class="ph cmd">To add new localization information, you must create a new localization file. Localization file names follow very specific naming conventions. You can optionally specify country and language codes, as well as the report type. To determine the name of the new localization file, do this.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">For folders, the localization file name convention is <code class="ph codeph">index_<language code>_<country code>.locale</code>. An example of a valid file name is <span class="ph filepath">index_es_PA.locale</span> .
+                    Note that the language and country codes are optional.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">For reports, the localization file name convention is <code class="ph codeph"><report name>_<language code>_<country code>.<report type>.locale</code>. An example of a valid file name is <span class="ph filepath">Inventory Report_es_PA.prpt.locale</span> .
+                    Note that the language and country codes are optional.</span> 
+                  </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd">Use a text editor to create a blank localization file that has the file name you constructed in the previous step, then save the file in the directory of the folder or report.</span> </li>
+              <li class="li step"><span class="ph cmd">Type the following in the blank file.</span>  <pre class="pre codeblock">
+#Localization File 
+file.title= 
+file.description=</pre> </li>
+              <li class="li step"><span class="ph cmd">Type the name of the report or folder that you want to appear in the User Console after the <span class="ph uicontrol">file.title</span>  variable. Type the name of the report or folder exactly as you want it to appear.</span> 
+                Example: <code class="ph codeph">file.title=Inventario</code></li>
+              <li class="li step"><span class="ph cmd">Type the description for the report or folder after the file.description variable. The value of the <span class="ph uicontrol">file.description</span>  appears when you hover the mouse pointer over the report or folder
+                name in the console. Type the description exactly as you want it to appear.</span>  Example: <code class="ph codeph">file.description=Inventario para El Rey</code></li>
+              <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+              <li class="li step"><span class="ph cmd">Upload the localization file along with other report or folder files into the BA Repository. Instructions for how to do this appear in <a class="xref" title="Documentation/5.1/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_importing_files_folders" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_importing_files_folders">Upload Folders and Files</a> .</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="396143be-95ac-4fef-b022-140e74550ac5__edit_localization_files">
+        <div id="section_8" class="mt-page-section"><span id="Edit_Existing_Localization_Information"></span> 
+          <h2 class="editable">Edit Existing Localization Information</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Complete these steps if you want to edit localization information for report and folder names and descriptions that appear in the User Console.</p>
+            </div>
+            <ol class="ol steps" id="396143be-95ac-4fef-b022-140e74550ac5__edit_localization_files__edit_local_file_steps">
+              <li class="li step"><span class="ph cmd">Download the report or folder for which you want to edit localization information. Instructions for how to do this appear in <a class="xref" title="Documentation/5.1/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_folders_files" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_folders_files">Download Folders and Files</a>  .</span> </li>
+              <li class="li step"><span class="ph cmd">Unzip the downloaded report or folder.</span> </li>
+              <li class="li step"><span class="ph cmd">Use a text editor to open the localization file you want to modify. Localization files have the <span class="ph filepath">.local</span>  extension. Localization files for folders begin with the word <span class="ph filepath">index</span> .
+                Localization files for reports begin with the report name. </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">To change the report or folder name that appears in the console, edit the <span class="ph uicontrol">file.title</span>  text.</span>  Example: <code class="ph codeph">file.title=Inventario</code></li>
+              <li class="li step"><span class="ph cmd">To change the report or folder description Tool Tip that appears when you hover the mouse pointer over the report or folder name in the console, edit the value of the <span class="ph uicontrol">file.description</span>                 variable.</span>  Example: <code class="ph codeph">file.description=Inventario para El Rey</code></li>
+              <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+              <li class="li step"><span class="ph cmd">Re-upload the localization file, along with the other report or folder files, into the BA Repository. Instructions for how to do this appear in <a class="xref" title="Documentation/5.1/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_importing_files_folders" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020#8c804d61-55ec-4482-b01f-5f37de72f0ac__task_importing_files_folders">Upload Folders and Files</a> .</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Localization_File_Structure" rel="internal">Localization File Structure</a> 
+        <ol>
+          <li> <a href="#Localization_File_Names" rel="internal">Localization File Names</a>  </li>
+          <li> <a href="#Localization_Variables" rel="internal">Localization Variables</a>  </li>
+          <li> <a href="#Popularly_Used_Country_and_Location_Codes" rel="internal">Popularly Used Country and Location Codes</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Set_Default_Localization_for_Reports_and_Folders" rel="internal">Set Default Localization for Reports and Folders</a>  </li>
+      <li> <a href="#Localize_for_Additional_Languages" rel="internal">Localize for Additional Languages</a>  </li>
+      <li> <a href="#Edit_Existing_Localization_Information" rel="internal">Edit Existing Localization Information</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,107 @@
+<content type="text/html" title="Apply Internationalization to Schema">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">An internationalized Analyzer for MongoDB application would have a schema for each language, where the caption of each object appears in the local language. For example, the <code class="ph codeph">[Product]</code> dimension would have the caption
+          &quot;Product&quot; in English and &quot;Produit&quot; in French.</p>
+        <p class="p">It is not a good idea to translate the actual names of the schema objects, because then the MDX statements would need to be changed also. All that you need to change is the caption. Every schema object (schema, cube, dimension, hierarchy, level,
+          measure, named set) has a caption attribute, and user interfaces such as JPivot and Pentaho Analyzer display the caption rather than the real name. Additional things to keep in mind include:</p>
+        <div class="p">
+          <ul class="pentaho-list-unordered" id="33d6e3f7-9fcf-4e12-a7ee-1adebb6fbf56__concept_nested_content_h1__ul_pqc_gls_xm">
+            <li class="li">Every schema object has a description attribute.</li>
+            <li class="li">A hierarchy can have an <code class="ph codeph">allMemberCaption</code> attribute as display value of the &quot;All&quot; member.</li>
+            <li class="li">For the schema, you can set a display value of the <strong class="ph b">measures</strong>  dimension by the <code class="ph codeph">measuresCaption</code> attribute.</li>
+            <li class="li">A calculated member has the properties CAPTION and DESCRIPTION that appear as caption and description if the member is a member of the <code class="ph codeph">Measures</code> dimension.</li>
+          </ul>
+        </div>
+        <p class="p">One way to create an internationalized application is to create a copy of the schema file for each language, but these are difficult to maintain. A better way is to use the <code class="ph codeph">LocalizingDynamicSchemaProcessor</code> class
+          to perform dynamic substitution on a single schema file.</p>
+      </div>
+      <div class="topic concept nested1" id="33d6e3f7-9fcf-4e12-a7ee-1adebb6fbf56__nested_first_h2">
+        <div id="section_1" class="mt-page-section"><span id="Localize_Schema_Processor"></span> 
+          <h2 class="editable">Localize Schema Processor</h2>
+          <div class="body conbody">
+            <p class="p">First, write your schema using variables as values for <code class="ph codeph">caption</code>, <code class="ph codeph">description</code>, <code class="ph codeph">allMemberCaption</code>, and <code class="ph codeph">measuresCaption</code>              attributes.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema ... measuresCaption=&quot;%{foodmart.measures.caption}&quot;>
+<Dimension name=&quot;Store&quot; caption=&quot;%{foodmart.dimension.store.caption}&quot; description=&quot;%{foodmart.dimension.store.description}&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Stores&quot; allMemberCaption=&quot;%{foodmart.dimension.store.allmember.caption =All Stores}&quot; primaryKey=&quot;store_id&quot;  caption=&quot;%{foodmart.hierarchy.store.country.caption}&quot; description=&quot;%{foodmart.hierararchy.store.country.description}>
+<Table name=&quot;store&quot;/>
+<Level name=&quot;Store Country&quot; column=&quot;store_country&quot; uniqueMembers=&quot;true&quot; caption=&quot;%{foodmart.dimension.store.country.caption}&quot; description=&quot;%{foodmart.dimension.store.country.description}&quot;/>
+<Level name=&quot;Store State&quot; column=&quot;store_state&quot; uniqueMembers=&quot;true&quot; caption=&quot;%{foodmart.dimension.store.state.caption}&quot; description=&quot;%{foodmart.dimension.store.state.description}&quot;/>
+<Level name=&quot;Store City&quot; column=&quot;store_city&quot; uniqueMembers=&quot;false&quot; caption=&quot;%{foodmart.dimension.store.city.caption}&quot; description=&quot;%{foodmart.dimension.store.city.description}&quot;/>
+<Level name=&quot;Store Name&quot; column=&quot;store_name&quot; uniqueMembers=&quot;true&quot; caption=&quot;%{foodmart.dimension.store.name.caption}&quot; description=&quot;%{foodmart.dimension.store.name.description}&quot;>
+<Property name=&quot;Store Type&quot; column=&quot;store_type&quot; caption=&quot;%{foodmart.dimension.store. name.property_type.caption}&quot; description=&quot;%{foodmart.dimension.store. name.property_type.description}&quot;/>
+<Property name=&quot;Store Manager&quot; column=&quot;store_manager&quot; caption=&quot;%{foodmart.dimension.store. name.property_manager.caption}&quot; description=&quot;%{foodmart.dimension.store. name.property_manager.description}&quot;/>
+<Property name=&quot;Store Sqft&quot; column=&quot;store_sqft&quot; type=&quot;Numeric&quot; caption=&quot;%{foodmart.dimension.store. name.property_storesqft.caption}&quot; description=&quot;%{foodmart.dimension.store. name.property_storesqft.description}&quot;/>
+<Property name=&quot;Grocery Sqft&quot; column=&quot;grocery_sqft&quot; type=&quot;Numeric&quot;/>
+<Property name=&quot;Frozen Sqft&quot; column=&quot;frozen_sqft&quot; type=&quot;Numeric&quot;/>
+<Property name=&quot;Meat Sqft&quot; column=&quot;meat_sqft&quot; type=&quot;Numeric&quot;/>
+<Property name=&quot;Has coffee bar&quot; column=&quot;coffee_bar&quot; type=&quot;Boolean&quot;/>
+<Property name=&quot;Street address&quot; column=&quot;store_street_address&quot; type=&quot;String&quot;/>
+</Level>
+</Hierarchy>
+</Dimension>
+<Cube name=&quot;Sales&quot; caption=&quot;%{foodmart.cube.sales.caption}&quot; description=&quot;%{foodmart.cube.sales.description}&quot;>
+...
+<DimensionUsage name=&quot;Store&quot; source=&quot;Store&quot; foreignKey=&quot;store_id&quot;  caption=&quot;%{foodmart.cube.sales.name.caption}&quot; description=&quot;%{foodmart.cube.sales.name.description}&quot;/>
+...
+<Measure name=&quot;Unit Sales&quot; column=&quot;unit_sales&quot; caption=&quot;%{foodmart.cube.sales.measure.unitsales.caption}&quot; description=&quot;%{foodmart.cube.sales.measure.unitsales.description}&quot;/>
+</Cube>
+</Schema></pre> </div>
+            <p class="p">As usual, the default caption for any cube, measure, dimension or level without a <code class="ph codeph">caption</code> attribute is the name of the element. A hierarchy's default caption is the caption of its dimension; for example, the
+              <code class="ph codeph">[Store]</code> hierarchy has no <code class="ph codeph">caption</code> defined, so it inherits the <code class="ph codeph">caption</code> attribute from its parent, the <code class="ph codeph">[Store]</code> dimension.</p>
+            <p class="p">Next, add the dynamic schema processor and locale to your connect string.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Provider=mondrian; Locale=en_US; DynamicSchemaProcessor=-mondrian.i18n.LocalizingDynamicSchemaProcessor; Jdbc=-jdbc:mysql://localhost/foodmart; JdbcUser=&not;foodmart; JdbcPassword=-foodmart; Catalog=&not;/WEB-INF/FoodMart.mondrian.xml</pre>              </div>
+            <p class="p">Now, for each locale you wish to support, provide a resource file named <code class="ph codeph">locale_{locale}.properties</code>.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># locale.properties: Default resources
+foodmart.measures.caption=Measures
+foodmart.dimension.store.country.caption=Store Country
+foodmart.dimension.store.name.property_type.column= store_type
+foodmart.dimension.store.country.member.caption= store_country
+foodmart.dimension.store.name.property_type.caption =Store Type
+foodmart.dimension.store.name.caption =Store Name
+foodmart.dimension.store.state.caption =Store State
+foodmart.dimension.store.name.property_manager.caption =Store Manager
+foodmart.dimension.store.name.property_storesqft.caption =Store Sq. Ft.
+foodmart.dimension.store.allmember.caption =All Stores
+foodmart.dimension.store.caption =Store
+foodmart.cube.sales.caption =Sales
+foodmart.dimension.store.city.caption =Store City
+foodmart.cube.sales.measure.unitsales =Unit Sales</pre> </div>
+            <p class="p">and</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># locale_hu.properties: Resources for the 'hu' locale.
+foodmart.measures.caption=Hungarian Measures
+foodmart.dimension.store.country.caption=Orsz\u00E1g
+foodmart.dimension.store.name.property_manager.caption =\u00C1ruh\u00E1z vezet\u0151
+foodmart.dimension.store.country.member.caption =store_country_caption_hu
+foodmart.dimension.store.name.property_type.caption =Tipusa
+foodmart.dimension.store.name.caption =Megnevez\u00E9s
+foodmart.dimension.store.state.caption =\u00C1llam/Megye
+foodmart.dimension.store.name.property_type.column =store_type_caption_hu
+foodmart.dimension.store.name.property_storesqft.caption =M\u00E9ret n.l\u00E1b
+foodmart.dimension.store.allmember.caption =Minden \u00C1ruh\u00E1z
+foodmart.dimension.store.caption =\u00C1ruh\u00E1z
+foodmart.cube.sales.caption =Forgalom
+foodmart.dimension.store.city.caption =V\u00E1ros
+foodmart.cube.sales.measure.unitsales =Eladott db</pre> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Localize_Schema_Processor" rel="internal">Localize Schema Processor</a>  </li>
+    </ol>
+  </body>
+</content>

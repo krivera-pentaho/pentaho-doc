@@ -1,0 +1,42 @@
+<content type="text/html" title="Secure SQL Access for Dashboards">
+  <head>
+    <style type="text/css">
+      /*<![CDATA[*/
+      /* Hide the empty TOC */
+      
+      #mt-toc-container {
+        display: none !important;
+      }
+      /*]]>*/
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">The Dashboard Designer has an SQL filter for greater control over a database query. By default, this feature is restricted to administrative users. To change these settings, follow the instructions below:</div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Ensure the Pentaho Server is not currently running; if it is, run the <code>stop-pentaho</code>&nbsp;script.</span> </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho-solutions/system/dashboards/settings.xml</span>  file with a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Locate the following line and modify it accordingly:</span>  <pre class="pre codeblock">
+
+<!-- roles with sql execute permissions -->
+<sql-execute-roles>Administrator</sql-execute-roles></pre>
+            <p class="pentaho-note">Values are separated by commas, with no spaces between roles.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Locate the following line and modify it accordingly:</span>  <pre class="pre codeblock">
+
+<!-- users with sql execute permissions -->
+<sql-execute-users>Administrator</sql-execute-users>
+</pre>
+            <p class="pentaho-note">Values are separated by commas, with no spaces between user names.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Save and close the text editor.</span> </li>
+          <li class="li step"><span class="ph cmd">Restart the Pentaho Server with the <code>start-pentaho</code>&nbsp;script.</span> </li>
+        </ol>
+        <div class="section result">The SQL filter function is now available in Dashboard Designer to the users and roles you specified.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

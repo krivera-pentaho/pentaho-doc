@@ -1,0 +1,1028 @@
+<content type="text/html" title="Report APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Details methods for api.report class.</p>
+        </div>
+      </div>
+      <div>
+        <div class="yui3-g">
+          <div class="yui3-u yui3-u-3-4">
+            <div class="content">
+              <div class="box intro">
+                <div id="section_2" class="mt-page-section"><span id="api.report_Class"></span> 
+                  <h2 class="editable">api.report Class</h2>
+                  <p>Report definition for api class. Contains all report related API calls.</p>
+                </div>
+              </div>
+              <div class="tabview">
+                <div>
+                  <div class="api-class-tabpanel index">
+                    <div class="index-section methods">
+                      <div id="section_3" class="mt-page-section"><span id="Methods"></span> 
+                        <h3 class="editable">Methods</h3>
+                        <p>The following methods are applicable:</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="api-class-tabpanel">
+                    <div class="method item" id="method_addLayoutField">
+                      <div id="section_4" class="mt-page-section"><span id="addLayoutField_(gembarId_formula_gembarOrdinal)"></span> 
+                        <h2 class="editable">addLayoutField <span class="paren">(</span> gembarId formula gembarOrdinal
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Adds a single gem to the gembar via its formula. The gembarOrdinal allows one to set the location of the inserted gem.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">gembarId</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the id of the gembar. It depends on the visualization's type. For example, PIVOT allows values such as &quot;rows&quot;, &quot;columns&quot;, &quot;measures&quot;.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">formula</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the String representation of the formula to insert as a gem.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">gembarOrdinal</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Number">Number</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the index at which to insert the gem. A value of -1 appends to the end of the list.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var gembarId = &quot;rows&quot;;
+var formula = &quot;[Markets].[City]&quot;;
+var gembarOrdinal = 1;
+api.report.addLayoutField( gembarId, formula, gembarOrdinal );</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_buildCellActionContext">
+                      <div id="section_5" class="mt-page-section"><span id="buildCellActionContext_(td)"></span> 
+                        <h2 class="editable">buildCellActionContext <span class="paren">(</span> td
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Returns the context on a specific TD cell. The context will depend on the type of cell clicked. We only support providing context on member, measure, and 'data' cells. Cells are passed as parameters to listeners bound in event
+                            calls such as <span class="filepath style-wrap">registerTableClickListener, registerTableContextMenuListener</span>, etc., which can be used as the TD parameter for this endpoint.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">td</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object">Object</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the HTML DOM object defining the TD cell of a table in a report.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li>
+                              <p>This is the JSON object containing specific TD cell context.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var ctx =api.report.buildCellActionContext(td);
+ReturnValue:
+{
+  &quot;[Measures].[MeasuresLevel]&quot;:&quot;[Measures].[Sales]&quot;,
+  &quot;[Markets].[Territory]&quot;:&quot;[Markets].[APAC]&quot;
+}</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_buildFilterActionContext">
+                      <div id="section_6" class="mt-page-section"><span id="buildFilterActionContext_(_)"></span> 
+                        <h2 class="editable">buildFilterActionContext 
+                          <span class="paren">( )</span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Returns the resolved filter context. 'Resolved' means that filters, such as the 'Last 30 Days' filter, will actually return the specified number of members, in this case '30 days', as opposed to the filter definition.</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li>
+                              <p>This is the JSON object containing the filter context.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var filterCtx =api.report.buildFilterActionContext();
+ReturnValue:
+{
+  &quot;[Markets].[Territory]&quot;:{
+    &quot;EQUAL&quot;:[&quot;[Markets].[APAC]&quot;]
+  }
+}</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getChartOption">
+                      <div id="section_7" class="mt-page-section"><span id="getChartOption_(name)__String"></span> 
+                        <h2 class="editable">getChartOption <span class="paren">(</span> name<span class="paren">)</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span>                           </span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Returns the value of the chart option by name.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>Name of chart option. Supported values include:</p>
+                                <ul>
+                                  <li>legendPosition</li>
+                                  <li>showLegend</li>
+                                  <li>autoRange</li>
+                                  <li>valueAxisLowerLimit</li>
+                                  <li>valueAxisUpperLimit</li>
+                                  <li>displayUnits</li>
+                                  <li>autoRangeSecondary</li>
+                                  <li>valueAxisLowerLimitSecondary</li>
+                                  <li>valueAxisUpperLimitSecondary</li>
+                                  <li>displayUnitsSecondary</li>
+                                  <li>maxValues</li>
+                                  <li>backgroundColor</li>
+                                  <li>labelColor</li>
+                                  <li>labelSize</li>
+                                  <li>backgroundFill</li>
+                                  <li>maxChartsPerRow</li>
+                                  <li>multiChartRangeScope</li>
+                                  <li>emptyCellMode</li>
+                                  <li>sizeByNegativesMode</li>
+                                  <li>backgroundColorEnd</li>
+                                  <li>labelStyle</li>
+                                  <li>legendBackgroundColor</li>
+                                  <li>legendSize</li>
+                                  <li>legendColor</li>
+                                  <li>legendStyle</li>
+                                  <li>labelFontFamily</li>
+                                  <li>legendFontFamily</li>
+                                </ul>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span> 
+                              <p>This is the value of the chart option.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getChartOption('legendPosition');</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getFieldOption">
+                      <div id="section_8" class="mt-page-section"><span id="getFieldOption_(formula_name)__String"></span> 
+                        <h2 class="editable">getFieldOption <span class="paren">(</span> formula name<span class="paren">)</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span>                           </span> 
+                        </h2>
+                        <div class="description">
+                          <p>Returns the field&nbsp;option's value by name for a given&nbsp;formula. For additional information, see
+                            <a title="Get/Set Field Options APIs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/Get%2F%2FSet_Field_Options_APIs">APIs for Get/Set Field Options</a> .</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">formula</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the string representation of the formula.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the name of field's option.</p>
+                                <ul>
+                                  <li>label</li>
+                                  <li>sortOrderEnum</li>
+                                  <li>showAggregate</li>
+                                  <li>showSum</li>
+                                  <li>showAverage</li>
+                                  <li>showMin</li>
+                                  <li>showMax</li>
+                                  <li>showSubtotal</li>
+                                  <li>formatShortcut</li>
+                                  <li>formatCategory</li>
+                                  <li>formatScale</li>
+                                  <li>formatExpression</li>
+                                  <li>currencySymbol</li>
+                                </ul>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span> 
+                              <p>This is the option's value.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getFieldOption(&quot;[Markets].[Territory]&quot;, &quot;showSubtotal&quot;);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getFilters">
+                      <div id="section_9" class="mt-page-section"><span id="getFilters_(_)"></span> 
+                        <h2 class="editable">getFilters 
+                          <span class="paren">( )</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Returns all non-numeric filters on the report. For additional information, see
+                            <a title="Analyzer Filters" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/Analyzer_Filters">Analyzer Filters</a> .</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="returns-description">
+                            <li>
+                              <p>JSON filters</p>
+                            </li>
+                          </ul>
+                          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a JSON object containing all non-numeric filters.</p>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getFilters();
+Return Value:
+{&quot;filters&quot;: {&quot;[Time].[Years]&quot;: [
+  {&quot;operator&quot;: &quot;EQUAL&quot;, &quot;members&quot;: [
+    {&quot;formula&quot;: &quot;[Time].[2003]&quot;, &quot;caption&quot;: &quot;2003&quot;},
+    {&quot;formula&quot;: &quot;[Time].[2004]&quot;, &quot;caption&quot;: &quot;2004&quot;},
+    {&quot;formula&quot;: &quot;[Time].[2005]&quot;, &quot;caption&quot;: &quot;2005&quot;}
+  ]}
+]}}</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getLayoutFields">
+                      <div id="section_10" class="mt-page-section"><span id="getLayoutFields_(gembarId)__Array"></span> 
+                        <h2 class="editable">getLayoutFields <span class="paren">(</span> gembarId<span class="paren">)</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array">Array</a> </span>                           </span> 
+                        </h2>
+                        <div class="description">
+                          <p>Returns the array of formulas&nbsp;for the layout fields by gembarId.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">gembarId</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the id of the field. It depends on the visualization's type. For example, PIVOT allows values such as &quot;rows&quot;, &quot;columns&quot;, &quot;measures&quot;.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array">Array</a> </span> 
+                              <p>This is the array of formulas.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var gembarId = &quot;rows&quot;;
+api.report.getLayoutFields(gembarId);
+Return Value:
+[&quot;[Markets].[Territory]&quot;]</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getName">
+                      <div id="section_11" class="mt-page-section"><span id="getName_(_)__String"></span> 
+                        <h2 class="editable">getName <span class="paren">( )</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span>                           </span> 
+                        </h2>
+                        <div class="description">
+                          <p>Returns the name of the current report. New reports will return a null value.</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li>
+                              <p>Name of the current report.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getName();
+Return Value:
+&quot;Country Performance (heat grid)&quot;</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getNumericFilters">
+                      <div id="section_12" class="mt-page-section"><span id="getNumericFilters_(_)"></span> 
+                        <h2 class="editable">getNumericFilters 
+                          <span class="paren">( )</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Gets the numeric filters for the report. Note that a report may only have a single level with a numeric filter and that level must be displayed on the report. For additional information, see
+                            <a title="Analyzer Filters" rel="internal"
+                            href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/Analyzer_Filters">Analyzer Filters</a> .</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="returns-description">
+                            <li>
+                              <p>All filters in a JSON object.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getNumericFilters();
+Return Value:
+{&quot;filters&quot;: {&quot;[Markets].[Territory]&quot;: [
+  {&quot;count&quot;: &quot;10&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;, &quot;operator&quot;: &quot;TOP&quot;},
+  {&quot;operator&quot;: &quot;GREATER_THAN&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;, &quot;op1&quot;: &quot;0.0&quot;},
+  {&quot;operator&quot;: &quot;LESS_THAN&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;, &quot;op1&quot;: &quot;100000000000&quot;},
+  {&quot;operator&quot;: &quot;IS_NOT_EMPTY&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;}
+]}}</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getPath">
+                      <div id="section_13" class="mt-page-section"><span id="getPath_(_)__String"></span> 
+                        <h2 class="editable">getPath <span class="paren">( )</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span>                           </span> 
+                        </h2>
+                        <div class="description">
+                          <p>Returns the path of the current saved report. New reports will return a null value.</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span> </li>
+                          </ul>
+                          <p style="margin-left: 40px;">The report's path.</p>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getPath();
+Return Value:
+&quot;/public/Steel Wheels/Country Performance (heat grid).xanalyzer&quot;</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getReportOption">
+                      <div id="section_14" class="mt-page-section"><span id="getReportOption_(name)__String"></span> 
+                        <h2 class="editable">getReportOption <span class="paren">(</span> name<span class="paren">)</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span>                           </span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Returns the value of the report option by name.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>The name of the report option. Supported values include:</p>
+                                <ul>
+                                  <li>showRowGrandTotal</li>
+                                  <li>showColumnGrandTotal</li>
+                                  <li>useNonVisualTotals</li>
+                                  <li>showEmptyCells</li>
+                                  <li>showDrillLinks</li>
+                                  <li>autoRefresh</li>
+                                  <li>freezeColumns</li>
+                                  <li>freezeRows</li>
+                                </ul>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span> 
+                              <p>This is the value of the report option.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getReportOption('showRowGrandTotal');</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_getVizId">
+                      <div id="section_15" class="mt-page-section"><span id="getVizId_(_)__String"></span> 
+                        <h2 class="editable">getVizId <span class="paren">( )</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span>                           </span> 
+                        </h2>
+                        <div class="description">
+                          <p>Returns the current visualization id.</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> </span> </li>
+                          </ul>
+                          <p style="margin-left: 40px;">The id of the visualization.</p>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.getVizId();
+Return Value:
+&quot;ccc_bar&quot;</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_isDirty">
+                      <div id="section_16" class="mt-page-section"><span id="isDirty_(_)__Boolean"></span> 
+                        <h2 class="editable">isDirty <span class="paren">( )</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> </span>                           </span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Returns as true&nbsp;if the report has pending changes which need to be saved.</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> </span> 
+                              <p>True if report has pending changes and false&nbsp;if no pending changes are present.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.isDirty();</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_isNew">
+                      <div id="section_17" class="mt-page-section"><span id="isNew_(_)__Boolean"></span> 
+                        <h2 class="editable">isNew <span class="paren">( )</span>  <span class="returns-inline"> 
+                          <span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> </span>                           </span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Returns as true&nbsp;if the report is new.</p>
+                        </div>
+                        <div class="returns">
+                          <p><strong>Returns:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li><span class="type"><a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> </span> 
+                              <p>True if report is new and false&nbsp;if the report is not new.</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.isNew();</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_removeFilters">
+                      <div id="section_18" class="mt-page-section"><span id="removeFilters_(level)"></span> 
+                        <h2 class="editable">removeFilters <span class="paren">(</span> level
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Removes all non-numeric filters for a given level.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">level</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object">Object</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the level on which the filter is being removed.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.removeFilters(&quot;[Markets].[Territory]&quot;);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_removeLayoutField">
+                      <div id="section_19" class="mt-page-section"><span id="removeLayoutField_(gembarId_formula)"></span> 
+                        <h2 class="editable">removeLayoutField <span class="paren">(</span> gembarId formula
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Removes a single gem from the gembar using its formula as the key.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">gembarId</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the id of the field. It depends on the visualization's type. For example, PIVOT allows values such as &quot;rows&quot;, &quot;columns&quot;, &quot;measures&quot;.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">formula</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the string representation of the formula to insert as a gem.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var gembarId = &quot;rows&quot;;
+var formula = &quot;[Markets].[City]&quot;;
+api.report.removeLayoutField(gembarId, formula);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_removeNumericFilters">
+                      <div id="section_20" class="mt-page-section"><span id="removeNumericFilters_(_)"></span> 
+                        <h2 class="editable">removeNumericFilters 
+                          <span class="paren">( )</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Removes all numeric filters on the report.</p>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.removeNumericFilters();</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setChartOption">
+                      <div id="section_21" class="mt-page-section"><span id="setChartOption_(name_value)"></span> 
+                        <h2 class="editable">setChartOption <span class="paren">(</span> name value
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Sets the value in the chart option of the current report. This API&nbsp;function is additionally available via URL parameters for each chart option name.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>The name of the chart's option. Supported values include:</p>
+                                <ul>
+                                  <li>legendPosition</li>
+                                  <li>showLegend</li>
+                                  <li>autoRange</li>
+                                  <li>valueAxisLowerLimit</li>
+                                  <li>valueAxisUpperLimit</li>
+                                  <li>displayUnits</li>
+                                  <li>autoRangeSecondary</li>
+                                  <li>valueAxisLowerLimitSecondary</li>
+                                  <li>valueAxisUpperLimitSecondary</li>
+                                  <li>displayUnitsSecondary</li>
+                                  <li>maxValues</li>
+                                  <li>backgroundColor</li>
+                                  <li>labelColor</li>
+                                  <li>labelSize</li>
+                                  <li>backgroundFill</li>
+                                  <li>maxChartsPerRow</li>
+                                  <li>multiChartRangeScope</li>
+                                  <li>emptyCellMode</li>
+                                  <li>sizeByNegativesMode</li>
+                                  <li>backgroundColorEnd</li>
+                                  <li>labelStyle</li>
+                                  <li>legendBackgroundColor</li>
+                                  <li>legendSize</li>
+                                  <li>legendColor</li>
+                                  <li>legendStyle</li>
+                                  <li>labelFontFamily</li>
+                                  <li>legendFontFamily</li>
+                                </ul>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">value</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the value of the chart's option.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setChartOption('legendPosition', 'TOP');</pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://sample.url.com?showLegend=true&amp;legendPosition=LEFT&amp;legendBackgroundColor=%23EEAADD&amp;legendSize=12&amp;legendColor=%23AA11AA&amp;legendStyle=BOLD&amp;legendFontFamily=Times%20New%20Roman&amp;backgroundFill=SOLID&amp;backgroundColor=%23DDBBCC&amp;labelColor=%23FF2322&amp;labelSize=14&amp;backgroundColorEnd=%23EEAADD&amp;labelStyle=BOLD&amp;labelFontFamily=Times%20New%20Roman&amp;autoRange=false&amp;autoRangeSecondary=false&amp;displayUnits=UNITS_2&amp;displayUnitsSecondary=UNITS_2&amp;valueAxisLowerLimit=500&amp;valueAxisUpperLimit=9000&amp;valueAxisLowerLimitSecondary=4&amp;valueAxisUpperLimitSecondary=55.5&amp;maxValues=3&amp;maxChartsPerRow=2&amp;multiChartRangeScope=GLOBAL&amp;emptyCellMode=GAP&amp;sizeByNegativesMode=USE_ABS</pre>                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setDatasource">
+                      <div id="section_22" class="mt-page-section"><span id="setDatasource_(catalog_cube)"></span> 
+                        <h2 class="editable">setDatasource <span class="paren">(</span> catalog cube
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Sets a data source by its catalog name and cube name. Upon success, the report options are set on the report. After changing data sources, if invalid layout fields are present, they will be automatically removed.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">catalog</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>The name of the catalog.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">cube</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>The name of the cube.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setDatasource(&quot;SteelWheels&quot;, &quot;SteelWheelsSales&quot;)</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setFieldLink">
+                      <div id="section_23" class="mt-page-section"><span id="setFieldLink_(formula_callback)"></span> 
+                        <h2 class="editable">setFieldLink <span class="paren">(</span> formula callback
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Renders a hyperlink on all members/cells under the given level/measure. The input formula can be either a level or measure formula. If a level formula, then all members under the level will have this link. If a level already
+                            specifies a content link, this API will override that link. If a measure formula, then all table cells which contain this measure will have this link. If a measure already has a hyperlink, such as if drill-down was enabled,
+                            this API will override that link. You do not need to refresh the report in order for the links to appear. They appear immediately after calling this API.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">formula</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the String representation of the formula to set a link.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">callback</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                              <div class="param-description">
+                                <p>The function that is executed when you click on link.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var callback = function(api, ctx, filterCtx){
+  // Perform Action on api.*
+};
+api.report.setFieldLink(&quot;[Markets].[Territory]&quot;, callback);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setFieldOption">
+                      <div id="section_24" class="mt-page-section"><span id="setFieldOption_(formula_name_value)"></span> 
+                        <h2 class="editable">setFieldOption <span class="paren">(</span> formula name value
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Sets the field option's value by name for a given formula. For additional information, see
+                            <a href="/Documentation/5.4/0R0/070/030/Get%2F%2FSet_Field_Options_APIs" rel="internal" title="Get/Set Field Options APIs">APIs for Get/Set Field Options</a> .</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">formula</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the string representation of the formula.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the name of the field's option.</p>
+                                <ul>
+                                  <li>label</li>
+                                  <li>sortOrderEnum</li>
+                                  <li>showAggregate</li>
+                                  <li>showSum</li>
+                                  <li>showAverage</li>
+                                  <li>showMin</li>
+                                  <li>showMax</li>
+                                  <li>showSubtotal</li>
+                                  <li>formatShortcut</li>
+                                  <li>formatCategory</li>
+                                  <li>formatScale</li>
+                                  <li>formatExpression</li>
+                                  <li>currencySymbol</li>
+                                </ul>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">value</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the value of the field's option.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setFieldOption(&quot;[Markets].[Territory]&quot;, &quot;label&quot;, &quot;My Territory&quot;);</pre>                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setFilters">
+                      <div id="section_25" class="mt-page-section"><span id="setFilters_(level_filterItems)"></span> 
+                        <h2 class="editable">setFilters <span class="paren">(</span> level filterItems
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Sets non-numeric filters on a level removing all previous non-numeric filters. For additional information, see
+                            <a title="Analyzer Filters" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/Analyzer_Filters">Analyzer Filters</a> .</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">level</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object">Object</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the level on which the filter is being set.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">filterItems</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object">Object</a> )</span> 
+                              <div class="param-description">
+                                <p>The JSON representation of the filter items. Supported Operators: EQUAL, NOT_EQUAL, CONTAIN, NOT_CONTAIN, BEFORE, AFTER, BETWEEN, TIME_AGO, TIME_AHEAD, TIME_YAGO, TIME_RANGE_PREV, TIME_RANGE_NEXT</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setFilters(&quot;[Time].[Years]&quot; : [
+  { // Builds a relative equal filter for Previous, Current, and Next on Years
+    &quot;operator&quot;: &quot;EQUAL&quot;,
+    &quot;members&quot;: [-1, 0, 1]
+  },
+  { // Builds an exact equal filter on Years
+    &quot;operator&quot;: &quot;EQUAL&quot;,
+    &quot;members&quot;: [
+      { &quot;formula&quot;: &quot;[Time].[2003]&quot;, &quot;caption&quot;: &quot;2003&quot; },
+      { &quot;formula&quot;: &quot;[Time].[2004]&quot;, &quot;caption&quot;: &quot;2004&quot; },
+      { &quot;formula&quot;: &quot;[Time].[2005]&quot;, &quot;caption&quot;: &quot;2005&quot; }]
+  }, {
+    &quot;operator&quot;: &quot;TIME_RANGE_PREV&quot;,
+    &quot;members&quot;: [10]
+  }, {
+    &quot;operator&quot;: &quot;TIME_RANGE_NEXT&quot;,
+    &quot;members&quot;: [10]
+  }, {
+    &quot;operator&quot;: &quot;TIME_AGO&quot;,
+    &quot;members&quot;: [10]
+  }, {
+    &quot;operator&quot;: &quot;TIME_AHEAD&quot;,
+    &quot;members&quot;: [10]
+  }, {
+    &quot;operator&quot;: &quot;BETWEEN&quot;,
+    &quot;members&quot;: [
+      {&quot;formula&quot;: &quot;[Time].[2003]&quot;, &quot;caption&quot;: &quot;2003&quot;},
+      {&quot;formula&quot;: &quot;[Time].[2005]&quot;,&quot;caption&quot;: &quot;2005&quot;}]
+  }],
+&quot;[Markets].[Territory]&quot; : [{
+  &quot;operator&quot;: &quot;CONTAIN&quot;,
+  &quot;members&quot;: [&quot;APAC&quot;]
+}]);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setLayoutFields">
+                      <div id="section_26" class="mt-page-section"><span id="setLayoutFields_(gembarId_formulas)"></span> 
+                        <h2 class="editable">setLayoutFields <span class="paren">(</span> gembarId formulas
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Sets the array of formulas for the layout fields by gembarId. It overwrites the existing fields in the current gembar. Each formula is validated. If the formula is invalid, then it will not be set.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">gembarId</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the id of the gembar. It depends on the visualization's type. For example, PIVOT allows values such as &quot;rows&quot;, &quot;columns&quot;, &quot;measures&quot;.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">formulas</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array">Array</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the array of strings of formulas.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var gembarId = &quot;rows&quot;;
+var formulas = [ &quot;[Markets].[Territory]&quot;, &quot;[Markets].[Country]&quot; ];
+api.report.setLayoutFields(gembarId, formulas);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setNumericFilters">
+                      <div id="section_27" class="mt-page-section"><span id="setNumericFilters_(level_filter)"></span> 
+                        <h2 class="editable">setNumericFilters <span class="paren">(</span> level filter
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Sets a numeric filter on a level. There can only be one numeric filter per report. This method will remove any&nbsp;pre-existing numeric filter&nbsp;on the report. For additional information, see
+                            <a title="Analyzer Filters" rel="internal"
+                            href="http://help.pentaho.com/Documentation/7.0/0R0/070/030/Analyzer_Filters">Analyzer Filters</a> .</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">level</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object">Object</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the level on which the filter is being set.</p>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">filter</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object">Object</a> )</span> 
+                              <div class="param-description">
+                                <p>A JSON filter representation. Supported Operators: LESS_THAN, GREATER_THAN, LESS_THAN_EQUAL, GREATER_THAN_EQUAL, EQUAL, NOT_EQUAL, BETWEEN, IS_NOT_EMPTY, TOP, BOTTOM, TOP_BOTTOM</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setNumericFilters(&quot;[Markets].[Territory]&quot;, [{&quot;count&quot;: &quot;10&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;, &quot;operator&quot;: &quot;TOP&quot;}, {&quot;operator&quot;: &quot;GREATER_THAN&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;, &quot;op1&quot;: &quot;0.0&quot;}, {&quot;operator&quot;: &quot;LESS_THAN&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;, &quot;op1&quot;: &quot;100000000000&quot;}, {&quot;operator&quot;: &quot;IS_NOT_EMPTY&quot;, &quot;formula&quot;: &quot;[Measures].[Sales]&quot;}]);</pre>                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setReportOption">
+                      <div id="section_28" class="mt-page-section"><span id="setReportOption_(name_value)"></span> 
+                        <h2 class="editable">setReportOption <span class="paren">(</span> name value
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="meta">
+                          <p>Sets the value of the report option. This API&nbsp;function is additionally available via URL parameters for each report option name.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>The name of the report's option. Supported values include:</p>
+                                <ul>
+                                  <li>showRowGrandTotal</li>
+                                  <li>showColumnGrandTotal</li>
+                                  <li>useNonVisualTotals</li>
+                                  <li>showEmptyCells</li>
+                                  <li>showDrillLinks</li>
+                                  <li>autoRefresh</li>
+                                  <li>freezeColumns</li>
+                                  <li>freezeRows</li>
+                                </ul>
+                              </div>
+                            </li>
+                            <li class="param"><code class="param-name">value</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the value of the report's option.</p>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setReportOption('showRowGrandTotal', 'true');</pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://sample.url.com?showRowGrandTotal=true&amp;showColumnGrandTotal=true&amp;useNonVisualTotals=true&amp;showEmptyCells=true&amp;showDrillLinks=true&amp;autoRefresh=true&amp;freezeColumns=true&amp;freezeRows</pre>                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="method item" id="method_setVizId">
+                      <div id="section_29" class="mt-page-section"><span id="setVizId_(vizId)"></span> 
+                        <h2 class="editable">setVizId <span class="paren">(</span> vizId
+                          <span class="paren">)</span> 
+                        </h2>
+                        <div class="description">
+                          <p>Sets the report's visualization using the visualization ID.</p>
+                        </div>
+                        <div class="params">
+                          <p><strong>Parameters:</strong> </p>
+                          <ul class="pentaho-list-unordered">
+                            <li class="param"><code class="param-name">vizId</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                              <div class="param-description">
+                                <p>This is the id of the visualization.</p>
+                                <ul>
+                                  <li>pivot</li>
+                                  <li>ccc_bar</li>
+                                  <li>ccc_barstacked</li>
+                                  <li>ccc_barnormalized</li>
+                                  <li>ccc_barline</li>
+                                  <li>ccc_horzbar</li>
+                                  <li>ccc_horzbarstacked</li>
+                                  <li>ccc_horzbarnormalized</li>
+                                  <li>ccc_line</li>
+                                  <li>ccc_area</li>
+                                  <li>ccc_pie</li>
+                                  <li>ccc_sunburst</li>
+                                  <li>ccc_scatter</li>
+                                  <li>ccc_heatgrid</li>
+                                  <li>open_layers</li>
+                                </ul>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="example">
+                          <p><strong>Example:</strong> </p>
+                          <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.report.setVizId(&quot;ccc_bar&quot;);</pre> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#api.report_Class" rel="internal">api.report Class</a> 
+        <ol>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#addLayoutField_(gembarId_formula_gembarOrdinal)" rel="internal">addLayoutField (gembarId formula gembarOrdinal)</a>  </li>
+      <li> <a href="#buildCellActionContext_(td)" rel="internal">buildCellActionContext (td)</a>  </li>
+      <li> <a href="#buildFilterActionContext_(_)" rel="internal">buildFilterActionContext ( )</a>  </li>
+      <li> <a href="#getChartOption_(name)__String" rel="internal">getChartOption (name) String </a>  </li>
+      <li> <a href="#getFieldOption_(formula_name)__String" rel="internal">getFieldOption (formula name) String </a>  </li>
+      <li> <a href="#getFilters_(_)" rel="internal">getFilters ( )</a>  </li>
+      <li> <a href="#getLayoutFields_(gembarId)__Array" rel="internal">getLayoutFields (gembarId) Array </a>  </li>
+      <li> <a href="#getName_(_)__String" rel="internal">getName ( ) String </a>  </li>
+      <li> <a href="#getNumericFilters_(_)" rel="internal">getNumericFilters ( )</a>  </li>
+      <li> <a href="#getPath_(_)__String" rel="internal">getPath ( ) String </a>  </li>
+      <li> <a href="#getReportOption_(name)__String" rel="internal">getReportOption (name) String </a>  </li>
+      <li> <a href="#getVizId_(_)__String" rel="internal">getVizId ( ) String </a>  </li>
+      <li> <a href="#isDirty_(_)__Boolean" rel="internal">isDirty ( ) Boolean </a>  </li>
+      <li> <a href="#isNew_(_)__Boolean" rel="internal">isNew ( ) Boolean </a>  </li>
+      <li> <a href="#removeFilters_(level)" rel="internal">removeFilters (level)</a>  </li>
+      <li> <a href="#removeLayoutField_(gembarId_formula)" rel="internal">removeLayoutField (gembarId formula)</a>  </li>
+      <li> <a href="#removeNumericFilters_(_)" rel="internal">removeNumericFilters ( )</a>  </li>
+      <li> <a href="#setChartOption_(name_value)" rel="internal">setChartOption (name value)</a>  </li>
+      <li> <a href="#setDatasource_(catalog_cube)" rel="internal">setDatasource (catalog cube)</a>  </li>
+      <li> <a href="#setFieldLink_(formula_callback)" rel="internal">setFieldLink (formula callback)</a>  </li>
+      <li> <a href="#setFieldOption_(formula_name_value)" rel="internal">setFieldOption (formula name value)</a>  </li>
+      <li> <a href="#setFilters_(level_filterItems)" rel="internal">setFilters (level filterItems)</a>  </li>
+      <li> <a href="#setLayoutFields_(gembarId_formulas)" rel="internal">setLayoutFields (gembarId formulas)</a>  </li>
+      <li> <a href="#setNumericFilters_(level_filter)" rel="internal">setNumericFilters (level filter)</a>  </li>
+      <li> <a href="#setReportOption_(name_value)" rel="internal">setReportOption (name value)</a>  </li>
+      <li> <a href="#setVizId_(vizId)" rel="internal">setVizId (vizId)</a>  </li>
+    </ol>
+  </body>
+</content>

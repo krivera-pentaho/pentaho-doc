@@ -1,0 +1,162 @@
+<content type="text/html" title="Import and Export PDI Content">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Indicates how to import and export PDI content&nbsp;<span>using PDI's built-in functions.</span> </p>
+        </div>
+      </div>
+      <p class="p">You can import and export PDI content to and from a repository by using PDI's built-in functions, explained in these subsections.</p>
+      <p class="pentaho-note">Among other purposes, these procedures are useful for backing up and restoring content in the solution repository. However, users, roles, permissions, and schedules will not be included in import/export operations. If you want to back up these things,
+        you should follow the procedure in
+        <a title="Backup and Restore Pentaho Repositories" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Repository/Backup_and_Restore_Pentaho_Repositories">Backup and Restore Pentaho Repositories</a> &nbsp;instead.</p>
+      <div id="section_2" class="mt-page-section"><span id="Import_Content_Into_a_Repository"></span> 
+        <h2 class="editable">Import Content Into a Repository</h2>
+        <p class="p">Follow the instructions below to import the repository. You must already be logged into the repository in Spoon before you perform this task.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">In Spoon, go to <strong class="ph b">Tools</strong>  > <strong class="ph b">Repository</strong>  > <strong class="ph b">Import Repository</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Locate the export (XML) file that contains the solution repository contents.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Open</strong> .</span>  The <strong class="ph b">Directory Selection</strong>  dialog box appears.</li>
+          <li class="li step"><span class="ph cmd">Select the directory in which you want to import the repository.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Enter a comment, if applicable.</span> </li>
+          <li class="li step"><span class="ph cmd">Wait for the import process to complete.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Close</strong> .</span> </li>
+        </ol>
+        <p>The full contents of the repository are now in the directory you specified.</p>
+        <div id="section_3" class="mt-page-section"><span id="Use_the_Import_Script_From_the_Command_Line"></span> 
+          <h3 class="editable">Use the Import Script From the Command Line</h3>
+          <div>
+            <div class="body refbody">
+              <div class="section">
+                <p class="p">The import script is a command line utility that pulls content into an enterprise or database repository from two kinds of files: Individual KJB or KTR files, or complete repository export XML files.</p>
+                <p class="p">You must also declare a rules file that defines certain parameters for the data integration content you're importing. We provide a sample file called <strong class="ph b">import-rules.xml</strong>, included with the standard Data Integration
+                  client tool distribution. It contains all of the potential rules with comments that describe what each rule does. You can either modify this file, or copy its contents to another file; regardless, you must declare the rules file as a
+                  command line parameter.</p>
+              </div>
+              <div class="section">
+                <div id="section_4" class="mt-page-section"><span id="Options"></span> 
+                  <h4 class="editable">Options</h4>
+                  <p class="p">The table below defines command line options for the import script. Options are declared with a dash: <strong class="ph b">-</strong>  followed by the option, then the <strong class="ph b">=</strong>  (equals) sign and the value.</p>
+                </div>
+              </div>
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+                <tbody>
+                  <tr class="sthead prophead">
+                    <th align="left" class="stentry proptypehd" id="6535c686-8a3e-4dcc-a4ae-27656ec22d43__d70381e44" valign="bottom" width="NaN%">Parameter</th>
+                    <th align="left" class="stentry propvaluehd" id="6535c686-8a3e-4dcc-a4ae-27656ec22d43__d70381e47" valign="bottom" width="NaN%">Definition/value</th>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">rep</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The name of the enterprise or database repository to import into.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">user</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The repository username you will use for authentication.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">pass</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The password for the username you specified with <strong class="ph b">user</strong> .</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">dir</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The directory in the repository that you want to copy the content to.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">limitdir</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%"><strong class="ph b">Optional.</strong>  A list of comma-separated source directories to include (excluding those directories not explicitly declared).</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">file</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The path to the repository export file that you will import from.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">rules</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The path to the rules file, as explained above.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">comment</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">The comment that will be set for the new revisions of the imported transformations and jobs.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">replace</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">Set to <strong class="ph b">Y</strong>  to replace existing transformations and jobs in the repository. Default value is <strong class="ph b">N</strong> .</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">coe</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">Continue on error, ignoring all validation errors.</td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d70381e44" valign="top" width="NaN%">version</td>
+                    <td class="stentry propvalue" headers="d70381e47" valign="top" width="NaN%">Shows the version, revision, and build date of the PDI instance that the import script interfaces with.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="example">
+                <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sh import.sh -rep=PRODUCTION -user=admin -pass=12345 -dir=/ -file=myJob.kjb -rules=import-rules.xml -coe=false -replace=true -comment=&quot;New version upload from UAT&quot;</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Export_Content_From_the_Repository"></span> 
+        <h2 class="editable">Export Content From the Repository</h2>
+        <p>Follow the instructions below to export the repository. You must already be logged into the repository through Spoon to complete this task.</p>
+        <div>
+          <div id="page-top">
+            <div id="topic">
+              <div id="pageText">
+                <div class="body taskbody">
+                  <ol class="ol steps">
+                    <li class="li step">
+                      <p><span class="ph cmd">In Spoon, go to&nbsp;<strong><span class="ph b">Tools</span> </strong> &nbsp;>&nbsp;<strong><span class="ph b">Repository</span> </strong> &nbsp;>&nbsp;<strong><span class="ph b">Export Repository</span> </strong> .</span> 
+                      </p>
+                    </li>
+                    <li class="li step"><span class="ph cmd">In the&nbsp;<strong><span class="ph b">Save As</span> </strong> &nbsp;dialog box, browse to the location where you want to save the export file.</span> 
+                    </li>
+                    <li class="li step"><span class="ph cmd">Type a name for your export file in the<span class="ph b">&nbsp;<strong>File Name</strong> </span> &nbsp;text box.</span> 
+                    </li>
+                  </ol>
+                  <p class="pentaho-note"><span style="color:rgb(102, 102, 102);font-style:italic;line-height:1.5;">The export file will be saved in XML format regardless of the file extension used.</span> </p>
+                  <ol class="ol steps" start="4">
+                    <li class="li step"><span class="ph cmd">Click&nbsp;<strong><span class="ph b">Save</span> </strong> .</span> 
+                    </li>
+                  </ol>
+                  <p class="li step">The export file is created in the location you specified. This XML file is a concatenation of all of the data integration content you selected. It is possible to break it up into individual KTR and KJB files by hand or through a transformation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Import_Content_Into_a_Repository" rel="internal">Import Content Into a Repository</a> 
+        <ol>
+          <li>
+            <a href="#Use_the_Import_Script_From_the_Command_Line" rel="internal">Use the Import Script From the Command Line</a> 
+            <ol>
+              <li> <a href="#Options" rel="internal">Options</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Export_Content_From_the_Repository" rel="internal">Export Content From the Repository</a>  </li>
+    </ol>
+  </body>
+</content>

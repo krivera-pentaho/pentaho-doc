@@ -1,0 +1,28 @@
+<content type="text/html" title="Edit an Interactive Report">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">You can use Report Designer to edit a report created with Pentaho Interactive Reporting. This procedure assumes that you have a <span class="ph filepath">.prpti</span>  report created with Pentaho Interactive Reporting</p>
+          <div class="note note"><span class="notetitle">Note:</span>  Once a <span class="ph filepath">.prpti</span>  file has been edited with Report Designer, it can no longer be used with Interactive Reporting.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Copy the <span class="ph filepath">.prpti</span>  file from the solution in the BA Server's <span class="ph filepath">/pentaho-solutions/</span>  directory to the workstation that has Report Designer.</span>  If you have the
+            BA Server and Report Designer on the same machine, this step may not be necessary. However, you may need to create a copy of the .prpti file if you want to continue using the original in Interactive Reporting. </li>
+          <li class="li step"> <span class="ph cmd">Copy the <strong class="ph b">.xmi</strong>  data source file from the solution in the BA Server's <span class="ph filepath">/pentaho-solutions/</span>  directory to the workstation that has Report Designer.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Start Report Designer and open the .prpti file.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Edit the report's data source definition and replace the URL to the BA Server's XMI file to the one you copied from the BA Server.</span>  Report Designer is unable to connect to XMI files on remote BA Server machines. If
+            you have the BA Server on the same system with Report Designer, you can continue using that XMI file, but you still have to provide the local filesystem location in place of the old BA Server URL. </li>
+          <li class="li step"> <span class="ph cmd">Establish a data source connection to the database referenced in the XMI file.</span>  The XMI file defines a metadata model, which can be used as a data source so long as the database it provides metadata for is available
+            to Report Designer. </li>
+          <li class="li step"> <span class="ph cmd">Copy the appropriate JDBC driver for the XMI database connection to the <span class="ph filepath">/report-designer/lib/jdbc/</span>  directory.</span>  You may already have an appropriate database driver; if so, skip this
+            step. </li>
+        </ol>
+        <div class="section result">You have successfully migrated an Interactive Report to Report Designer. From here, you can render and distribute or publish it. If you publish this file to the BA Server, it will be treated as a Report Designer .prpt report, not as an Interactive
+          Reporting .prpti report.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

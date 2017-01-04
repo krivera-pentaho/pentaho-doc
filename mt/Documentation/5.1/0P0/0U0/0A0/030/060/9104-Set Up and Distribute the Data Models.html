@@ -1,0 +1,38 @@
+<content type="text/html" title="Set Up and Distribute the Data Models">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">This procedure describes how to set up and distribute the data models for the DI Operations Mart under the BA Server:</div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Place the <span class="ph filepath">models/[MyBusinessModel].xmi</span>  and the <span class="ph filepath">models/PDI_Operations_Mart_<dbname>.mondrian.xml</span>, where <span class="ph filepath"><dbname></span>  is the name
+            of the database containing the DI Operations Mart, under the BA Server directory at the following location: <span class="ph filepath">bi-server/pentaho_solutions/PDI Operations Mart Sample Reports</span> .</span>  You may also put the
+            <span
+            class="ph filepath">[MyBusinessModel]</span>  into <span class="ph filepath">bi-server/pentaho_solutions/admin/resources/metadata</span>  or to another solutions directory so it is available independent of the sample solution. In case you already have an existing
+              <span class="ph filepath">[MyBusinessModel]</span>  in this location, you need to rename the file to <span class="ph filepath">PDI_Operations_Mart.xmi</span> . The same applies accordingly to the Mondrian schema. </li>
+          <li class="li step"> <span class="ph cmd">Rename the <span class="ph filepath">PDI_Operations_Mart_<dbname>.mondrian.xml</span>  file to <span class="ph filepath">PDI_Operations_Mart.mondrian.xml</span> .</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd"><a class="xref" title="Documentation/5.1/0P0/0U0/010/000#a26f2312-f251-4bdf-85a5-398290a8a230__specify_di_connections" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/0U0/010/000#a26f2312-f251-4bdf-85a5-398290a8a230__specify_di_connections">Create a new database connection</a> . Name it <span class="ph filepath">PDI_Operations_Mart</span> .
+            Then set the connection information to the Data Integration Operations Mart database location. You can copy the needed URL from the database connecting within Spoon when editing the connection information and pressing the <span class="ph uicontrol">Feature List</span>             button. </span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Add a category entry to the <span class="ph filepath">datasources.xml</span>  file, which can be found here: <span class="ph filepath"> bi-server/pentaho_solutions/system/olap/.</span> </span> 
+            <p class="p">If you named your data source <span class="ph filepath">PDI_Operations_Mart</span>  and used the solution folder <span class="ph filepath">PDI Operations Mart Sample Reports</span>, then the addition to the XML file looks like this.</p>
+            <pre
+            class="pre codeblock">
+              <Catalog name=&quot;PDI_Operations_Mart&quot;>
+                <DataSourceInfo>Provider=mondrian;DataSource=PDI_Operations_Mart</DataSourceInfo>
+                <Definition>
+                  solution:PDI Operations Mart Sample Reports/PDI_Operations_Mart.mondrian.xml
+                </Definition>
+              </Catalog>
+              </pre>
+          </li>
+          <li class="li step"> <span class="ph cmd">Save the file.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Restart the BA Server.</span>  </li>
+          <li class="li step"> <span class="ph cmd">From the User Console, refresh all caches and settings.</span>  </li>
+        </ol>
+        <div class="section result">The DI Operations Mart data models are available for Analyzer and Interactive reporting using the <span class="ph filepath">PDI_Operations_Mart</span>  data source. </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

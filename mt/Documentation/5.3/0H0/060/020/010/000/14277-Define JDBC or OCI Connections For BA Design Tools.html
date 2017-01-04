@@ -1,0 +1,58 @@
+<content type="text/html" title="Define JDBC or OCI Connections For BA Design Tools">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Once you have
+            <a class="xref" title="Documentation/5.1/0H0/060/020/010" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/010">chosen to use a JDBC or OCI access protocol</a>, all you have to do <em class="ph i">now</em>  is install the appropriate driver so that you can use dsign tools anytime you want. You will specify the access protocol later when you define the
+            data source for each design tool.</p>
+          <p class="p">When the driver file is in place, go on to the next stop on the <em class="ph i">Guide Post</em>  graphic.</p>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+      <div class="topic task nested1" id="4580194d-b93f-486b-900a-23a5c13beef3__install_driver">
+        <div id="section_1" class="mt-page-section"><span id="Add_Drivers"></span> 
+          <h2 class="editable">Add Drivers</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The driver enables design tools to connect to the BA Server and verify that the model is correct. Your database administrator, Chief Intelligence Officer, or IT manager should be able to provide the appropriate driver. If not, you can download
+                drivers from your database vendor's website. See the
+                <a class="xref" title="Review Supported Technologies" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0D0/160">Supported Technologies</a>  to ensure that your database and its driver is supported.</p>
+              <p class="p">When you have the correct driver, copy it to these directories on <em class="ph i">all</em>  machines that run the design tools you chose to install. Design tools should not be running when you do this. Once the driver is in place, you can
+                start the design tools.</p>
+              <div class="p">
+                <ul class="ul" id="4580194d-b93f-486b-900a-23a5c13beef3__install_driver__ul_g5d_22d_xj">
+                  <li class="li"><strong class="ph b">Aggregation Designer:</strong>  <span class="ph filepath">/pentaho/design-tools/agg-designer/drivers/</span> </li>
+                  <li class="li"><strong class="ph b">Metadata Editor:</strong>  <span class="ph filepath">/pentaho/design-tools/metadata-editor/libext/JDBC/</span> </li>
+                  <li class="li"><strong class="ph b">Report Designer:</strong>  <span class="ph filepath">/pentaho/design-tools/report-designer/lib/jdbc/</span> </li>
+                  <li class="li"><strong class="ph b">Schema Workbench:</strong>  <span class="ph filepath">/pentaho/design-tools/schema-workbench/drivers/</span> </li>
+                </ul>
+              </div>
+              <p class="p">There should be only one driver for your database in this directory. Ensure that there are no other versions of the same vendor's driver in this directory. If there are, back up the old driver files and remove them to avoid version conflicts.
+                If you have any concerns about how to proceed, contact
+                <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/Get_Help_and_Support/001">Pentaho support</a> .</p>
+              <p class="p"><strong class="ph b">Driver for Microsoft SQL Server</strong> </p>
+              <p class="p">If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+                <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/Get_Help_and_Support/001">Pentaho support</a>  to ensure that you are adding the correct driver.</p>
+              <p class="p">For Microsoft Windows, most JDBC drivers support Type 2 integrated authentication through the <span class="ph filepath">integratedSecurity</span>  connection string property. To use integrated authentication, copy the <span class="ph filepath">sqljdbc_auth.dll</span>                 file to all machines and directories to which you copied the JDBC driver. You can find this file in this location.</p>
+              <div class="p"> <pre class="pre codeblock">
+<installation directory>\sqljdbc_<version>\<language>\auth\</pre> </div>
+              <div class="p">
+                <ul class="ul">
+                  <li class="li">Use the <span class="ph filepath">sqljdbc_auth.dll</span>  file, in the x86 folder, if you are running a 32-bit Java Virtual Machine (JVM) even if the operating system is version x64.</li>
+                  <li class="li">Use the <span class="ph filepath">sqljdbc_auth.dll</span>  file in the x64 folder, if you are running a 64-bit JVM on a x64 processor.</li>
+                  <li class="li">Use the <span class="ph filepath">sqljdbc_auth.dll</span>  file in the IA64 folder, you are running a 64-bit JVM on an Itanium processor.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Add_Drivers" rel="internal">Add Drivers</a>  </li>
+    </ol>
+  </body>
+</content>

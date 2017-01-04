@@ -1,0 +1,52 @@
+<content type="text/html" title="Test BA Server Scalability">
+  <body>
+    <div>
+      <div class="body">
+        <div class="section">
+          <p class="p">Improper scalability testing can give you the wrong idea about changes you've made to your BA Server instance.</p>
+          <p class="p">Before testing, ensure that you're reusing sessions, instead of creating successive new sessions. Creating multiple unnecessary sessions causes the BA Server to run out of memory unless the session timeout in web.xml is set extremely low (1
+            per minute, for instance); the default is 30 minutes.</p>
+          <p class="p">Logging into the BA Server is resource-intensive: you must authenticate the user; create a bunch of session data; and run all startup action sequences, which usually store data in the user's session. So if, during testing, you simply string
+            together a bunch of URLs and ignore the established session, you'll create a series of 30-minute sessions and almost certainly run out of memory. The correct way to test the server is to mimic a user's actions from a browser. The sections
+            below explain how to do this.</p>
+        </div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Sessions_and_URLs"></span> 
+            <h2 class="editable">Sessions and URLs</h2>
+            <p class="p">Most stress test tools (Loadrunner, JMeter, etc.) have session/cookie management options to ensure that they behave like a human user. However, if you're creating your own test scripts, you should follow this process:</p>
+            <ol class="ol">
+              <li class="li">Log into the server</li>
+              <li class="li">Execute a URL that contains the <strong class="ph b">userid</strong>  and <strong class="ph b">password</strong>  parameters (<strong class="ph b">&amp;userid=administrator&amp;password=password</strong>  for example)</li>
+              <li class="li">Using the same session, submit other URLs that don't have the userid/password in them.</li>
+            </ol>
+            <p class="p">Use this process for as many users as you need to test with.</p>
+            <p class="p">To log out of a session, you can use the <strong class="ph b"><a rel="freeklink" href="http://localhost:8080/pentaho/Logout" title="http://localhost:8080/pentaho/Logout" class="external">http://localhost:8080/pentaho/Logout</a> </strong>  URL;
+              this will invalidate the session if you append the userid and password values of the logged-in user. Without passing those parameters (or, alternatively, specifying the session ID or cookie) on the Logout URL, you will create another new
+              session instead of closing an old one.</p>
+            <p class="p">This means that two back-to-back <strong class="ph b">wget</strong>  commands in Linux will create two different HTTP sessions on the server unless one of the following conditions is met:</p>
+            <ol class="ol">
+              <li class="li"><strong class="ph b">-cookies=on</strong>  is specified for both wget commands</li>
+              <li class="li"><strong class="ph b">-save-cookies</strong>  is used on the first wget command to save the cookies to a file, and <strong class="ph b">-load-cookies</strong>  is used on the second wget command to load the session state</li>
+            </ol>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Memory_and_sessions"></span> 
+            <h2 class="editable">Memory and sessions</h2>
+            <p class="p">Out of memory errors in the BI Platform can happen because of what your test script is doing, not necessarily because of any weakness in the platform. You can see just how robust the BI Platform is by taking a look at a production server's
+              natural (human user) load. The following URL will show you what each day's maximum and present number of HTTP sessions are: <strong class="ph b"><a rel="freeklink" href="http://testserver.example.com/pentaho/public/UserService" title="http://testserver.example.com/pentaho/public/UserService" class="external">http://testserver.example.com/pentah...ic/UserService</a> </strong> .</p>
+            <p class="p">You can see the Java virtual machine memory settings by examining the the options passed to the Tomcat or JBoss start scripts, or by looking at the <strong class="ph b">CATALINA_OPTS</strong>  system variable, if there is one. The <strong class="ph b">Xms</strong>               and <strong class="ph b">Xmx</strong>  options define the minimum and maximum amount of memory assigned to the application server. The default settings are not particularly high, and even if you've adjusted them, take note of the number of
+              sessions it takes to use up all of the memory. Also take note of the fact that closing sessions after an out of memory error will return the memory to the available pool, proving that there are no memory leaks or zombie sessions inherent
+              in the BI Platform.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Sessions_and_URLs" rel="internal">Sessions and URLs</a>  </li>
+      <li> <a href="#Memory_and_sessions" rel="internal">Memory and sessions</a>  </li>
+    </ol>
+  </body>
+</content>

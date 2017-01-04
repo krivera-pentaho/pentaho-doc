@@ -1,0 +1,393 @@
+<content type="text/html" title="PDI Transformation Tutorial">
+  <body>
+    <div>
+      <p>The Data Integration perspective of Spoon allows you to create two basic&nbsp;file types: transformations and jobs. Transformations are used to describe the data flows for ETL such as reading from a source, transforming data and loading it into
+        a target location. Jobs are used to coordinate ETL activities such as defining the flow and dependencies for what order transformations should be run, or prepare for execution by checking conditions such as, &quot;Is my source file available?&quot;
+        or &quot;Does a table exist in my database?&quot;</p>
+      <div class="body">
+        <p class="p">This exercise will step you through building your first transformation with Pentaho Data Integration introducing common concepts along the way. The exercise scenario includes a flat file (.csv) of sales data that you will load into a database
+          so that mailing lists can be generated. Several of the customer records are missing postal codes (zip codes) that must be resolved before loading into the database. The logic looks like this:</p>
+        <p class="p">
+          <img alt="File:/flowchart_for_creating_transformation.png" class="image internal" id="f5c87dad-629f-4369-9e9d-3e8b22c264eb__topic_creating_first_transformation__image_6180ead4-979d-4ac2-a453-bbf6fef84d41" src="http://help.pentaho.com/@api/deki/files/10694/flowchart_for_creating_transformation.png?revision=1"
+          />
+        </p>
+        <div id="section_1" class="mt-page-section"><span id="Retrieving_Data_from_a_Flat_File"></span> 
+          <h2 class="editable">Retrieving Data from a Flat File</h2>
+          <div class="section context">
+            <p class="p">Follow the instructions below to retrieve data from a flat file.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Select <strong>File >&nbsp;<span class="ph uicontrol">New > Transformation</span> </strong> &nbsp;in the upper left corner of the <strong>Spoon </strong> window to create a new transformation.</span> 
+            </li>
+          </ol>
+          <p class="li step"><span class="ph cmd"><img alt="Creating a New Transformation" class="internal default" src="http://help.pentaho.com/@api/deki/files/11806/ssPDINewTransformation.png?revision=2" />&#8203;</span> </p>
+          <ol class="ol steps" start="2">
+            <li class="li step"><span class="ph cmd">Under the <strong class="ph b">Design</strong>  tab, expand the <strong class="ph b">Input</strong>  node; then, select and drag a <strong class="ph b">Text File Input</strong>  step onto the canvas.</span> </li>
+            <li class="li step"><span class="ph cmd">Double-click on the <strong class="ph b">Text File</strong>  input step.</span>  The <strong>Text file input</strong> &nbsp;window appears. &nbsp;This window allows you to set the properties for this step.</li>
+          </ol>
+          <p class="p li step">
+            <img alt="TextFileInput_File.png" class="internal default" style="width: 550px; height: 337px;" width="550px" height="337px" src="http://help.pentaho.com/@api/deki/files/10702/TextFileInput_File.png?size=bestfit&amp;width=550&amp;height=337&amp;revision=2"
+            />
+          </p>
+          <ol class="ol steps" start="4">
+            <li class="li step"><span class="ph cmd" id="b711e897-ee7b-41d9-992f-d9db091dad9a__task_pdi_retrieve_data_from_flt_file__task_pdi_retrieve_data_from_flt_file_step5">In the <strong class="ph b">Step Name</strong>  field, type <strong class="ph b">Read Sales Data</strong> .</span> &nbsp;This
+              renames the&nbsp;<strong>Text file input&nbsp;</strong> step to&nbsp;<strong>Read Sales Data</strong> .</li>
+            <li class="li step"><span class="ph cmd" id="b711e897-ee7b-41d9-992f-d9db091dad9a__task_pdi_retrieve_data_from_flt_file__task_pdi_retrieve_data_from_flt_file_step6">Click <strong class="ph b">Browse</strong>  to locate the source file, <strong class="ph b">sales_data.csv</strong>, available at <span class="filepath style-wrap"><code class="ph codeph">...\design-tools\data-integration\samples\transformations\files</code></span> .</span> &nbsp;
+              &nbsp;(The <strong>Browse </strong> button appears near the top right side of the window near the&nbsp;<strong>File or Directory&nbsp;</strong> field.) &nbsp;Click <strong>Open</strong> &#8203;. &nbsp;The path to the source file appears in
+              the <strong class="ph b">File or directory</strong>  field.</li>
+            <li class="li step" id="b711e897-ee7b-41d9-992f-d9db091dad9a__task_pdi_retrieve_data_from_flt_file__task_pdi_retrieve_data_from_flt_file_step7"><span class="ph cmd">Click <strong class="ph b">Add</strong> . </span>  The path to the file appears under <strong class="ph b">Selected Files</strong> .&nbsp;</li>
+            <li class="li step">To look at the contents of the sample file perform the following steps:
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step">Click the <strong>Content </strong> tab, then set the&nbsp;<strong>Format </strong> field to&nbsp;<strong>Unix</strong> &#8203;. &nbsp;</li>
+                <li class="li step">Click the <strong>File </strong> tab again and click the <strong class="ph b">Show file content&nbsp;</strong> near the bottom of the window. &nbsp;</li>
+                <li class="li step">The <strong>Nr of lines to view&nbsp;</strong> window appears. &nbsp;Click the&nbsp;<strong>OK </strong> button to accept the default.</li>
+                <li class="li step">The <strong>Content of first file </strong> window displays the file. &nbsp;Examine the file to see how that input file is delimited, what enclosure character is used, and whether or not a header row is present. In the sample, the input
+                  file is comma (,) delimited, the enclosure character being a quotation mark (&ldquo;) and it contains a single header row containing field names.</li>
+                <li class="li step">Click the&nbsp;<strong>Close&nbsp;</strong> button to close the window.</li>
+              </ol>
+            </li>
+            <li class="li step"><span class="ph cmd">To provide information about the content, perform the following steps:</span> 
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step"><span class="ph cmd">Click the <strong class="ph b">Content</strong>  tab.</span>  The fields under the <strong class="ph b">Content</strong>  tab allow you to define how your data is formatted.</li>
+                <li class="li step"><span class="ph cmd">Make sure that the <strong class="ph b">Separator</strong>  is set to comma (,) and that the <strong class="ph b">Enclosure</strong>  is set to quotation mark (&quot;). Enable <strong class="ph b">Header</strong>  because there is one line of header rows in the file.</span> </li>
+              </ol>
+            </li>
+          </ol>
+          <p class="li step"><strong><a class="thumb" title="textfileinput_content.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/10701/textfileinput_content.png"><img alt="textfileinput_content.png" class="internal default" style="width: 550px; height: 337px;" width="550px" height="337px" src="http://help.pentaho.com/@api/deki/files/10701/textfileinput_content.png?size=bestfit&amp;width=550&amp;height=337&amp;revision=2" /></a> </strong> </p>
+          <ol start="3" style="margin-left: 40px; list-style-type: lower-alpha;">
+            <li class="li step">
+              <p class="p li step">Click the <strong>Fields </strong> tab and click <strong>Get Fields</strong>  to retrieve the input fields from your source file. When the <strong>Nr of lines to sample</strong>  window appears, enter <strong>0</strong>  in the field then click
+                <strong>OK</strong> .</p>
+            </li>
+            <li class="li step">if the <strong>Scan Result</strong>  window displays, click <strong>Close </strong> to close the window.</li>
+            <li class="li step"><span class="ph cmd">To verify that the data is being read correctly:</span> 
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step"><span class="ph cmd">Click <strong class="ph b">Preview Rows</strong> . </span> </li>
+                <li class="li step"><span class="ph cmd">In the <strong>Enter preview size </strong> window&nbsp;click&nbsp;<strong class="ph b">OK</strong> . &nbsp;The&nbsp;<strong>Examine preview data&nbsp;</strong> window appears. &nbsp;</span> </li>
+                <li class="li step"><span class="ph cmd">Review the data, then click&nbsp;<strong>Close</strong> .</span> </li>
+              </ol>
+            </li>
+            <li class="li step"><span class="ph cmd">Click&nbsp;<strong>OK&nbsp;</strong> to save the information that you entered in the step.</span> </li>
+            <li class="li step"><span class="ph cmd">To save the transformation, do these things.</span> 
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step"><span class="ph cmd">Select <strong>File > Save</strong> &nbsp;to save the transformation. </span> </li>
+                <li class="li step"><span class="ph cmd">The <strong>Transformation Properties&nbsp;</strong> window appears.</span> &nbsp;&nbsp;In the&nbsp;<strong>Transformation Name&nbsp;</strong> field, type&nbsp;<span class="ph cmd"><strong>Getting Started Transformation</strong> . &nbsp;(Note that the&nbsp;<strong>Transformation Properties&nbsp;</strong> window appears because you are connected to a repository. &nbsp;If you were not connected to the repository, the standard save window would appear.)</span> </li>
+              </ol>
+            </li>
+          </ol>
+          <p class="li step"><span class="ph cmd"><a class="thumb" title="TransformationProperties.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/10703/TransformationProperties.png"><img alt="TransformationProperties.png" class="internal default" style="width: 550px; height: 391px;" width="550px" height="391px" src="http://help.pentaho.com/@api/deki/files/10703/TransformationProperties.png?size=bestfit&amp;width=550&amp;height=391&amp;revision=2" /></a> </span> </p>
+          <ol start="3" style="margin-left: 40px; list-style-type: lower-alpha;">
+            <li class="li step"><span class="ph cmd">In the&nbsp;<strong>Directory&nbsp;</strong> field, click the folder icon.</span> </li>
+            <li class="li step"><span class="ph cmd">Expand the&nbsp;<strong>Home&nbsp;</strong> directory and double-click the&nbsp;folder in which you want to save the transformation. &nbsp;Your transformation is saved in the&nbsp;Pentaho Repository.</span> </li>
+            <li class="li step"><span class="ph cmd">Click&nbsp;<strong>OK&nbsp;</strong> to close the&nbsp;<strong>Transformation Properties&nbsp;</strong> window. &nbsp;When prompted for a comment, enter one then click&nbsp;<strong>OK</strong> . Your comment is stored for version control purposes in the&nbsp;Pentaho Repository.</span> </li>
+          </ol>
+        </div>
+        <div id="section_2" class="mt-page-section"><span id="Filter_Records_with_Missing_Postal_Codes"></span> 
+          <h2 class="editable">Filter Records with Missing Postal Codes</h2>
+          <div class="section context">
+            <p class="p">After completing
+              <a class="xref" title="Retrieving Data from a Flat File" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/020/000">Retrieve Data from a Flat File</a>, you are ready to add the next step to your transformation. The source file contains several records that are missing postal codes. Use the Filter Rows transformation step to separate out those records
+              so that you can resolve them in a later exercise.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Add a <strong class="ph b">Filter Rows</strong>  step to your transformation. Under the <strong class="ph b">Design</strong>  tab, select&nbsp;<strong class="ph b">Flow</strong>  > <strong class="ph b">Filter Rows</strong> .</span> </li>
+            <li class="li step" id="16cfa3b6-cbdb-46c7-81c0-cd1e83755060__task_pdi_resolving_missing_zip_code_info__create_a_hop"><span class="ph cmd">Create a hop between the <strong class="ph b">Read Sales Data</strong> &nbsp;step and the <strong class="ph b">Filter Rows</strong>  step. Hops are used to describe the flow of data in your transformation. To create the hop, click the <strong class="ph b">Read Sales Data</strong>  (Text File input) step, then press the <<strong class="ph b">SHIFT</strong> > key down and draw a line to the <strong>Filter Rows </strong> step.</span> 
+              <br
+              />
+              <img alt="File:/pdi_create_hop.png" class="default" src="undefined" style="width: 0px; height: 0px;" />
+              <a class="thumb" title="readsalesdata_filterrows.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/10705/readsalesdata_filterrows.png">
+                <img alt="readsalesdata_filterrows.png" class="internal default" style="width: 350px; height: 141px;" width="350px" height="141px" src="http://help.pentaho.com/@api/deki/files/10705/readsalesdata_filterrows.png?size=bestfit&amp;width=350&amp;height=141&amp;revision=2"
+                />
+              </a> 
+            </li>
+            <li class="li step"><span class="ph cmd">Double-click the <strong class="ph b">Filter Rows</strong>  step. </span>  The <strong class="ph b">Filter Rows</strong>  window appears.</li>
+            <li class="li step"><span class="ph cmd">In the <strong class="ph b">Step Name</strong>  field type, <strong class="ph b">Filter Missing Zips</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Under <strong class="ph b">The condition</strong>, click <span class="keyword cmdname"><field></span> . The <span class="ph uicontrol"><strong>Fields</strong> </span> &nbsp;window appears. These are the conditions you can
+              select.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">In the <strong class="ph b">Fields</strong> &nbsp;window select <strong class="ph b">POSTALCODE</strong>  and click <strong class="ph b">OK</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Click on the comparison operator (set to <strong class="ph b">=</strong>  by default) and select the <strong class="ph b"><strong class="ph b">IS NOT NULL</strong> </strong> &nbsp;from the <strong>Functions:&nbsp;</strong> window that appears.</span> </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong> &#8203; to close the <strong>Functions:&nbsp;</strong> window.</span> </li>
+            <li class="li step"><span class="ph cmd">Click&nbsp;<strong class="ph b">OK</strong>  to exit the <strong>Filter Rows</strong>  window.</span> 
+              <div class="note note"><span class="notetitle">Note:</span>  You will return to this step later and configure the <strong class="ph b">Send true data to step</strong>  and <strong class="ph b">Send false data to step</strong>  settings after adding their target steps
+                to your transformation.</div>
+            </li>
+            <li class="li step"><span class="ph cmd">Select <strong>File > Save&nbsp;</strong> to save your transformation.</span> </li>
+          </ol>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Loading_Your_Data_into_a_Relational_Database"></span> 
+          <h2 class="editable">Loading Your Data into a Relational Database</h2>
+          <div class="section context">
+            <p class="p">After completing
+              <a class="xref" title="Filter Records with Missing Postal Codes" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/020/010">Filter Records with Missing Postal Codes</a>, you are ready to take all records exiting the <strong>Filter rows</strong>  step where the <strong>POSTALCODE </strong> was not null (the <strong class="ph b">true</strong>  condition), and load
+              them into a database table.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Under the <strong>Design </strong> tab, expand the contents of the <strong class="ph b">Output</strong>  node.</span> </li>
+            <li class="li step"><span class="ph cmd">Click and drag a <strong class="ph b">Table Output</strong>  step into your transformation. Create a hop between the <strong class="ph b">Filter Missing Zips</strong>  and <strong class="ph b">Table Output</strong>  steps. In the dialog that appears, select <strong class="ph b">Result is TRUE</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Double-click the <strong class="ph b">Table Output</strong>  step to open its edit properties dialog box. </span> </li>
+            <li class="li step"><span class="ph cmd">Rename your Table Output Step to <strong class="ph b">Write to Database</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">New</strong>  next to the <strong class="ph b">Connection</strong>  field. You must create a connection to the database.</span>  The <strong class="ph b">Database Connection</strong>  dialog box
+              appears.</li>
+            <li class="li step"><span class="ph cmd">Provide the settings for connecting to the database.</span> 
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <th class="entry" valign="top">Field</th>
+                      <th class="entry" valign="top">Setting</th>
+                    </tr>
+                    <tr>
+                      <td class="entry" valign="top"><strong>Connection Name:&nbsp;</strong> </td>
+                      <td class="entry" valign="top">Sample Data</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">Connection Type:</strong> </td>
+                      <td class="entry" valign="top">Hypersonic</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">Host Name</strong> </td>
+                      <td class="entry" valign="top">localhost</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">Database Name</strong> </td>
+                      <td class="entry" valign="top">sampledata</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">Port Number</strong> </td>
+                      <td class="entry" valign="top">9001</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">User Name</strong> </td>
+                      <td class="entry" valign="top">pentaho_admin</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">Password</strong> </td>
+                      <td class="entry" valign="top">password (If&nbsp;&quot;password&quot;&nbsp;does not work, please check with your system administrator.)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Test</strong>  to make sure your entries are correct. A success message appears. Click <strong class="ph b">OK</strong> .</span> 
+              <div class="note note"><span class="notetitle">Note:</span>  If you get an error when testing your connection, ensure that you have provided the correct settings information as described in the table and that the sample database is running. See
+                <a class="xref"
+                title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop&nbsp;the Pentaho&nbsp;Server</a>  for information about how to start the Pentaho&nbsp;Server.</div>
+            </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>, to exit the <strong>Database Connections</strong>  window.</span> </li>
+            <li class="li step"><span class="ph cmd">Type <strong class="ph b">SALES_DATA</strong>  in the <strong class="ph b">Target Table</strong>  text field.</span> </li>
+            <li class="li step">Since this table does not exist in the target database, you will need use the software to generate the Data Definition Language (DDL) to create the table and execute it. DDLs are the SQL commands that define the different structures in a database
+              such as CREATE TABLE.
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step"><span class="ph cmd">In the <strong>Table Output </strong> window, enable the <strong class="ph b">Truncate Table</strong>  property.</span> </li>
+                <li class="li step"><span class="ph cmd">Click the <strong class="ph b">SQL</strong>  button at the bottom of the <span class="ph uicontrol">Table output</span>  dialog box to generate the DDL for creating your target table.</span> 
+                </li>
+                <li class="li step">The <strong><span class="ph uicontrol">Simple SQL editor</span> </strong>  window appears with the SQL statements needed to create the table.</li>
+                <li class="li step">Click <strong><span class="ph uicontrol">Execute</span>  </strong> to execute the SQL statement. &nbsp;</li>
+                <li class="li step">The <strong>Results of the SQL statements </strong> window&nbsp;appears. &nbsp;Examine the results, then click <strong>OK&nbsp;</strong> to close the <strong>Results of the SQL statements</strong>  window. &nbsp;</li>
+                <li class="li step">Click <strong>Close</strong> &nbsp;in the&nbsp;<strong><span class="ph uicontrol">Simple SQL editor</span> </strong> &nbsp;window to close it.</li>
+                <li class="li step">Click <strong class="ph b">OK</strong>  to close the <strong><span class="ph uicontrol">Table output</span>  </strong> window.</li>
+              </ol>
+            </li>
+            <li class="li step"><span class="ph cmd">Save your transformation.</span> </li>
+          </ol>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Retrieving_Data_from_Your_Lookup_File"></span> 
+          <h2 class="editable">Retrieving Data from Your Lookup File</h2>
+          <div class="section context">After
+            <a class="xref" title="Loading Your Data into a Relational Database" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/020/020">Loading Your Data into a Relational Database</a>, you are ready to retrieve data from your lookup file. You have been provided a second text file containing a list of cities, states, and postal codes that you will now use to look up the postal
+            codes for all of the records where they were missing (the &lsquo;false&rsquo; branch of your Filter rows step). First, you will use a Text file input step to read from the source file, then you will use a Stream lookup step to bring the resolved
+            Postal Codes into the stream.</div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Add a new <strong><span class="ph uicontrol">Text File Input</span>  </strong> step to your transformation. In this step you will retrieve the records from your lookup file. &nbsp;Do not add a hop yet.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Open the <strong>Text File Input </strong> step window, then enter&nbsp;<strong><span class="ph uicontrol">Read Postal Codes&nbsp;</span> </strong> in the&nbsp;<span class="ph uicontrol"><strong>Step name</strong> </span> &nbsp;property.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Browse</strong>  to locate the source file, <span class="filepath style-wrap"><span class="ph uicontrol">Zipssortedbycitystate.csv</span> </span>, located at <code class="ph codeph">...\design-tools\data-integration\samples\transformations\files</code>.
+              &nbsp;</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Add</strong> . </span>  The path to the file appears under&nbsp;<strong><span class="ph uicontrol">Selected files</span> </strong> .</li>
+            <li class="li step">To look at the contents of the sample file:
+              <ol start="1">
+                <li class="li step">Click the&nbsp;<strong>Content&nbsp;</strong> tab, then set the&nbsp;<strong>Format&nbsp;</strong> field to&nbsp;<strong>Unix</strong> &#8203;. &nbsp;</li>
+                <li class="li step">Click the&nbsp;<strong>File&nbsp;</strong> tab again and click the&nbsp;<strong class="ph b">Show file content&nbsp;</strong> near the bottom of the window. &nbsp;</li>
+                <li class="li step">The&nbsp;<strong>Nr of lines to view&nbsp;</strong> window appears. &nbsp;Click the&nbsp;<strong>OK&nbsp;</strong> button to accept the default.</li>
+                <li class="li step">The&nbsp;<strong>Content of first file&nbsp;</strong> window displays the file. &nbsp;Examine the file to see how that input file is delimited, what enclosure character is used, and whether or not a header row is present. In the example,
+                  the input file is comma (,) delimited, the enclosure character being a quotation mark (&ldquo;) and it contains a single header row containing field names.</li>
+                <li class="li step">Click the&nbsp;<strong>Close&nbsp;</strong> button to close the window.</li>
+              </ol>
+            </li>
+            <li class="li step"><span class="ph cmd">In the <strong><span class="ph uicontrol">Content</span>  </strong> tab, change the <strong>Separator </strong> character to a comma (,). and confirm that the <strong>Enclosure </strong> setting is a quotation mark (&quot;).
+              &nbsp; Make sure the <strong><span class="ph uicontrol">Header</span> </strong>  option is selected.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Under the <span class="ph uicontrol">Fields</span>  tab, click <strong><span class="ph uicontrol">Get Fields</span> </strong>  to retrieve the data from your .csv file. </span> 
+            </li>
+            <li class="li step"><span class="ph cmd">The&nbsp;<strong>Nr of lines to sample</strong> &nbsp;window appears. Enter 0 in the field, then click <strong>OK.</strong> </span> </li>
+            <li class="li step"><span class="ph cmd">If the <strong>Scan Result</strong>  window displays, click <strong>OK</strong>  to close it.</span> </li>
+            <li class="li step"><span class="ph cmd">Click <strong><span class="ph uicontrol">Preview rows</span>  </strong> to make sure your entries are correct. &nbsp;When prompted to enter the preview size, click <strong>OK</strong> . &nbsp;Review the information in the
+              window, then click <strong>Close.</strong> </span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Click&nbsp;<strong class="ph b">OK</strong>  to exit the <strong>Text File input</strong>  window.</span> </li>
+            <li class="li step"><span class="ph cmd">Save the&nbsp;transformation.</span> </li>
+          </ol>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Resolving_Missing_Zip_Code_Information"></span> 
+          <h2 class="editable">Resolving Missing Zip Code Information</h2>
+          <div class="section context">
+            <p class="p">After
+              <a class="xref" title="Retrieving Data from Your Lookup File" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/020/030">Retrieving Data from Your Lookup File</a>, you can begin to resolve the missing zip codes.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Add a <strong class="ph b">Stream Lookup</strong>  step to your transformation. &nbsp;To do this, click the <strong>Design </strong> tab, then expand the <strong><span class="ph uicontrol">Lookup</span>  </strong> folder and
+              choose <strong class="ph b">Stream Lookup</strong> .</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Draw a hop from the <strong><span class="ph uicontrol">Filter Missing Zips</span> </strong>  to the&nbsp;<strong class="ph b">Stream lookup</strong>  step. In the dialog box that appears, select <strong><span class="ph uicontrol">Result is FALSE</span> </strong> .
+              </span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Create a hop from the <strong class="ph b">Read Postal Codes</strong>  step to the <strong>Stream lookup</strong>  step.</span> </li>
+          </ol>
+          <p>
+            <img alt="ziptransformation_tutorial.png" class="internal default" style="width: 550px; height: 291px;" width="550px" height="291px" src="http://help.pentaho.com/@api/deki/files/10714/ziptransformation_tutorial.png?size=bestfit&amp;width=550&amp;height=291&amp;revision=2"
+            />
+          </p>
+          <ol class="ol steps" start="4">
+            <li class="li step"><span class="ph cmd">Double-click on the <strong class="ph b">Stream lookup</strong>  step to open the <strong>Stream Value Lookup&nbsp;</strong> window.</span> </li>
+            <li class="li step"><span class="ph cmd">Rename <strong>Stream Lookup</strong>  to <strong class="ph b">Lookup Missing Zips</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">From the <span class="ph uicontrol"><strong>Lookup </strong> step</span>  drop-down box, select <strong><span class="ph uicontrol">Read Postal Codes</span> </strong>  as the lookup step.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Define the <strong class="ph b">CITY</strong>  and <strong class="ph b">STATE</strong>  fields in the <strong class="ph b">key(s) to look up the value(s)</strong>  table. In <strong>row #1</strong>,&nbsp;click the drop down in the <strong class="ph b">Field</strong>  column and select <strong class="ph b">CITY</strong> . Then, click in the <strong class="ph b">LookupField</strong>  column and select <strong class="ph b">CITY</strong> . In <strong>row #2</strong>, click the drop down field in the <strong>Field</strong>  column and select <strong>STATE</strong> . Then click in the <strong>LookupField</strong>  column and select <strong>STATE</strong> .&nbsp;</span> </li>
+          </ol>
+          <p>
+            <img alt="File:/pdi_lookup_values.png" class="default" src="undefined" style="width: 0px; height: 0px;" />
+            <img alt="StreamValueLookup_tutorial1.png" class="internal default" style="width: 550px; height: 402px;" width="550px" height="402px" src="http://help.pentaho.com/@api/deki/files/10713/StreamValueLookup_tutorial1.png?size=bestfit&amp;width=550&amp;height=402&amp;revision=2"
+            />
+          </p>
+          <ol class="ol steps" start="8">
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Get Lookup Fields</strong> . </span> </li>
+            <li class="li step"><span class="ph cmd"><strong class="ph b">POSTALCODE</strong>  is the only field you want to retrieve. To delete the <span class="ph uicontrol">CITY</span>  and <span class="ph uicontrol">STATE</span>  lines, right-click in the line and select
+              <strong><span class="ph uicontrol">Delete Selected Lines</span> </strong> . </span> 
+            </li>
+            <li class="li step"><span class="ph cmd">In the <strong>New Name</strong>  field, give <strong class="ph b">POSTALCODE</strong>  a new name of <strong class="ph b">ZIP_RESOLVED</strong>  and make sure the <strong class="ph b">Type</strong>  is set to <strong class="ph b">String</strong> . </span> </li>
+            <li class="li step"><span class="ph cmd">Enable&nbsp;<strong class="ph b">Use sorted list (i.s.o. hashtable)</strong> .</span> </li>
+          </ol>
+          <p><span class="ph cmd">&#8203;&#8203;<img alt="LookupDialog.png" class="undefined internal" style="width: 550px; height: 341px;" width="550px" height="341px" src="http://help.pentaho.com/@api/deki/files/10708/LookupDialog.png?size=bestfit&amp;width=550&amp;height=341&amp;revision=2" /></span> </p>
+          <ol class="ol steps" start="12">
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to close the <strong class="ph b">Stream Value Lookup</strong>  edit properties dialog box.&#8203;&#8203;</span> </li>
+            <li class="li step"><span class="ph cmd">Save your transformation.</span> </li>
+            <li class="li step">To preview the data:
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step">In the canvas, select the <strong><span class="ph uicontrol">Lookup Missing Zips</span> </strong>  step then right-click and select <strong class="ph b">Preview.</strong> &nbsp;</li>
+                <li class="li step">In the <strong>Transformation debug dialog&nbsp;</strong> window, click <strong class="ph b">Quick Launch</strong>  to preview the data flowing through this step. &nbsp;</li>
+                <li class="li step">The <strong>Examine preview data&nbsp;</strong> &nbsp;window appears. &nbsp;Notice that the new field,<strong> <span class="ph uicontrol">ZIP_RESOLVED</span> </strong>, has been added to the stream containing your resolved postal codes.</li>
+                <li class="li step">Click&nbsp;<strong>Close&nbsp;</strong> to close the window.</li>
+                <li class="li step">If the&nbsp;<strong>Select the preview step&nbsp;</strong> window appears, click the&nbsp;<strong>Close&nbsp;</strong> button.</li>
+                <li class="li step">Note that the execution results near the bottom of the&nbsp;<strong>Spoon&nbsp;</strong> window shows updated metrics in the&nbsp;<strong>Step Metrics&nbsp;</strong> tab.</li>
+              </ol>
+            </li>
+          </ol>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Completing_Your_Transformation"></span> 
+          <h2 class="editable">Completing Your Transformation</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">After you
+                <a class="xref" title="Resolving Missing Zip Code Information" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/020/040">resolve missing zip code information</a>, the last task is to clean up the field layout on your lookup stream. Cleaning up makes it so that it matches the format and layout of your other stream going to the <span class="ph uicontrol">Write to Database</span>                 step. Create a <span class="ph uicontrol">Select values</span>  step for renaming fields on the stream, removing unnecessary fields, and more.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Add a <strong class="ph b">Select Values</strong>  step to your transformation by expanding the <strong class="ph b">Transform</strong>  folder and choosing <strong class="ph b">Select Values</strong> .</span> </li>
+              <li
+              class="li step"><span class="ph cmd">Create a hop from the <strong class="ph b">Lookup Missing Zips</strong>  to the&nbsp;<strong class="ph b">Select Values</strong>  step.</span> </li>
+                <li class="li step"><span class="ph cmd">Double-click the <strong class="ph b">Select Values</strong>  step to open its properties dialog box.</span> </li>
+                <li class="li step"><span class="ph cmd">Rename the Select Values step to <strong class="ph b">Prepare Field Layout</strong> .</span> </li>
+                <li class="li step"><span class="ph cmd">Click <strong class="ph b">Get fields to select</strong>  to retrieve all fields and begin modifying the stream layout.</span> </li>
+                <li class="li step"><span class="ph cmd">In the <strong>Fields</strong>  list, find the <strong>#</strong>  column and click the number for the <strong class="ph b">ZIP_RESOLVED</strong>  field.&nbsp;Use <<strong class="ph b">CTRL</strong> ><<strong class="ph b">UP</strong> > to move <strong>ZIP_RESOLVED</strong>  just below the <strong class="ph b">POSTALCODE</strong>  field (the one that still contains null values).</span> </li>
+                <li class="li step"><span class="ph cmd">Select the old <strong class="ph b">POSTALCODE</strong>  field in the list (line 20) and delete it.&nbsp;</span> </li>
+            </ol>
+            <p>
+              <a class="thumb" title="selectrenamevalues2.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/10717/selectrenamevalues2.png">
+                <img alt="selectrenamevalues2.png" class="internal default" style="width: 550px; height: 331px;" width="550px" height="331px" src="http://help.pentaho.com/@api/deki/files/10717/selectrenamevalues2.png?size=bestfit&amp;width=550&amp;height=331&amp;revision=2"
+                />
+              </a> 
+            </p>
+            <ol class="ol steps" start="8">
+              <li class="li step"><span class="ph cmd">The original POSTALCODE field was formatted as an 9-character string. You must modify your new field to match the form. Click the <strong class="ph b">Meta-Data</strong>  tab. </span> </li>
+              <li class="li step"><span class="ph cmd">In the first row of the<strong class="ph b"> Fields to alter table the meta-data for </strong> section, click in the <strong class="ph b">Fieldname</strong>  column and select <strong class="ph b">ZIP_RESOLVED</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Type <strong class="ph b">POSTALCODE</strong>  in the <strong class="ph b">Rename</strong>  to column; select <strong class="ph b">String</strong>  in the Type column, and type <strong class="ph b">9</strong>  in the <strong class="ph b">Length</strong>  column. Click <strong class="ph b">OK</strong>  to exit the edit properties dialog box.</span> </li>
+              <li class="li step"><span class="ph cmd">Draw a hop from the <strong class="ph b">Prepare Field Layout</strong>  (Select values) step to the <strong class="ph b">Write to Database </strong>  (Table output) step.</span> </li>
+              <li class="li step"><span class="ph cmd">When prompted, select the <strong>Main output of the step&nbsp;</strong> option.</span> </li>
+              <li class="li step"><span class="ph cmd">Save your transformation.</span> </li>
+            </ol>
+            <p>
+              <img alt="Transformation Steps " class="internal default" src="http://help.pentaho.com/@api/deki/files/12112/transformation_step_changed_to_Prepare_Field_Layout_2016-10-24_14-42-39.png?revision=2" />
+            </p>
+          </div>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Run_Your_Transformation"></span> 
+          <h2 class="editable">Run Your Transformation</h2>
+          <div class="section context">
+            <p class="p">Data Integration provides a number of deployment options.
+              <a title="Running a Transformation" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/030/010">Running a Transformation</a>  explains these and other options available for execution. This final part of this exercise to create a transformation focuses exclusively on the <strong>Local&nbsp;</strong> run option.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">In the <strong>Spoon&nbsp;</strong> &nbsp;window, select&nbsp;<strong>Action > Run</strong> .</span> </li>
+            <li class="li step">
+              <p>The <strong class="ph b">Run Options</strong>  window appears. You can run a transformation locally, remotely, or in a clustered environment. For the purposes of this exercise, keep the default&nbsp;<strong class="ph b">Local </strong> options.</p>
+            </li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Run</strong> .</span>  The transformation executes. Upon running the transformation, the <strong class="ph b">Execution Results</strong>  panel opens below the canvas.</li>
+            <li class="li step">
+              <p class="p">The <strong>Execution Results</strong> &nbsp;section of the window contains several different tabs that help you to see how the transformation executed, pinpoint errors, and monitor performance.</p>
+            </li>
+          </ol>
+          <ul class="ol steps">
+            <li class="li step">
+              <p class="p"><strong class="ph b">Step Metrics</strong> &nbsp;tab provides statistics for each step in your transformation including how many records were read, written, caused an error, processing speed (rows per second) and more. &nbsp;This tab also
+                indicates whether an error occured in a transformation step. &nbsp;We did not intentionally put any errors in this tutorial so it should run correctly. &nbsp;But, if a mistake had occurred, steps that caused the transformation to fail
+                would be highlighed in red. &nbsp;In the example below, the&nbsp;<strong class="ph b">Lookup Missing Zips</strong> &nbsp;step caused an error.</p>
+            </li>
+          </ul>
+          <p class="p li step">&#8203;
+            <img alt="" class="default internal" style="width: 550px; height: 465px;" width="550px" height="465px" src="http://help.pentaho.com/@api/deki/files/10728/ssPDIExecutingTransformation.PNG?size=bestfit&amp;width=550&amp;height=465&amp;revision=2"
+            />
+          </p>
+          <ul>
+            <li class="p li step">The <strong class="ph b">Logging</strong>  tab displays the logging details for the most recent execution of the transformation. It also allows you to drill deeper to determine where errors occur. &nbsp;Error lines are highlighted in red. &nbsp;In
+              the example below, the&nbsp;<strong class="ph b">Lookup Missing Zips</strong> &nbsp;step caused an error because it attempted to lookup values on a field called&nbsp;<strong>POSTALCODE2</strong>, which did not exist in the lookup stream.&nbsp;</li>
+          </ul>
+          <p class="p li step">
+            <img alt="" class="default internal" style="width: 550px; height: 421px;" width="550px" height="421px" src="http://help.pentaho.com/@api/deki/files/10726/ssPDIExecuteTransformationLogging.PNG?size=bestfit&amp;width=550&amp;height=421&amp;revision=2"
+            />
+          </p>
+          <ul>
+            <li class="p li step">The&nbsp;<strong class="ph b">Execution History</strong> &nbsp;tab provides you access to the Step Metrics and log information from previous executions of the transformation. This feature works only if you have configured your transformation
+              to log to a database through the Logging tab of the Transformation Settings dialog. For more information on configuring logging or viewing the execution history, see&nbsp;
+              <a class="xref" title="Documentation/5.1/0L0/0Y0/000" rel="internal"
+              href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0">Create DI Solutions</a> .</li>
+            <li class="p li step">The <strong class="ph b">Performance Graph</strong>  allows you to analyze the performance of steps based on a variety of metrics including how many records were read, written, caused an error, processing speed (rows per second) and more. &nbsp;Like
+              the Execution History, this feature requires you to configure your transformation to log to a database through the <strong>Logging </strong> tab of the <strong>Transformation Settings</strong>  dialog box.</li>
+            <li class="p li step">The <strong class="ph b">Metrics tab</strong>  allows you to see a Gantt chart after the transformation or job has run. This shows you information such as how long it takes to connect to a database, how much time is spent executing a SQL query,
+              or how long it takes to load a transformation.</li>
+          </ul>
+          <p class="p li step">
+            <img alt="" class="default internal" style="width: 550px; height: 509px;" width="550px" height="509px" src="http://help.pentaho.com/@api/deki/files/10727/ssPDIExecuteTransformationMetrics.PNG?size=bestfit&amp;width=550&amp;height=509&amp;revision=2"
+            />
+          </p>
+          <ul>
+            <li class="p li step">The <strong>Preview Data </strong> tab displays a preview of the data.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Retrieving_Data_from_a_Flat_File" rel="internal">Retrieving Data from a Flat File</a>  </li>
+      <li> <a href="#Filter_Records_with_Missing_Postal_Codes" rel="internal">Filter Records with Missing Postal Codes</a>  </li>
+      <li> <a href="#Loading_Your_Data_into_a_Relational_Database" rel="internal">Loading Your Data into a Relational Database</a>  </li>
+      <li> <a href="#Retrieving_Data_from_Your_Lookup_File" rel="internal">Retrieving Data from Your Lookup File</a>  </li>
+      <li> <a href="#Resolving_Missing_Zip_Code_Information" rel="internal">Resolving Missing Zip Code Information</a>  </li>
+      <li> <a href="#Completing_Your_Transformation" rel="internal">Completing Your Transformation</a>  </li>
+      <li> <a href="#Run_Your_Transformation" rel="internal">Run Your Transformation</a>  </li>
+    </ol>
+  </body>
+</content>

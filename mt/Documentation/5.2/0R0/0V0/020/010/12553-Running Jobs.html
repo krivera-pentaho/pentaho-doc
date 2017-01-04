@@ -1,0 +1,29 @@
+<content type="text/html" title="Running Jobs">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">If you want to run a PDI job from Java code in a stand-alone application, take a look at this sample class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningJobs</code>. It sets the parameters and executes the job in <span class="ph filepath">etl/parametrized_job.kjb</span> .
+          The job can be run from the .<span class="ph filepath">kjb</span>  file using <code class="ph codeph">runJobFromFileSystem()</code> or from a repository using <code class="ph codeph">runJobFromRepository()</code>.</div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs..</span> </li>
+          <li class="li step"><span class="ph cmd">Prepare the job. </span>  The definition of a PDI job is represented by a
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html"><code class="ph codeph">JobMeta</code></a>  object. You can load this object from a .<span class="ph filepath">ktb</span>  file, a PDI repository, or you can generate it dynamically. To query the declared parameters of the job definition use
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#listParameters%28%29"><code class="ph codeph">listParameters()</code></a> . To set the assigned values use
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#setParameterValue%28java.lang.String,%20java.lang.String%29"><code class="ph codeph">setParameterValue()</code></a> .</li>
+          <li class="li step"><span class="ph cmd">Execute the job. </span>  An executable
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html"><code class="ph codeph">Job</code></a>  object is derived from the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html"><code class="ph codeph">JobMeta</code></a>  object that is passed in to the constructor. The
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html"><code class="ph codeph">Job</code></a>  object starts, and then executes in a separate thread. To wait for the job to complete, call
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html#waitUntilFinished%28%29"><code class="ph codeph">waitUntilFinished()</code></a> .</li>
+          <li class="li step"><span class="ph cmd">Evaluate the job outcome. </span>  After the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html"><code class="ph codeph">Job</code></a>  completes, you can access the result using
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html#getResult%28%29"><code class="ph codeph">getResult(</code>)</a> . The
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/Result.html"><code class="ph codeph">Result</code></a>  object can be queried for success using
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/Result.html#getResult%28%29"><code class="ph codeph">getResult()</code></a> . This method returns <code class="ph codeph">true</code> on success and <code class="ph codeph">false</code> on failure. To get more information, retrieve the job log lines.</li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

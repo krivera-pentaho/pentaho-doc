@@ -1,0 +1,214 @@
+<content type="text/html" title="Analyzer Event Registration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>Analyzer events are API hooks which allow you to register custom listeners into the inner workings of Analyzer. These locations can range from when Analyzer is initialized to when a cell is clicked. For a list of the Event APIs,
+        <a title="Event APIs"
+        rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/070/030/Event_APIs">click here</a> .</p>
+      <div id="section_1" class="mt-page-section"><span id="Event_Registration"></span> 
+        <h2 class="editable">Event Registration</h2>
+        <p><span>Event registration occurs before Analyzer is initialized. Events are registered using the Analyzer API, which has to be required using&nbsp;<a class="external-link" href="http://requirejs.org/" rel="nofollow">RequireJS</a> . When triggered, event listeners will execute in the order in which they were registered.</span> </p>
+        <p>All registered event listeners receive at least three function parameters: <span class="filepath style-wrap">e</span>  (the event object), and api or <span class="filepath style-wrap">cv</span>  (global analyzer namespace).</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([&quot;analyzer/cv_api&quot;], function(api) {
+  api.event.registerInitListener(function(e, cv){
+	// Perform Action
+  });
+}</pre> </div>
+      <div id="section_2" class="mt-page-section"><span id="Stop_Immediate_Propagation"></span> 
+        <h2 id="AnalyzerEventRegistration-StopImmediatePropagation" class="editable">Stop Immediate Propagation</h2>
+        <p>There may be a time when, under special circumstances, a prior event listener will not want any further listeners to be executed. This can be performed by stopping the immediate propagation on the event chain. The function is attached to the event
+          object (<span class="filepath style-wrap">e</span> ), which is passed into the listeners.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerInitListener(function(e, cv) {
+  // Perform Action 1
+  e.stopImmediatePropagation();
+});
+ 
+api.event.registerInitListener(function(e, cv) {
+  // Perform Action 2
+});</pre>
+        <p>In the above code sample, even though two event listeners have been registered, since the first listener stopped the immediate propagation, the 2nd (and any subsequent) event listener will not be fired.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Prevent_Default"></span> 
+        <h2 id="AnalyzerEventRegistration-PreventDefault" class="editable">Prevent Default</h2>
+        <p>All events have a default behavior associated with them and, in some cases, this behavior can be completely prevented. As with <span class="filepath style-wrap">stopImmediatePropagation</span>, this is also attached the to the event object (
+          <span
+          class="filepath style-wrap">e</span> ) and needs to be called within the listener's code block.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerInitListener(function(e, cv) {
+  // Perform Action
+  e.preventDefault();
+});</pre> </div>
+      <div id="section_4" class="mt-page-section"><span id="Removing_Listeners"></span> 
+        <h2 id="AnalyzerEventRegistration-RemovingListeners" class="editable">Removing Listeners</h2>
+        <p>It is possible to remove listeners once they have been registered. &nbsp;A register event listener function returns a handler for that event listener which has a remove function attached to it. Calling this function removes the listener from the
+          event chain.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var initListenerHandler = api.event.registerInitListener(function(e, cv) {
+  // Perform Action
+  e.preventDefault();
+});
+ 
+initListenerHandler.remove();</pre> </div>
+      <div id="section_5" class="mt-page-section"><span id="Attaching_Event_Listener_Code"></span> 
+        <h2 id="AnalyzerEventRegistration-AttachingEventListenerCode" class="editable">Attaching Event Listener Code</h2>
+        <p>To insert your own custom javascript file, you must modify <span class="filepath style-wrap">plugin.xml</span>  inside of your plugin folder. Currently, there is a commented line which is pointed at an example file inside of the analyzer's plugin&nbsp;script
+          folder. If you would like to see this file working, uncomment that line by deleting the <span class="filepath style-wrap">
+<!--</span>  and <span class="filepath style-wrap">--></span>  surrounding the <span class="filepath style-wrap"><file></span>           tag. You <strong>must</strong>  <strong>restart</strong>  your server to see these changes.</p>
+        <p><strong>Example:</strong> </p>
+        <div class="codeHeader panelHeader" style="border-bottom-width: 1px;"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- <file context=&quot;analyzer&quot;>content/analyzer/scripts/api_examples/EventRegistration.js</file> --></pre> </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Events"></span> 
+        <h2 class="editable">Events</h2>
+        <p>The following are events in Analyzer.</p>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="init"></span> 
+        <h2 id="AnalyzerEventRegistration-init" class="editable">init</h2>
+        <p class="p1"><span class="s1">The <span class="filepath style-wrap">init </span> event occurs after Analyzer's UI has initialized and the report definition (if opening a saved report) has been loaded into the editor.&nbsp; Once all <span class="filepath style-wrap">init </span> handlers
+          have been called, the report will automatically refresh its data so you do not need to call <span class="filepath style-wrap">refreshReport </span> in the <span class="filepath style-wrap">init </span> handler.</span> 
+        </p>
+        <p class="p1"><strong><span class="s1">Example:</span> </strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerInitListener(function(e, cv) {
+  // Perform Action
+  // e.stopImmediatePropagation();
+});</pre> </div>
+      <div id="section_8" class="mt-page-section"><span id="onTableClick"></span> 
+        <h2 class="editable">onTableClick</h2>
+        <p>The <span class="filepath style-wrap">onTableClick </span> event works only for the pivot table view. The event occurs after a user clicks on a table cell. &nbsp;The registered <span class="filepath style-wrap">onTableClick </span> handlers are
+          executed first, followed by the default on click event handlers. This event supports the <span class="filepath style-wrap">stopImmediatePropagation</span>  and <span class="filepath style-wrap">preventDefault</span>  functions.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerTableClickListener(function(e, api, td, ctx, filterCtx) {
+  // Perform action
+  // e.preventDefault();
+  // e.stopImmediatePropagation();
+});</pre>
+        <p>This method signature contains a td parameter. &nbsp;This parameter contains the
+          <td> dom element that was clicked by the user.</p>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="onTableContextMenu"></span> 
+        <h2 class="editable">onTableContextMenu</h2>
+        <p>The <span class="filepath style-wrap">onTableContextMenu</span>  event works only for the pivot table view. The event occurs after a user opens the context menu on a table cell, via the right-click menu. &nbsp;The registered <span class="filepath style-wrap">onTableContextMenu</span>           handlers are executed first, followed by the default on click event handlers. This event supports the <span class="filepath style-wrap">stopImmediatePropagation</span>  and<span class="filepath style-wrap"> preventDefault</span>  functions.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerTableContextMenuListener(function(e, api, td, ctx, filterCtx) {
+  // Perform action
+  // e.preventDefault();
+  // e.stopImmediatePropagation();
+});</pre>
+        <p>This method signature contains a td parameter. &nbsp;This parameter contains the
+          <td> dom element that was clicked by the user.</p>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="render"></span> 
+        <h2 class="editable">render</h2>
+        <p>The <span class="filepath style-wrap">render </span> event occurs after the UI has finished drawing the visualization. &nbsp;This event happens after the <span class="filepath style-wrap">init </span> event is completed.&nbsp; This event can be
+          used to highlight cells or change the styling of visualization elements. This event type supports <span class="filepath style-wrap">stopImmediatePropagation</span>, but does <em>not </em> support <span class="filepath style-wrap">preventDefault</span> .</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerRenderListener(function(e, api, reportArea) {
+  // Perform action
+  // e.stopImmediatePropagation();
+});</pre>
+        <p>This method signature contains a div parameter. &nbsp;This parameter contains the
+          <div> dom element which contains the pivot table or visualization's view.</p>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="actionEvent"></span> 
+          <h2 class="editable">actionEvent</h2>
+          <p>There are multiple action events which are triggered either through UI controls (by the user) or through API calls. Depending on the action, a specific <span class="filepath style-wrap">actionCode </span> is passed into the bound listener (Action
+            Codes). Additionally, an <span class="filepath style-wrap">actionCtx </span> (action context) is provided to indicate upon which object(s) the action is being performed. This event type supports both <span class="filepath style-wrap">preventDefault </span> and
+            <span class="filepath style-wrap">stopImmediatePropagation</span> .</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerActionEventListener(function(e, api, actionCode, actionCtx) {
+  //Perform Action
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_12" class="mt-page-section"><span id="buildMenu"></span> 
+          <h2 class="editable">buildMenu</h2>
+          <p>The buildMenu event is fired when Analyzer attempts to build a menu within the application. Normally, these menus are built when right-clicking on a table cell or a gem. Also, you may want to hook into this event to override the default behavior
+            and prevent the menu from building such that you can replace the default menu with one of your own.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerBuildMenuListener(function(e, api, menuId, menu, x, y){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_13" class="mt-page-section"><span id="chartSelectItems"></span> 
+          <h2 class="editable">chartSelectItems</h2>
+          <p>This event is fired when a user selects a chart data point or lassos a collection of data points within an Analyzer Visualization. This can be useful to perform an additional action when a user selects an item in a chart.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerChartSelectItemsListener(function(e, api, ctx[]){
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_14" class="mt-page-section"><span id="chartDoubleClick"></span> 
+          <h2 class="editable">chartDoubleClick</h2>
+          <p>This event is fired when the user double-clicks on a chart item. Normally, this would perform a drill-down action, providing a filtered result set.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerChartDoubleClickListener(function(e, api, ctx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_15" class="mt-page-section"><span id="dragEvent"></span> 
+          <h2 class="editable">dragEvent</h2>
+          <p>Drag events are fired when beginning to drag any draggable item within Analyzer.</p>
+          <p><span style="color: rgb(0,0,0);font-size: 10.0pt;line-height: 13.0pt;">&nbsp;<strong>Example:</strong> </span> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerDragEventListener(function(e, api, formula){
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_16" class="mt-page-section"><span id="dropEvent"></span> 
+          <h2 class="editable">dropEvent</h2>
+          <p>Drop events are fired when a draggable element has been dropped onto a drop target within the layout panel, report area, trash can, or filter panel. This event is also fired when completing a drop programmatically using <span class="filepath style-wrap">cv.api.operation.completeDrop</span>             after retrieving a valid drop target from <span class="filepath style-wrap">cv.api.operation.getDropTarget</span> .</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerDropEventListener(function(e, api, formula, dropClass){
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_17" class="mt-page-section"><span id="tableDoubleClick"></span> 
+          <h2 class="editable">tableDoubleClick</h2>
+          <p>This event occurs when double-clicking on a cell within Analyzer's PIVOT table.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerTableDoubleClickListener(function(e, api, td, ctx, filterCtx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_18" class="mt-page-section"><span id="tableMouseMove"></span> 
+          <h2 class="editable">tableMouseMove</h2>
+          <p>This event is fired when moving the mouse over a cell within Analyzer's PIVOT table. The listener is executed many times within a small mouse movement. Most often, the (x, y) coordinates of the mouse are recorded using this event.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerTableMouseMoveListener(function(e, api, td, ctx, filterCtx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+        <div id="section_19" class="mt-page-section"><span id="tableMouseOver"></span> 
+          <h2 class="editable">tableMouseOver</h2>
+          <p>This event is fired when moving the mouse over a cell within Analyzer's PIVOT table. This event is only fired once when the mouse moves over a cell.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.event.registerTableMouseOverListener(function(e, api, td, ctx, filterCtx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre>
+          <br />
+        </div>
+      </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Event_Registration" rel="internal">Event Registration</a>  </li>
+      <li> <a href="#Stop_Immediate_Propagation" rel="internal">Stop Immediate Propagation</a>  </li>
+      <li> <a href="#Prevent_Default" rel="internal">Prevent Default</a>  </li>
+      <li> <a href="#Removing_Listeners" rel="internal">Removing Listeners</a>  </li>
+      <li> <a href="#Attaching_Event_Listener_Code" rel="internal">Attaching Event Listener Code</a>  </li>
+      <li> <a href="#Events" rel="internal">Events</a>  </li>
+      <li> <a href="#init" rel="internal">init</a>  </li>
+      <li> <a href="#onTableClick" rel="internal">onTableClick</a>  </li>
+      <li> <a href="#onTableContextMenu" rel="internal">onTableContextMenu</a>  </li>
+      <li> <a href="#render" rel="internal">render</a>  </li>
+      <li> <a href="#actionEvent" rel="internal">actionEvent</a>  </li>
+      <li> <a href="#buildMenu" rel="internal">buildMenu</a>  </li>
+      <li> <a href="#chartSelectItems" rel="internal">chartSelectItems</a>  </li>
+      <li> <a href="#chartDoubleClick" rel="internal">chartDoubleClick</a>  </li>
+      <li> <a href="#dragEvent" rel="internal">dragEvent</a>  </li>
+      <li> <a href="#dropEvent" rel="internal">dropEvent</a>  </li>
+      <li> <a href="#tableDoubleClick" rel="internal">tableDoubleClick</a>  </li>
+      <li> <a href="#tableMouseMove" rel="internal">tableMouseMove</a>  </li>
+      <li> <a href="#tableMouseOver" rel="internal">tableMouseOver</a>  </li>
+    </ol>
+  </body>
+</content>

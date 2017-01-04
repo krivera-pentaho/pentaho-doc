@@ -1,0 +1,66 @@
+<content type="text/html" title="Understanding Row Counters">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">During transformation execution, each PDI step keeps track of a set of step metrics. These are displayed in Spoon in the <span class="ph uicontrol">Step Metrics</span>  tab.</p>
+        <br />
+        <img alt="File:/metrics.png" class="image internal" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__undetstanding_row_counters__image_xzs_jfg_ph" src="http://help.pentaho.com/@api/deki/files/3590/metrics.png?revision=1" />
+        <p class="p">Each step metric is essentially a row counter. The counters are manipulated by calling the corresponding increment, decrement, get, and set methods on <code class="ph codeph">BaseStep</code>. This table provides a list of the counters and the
+          correct way to use them.&nbsp;</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__undetstanding_row_counters__table_z5m_4yh_nh" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__d27747e47" valign="top" width="16.666666666666664%"><strong class="ph b">Counter Name</strong> </th>
+                <th class="entry" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__d27747e53" valign="top" width="33.33333333333333%"><strong class="ph b">Meaning</strong> </th>
+                <th class="entry" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__d27747e59" valign="top" width="50%"><strong class="ph b">When to Increment</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesRead </code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows received from previous steps</td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Never increment manually. This is handled by <code class="ph codeph">getRow()</code>.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesWritten </code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows passed to next steps</td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Never increment manually. This is handled by <code class="ph codeph">putRow()</code>.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesInput </code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows read from external sources, such as files, database, and alike</td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesInput()</code> when a new row is received from an external source.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesOutput </code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows written to external sources, such as files, database, and alike</td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesOutput()</code> when a row is written to an external system or file.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesUpdated </code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows updated in external sources, such as database, and alike</td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesUpdated()</code> when a row is updated in an external system or file.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesSkipped</code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows for which part of the processing has been skipped</td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesSkipped()</code> when a row was skipped. This is relevant when the step implements conditional processing, and the condition for processing a row is not satisfied. For example, an updating step
+                  may skip rows that are already up to date.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesRejected </code></td>
+                <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows diverted to an error step as part of
+                  <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0R0/0V0/010/000/020/030" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/020/030">error handling </a> 
+                </td>
+                <td class="entry" headers="d27747e59 " valign="top" width="50%">Never increment manually. This is handled by <code class="ph codeph">putError()</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

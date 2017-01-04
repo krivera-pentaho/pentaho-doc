@@ -1,0 +1,85 @@
+<content type="text/html" title="Change the PDI Home Directory Location">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The default location for the Pentaho Data Integration home directory is the <code>.kettle</code>&nbsp;directory in your system user's home directory.</p>
+        <ul class="ul">
+          <li class="li"><strong class="ph b">Windows:</strong>  <span class="ph filepath">C:\Documents and Settings\example_user\.kettle</span> </li>
+          <li class="li"><strong class="ph b">Linux:</strong>  <span class="ph filepath">~/.kettle</span> )</li>
+        </ul>
+        <p class="p">There will be a different .kettle directory, and therefore a different set of configuration files, for each system user that runs PDI.</p>
+        <p class="p">The contents of this directory are listed in the following table:</p>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" valign="bottom" width="NaN%">File</th>
+              <th align="left" class="stentry propvaluehd" valign="bottom" width="NaN%">Purpose</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70865e20" valign="top" width="NaN%">kettle.properties</td>
+              <td class="stentry propvalue" headers="d70865e23" valign="top" width="NaN%">Main PDI properties file; contains global variables for low-level PDI settings</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70865e20" valign="top" width="NaN%">shared.xml</td>
+              <td class="stentry propvalue" headers="d70865e23" valign="top" width="NaN%">Shared objects file</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70865e20" valign="top" width="NaN%">db.cache</td>
+              <td class="stentry propvalue" headers="d70865e23" valign="top" width="NaN%">The database cache for metadata</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70865e20" valign="top" width="NaN%">repositories.xml</td>
+              <td class="stentry propvalue" headers="d70865e23" valign="top" width="NaN%">Connection details for PDI database or solution repositories</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70865e20" valign="top" width="NaN%">.spoonrc</td>
+              <td class="stentry propvalue" headers="d70865e23" valign="top" width="NaN%">User interface settings, including the last opened transformation/job</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d70865e20" valign="top" width="NaN%">.languageChoice</td>
+              <td class="stentry propvalue" headers="d70865e23" valign="top" width="NaN%">Default language for the PDI client tool</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Standalone_PDI_client_tool_deployments"></span> 
+            <h2 class="editable">Standalone PDI client tool deployments</h2>
+            <p class="p">You can specify a single, universal <code>.kettle</code> directory for all users by declaring a KETTLE_HOME environment variable in your operating system. When declaring the variable, leave out the <code>.kettle</code>&nbsp;portion of it;
+              this is automatically added by PDI.</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export KETTLE_HOME=/home/pentaho/examplepath/pdi</pre>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Pentaho_Server_deployments_that_run_PDI_content"></span> 
+            <h2 class="editable">Pentaho Server deployments that run PDI content</h2>
+            <p class="p">If you followed a manual deployment or archive package installation path, you can set a system environment variable as explained above, but it must be declared before the Pentaho Server service starts. You can alternatively change the CATALINA_OPTS&nbsp;system
+              variable to include the <code>-D</code> flag for KETTLE_HOME, or you can edit the script that runs the Pentaho Server and set the flag inline, as in this example from the <code>start-pentaho.sh</code>&nbsp;script:</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export CATALINA_OPTS=&quot;--Xms2048m -Xmx2048m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot; -DKETTLE_HOME=/home/pentaho/examplepath/pdi</pre>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Windows_service_modification"></span> 
+            <h2 class="editable">Windows service modification</h2>
+            <p class="p">If you used the graphical utility to install the Pentaho Server, then you must modify the Java options flag that runs the Pentaho Server Tomcat service. Here is an example command that will change the value of KETTLE_HOME to <span class="ph filepath">C:\<examplepath>\pdi\.kettle</span> :</p>
+            <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">tomcat8.exe //US//pentahobiserver ++JvmOptions -DKETTLE_HOME=C:\examplepath\pdi</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Standalone_PDI_client_tool_deployments" rel="internal">Standalone PDI client tool deployments</a>  </li>
+      <li> <a href="#Pentaho_Server_deployments_that_run_PDI_content" rel="internal">Pentaho Server deployments that run PDI content</a>  </li>
+      <li> <a href="#Windows_service_modification" rel="internal">Windows service modification</a>  </li>
+    </ol>
+  </body>
+</content>

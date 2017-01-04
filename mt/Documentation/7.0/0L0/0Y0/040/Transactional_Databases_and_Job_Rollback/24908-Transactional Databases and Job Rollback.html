@@ -1,0 +1,67 @@
+<content type="text/html" title="Transactional Databases and Job Rollback">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides informatino onh how to roll back jobs should transformations and jobs fail.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">By default, when you run a job or transformation that makes changes to a database table, changes are committed as the transformation or job executes.&nbsp; Sometimes, this can cause an issue if a job or transformation fails. For example, if
+            you run a job that updates then syncs two tables, but the job fails before you can write to the second table, the first table might be updated and the other might not, rendering them both out of sync. If this is a concern, consider implementing
+            job rollback by making the transformation or job databases (or both) transactional. When you do this, changes to a data source occur only if a transformation or job completes successfully. Otherwise, the information in both data sources remain
+            unchanged. &nbsp;</p>
+          <p class="p">The following links provide general information on how to make databases transactional. The wiki provides
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Database+transactions+in+jobs+and+transformations">more detail</a> .</p>
+          <ul class="ul">
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0L0/0Y0/0H0#1dc9f512-f07d-45d1-89a1-84a2be6ee909__transformation_transaction" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback#1dc9f512-f07d-45d1-89a1-84a2be6ee909__transformation_transaction">Make a Transformation Database Transactional</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0L0/0Y0/0H0#1dc9f512-f07d-45d1-89a1-84a2be6ee909__job_transaction" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback#1dc9f512-f07d-45d1-89a1-84a2be6ee909__job_transaction">Make a Job Database Transactional</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dc9f512-f07d-45d1-89a1-84a2be6ee909__transformation_transaction">
+        <div id="section_2" class="mt-page-section"><span id="Make_a_Transformation_Database_Transactional"></span> 
+          <h2 class="editable">Make a Transformation Database Transactional</h2>
+          <div class="body taskbody">
+            <div class="section context">To make a transformation database transactional, complete these steps.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">In Spoon, open a transformation.</span> </li>
+              <li class="li step"><span class="ph cmd">Right-click an empty space in the transformation's tab and select <strong class="ph b">Transformation Settings</strong>  from the menu that appears. </span> </li>
+              <li class="li step"><span class="ph cmd">Click the <strong class="ph b">Miscellaneous</strong>  tab. </span> </li>
+              <li class="li step"><span class="ph cmd">Enable the <strong class="ph b">Make the transformation database transactional</strong>  checkbox. </span> </li>
+              <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to close the window. </span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dc9f512-f07d-45d1-89a1-84a2be6ee909__job_transaction">
+        <div id="section_3" class="mt-page-section"><span id="Make_a_Job_Database_Transactional"></span> 
+          <h2 class="editable">Make a Job Database Transactional</h2>
+          <div class="body taskbody">
+            <div class="section context">To make a job database transactional, complete these steps.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">In Spoon, open a job.</span> </li>
+              <li class="li step"><span class="ph cmd">Right-click in an empty space in the job&rsquo;s tab. &nbsp; Select <strong class="ph b">Job Settings</strong>  from the menu that appears.</span> </li>
+              <li class="li step"><span class="ph cmd">Click the <strong class="ph b">Transactions</strong>  tab. </span> </li>
+              <li class="li step"><span class="ph cmd">Enable the <strong class="ph b">Make the job database transactional </strong>  checkbox. </span> </li>
+              <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to close the window. </span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Make_a_Transformation_Database_Transactional" rel="internal">Make a Transformation Database Transactional</a>  </li>
+      <li> <a href="#Make_a_Job_Database_Transactional" rel="internal">Make a Job Database Transactional</a>  </li>
+    </ol>
+  </body>
+</content>

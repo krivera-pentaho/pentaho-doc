@@ -1,0 +1,299 @@
+<content type="text/html" title="Go Live for Production - DI">
+  <body>
+    <p class="p">Go Live is the process by which you migrate a prototype to production. This process is divided into four parts.</p>
+    <div id="section_1" class="mt-page-section"><span id="Set_Up_Production_Environment"></span> 
+      <h2 class="editable">Set Up Production Environment</h2>
+      <p class="p">Setting up the environment includes installing the software on production computers, configuring clustering, and connecting to data sources.&nbsp; To set up the environment, install and configure the DI Server, Spoon, and any plugins required.&nbsp;
+        Then set up data sources and clusters.</p>
+      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__table_dtz_qbr_2l" rules="all" summary="">
+        <caption><span class="tablecap">Table 1. Set up Production Environment Checklist </span> </caption>
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e88" valign="top" width="24.81%">Task</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e91" valign="top" width="32%">Do This</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e94" valign="top" width="43.17%">Objective</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong class="ph b">Verify System Requirements</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_nt1_5jz_hl">
+                <li class="li">
+                  <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/000">Components Reference</a> 
+                </li>
+                <li class="li">
+                  <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/010">JDBC Drivers Reference</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_skt_r5m_kl">
+                <li class="li">Acquire one or more servers that meet the requirements.</li>
+                <li class="li">Obtain the correct drivers for your system.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong>Obtain Software and Install PDI</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_qg4_vjz_hl">
+                <li class="li">
+                  <a class="xref link-https" target="_blank" rel="external nofollow" href="https://support.pentaho.com/home">Download and Install the Latest Service Pack</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" title="Start the DI Server" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/000">Start the DI Server</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" title="Start Spoon" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020">Start Spoon</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" title="Configure the Licenses" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020">Configure the Licenses</a>  (if necessary)</li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_wwy_r5m_kl">
+                <li class="li">Get the software from your Sales Support representative.</li>
+                <li class="li">Install the software - we recommend using the installation wizard.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong class="ph b">Change the DI Server Fully Qualified URL</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_olx_xjz_hl">
+                <li class="li">
+                  <a title="Changing Ports and URLs" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/080">Change the URL</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_vjb_s5m_kl">
+                <li class="li">Change the server's URL so that you do not have a conflict.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong class="ph b">Connect to the&nbsp;Pentaho Repository</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_u5l_pzh_nl">
+                <li class="li">
+                  <a class="xref" title="Access Spoon" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020#Connect_to_the_Pentaho_Repository">Connect to the&nbsp;Pentaho Repository</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__a">
+                <li class="li">Connect to the&nbsp;Pentaho Repository</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong class="ph b">Set up Clusters</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">
+              <ul class="ul">
+                <li class="li">
+                  <a class="xref" title="Set Up Clusters" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/060">Set up Clusters</a>  (optional step)</li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul class="ul">
+                <li class="li">Become familiar with clustering.</li>
+                <li class="li">Set up clusters, if they are needed in your environment.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong class="ph b">Copy Configuration Files</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">Copy shared.xml, repositories.xml, kettle.properties, and jar files from the development environment to the production environment.</td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__task_dev_config_di__ul_xrq_th2_vl">
+                <li class="li">System is set up and read for production.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="entry" headers="d154485e88 " valign="top" width="24.81%"><strong>Logging and Monitoring your DI Server</strong> </td>
+            <td class="entry" headers="d154485e91 " valign="top" width="32%">
+              <ul>
+                <li> <a title="https://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0">Logging and Monitoring Operations</a>  </li>
+                <li> <a title="https://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0/000">Enable Logging in Spoon</a>  </li>
+                <li> <a title="https://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0/060" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0/060">Monitoring with PDI and SNMP Traps</a>  </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e94 " valign="top" width="43.17%">
+              <ul>
+                <li>Learn about the different ways to log and monitor DI Server operations
+                  <ul>
+                    <li>Log through Spoon and Carte</li>
+                    <li>Use SNMP traps with PDI</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Deploy_Solution"></span> 
+      <h2 class="editable">Deploy Solution</h2>
+      <p class="p">Export solutions from the&nbsp;Pentaho Repository that is in the development or test environments, to the&nbsp;Pentaho Repository that is in the production environment.&nbsp;</p>
+      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border"
+      id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__build_and_test__c" rules="all" summary="">
+        <caption><span class="tablecap">Table 2. Move Solution Checklist</span> </caption>
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e317" valign="top" width="24.81%">Task</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e320" valign="top" width="32%">Do This</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e323" valign="top" width="43.17%">Objective</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d154485e317 " valign="top" width="24.81%"><strong class="ph b">Export and Import&nbsp;Pentaho Repository</strong> </td>
+            <td class="entry" headers="d154485e320 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__build_and_test__ul_l2t_ql3_nl">
+                <li class="li">
+                  <p class="p">
+                    <a class="xref" title="Import and Export PDI Content" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/040">Export and Import&nbsp;Pentaho Repository Content</a> 
+                  </p>
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e323 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__build_and_test__ul_q2t_ql3_nl">
+                <li class="li">Export&nbsp;Pentaho Repository content from test environment</li>
+                <li class="li">Import&nbsp;Pentaho Repository content to production environment</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Tune_Solution"></span> 
+      <h2 class="editable">Tune Solution</h2>
+      <p class="p">Fine tune transformations and jobs to optimize performance.&nbsp; This involves using various tools such as the DI Operations and Audit Marts to determine where bottlenecks or other performance issues occur, and attempting to address them.</p>
+      <table
+      border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__tune_solutions__table_zrb_sxq_ll" rules="all" summary="">
+        <caption><span class="tablecap">Table 3. Tune Checklist</span> </caption>
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e401" valign="top" width="24.81%">Task</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e404" valign="top" width="32%">Do This</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e407" valign="top" width="43.17%">Objective</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d154485e401 " valign="top" width="24.81%"><strong class="ph b">Review the Performance Tuning Checklist and Make Changes to Transformations and Jobs</strong> </td>
+            <td class="entry" headers="d154485e404 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__tune_solutions__ul_tsz_5j3_nl">
+                <li class="li">
+                  <a class="xref" title="Tuning Tips" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/100/040/010">Tuning tips</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e407 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__tune_solutions__ul_j5s_bk3_nl">
+                <li class="li">Get familiar with things that you can do to optimize performance.</li>
+                <li class="li">Apply tuning tips as needed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e401 " valign="top" width="24.81%"><strong class="ph b">Consider other performance tuning options</strong> </td>
+            <td class="entry" headers="d154485e404 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__tune_solutions__ul_uj1_qfm_ml">
+                <li class="li">
+                  <p class="p">
+                    <a class="xref" title="Documentation/5.1/0L0/0Y0/0H0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback">Transactional Databases</a> 
+                  </p>
+                </li>
+                <li class="li">
+                  <p class="p">
+                    <a class="xref" title="Using Logs" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0/000">Using Logs</a> 
+                  </p>
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e407 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__tune_solutions__ul_dzc_1k3_nl">
+                <li class="li">Learn how to apply transactional databases.</li>
+                <li class="li">Learn how to use logs to tune transformations and jobs.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+        </table>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Schedule_Runs"></span> 
+      <h2 class="editable">Schedule Runs</h2>
+      <p>Use Spoon, Pan, or Kitchen to schedule executions of jobs and transformations.</p>
+      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+        <caption><span class="tablecap">Table 4. Schedule Runs Checklist</span> </caption>
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e553" valign="top" width="24.81%">Task</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e556" valign="top" width="32%">Do This</th>
+            <th class="entry" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__d154485e559" valign="top" width="43.17%">Objective</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d154485e553 " valign="top" width="24.81%"><strong class="ph b">Schedule Transformations and Jobs From Spoon</strong> </td>
+            <td class="entry" headers="d154485e556 " valign="top" width="32%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__migrate_solutions__ul_amd_5l2_vl">
+                <li class="li">
+                  <a class="xref" title="Use the Schedule Perspective to Run Transformations and Jobs" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/050">Schedule Transformations and Jobs</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e559 " valign="top" width="43.17%">
+              <ul class="ul" id="4f8dac10-f794-4df6-95a4-c04c5f7ef777__migrate_solutions__ul_cmd_5l2_vl">
+                <li class="li">Schedule Transformations and Jobs</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d154485e553 " valign="top" width="24.81%"><strong class="ph b">Command Line Scripting Through Pan and Kitchen</strong> </td>
+            <td class="entry" headers="d154485e556 " valign="top" width="32%">
+              <ul class="ul">
+                <li class="li">
+                  <a title="Pan Options and Syntax" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/070/000">Learn about Pan's options</a> .</li>
+                <li class="li">
+                  <a title="Kitchen Options and Syntax" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/070/010">Discover Kitchen options</a> .</li>
+              </ul>
+            </td>
+            <td class="entry" headers="d154485e559 " valign="top" width="43.17%">
+              <ul class="ul">
+                <li class="li">Use Pan and Kitchen to schedule transformations and jobs.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Next_Steps"></span> 
+      <h2 class="editable">Next Steps</h2>
+      <p>These resources will be helpful to you after your Production server is live.</p>
+      <ul class="ul">
+        <li class="li">
+          <a class="xref external" target="_blank" title="Administer Pentaho Systems" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0">Fine-Tune Pentaho Systems</a>  - provides guidance on how to maintain and fine-tune your DI Server.</li>
+        <li class="li">
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://www.pentaho.com/service/training">Pentaho Training and Education</a> 
+        </li>
+        <li class="li">
+          <a class="xref link-https" target="_blank" rel="external nofollow" href="https://support.pentaho.com/home">Pentaho Customer Support</a> &nbsp;- check with support for service packs.</li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Set_Up_Production_Environment" rel="internal">Set Up Production Environment</a>  </li>
+      <li> <a href="#Deploy_Solution" rel="internal">Deploy Solution</a>  </li>
+      <li> <a href="#Tune_Solution" rel="internal">Tune Solution</a>  </li>
+      <li> <a href="#Schedule_Runs" rel="internal">Schedule Runs</a>  </li>
+      <li> <a href="#Next_Steps" rel="internal">Next Steps</a>  </li>
+    </ol>
+  </body>
+</content>

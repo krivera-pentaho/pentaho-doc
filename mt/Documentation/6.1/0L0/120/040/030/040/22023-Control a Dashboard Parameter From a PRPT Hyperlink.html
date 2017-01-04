@@ -1,0 +1,42 @@
+<content type="text/html" title="Control a Dashboard Parameter From a PRPT Hyperlink">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You must have a report (.prpt) that contains a hyperlink before you can complete this task. See the
+          <a class="xref" title="Documentation/5.1/0L0/130/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/130/000">Design Print-Quality Reports</a>  section for instructions about adding hyperlinks to a report.</div>
+        <div class="section context">
+          <p class="p">The instructions that follow show you how a link inside a Report Designer report (.prpt) can drive a parameter in content on another dashboard panel. You must adjust the instructions when working with your own data.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Create a simple dashboard that contains a .prpt report and a data table. At this point, none of the content has been linked and you have a &quot;static&quot; dashboard.</span> 
+            <img alt="File:/71_prpt_content_linking.png"
+            class="internal default" style="width: 549px; height: 358px;" width="549px" height="358px" src="http://help.pentaho.com/@api/deki/files/8035/71_prpt_content_linking.PNG?size=bestfit&amp;width=549&amp;height=358&amp;revision=1" />
+            <p class="p">Notice the report (.prpt) in the example above. You want dashboard consumers to click a territory (APAC, EMEA, etc.), hyperlink and have the data table update with information about that territory specifically.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Under <strong class="ph b">General Settings</strong>, choose the report (.prpt) and click the <strong class="ph b">Content Linking </strong> tab. Click the checkbox next to the field you want used for content linking. </span> </li>
+          <li class="li step"><span class="ph cmd">Add a parameterized condition to the query for the data table by specifying a parameter name in curly braces in the <strong class="ph b">Value</strong> text box; then, provide a default value for that parameter in the <strong class="ph b">Default</strong>  text box. In the example below, a parameter called <strong class="ph b">TERRITORY</strong>  with a default value of <strong class="ph b">NA</strong>  has been created. </span> 
+            <p class="p">
+              <img alt="File:/49_filterparm_sample.png" class="internal default" style="width: 548px; height: 100px;" width="548px" height="100px" src="http://help.pentaho.com/@api/deki/files/8034/49_filterparm_sample.PNG?size=bestfit&amp;width=548&amp;height=100&amp;revision=1"
+              />
+            </p> Parameterizing a query, as described here, allows you to pass values dynamically and update the data table based on events triggered by other elements of the dashboard such as a user choosing an item from a filter control or following links
+            defined in content associated with another panel in the dashboard.</li>
+          <li class="li step"><span class="ph cmd">Under <strong class="ph b">General Settings</strong>, choose the data table and click the <strong class="ph b">Content Linking</strong>  tab. Click the drop-down arrow, in the <strong class="ph b">Source</strong>  text box to display another source for the parameter you created. In the example below, notice that <strong class="ph b">Product Line Share by Territory - Territory </strong>, (this is the name of the dashboard panel that contains the .prpt), is now selected as a source for the <strong class="ph b">Territory</strong>  parameter.</span> 
+            <p class="p">
+              <img alt="File:/72_prpt_content_linking_select_parm.png" class="internal default" style="width: 550px; height: 144px;" width="550px" height="144px" src="http://help.pentaho.com/@api/deki/files/8036/72_prpt_content_linking_select_parm.PNG?size=bestfit&amp;width=550&amp;height=144&amp;revision=1"
+              />
+            </p>
+          </li>
+          <li class="li step"><span class="ph cmd">Save your dashboard. See <a class="xref" title="Saving Dashboards" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/120/020/000/040">Saving Dashboards</a> .</span>  When content linking is achieved, the data
+            table updates when a link in the report (.prpt) is clicked as shown in the example below.</li>
+        </ol>
+        <div class="section result">
+          <p class="p" style="margin-left: 40px;">
+            <img alt="File:/73_prpt_content_linking_final_result.png" class="internal default" style="width: 550px; height: 291px;" width="550px" height="291px" src="http://help.pentaho.com/@api/deki/files/8037/73_prpt_content_linking_final_result.PNG?size=bestfit&amp;width=550&amp;height=291&amp;revision=1"
+            />
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

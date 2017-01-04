@@ -1,0 +1,29 @@
+<content type="text/html" title="Pentaho Data Mining (Weka) Performance Tips">
+  <body>
+    <div class="body">
+      <p class="p">The most common Weka performance issue is the <strong class="ph b">OutOfMemory</strong>  exception. This is caused by using resource-intensive algorithms with large data sources. To address this, refer to
+        <a class="xref" title="Documentation/5.1/0P0/100/090/060"
+        rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/100/090/060">Increase the Memory Limit in Weka</a> .</p>
+      <p class="p">Learning algorithms convert multi-valued discrete fields to binary indicator fields, thus potentially expanding the total number of fields. This sort of pre-processing can result in two copies of the data being held in main memory briefly until
+        the transformation is complete. So even if you have enough memory to complete the task, it could take a while to perform. For this reason, you may need to run Weka on very fast multi-core, multi-CPU 64-bit machines if you are concerned with poor
+        performance.</p>
+      <p class="p">Beyond this, data mining tuning involves looking at each algorithm you're using and tweaking its parameters to improve the speed and accuracy of the results. This is always data- and algorithm-specific, and requires empirical experimentation. If
+        you are running out of memory or experiencing poor performance, you might consider switching to an incrementally learning algorithm such as:</p>
+      <ul class="ul">
+        <li class="li">Naive Bayes</li>
+        <li class="li">Naive Bayes multinomial</li>
+        <li class="li">DMNBtext</li>
+        <li class="li">AODE and AODEsr</li>
+        <li class="li">SPegasos</li>
+        <li class="li">SGD</li>
+        <li class="li">IB1, IBk and KStar</li>
+        <li class="li">Locally weighted learning</li>
+        <li class="li">RacedIncrementalLogitBoost</li>
+        <li class="li">Cobweb</li>
+      </ul>
+      <p class="p">See this page on the Pentaho Wiki for more details:
+        <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/display/DATAMINING/Handling+Large+Data+Sets+with+Weka">http://wiki.pentaho.com/display/DATAMINING/Handling+Large+Data+Sets+with+Weka</a> .</p>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

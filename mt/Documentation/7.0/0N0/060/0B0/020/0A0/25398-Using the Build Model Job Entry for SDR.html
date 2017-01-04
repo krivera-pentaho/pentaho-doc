@@ -1,0 +1,160 @@
+<content type="text/html" title="Using the Build Model Job Entry for SDR">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+        </div>
+      </div>
+      <p>The Build Model job entry can be used to create Data Source Wizard (DSW) data sources, wh
+        <font color="#000000">ich includes both a Metadata and a Mondrian model. It works by searching upstream for an output step or data service&nbsp;upon which to base your&nbsp;model, or you can select an existing DSW or Analysis model from the Pentaho Server.&nbsp;</font>Note
+        that if you are using a data service as the source in your Build Model job entry, you must be connected to a Pentaho Repository to successfully publish your model.</p>
+      <p>After you have run this job entry, a data model is created and can be published to the server for the creation of Analysis reports in the Pentaho User Console.
+        <font color="#000000">Business users will also be able to refine the data model with the Data Model Editor.</font>
+        <font color="#000000">If you selected an Analysis model to build from, the Build Model job entry will only create an Analysis model.</font>
+      </p>
+      <p>
+        <font color="#000000">A Build Model job entry b
+          <font color="#000000">uilds the model and sets variables into the job that can be modified or picked up by the
+            <a title="Documentation/5.4/0N0/060/0B0/020/0D0" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060/0B0/020/0D0">Publish Model</a>  job entry. An&nbsp;</font>
+        </font>example workflow is shown below.</p>
+      <p style="text-align: center;">
+        <img alt="SDRBasicWorkflow.png" class="internal default" style="width: 604px; height: 56px;" width="604px" height="56px" src="http://help.pentaho.com/@api/deki/files/11345/SDRBasicWorkflow.png?size=bestfit&amp;width=604&amp;height=56&amp;revision=1"
+        />
+      </p>
+      <p>After the Build Model job runs successfully,
+        <font color="#000000">you can</font>
+        <a title="Publish Model (job entry)" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060/0B0/020/0D0">publish</a> 
+        <font color="#000000">the data source to the Pentaho Server.</font>
+      </p>
+      <div id="section_2" class="mt-page-section"><span id="Creating_a_Build_Model_Job_Entry"></span> 
+        <h2 class="editable">Creating a Build Model Job Entry</h2>
+        <p>
+          <font color="#000000">Use the Build Model job entry to create a model for publishing directly to the Pentaho Server. (</font>This task assumes you are in the Job canvas in Spoon.)</p>
+        <ol class="pentaho-list-ordered">
+          <li>In the <strong>Design </strong> tab, click the <strong>Modeling </strong> folder, and then double-click the <strong>Build Model</strong>  job entry. Alternatively, you can drag the job entry icon on to the job canvas.</li>
+        </ol>
+        <p>
+          <img alt="Build Model Icon" class="internal default" style="width: 165px; height: 57px;" width="165px" height="57px" src="http://help.pentaho.com/@api/deki/files/11344/BuildModelIcon2.PNG?size=bestfit&amp;width=165&amp;height=57&amp;revision=1"
+          />
+        </p>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Double-click the <strong>Build Model</strong>  icon to open the Build Model dialog box.</li>
+          <li>Enter a name for the entry in the <strong>Entry Name</strong>  field.</li>
+        </ol>
+        <p class="pentaho-note">The following characters are not valid in Data Source Wizard source names: '<strong>%</strong> ', '<strong>/</strong> ', '<strong>:</strong> ', '<strong>[]</strong> ', '<strong>*</strong> ', '<strong>\t</strong> ', '<strong>\r</strong> ', '<strong>\n</strong> '.</p>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>In the <strong>Source</strong>  field, select an output step or a Pentaho Data Service from the drop-down menu, or press <strong>CTRL </strong> + <strong>Space </strong> to select a variable. The selected output step or data service provides the
+            source data in the model. If no data is written to the table by the selected source, then the Build Model job entry will not build a model.</li>
+        </ol>
+        <p class="pentaho-note">When you select a Pentaho Data Service as the source, previously defined link dimensions will not be linked to your model. Link dimension annotations are dependent on shared dimensions, and shared dimensions cannot use a data service for their
+          source. See
+          <a title="Documentation/6.1/0L0/0Y0/090/040" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/090/040">Connecting to a Pentaho Data Service </a> for more information about data services.</p>
+        <ol class="pentaho-list-ordered" start="5">
+          <li>Enter a name for your data model in the <strong>Model Name</strong>  field. Optionally, click in the field and press <strong>CTRL </strong> + <strong>Space </strong> to select a variable. The model name entered here will appear in the list of data
+            sources in the Pentaho Server.</li>
+          <li>In the Modeling Method section, you can choose either <strong>Auto Model</strong>  or <strong>Use Existing</strong>  for the entry.
+            <ul class="pentaho-list-unordered">
+              <li>Select <strong>Auto Model </strong> if you want to build a new model. Note that when you choose to auto model, your annotations will be applied to the model when it is opened in Analyzer.</li>
+              <li>Select <strong>Use Existing</strong> &nbsp;if you want to base your model on one which already exists in the Pentaho Server. Click the <strong>Select</strong>  button below to enter the name of an existing model from the&nbsp;server in the
+                required field. See
+                <a title="Using the Build Model Job Entry for SDR" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060/0B0/020/0A0#Selecting_Existing_Model_Options">Selecting Existing Model Options</a> . Note that when you use an existing model, your annotations will not be applied to the model when it is opened in Analyzer.</li>
+            </ul>
+          </li>
+        </ol>
+        <p class="pentaho-note" style="margin-left: 40px;">When you select <strong>Auto Model</strong>  and you have modified a measure in Analyzer, the inline model editing changes you made in Analyzer will take priority over any annotations added to the measure in PDI. In addition, annotations you add
+          in PDI will not be visible for that measure when viewed in Analyzer.</p>
+        <ol class="pentaho-list-ordered" start="7">
+          <li>Click <strong>OK </strong> to save your changes and close the dialog box, or click <strong>Cancel </strong> to discard your changes and close the dialog box.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Selecting_Existing_Model_Options"></span> 
+        <h2 class="editable">Selecting Existing Model Options</h2>
+        <p>If you selected to use an existing model to build upon, you will need to be connected to the Pentaho Server. Once you are connected, you can select an existing model with the same physical schema to base your new model on.</p>
+        <p class="pentaho-note">If you select <strong>Use Existing</strong>, your annotations are not applied to the model when it is opened in Analyzer. If you want to apply your annotations to the model in Analyzer, select<strong> Auto Model</strong> .</p>
+        <ol class="pentaho-list-ordered">
+          <li>Fill in or edit the fields in the Pentaho Server Connection section.</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="164" style="table-layout: fixed;" title="Pentaho Table" width="672">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 150px;">Field</th>
+              <th scope="col" style="width: 475px;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 165px;">URL</td>
+              <td style="width: 509px;">The base URL string used to connect to the server.</td>
+            </tr>
+            <tr>
+              <td style="width: 165px;">User Name</td>
+              <td style="width: 509px;">The user name required to access the server.</td>
+            </tr>
+            <tr>
+              <td style="width: 165px;">Password</td>
+              <td style="width: 509px;">The password associated with the provided user name which is passed during the authentication process.</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Click the <strong>Connect </strong> button to connect to the server using the information provided in the above fields.&nbsp;If the connection was successful, the <strong>Existing Models</strong>  drop-down menu will be available for selection
+            with a list of models to choose from.</li>
+          <li>Select a model from the<strong> Existing Models</strong>  drop-down menu. If no models are listed, verify that you are connected to the Pentaho Server.</li>
+          <li>Optionally, select the Create model if not found check box to generate a model if the system cannot find an existing model with the entered name.</li>
+          <li>When finished, click <strong>OK </strong> to save your changes and close the dialog box, or <strong>Cancel</strong>  to close the dialog box without saving your changes.</li>
+        </ol>
+        <p>This is an example of the Select Existing Model dialog box.</p>
+        <p>
+          <img alt="" class="internal default" src="http://help.pentaho.com/@api/deki/files/12114/select_existing_model.png?revision=1" />
+        </p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Variables_for_Build_Model_Job_Entry"></span> 
+        <h2 class="editable">Variables for Build Model Job Entry</h2>
+        <p>These variables are generated when the the model is created. You can only see these&nbsp;specific variables for the Build Model job entry if you press CTRL + Space after the first run.</p>
+        <p>You can use these variables to know more about the model you created. For example, if you have scheduled a job to run at regular intervals, you can include these variables in the Mail job entry to alert you to any issues during the run.</p>
+        <table
+        border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col">Variable</th>
+              <th scope="col">Variable Type</th>
+              <th scope="col">Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>JobEntryBuildModel.DatabaseConnection.
+                <Model Name>
+              </td>
+              <td>String</td>
+              <td>Returns the name of the database connection used by the transformation on the Source. This connection information is specified in the Build Model job entry.</td>
+            </tr>
+            <tr>
+              <td>JobEntryBuildModel.XMI.
+                <Model Name>
+              </td>
+              <td><span class="rangySelectionBoundary" style="line-height:0;display:none;">&#65279;</span> String</td>
+              <td>Returns all the contents of the XML file published on the Pentaho Server. (It may or may not contain the OLAP components.)</td>
+            </tr>
+            <tr>
+              <td>JobEntryBuildModel.XMI.DSW.
+                <Model Name>
+              </td>
+              <td><span class="rangySelectionBoundary" style="line-height:0;display:none;">&#65279;</span> Boolean (True or False)</td>
+              <td>Indicates if the XMI should be delivered as a DSW&nbsp;data source. Typically, when this is 'true', we only generate the DSW data source and no other contents.</td>
+            </tr>
+          </tbody>
+          </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Creating_a_Build_Model_Job_Entry" rel="internal">Creating a Build Model Job Entry</a>  </li>
+      <li> <a href="#Selecting_Existing_Model_Options" rel="internal">Selecting Existing Model Options</a>  </li>
+      <li> <a href="#Variables_for_Build_Model_Job_Entry" rel="internal">Variables for Build Model Job Entry</a>  </li>
+    </ol>
+  </body>
+</content>

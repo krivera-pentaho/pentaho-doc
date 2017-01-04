@@ -1,0 +1,330 @@
+<content type="text/html" title="Set Up MongoDB for Analyzer">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <p class="p">This is a quick set of instructions for setting up an environment to use Analyzer with MongoDB using the <span class="filepath style-wrap">foodmart</span>  sample data.</p>
+      <p class="p"><strong>Prerequisite: </strong> Before you begin, you should have installed
+        <a title="Documentation/5.1/0F0/0I0/010" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0I0/010">Pentaho BA Server</a>  and
+        <a class="external" title="http://docs.mongodb.org/manual/installation/" rel="external nofollow" href="http://docs.mongodb.org/manual/installation/" target="_blank">MongoDB</a> .</p>
+      <div class="topic task nested1" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_import_foodmart_sample">
+        <div id="section_1" class="mt-page-section"><span id="Import_Foodmart_Sample_Data"></span> 
+          <h2 class="editable">Import Foodmart Sample Data</h2>
+          <p class="p">Now that you have MongoDB and the latest Pentaho software installed, it is time to import the Foodmart sample data. These steps are for importing on Windows; if you are using Linux, you can modify them to suit your OS.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="p">Create a directory called<span class="filepath style-wrap"> foodmart_data</span>  in your <span class="filepath style-wrap">C:\</span>  directory.</li>
+            <li class="p">Navigate to<span class="filepath style-wrap"> C:\Program Files\pentaho\server\biserver-ee\pentaho-solutions\system\samples</span> .</li>
+            <li class="p">Extract the <span class="filepath style-wrap">mondrian-data-foodmart-json-0.3.3.zip</span>  file into the newly created <span class="filepath style-wrap">foodmart_data</span>  directory.</li>
+            <li class="p">Open the command line interface. Import these four collections used in the Foodmart.mongo.xml schema by executing these commands.</li>
+          </ol>
+          <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\mongodb-win32-x86_64-2008plus-[insert current vernum]\bin\mongoimport -db
+ foodmart --collection sales --type json --file
+  c:\foodmart_data\sales_fact_1997_collapsed.json</pre> </div>
+          <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\mongodb-win32-x86_64-2008plus-[insert current vernum]\bin\mongoimport -db
+ foodmart --collection sales_transactions --type json--file
+  c:\foodmart_data_sales_transactions.json</pre> </div>
+          <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\mongodb-win32-x86_64-2008plus-[insert current vernum]\bin\mongoimport -db
+ foodmart --collection agg_g_ms_pcat_sales_fact_1997 --type json--file
+  c:\agg_g_ms_pcat_sales_fact_1997.json</pre> </div>
+          <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\mongodb-win32-x86_64-2008plus-[insert current vernum]\bin\mongoimport -db
+ foodmart --collection agg_c_10_sales_fact_1997 --type json--file
+  c:\agg_c_10_sales_fact_1997.json</pre> </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_publish_data_model">
+        <div id="section_2" class="mt-page-section"><span id="Upload_a_Schema"></span> 
+          <h2 class="editable">Upload a Schema</h2>
+          <p class="p">After completion of your data model, the easiest way to upload the schema into the Pentaho BA server repository is through the user console. A schema can be
+            <a class="xref external" target="_blank" title="Documentation/5.1/0P0/000/020" rel="internal"
+            href="http://help.pentaho.com/Documentation/5.1/0P0/000/020">deployed</a>  in other ways; however, the console is the quickest and easiest method. The <span class="filepath style-wrap">Foodmart.mongo.xml</span> schema can be found at <span class="filepath style-wrap">.../pentaho/server/biserver-ee/pentaho-solutions/system/samples. </span> </p>
+        </div>
+      </div>
+      <ol class="pentaho-list-ordered" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_publish_data_model__steps_qy4_htb_zm">
+        <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Login to the User Console using the admin username and password.</span> </span> 
+        </li>
+        <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Open the <strong class="ph b">Browse</strong>  perspective by selecting this from the upper-left menu.</span> </span> 
+        </li>
+        <li class="li step"><span style="font-size:12px;"><span class="ph cmd">In the <strong class="ph b">Folders</strong>  panel, select the location where you want to store the schema. Click on <strong class="ph b">Upload...</strong>  in the <strong class="ph b">Folder Actions</strong>  panel.</span>           The <strong class="ph b">Upload</strong>  dialog box appears.</span> 
+        </li>
+        <li class="li step"><span style="font-size:12px;"><span class="ph cmd">In the dialog box, click <strong class="ph b">Browse</strong>  to go to the location of the schema for upload. Double-click on the schema.</span>  If needed, specific permissions are set on the
+          schema by using the
+          <a class="xref external" target="_blank" title="Documentation/5.1/0P0/000/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/020">Advanced Options</a>  settings.</span> 
+        </li>
+        <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Click <strong class="ph b">OK</strong> .</span>  The schema is uploaded and available to specified users.</span> 
+        </li>
+      </ol>
+      <div class="topic task nested1" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_define_mongo_connection">
+        <div id="section_3" class="mt-page-section"><span id="Define_the_Data_Connection"></span> 
+          <h2 class="editable">Define the Data Connection</h2>
+          <p class="p">After you have uploaded the schema to your BA repository, you need to define your connection to MongoDB.</p>
+          <p class="p">To do this, you need to locate the <code class="ph codeph">olap4j.properties</code> file in the <span class="ph filepath">.../pentaho-solutions/system</span>  directory. This file provides all of the information about connections that the platform
+            needs to create. There can be multiple connections defined in this file, but each of them must have a unique name.</p>
+          <p class="p">The connections are created when the BA server is started, but will not be updated if the file is modified while the server is running. If you need to make modifications to the file, you must restart the BA server so that the changes take effect.</p>
+          <p class="p">These are the properties that you define for each connection.</p>
+          <div class="p">
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_define_mongo_connection__table_e2x_vyh_bn" rules="all" summary="">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th align="center" class="entry" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__d11954e390" valign="top" width="28.121927236971484%">Property</th>
+                    <th align="center" class="entry" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__d11954e393" valign="top" width="9.83284169124877%">Required</th>
+                    <th align="center" class="entry" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__d11954e396" valign="top" width="62.04523107177974%">Description</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d11954e390 " valign="top" width="28.121927236971484%"><code class="ph codeph">[connection name].name</code></td>
+                    <td align="center" class="entry" headers="d11954e393 " valign="top" width="9.83284169124877%">Yes</td>
+                    <td class="entry" headers="d11954e396 " valign="top" width="62.04523107177974%">A user-friendly caption given to this connection. This is the name which will be shown to users.&nbsp;</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e390 " valign="top" width="28.121927236971484%"><code class="ph codeph">[connection name].className</code></td>
+                    <td align="center" class="entry" headers="d11954e393 " valign="top" width="9.83284169124877%">Yes</td>
+                    <td class="entry" headers="d11954e396 " valign="top" width="62.04523107177974%">The fully qualified name of the class which will serve as a connectivity driver. To connect to MongoDB through OLAP, use
+                      <p class="p"><span class="ph filepath">org.pentaho.platform.plugin.services.connections.</span> </p>
+                      <p class="p"><span class="ph filepath">PentahoSystemDriver</span> .</p>
+                    </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e390 " valign="top" width="28.121927236971484%"><code class="ph codeph">[connection name].connectString</code></td>
+                    <td align="center" class="entry" headers="d11954e393 " valign="top" width="9.83284169124877%">Yes</td>
+                    <td class="entry" headers="d11954e396 " valign="top" width="62.04523107177974%">This property supplies the connection details to your MongoDB instance as well as the path to your schema file. This is also where you define the credentials to use if your MongoDB instance requires it. &nbsp;</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="p">This template can be used as a starting point for defining your connection.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[connection name].name=mongoFoodmart
+[connection name].className=org.pentaho.platform.plugin.
+services.connections.PentahoSystemDriver
+[connection name].user=aUser
+[connection name].password=aPassword
+[connection name].connectString=jdbc:mondrian4:Host=localhost;dbname=foodmart;
+DataServicesProvider=com.pentaho.analysis.mongo.MongoDataServicesProvider;
+Catalog=C:/foodmart_data/FoodMart.mongo.xml;</pre>
+            <p class="p">Follow this naming convention to make multiple connections.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">connection1.name=MyFirstConnection
+connection1.url=(...)
+-------------
+connection2.name=MySecondConnection
+connection2.url=(...)
+-------------
+connection3.name=MyThirdConnection
+connection3.url=(...)</pre>
+            <ol class="pentaho-list-ordered">
+              <li class="li"><span style="font-size:12px;">Open the <code class="ph codeph">olap4j.properties</code> file with a text editor.</span> </li>
+              <li class="li"><span style="font-size:12px;">If applicable, make sure to uncomment the necessary values in the properties file by removing the <strong class="ph b">#</strong>  symbols from the text.</span> </li>
+              <li class="li"><span style="font-size:12px;">Define a unique <code class="ph codeph">[connection name].name</code> for the data connection.</span> </li>
+              <li class="li"><span style="font-size:12px;">Enter the fully qualified name for the <code class="ph codeph">[connection name].className</code>.</span> </li>
+              <li class="li"><span style="font-size:12px;">Add the connection details (<code class="ph codeph">[connection name].connectString</code>) to your <strong class="ph b">MongoDB</strong>  by defining the properties shown in this table.</span> </li>
+              <li class="li"><span style="font-size:12px;">After all properties are defined, save and close the <code class="ph codeph">olap4j.properties</code> file.</span> </li>
+              <li class="li"><span style="font-size:12px;">Test your data connection by launching the user console, clicking on <strong class="ph b">Create New > Analysis Report</strong>, then verifying that the MongoDB connection appears in the <strong class="ph b">Select Data Source</strong>  dialog box.</span> </li>
+            </ol>
+            <p class="pentaho-note">If your data source does not show up in the Data Sources list, restart the BA Server. It may be necessary to work with your system administrator and check the Analyzer logs for the purpose of troubleshooting the connection.</p>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_define_mongo_connection__table_ctd_fg3_bn" rules="all" summary="">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__d11954e515" valign="top" width="50%">Property</th>
+                    <th class="entry" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__d11954e518" valign="top" width="50%">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">Host=localhost</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Replace <code class="ph codeph">localhost</code> with the address of your <strong class="ph b">MongoDB</strong>  server. This can be an IP address or a fully qualified URL.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">USE_ALL_REPLICA_SET_MEMBERS</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Governs whether the <code class="ph codeph">MongoClient</code> is instantiated with a <code class="ph codeph">List of ServerAddresses</code>, indicating the driver should act against a replica set, even if there's only a single server
+                      specified. If there are two or more servers specified in HOST, a <code class="ph codeph">List of ServerAddress</code> will be used, even if this property is unset or <code class="ph codeph">false</code>. This property is useful primarily
+                      for the case where a single server is specified but replica-set behavior is desired.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">USE_KERBEROS</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Indicates whether to use GSSAPI credentials. Defaults to <code class="ph codeph">false</code> unless the string value can be parsed as true.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">PENTAHO_JAAS_AUTH_MODE</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">The variable name that may specify the authentication mode to use when creating a JAAS <code class="ph codeph">LoginContext</code>. Possible values are KERBEROS_USER, KERBEROS_KEYTAB, and EXTERNAL.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">PENTAHO_JAAS_KEYTAB_FILE</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">The variable name that may specify the location of the keytab file to use when authenticating with &quot;KERBEROS_KEYTAB&quot; mode.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">dbname=foodmart</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Replace <code class="ph codeph">foodmart</code> with the name of the database to use that is located on your <strong class="ph b">MongoDB</strong>  server.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">Catalog=/home/admin/pentaho-mongolap/test-data/FoodMart.mongo.xml</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">
+                      <p class="p">Add the path to your schema in this property. If you uploaded your schema into the BA server repository, you can prefix the path to the schema by using <code class="ph codeph">solution:/</code> .</p> <strong class="ph b">Tip: </strong>                       An alternative method is to replace <code class="ph codeph">/home/admin/pentaho-mongolap/test-data/FoodMart.mongo.xml</code> with the path to your schema file.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">jdbc</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">This property is ignored and only supplied for compatibility reasons.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">DataServicesProvider=com.pentaho...</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Do not modify this property.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" colspan="2" headers="d11954e515 d11954e518 " valign="top">The following list is for optional configuration items.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">connectionsPerHost=100</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">The maximum number of allowed MongoDB connections.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">connectTimeout=100000</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">The MongoDB connection timeout in millis. 0 means no timeout.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">maxWaitTime=120000</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">The max wait for a MongoDB connection to be available (millis).</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">socketKeepAlive=false</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Boolean which controls whether MongoDB connections are kept alive through firewalls.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">socketTimeout=0</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Socket timeout (millis). 0 (default) means no timeout</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">readPreference=primary</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Read preference to use:<code class="ph codeph"> [primary, primaryPreferred, secondary, secondaryPreferred, nearest]</code>. If set to anything besides primary, the preference is &quot;taggable&quot;, meaning the tag sets defined in
+                      the <code class="ph codeph">MongoProp.tagSet</code> property will be used if present.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">tagSet=...</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">A comma separated list of JSON docs representing the tag set to associate with <code class="ph codeph">readPreference</code>.
+                      <p class="p">For example, <code class="ph codeph">{ &quot;disk&quot;: &quot;ssd&quot;, &quot;use&quot;: &quot;reporting&quot;, &quot;rack&quot;: &quot;a&quot; },{ &quot;disk&quot;: &quot;ssd&quot;, &quot;use&quot;: &quot;reporting&quot;, &quot;rack&quot;: &quot;d&quot; }</code>.
+                        This governs the preferred order when determining which MongoDB to read from.</p>
+                      <p class="p">The article
+                        <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/tutorial/configure-replica-set-tag-sets/">Configure Replica Set Tag Sets</a>  has more detailed information. Note that the expected syntax for tag sets differs from the format specified for MongoURI, which uses semi-colons as a delimiter.</p>
+                    </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">writeConcern=2</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Specifies the number of servers to wait on before acknowledging a write. Corresponds to the String parameter of the constructor <code class="ph codeph">{@link com.mongodb.WriteConcern(String, int, boolean, boolean)}</code>.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">wTimeout=10000</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">Specifies the write timeout in millis for the <code class="ph codeph">writeConcern</code>.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">JOURNALED</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">A <code class="ph codeph">true|false</code> property indicating how <code class="ph codeph">WriteConcern</code> should be configured. For example, indicating whether to block until write operations have been committed to the journal.
+                      This will cause an exception if set to <code class="ph codeph">true</code> when connecting to a server without journaling in use.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d11954e515 " valign="top" width="50%"><code class="ph codeph">useSSL</code></td>
+                    <td class="entry" headers="d11954e518 " valign="top" width="50%">A <code class="ph codeph">true|false</code> property indicating whether connections to MongoDB should use SSL. It is assumed that the SSL certificate used on the host is signed by a trusted authority. If you are using a self-signed
+                      certificate you will need to import your certificate into the keystore for your JVM.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested2" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_cdj_sz3_bn">
+        <div class="mt-clear" style="page-break-after: always;"><span style="display: none;">&nbsp;</span> </div>
+        <div id="section_4" class="mt-page-section"><span id="Delete_the_Data_Connection"></span> 
+          <h2 class="editable">Delete the Data Connection</h2>
+          <p>To remove the MongoDB connection from Analyzer, you will need to edit the <span class="filepath style-wrap">olap4j.spring.xml</span>  file, which is found in the same directory as <span class="filepath style-wrap">olap4j.properties</span> 
+            <span
+            class="ph filepath">.../pentaho-solutions/system</span> .</p>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <span class="filepath style-wrap">olap4j.spring.xml</span>  file with a text editor and locate the section for <span class="filepath style-wrap">olap4jConnectionRemovalList</span> .</li>
+            <li>Add the name of the connection that you want to remove in the<span class="filepath style-wrap"> <value></value></span>  tag.</li>
+            <li>Save and close the file.</li>
+            <li>Restart the BA Server so that the changes will take effect.</li>
+          </ol>
+          <div class="pentaho-code-block style-wrap"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;olap4jConnectionRemoveList&quot; class=&quot;java.util.ArrayList&quot;>
+    <constructor-arg>
+      <list>
+
+          <!--uncomment the value below and change the text to remove 
+              existing olap4j connections-->
+        
+          <!--<value>mongoFoodmart</value>-->          
+              <value>mongolap2</value>
+      </list>   
+    </constructor-arg> 
+ </bean></pre> </div>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Implement_Encrypted_Passwords_for_the_Connection"></span> 
+          <h2 class="editable">Implement Encrypted Passwords for the Connection</h2> MongoDB connections for Analyzer are configured in the <code class="ph codeph">olap4j.properties</code> file. This connection information contains passwords for connecting to your database.
+          There are two ways to encrypt your passwords by default - Base64 Encoding and Cipher Encryption. You may also supply custom Java code for encryption.</div>
+      </div>
+      <div class="topic task nested3" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_sqy_5nn_bn">
+        <div id="section_6" class="mt-page-section"><span id="Configure_Your_Password_Service"></span> 
+          <h3 class="editable">Configure Your Password Service</h3> If you do not want to use the default Base64 encoding value for your password service, change it to the Cipher encryption method using these steps.
+          <ol class="ol steps" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_sqy_5nn_bn__steps_tzm_5z3_bn">
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Navigate to the <span class="ph filepath">.../pentaho-solutions/system</span>  directory and open the <code class="ph codeph">pentahoObjects.spring.xml</code> file with a text editor.</span> 
+              </span> 
+            </li>
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Locate the <code class="ph codeph">IPasswordService</code> bean in the <code class="ph codeph">pentahoObjects.spring.xml</code> file.</span> </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;IPasswordService&quot;
+      class=&quot;org.pentaho.platform.util.Base64PasswordService&quot;
+      scope=&quot;singleton&quot;/></pre> </li>
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Change to Cipher encryption by editing the bean's class attribute. </span> </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;IPasswordService&quot;
+      class=&quot;org.pentaho.platform.engine.security.CipherEncryptionService&quot;
+      scope=&quot;singleton&quot;/></pre> </li>
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Save and close the <code class="ph codeph">pentahoObjects.spring.xml</code> file.</span> </span> 
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="topic task nested3" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_bxr_vnn_bn">
+        <div id="section_7" class="mt-page-section"><span id="Encrypt_Your_Password"></span> 
+          <h3 class="editable">Encrypt Your Password</h3> These steps show you how to use the Pentaho server to obtain the encrypted version of your password.
+          <ol class="ol steps" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_bxr_vnn_bn__steps_ej3_r4n_bn">
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">Make sure that your server is running. Then, open the password encryption page by accessing the following URL, replacing <code class="ph codeph"><yourhost:port></code> with your host and port.</span> </span> 
+              <pre class="pre codeblock">
+http://<yourhost:port>/pentaho/api/password/encrypt
+</pre> </li>
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">The password encryption page contains a simple form with a text box for your MongoDB password.&nbsp; Enter your password and click <strong class="ph b">Submit</strong> . </span> </span> 
+            </li>
+            <li class="li step"><span style="font-size:12px;"><span class="ph cmd">The text that is returned after you click <strong class="ph b">Submit</strong>  is your encrypted password.</span> </span> 
+            </li>
+          </ol>
+          <p>Now you can use the encrypted version of your password in the <code class="ph codeph">olap4j.properties</code>. The BA server automatically determines if your password is encrypted or not. For example: <code class="ph codeph">username=admin;password=ENC:cGFzc3dvcmQ= </code>.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_build_report">
+        <div id="section_8" class="mt-page-section"><span id="Test_the_Connection_by_Building_a_Report"></span> 
+          <h2 class="editable">Test the Connection by Building a Report</h2>
+          <p class="p">The easiest way to test the connection and setup is to build your first report with MongoDB for Analyzer as shown in our walk-through tutorials, under&nbsp;
+            <a class="xref external" target="_blank" title="https://help.pentaho.com/Documentation/5.1/0J0/0D0/040"
+            rel="internal" href="http://help.pentaho.com/Documentation/5.1/0J0/0D0/040">Get Started with Analyzer Reports</a> .</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Import_Foodmart_Sample_Data" rel="internal">Import Foodmart Sample Data</a>  </li>
+      <li> <a href="#Upload_a_Schema" rel="internal">Upload a Schema</a>  </li>
+      <li> <a href="#Define_the_Data_Connection" rel="internal">Define the Data Connection</a>  </li>
+      <li> <a href="#Delete_the_Data_Connection" rel="internal">Delete the Data Connection</a>  </li>
+      <li>
+        <a href="#Implement_Encrypted_Passwords_for_the_Connection" rel="internal">Implement Encrypted Passwords for the Connection</a> 
+        <ol>
+          <li> <a href="#Configure_Your_Password_Service" rel="internal">Configure Your Password Service</a>  </li>
+          <li> <a href="#Encrypt_Your_Password" rel="internal">Encrypt Your Password</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Test_the_Connection_by_Building_a_Report" rel="internal">Test the Connection by Building a Report</a>  </li>
+    </ol>
+  </body>
+</content>

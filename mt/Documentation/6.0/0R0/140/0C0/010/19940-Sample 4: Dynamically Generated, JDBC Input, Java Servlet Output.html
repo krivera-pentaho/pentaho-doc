@@ -1,0 +1,192 @@
+<content type="text/html" title="Sample 4: Dynamically Generated, JDBC Input, Java Servlet Output">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>This example assumes you have a Java application server, such as Tomcat or JBoss, installed, configured, running, and accessible to you.</p>
+      <p>Sample4.java is an HttpServlet which generates an HTML report similar to Sample2 (dynamically created report definition based on the data set, a static data set, and no parameters). In the <strong class="ph b">generateReport(&hellip;)</strong>  method,
+        the report is generates as HTML into an output stream which is routed directly to the browser. As noted in the comments of this method, a small simple change can be made to generate PDF output instead of HTML output.</p>
+      <div id="section_1" class="mt-page-section"><span id="Directions_for_Running_Sample4"></span> 
+        <h2 class="editable">Directions for Running Sample4</h2>
+        <p>To execute Sample4, the following steps will deploy and run it using Tomcat:</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li">Copy Sample4.war into the webapps directory of a working Tomcat instance</li>
+          <li class="li">Start the Tomcat server (bin/startup.sh or bin\startup.bat)</li>
+          <li class="li">In a browser, navigate to the following URL: <span class="ph filepath"><a class="external" href="http://localhost:8080/Sample4/" rel="freeklink" title="http://localhost:8080/Sample4/">http://localhost:8080/Sample4/</a> </span> </li>
+        </ol> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/*
+ * This program is free software; you can redistribute it and/or modify it under the 
+ * terms of the GNU Lesser General Public License, version 2.1 as published by the Free Software 
+ * Foundation.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this 
+ * program; if not, you can obtain a copy at http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html 
+ * or from the Free Software Foundation, Inc., 
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * Copyright 2009 Pentaho Corporation.  All rights reserved.
+ *
+ * Created July 22, 2009 
+ * @author dkincade
+ */
+package org.pentaho.reporting.engine.classic.samples;
+import java.io.IOException;
+import java.io.OutputStream;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.swing.table.AbstractTableModel;
+import org.pentaho.reporting.engine.classic.core.ClassicEngineBoot;
+import org.pentaho.reporting.engine.classic.core.MasterReport;
+import org.pentaho.reporting.engine.classic.core.PageDefinition;
+import org.pentaho.reporting.engine.classic.core.ReportProcessingException;
+import org.pentaho.reporting.engine.classic.core.TableDataFactory;
+import org.pentaho.reporting.engine.classic.core.modules.output.table.html.HtmlReportUtil;
+import org.pentaho.reporting.engine.classic.core.wizard.RelationalAutoGeneratorPreProcessor;
+/**
+ * Servlet implementation which generates a report and returns the report as an HTML
+ * stream back to the browser. 
+ */
+public class Sample4 extends HttpServlet
+{
+  /**
+   * Default constructor for this sample servlet
+   */
+  public Sample4()
+  {
+  }
+  
+  /**
+   * Initializes the servlet - we need to make sure the reporting engine has been initialized
+   */
+  public void init()
+  {
+    // Initialize the reporting engine
+    ClassicEngineBoot.getInstance().start();
+  }
+  /**
+   * Handles the GET request. We will handle both the GET request and POST request the same way.
+   */
+  protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException
+  {
+    generateReport(req, resp);
+  }
+  /**
+   * Handles the POST request. We will handle both the GET request and POST request the same way.
+   */
+  protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException
+  {
+    generateReport(req, resp);
+  }
+  /**
+   * Generates a simple HTML report and returns the HTML output back to the browser
+   */
+  private void generateReport(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException
+  {
+    // Generate the report definition
+    final MasterReport report = createReportDefinition();
+    
+    // Run the report and save the HTML output to a byte stream
+    resp.setContentType(&quot;text/html&quot;); // Change to &quot;application/pdf&quot; for PDF output
+    OutputStream out = resp.getOutputStream();
+    try
+    {
+      // Use the HtmlReportUtil to generate the report to a Stream HTML
+      HtmlReportUtil.createStreamHTML(report, out); 
+      
+      //NOTE: Changing this to use PDF is simple:
+      // 1. Change the above setContent call to use &quot;application/pdf&quot;
+      // 2. Instead of HtmlReportUtil, use the following line:
+      // PdfReportUtil.createPDF(report, out)
+    }
+    catch (ReportProcessingException rpe)
+    {
+      rpe.printStackTrace();
+    }
+    finally
+    {
+      out.close();
+    }
+  }
+  
+  private MasterReport createReportDefinition()
+  {
+    // Create a report using the autogenerated fields
+    final MasterReport report = new MasterReport();
+    report.addPreProcessor(new RelationalAutoGeneratorPreProcessor());
+    
+    // Add the data factory to the report
+    report.setDataFactory(new TableDataFactory(&quot;Sample4Query&quot;, new Sample4TableModel()));
+    report.setQuery(&quot;Sample4Query&quot;);
+    // return
+    return report;
+  }
+  /**
+   * The table model used for this sample.
+   * <br/>
+   * In a real situation, this would never happen (a JNDI datasource connected up to 
+   * customer data would be more normal). But for a sample, some hard coded
+   * data is to be expected.
+   */
+  private static class Sample4TableModel extends AbstractTableModel
+  {
+    /**
+     * The sample data
+     */
+    private static final Object[][] data = new Object[][]
+    { 
+      new Object[] { &quot;Acme Industries&quot;, 2500, 18.75 }, 
+      new Object[] { &quot;Brookstone Warehouses&quot;, 5000, 36.1245 }, 
+      new Object[] { &quot;Cartwell Restaurants&quot;, 18460, 12.9 }, 
+      new Object[] { &quot;Domino Builders&quot;, 20625, 45.52 }, 
+      new Object[] { &quot;Elephant Zoo Enclosures&quot;, 750, 19.222 }, 
+    };
+    /**
+     * Returns the number of columns of data in the sample dataset
+     */
+    public int getColumnCount()
+    {
+      return data[0].length;
+    }
+    /**
+     * Returns the number of rows in the sample data
+     */
+    public int getRowCount()
+    {
+      return data.length;
+    }
+    /**
+     * Returns the data value at the specific row and column index
+     */
+    public Object getValueAt(int rowIndex, int columnIndex)
+    {
+      if (rowIndex >= 0 &amp;&amp; rowIndex < data.length &amp;&amp; columnIndex >= 0 &amp;&amp; columnIndex < data[rowIndex].length)
+      {
+        return data[rowIndex][columnIndex];
+      }
+      return null;
+    }
+  }
+}</pre>
+        <br />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Directions_for_Running_Sample4" rel="internal">Directions for Running Sample4</a>  </li>
+    </ol>
+  </body>
+</content>

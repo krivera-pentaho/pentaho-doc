@@ -1,0 +1,66 @@
+<content type="text/html" title="Cache Report Content">
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">You can cache the result sets of parameterized reports so that every time you change a parameter during your user session (all caching is on a per-session basis) you do&nbsp;not have to retrieve a new result set. By default, Pentaho Reporting
+          has result set caching turned on, but you may find some advantage in turning it off or changing the cache thresholds and settings.</p>
+        <p class="pentaho-note">When you publish a report to the Pentaho&nbsp;Server, you switch cache and engine configurations from the local Report Designer versions of <code>ehcache.xml</code>&nbsp;and <code>classic-engine.properties</code>&nbsp;to the server's version inside
+          the Pentaho WAR. These configurations may not be the same, so if you have made changes to the result set cache settings locally, you may want to port those changes over to the Pentaho Server as well.</p>
+      </div>
+      <div id="section_1" class="mt-page-section"><span id="Result_Set_Caching"></span> 
+        <h2 class="editable">Result Set Caching</h2>
+        <p class="p">When rendered, a parameterized report must account for every dataset required for every parameter. Every time a parameter field changes, every dataset is recalculated, which can negatively impact performance.</p>
+        <p class="p">You can avoid gratuitous dataset recalculations by caching parameter datasets. This is accomplished through the EHcache framework built into the Pentaho&nbsp;Server. You can configure specific settings for published reports by editing the <code>ehcache.xml</code>&nbsp;file
+          in the <span class="ph filepath">/WEB-INF/classes/</span>  folder inside of the pentaho.war. The relevant element is:</p>
+        <p class="p">Anything containing complex objects is not cached (CLOB and BLOB data types). These&nbsp;are results coming from a scripting dataset, a Java method call, a table data source, an external data source (computed in an action sequence), or a CDA data
+          source. In all cases, either no point in caching exists because it would be more expensive than recalculating, or because not enough hints are available in the involved parameters.</p> <pre class="pre codeblock">
+
+<!--
+    Defines a cache used by the reporting engine to hold small datasets.
+    This cache can be configured to have a separate instance for each
+logged in user via the
+    global report configuration. This per-user cache is required if role
+or other security and
+    filter information is used in ways invisible for the reporting
+engine.
+  -->
+  <cache name=&quot;report-dataset-cache&quot;
+        maxElementsInMemory=&quot;50&quot;
+        eternal=&quot;false&quot;
+        overflowToDisk=&quot;false&quot;
+        timeToIdleSeconds=&quot;300&quot;
+        timeToLiveSeconds=&quot;600&quot;
+        diskPersistent=&quot;false&quot;
+        diskExpiryThreadIntervalSeconds=&quot;120&quot;
+    /></pre>
+        <p class="p">However,&nbsp;if a cache exists for too long, it may not reflect in the report output because it's still using old data. So there is a balance between performance and accuracy that you must tailor to your needs.</p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Result_Set_Cache_Options"></span> 
+        <h2 class="editable">Result Set Cache Options</h2>
+        <p class="p">These <code>classic-engine.properties</code>&nbsp;options control result set caching in parameterized reports.</p>
+        <table border="1" cellpadding="4" cellspacing="0" class="simpletable properties" summary="">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="e156f078-3fa7-4272-a7a6-3ca54a5aa5ab__d77692e26" valign="bottom" width="33.333333333333336%">Option</th>
+              <th align="left" class="stentry propvaluehd" id="e156f078-3fa7-4272-a7a6-3ca54a5aa5ab__d77692e29" valign="bottom" width="66.66666666666667%">Purpose</th>
+              <th align="left" class="stentry propdeschd" id="e156f078-3fa7-4272-a7a6-3ca54a5aa5ab__d77692e32" valign="bottom" width="NaN%">Possible Values</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d77692e26" valign="top" width="33.333333333333336%"><code>org.pentaho.reporting&#8203;.platform.plugin.cache.&#8203;PentahoDataCache.CachableRowLimit</code></td>
+              <td class="stentry propvalue" headers="d77692e29" valign="top" width="66.66666666666667%">Number of rows in the dataset that will be cached; the higher the number, the larger the cache and the more disk space is used while the cache is active.</td>
+              <td class="stentry propdesc" headers="d77692e32" valign="top" width="NaN%">Integer; default value is 1000.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <div class="related-links">&nbsp;</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Result_Set_Caching" rel="internal">Result Set Caching</a>  </li>
+      <li> <a href="#Result_Set_Cache_Options" rel="internal">Result Set Cache Options</a>  </li>
+    </ol>
+  </body>
+</content>

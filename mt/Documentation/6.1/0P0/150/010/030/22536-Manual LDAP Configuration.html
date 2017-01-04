@@ -1,0 +1,60 @@
+<content type="text/html" title="Manual LDAP Configuration">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You must have a working directory server with an established configuration before continuing.</div>
+        <div class="section context">
+          <p class="p">Follow the instructions below to manually switch from Pentaho default security to LDAP security.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the BA Server and User Console.</span> </li>
+          <li class="li step"><span class="ph cmd">Change the <code class="ph codeph">securities.properties</code> file located at <span class="ph filepath">/pentaho-solutions/system</span>  folder from<code class="ph codeph"> provider=jackrabbit</code> to <code class="ph codeph">provider=ldap</code>            .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then edit the <span class="ph filepath">/pentaho-solutions/system/applicationContext-security-ldap.properties</span>  file and modify the <strong class="ph b">localhost</strong>  and <strong class="ph b">password</strong>             to match your configuration.</span> 
+            <p class="p">&nbsp;</p> <pre class="pre codeblock">
+<code class="ph codeph">contextSource.providerUrl=ldap\://<strong class="ph b">localhost</strong> \:10389/ou\=system
+</code></pre>
+            <p class="p">&nbsp;</p> <pre class="pre codeblock">
+<code class="ph codeph">contextSource.password=<strong class="ph b">secret</strong> </code></pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then edit the <span class="ph filepath">/pentaho-solutions/system/data-access/settings.xml</span>  file and modify the settings to match your LDAP configuration. </span>  Find and replace the entries
+            for <span class="ph uicontrol">Administrator</span>  in the examples below with the correct administrator name for your LDAP configuration. <pre class="pre codeblock">
+<code class="ph codeph"><!&ndash; roles with data access permissions &ndash;>
+<data-access-roles><strong class="ph b">Administrator</strong> </data-access-roles>
+<!&ndash; users with data access permissions &ndash;>
+<!&ndash;
+<data-access-users></data-access-users>
+&ndash;>
+<!&ndash; roles with datasource view permissions &ndash;>
+<data-access-view-roles>Authenticated,<strong class="ph b">Administrator</strong> </data-access-view-roles>
+<!&ndash; users with datasource view permissions &ndash;>
+<!&ndash; <data-access-view-users>suzy</data-access-view-users> &ndash;>
+<!&ndash; default view acls for user or role &ndash;>
+<data-access-default-view-acls>31</data-access-default-view-acls></code></pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then edit the following files in the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/</span>  directory and change all instances of the <strong class="ph b">Administrator</strong>             and <strong class="ph b">Authenticated</strong>  role values to match the appropriate roles in your LDAP configuration: </span> 
+            <ul class="ul">
+              <li class="li">pentaho.xml</li>
+              <li class="li">repository.spring.properties</li>
+              <li class="li">applicationContext-spring-security.xml</li>
+            </ul>
+          </li>
+          <li class="li step"><span class="ph cmd">Delete these two folders from the <code class="ph codeph">/pentaho/server/biserver-ee/pentaho-solutions/system/jackrabbit/repository</code> directory:</span> 
+            <ul class="ul" id="f197e044-99bf-4109-b5f8-881089ac8174__admin_ldap_dao__ul_pm1_mpx_5m">
+              <li class="li">repository</li>
+              <li class="li">workspaces</li>
+            </ul>
+          </li>
+          <li class="li step"><span class="ph cmd">Restart the BA Server and test the LDAP functionality.</span> </li>
+        </ol>
+        <div class="section result">The BA Server is now configured to authenticate users against your directory server. The
+          <a class="xref" title="Documentation/5.1/0P0/150/010/030/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010/030/010">LDAP Properties</a>  reference article contains supplemental information for LDAP values.</div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/150/010/030/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010/030/000">Use Nested Roles in LDAP</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/150/010/030/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010/030/010">LDAP Properties</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

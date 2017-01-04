@@ -1,0 +1,30 @@
+<content type="text/html" title="Changing the Kettle Home Directory within the Pentaho BI Platform">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">You can set the KETTLE_HOME directory in the BA Server:</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">When started as a service, edit the registry: <code class="ph codeph">HKEY_LOCAL_MACHINE\SOFTWARE\Apache Software Foundation\Procrun 2.0\pentahobiserver\Parameters\Java</code> </span> 
+            <div class="note note"><span class="notetitle">Note:</span>  On 64-bit systems, the Apache Software Foundation is under <strong class="ph b">Wow6432Node</strong> .</div>
+          </li>
+          <li class="li step"><span class="ph cmd">Add a new line (<strong class="ph b">not a space!</strong> ) to the <strong class="ph b">Options</strong>  associated with the KETTLE_HOME variable, for example, <code class="ph codeph">-Dcatalina.base=C:\Pentaho\3.0.1\Installed/server/biserver-ee/tomcat</code> </span>             <pre class="pre codeblock">
+[...] 
+-XX:MaxPermSize=256m 
+-DKETTLE_HOME=C:\Pentaho\Kettle\KETTLE_HOME</pre> </li>
+          <li class="li step"><span class="ph cmd">Reboot the server.</span> </li>
+          <li class="li step"><span class="ph cmd">When you start the BA Server from the command line, you must edit the <code class="ph codeph">...server\biserver-ee\start-pentaho.bat</code> (see below): </span>  <pre class="pre codeblock">
+[...] 
+set CATALINA_HOME=%PENTAHO_PATH%tomcat 
+set CATALINA_OPTS=-Xms256m -Xmx768m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -DKETTLE_HOME=C:\Pentaho\Kettle\KETTLE_HOME 
+call startup 
+endlocal 
+:quit</pre> </li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

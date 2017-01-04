@@ -1,0 +1,81 @@
+<content type="text/html" title="Starting BA Server on Linux">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Modify_the_Tomcat_Linux_Startup_Script"></span> 
+        <h2 class="editable">Modify&nbsp;the Tomcat Linux Startup Script</h2>
+        <p>The Tomcat startup script must be modified to include the <span class="ph filepath">CATALINA_OPTS</span>  variable. <span class="ph filepath">CATALINA_OPTS</span>  indicates the amount of memory to allocate. It also indicates where Pentaho licenses
+          are installed.&nbsp;</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Make sure the Tomcat web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <span class="ph filepath">ps -A</span>  at the prompt. If the server is running, stop it.</li>
+          <li class="li step">Use a text editor to open the <span class="ph filepath">startup.sh</span>  file, which is in the biserver-ee&nbsp;directory.</li>
+          <li class="li step">Add the java option pentaho.installed.licenses.file to CATALINA_OPTS. You need to modify setting of
+            <br /> CATALINA_OPTS variable at the end of the file by adding the java option. &nbsp;See the following example.</li>
+        </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH&quot;</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li class="li step">Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Modifying_the_JBoss_Linux_Startup_Script"></span> 
+        <h2 class="editable">Modifying the JBoss Linux Startup Script</h2>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Make sure the JBoss web application server is not running by opening a <strong>Terminal</strong>  window and typing <span class="ph filepath">ps -A</span>  at the prompt. If the server is running, stop it.</li>
+          <li class="li step">Use a text editor to open the <span class="ph filepath">standalone.conf</span>  file. The file is located in the <span class="ph filepath">bin</span>  subdirectory of your JBoss home directory.</li>
+          <li class="li step">Modify the <span class="ph filepath">Xms</span>  memory settings in the <span class="ph filepath">JAVA_OPTS</span>  line to be at least 4096 MB or more, if you have the resources and are concerned with performance. Change the <span class="ph filepath">Xmx</span>             value to at least 6144 MB.</li>
+          <li class="li step">Add the following options to the <span class="ph filepath">JAVA_OPTS</span>  line: <span class="ph filepath">-Djava.awt.headless=true</span>  <span class="ph filepath">-Djava.io.tmpdir=/tmp/</span>  <span class="ph filepath">-Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH </span>             <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># Specify options to pass to the Java VM.
+    if [ &quot;x$JAVA_OPTS&quot; = &quot;x&quot; ]; then
+        JAVA_OPTS=&quot;-Xms4096m \
+        -Xmx6144m \
+        -XX:MaxPermSize=256m \
+        -Dsun.rmi.dgc.client.gcInterval=3600000 \
+        -Dsun.rmi.dgc.server.gcInterval=3600000 \
+        <b>-Djava.awt.headless=true \
+        -Djava.io.tmpdir=/tmp/ \
+        -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH</pre> <span class="ph filepath"> You may need to adjust these settings for your environment. For instance, if you do not have a <span class="ph filepath">/tmp/</span>  directory,
+            you may want to change that setting to <span class="ph filepath">/var/tmp/</span>  or some other location.</span> 
+          </li>
+          <li class="li step">Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Start_BA_Server"></span> 
+        <h2 class="editable">Start BA Server</h2>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Run the startup script for your web application server by launching one these files.
+            <div class="p">
+              <ul>
+                <li class="li"><strong class="ph b">Linux Tomcat:</strong>  Launch the <span class="ph filepath"><span class="filepath style-wrap">startup.sh</span>  </span> file. The file is in the Tomcat <span class="ph filepath">bin</span>  directory.</li>
+                <li class="li"><strong class="ph b">Linux JBoss:</strong>  Launch the <span class="filepath style-wrap"><span class="ph filepath">standalone.sh</span> </span>  file. The file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+              </ul>
+            </div>
+          </li>
+          <li class="li step">Open a web browser and enter this URL: <span class="ph filepath"><a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a> </span> . The <strong>User Console Log On</strong>             window appears. Note that you will be prompted to install a license. Information on how to do that appears in the
+            <a class="xref" title="https://help.pentaho.com/Documentation/5.3/0H0/060/010/020" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0H0/060/010/020">Set Up BA Server</a>  instructions.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Modify_the_Tomcat_Linux_Startup_Script" rel="internal">Modify&nbsp;the Tomcat Linux Startup Script</a>  </li>
+      <li> <a href="#Modifying_the_JBoss_Linux_Startup_Script" rel="internal">Modifying the JBoss Linux Startup Script</a>  </li>
+      <li> <a href="#Start_BA_Server" rel="internal">Start BA Server</a>  </li>
+    </ol>
+  </body>
+</content>

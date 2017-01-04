@@ -1,0 +1,101 @@
+<content type="text/html" title="Reporting Samples">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Executing_a_report_from_a_HTML_form_(POSTing_parameters)"></span> 
+            <h2 class="editable">Executing a report from a HTML form (POSTing parameters)</h2>
+            <p class="p">This sample renders a prpt report by posting the report parameters to the report REST URL:</p>
+            <p class="p"><code class="ph codeph"><a class="external" href="http://localhost:8080/pentaho/api/repos/" rel="freeklink" title="http://localhost:8080/pentaho/api/repos/">http://localhost:8080/pentaho/api/repos/</a> <path>/<strong class="ph b">generatedContent</strong> </code></p>
+            <p class="p">The POST request contains all parameters the report expects, plus the additional rendering parameter <code class="ph codeph">output-target</code>, which controls the rendering format (HTML, PDF, XLS, etc.)</p>
+            <p class="p">The following output formats are supported:</p>
+            <div class="p">
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="7add9c18-83f8-4b63-9319-b83effdbeb20__integrating_server_example_reportviewer__table_drz_cxb_jk" rules="all" summary="">
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" valign="top"><strong class="ph b">Option</strong> </td>
+                      <td class="entry" valign="top"><strong class="ph b">Purpose</strong> </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">table/html;page-mode=stream</td>
+                      <td class="entry" valign="top">HTML as a single page, all report pagebreaks are ignored.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">table/html;page-mode=page</td>
+                      <td class="entry" valign="top">HTML as a sequence of physical pages, manual and automatic pagebreaks are active.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;page-mode=flow</td>
+                      <td class="entry" valign="top">Excel 2007 XLSX Workbook</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">table/excel;page-mode=flow</td>
+                      <td class="entry" valign="top">Excel 97 Workbook</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">table/csv;page-mode=stream</td>
+                      <td class="entry" valign="top">CSV output</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">table/rtf;page-mode=flow</td>
+                      <td class="entry" valign="top">Rich text format</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">pageable/pdf</td>
+                      <td class="entry" valign="top">PDF output</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">pageable/text</td>
+                      <td class="entry" valign="top">Plain text</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">pageable/xml</td>
+                      <td class="entry" valign="top">Pageable layouted XML</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">table/xml</td>
+                      <td class="entry" valign="top">Table-XML output</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">pageable/X-AWT-Graphics;image-type=png</td>
+                      <td class="entry" valign="top">A single report page as PNG.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top">mime-message/text/html</td>
+                      <td class="entry" valign="top">MIME email with HTML as body text and all style and images as inline attachments.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Rendering_a_report_in_an_IFRAME"></span> 
+            <h2 class="editable">Rendering a report in an IFRAME</h2>
+            <p class="p">This sample renders a prpt report using a regular GET request, by populating an HTML IFRAME with the report REST URL:</p>
+            <p class="p"><code class="ph codeph"><a class="external" href="http://localhost:8080/pentaho/api/repos/" rel="freeklink" title="http://localhost:8080/pentaho/api/repos/">http://localhost:8080/pentaho/api/repos/</a> <path>/<strong class="ph b">generatedContent</strong> ?<parameters></code></p>
+            <p class="p">The request contains all parameters as part of the URL.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Rendering_report_viewer_with_available_parameters_and_executed_report"></span> 
+            <h2 class="editable">Rendering report viewer with available parameters and executed report</h2>
+            <p class="p">The sample renders the <strong class="ph b">Pentaho Report Viewer IU</strong>  by populating an HTML IFRAME with the report REST URL:</p>
+            <p class="p"><code class="ph codeph"><a class="external" href="http://localhost:8080/pentaho/api/repos/" rel="freeklink" title="http://localhost:8080/pentaho/api/repos/">http://localhost:8080/pentaho/api/repos/</a> <path>/<strong class="ph b">viewer</strong> ?<parameters></code></p>
+            <p class="p">The request contains the initial report parameters as part of the URL.</p>
+            <p class="p">&nbsp;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Executing_a_report_from_a_HTML_form_(POSTing_parameters)" rel="internal">Executing a report from a HTML form (POSTing parameters)</a>  </li>
+      <li> <a href="#Rendering_a_report_in_an_IFRAME" rel="internal">Rendering a report in an IFRAME</a>  </li>
+      <li> <a href="#Rendering_report_viewer_with_available_parameters_and_executed_report" rel="internal">Rendering report viewer with available parameters and executed report</a>  </li>
+    </ol>
+  </body>
+</content>

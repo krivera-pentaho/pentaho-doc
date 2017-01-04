@@ -1,0 +1,69 @@
+<content type="text/html" title="Apply Data Constraints">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">In the Pentaho Metadata Editor, select the model to which you want to add Row Level Security, right click on the Model, and select <strong class="ph b">Edit</strong> . </p>
+        <p class="p">
+          <img alt="Role Based             Security" class="image internal" src="http://help.pentaho.com/@api/deki/files/1735/42_pme_role_based_security.png?revision=1" /> </p>
+        <p class="p">Row Level Security is only in effect at the Model level. Any data constraints defined below the Model Level, such as in a Business Table or Business Column, is ignored and not used. In the Model Properties dialog box, select the <strong class="ph b">General</strong>           -> <strong class="ph b">Data Constraints </strong> . </p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Global_Constraint"></span> 
+            <h2 class="editable"> 
+              <strong class="ph b">Global Constraint</strong>  
+            </h2>
+            <p class="p">If you are using the <strong class="ph b">Global Constraint</strong>, a single MQL Formula is used to define security for all users. In addition to the standard MQL Functions available, there are also two additional functions:</p>
+            <ul class="ul">
+              <li class="li">USER() - returns the name of the current user</li>
+              <li class="li">ROLES() - returns a list of roles associated with the current user</li>
+            </ul>
+            <p class="p">The example below defines an MQL formula that allows administrators full access; all other users have no access,</p> <pre class="pre codeblock">IN(&quot;Admin&quot;; ROLES())</pre> </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Role-Based_Constraints"></span> 
+            <h2 class="editable"> 
+              <strong class="ph b">Role-Based Constraints</strong>  
+            </h2>
+            <p class="p">If you are using <strong class="ph b">Role-Based Constraints</strong>, the Metadata engine determines which MQL constraints are appropriate for the current user and applies them to the current query. Constraints may be added for each Role
+              and User in a system. If zero constraints match a user and his or her roles, no data is returned by the MQL query. If more than one constraint applies to a user, the constraints are OR'ed together to determine row visibility.</p>
+            <p class="p">This example below defines an MQL Formula for three different roles. The Admin role has full row visibility, the Sales and Engineering roles can access data that joins to rows associated with their specific department only.</p>
+            <div class="tablenoborder">
+              <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all">
+                <thead class="thead" align="left">
+                  <tr class="row">
+                    <th class="entry" valign="top" id="c6bcb620-7031-4888-8ea3-0f491d99e6e9__d1014e91"> <strong class="ph b">Role</strong>  </th>
+                    <th class="entry" valign="top" id="c6bcb620-7031-4888-8ea3-0f491d99e6e9__d1014e97"> <strong class="ph b">Constraint</strong>  </th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d1014e91 d1014e97 ">Admin</td>
+                    <td class="entry" valign="top" headers="d1014e91 d1014e97 ">TRUE() </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d1014e91 d1014e97 ">Sales</td>
+                    <td class="entry" valign="top" headers="d1014e91 d1014e97 ">[BC_DEPARTMENT]=&quot;Sales&quot; </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d1014e91 d1014e97 ">Engineering</td>
+                    <td class="entry" valign="top" headers="d1014e91 d1014e97 ">[BC_DEPARTMENT]=&quot;Engineering&quot;</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="p">
+              <div class="note important"><span class="importanttitle">Important:</span>  Row Level Security Constraints are applied at the MQL Layer. The Business Columns referenced in the MQL Security Constraints will be resolved down to SQL Table Columns. The Tables which contain
+                column references included in security constraints will be joined to your query, based on the relationships defined in the Business Model. It is recommended that you do not use outer joined business columns for the purposes of security
+                constraints.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Global_Constraint" rel="internal"> Global Constraint </a>  </li>
+      <li> <a href="#Role-Based_Constraints" rel="internal"> Role-Based Constraints </a>  </li>
+    </ol>
+  </body>
+</content>

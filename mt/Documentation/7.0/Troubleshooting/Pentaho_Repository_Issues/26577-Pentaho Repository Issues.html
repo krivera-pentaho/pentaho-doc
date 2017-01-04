@@ -1,0 +1,78 @@
+<content type="text/html" title="Pentaho Repository Issues">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+  </head>
+  <body>
+    <div class="body">
+      <p class="p">Follow the suggestions in these topics&nbsp;to help&nbsp;resolve common issues associated with the&nbsp;Pentaho Repository:</p>
+      <ul>
+        <li>Debugging a&nbsp;Corrupted Pentaho Server Repository</li>
+        <li>Unable to Get List of Repositories</li>
+      </ul>
+      <p>See Pentaho&nbsp;
+        <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="Debugging_a_Corrupted_Pentaho_Server_Repository"></span> 
+      <h2 class="editable">Debugging a&nbsp;Corrupted Pentaho Server Repository</h2>
+      <p class="p">A corrupted&nbsp;Pentaho Repository will become&nbsp;unresponsive&nbsp;resulting in missing content, inaccessibility, and the following error message that appears in the <span class="ph filepath">/pentaho-server/tomcat/logs/catalina.out</span>  log
+        file:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">ERROR [ConnectionRecoveryManager] could not execute statement, reason: File corrupted while reading record: &quot;page[48970] data leaf table:8 entries:1 parent:49157 keys:[118547] offsets:[737]&quot;. Possible solution: use the recovery tool [90030-131], state/code: 90030/90030</pre>
+      <p class="p">If this error occurs, shut down the Pentaho Server and restore your solution repository from a recent backup.</p>
+      <p class="p">If you do not have a viable backup, you may be able to minimize data loss by identifying the exact file that is corrupt. Enable debug logging by adding the following XML snippet above the <code><root></code>&nbsp;element in the <span class="ph filepath">/WEB-INF/classes/log4j.xml</span>         inside your deployed <code>pentaho.war</code>:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><category name=&quot;org.pentaho.platform&quot;>
+     <priority value=&quot;DEBUG&quot;/>
+</category></pre>
+      <p class="p">Restart the Pentaho Server and retry the action that caused the original error. If it occurs again, shut down the Pentaho Server and open the <code>catalina.out</code>&nbsp;log file in Tomcat. The last line that appears before the error usually
+        contains the name of the file that has been damaged.</p>
+      <p class="p">When you have finished investigating, remove the extra logging capabilities so that your Pentaho&nbsp;Server log files do&nbsp;not become large and unmanageable.</p>
+      <div id="section_2" class="mt-page-section"><span id="Using_the_H2_Database_Recovery_Tool"></span> 
+        <h3 class="editable">Using the H2&nbsp;Database Recovery Tool</h3>
+        <div class="section context">
+          <p class="p">The Pentaho Server includes a third-party H2 database recovery tool that enables you to extract raw data from your&nbsp;Pentaho Repository. This recovery tool is primarily useful in situations where the repository has become corrupt&nbsp;and
+            you do not have any relevant backups.</p>
+          <p class="pentaho-note">If the database has become corrupt, the corrupted rows will not be exported. Any information contained in corrupted rows is unrecoverable through this method.</p>
+          <p class="p">The recovery tool is a JAR you run via the Java command. The output is a SQL dump that you can then attempt to import after you have re-initialized your Pentaho Server database.</p>
+          <p class="p">Read more about the recovery tool on the H2 Web site:&nbsp;
+            <a class="xref external" href="http://www.h2database.com/html/advanced.html#using_recover_tool" rel="external nofollow" target="_blank" title="http://www.h2database.com/html/advanced.html#using_recover_tool">http://www.h2database.com/html/advanced.html#using_recover_tool</a> .</p>
+          <p class="p">Follow these directions to use the recovery tool:</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Open a terminal on (or establish an SSH connection to) your </span> Pentaho<span class="ph cmd"> Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Navigate to the&nbsp;<span class="ph filepath">/pentaho-solutions/system/jackrabbit/repository/version/</span> &nbsp;folder.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cd pentaho-server/pentaho-solutions/system/jackrabbit/repository/version/</pre>            </li>
+          <li class="li step"><span class="ph cmd">Run the <code>h2-1.2.131.jar</code>&nbsp;H2 database JAR with the recovery tool option.</span>  <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">java -cp h2-1.2.131.jar org.h2.tools.Recover</pre>            </li>
+          <li class="li step"><span class="ph cmd">Create a directory to move your old database files.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mkdir old</pre> </li>
+          <li class="li step"><span class="ph cmd">Move the old database files to the directory created in the previous step.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mv db.h2.db db.trace.db old</pre>            </li>
+          <li class="li step"><span class="ph cmd">Re-initialize the repository with the <code>RunScript</code>&nbsp;option&nbsp;using the salvaged SQL dump as the source.</span>  <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">java -cp h2-1.2.131.jar org.h2.tools.RunScript -url jdbc:h2:./db -user sa -script db.h2.sql</pre>            </li>
+          <li class="li step"><span class="ph cmd">The backup directory you created earlier (<code>old</code>&nbsp;in the above example) can be removed after you are sure that you no longer need the corrupted database files.</span> </li>
+          <li class="li step">Start the Pentaho Server and check for further errors. If repository errors persist, contact Pentaho support.</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Unable_to_Get_List_of_Repositories"></span> 
+      <h2 class="editable">Unable to Get List of Repositories</h2>
+      <p>When you are working with a repository and trying to execute a job or transformation remotely on a Carte server, the following error message may appears:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">There was an error posting the transformation on the remote server:
+   org.pentaho.di.core.exception.KettleException:
+   Unable to get a list of repositories to locate repository 'repo'</pre>
+      <p>To execute a job or transformation remotely on a Carte server, you first need to copy the local <span class="ph filepath">repositories.xml</span>  from the user's <span class="ph filepath">.kettle</span>  directory to the Carte server's <span class="ph filepath">$HOME/.kettle</span>         directory. The Carte service also looks for the <span class="ph filepath">repositories.xml</span>  file in the directory where Carte was started.</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Debugging_a_Corrupted_Pentaho_Server_Repository" rel="internal">Debugging a&nbsp;Corrupted Pentaho Server Repository</a> 
+        <ol>
+          <li> <a href="#Using_the_H2_Database_Recovery_Tool" rel="internal">Using the H2&nbsp;Database Recovery Tool</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Unable_to_Get_List_of_Repositories" rel="internal">Unable to Get List of Repositories</a>  </li>
+    </ol>
+  </body>
+</content>

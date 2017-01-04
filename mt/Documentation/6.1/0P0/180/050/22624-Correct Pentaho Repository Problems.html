@@ -1,0 +1,103 @@
+<content type="text/html" title="Correct Pentaho Repository Problems">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to recognize and correct DI Respository issues.</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p>Common&nbsp;Pentaho Repository problems and solutions appear in the following sections.</p>
+        <div id="section_2" class="mt-page-section"><span id="Cannot_Create_Jackrabbit_Tables_in_MySQL"></span> 
+          <h2 class="editable">Cannot Create Jackrabbit Tables in MySQL</h2>
+          <p class="p">The Pentaho solution repository uses long text strings that require a longer maximum character limit than the default UTF-8 configuration allows. Therefore, if your MySQL character set is configured to use UTF-8, you must change it to
+            <strong
+            class="ph b">ASCII</strong>  instead in order to use it as a Pentaho solution database. Using UTF-8 will prevent the MySQL initialization scripts from running during installation.</p>
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Troubleshooting_a_Corrupted_DI_Server_Repository"></span> 
+        <h2 class="editable">Troubleshooting a Corrupted DI Server Repository</h2>
+        <div class="related-links">
+          <div class="body conbody">
+            <p class="p">If the&nbsp;Pentaho Repository becomes corrupt, it will be unresponsive, content may be missing or inaccessible, and an error message similar to this will appear in the&nbsp;<span class="ph filepath">/data-integration-server/tomcat/logs/catalina.out</span> &nbsp;log
+              file:</p> <pre class="pre codeblock">
+ERROR [ConnectionRecoveryManager] could not execute statement, reason: File corrupted while reading record: &quot;page[48970] data leaf table:8 entries:1 parent:49157 keys:[118547] offsets:[737]&quot;. Possible solution: use the recovery tool [90030-131], state/code: 90030/90030
+</pre>
+            <p class="p">If this happens, shut down the DI Server and restore your solution repository from a recent backup.</p>
+            <p class="p">If you do not have a viable backup, you may be able to minimize data loss by identifying the exact file that is corrupt. To do this, enable debug logging by adding the following XML snippet above the&nbsp;<strong class="ph b"><root></strong> &nbsp;element
+              in the&nbsp;<span class="ph filepath">/WEB-INF/classes/log4j.xml</span> &nbsp;inside your deployed pentaho.war:</p> <pre class="pre codeblock">
+<category name=&quot;org.pentaho.platform&quot;>
+     <priority value=&quot;DEBUG&quot;/>
+</category>
+</pre>
+            <p class="p">Restart the DI Server and retry the action that caused the original error. If it occurs again, shut down the DI Server and open the<strong class="ph b">catalina.out</strong> &nbsp;log file in Tomcat. Look for the last line that appears before
+              the error; it usually contains the name of the file that has been damaged. When you are finished investigating the data corruption, remove the extra logging capabilities so that your DI Server log files don't become large and unmanageable.</p>
+            <pre class="pre codeblock">
+reading file with id 'xyz' and path '/public/a.txt'
+</pre>
+            <p class="p">You can also try to recover your PDI data from the damaged database by using a recovery program, as explained in&nbsp;
+              <a class="xref" href="/Documentation/5.1/180/0F0" rel="internal" title="Documentation/5.1/180/0F0">Using the H2 Database Recovery Tool</a> .</p>
+            <div class="note note"><span class="notetitle">Note:</span> &nbsp;If the database has become corrupt, the damaged rows will not be exported with the recovery tool, and whatever information they contained will be lost.</div>
+            <div class="section context">
+              <div id="section_4" class="mt-page-section"><span id="Using_the_H2_Database_Recovery_Tool"></span> 
+                <h3 class="editable">Using the H2&nbsp;Database Recovery Tool</h3>
+                <p class="p">The DI Server includes a third-party H2 database recovery tool that enables you to extract raw data from your&nbsp;Pentaho Repository. This is primarily useful in situations where the repository has become corrupt, and you don't have any
+                  relevant backups to restore from.</p>
+                <div class="note note"><span class="notetitle">Note:</span> &nbsp;If the database has become corrupt, the corrupted rows will not be exported. Any information contained in corrupted rows is unrecoverable through this method.</div>
+                <p class="p">The recovery tool is a JAR that must be run via the Java command. The output is a SQL dump that you can then attempt to import after you've re-initialized your DI Server database.</p>
+                <p class="p">You can read more about the recovery tool on the H2 Web site:&nbsp;
+                  <a class="xref external" href="http://www.h2database.com/html/advanced.html#using_recover_tool" rel="external nofollow" target="_blank" title="http://www.h2database.com/html/advanced.html#using_recover_tool">http://www.h2database.com/html/advanced.html#using_recover_tool</a> .</p>
+                <p class="p">Follow the directions below to use the recovery tool.</p>
+              </div>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Open a terminal on (or establish an SSH connection to) your DI Server.</span> </li>
+              <li class="li step"><span class="ph cmd">Navigate to the&nbsp;<span class="ph filepath">/pentaho-solutions/system/jackrabbit/repository/version/</span> &nbsp;directory.</span>  <pre class="pre codeblock">
+ cd data-integration-server/pentaho-solutions/system/jackrabbit/repository/version/
+</pre> </li>
+              <li class="li step"><span class="ph cmd">Run the&nbsp;<strong class="ph b">h2-1.2.131.jar</strong> &nbsp;H2 database JAR with the recovery tool option.</span>  <pre class="pre codeblock">
+java -cp h2-1.2.131.jar org.h2.tools.Recover
+</pre> </li>
+              <li class="li step"><span class="ph cmd">Create a directory to move your old database files to.</span>  <pre class="pre codeblock">
+mkdir old
+</pre> </li>
+              <li class="li step"><span class="ph cmd">Move the old database files to the directory you just created.</span>  <pre class="pre codeblock">
+mv db.h2.db db.trace.db old
+</pre> </li>
+              <li class="li step"><span class="ph cmd">Re-initialize the repository with the&nbsp;<strong class="ph b">RunScript</strong> &nbsp;option, using the salvaged SQL dump as the source.</span>  <pre class="pre codeblock">
+java -cp h2-1.2.131.jar org.h2.tools.RunScript -url jdbc:h2:./db -user sa -script db.h2.sql
+</pre> </li>
+              <li class="li step"><span class="ph cmd">The backup directory you created earlier (<strong class="ph b">old</strong> &nbsp;in the above example) can be removed after you're sure that you don't need the corrupted database files anymore. However, it's a good idea to keep this around just in case you need it later.</span> </li>
+            </ol>
+            <p>You've successfully extracted all of the usable data from your corrupt solution repository, removed the damaged database files, and re-initialized the repository with the salvaged data.</p>
+            <p>Start the DI Server and check for further errors. If repository errors persist, contact Pentaho support and request developer assistance.</p>
+            <div id="section_5" class="mt-page-section"><span id="Unable_to_Use_the_Database_Init_Scripts_for_PostgreSQL"></span> 
+              <h2 class="editable">
+                <span>Unable to Use the Database Init Scripts for PostgreSQL</span> 
+              </h2>
+              <p>The&nbsp;<strong class="ph b">pg_hba.conf</strong> &nbsp;file contains host-based authentication information. If you can't run the SQL scripts that generate the Jackrabbit and Quartz databases, it's probably because the default user accounts
+                for each database don't have the right permissions. To change this, edit the file to ensure that connections from local users created by the&nbsp;Pentaho&nbsp;sql&nbsp;scripts (such as&nbsp;<strong class="ph b">pentaho_user</strong> ) will
+                be able to connect. The default on&nbsp;Debian-based&nbsp;systems is for local connections you use&nbsp;<strong class="ph b">ident</strong> &nbsp;authentication, which means that database users must have local user accounts. In other words,
+                to continue using&nbsp;<strong class="ph b">ident</strong>, you would have to create a local&nbsp;<strong class="ph b">pentaho_user</strong> &nbsp;account. It's easier to just change the authentication method to something less restrictive,
+                if your IT manager allows that approach.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Cannot_Create_Jackrabbit_Tables_in_MySQL" rel="internal">Cannot Create Jackrabbit Tables in MySQL</a>  </li>
+      <li>
+        <a href="#Troubleshooting_a_Corrupted_DI_Server_Repository" rel="internal">Troubleshooting a Corrupted DI Server Repository</a> 
+        <ol>
+          <li> <a href="#Using_the_H2_Database_Recovery_Tool" rel="internal">Using the H2&nbsp;Database Recovery Tool</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Unable_to_Use_the_Database_Init_Scripts_for_PostgreSQL" rel="internal">Unable to Use the Database Init Scripts for PostgreSQL</a>  </li>
+    </ol>
+  </body>
+</content>

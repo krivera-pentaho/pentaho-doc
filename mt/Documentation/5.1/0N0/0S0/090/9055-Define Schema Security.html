@@ -1,0 +1,158 @@
+<content type="text/html" title="Define Schema Security">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Now you have all this great data, but what if you do not want everyone to be able to read all of it? To solve this, you can define a security profile, called a <em class="ph i">Role</em>, as part of the schema, and set this role when establishing
+          a connection. This restricts the role so that when you do publish the schema, only the specific parts that you designate will be available to members of that particular role.</p>
+      </div>
+      <div class="topic concept nested1" id="9fa0d24c-0d38-42f8-8a11-3f820a6528ba__concept_define_role">
+        <div id="section_1" class="mt-page-section"><span id="Define_a_Role"></span> 
+          <h2 class="editable">Define a Role</h2>
+          <div class="body conbody">
+            <p class="p">Roles are defined by <code class="ph codeph"><Role></code> elements, which occur as direct children of the <code class="ph codeph"><Schema></code> element, after the last <code class="ph codeph"><Cube></code>. Here is an example of a role.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Role name=&quot;California manager&quot;>
+<SchemaGrant access=&quot;none&quot;>
+<CubeGrant cube=&quot;Sales&quot; access=&quot;all&quot;>
+<DimensionGrant hierarchy=&quot;[Measures]&quot; access=&quot;all&quot;/>
+<HierarchyGrant hierarchy=&quot;[Store]&quot; access=&quot;custom&quot; topLevel=&quot;[Store].[Store Country]&quot;>
+<MemberGrant member=&quot;[Store].[USA].[CA]&quot; access=&quot;all&quot;/>
+<MemberGrant member=&quot;[Store].[USA].[CA].[Los Angeles]&quot; access=&quot;none&quot;/>
+</HierarchyGrant>
+<HierarchyGrant hierarchy=&quot;[Customers]&quot; access=&quot;custom&quot; topLevel=&quot;[Customers].[State Province]&quot; bottomLevel=&quot;[Customers].[City]&quot;>
+<MemberGrant member=&quot;[Customers].[USA].[CA]&quot; access=&quot;all&quot;/>
+<MemberGrant member=&quot;[Customers].[USA].[CA].[Los Angeles]&quot; access=&quot;none&quot;/>
+</HierarchyGrant>
+<HierarchyGrant hierarchy=&quot;[Gender]&quot; access=&quot;none&quot;/>
+</CubeGrant>
+</SchemaGrant>
+</Role></pre> </div>
+            <p class="p">A <code class="ph codeph"><SchemaGrant> </code>defines the default access for objects in a schema. The <code class="ph codeph">access</code> attribute can be <code class="ph codeph">all</code> or <code class="ph codeph">none</code>; this access
+              can be overridden for specific objects. In this case, because <code class="ph codeph">access=&quot;none&quot;</code>, a user would only be able to browse the <code class="ph codeph">Sales</code> cube, because it is explicitly granted.</p>
+            <p class="p">A <code class="ph codeph"><CubeGrant></code> defines the access to a particular cube. As for <code class="ph codeph"><SchemaGrant></code>, the access attribute can be <code class="ph codeph">all</code>, <code class="ph codeph">custom</code>,
+              or <code class="ph codeph">none</code>, and can be overridden for specific subobjects in the cube.</p>
+            <p class="p">A <code class="ph codeph"><DimensionGrant></code> defines access to a dimension. The access attribute can be <code class="ph codeph">all</code>, <code class="ph codeph">custom</code>, or <code class="ph codeph">none</code>. An access level
+              of <code class="ph codeph">all</code> means that all the child hierarchies of the dimension will get inherited access. An access level of <code class="ph codeph">custom</code> means that the role does not get an inherent access to the child
+              hierarchies, unless the role is explicitly granted using a <code class="ph codeph"><HierarchyGrant></code> element.</p>
+            <p class="p">A <code class="ph codeph"><HierarchyGrant></code> defines access to a hierarchy. The access attribute can be <code class="ph codeph">all</code>, meaning all members are visible; <code class="ph codeph">none</code>, meaning the hierarchy's
+              very existence is hidden from the user; and <code class="ph codeph">custom</code>. With custom access, you can use the <code class="ph codeph">topLevel</code> attribute to define the top level which is visible; this prevents users from seeing
+              too much of the 'big picture', such as viewing revenues rolled up to the Store Country level. Or you can use the <code class="ph codeph">bottomLevel</code> attribute to define the bottom level which is visible; this keeps users from looking
+              at individual customers' details. Control which sets of members the user can see, by defining nested <code class="ph codeph"><MemberGrant></code> elements.</p>
+            <p class="p">You can only define a <code class="ph codeph"><MemberGrant></code> element if its enclosing <code class="ph codeph"><HierarchyGrant></code> has <code class="ph codeph">access=&quot;custom&quot;</code>. Member grants give or remove access to
+              a given member, and all of its children. Here are the rules.</p>
+            <div class="p">
+              <ol class="pentaho-list-ordered" id="9fa0d24c-0d38-42f8-8a11-3f820a6528ba__concept_define_role__ol_srx_3nn_ym">
+                <li class="li"><strong class="ph b">Members inherit access from their parents.</strong>  If you deny access to California, you will not be able to see San Francisco.</li>
+                <li class="li"><strong class="ph b">Grants are order-dependent.</strong>  If you grant access to USA, then deny access to Oregon, then you will not be able to see Oregon, or Portland. But if you were to deny access to Oregon, then grant access to USA,
+                  you can effectively see everything.</li>
+                <li class="li"><strong class="ph b">A member is visible if any of its children are visible.</strong>  Suppose you deny access to USA, then grant access to California. You will be able to see USA, and California, but none of the other states. The totals
+                  against USA will still reflect all states, however. If the parent <code class="ph codeph">HierarchyGrant</code> specifies a top level, only the parents equal or below this level will be visible. Similarly, if a bottom level is specified,
+                  only the children above or equal to the level are visible.</li>
+                <li class="li"><strong class="ph b">Member grants do not override the hierarchy grant's top- and bottom-levels.</strong>  If you set <code class="ph codeph">topLevel=&quot;[Store].[Store State]&quot;</code>, and grant access to California, you will not
+                  be able to see USA. Member grants do not override the <code class="ph codeph">topLevel</code> and <code class="ph codeph">bottomLevel</code> attributes. You can grant or deny access to a member of any level, but the top and bottom constraints
+                  have precedence on the explicit member grants.</li>
+              </ol>
+            </div>
+            <p class="p">In the example, the user will have access to California, and all of the cities in California except Los Angeles. They will be able to see USA&mdash;because its child, California, is visible&mdash;but no other nations, and not All Stores, because
+              it is above the top level, <code class="ph codeph">Store Country</code>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9fa0d24c-0d38-42f8-8a11-3f820a6528ba__concept_rollup_policy">
+        <div id="section_2" class="mt-page-section"><span id="Rollup_Policy"></span> 
+          <h2 class="editable">Rollup Policy</h2>
+          <div class="body conbody">
+            <p class="p">A <em class="ph i">rollup policy</em>  determines how Mondrian computes a member's total if the current role cannot see all of that member's children. Under the default rollup policy, called <code class="ph codeph">full</code>, the total for
+              that member includes contributions from the children that are not visible. For example, suppose that Fred belongs to a role that can see <code class="ph codeph">[USA].[CA]</code> and <code class="ph codeph">[USA].[OR]</code> but not
+              <code
+              class="ph codeph">[USA].[WA]</code>. If Fred runs the query:</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SELECT {[Measures].[Unit Sales]} ON COLUMNS,
+    {[[Store].[USA], Store].[USA].Children} ON ROWS
+FROM [Sales]</pre> </div>
+            <p class="p">the query returns this:</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[Customer][Measures].[Unit Sales]
+[USA]	             266,773
+[USA].[CA]	        74,748
+[USA].[OR]	        67,659</pre> </div>
+            <p class="p">Note that <code class="ph codeph">[USA].[WA]</code> is not returned, per the access control policy, but the total includes the total from Washington (124,366) that Fred cannot see. For some applications, this is not appropriate. In particular,
+              if the dimension has a small number of members, the end-user may be able to deduce the values of the members which they do not have access to.</p>
+            <p class="p">To remedy this, a role can apply a different rollup policy to a hierarchy. The policy describes how a total is calculated for a particular member if the current role can only see some of that member's children.</p>
+            <div class="p">
+              <ul class="pentaho-list-unordered" id="9fa0d24c-0d38-42f8-8a11-3f820a6528ba__concept_rollup_policy__ul_hpx_ynn_ym">
+                <li class="li"><strong class="ph b">Full. </strong> The total for that member includes all children. This is the default policy, if you do not specify the <code class="ph codeph">rollupPolicy</code> attribute.</li>
+                <li class="li"><strong class="ph b">Partial.</strong>  The total for that member includes only accessible children.</li>
+                <li class="li"><strong class="ph b">Hidden.</strong>  If any of the children are inaccessible, the total is hidden.</li>
+              </ul>
+            </div>
+            <p class="p">Under the <code class="ph codeph">partial</code> policy, the <code class="ph codeph">[USA]</code> total is the sum of the accessible children <code class="ph codeph">[CA]</code> and <code class="ph codeph">[OR]</code>.</p>
+            <div class="p">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[Customer][Measures].[Unit Sales]
+[USA]	             142,407  
+[USA].[CA]	        74,748
+[USA].[OR]	        67,659</pre> </div>
+            <p class="p">Under <code class="ph codeph">hidden</code> policy, the <code class="ph codeph">[USA]</code> total is hidden because one of its children is not accessible.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[Customer][Measures].[Unit Sales]
+[USA]	             -  
+[USA].[CA]	        74,748
+[USA].[OR]	        67,659</pre> </div>
+            <p class="p">The policy is specified per role and hierarchy. In the following example, the role sees partial totals for the <code class="ph codeph">[Store]</code> hierarchy but full totals for <code class="ph codeph">[Product]</code>.</p>
+            <div class="p">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><SchemaGrant access=&quot;none&quot;>
+<CubeGrant cube=&quot;Sales&quot; access=&quot;all&quot;>
+<HierarchyGrant hierarchy=&quot;[Store]&quot; access=&quot;custom&quot; rollupPolicy=&quot;partial&quot; topLevel=&quot;[Store].[Store Country]&quot;>
+<MemberGrant member=&quot;[Store].[USA].[CA]&quot; access=&quot;all&quot;/>
+<MemberGrant member=&quot;[Store].[USA].[CA].[Los Angeles]&quot; access=&quot;none&quot;/>
+</HierarchyGrant>
+<HierarchyGrant hierarchy=&quot;[Customers]&quot; access=&quot;custom&quot; rollupPolicy=&quot;full&quot; topLevel=&quot;[Customers].[State Province]&quot; bottomLevel=&quot;[Customers].[City]&quot;>
+<MemberGrant member=&quot;[Customers].[USA].[CA]&quot; access=&quot;all&quot;/>
+<MemberGrant member=&quot;[Customers].[USA].[CA].[Los Angeles]&quot; access=&quot;none&quot;/>
+</HierarchyGrant>
+<HierarchyGrant hierarchy=&quot;[Gender]&quot; access=&quot;none&quot;/>
+</CubeGrant>
+</SchemaGrant>
+</Role></pre> </div>
+            <p class="p">This example also shows existing features, such as how hierarchy grants can be restricted using <code class="ph codeph">topLevel</code> and/or <code class="ph codeph">bottomLevel</code> attributes, and how a role can be prevented from seeing
+              a hierarchy using <code class="ph codeph">access=&quot;none&quot;</code>.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9fa0d24c-0d38-42f8-8a11-3f820a6528ba__concept_union_roles">
+        <div id="section_3" class="mt-page-section"><span id="Union_Roles"></span> 
+          <h2 class="editable">Union Roles</h2>
+          <div class="body conbody">
+            <p class="p">A union role combines several roles, and has the sum of their privileges. A union role can see a particular schema object if one or more of its constituent roles can see it. Similarly, the rollup policy of a union role with respect to a particular
+              hierarchy is the least restrictive of all of the roles' rollup policies.</p>
+            <p class="p">Here is an example showing the syntax of a union role.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Role name=&quot;Coastal manager&quot;>
+<Union>
+<RoleUsage roleName=&quot;California manager&quot;/>
+<RoleUsage roleName=&quot;Eastern sales manager&quot;/>
+</Union>
+</Role></pre> </div>
+            <p class="p">The constituent roles <code class="ph codeph">California manager</code> and <code class="ph codeph">Eastern sales manager</code> may be regular roles, user-defined roles, or union roles, but they must be declared earlier in the schema file.
+              The <code class="ph codeph">Coastal manager</code> role will be able to see any member that or a <code class="ph codeph">California manager</code> and <code class="ph codeph">Eastern sales manager</code>. It will be able to see all the cells
+              at the intersection of these members, plus it will be able to see cells that neither role can see. For example, if only <code class="ph codeph">California manager</code> can see <code class="ph codeph">[USA].[CA].[Fresno]</code>, and only
+              <code class="ph codeph">Eastern sales manager</code> can see the <code class="ph codeph">[Sales Target]</code> measure, then <code class="ph codeph">Coastal manager</code> will be able to see the sales target for Fresno, which neither of
+              the constituent roles will have access to.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Define_a_Role" rel="internal">Define a Role</a>  </li>
+      <li> <a href="#Rollup_Policy" rel="internal">Rollup Policy</a>  </li>
+      <li> <a href="#Union_Roles" rel="internal">Union Roles</a>  </li>
+    </ol>
+  </body>
+</content>

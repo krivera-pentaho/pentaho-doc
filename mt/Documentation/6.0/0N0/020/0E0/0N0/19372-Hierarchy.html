@@ -1,0 +1,114 @@
+<content type="text/html" title="Hierarchy">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">
+          <p class="p">Defines a hierarchy, which is a pre-defined drill-down.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  You must specify at most one
+            <Relation> or memberReaderClass. If you specify none, the hierarchy is assumed to come from the same fact table of the current cube.</div>
+        </div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Attributes"></span> 
+            <h2 class="editable">Attributes</h2>
+          </div>
+        </div>
+        <table cellpadding="4" cellspacing="0" summary="" border="1" class="simpletable properties">
+          <tr class="sthead prophead">
+            <th valign="bottom" align="left" class="stentry proptypehd" width="33.333333333333336%" id="bfaadd5a-ed19-433e-ac4d-2d89c35eb6db__d13516e35">Attribute</th>
+            <th valign="bottom" align="left" class="stentry propvaluehd" width="66.66666666666667%" id="bfaadd5a-ed19-433e-ac4d-2d89c35eb6db__d13516e38">Data type</th>
+            <th valign="bottom" align="left" class="stentry propdeschd" width="NaN%" id="bfaadd5a-ed19-433e-ac4d-2d89c35eb6db__d13516e41">Definition</th>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">name</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">Name of the hierarchy. If this is not specified, the hierarchy has the same name as its dimension.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">hasAll</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">Boolean</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">Whether this hierarchy has an 'all' member.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">allMemberName</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">Name of the 'all' member. If this attribute is not specified, the all member is named 'All hierarchyName', for example, 'All Store'.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">allMemberCaption</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">A string being displayed instead as the all member's name. Can be localized from Properties file using #{propertyname}.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">allLevelName</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">Name of the 'all' level. If this attribute is not specified, the all member is named '(All)'. Can be localized from Properties file using #{propertyname}.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">primaryKey</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">The name of the column which identifies members, and which is referenced by rows in the fact table. If not specified, the key of the lowest level is used. See also CubeDimension.foreignKey.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">primaryKeyTable</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">The name of the table which contains primaryKey. If the hierarchy has only one table, defaults to that; it is required.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">defaultMember</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">&nbsp;</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">memberReaderClass</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">Name of the custom member reader class. Must implement the mondrian.olap.MemberReader interface.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e35" class="stentry proptype" width="33.333333333333336%">caption</td>
+            <td valign="top" headers="d13516e38" class="stentry propvalue" width="66.66666666666667%">String</td>
+            <td valign="top" headers="d13516e41" class="stentry propdesc" width="NaN%">A string to be displayed in the user interface. If not specified, the hierarchy's name is used. Can be localized from Properties file using #{propertyname}.</td>
+          </tr>
+        </table>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Constituent_elements"></span> 
+            <h2 class="editable">Constituent elements</h2>
+          </div>
+        </div>
+        <table cellpadding="4" cellspacing="0" summary="" border="1" class="simpletable properties">
+          <tr class="sthead prophead">
+            <th valign="bottom" align="left" class="stentry proptypehd" width="NaN%" id="bfaadd5a-ed19-433e-ac4d-2d89c35eb6db__d13516e176">Element</th>
+            <th valign="bottom" align="left" class="stentry propvaluehd" width="NaN%" id="bfaadd5a-ed19-433e-ac4d-2d89c35eb6db__d13516e179">Definition</th>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e176" class="stentry proptype" width="NaN%">RelationOrJoin (as
+              <a class="xref" title="Documentation/5.1/0N0/020/0E0/1A0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0/1A0">
+                <Table>
+              </a>,
+              <a class="xref" title="Documentation/5.1/0N0/020/0E0/1E0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0/1E0">
+                <View>
+              </a>,
+              <a class="xref" title="Documentation/5.1/0N0/020/0E0/0Q0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0/0Q0">
+                <Join>
+              </a>, or
+              <a class="xref" title="Documentation/5.1/0N0/020/0E0/0P0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0/0P0">
+                <InlineTable>
+              </a> )</td>
+            <td valign="top" headers="d13516e179" class="stentry propvalue" width="NaN%">The Table, Join, View, or Inline Table that populates this hierarchy.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d13516e176" class="stentry proptype" width="NaN%">
+              <a class="xref" title="Documentation/5.1/0N0/020/0E0/0S0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0E0/0S0">Level</a> 
+            </td>
+            <td valign="top" headers="d13516e179" class="stentry propvalue" width="NaN%">&nbsp;</td>
+          </tr>
+          </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Attributes" rel="internal">Attributes</a>  </li>
+      <li> <a href="#Constituent_elements" rel="internal">Constituent elements</a>  </li>
+    </ol>
+  </body>
+</content>

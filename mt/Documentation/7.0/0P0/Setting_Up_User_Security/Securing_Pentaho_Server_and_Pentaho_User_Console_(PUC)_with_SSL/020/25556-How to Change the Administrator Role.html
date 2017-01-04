@@ -1,0 +1,40 @@
+<content type="text/html" title="How to Change the Administrator Role">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">The default administrator role in the Pentaho Server is <strong class="ph b">Admin</strong> . If you need to give this privilege level to a different role name, follow these instructions:</p>
+          <p class="pentaho-note">Role names are case sensitive, so take special care when typing in the new role name.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/pentaho-server<span class="rangySelectionBoundary" id="selectionBoundary_1472238469127_9930623715632435" style="line-height:0;display:none;">&#65279;</span> /pentaho-solutions/system/pentaho.xml</span> 
+            file with a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Find the <code><acl-voter></code>&nbsp;element, and replace its <code><admin-role></code>&nbsp;property with the new administrator role. For example, as&nbsp;<code>NewAdmin</code>&nbsp;is used&nbsp;in this sample procedure:</span>             <pre class="pre codeblock">
+<admin-role>NewAdmin</admin-role></pre> </li>
+          <li class="li step"><span class="ph cmd">Find the <code><acl-publisher></code>&nbsp;element, and appropriately replace all instances of <code>Admin</code>&nbsp;in the properties inside of the <code><default-acls></code>&nbsp;and <overrides>&nbsp;elements as shown in the following example:</span>             <pre class="pre codeblock">
+<acl-entry role=&quot;NewAdmin&quot; acl=&quot;ADMIN_ALL&quot; /></pre> </li>
+          <li class="li step">
+            <p><span class="ph cmd">Save the file, then open <span class="ph filepath">applicationContext-spring-security.xml.</span> </span> 
+            </p>
+          </li>
+          <li class="li step"><span class="ph cmd">Find the <code>filterInvocationInterceptor</code>&nbsp;bean, and modify its <code>objectDefinitionSource</code>&nbsp;property accordingly.</span>  You may need to consult the
+            <a class="external" target="_blank" title="http://projects.spring.io/spring-security/"
+            rel="external nofollow" href="http://projects.spring.io/spring-security/">Spring Security documentation</a>  to complete this step: <pre class="pre codeblock">
+<property name=&quot;objectDefinitionSource&quot;>
+    <value>
+        <![CDATA[
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        ...
+        \A/admin.*\Z=NewAdmin
+        ...
+        ]]>
+    </value>
+</property></pre> </li>
+        </ol>
+        <div class="section result">You have successfully changed the administrator role.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

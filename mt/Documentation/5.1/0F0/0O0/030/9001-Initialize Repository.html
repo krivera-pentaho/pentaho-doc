@@ -1,0 +1,246 @@
+<content type="text/html" title="Initialize Repository">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Indicates how to initialize the DI Repository.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the DI Server installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/1588/grDiArchiveInstallPrepareRepository.png?revision=1" />
+          </p>
+          <p class="p">Before you prepare the DI Repository complete the tasks in
+            <a class="xref" title="Documentation/5.1/0F0/0O0/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/020">Prepare Environment</a> .</p>
+          <div class="p">Pentaho stores content about reports that you create, examples we provide, report scheduling data, and audit data in the DI Repository. The DI Repository resides on the database that you installed during the Prepare Environment step. The DI
+            Repository consists of three repositories: <em class="ph i">Jackrabbit</em>, <em class="ph i">Quartz</em>, and <em class="ph i">Hibernate</em> .
+            <ul class="ul" id="7a196ad2-219a-4cb3-9ead-5093279f3777__prepare_solution_repository_platform__ul_ccy_xlm_rj">
+              <li class="li"><em class="ph i">Jackrabbit</em>  contains the solution respository, examples, security data, and content data from reports that you use Pentaho software to create.</li>
+              <li class="li"><em class="ph i">Quartz</em>  holds data that is related to scheduling reports and jobs.</li>
+              <li class="li"><em class="ph i">Hibernate</em>  holds data that is related to audit logging.</li>
+            </ul>
+          </div>
+          <p class="p">This step only consists of one task: Initialize the database. In this task you run DDLs that contain SQL commands that create the Jackrabbit, Quartz, and Hibernate databases, as well as the Operations Mart schema.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_postgres">
+        <div id="section_2" class="mt-page-section"><span id="Initialize_PostgreSQL_DI_Repository_Database"></span> 
+          <h2 class="editable">Initialize PostgreSQL DI Repository Database</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To initialize PostgreSQL so that it serves as the DI Repository, run SQL scripts to create the Hibernate, Quartz and Jackrabbit (also known as the JCR) databases.</p>
+              <p class="p"><strong class="ph b">Note:</strong>  Your PostgreSQL configuration must support logins from all users. This is not always the default configuration, so you may have to edit your <span class="ph filepath">pg_hba.conf</span>  file to support
+                this option. If you do need to make changes to pg_hba.conf, you must restart the PostgreSQL server before proceeding.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">To make the databases that you create more secure, Pentaho recommends that you change the default passwords in the SQL script files to ones that you specify. If you are evaluating Pentaho, you might want to skip this step. If you do decide to make the databases more secure, use a text editor to change the passwords in these files:</span> 
+                <ul class="ul" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_postgres__ul_dcc_4yg_hl">
+                  <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/postgresql/create_jcr_postgresql.sql</span> </li>
+                  <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/postgresql/create_quartz_postgresql.sql</span> </li>
+                  <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/postgresql/create_repository_postgresql.sql</span> </li>
+                </ul>
+                <p class="p">Here is an example of a password change made in the <span class="ph filepath">create_jcr_postgresql.sql</span>  file.</p>
+                <div class="p"> <pre class="pre codeblock">
+CREATE USER jcr_user PASSWORD 'myNewPassword'</pre> </div>
+              </li>
+              <li class="li step"><span class="ph cmd"><strong class="ph b">Windows:</strong>  The commands you use to run the SQL scripts depends on your operating system. For windows, do this.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">Open a <span class="ph uicontrol">SQL Shell</span>  window. The <span class="ph uicontrol">SQL Shell</span>  window is installed with PostgreSQL.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">When prompted for the server enter the name of the server if you are not using the default (localhost). If you are using the default, do not type anything and press Enter.</span> </li>
+                  <li class="li substep"><span class="ph cmd">When prompted for the database enter the name of the database if you are not using the default (postgres) If you are using the default, do not type anything and press Enter.</span> </li>
+                  <li class="li substep"><span class="ph cmd">When prompted for the port enter the name of the port if you are not using the default (5432). If you are using the default port, do not type anything and press Enter.</span> </li>
+                  <li class="li substep"><span class="ph cmd">When prompted for the username, accept the default, then press Enter.</span> </li>
+                  <li class="li substep"><span class="ph cmd">When prompted for the password, enter the password that you indicated when you installed PostgreSQL.</span> </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Jackrabbit database by typing this.</span>  <pre class="pre codeblock">
+\i /pentaho/server/data-integration-server/data/postgresql/create_jcr_postgresql.sql</pre> <strong class="ph b">Note:</strong> If necessary, change the <span class="ph filepath">\pentaho\server\data-integration-server</span>  to the place where you unpacked
+                    your pentaho files.</li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the hibernate database by typing this.</span>  <pre class="pre codeblock">
+\i /pentaho/server/data-integration-server/data/postgresql/create_repository_postgresql.sql</pre> </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Quartz database by typing this.</span>  <pre class="pre codeblock">
+\i /pentaho/server/data-integration-server/data/postgresql/create_quartz_postgresql.sql</pre> </li>
+                  <li class="li substep"><span class="ph cmd">To switch to the Hibernate database, type this.</span>  <pre class="pre codeblock">
+\c postgres</pre> </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Operations Mart database by typing this.</span>  <pre class="pre codeblock">
+\i /pentaho/server/data-integration-server/data/postgresql/pentaho_mart_postgresql.sql</pre> </li>
+                  <li class="li substep"><span class="ph cmd">Exit from the window by pressing the <span class="ph uicontrol">CTRL</span>  + <span class="ph uicontrol">C</span>  keys.</span> 
+                  </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd"><strong class="ph b">Linux:</strong>  To run the SQL scripts on a Linux system, do this.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  window. You should be logged in as the <span class="ph uicontrol">pentaho</span>  user.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Sign into PostgreSQL by typing <code class="ph codeph">psql -U postgres -h localhost</code> at the prompt.</span> </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Jackrabbit database by typing this.</span>  <pre class="pre codeblock">
+<code class="ph codeph">\i ~/pentaho/server/data-integration-server/data/postgresql/create_jcr_postgresql.sql</code></pre> <strong class="ph b">Note:</strong> If necessary, change the <span class="ph filepath">~/pentaho/server/data-integration-server</span>                     directory path to the place where you unpacked your pentaho files.</li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the hibernate database by typing this.</span>  <pre class="pre codeblock">
+\i ~/pentaho/server/data-integration-server/data/postgresql/create_repository_postgresql.sql</pre> <strong class="ph b">Note:</strong> If necessary, change the <span class="ph filepath">~/pentaho/server/data-integration-server</span>  to the place where
+                    you unpacked your pentaho files.</li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Quartz database by typing this.</span>  <pre class="pre codeblock">
+\i ~/pentaho/server/data-integration-server/data/postgresql/create_quartz_postgresql.sql</pre> <strong class="ph b">Note:</strong> If necessary, change the <span class="ph filepath">~/pentaho/server/data-integration-server</span>  directory path to the
+                    place where you unpacked your pentaho files.</li>
+                  <li class="li substep"><span class="ph cmd">To switch to the Hibernate database, type this.</span>  <pre class="pre codeblock">
+\c postgres</pre> </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Operations Mart database by typing this.</span>  <pre class="pre codeblock">
+\i ~/pentaho/server/data-integration-server/data/postgresql/pentaho_mart_postgresql.sql</pre> </li>
+                  <li class="li substep"><span class="ph cmd">Exit from the window by pressing the <span class="ph uicontrol">CTRL</span>  + <span class="ph uicontrol">C</span>  keys.</span> 
+                  </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd">To verify that databases and user roles have been created, do this.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">Open the pgAdminIII tool. pgAdminIII is bundled with both the Windows and Linux versions of PostgreSQL.</span> </li>
+                  <li class="li substep"><span class="ph cmd">To view the contents of PostgreSQL, click the PostgreSQL folder in the <span class="ph uicontrol">Object Browser</span>, then enter the password when prompted.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Object Browser</span>, click the <span class="ph uicontrol">Databases</span>  folder. The Jackrabbit, Postgres, Hibernate and Quartz databases appear.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Object Browser</span>, click the <span class="ph uicontrol">Login Roles</span>  folder. The jcr_user, pentaho_user, hibuser, and postgres user accounts appear.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">If the databases and login roles do not appear, go to the beginning of these instructions and try running the scripts again.</span> </li>
+                  <li class="li substep"><span class="ph cmd">Select <span class="ph uicontrol">File > Exit</span>  to exit from pgAdminIII.</span> 
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_mysql">
+        <div id="section_3" class="mt-page-section"><span id="Initialize_MySQL_DI_Repository_Database"></span> 
+          <h2 class="editable">Initialize MySQL DI Repository Database</h2>
+          <p class="p">To initialize MySQL so that it serves as the DI Repository, run SQL scripts to create the Hibernate, Quartz and Jackrabbit (also known as the JCR) databases.</p>
+          <p class="pentaho-note">Use the ASCII character set when you run these scripts. Do not use UTF-8 because there are text string length limitations that might cause the scripts to fail.</p>
+          <p class="p">If you are using Redshift, after you finish this section, move on to the configuring MySQL tasks.</p>
+          <p class="p">These sections take you through the steps to initialize the MySQL DI repository database.</p>
+          <div id="section_4" class="mt-page-section"><span id="Change_Default_Passwords"></span> 
+            <h3 class="editable">Change Default Passwords</h3>
+            <p class="li step"><span class="ph cmd">To make the databases that you create more secure, Pentaho recommends that you change the default passwords in the SQL script files to ones that you specify. If you are evaluating Pentaho, you might want to skip this step. If you do decide to make the databases more secure, use a text editor to change the passwords in these files:</span> </p>
+            <ul class="ul" id="8ca72d85-6842-4cc7-a840-1b25b94c0382__archive_initialize_mysql__d122e511">
+              <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/mysql5/create_jcr_mysql.sql</span> </li>
+              <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/mysql5/create_quartz_mysql.sql</span> </li>
+              <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/mysql5/create_repository_mysql.sql</span> </li>
+              <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/mysql5/pentaho_mart_mysql.sql</span> </li>
+            </ul>
+          </div>
+          <div id="section_5" class="mt-page-section"><span id="Run_SQL_Scripts"></span> 
+            <h3 class="editable">Run SQL Scripts</h3>
+            <p class="li step"><span class="ph cmd">Once you change the passwords, you will need to run these SQL scripts. The process for running SQL scripts against MySQL is the same for Windows or Linux machines. <span id="cke_bm_120E" style="display: none;">&nbsp;</span> </span> 
+            </p>
+            <p class="li step"><span class="ph cmd">Run these scripts from the <strong>MySQL Command Prompt</strong>  window or from <strong>MySQL Workbench</strong> .</span> </p>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+            title="Pentaho Table">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 179px;">Action</th>
+                  <th scope="col" style="width: 470px;">SQL Script</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 179px;">Create Quartz</td>
+                  <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> source <your filepath>\create_quartz_mysql.sql</code></span> </td>
+                </tr>
+                <tr>
+                  <td style="width: 179px;">Create Hibernate repository</td>
+                  <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> source <your filepath>\create_repository_mysql.sql</code></span> </td>
+                </tr>
+                <tr>
+                  <td style="width: 179px;">Create Jackrabbit</td>
+                  <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> source <your filepath>\create_jcr_mysql.sql</code></span> </td>
+                </tr>
+                <tr>
+                  <td style="width: 179px;">Create Pentaho Operations mart</td>
+                  <td style="width: 495px;"><span class="ph cmd"><code class="ph codeph">> source <your filepath>\pentaho_mart_mysql.sql</code></span> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_6" class="mt-page-section"><span id="Verify_MySQL_Initialization"></span> 
+            <h3 class="editable">Verify MySQL Initialization</h3>
+            <p>After you run the scripts, this list will help you verify that databases and user roles have been created.</p>
+            <ol class="pentaho-list-ordered">
+              <li class="li step">Open the <span class="ph uicontrol">MySQL Workbench</span>  tool. <span class="ph uicontrol">MySQL Workbench</span>  is freely available at the MySQL development site.</li>
+              <li class="li step">Make sure that the Quartz, Jackrabbit (JCR), Hibernate, and Pentaho Operations mart databases are present.</li>
+              <li class="li step">Exit from the <span class="ph uicontrol">MySQL Workbench</span> .</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_oracle">
+        <div id="section_7" class="mt-page-section"><span id="Initialize_Oracle_DI_Repository_Database"></span> 
+          <h2 class="editable">Initialize Oracle DI Repository Database</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To initialize Oracle so it serves as the DI Repository, run SQL scripts to create the Hibernate, Quartz and Jackrabbit (also known as the JCR) databases.</p>
+            </div>
+            <ol class="ol steps" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_oracle__steps_eby_2hj_sj">
+              <li class="li step"><span class="ph cmd">To make the databases that you create more secure, Pentaho recommends that you change the default passwords in the SQL script files to ones that you specify. If you are evaluating Pentaho, you might want to skip this step. If you do decide to make the databases more secure, use a text editor to change the passwords in these files. (Also, for each file, edit the <strong class="ph b">datafile</strong>  path with the path to your Oracle installation.)</span> 
+                <ul class="ul" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_oracle__ul_kdt_txg_hl">
+                  <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/oracle10g/create_jcr_ora.sql</span> </li>
+                  <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/oracle10g/create_quartz_ora.sql</span> </li>
+                  <li class="li"><span class="ph filepath">pentaho/server/data-integration-server/data/oracle10g/create_repository_ora.sql</span> </li>
+                </ul>
+                <p class="p">Here is an example of a password change made in the <span class="ph filepath">create_jcr_ora.sql</span>  file.</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">--conn admin/myNewPassword@pentaho
+create user di_jcr_user identified by &quot;myNewPassword&quot; default tablespace di_pentaho_tablespace quota unlimited on pentaho_tablespace temporary tablespace temp quota 5M on system;</pre> </div> <strong class="ph b">Note: </strong> The user name
+                above (<span class="ph filepath">jcr_user</span> ) might be different in your <span class="ph filepath">create_jcr_ora.sql</span>  file.</li>
+              <li class="li step"><span class="ph cmd">Although there are several different methods for running SQL scripts, these instructions explain how to run SQL*Plus from a Terminal or Command Prompt window. These instructions are the same for both Windows and Linux. If you prefer to run SQL scripts using another method, modify instructions accordingly.</span> 
+                <ol class="ol substeps" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_oracle__substeps_qcy_2hj_sj" type="a">
+                  <li class="li substep"><span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  or <span class="ph uicontrol">Command Prompt</span>  window, start the <span class="ph uicontrol">SQL*Plus</span>  and log in.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Jackrabbit database by typing <code class="ph codeph">START create_jcr_ora</code>. If necessary, append the path to the <span class="ph filepath">create_jcr_ora.sql</span>  path in the
+                    command.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the repository database by typing <code class="ph codeph">START create_repository_ora</code>. If necessary, append the path to the <span class="ph filepath">create_repository_ora.sql</span>                     path in the command.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Quartz database and users by typing <code class="ph codeph">START create_quartz_ora</code>. If necessary, append the path to the <span class="ph filepath">create_quartz_ora.sql</span>                     path in the command.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Run the script to create the Operations Mart database and users by typing <code class="ph codeph">START pentaho_mart_ora</code>. If necessary, append the path to the <span class="ph filepath">pentaho_mart_ora.sql</span>                     path in the command.</span> 
+                  </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd">To verify user roles have been created, do this.</span> 
+                <ol class="ol substeps" id="7a196ad2-219a-4cb3-9ead-5093279f3777__initialize_oracle__substeps_kdy_2hj_sj" type="a">
+                  <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Terminal</span>  or <span class="ph uicontrol">Command Prompt</span>  window that is running <span class="ph uicontrol">SQL*Plus</span>, type SELECT USERNAME FROM DBA_USERS to see
+                    the users that have been created.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">If the usernames do not appear, go to the beginning of these instructions and try running the scripts again.</span> </li>
+                  <li class="li substep"><span class="ph cmd">Exit from <span class="ph uicontrol">SQL*Plus</span> .</span> 
+                  </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Initialize_PostgreSQL_DI_Repository_Database" rel="internal">Initialize PostgreSQL DI Repository Database</a>  </li>
+      <li>
+        <a href="#Initialize_MySQL_DI_Repository_Database" rel="internal">Initialize MySQL DI Repository Database</a> 
+        <ol>
+          <li> <a href="#Change_Default_Passwords" rel="internal">Change Default Passwords</a>  </li>
+          <li> <a href="#Run_SQL_Scripts" rel="internal">Run SQL Scripts</a>  </li>
+          <li> <a href="#Verify_MySQL_Initialization" rel="internal">Verify MySQL Initialization</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Initialize_Oracle_DI_Repository_Database" rel="internal">Initialize Oracle DI Repository Database</a>  </li>
+    </ol>
+  </body>
+</content>

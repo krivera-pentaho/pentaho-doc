@@ -1,0 +1,104 @@
+<content type="text/html" title="Starting DI Server on Windows">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to start the DI Server.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Install_License_Keys_Using_the_Command_Line_Interface"></span> 
+        <h2 class="editable">Install License Keys Using the Command Line Interface</h2>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Download the .lic file you want to install.</span> </li>
+          <li class="li step"><span class="ph cmd">Copy your .lic files to the DI Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">license-installer</span> &nbsp;directory: pentaho\license-installer</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Run <span class="ph filepath">install_license.bat</span>  with the install switch and the location and name of your license file as a parameter, like this:</span> 
+          </li>
+        </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">install_license.bat install &quot;C:\Users\dvader\Downloads\Pentaho DI Enterprise Edition.lic&quot;</pre></div>
+      <div id="section_3"
+      class="mt-page-section"><span id="Modify_Tomcat_Windows_Startup_Script"></span> 
+        <h2 class="editable">Modify Tomcat Windows&nbsp;Startup Script</h2>
+        <p class="p">The Tomcat startup script must be modified to include the <span class="filepath">CATALINA_OPTS</span>  variable. <span class="filepath">CATALINA_OPTS</span>  indicates the amount of memory to allocate. It also indicates where Pentaho licenses are
+          installed. Specific instructions on how to modify the startup script depend on your operating system.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Make sure the Tomcat web application server is not running by starting the Windows <strong>Task Manager</strong>  and looking for <strong class="ph b">Tomcat</strong>  in the <strong>Applications </strong> tab. If the server is running, stop it.</li>
+          <li class="li step">Use a text editor to open the <span class="ph filepath">startup.bat</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</li>
+          <li class="li step">Add this line before the <span class="filepath style-wrap">CATALINA_HOME</span>  definition.</li>
+        </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SET DI_HOME=%~dp0pentaho-solutions\system\kettle</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li class="li step">Add this line directly before the call <span class="filepath style-wrap">&quot;%EXECUTABLE%&quot; start %CMD_LINE_ARGS%</span>  line, which is located near the end of the file.</li>
+        </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">set CATALINA_OPTS=-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH% -DDI_HOME=%DI_HOME%</pre>
+        <ol class="pentaho-list-ordered" start="5">
+          <li class="li step">Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Modify_JBoss_Startup_Script"></span> 
+        <h2 class="editable">Modify JBoss Startup Script</h2>
+        <p>The JBoss startup script must be modified to include the JAVA_OPTS variable. JAVA_OPTS indicates the amount of memory to allocate. It also indicates where Pentaho licenses are installed. Specific instructions on how to modify the startup script
+          depend on your operating system.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Make sure the JBoss web application server is not running by starting the Windows <strong>Task Manager</strong>  and looking for <strong class="ph b">JBoss</strong>  in the <strong>Applications </strong> tab. If the server is running, stop it.</li>
+          <li class="li step">Use a text editor to open the <span class="ph filepath">standalone.conf.bat</span>  file, which is located in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+          <li class="li step">Use a text editor to open the <span class="filepath style-wrap">standalone.bat</span>  file.</li>
+        </ol>
+        <ol class="pentaho-list-ordered" start="4">
+          <li class="li step">Locate<span class="filepath style-wrap"> &quot;x%JBOSS_HOME%&quot; == &quot;x&quot; &nbsp;(</span>  and copy this text above it:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">pushd &quot;%DIRNAME%..\..&quot;
+set &quot;INSTALL_HOME=%CD%&quot;
+popd
+SET DI_HOME=%INSTALL_HOME%\pentaho-solutions\system\kettle</pre>
+        <ol class="pentaho-list-ordered" start="5">
+          <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Start_DI_Server"></span> 
+        <h2 class="editable">Start DI Server</h2>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Run the startup script for your web application server by launching one these files.
+            <ul class="pentaho-list-unordered">
+              <li class="li"><strong class="ph b">Windows Tomcat:</strong>  Launch the <span class="ph filepath">startup.bat</span>  file. The startup.bat file is in the Tomcat <span class="ph filepath">bin</span>  directory.</li>
+              <li class="li"><strong class="ph b">Windows JBoss:</strong>  Launch the <span class="ph filepath">standalone.bat</span>  file. The startup.bat file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+            </ul>
+          </li>
+          <li class="li step">The server starts. There is no GUI for the server, but when you install then start the client tool, which is called Spoon, you can interact with the DI Server from there. When you start Spoon, you will also be prompted to enter your license
+            information. See
+            <a class="xref" title="Install DI Design Tool and Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0H0/030"> Install DI Tools</a>  to learn how to install Spoon and other plugins.</li>
+        </ol>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Problems_Starting_the_DI_Server.3F"></span> 
+        <h2 class="editable">Problems Starting the DI&nbsp;Server?</h2>
+        <p>Check out our
+          <a title="Introduction" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/000">Troubleshooting Guide</a>  for help.</p>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Next_Step"></span> 
+        <h2 class="editable">Next Step</h2>
+        <p class="li step">
+          <a title="Next Steps" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/050">Read the next steps</a> .</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_License_Keys_Using_the_Command_Line_Interface" rel="internal">Install License Keys Using the Command Line Interface</a>  </li>
+      <li> <a href="#Modify_Tomcat_Windows_Startup_Script" rel="internal">Modify Tomcat Windows&nbsp;Startup Script</a>  </li>
+      <li> <a href="#Modify_JBoss_Startup_Script" rel="internal">Modify JBoss Startup Script</a>  </li>
+      <li> <a href="#Start_DI_Server" rel="internal">Start DI Server</a>  </li>
+      <li> <a href="#Problems_Starting_the_DI_Server.3F" rel="internal">Problems Starting the DI&nbsp;Server?</a>  </li>
+      <li> <a href="#Next_Step" rel="internal">Next Step</a>  </li>
+    </ol>
+  </body>
+</content>

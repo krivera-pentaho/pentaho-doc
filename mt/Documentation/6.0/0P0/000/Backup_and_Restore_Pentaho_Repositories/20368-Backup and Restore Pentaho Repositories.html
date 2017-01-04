@@ -1,0 +1,173 @@
+<content type="text/html" title="Backup and Restore Pentaho Repositories">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>A complete backup and restore of your Business Analytics (BA) or Data Integration (DI)&nbsp;repositories&nbsp;can be done through either the command (<span class="filepath style-wrap">cmd</span> ) window or with
+      <a title="File Resource" rel="internal"
+      href="http://help.pentaho.com/Documentation/6.0/0R0/070/010/0A0/0O0">Rest APIs for BA</a> .&nbsp;</p>
+    <div id="section_1" class="mt-page-section"><span id="Backup_and_Restore_the_Pentaho_BA_Repository"></span> 
+      <h2 class="editable">Backup and Restore&nbsp;the Pentaho BA&nbsp;Repository</h2>
+      <p>The backup process exports <em>all </em> content&nbsp;from the BA&nbsp;repository and creates a .zip file, which includes:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Users and roles</li>
+        <li>All files (dashboards, reports, etc.)</li>
+        <li>Schedules</li>
+        <li>Data connections</li>
+        <li>Mondrian schemas</li>
+        <li>Metadata entries</li>
+        <li>A manifest file</li>
+      </ul>
+      <p>All of your content is pulled from this <span class="filepath style-wrap">.zip</span>  file when you restore the BA repository.</p>
+      <p>You must have appropriate administrator permissions on the server in order to perform a repository backup or restore.</p>
+      <div id="section_2" class="mt-page-section"><span id="Step_1:_Backup_the_BA_Repository"></span> 
+        <h3 class="editable">Step 1: Backup the BA Repository</h3>
+        <p>Backing up up your BA repository is done through the use of command line arguments. There are some example arguments below that you can&nbsp;customize for your particular server.&nbsp;</p>
+        <p>If an argument is required for successful backup and has not been provided, the missing requirement is displayed in the cmd window. Backup results are also displayed in the window.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open a <span class="filepath style-wrap">cmd </span> window&nbsp;and point the directory to&nbsp;the install location of your running BA server.</li>
+          <li>Use the <span class="filepath style-wrap">import-export</span>  script with your arguments for backing up the repository.</li>
+          <li>Press <strong>Enter.</strong> </li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td>
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import-export.bat --backup --url=http://localhost:8080/pentaho --username=admin --password=password --file-path=c:/home/Downloads/backup.zip --logfile=c:/temp/logfile.log</pre>                </td>
+            </tr>
+            <tr>
+              <td>
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./import-export.sh --backup --url=http://localhost:8080/pentaho --username=admin --password=password --file-path=/home/Downloads/backup.zip --logfile=/temp/logfile.log</pre>                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Step_2:_Restore_the_BA_Repository"></span> 
+        <h3 class="editable">Step 2: Restore&nbsp;the BA&nbsp;Repository</h3>
+        <p>Restoring your BA repository is also done through the use of command line arguments.&nbsp;The process for restoring both repositories&nbsp;is similar to the backup process, except for the differences shown in the examples below. These examples
+          can be customized for your particular server.&nbsp;</p>
+        <p>If an argument is required for successful restore and has not been provided, the missing requirement is displayed in the cmd window. Restore&nbsp;results are also displayed in the window.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open a terminal window&nbsp;and change the directory to&nbsp;the install location of your running BA server.</li>
+          <li>Use the <span class="filepath style-wrap">import-export</span>  script with your arguments for restoring the repository.</li>
+          <li>Press&nbsp;<strong><span>Enter.</span> </strong> </li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead> </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import-export.bat --restore --url=http://localhost:8080/pentaho --username=admin --password=password --file-path=c:/home/Downloads/backup.zip --overwrite=true --logfile=c:/temp/logfile.log</pre>                </td>
+            </tr>
+            <tr>
+              <td>
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./import-export.sh --restore --url=http://localhost:8080/pentaho --username=admin --password=password --file-path=/home/Downloads/backup.zip --overwrite=true --logfile=/temp/logfile.log</pre>                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Backup_and_Restore_the_Pentaho_DI_Repository"></span> 
+      <h2 class="editable">Backup and Restore the Pentaho&nbsp;DI Repository</h2>
+      <p>The backup process exports <em>all </em> content&nbsp;from the DI repository and creates a .zip file, which includes:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Users and roles</li>
+        <li>All files (.ktrs, .kjbs, etc.)</li>
+        <li>Schedules</li>
+        <li>Data connections</li>
+        <li>Mondrian schemas</li>
+        <li>Metadata entries</li>
+        <li>A manifest file</li>
+      </ul>
+      <p>All of your content is pulled from this .zip file when you restore the DI repository.</p>
+      <p>You must have appropriate administrator permissions on the server in order to perform a repository backup or restore.</p>
+      <div id="section_5" class="mt-page-section"><span id="Step_1:_Backup_the_DI_Repository"></span> 
+        <h3 class="editable">Step 1: Backup the DI Repository</h3>
+        <p>Backing up up your DI repository is done through the use of command line arguments. There are some example arguments below that you can&nbsp;customize for your particular server.&nbsp;</p>
+        <p>If an argument is required for successful backup and has not been provided, the missing requirement is displayed in the cmd window. Backup results are also displayed in the window.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open a <span class="filepath style-wrap">cmd </span> window&nbsp;and point the directory to&nbsp;the install location of your running DI server.</li>
+          <li>Use the <span class="filepath style-wrap">import-export</span>  script with your arguments for backing up the repository.</li>
+          <li>Press <strong>Enter.</strong> </li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead> </thead>
+          <tbody>
+            <tr>
+              <td style="width:217px;">
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width:400px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import-export.bat --backup --url=http://localhost:9080/pentaho-di --username=admin --password=password --file-path=c:/home/Downloads/backup.zip --logfile=c:/temp/logfile.log</pre>                </td>
+            </tr>
+            <tr>
+              <td style="width:217px;">
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width:458px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./import-export.sh --backup --url=http://localhost:9080/pentaho-di --username=admin --password=password --file-path=/home/Downloads/backup.zip --logfile=/temp/logfile.log</pre>                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Step_2:_Restore_the_DI_Repository"></span> 
+        <h3 class="editable">Step 2: Restore the DI Repository</h3>
+        <p>Restoring your DI repository is also done through the use of command line arguments.&nbsp;The process for restoring the repository&nbsp;is similar to the backup process, except for the differences shown in the examples below. These examples can
+          be customized for your particular server.&nbsp;</p>
+        <p>If an argument is required for successful restore and has not been provided, the missing requirement is displayed in the cmd window. Restore&nbsp;results are also displayed in the window.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open a terminal window&nbsp;and change the directory to&nbsp;the install location of your running DI server.</li>
+          <li>Use the <span class="filepath style-wrap">import-export</span>  script with your arguments for restoring the repository.</li>
+          <li>Press&nbsp;<strong>Enter.</strong> </li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td>
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 460px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import-export.bat --restore --url=http://localhost:9080/pentaho-di --username=admin --password=password --file-path=c:/home/Downloads/backup.zip --overwrite=true --logfile=c:/temp/logfile.log</pre>                </td>
+            </tr>
+            <tr>
+              <td style="width: 209px;">
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 466px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./import-export.sh --restore --url=http://localhost:9080/pentaho-di --username=admin --password=password --file-path=/home/Downloads/backup.zip --overwrite=true --logfile=/temp/logfile.log</pre>                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Backup_and_Restore_the_Pentaho_BA_Repository" rel="internal">Backup and Restore&nbsp;the Pentaho BA&nbsp;Repository</a> 
+        <ol>
+          <li> <a href="#Step_1:_Backup_the_BA_Repository" rel="internal">Step 1: Backup the BA Repository</a>  </li>
+          <li> <a href="#Step_2:_Restore_the_BA_Repository" rel="internal">Step 2: Restore&nbsp;the BA&nbsp;Repository</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Backup_and_Restore_the_Pentaho_DI_Repository" rel="internal">Backup and Restore the Pentaho&nbsp;DI Repository</a> 
+        <ol>
+          <li> <a href="#Step_1:_Backup_the_DI_Repository" rel="internal">Step 1: Backup the DI Repository</a>  </li>
+          <li> <a href="#Step_2:_Restore_the_DI_Repository" rel="internal">Step 2: Restore the DI Repository</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

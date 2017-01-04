@@ -1,0 +1,30 @@
+<content type="text/html" title="Increase Memory Limits with an Archive or Manual Deployment">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">By default, Tomcat has a relatively low memory allotment. This can cause out-of-memory errors in the BA Server from time to time. To increase the memory limit, follow the below process.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the Tomcat server or service.</span> </li>
+          <li class="li step"><span class="ph cmd"><strong class="ph b">Because you are modifying your own Tomcat instance</strong>  and have performed a manual deployment of the BA Server WAR, edit the <span class="ph filepath">~/.bashrc</span>  for the user account that
+            starts the Tomcat service, or whatever configuration file or dialogue that contains global system variables on your BA Server machine. Set or modify the <strong class="ph b">CATALINA_OPTS</strong>  system variable to include reasonable minimum
+            and maximum memory settings using the <strong class="ph b">-Xms</strong>  and <strong class="ph b">-Xmx</strong>  options. Ensure you customize these settings to fit the needs of your system. </span>  <pre class="pre codeblock">
+export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m&quot; </pre> </li>
+          <li class="li step"><span class="ph cmd"><strong class="ph b">If you are using a Pentaho-supplied Tomcat instance</strong>  provided in BA Server archive packages, edit the <strong class="ph b">start-pentaho</strong>  scripts (.bat for Windows, and .sh for Linux), and modify the <strong class="ph b">CATALINA_OPTS</strong>  environment variable, adjusting the values of <strong class="ph b">Xms</strong>  and <strong class="ph b">Xmx</strong>  in the same manner as the previous step.</span>             <pre class="pre codeblock">
+export CATALINA_OPTS=&quot;-XMs4096m -Xmx6144m -XX:MaxPermSize=256m -
+                    Dsun.rmi.dgc.client.gcInterval=3600000
+                    -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</pre> </li>
+          <li class="li step"><span class="ph cmd">If you are modifying a Windows service for Tomcat, you must use the <strong class="ph b">tomcat6.exe</strong>  command to reconfigure the service parameters within a command line window. You can access Windows Services by going to the <strong class="ph b">Windows Start Menu</strong>  and typing <strong class="ph b">services</strong>  in the <strong class="ph b">Search Programs and Files</strong>  box. See the below example.</span> 
+            <p class="p">Windows (this only applies to a Windows service for Tomcat)</p> <pre class="pre codeblock">
+tomcat6 //US//Tomcat6 --JvmMs=4096m --JvmMx=6144m</pre> </li>
+          <li class="li step"><span class="ph cmd">Start the Tomcat server or service.</span> </li>
+        </ol>
+        <div class="section result">Your Tomcat server now has increased minimum and maximum memory limits. You can adjust the <strong class="ph b">JvmMx</strong>  number (this parameter specifies the maximum limit) to a higher number if you prefer. However, if the Java virtual machine
+          refuses to start with increased limits, then you will have to add more RAM to your system, stop some memory-intensive services, or reduce the maximum memory limit to a lower number. This problem occurs when there is not enough contiguous memory
+          available to assign to the JVM, and appears to happen on Windows at lower thresholds than on other operating systems.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

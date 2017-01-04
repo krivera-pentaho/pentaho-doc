@@ -1,0 +1,30 @@
+<content type="text/html" title="Report Viewer Localization">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Follow the directions below to create localized message bundles for the Report Viewer plugin.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  This is for the <strong class="ph b">Report Viewer</strong>, which displays reports created with Report Designer. The instructions here, while similar, do not provide localization support for Interactive
+            Reporting, or for individual reports. Refer to
+            <a class="xref" title="Documentation/5.1/0R0/080/020/000/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/080/020/000/020">Pentaho Interactive Reporting Localization</a>  for Interactive Reporting localization.</div>
+          <div class="note warning"><span class="warningtitle">Warning:</span>  The date picker is an interface element from the <strong class="ph b">common-ui</strong>  BA Server plugin, which does not currently support more than one locale at a time.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">If the BA Server is currently running, shut it down.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Make a copy of the <strong class="ph b">messages.properties</strong>  file in <span class="ph filepath">/pentaho-solutions/system/reporting/messages/</span> ; name the copy according to the standard locale naming scheme defined
+            earlier in this section.</span>  <pre class="pre codeblock">cp messages.properties messages_fr.properties</pre> </li>
+          <li class="li step"> <span class="ph cmd">Translate the content of the new message bundle into the locale defined in its file name.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Inside of the Pentaho Web application, unpack the <span class="ph filepath">/WEB-INF/lib/pentaho-reporting-engine-classic-core- platform-plugin-</span> <span class="ph filepath">--check--</span> <span class="ph filepath">5.1</span> 
+            <span class="ph filepath">.jar</span>  JAR, then navigate to the <span class="ph filepath">/org/pentaho/reporting/platform/plugin/messages/</span>  directory inside of it.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Make a copy of the <strong class="ph b">messages.properties</strong>  file in this directory; name the copy according to the standard locale naming scheme defined earlier in this section.</span>  <pre class="pre codeblock">cp messages.properties messages_fr.properties</pre>            </li>
+          <li class="li step"> <span class="ph cmd">Translate the content of the new message bundle into the locale defined in its file name, and remove all of the properties that you don't change.</span>  Leaving the unchanged properties in the file will cause duplicate definitions,
+            which cause unnecessary overhead and difficulty in future translation efforts. </li>
+          <li class="li step"> <span class="ph cmd">Re-pack the JAR.</span>  If the original JAR was not deleted when you unpacked it, you will have to delete it before re-packing. </li>
+        </ol>
+        <div class="section result">You now have translated Report Viewer (and Reporting plugin) message bundles available in your BA Server.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

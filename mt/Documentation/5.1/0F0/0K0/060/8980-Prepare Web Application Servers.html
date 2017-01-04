@@ -1,0 +1,244 @@
+<content type="text/html" title="Prepare Web Application Servers">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to prepare the Tomcat and JBoss app servers.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the BA Manual installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/1575/grBaManualPrepareAppServer.png?revision=1" />
+          </p>
+          <p class="p">After you have completed the tasks in the
+            <a class="xref" title="Documentation/5.1/0F0/0K0/050" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0K0/050">Specify Connections</a>  step, you must determine whether your web application server must be configured before the BA Server is deployed on it.</p>
+          <p class="p"><strong class="ph b">Tomcat:</strong>  No additional configuration is required. Proceed to the
+            <a class="xref" title="Documentation/5.1/0F0/0K0/070" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0K0/070">Start BA Server</a>  step.</p>
+          <p class="p"><strong class="ph b">JBoss:</strong>  If you have installed the JBoss web application server, you must manually complete several configuration tasks.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="609787c2-62b0-4d7a-ab17-f7a18461eb86__StartupTimeout">
+        <div id="section_2" class="mt-page-section"><span id="Increase_the_Amount_of_Time_JBoss_Allows_for_BA_Server_Deployment"></span> 
+          <h2 class="editable">Increase the Amount of Time JBoss Allows for BA Server Deployment</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">By default, JBoss allows up to one minute for a web application to be deployed. If the web application is not deployed within that timeframe, an error occurs.</p>
+              <p class="p">Because the BA Server deployment requires more than one minute, manually edit the <span class="ph filepath">standalone.xml</span>  file to increase the deployment time.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath"><your jboss installation directory>/standalone/configuration/standalone.xml</span>  file.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Find the <code class="ph codeph"> <deployment-scanner> </code> tag, add the <code class="ph codeph">deployment-timeout</code> attribute, then set the attribute equal to <code class="ph codeph">120</code>. Note that if you are installing the BA Server on a VM, you might want to increase the <code class="ph codeph">deployment-timeout</code> attribute's value to give the BA Server more time to deploy. </span>                 <code class="ph codeph"><deployment-scanner scan-interval=&quot;5000&quot; relative-to=&quot;jboss.server.base.dir&quot; path=&quot;deployments&quot; scan-enabled=&quot;true&quot; deployment-timeout=&quot;120&quot;/></code></li>
+              <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="609787c2-62b0-4d7a-ab17-f7a18461eb86__Disable_RESTEasy_Scan">
+        <div id="section_3" class="mt-page-section"><span id="Disable_the_JBoss_RESTEasy_Scan"></span> 
+          <h2 class="editable">Disable the JBoss RESTEasy Scan</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To load pentaho REST services correctly, the RESTEasy scan in JBoss must be disabled. These instructions explain how to do this.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the contents of the <span class="ph filepath"><your jboss installation directory>/standalone/deployments/pentaho.war</span>  file. Do not unzip the
+                <span class="ph filepath">pentaho.war</span>  file, just view its contents.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">WEB-INF</span>  directory in the <span class="ph filepath">pentaho.war</span>  file and open the <span class="ph filepath">web.xml</span>  file in a text editor.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">At the end of the <context-param> tags, add this code.</span>  <pre class="pre codeblock">
+<context-param>
+             <param-name>resteasy.scan</param-name>
+             <param-value>false</param-value>
+        </context-param>
+        <context-param>
+             <param-name>resteasy.scan.resources</param-name>
+             <param-value>false</param-value>
+        </context-param>
+        <context-param>
+             <param-name>resteasy.scan.providers</param-name>
+             <param-value>false</param-value>
+</context-param></pre> </li>
+              <li class="li step"><span class="ph cmd">In the <span class="ph filepath">web.xml</span>  file, change the BA Server fully qualified URL. To learn how, read the
+                <a class="xref" title="Documentation/5.1/0P0/150/030/000/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/150/030/000/020">Change the BA Server Fully Qualified URL</a>  instructions.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+              <li class="li step"><span class="ph cmd">The zip extraction utility that you used might show a prompt that asks whether you would like to update the file in the <span class="ph filepath">pentaho.war</span>  archive. If this happens, confirm that you would like
+                to do this.</span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="609787c2-62b0-4d7a-ab17-f7a18461eb86__SetLocationPentahoSolutionsDirectory">
+        <div id="section_4" class="mt-page-section"><span id="Set_the_Location_of_the_pentaho-solutions_Directory"></span> 
+          <h2 class="editable">Set the Location of the pentaho-solutions Directory</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To deploy JBoss correctly, Pentaho recommends that you define the location of the Pentaho solutions directory in the <span class="ph filepath">web.xml</span>  file. These instructions explain how to do this.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">If you have not done so already, use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the contents of the <span class="ph filepath">jboss/standalone/deployments/pentaho.war</span>  file. Do not unzip
+                the <span class="ph filepath">pentaho.war</span>  file, just view its contents.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">WEB-INF</span>  directory in the <span class="ph filepath">pentaho.war</span>  file and open the <span class="ph filepath">web.xml</span>  file in a text editor.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Locate the following <context-param> tags. </span>  <pre class="pre codeblock">
+<context-param>
+      <param-name>solution-path</param-name>
+      <param-value></param-value>
+ </context-param></pre> </li>
+              <li class="li step"><span class="ph cmd">Set the paramater value of the solution-path to the pentaho-solutions path. An example of the code is below.</span>  <pre class="pre codeblock">
+<context-param>
+     <param-name>solution-path</param-name>
+     <param-value>/home/pentaho/server/biserver-ee/pentaho-solutions</param-value>
+ </context-param></pre> </li>
+              <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="609787c2-62b0-4d7a-ab17-f7a18461eb86__IncreaseMemoryDefault_windows">
+        <div id="section_5" class="mt-page-section"><span id="Increase_JBoss_Default_Memory_Settings"></span> 
+          <h2 class="editable">Increase JBoss Default Memory Settings</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Before you deploy the BA Server, modify the JBoss startup script to match the BA Server's memory resource requirements. If this step is not performed, the BA Server will not start.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Use a text editor to open the standalone configuration file. The file you open depends on your operating system.</span> 
+                <ul class="ul">
+                  <li class="li"><strong class="ph b">Microsoft Windows:</strong>  <span class="ph filepath"><your jboss installation directory>/bin/standalone-conf.bat</span> </li>
+                  <li class="li"><strong class="ph b">Linux:</strong>  <span class="ph filepath"><your jboss installation directory>/bin/standalone.conf</span> </li>
+                </ul>
+              </li>
+              <li class="li step"><span class="ph cmd">Change the following code from <code class="ph codeph">-Xms1303m -Xmx1303m -XX:MaxPermSize=256m</code> to this:</span>  <pre class="pre codeblock">
+-Xms4096m -Xmx6144m -XX:MaxPermSize=256m</pre> </li>
+              <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Add_JBoss_Logging"></span> 
+        <h2 class="editable">Add JBoss Logging</h2>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">You can add Pentaho application level logging to the JBoss logging subsystem. This is an optional step.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">pentaho.war</span>, go to the <span class="ph filepath">WEB-INF</span>  directory and open the <span class="ph filepath">jboss-deployment-structure.xml</span>  file.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Under the <span class="ph filepath"><deployment></span>  tag add this code. </span>  <pre class="pre codeblock">
+<exclusions>
+    <module name=&quot;org.apache.log4j&quot;/>
+</exclusions></pre> </li>
+            <li class="li step"><span class="ph cmd">Save and close the file, then exit from <span class="ph uicontrol">pentaho.war</span> .</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">standalone.xml</span>  file in the <span class="ph filepath"><your jboss directory>/standalone/configuration</span>  directory.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Under the <span class="ph filepath"></extensions></span>  tag add this code.</span>  <pre class="pre codeblock">
+ <system-properties>
+      <property name=&quot;org.jboss.as.logging.per-deployment&quot; value=&quot;false&quot;/>
+  </system-properties></pre> </li>
+            <li class="li step"><span class="ph cmd">Find the <span class="ph filepath"><console-handler ...></span>  or <span class="ph filepath"><file-handler ...></span>  sections and add the following two handlers.</span>  <pre class="pre codeblock">
+<console-handler name=&quot;PENTAHOCONSOLE&quot;>
+<level name=&quot;ALL&quot;/>
+</console-handler>
+   <file-handler name=&quot;PENTAHOFILE&quot;>
+    <file relative-to=&quot;jboss.server.log.dir&quot; path=&quot;pentaho.log&quot;/>
+    <append value=&quot;false&quot;/>
+</file-handler></pre> </li>
+            <li class="li step"><span class="ph cmd">Under the file handlers section, there is a section containing <span class="ph filepath"><logger></span>  tags. Configure the <span class="ph filepath"><root-logger></span>  handler to use these handlers.</span>  <pre class="pre codeblock">
+<handler name=&quot;PENTAHOCONSOLE&quot;/>
+<handler name=&quot;PENTAHOFILE&quot;/></pre> </li>
+            <li class="li step"><span class="ph cmd">Add the following loggers above <span class="ph filepath"><root-logger></span> .</span>  <pre class="pre codeblock">
+<logger category=&quot;org.hybernate&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;net.sf.ehcache&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+   </logger>
+<logger category=&quot;org.quartz&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+</handlers>
+</logger>
+    <logger category=&quot;org.springframework&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;org.springframework.security&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;com.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.jfree.JCommon&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.apache.jackrabbit.core.security.authentication.AbstractLoginModule&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;RepositoryImportLog&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;INFO&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger></pre> </li>
+            <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Increase_the_Amount_of_Time_JBoss_Allows_for_BA_Server_Deployment" rel="internal">Increase the Amount of Time JBoss Allows for BA Server Deployment</a>  </li>
+      <li> <a href="#Disable_the_JBoss_RESTEasy_Scan" rel="internal">Disable the JBoss RESTEasy Scan</a>  </li>
+      <li> <a href="#Set_the_Location_of_the_pentaho-solutions_Directory" rel="internal">Set the Location of the pentaho-solutions Directory</a>  </li>
+      <li> <a href="#Increase_JBoss_Default_Memory_Settings" rel="internal">Increase JBoss Default Memory Settings</a>  </li>
+      <li> <a href="#Add_JBoss_Logging" rel="internal">Add JBoss Logging</a>  </li>
+    </ol>
+  </body>
+</content>

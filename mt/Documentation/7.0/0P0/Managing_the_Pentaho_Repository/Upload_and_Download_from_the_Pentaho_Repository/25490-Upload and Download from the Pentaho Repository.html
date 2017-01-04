@@ -1,0 +1,220 @@
+<content type="text/html" title="Upload and Download from the Pentaho Repository">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>You can upload and download from the&nbsp;Pentaho Repository through the Pentaho&nbsp;User Console (PUC) or the command line interface. The ability to upload and download assumes that you have already created a data source, that data content
+            exists to be pushed, and defines permissions for the repository.</p>
+        </div>
+      </div>
+      <p class="p">Uploading and downloading from the&nbsp;Pentaho Repository is done using the Pentaho User Console (PUC) or the command line interface. The ability to upload and download assumes that you have already created a data source, that data content exists
+        to be pushed, and defines permissions for the repository.</p>
+      <p class="p">For uploading, any starting location can be selected. Permission settings are inherited through the folder structure if the destination location has existing permission settings. It is advisable to keep existing security settings as defaults for
+        the upload. Uploading more than one file or folder requires the files to be zipped before beginning the upload.</p>
+      <p class="p">For downloading, you are able to select the destination location for the downloaded file or folder. The download process always creates a ZIP&nbsp;file that includes a manifest file along with the downloaded content. The manifest file contains the
+        collection of permissions settings for the downloaded files and folders and is found in the root directory of the ZIP file.</p>
+      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border">
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" valign="top" width="50%">Supported File Types</th>
+            <th class="entry" valign="top" width="50%">Hidden File Types</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" valign="top" width="50%">
+              <p class="p">These are the supported file types and artifacts for uploading and downloading from the Pentaho Repository.</p>
+            </td>
+            <td class="entry" headers="d3947e67 " valign="top" width="50%">
+              <p class="p">These are the file types that are hidden by default in the Pentaho Repository.</p>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" valign="top" width="50%">
+              <ul class="ul">
+                <li class="li">Reporting (.prpt, .prpti, .xml)</li>
+                <li class="li">Analyzer (.xanalyzer)</li>
+                <li class="li">Dashboards (.xdash)</li>
+                <li class="li">Solution Files (.xaction, .locale)</li>
+              </ul>
+            </td>
+            <td class="entry" headers="d3947e67 " valign="top" width="50%">
+              <ul class="ul">
+                <li class="li">Web (.html, .htm)</li>
+                <li class="li">Reporting (.xml)</li>
+                <li class="li">Solution Files (.properties)</li>
+                <li class="li">Graphics (.png, .jpg, .gif, .svg)</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="section_2" class="mt-page-section"><span id="Upload_Folders_and_Files"></span> 
+        <h2 class="editable">Upload Folders and Files</h2>
+        <p class="p">The User Console can be used to upload files and folders to the Pentaho Repository. A quick word about manifests: when a user downloads content out of the repository, a manifest file is created within the zip file which contains the permission
+          and ownership information about the file.</p>
+        <p>For <strong>Retain permission on upload file</strong>, the file permission contained in the uploaded zip (<span class="filepath style-wrap">exportManifest.xml</span> ) will be the permission applied the repository. If the file doesn't have an entry
+          in the <span class="filepath style-wrap">exportManifest.xml</span>  for the permission, then it will use the default permission, which is <span class="filepath style-wrap">inherit</span> . This is equivalent to the command line switch, <span class="filepath style-wrap">--permission=true</span> .</p>
+        <p>For <strong>Set Owner based on uploaded file</strong>, the owner found in the uploaded zip (<span class="filepath style-wrap">exportManifest.xml</span> ) will be the owner of the file in the repository. If the file doesn't have an entry in the
+          <span class="filepath style-wrap">exportManifest.xml</span>  for the <span class="filepath style-wrap">Owner</span>, then it will set the <span class="filepath style-wrap">Owner </span> to the user who is uploading the zip. This equivalent to
+          the command line switch,<span class="filepath style-wrap"> --retainOwnership=true</span> .</p>
+        <p class="p">These steps walk you through uploading to the repository with the User Console.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">From the User Console <strong>Home</strong>, click <strong>Browse Files</strong> . The <strong>Browse Files</strong>  page appears.</li>
+          <li class="li step">From the <strong>Browse</strong>  pane on the left, click to choose the destination folder for the upload.</li>
+          <li class="li step">With the destination folder highlighted, click <strong>Upload</strong>  in the <strong>Folder Actions</strong>  pane on the right. The <strong>Upload</strong>  dialog box appears.</li>
+          <li class="li step">Browse to the file or folder to be uploaded by clicking <strong>Browse</strong> .</li>
+          <li class="li step">Click <strong>OK</strong>  to begin upload using the default settings.</li>
+          <li class="li step">Choose preferences for the upload by clicking to expand the <strong>Advanced Options</strong>  menu.
+            <ol class="ol substeps">
+              <li class="li substep">Choose <strong>Replace the Existing File</strong>  or <strong>Do Not Upload</strong>  from the first menu.</li>
+              <li class="li substep">Choose <strong>File Permissions</strong>  from the second menu. The choices are <strong><strong>Do Not Change Permissions</strong> </strong>  or <strong><strong>Retain</strong>  <strong>Permissions on the Uploaded File</strong> </strong> .</li>
+              <li class="li substep">If you selected <strong>Retain Permissions on the Uploaded File</strong>, choose <strong><strong>File Ownership</strong> </strong>  by selecting <strong>Do Not Change Owner</strong>  or <strong>Set Owner Based on Uploaded File</strong>  from
+                the third menu.</li>
+              <li class="li substep">Choose <strong>None</strong>, <strong>Short</strong>, or <strong>Verbose</strong>  from the Logging menu.</li>
+            </ol>
+          </li>
+          <li class="li step">Click <strong>OK</strong> .</li>
+        </ol>
+        <p>The upload runs and the files or folders are uploaded to the repository. If the upload fails, an error log window opens with specific information.</p>
+        <div id="section_3" class="mt-page-section"><span id="Upload_from_the_Command_Line"></span> 
+          <h3 class="editable">Upload from the Command Line</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Open the command line interface by clicking <strong>Start</strong>  and typing <strong>cmd</strong> . Press <strong>Enter</strong> .</li>
+            <li class="li step">From the command line interface, go to the location where you have a local copy of the Pentaho Server installed, such as <span class="filepath style-wrap">C:/dev/pentaho/pentaho-server</span> .</li>
+            <li class="li step">Enter a space, then type the arguments for upload into the command line interface. A completed upload argument would look something like this:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import-export.bat --import --url=http://localhost:8080/pentaho --username=dvader --password=password --charset=UTF-8 --path=/public --file-path=C:/Users/dvader/Downloads/pentaho-solutions.zip --overwrite=true --permission=true --retainOwnership=true</pre>
+          <ol class="pentaho-list-ordered">
+            <li value="4">Press <strong>Enter</strong>  after the arguments are typed.</li>
+          </ol>
+          <p>The upload process runs and the results are displayed in the command interface. If an argument is required for successful upload and has not been provided, the missing requirement is displayed in the command interface. The
+            <a title="Command Line Arguments Reference"
+            rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_Pentaho_Repositories/Upload_and_Download_from_the_Pentaho_Repository/Command_Line_Arguments_Reference">Command Line Arguments Reference</a>  has a list of available command line arguments for uploading.</p>
+        </div>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Download_Folders_and_Files"></span> 
+        <h2 class="editable">Download Folders and Files</h2>
+        <p>Downloading folders and files can be done through the User Console or through the command line interface. The download process always creates a ZIP&nbsp;file that includes a manifest file along with the downloaded content. The manifest file is
+          a collection of the permissions settings for the downloaded files and folders and is found in the root directory of the ZIP&nbsp;file.</p>
+        <div id="section_5" class="mt-page-section"><span id="Download_a_Folder"></span> 
+          <h3 class="editable">Download a Folder</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">From the User Console <strong>Home</strong>, click <strong>Browse Files</strong> . The <strong>Browse Files</strong>  page appears.</li>
+            <li class="li step">From the <strong>Browse</strong>  pane on the left, browse to the location of the folder to be downloaded.</li>
+            <li class="li step">With the folder highlighted, click <strong>Download</strong>  in the <strong>Folder Actions</strong>  pane on the right.</li>
+            <li class="li step">Choose <strong>Save File</strong>  in the window that appears, and click <strong>OK</strong> .</li>
+          </ol>
+          <p>The folder is saved as a ZIP&nbsp;file with the manifest located in the top level of the file.</p>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Download_a_File"></span> 
+          <h3 class="editable">Download a File</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">From the User Console <strong>Home</strong>, click <strong>Browse Files</strong> . The <strong>Browse Files</strong>  page appears.</li>
+            <li class="li step">Browse to the location of the file by clicking through the folders in the <strong>Browse</strong>  pane on the left. The <strong>Files</strong>  pane in the center populates with a list of reports.</li>
+            <li class="li step">Click to select the file in the <strong>Files</strong>  pane and choose <strong>Download</strong>  in the <strong>Folder Actions</strong>  pane on the right.</li>
+            <li class="li step">Choose <strong>Save File</strong>  in the window that appears, and click <strong>OK</strong> .</li>
+          </ol>
+          <p>The file is saved as a ZIP&nbsp;file with the manifest located in the top level of the file.</p>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Download_from_the_Command_Line"></span> 
+          <h3 class="editable">Download from the Command Line</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Open the command line interface by clicking <strong>Start</strong>  and typing <strong>cmd</strong> . Press <strong>Enter</strong> .</li>
+            <li class="li step">From the command line interface, go to the location where you have a local copy of the Pentaho Server installed, such as <span class="filepath style-wrap">C:/dev/pentaho/pentaho-server</span> .</li>
+            <li class="li step">Enter a space, then type the arguments for download into the command line interface. A completed download argument would look something like this:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import-export.bat --export --url=http://localhost:8080/pentaho --username=dvader --password=password --charset=UTF-8 --path=/public --file-path=C:/Users/dvader/Downloads/pentaho-solutions.zip --overwrite=true --permission=true --retainOwnership=true</pre>
+          <ol class="pentaho-list-ordered">
+            <li value="4">Press <strong>Enter</strong>  after the arguments are typed.</li>
+          </ol>
+          <p>The download process runs and the results are displayed in the command interface. The file is saved as a ZIP&nbsp;file with the download manifest located in the top level of the file. If an argument is required for successful download and has
+            not been provided, the missing requirement is displayed in the command interface.&nbsp;<span>The&nbsp;</span> 
+            <a href="/Documentation/6.0/0P0/000/020/Command_Line_Arguments_Reference#Downloading_Arguments" rel="internal" title="https://help.pentaho.com/Documentation/6.0/0P0/000/020/Command_Line_Arguments_Reference#Downloading_Arguments">Command Line Arguments Reference</a> <span>&nbsp;has a list of available command line arguments for downloading.</span> </p>
+        </div>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Response_Code_Definitions"></span> 
+        <h2 class="editable">
+          <span>Response Code Definitions</span> 
+        </h2>
+        <p><span>Here is a list of response codes for the&nbsp;<span class="filepath style-wrap">import-export.bat</span>  script.</span> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 90px;">Response Code</th>
+              <th scope="col" style="width: 400px;">Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 90px;">1</td>
+              <td style="width: 585px;"><span>Publish to server failed.</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">2</td>
+              <td style="width: 585px;">General publish error.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">3</td>
+              <td style="width: 585px;">Publish successful.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">5</td>
+              <td style="width: 585px;">Authentication to the publish server failed. Username or password is incorrect.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">6</td>
+              <td style="width: 585px;">Datasource publish failed.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">7</td>
+              <td style="width: 585px;">XMLA&nbsp;catalog already exists.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">8</td>
+              <td style="width: 585px;">Schema already exists.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">9</td>
+              <td style="width: 585px;">Content about to be published already exists.</td>
+            </tr>
+            <tr>
+              <td style="width: 90px;">10</td>
+              <td style="width: 585px;">Error publishing to the server due to prohibited symbols in the name of the content.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Upload_Folders_and_Files" rel="internal">Upload Folders and Files</a> 
+        <ol>
+          <li> <a href="#Upload_from_the_Command_Line" rel="internal">Upload from the Command Line</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Download_Folders_and_Files" rel="internal">Download Folders and Files</a> 
+        <ol>
+          <li> <a href="#Download_a_Folder" rel="internal">Download a Folder</a>  </li>
+          <li> <a href="#Download_a_File" rel="internal">Download a File</a>  </li>
+          <li> <a href="#Download_from_the_Command_Line" rel="internal">Download from the Command Line</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Response_Code_Definitions" rel="internal">Response Code Definitions</a>  </li>
+    </ol>
+  </body>
+</content>

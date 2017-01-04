@@ -1,0 +1,52 @@
+<content type="text/html" title="Create a Link to a Report on a Chart">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">This section specifies how to create a chart within Report Designer that links to other reports or URLs. This action is known as creating a &quot;hyperlink&quot; or a &quot;drill-down&quot; on a link.</div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Within the report, double-click on the chart to place a hyperlink.</span>  The <strong class="ph b">Edit Chart</strong>  window appears. </li>
+          <li class="li step"> <span class="ph cmd">Within the <strong class="ph b">Edit Chart</strong>  dialog box, scroll down to the <strong class="ph b">Values</strong>  section on the left panel. Select <strong class="ph b">url-formula</strong>  and a <strong class="ph b">...</strong>  appears. Click on the <strong class="ph b">...</strong>  to show the <strong class="ph b">Formula Editor</strong> .</span>             </li>
+          <li class="li step"> <span class="ph cmd">Within the <strong class="ph b">Formula Editor</strong>  dialog box, select the last button on the right. This is the <strong class="ph b">Drill-down Function</strong>  button, which looks like a chain link.</span>  <code class="ph codeph">DRILLDOWN</code>            appears in the <strong class="ph b">Formula</strong>  box. </li>
+          <li class="li step"> <span class="ph cmd">In the top of the <strong class="ph b">Formula Editor</strong>  display, click on the drop-down box to select the <strong class="ph b">Location</strong>  type.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Choose <strong class="ph b">Pentaho Repository</strong>  if the link opens a report from the repository.</span> 
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">If you choose <strong class="ph b">Pentaho Repository</strong>, enter the URL to the Pentaho server in the Server URL field. For example, <span class="ph filepath">http://<myPentahoServer>:<PortNumber>/<FileName></span> .
+                Use the <strong class="ph b">Path</strong>  field to browse to the desired linking report.</span> 
+              </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">Choose <strong class="ph b">URL</strong>  if the link goes to a defined URL.</span> 
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">If you choose <strong class="ph b">URL</strong>, enter the URL for the link in the Path field. For example, <span class="ph filepath"> <a rel="freeklink" href="http://www" title="http://www" class="external">http://www</a> .<ApplicationName>/search?</span> .
+                If the URL requires parameters, you can define them in the Parameters section. Click the <strong class="ph b">Add parameter</strong>  button to add an entry for the parameter name and value. They must be defined as formulas. For example,
+                <strong class="ph b">myRegion = East</strong>  or <strong class="ph b">myLine = Trains</strong> . You can also use any data columns or functions in the formula. For this example, the URL generated is <span class="ph filepath"> <a rel="freeklink" href="http://www.myApplication.com/search?myRegion=East&amp;myLine=Trains" title="http://www.myApplication.com/search?myRegion=East&amp;myLine=Trains" class="external">http://www.myApplication.com/search?...&amp;myLine=Trains</a> </span> .
+                </span> 
+              </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">Choose <strong class="ph b">Self</strong>  if the link goes to a custom web application and refers back to itself as a link.</span> 
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">If <strong class="ph b">Self</strong>  is chosen, set the list of parameters that your web application passes back into the report. The parameter values need to be defined as a formula. You can also add any additional parameters and values that your custom web application requires. You may find it necessary to use the internal chart fields here.</span>                 </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">Within the <strong class="ph b">Formula Editor</strong>  display, view the <strong class="ph b">Parameters</strong>  applied to the report to ensure they are correct.</span> 
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">Select the <strong class="ph b">Report Parameters</strong>  tab to view the parameters used in the targeted report. This tab shows all the parameters defined in the target report that can be mapped to the current report.</span>                 </li>
+              <li class="li substep"> <span class="ph cmd">Select the <strong class="ph b">System Parameters</strong>  tab to allow report designer to optionally control the behavior of the Report Viewer. The initial list provided is a pre-defined list of the most popular parameters. For example, TabActive (when set to true, allows the target report to open in a new tab) and TabName (when TabActive is to true, allows the tab name to be dynamically named using a formula) are frequently used as <strong class="ph b">TabActive true</strong>  and <strong class="ph b">TabName = &quot;[::chart-series-key]&quot;</strong> . The defined list of parameters can be found in the Report Viewer Plugin wiki.</span>                 </li>
+              <li class="li substep"> <span class="ph cmd">Select the <strong class="ph b">Custom Parameters</strong>  tab to add additional parameters to the report unique to a specific use case. In rare cases, this would be a situation where the Report Viewer has been extended to accept additional parameters.</span>                 </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">Depending on location type, a DRILLDOWN function is generated in the Formula section. For example, for a local report called oStatus that you want to link to <span class="ph filepath">Order Status.prpt</span>, you would
+            enter: </span>  <pre class="pre codeblock">=DRILLDOWN(&quot;local-prpt&quot;; NA();
+{&quot;oStatus&quot;; [&quot;chart::category-key&quot;] | &quot;showParameters&quot;; [STATUS] |
+   &quot;solution&quot;; &quot;steel-wheels&quot; | &quot;path&quot;; &quot;reports&quot; | &quot;name&quot;; 
+   &quot;OrderStatus.prpt&quot;})</pre> </li>
+          <li class="li step"> <span class="ph cmd">Run the report in your desired format. Clicking the green arrow and select the desired output type from the drop-down menu.</span>  The final product appears. </li>
+          <li class="li step"> <span class="ph cmd">Double-click on the appropriate area within the chart to launch the link.</span>  The new report appears in the browser. </li>
+        </ol>
+        <div class="section result">The report is linked to another report using a hyperlink. This is also known as a drill-down link on a report.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

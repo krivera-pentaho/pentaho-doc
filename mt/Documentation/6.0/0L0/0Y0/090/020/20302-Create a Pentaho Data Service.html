@@ -1,0 +1,245 @@
+<content type="text/html" title="Create a Pentaho Data Service">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Explains how to create, test, and optimize a Pentaho Data Service.</p>
+      </div>
+    </div>
+    <div class="SCX173710296">
+      <div class="OutlineElement Ltr SCX173710296">
+        <p>The
+          <a title="Turn a Transformation into a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/090">Pentaho Data Service</a>  allows you to retrieve the query results of a transformation through a JDBC service.&nbsp;&nbsp; These instructions explain how you can create and test a data service.&nbsp; It also describes techniques for optimizing
+          the performance of your Data Service.&nbsp; Applying optimizations to a Data Service can significantly improve performance by leveraging caching, as well as adding filters to the input data source.</p>
+        <p class="pentaho-note">As you work through these instructions to create a Pentaho Data Service, we recommend that you use the Verify feature (Actions > Verify). The verify feature helps you validate your transformation, including the Pentaho Data Service, as you build
+          it.</p>
+        <div id="section_2" class="mt-page-section"><span id="Create_a_Pentaho_Data_Service"></span> 
+          <h2 class="editable">Create a&nbsp;Pentaho Data Service</h2>
+          <p>To create the data service, complete the following steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>In Spoon, create or open a transformation that you&rsquo;d like to turn into a data service.</li>
+            <li>Right-click a step at the end of the transformation which outputs the desired data, and select <strong>Data Service > New...</strong> .</li>
+          </ol>
+          <p>
+            <a class="thumb" title="DataService.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/6968/DataService.png">
+              <img alt="DataService.png" class="internal default" style="width: 312px; height: 350px;" width="312px" height="350px" src="http://help.pentaho.com/@api/deki/files/6968/DataService.png?size=bestfit&amp;width=312&amp;height=350&amp;revision=1"
+              />
+            </a> 
+          </p>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>In the <strong>Data Service</strong>  window, enter a name for the data service in the <strong>Service Name (Virtual Table Name)</strong>  field.&nbsp; When you run the data service, the results will be stored in a virtual table with the name
+              you enter in this field.&nbsp; Your data service name should be unique within your transformation. The data service should also not have the same name as another data service in another transformation saved locally or in the repository.</li>
+            <li>By default, data service results are cached in memory on the DI Server for an hour. If you want to change the duration, click the <strong>Service Cache </strong> tab, and modify the <strong>Cache Duration (seconds) </strong> field.&nbsp; (If
+              you want to disable the cache, deselect the <strong>Enable Caching </strong> checkbox.)</li>
+            <li>&nbsp;
+              <a title="Create a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/090/020#Test_the_Pentaho_Data_Service">Test the data service</a> .</li>
+            <li>Save and close the data service.</li>
+          </ol>
+          <div id="section_3" class="mt-page-section"><span id="Test_the_Pentaho_Data_Service"></span> 
+            <h3 class="editable">Test the Pentaho Data Service</h3>
+            <p>&nbsp;To test the Pentaho Data Service, complete these steps.</p>
+            <ol class="pentaho-list-ordered">
+              <li>Select the data service that you want to test from the <strong>View </strong> panel.&nbsp; The <strong>Data Service </strong> window appears.</li>
+              <li>Click the <strong>Test Data Service </strong> button.&nbsp; The <strong>Data Service Test</strong>  window appears.</li>
+            </ol>
+            <p>
+              <a class="thumb" title="dataservicetest.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/6970/dataservicetest.png">
+                <img alt="dataservicetest.png" class="internal default" style="width: 350px; height: 303px;" width="350px" height="303px" src="http://help.pentaho.com/@api/deki/files/6970/dataservicetest.png?size=bestfit&amp;width=350&amp;height=303&amp;revision=1"
+                />
+              </a> 
+            </p>
+            <ol class="pentaho-list-ordered" start="3">
+              <li>Adjust the
+                <a title="https://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/000"> logging level</a>, if needed.</li>
+              <li>Indicate the maximum number of rows that you&rsquo;d like to preview in the<strong> Max Rows</strong>  field.</li>
+              <li>Click the<strong> Execute SQL</strong>  button.&nbsp; (You can also press <strong>[CTRL]+[ENTER]</strong>  to query.)&nbsp; Test results span several tabs.</li>
+            </ol>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="367" style="width: 665px; table-layout: fixed;" title="Pentaho Table" width="664">
+              <tbody>
+                <tr>
+                  <th style="width: 215px;">Tab Name</th>
+                  <th style="width: 426px;">Description</th>
+                </tr>
+                <tr>
+                  <td style="width: 215px;">Query Results&nbsp;
+                    <br /> &nbsp;</td>
+                  <td style="width: 426px;">Shows processing information and the result of the query.</td>
+                </tr>
+                <tr>
+                  <td style="width: 215px;">Optimized Queries&nbsp;
+                    <br /> &nbsp;</td>
+                  <td style="width: 426px;">Displays processing information and the result of optimizations.</td>
+                </tr>
+                <tr>
+                  <td style="width: 215px;">Service Transformation Logging&nbsp;
+                    <br /> &nbsp;</td>
+                  <td style="width: 426px;">Shows the logs from the transformation as it runs. &nbsp;Note that there are two transformations that run: one that you created&nbsp; (Service Transformation) and the one that PDI creates (Generated Transformation) when you run the data
+                    service. &nbsp;This tab shows service transformation logs.</td>
+                </tr>
+                <tr>
+                  <td style="width: 215px;">Generated Transformation Logging&nbsp;
+                    <br /> &nbsp;</td>
+                  <td style="width: 426px;">Displays the logs from the transformation as it runs. &nbsp;Note that there are two transformations that run: one that you created&nbsp; (Service Transformation) and the one that PDI creates (Generated Transformation) when you run the
+                    data service. &nbsp;This tab shows generated transformation logs.</td>
+                </tr>
+                <tr>
+                  <td style="width: 215px;">Service Metrics&nbsp;
+                    <br /> &nbsp;</td>
+                  <td style="width: 426px;">Shows a GANTT-chart like representation of the amount of time, in milliseconds it took to run the different parts of the transformation.</td>
+                </tr>
+                <tr>
+                  <td style="width: 215px;">SQL Trans Metrics</td>
+                  <td style="width: 426px;">Shows a GANTT-chart like representation of the amount of time, in milliseconds it took to run the SQLquery made to the Data Service.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Optimize_a_Data_Service"></span> 
+          <h2 class="editable">Optimize a Data Service</h2>
+          <p>Optimizations are optional, but can greatly improve the performance of your data service.&nbsp; Optimizations can be applied to the <strong>Table Input</strong>  and <strong>MongoDB Input </strong> steps.</p>
+          <p class="pentaho-note"><span>&nbsp;If caching is enabled for the data service, the cache will be checked before applying optimizations. If query results cannot be derived from cache, the service transformation will be run, applying optimizations where possible. The results of that execution will then be cached.</span> </p>
+          <div id="section_5" class="mt-page-section"><span id="Set_Input_Step_Optimization_Values"></span> 
+            <h3 class="editable">Set Input Step Optimization Values</h3>
+            <p>To set up an input step optimization value, complete these steps.</p>
+            <ol class="pentaho-list-ordered">
+              <li> <a title="Create a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/090/020#Create_a_Pentaho_Data_Service">Create and test a Pentaho Data Service</a>  for a transformation that has a <strong>Table Input </strong> or <strong>MongoDB Input </strong> step. </li>
+              <li>In the <strong>Pentaho Data Service </strong> window, click the <strong>Input Step Optimizations</strong>  tab.</li>
+            </ol>
+            <p>
+              <img alt="DataService_InputStepOptimization.png" class="internal default" style="width: 312px; height: 350px;" width="312px" height="350px" src="http://help.pentaho.com/@api/deki/files/6969/DataService_InputStepOptimization.png?size=bestfit&amp;width=312&amp;height=350&amp;revision=1"
+              />
+            </p>
+            <ol class="pentaho-list-ordered" start="3">
+              <li>Click the <strong>+ </strong> button.</li>
+              <li>In the <strong>Create Parameter</strong>  window type the name of an optimization parameter.&nbsp; You will be using this parameter name later when you add it to your input step query.&nbsp; Click <strong>OK</strong> .</li>
+              <li>Select the step that contains the parameter in the <strong>Step Name </strong> field.</li>
+              <li>In the <strong>Definitions </strong> area of the window, enter the <strong>Data Service Field</strong>  and the <strong>Step Field </strong> that you want to parameterize.</li>
+            </ol>
+            <ul class="pentaho-list-unordered">
+              <li>The <strong>Data Service Field </strong> contains the name of the<em> transformation's</em>  name of the field you want to parameterize.&nbsp; For example, you might have renamed the <span class="filepath style-wrap">cty</span>  field from
+                your data source as <span class="filepath style-wrap">country</span> .&nbsp; You would enter country in the <strong>Data Service Field</strong> .</li>
+              <li>The <strong>Step Field </strong> should contain the <em>data source's </em> name of the field you want to parameterize.&nbsp; For example, if you wanted to&nbsp; parameterize the <span class="filepath style-wrap">cty </span> field in a MySQL
+                database, enter <span class="filepath style-wrap">cty </span> in the <strong>Step Field</strong> .</li>
+            </ul>
+            <p class="pentaho-note">Optionally, you can click the <strong>Get Optimizations </strong> button to automatically generate input step optimizations based on the output fields for the step on which you've created the data service and input fields.</p>
+            <ol class="pentaho-list-ordered"
+            start="7">
+              <li>Click the <strong>OK </strong> button to save and close the window.</li>
+              <li>Add the optimization parameter you created to the input step query.</li>
+            </ol>
+          </div>
+          <div id="section_6" class="mt-page-section"><span id="Add_the_Optimization_Parameter_to_the_Input_Step_Query"></span> 
+            <h3 class="editable">Add the Optimization Parameter to the Input Step Query</h3>
+            <p>The input step allows you to query the data source.&nbsp; These instructions explain how to add a parameter that will act as a WHERE clause in the SQL query or the equivalent type of clause in the MongoDB query.</p>
+            <ol class="pentaho-list-ordered">
+              <li>In the transformation that contains the data service, double-click the input step&nbsp;(<strong>Table Input </strong> or <strong>MongoDB Input</strong> ) that contains the query you want to optimize.</li>
+              <li>Add the parameter you created in the
+                <a title="Create a Pentaho Data Service (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/090/020#Set_Input_Step_Optimization_Values">Set Input Step Optimization Values instructions</a>  to the place where the WHERE clause value would be, like this:</li>
+            </ol>
+            <ul class="pentaho-list-unordered">
+              <li><span class="filepath style-wrap"><strong>SQL Query Example:</strong>  SELECT * FROM media WHERE&nbsp; ${countryParam}&nbsp;</span> </li>
+              <li><span class="filepath style-wrap"><strong>MongoDB Query Example:</strong>  {$match : ${mongoDbParam}}</span> </li>
+            </ul>
+            <ol class="pentaho-list-ordered" start="3">
+              <li>Press<strong> [CTRL]+[SPACE] </strong> to view the list of parameters. Click on a parameter from the list to add it to the query.</li>
+              <li>Click the <strong>Replace Variables in Script? </strong> checkbox.</li>
+              <li>Click the <strong>OK</strong>  button.</li>
+              <li>Test your optimization.</li>
+            </ol>
+          </div>
+          <div id="section_7" class="mt-page-section"><span id="Test_the_Optimization"></span> 
+            <h3 class="editable">Test the Optimization</h3>
+            <p>To test the Pentaho Data Service optimization, complete these steps.</p>
+            <ol class="pentaho-list-ordered">
+              <li>Select the data service that you want to test from the <strong>View </strong> panel.&nbsp; The <strong>Data Service </strong> window appears.</li>
+              <li>Click the <strong>Test Data Service </strong> button.&nbsp; The <strong>Data Service Test</strong>  window appears.&nbsp; The SQL section shows a query that has the optimization variable that you added to it, like this:</li>
+            </ol>
+            <p><span class="filepath style-wrap">SELECT * FROM myNewParam&nbsp;</span> </p>
+            <ol class="pentaho-list-ordered" start="3">
+              <li>Adjust the
+                <a title="https://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/000"> logging level</a>, if desired.</li>
+              <li>Indicate the maximum number of rows that you&rsquo;d like to return in the <strong>Max Rows</strong>  field.</li>
+              <li>In the SQL section of the window set the WHERE clause value using SQL, like this:</li>
+            </ol>
+            <p><span class="filepath style-wrap">SELECT * FROM myNewParam WHERE cty='Japan'&nbsp;</span> </p>
+            <ol class="pentaho-list-ordered" start="6">
+              <li>Click the <strong>Preview Optimization</strong>  button.</li>
+              <li>&nbsp;The query results appear in the <strong>Optimized Query </strong> tab.&nbsp; This tab shows the starting query as well as the input step queries after push down optimizations have been applied.&nbsp; There could be several input queries
+                displayed in the tab: one for each input step that supports push down.</li>
+            </ol>
+          </div>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Edit_or_Delete_a_Data_Service"></span> 
+          <h2 class="editable">Edit or Delete a Data Service</h2>
+          <p>To edit or delete a data service, do these things.</p>
+          <ul class="pentaho-list-unordered">
+            <li><strong>Edit a Data Service</strong> : In the View tab, right-click the data service and select <strong>Edit</strong> .</li>
+            <li><strong>Delete a Data Service</strong> : In the View tab, right-click the data service and select <strong>Delete</strong> .</li>
+            <li><strong>Disable an Optimization</strong> : Click the <strong>Disable an Optimization </strong> checkbox in the <strong>Data Services </strong> window.</li>
+          </ul>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Run_the_Data_Service"></span> 
+          <h2 class="editable">Run the Data Service</h2>
+          <p>
+            <a title="Working with Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/030/030">Run the data service as you would any other transformation</a> .</p>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Monitor_the_Data_Service"></span> 
+          <h2 class="editable">Monitor the Data Service</h2>
+          <p>To monitor the data service from a browser, use one of the following commands.&nbsp; Replace localhost:9080 with the hostname and port number of the DI Server that is running the data service.</p>
+          <ul class="pentaho-list-unordered">
+            <li>List the services that are running:
+              <a class="external" href="http://localhost:9080/kettle/listServices" rel="freeklink" title="http://localhost:9080/kettle/listServices">http://localhost:9080/pentaho-di/kettle/listServices</a> 
+            </li>
+            <li>List the status of the service:
+              <a class="external" href="http://localhost:9080/kettle/Status" rel="freeklink" title="http://localhost:9080/kettle/Status">http://localhost:9080/pentaho-di/kettle/Status</a> 
+            </li>
+          </ul>
+          <p class="pentaho-note">To list the services on carte, use
+            <a class="external" href="http://localhost:9080/kettle/listServices" rel="freeklink" title="http://localhost:9080/kettle/listServices">http://localhost:9080/kettle/listServices</a> . &nbsp;To list the status of the service on carte, use
+            <a class="external" href="http://localhost:9080/kettle/Status" rel="freeklink" title="http://localhost:9080/kettle/Status">http://localhost:9080/kettle/Status</a> .</p>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Share_the_Data_Service_with_Others"></span> 
+          <h2 class="editable">Share the Data Service with Others</h2>
+          <p>To share the data service with others, do two things.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Grant the person who will use the data service access to the data service transformation and the DI Server.&nbsp; For more information, read
+              <a title="Assign Permissions to Use or Manage Database Connections" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/070">Assign Permissions to Use or Manage Database Connections.</a> 
+            </li>
+            <li>Follow the instructions in the
+              <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/090/040">Connect to PDI Data Services</a>  article.</li>
+          </ol>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Troubleshooting"></span> 
+          <h2 class="editable">Troubleshooting</h2>
+          <p>Having problems with data services?&nbsp; Check out our
+            <a title="Resolve Pentaho Data Service Issues" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/180/075">Resolve Pentaho Data Service Issues</a>  article to get help.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Create_a_Pentaho_Data_Service" rel="internal">Create a&nbsp;Pentaho Data Service</a> 
+        <ol>
+          <li> <a href="#Test_the_Pentaho_Data_Service" rel="internal">Test the Pentaho Data Service</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Optimize_a_Data_Service" rel="internal">Optimize a Data Service</a> 
+        <ol>
+          <li> <a href="#Set_Input_Step_Optimization_Values" rel="internal">Set Input Step Optimization Values</a>  </li>
+          <li> <a href="#Add_the_Optimization_Parameter_to_the_Input_Step_Query" rel="internal">Add the Optimization Parameter to the Input Step Query</a>  </li>
+          <li> <a href="#Test_the_Optimization" rel="internal">Test the Optimization</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Edit_or_Delete_a_Data_Service" rel="internal">Edit or Delete a Data Service</a>  </li>
+      <li> <a href="#Run_the_Data_Service" rel="internal">Run the Data Service</a>  </li>
+      <li> <a href="#Monitor_the_Data_Service" rel="internal">Monitor the Data Service</a>  </li>
+      <li> <a href="#Share_the_Data_Service_with_Others" rel="internal">Share the Data Service with Others</a>  </li>
+      <li> <a href="#Troubleshooting" rel="internal">Troubleshooting</a>  </li>
+    </ol>
+  </body>
+</content>

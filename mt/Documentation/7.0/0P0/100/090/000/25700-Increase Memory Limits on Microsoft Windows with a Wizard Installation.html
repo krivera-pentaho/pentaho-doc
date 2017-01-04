@@ -1,0 +1,35 @@
+<content type="text/html" title="Increase Memory Limits on Microsoft Windows with a Wizard Installation">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">By default, Tomcat has a relatively low memory allotment. This can cause out-of-memory errors in the Pentaho&nbsp;Server from time to time. The following instructions will explain how to increase the memory so this error does&nbsp;not occur.
+            Instructions are also included for renaming the <code>tomcat8</code> executable file so that Pentaho Server starts automatically.</p>
+          <p class="pentaho-note">These instructions are for those who installed the&nbsp;Pentaho software graphically (as opposed to manually) and are Windows users.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step">
+            <p><span class="ph cmd">Go to the <strong class="ph b">Windows Search Box</strong>  and enter <span class="ph filepath">C:\pentaho\server\pentaho-server\tomcat\bin\shutdown.bat</span>  to shutdown the&nbsp;Pentaho&nbsp;Server.</span> 
+            </p>
+          </li>
+          <li class="li step"><span class="ph cmd">Type <span class="ph filepath">services.msc</span>  into the <strong class="ph b">Windows Search Box</strong> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Find the <strong>Pentaho Server</strong>  and open it so you can find the <strong class="ph b">service name</strong> . The <strong class="ph b">service name</strong>  should appear at the top of the first tab (<strong class="ph b">General</strong> ). It will be <strong class="ph b">pentahoserver</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Go into the bin file (<span class="ph filepath">C:\pentaho\server\pentaho-server\tomcat\bin\</span> ) and rename the <code>tomcat8w.exe</code>&nbsp;file to match the <strong class="ph b">service name</strong>  (<strong class="ph b">pentahoserver</strong> ).
+            This will ensure that the server starts with the software.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">After you have renamed the file, open it by double-clicking on it. This will not open the file, it will allow you to edit it. You may need to right-click and select <span class="ph uicontrol">Run as Administrator</span> .
+            This depends on your user permission settings.</span>  The <strong class="ph b">Properties Window</strong>  will open.</li>
+          <li class="li step"><span class="ph cmd">Select the <strong class="ph b">Java</strong>  tab.</span> </li>
+          <li class="li step"><span class="ph cmd">Set the memory setting to a minimum of <strong class="ph b">4096 M</strong>  and a maximum of <strong class="ph b">6144 M</strong>, depending on your computer's memory capabilities.</span> </li>
+          <li class="li step"><span class="ph cmd">Start the Tomcat server or service.</span> </li>
+        </ol>
+        <p>Your Tomcat server now has increased minimum and maximum memory limits.</p>
+        <p>You can adjust the <code><span class="mt-font-courier-new">JvmMx</span> </code> number (a parameter that specifies the maximum memory&nbsp;limit for the&nbsp;Java virtual machine) to a higher number, if you prefer. However, a problem occurs when
+          not enough contiguous memory is available to assign to the Java virtual machine&nbsp;(JVM). If the JVM&nbsp;refuses to start with the&nbsp;increased limits, then you will have to add more RAM to your system, stop some memory-intensive services,
+          or lower the maximum memory limit allocation.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

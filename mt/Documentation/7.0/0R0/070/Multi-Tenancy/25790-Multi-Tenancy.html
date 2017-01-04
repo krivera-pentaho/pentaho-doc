@@ -1,0 +1,628 @@
+<content type="text/html" title="Multi-Tenancy">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Introduction"></span> 
+        <h2 class="editable">Introduction</h2>
+        <p style="visibility: visible;"><em><strong>Audience:</strong> </em>  This article is designed for architects and developers who are familiar with multi-tenancy and ready to consider applying their business requirements to parts of their Pentaho system.</p>
+        <p style="visibility: visible;">Multi-tenancy is an architecture in which individuals or groups share the same instance of a software application, but have separate data and content. These multiple individuals or groups are referred to as tenants. In a multi-tenancy architecture,
+          customers share infrastructures, applications, or databases to gain performance advantages while reducing overhead. A provider defines the rules for the tenants within the system.&nbsp;Each tenant can be restricted to see only her own secure
+          data and content while using the same software. Note that multi-tenancy differs from <em>multi-instance</em>  architecture which is based on maintaining separate copies of the software to serves separate clients.&nbsp;</p>
+        <p style="visibility: visible;">Pentaho Enterprise software is designed to work as a stand-alone, multi-tenant solution or embedded as part of a multi-tenant service. Pentaho is flexible enough to support a variety of multi-tenancy approaches.&nbsp;Taking advantage of Pentaho&rsquo;s
+          multi-tenancy capabilities can provide sophisticated analytics&nbsp;while reducing complexity and cost.</p>
+        <p style="visibility: visible;">The focus of this article is to explain how multi-tenancy is achieved using Pentaho Enterprise Business Analytics software.&nbsp;</p>
+        <div id="section_2" class="mt-page-section"><span id="Multi-Tenancy_in_Pentaho"></span> 
+          <h3 style="visibility: visible;" class="editable">Multi-Tenancy in Pentaho</h3>
+          <p style="visibility: visible;">Pentaho has three categories of multi-tenancy:</p>
+          <ul class="pentaho-list-unordered">
+            <li><strong>Data multi-tenancy</strong>  allows developers and integrators to apply custom security and business rules to control access to data.</li>
+            <li><strong>Content multi-tenancy</strong>  separates content, such as reports and folders, among tenants.</li>
+            <li><strong>UI multi-tenancy </strong> presents different styles of the user interface for each tenant.</li>
+          </ul>
+          <p style="visibility: visible;">There are two required components to make multi-tenancy work. &nbsp;Users need to be associated with tenants via roles, tenant IDs, or other identifiers which indicate what content and data users see. &nbsp;Similarly, there must be something
+            in the data that can be used to restrict access. &nbsp;The combination of user information and data make the multi-tenancy approaches described here possible. &nbsp;Since these approaches are data model and data-driven, they are very flexible.</p>
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Preparing_for_Multi-Tenancy_in_Pentaho"></span> 
+        <h2 class="editable">Preparing for Multi-Tenancy in Pentaho</h2>
+        <p style="visibility: visible;">Before you can apply multi-tenancy to your Pentaho system, you need to associate users to a tenant. The most likely methods are to assign a specific role to users who belong to the same tenant or to designate a session variable which identifies
+          the tenant ID. Other approaches include associating users with some data, such as geographic region or business unit. &nbsp;The association of a user with tenant identifiers is accomplished through one of the following approaches:</p>
+        <ul class="pentaho-list-unordered">
+          <li style="visibility: visible;">The user information can be set via single sign-on if it is used. &nbsp;This approach has the advantage of requiring a single point to set user ID, roles, and tenant info. &nbsp;However, if users will be scheduling their own content, this approach
+            will not work because the SSO filter is not called by the scheduler.</li>
+          <li style="visibility: visible;">A session startup action that is run when a user session is created. &nbsp;The advantage to this approach is that the action is called by the scheduler. &nbsp;The downside is that an<em> action sequence</em>  is required, which means understanding
+            a new technology.</li>
+        </ul>
+        <p style="visibility: visible;">You can use an action sequence to add an indicator to the user's session which identifies the user as a member of the tenant. The following document illustrates techniques for controlling access to data used in
+          <a class="external" href="http://wiki.pentaho.com/display/ServerDoc2x/03.+Action+Sequences"
+          rel="external nofollow" target="_blank" title="03. Action Sequences">action sequences</a>  in the Pentaho BI Platform. You should be familiar with the Pentaho BI Platform, creating action sequences and SQL database queries.</p>
+        <p style="visibility: visible;"><span>For more information, see:</span> 
+          <a class="external" href="http://wiki.pentaho.com/display/ServerDoc2x/Using+System+Actions+to+Control+Data+Access" rel="external nofollow" target="_blank" title="http://wiki.pentaho.com/display/ServerDoc2x/Using+System+Actions+to+Control+Data+Access"><span> http://wiki.pentaho.com/display/ServerDoc2x/Using+System+Actions+to+Control+Data+Access</span> </a> 
+        </p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Data_Multi-Tenancy_and_Supported_Methods"></span> 
+        <h2 class="editable">Data Multi-Tenancy and Supported Methods</h2>
+        <p style="visibility: visible;">The most common&nbsp;category of multi-tenancy is <em>data multi-tenancy</em> . Data multi-tenancy allows developers&nbsp;to apply their own custom data access rules at runtime. For example, each tenant might only be allowed to see data which is
+          associated with their tenant ID. Here are the most common methods for data multi-tenancy in Pentaho Business Analytics.</p>
+        <ul class="pentaho-list-unordered">
+          <li><strong>Sharding</strong> : Each tenant has its own database or schema. &nbsp;This approach has the advantage of controlling per database and ensuring data is separated.&nbsp; Note that with this approach, multiple databases and servers will
+            need to be managed.</li>
+          <li><strong>Striping</strong> : Tenants share a database, but the tables have a tenant ID column to indicate which tenant can see the specified data. &nbsp;This approach has the advantage of managing only a single database.&nbsp; Note that with this
+            approach, databases can become very large.</li>
+          <li><strong>Data Models</strong> : Tenancy is controlled at the data level where different tenants (or sub-tenants) are only able to see certain data. &nbsp;This approach is very flexible, but the data to restrict on must usually be known in advance.</li>
+          <li><strong>Hybrid</strong> : Combinations of sharding, striping, and data model. &nbsp;Each of the approaches above can be combined into a single, flexible solution to data multi-tenancy.</li>
+        </ul>
+        <p style="visibility: visible;">Each database implementation has advantages and disadvantages, based on factors of performance management, maintenance, security, efficiency, available resources, and database vendor features. For best practices in database architecture, Pentaho
+          recommends working with an expert in your chosen database and data modeling.</p>
+        <div id="section_5" class="mt-page-section"><span id="Sharding_Data_Multi-Tenancy"></span> 
+          <h3 class="editable">Sharding Data Multi-Tenancy</h3>
+          <p style="visibility: visible;">Sharding involves separating data by database or by database connection properties. The Pentaho Business Analytics platform manages access to database connections through a central mechanism called a <em>data source</em> . The platform delegates
+            to the IDBDatasource object whenever a connection is requested to a given data source. Through Java code and Pentaho configuration files, developers can plug in their own object to apply rules at runtime as shown in the following example.</p>
+          <div id="section_6" class="mt-page-section"><span id="Reference:"></span> 
+            <h5 style="visibility: visible;" class="editable">
+              <strong>Reference:</strong> 
+            </h5>
+            <p style="visibility: visible;">IDBDatasourceService JavaDoc:
+              <a class="external" href="http://javadoc.pentaho.com/bi-platform600/pentaho-platform-api-6.0.0.0-javadoc/org/pentaho/platform/api/data/IDBDatasourceService.html" rel="freeklink" title="http://javadoc.pentaho.com/bi-platform600/pentaho-platform-api-6.0.0.0-javadoc/org/pentaho/platform/api/data/IDBDatasourceService.html">http://javadoc.pentaho.com/bi-platfo...ceService.html</a> 
+            </p>
+          </div>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="IDBDatasourceService_Implementation_Example"></span> 
+          <h3 class="editable">IDBDatasourceService&nbsp;Implementation Example</h3>
+          <p style="visibility: visible;">An IDBDatasourceService implementation uses two methods to modify the data source name: 1) getDataSource and 2) clearDataSource. The following code sample adds a tenant ID to the data source name. Adding the tenant ID allows the system to publish
+            report definitions with a common data source name. At runtime, the platform will use the dynamically created data source name.
+            <br /> &nbsp;
+          </p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public class MyTenantedDatasourceService extends PooledOrJndiDatasourceService {
+    @Override
+    public DataSource getDataSource(String dsName) throws DBDatasourceServiceException {
+        return super.getDataSource(modifyDsNameForTenancy(dsName));
+    }
+    @Override
+    public void clearDataSource(String dsName) {
+        super.clearDataSource(modifyDsNameForTenancy(dsName));
+    }
+    private String modifyDsNameForTenancy(String dsName){
+        logger.debug(&quot;Original DSName is &quot;+dsName);
+        IPentahoSession session = PentahoSessionHolder.getSession();
+        if (session == null) {
+            logger.warn(&quot;Session is null; no modifications made to the JNDI dsName.&quot;);
+            return dsName;
+        }
+        String tenantId = (String)session.getAttribute(&quot;tenantId&quot;);
+        if (StringUtils.isEmpty(tenantId)){
+            logger.warn(&quot;ID not found; no modifications made to the JNDI dsName.&quot;);
+            return dsName;
+        }
+        String dsname = tenantId.concat(&quot;_&quot;).concat(dsName);
+        logger.debug(&quot;New DSName is &quot;+dsname);
+        return dsname;
+    }
+}</pre> </div>
+        <div id="section_8" class="mt-page-section"><span id="Configuring_IDBDatasourceService"></span> 
+          <h3 class="editable">
+            <span>Configuring IDBDatasourceService</span> 
+          </h3>
+          <p style="visibility: visible;">You must configure the class you want to use.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Place your compiled class or jar file in the <span class="filepath style-wrap">webapps/pentaho/WEB-INF/lib</span>  folder</li>
+            <li>Modify <span class="filepath style-wrap">pentahoObjects.spring.xml</span>  to point to your class name. For example:</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;IDBDatasourceService&quot; class=&quot;org.myorganization.MyTenantedDatasourceService&quot; scope=&quot;singleton&quot;/></pre>
+          <ol class="pentaho-list-ordered">
+            <li value="3">Restart the server for the configuration change to take effect.</li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Using_the_Data_Source"></span> 
+          <h3 style="visibility: visible;" class="editable">
+            <span>Using the Data Source</span> 
+          </h3>
+          <p style="visibility: visible;">The following steps describe how the data source in this example is used at run time.</p>
+          <ol class="pentaho-list-ordered">
+            <li>A report is published to Pentaho which refers to a JNDI data source called 'MyDataSource'.</li>
+            <li>A user with the tenant ID of 'CompanyA' runs a report.</li>
+            <li>The IDBDatasourceService appends the tenant ID to the data source name, resulting in 'MyDataSource_CompanyA', and returns the connection.</li>
+            <li>The report is run using data from the 'MyDataSource_CompanyA' connection.<span id="cke_bm_120E" style="display:none;">&nbsp;</span> </li>
+          </ol>
+          <p style="visibility: visible;">The IDBDatasourceService interface can be used any time a connection uses either JNDI or Pentaho database-pooled connections. This approach works for reports generated with Report Designer, Analyzer, dashboards, data model-based reports, and
+            action sequences using named data sources. Note that the IDBDatasource is implemented on the Pentaho Server and is not directly available to BA design tools, such as Report Designer and Schema Workbench.</p>
+          <p class="pentaho-caution" style="visibility: visible;">If you are using only the IDBDatasourceService for multi-tenancy and also using Pentaho&nbsp;Analysis, it is recommended that you have a DSP&nbsp;(see below) which will modify the Analysis schema in a benign way, such as modifying the description.
+            This is because the schema is used to determine caching. &nbsp;If only the IDBDatasourceService is used, it is possible for data from one tenant to be exposed to another tenant.</p>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Striping_and_Data_Model_Multi-Tenancy"></span> 
+          <h3 class="editable">Striping and Data Model Multi-Tenancy</h3>
+          <p>Striping involves filtering tenant data within a single database connection. To allow a user to interactively query or navigate this data, access rules must exist between the user actions and the data. Data models provide a place to embed these
+            access rules. Pentaho Business Analytics natively supports two types of data models: Pentaho Metadata and Analysis&nbsp;schemas.</p>
+          <ul class="pentaho-list-unordered">
+            <li>Pentaho Metadata allows you to define business abstractions of relational database models. The
+              <a href="/Documentation/7.0/0N0/110/020" rel="internal" title="A Conceptual Overview of the Pentaho Metadata Editor">Pentaho Metadata Editor</a>  (PME) and the
+              <a href="/Documentation/7.0/0L0/0A0/020" rel="internal" title="Tour the Data Source Wizard">Data Source Wizard</a>  are used to build and set up data&nbsp;models. Pentaho Metadata is used by Pentaho Interactive Reporting report files (.prpti) and can be used by&nbsp;Pentaho Report Designer report files (.prpt), dashboards,&nbsp;Pentaho
+              Data Integration, and CTools dashboards.</li>
+            <li>Analysis schemas define multi-dimensional data models. These schemas are created by Pentaho Schema Workbench, Data Source Wizard, and other parts of Pentaho software. Analysis schemas can be used by Analyzer, Pentaho Report Designer reports
+              (.prpt) and CTools dashboards.<span id="cke_bm_106E" style="display:none;">&nbsp;</span> </li>
+          </ul>
+        </div>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="Pentaho_Metadata_Security"></span> 
+        <h2 class="editable">Pentaho Metadata Security</h2>
+        <p style="visibility: visible;">The easiest way to implement multi-tenancy is to use a global security constraint in the data model. The advantage to this approach is that there is no code to maintain, making it simple for non-developers to implement. However, there are several
+          disadvantages to this approach, such as that complex constraints can be difficult to model and not all constraints can be modeled. This approach also applies to all queries which may result in unnecessary joins. Finally, each model has to be
+          constrained, whereas the SQL Generator can be applied to all models with one piece of code.</p>
+        <p style="visibility: visible;">To set the global constraint:</p>
+        <ol class="pentaho-list-ordered">
+          <li style="visibility: visible;">Edit the data model.</li>
+          <li style="visibility: visible;">Set a constraint on the business model to be constrained
+            <a title="Documentation/5.3/0N0/110/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/110/060/020/000">using available formulas</a> .&nbsp;The following is a simple example:</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[BT_EMPLOYEES_EMPLOYEES].[BC_EMPLOYEES_OFFICECODE]=&quot;SESSION(&quot;officeCode&quot;)&quot;</pre>
+        <ol class="pentaho-list-ordered"
+        start="3">
+          <li style="visibility: visible;">Repeat for all tables and models as necessary.</li>
+        </ol>
+        <p style="visibility: visible;">More information on setting Pentaho Metadata security, see
+          <a title="Define JNDI Connections for Report Designer and Metadata Editor" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_BA_Design_Tools/010">Edit the Properties File for Metadata </a> 
+          <a title="Define JNDI Connections for Report Designer and Metadata Editor" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_BA_Design_Tools/010">Editor</a> 
+          <a title="Define JNDI Connections for Report Designer and Metadata Editor" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_BA_Design_Tools/010">.</a> 
+        </p>
+        <div id="section_12" class="mt-page-section"><span id="SQL_Generator"></span> 
+          <h3 class="editable">SQL Generator</h3>
+          <p>The SQL Generator is a special class that is called when Pentaho Metadata queries the database. There are two methods that can be overwritten: <span class="uicontrol style-wrap"><strong>preprocessQueryModel</strong> </span>  and <span class="uicontrol style-wrap"><strong>processGeneratedSql</strong> </span> .</p>
+          <ul class="pentaho-list-unordered">
+            <li style="visibility: visible;">The <strong>preprocessQueryModel</strong>  method is the recommended method to overwrite. It is called before the SQL is generated. To overwrite, add an &quot;AND&quot; condition to the query to restrict data.</li>
+            <li style="visibility: visible;">The second method, <strong>processGeneratedSql</strong>, is called after the SQL is generated. While it is possible to modify this query, it would involve parsing and modifying the string query.</li>
+          </ul>
+          <p style="visibility: visible;">The following example shows the <strong>preprocessQueryModel</strong>  for a class that extends the <strong>SqlGenerator</strong>  class. The first loop gathers up all of the columns to see which ones need to be constrained to avoid duplicate
+            checks. The second loop adds a &ldquo;WHERE&rdquo; clause to the query. Only &ldquo;AND&rdquo; conditions can be used. Because you can not add parentheses, using &quot;AND&quot; conditions can cause problems if the model already has an &ldquo;OR&rdquo;
+            condition in the &ldquo;WHERE&rdquo; clause.</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Override
+protected void preprocessQueryModel(SQLQueryModel query, List<Selection> selections, Map<LogicalTable, String> tableAliases, DatabaseMeta databaseMeta) {
+    Set<LogicalTable> selectedLogicalTables = new HashSet<LogicalTable>();
+    // Get the users productline from the session
+    IPentahoSession session = PentahoSessionHolder.getSession();
+    String productline = (String)session.getAttribute(&quot;productline&quot;);
+    //Object territory = &quot;NA&quot; ;
+    // Figure out and gather up the selected logical tables. We need to
+    // know if the CUSTOMER_W_TER table is included in the
+    // query...
+    if(selections!=null &amp;&amp; !selections.isEmpty()) {
+        for(Selection selection:selections) {
+            LogicalColumn column = selection.getLogicalColumn();
+            LogicalTable table = column.getLogicalTable();
+            selectedLogicalTables.add(table);
+        }
+    }
+    // We now find the column to constrain, and add our where
+    // clause, using a dialect specific where clause...
+    for(LogicalTable table:selectedLogicalTables) {
+        List<LogicalColumn> logicalColumns=table.getLogicalColumns();
+        for(LogicalColumn logicalColumn:logicalColumns) {
+            if(logicalColumn.getId().equalsIgnoreCase(&quot;BC_PRODUCTS_PRODUCTLINE&quot;)) {
+                String tableAlias = tableAliases.get(table);
+                String columnName = (String) logicalColumn.getPhysicalColumn().
+                getProperty(&quot;target_column&quot;);
+                query.addWhereFormula(tableAlias + &quot;.&quot; +
+                columnName + &quot; = '&quot; + productline + &quot;', AND&quot;);
+            }
+        }
+    }
+}</pre>
+          <p style="visibility: visible;">Once the code has been compiled and placed in a <span class="filepath style-wrap">.jar</span>  file, it should be deployed to <span class="filepath style-wrap">webapps/pentaho/WEB-INF/lib</span> . Then two files need to be modified:</p>
+          <ul class="pentaho-list-unordered">
+            <li><span class="filepath style-wrap">pentaho-solutions/system/pentahoObjects.spring.xml </span> should be modified to change the class defined for the <strong>sqlGenerator</strong>  bean. The following shows an example of the bean mapping:</li>
+          </ul> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;sqlGenerator&quot; class=&quot;org.myorganization.MySqlGenerator&quot; scope=&quot;prototype&quot;/></pre>
+          <ul class="pentaho-list-unordered">
+            <li><span class="filepath style-wrap">webapps/pentaho/WEB-INF/classes/classic-engine.properties</span>  should be modified by defining a new parameter:</li>
+          </ul> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.pentaho.reporting.engine.classic.extensions.datasources.pmd.SqlGeneratorClass=org.myorganization.MySqlGenerator</pre>
+          <p style="visibility: visible;">One way to debug <strong>SQLGenerator </strong> functionality is to view the generated SQL statements. A common method is to use logging statements within <strong>processGeneratedSql </strong> and increase the log level of <strong>SQLGenerator</strong>             in <span class="filepath style-wrap">log4j.xml</span>  file <span class="filepath style-wrap">under webapps/pentaho/WEB-INF/classes</span> .</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><category name=&quot;org.pentaho.metadata.query.impl.sql.SqlGenerator&quot;>
+    <priority value=&quot;DEBUG&quot;/>
+  </category>
+  <category name=&quot;org.myorganization.MySqlGenerator&quot;>
+    <priority value=&quot;DEBUG&quot;/>
+  </category></pre>
+          <div id="section_13" class="mt-page-section"><span id="Reference:_2"></span> 
+            <h5 class="editable">
+              <strong>Reference:</strong> 
+            </h5>
+            <p>SQLGenerator JavaDoc:
+              <a class="external" href="http://javadoc.pentaho.com/bi-platform530/pentaho-metadata-5.3.0.0-javadoc/api/org/pentaho/metadata/query/impl/sql/SqlGenerator.html" rel="freeklink" title="http://javadoc.pentaho.com/bi-platform530/pentaho-metadata-5.3.0.0-javadoc/api/org/pentaho/metadata/query/impl/sql/SqlGenerator.html">http://javadoc.pentaho.com/bi-platfo...Generator.html</a> 
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id="Analyzer_Data_Multi-Tenancy"></span> 
+        <h2 class="editable">Analyzer Data Multi-Tenancy</h2>
+        <p style="visibility: visible;">The two primary ways that multi-tenancy is applied for analysis reports include Dynamic Schema Processor and Delegate Roles. This section will describe when and how to use each.</p>
+        <div id="section_15" class="mt-page-section"><span id="Dynamic_Schema_Processor"></span> 
+          <h3 class="editable">Dynamic Schema Processor</h3>
+          <p style="visibility: visible;">A Dynamic Schema Processor (DSP) is a special class that can intercept the schema when it is loaded. Since the class has access to the user session information, it can modify the schema based on details about the user, such as user ID, roles,
+            or other session attributes set when the user logged in, such as tenant ID.</p>
+          <p style="visibility: visible;">A common implementation approach with Mondrian 3.x is as follows:</p>
+          <ol class="pentaho-list-ordered">
+            <li>Modify the Mondrian schema to include SQL statements that will limit the data returned from the dimension and fact tables. SQL statements on tables will be added to the WHERE clause when the SQL query is generated by Mondrian. For example:</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">. . .
+<Table name=&quot;my_facts&quot;>
+  <SQL dialect=&quot;generic&quot;>my_column = %my_tenant_id%</SQL>
+</Table>
+. . .</pre>
+          <ol class="pentaho-list-ordered" start="2">
+            <li>Populate the user&rsquo;s session to include the variable value, such as <span class="filepath style-wrap">my_tenant_id = 12</span> . This step is usually completed at session startup by creating a session startup action or startup rule. It
+              can also be set via SSO by passing additional parameters which are set in the SSO filter.</li>
+            <li>Create a <span class="filepath style-wrap">DynamicSchemaProcessor</span>  class to modify the schema to replace the variable with the value from the user&rsquo;s session. This class should implement the <span class="filepath style-wrap">mondrian.spi.DynamicSchemaProcessor</span>               interface. It is common to extend the <span class="filepath style-wrap">FilterDynamicSchemaProcessor</span>  or the <span class="filepath style-wrap">LocalizingDynamicSchemaProcessor</span> .</li>
+            <li>Publish the Mondrian schema on the Pentaho Server.</li>
+            <li>Configure each desired Pentaho Analysis data source to use the DSP by adding parameters to the data source properties:</li>
+          </ol>
+          <ul class="pentaho-list-unordered" style="margin-left: 40px;">
+            <li><span class="filepath style-wrap">UseContentChecksum=true</span> </li>
+            <li><span class="filepath style-wrap">DynamicSchemaProcessor=org.myorganization.MyDynamicSchemaProcessor</span> </li>
+          </ul>
+          <p style="visibility: visible;">Please note that DSPs typically involve a separate cache to be maintained for each tenant, which can cause performance concerns. Therefore,&nbsp;DSPs are generally recommended where multiple users share the generated schema. For cases where
+            individuals each have his or her own rules within the schema, the delegate role technique is recommended.</p>
+          <p style="visibility: visible;">To maintain internationalization functionality, the<span class="filepath style-wrap"> LocalizingDynamicSchema</span>  processor is typically extended and the filter method overridden. The following listing shows a simple <span class="filepath style-wrap">DynamicSchemaProcessor</span>             which replaces all of the tenant-ID variables in the schema with the tenant-ID of the user:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public class TenantedDynamicSchemaProcessor extends LocalizingDynamicSchemaProcessor
+implements mondrian.spi.DynamicSchemaProcessor { 
+  public String filter(String schemaUrl, Util.PropertyList connectInfo, InputStream stream) throws Exception {
+    String schema = super.filter(schemaUrl, connectInfo, stream);
+    IPentahoSession session = PentahoSessionHolder.getSession();
+    schema = schema.replaceAll(&quot;%my_id%&quot;, session.getName());
+    return schema;
+  }
+}</pre>
+          <div id="section_16" class="mt-page-section"><span id="References:"></span> 
+            <h5 style="visibility: visible;" class="editable">References:</h5>
+            <ul class="pentaho-list-unordered">
+              <li>Schema Processor Documentation:
+                <a class="external" href="http://mondrian.pentaho.com/documentation/schema.php#Schema_processor" rel="freeklink" title="http://mondrian.pentaho.com/documentation/schema.php#Schema_processor">http://mondrian.pentaho.com/document...hema_processor</a> 
+              </li>
+              <li>DynamicSchemaProcessor JavaDoc:
+                <a class="external" title="http://javadoc.pentaho.com/mondrian390/mondrian/spi/DynamicSchemaProcessor.html" rel="external nofollow" href="http://javadoc.pentaho.com/mondrian390/mondrian/spi/DynamicSchemaProcessor.html"
+                target="_blank">http://javadoc.pentaho.com/mondrian390/mondrian/spi/DynamicSchemaProcessor.html</a> 
+              </li>
+              <li>Table Element in Mondrian Schema:
+                <a class="external" href="http://mondrian.pentaho.com/documentation/xml_schema.php#Table" rel="freeklink" title="http://mondrian.pentaho.com/documentation/xml_schema.php#Table">http://mondrian.pentaho.com/document...hema.php#Table</a> 
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div id="section_17" class="mt-page-section"><span id="Delegate_Roles"></span> 
+          <h3 style="visibility: visible;" class="editable">
+            <span>Delegate Roles</span> 
+          </h3>
+          <p style="visibility: visible;"><em>Delegate roles</em>  allow the data to be restricted using roles at runtime. You can implement individual roles for each user in the schema, but this can be unmanageable for thousands of users, each with a unique role. In the scenario where
+            many users will have fine-grained control, delegate roles solve the problem with a few classes.</p>
+          <p style="visibility: visible;">The standard approach is as follows.</p>
+          <ol class="pentaho-list-ordered">
+            <li> <a title="Documentation/5.3/0R0/070/Multi-Tenancy_for_OEMs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/Multi-Tenancy#Populate_the_User_Session">Populate the user session</a>  with information which can be used to restrict the data. </li>
+            <li> <a title="Documentation/5.3/0R0/070/Multi-Tenancy_for_OEMs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/Multi-Tenancy#Add_a_Role_to_the_Schema">Add a role</a>  with data restrictions to some members of the hierarchy to be controlled. </li>
+            <li> <a title="Documentation/5.3/0R0/070/Multi-Tenancy_for_OEMs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/Multi-Tenancy#Configure_the_Role_Mapper">Configure a role mapper</a>  in <span class="filepath style-wrap">pentahoObjects.spring.xml</span> . A one-to-one mapping is usually recommended. Without this configuration, roles are not enforced. </li>
+            <li>Create a custom role object.</li>
+            <li> <a title="Documentation/5.3/0R0/070/Multi-Tenancy_for_OEMs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/Multi-Tenancy#Create_a_Custom_Connection">Create a custom connection</a>  object which will set the new delegate role. </li>
+            <li>Change the configuration to use your custom connection and role objects. &nbsp;Open pentahoObjects.spring.xml in an editor, and modify the &ldquo;connection-MDX&rdquo; bean.</li>
+          </ol>
+          <div id="section_18" class="mt-page-section"><span id="Populate_the_User_Session"></span> 
+            <h4 class="editable">Populate the User Session</h4>
+            <p>The typical approach is to populate the session with the specific data members which a user will be able to see. For example, if a sales manager is restricted to the northwestern United States, then that manager might have &ldquo;ID,&rdquo;
+              &ldquo;WA,&rdquo; and &ldquo;OR&rdquo; in a session variable. This data will be used by the delegate role described to restrict access.</p>
+          </div>
+          <div id="section_19" class="mt-page-section"><span id="Add_a_Role_to_the_Schema"></span> 
+            <h4 class="editable">Add a Role to the Schema</h4>
+            <p style="visibility: visible;">To restrict on a role, Mondrian will need to have a role defined. A common approach is as follows.</p>
+            <ol class="pentaho-list-ordered">
+              <li style="visibility: visible;">Create the Authenticated role or some other role that all users of the schema will have. However, you can use any role which the user might have.</li>
+              <li>Within the role, a<span class="filepath style-wrap"> MemberGrant </span> should be defined. The following listing shows a role for Sales Managers. In this case the Sales Manager will only have access to facts associated with the state of
+                WA (Washington).</li>
+            </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Role name=&quot;Sales Manager&quot;>
+  <SchemaGrant access=&quot;none&quot;>
+    <CubeGrant cube=&quot;Product Sales&quot; access=&quot;all&quot;>
+      <HierarchyGrant hierarchy=&quot;[Location]&quot; access=&quot;custom&quot;>
+        <MemberGrant member=&quot;[Location].[Country].[USA]&quot; access=&quot;none&quot;/>
+        <MemberGrant member=&quot;[Location].[State].[WA] access=&quot;all&quot;/>
+      </HierarchyGrant>
+  </CubeGrant>
+  </SchemaGrant>
+</Role></pre>
+            <p style="visibility: visible;">There are a couple of important considerations.</p>
+            <ul class="pentaho-list-unordered">
+              <li style="visibility: visible;">A member grant must exist. If there is no member grant on a hierarchy, Mondrian will not check to see if the user has access.</li>
+              <li style="visibility: visible;">The member has to exist in the data. For example, the member could not be <span class="filepath style-wrap">[Location].[State].[NoWhere]</span>  unless 'NoWhere' is a legitimate member. It is an option to have fake members in the dimension
+                table with no facts and use that as the default.</li>
+              <li style="visibility: visible;">If a dimension needs to be restricted, you must restrict it separately. Restricting a hierarchy does not restrict other hierarchies, so if there is not a measure or restricted member, Analyzer will show you all members of the dimension.</li>
+            </ul>
+          </div>
+          <div id="section_20" class="mt-page-section"><span id="Configure_the_Role_Mapper"></span> 
+            <h4 class="editable">Configure the Role Mapper</h4>
+            <p>A<em> role mapper</em>  tells Mondrian how to map from a Pentaho role to a role defined in the Mondrian schema. By default, Pentaho does not have the role mapper defined. If there is no role mapper, then Mondrian will not apply any security
+              access and all users will have access to all data.</p>
+            <p>To configure the role mapper, modify <span class="filepath style-wrap">pentahoObjects.spring.xml</span>  in the<span class="filepath style-wrap"> pentaho-solutions/system</span>  folder. There are several options with descriptions already defined
+              in the configuration file. The most common is to use the <span class="filepath style-wrap">MondrianOneToOneUserRoleListMapper</span> . This mapper will map directly from a Pentaho role to a Mondrian role.</p>
+          </div>
+          <div id="section_21" class="mt-page-section"><span id="Create_a_Custom_Connection"></span> 
+            <h4 class="editable">Create a Custom Connection</h4>
+            <p>You will need a custom connection to set the delegate role mapper. This is because only the connection can be configured in Pentaho. The custom class will typically extend the default MDX connection and extend the init() method. The following
+              example shows how to set the delegating role for Authenticated:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public class CustomMDXOlap4jConnection extends MDXOlap4jConnection {
+  public boolean connect( Properties props ) {
+    boolean result = super.connect( props );
+    if ( result &amp;&amp; this.connection != null ) {
+      try {
+        RolapConnection rolapConnection = this.connection.unwrap( RolapConnection.class );
+        Role delegateRole = rolapConnection.getSchema().lookupRole( &quot;Authenticated&quot; );
+        if ( delegateRole != null ) {
+          CustomSessionAssistedRole customRole = new CustomSessionAssistedRole( delegateRole );
+          rolapConnection.setRole( customRole );
+        }
+      } catch ( Exception e ) {
+        throw new RuntimeException( e );
+      }
+    }
+    return result;
+  }
+}</pre>
+            <p>To configure the custom connection, modify <span class="filepath style-wrap">pentahoObjects.spring.xml</span>  and set the value of the connection-MDX bean.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;connection-MDXOlap4j&quot; class=&quot;org.myorganization.CustomMDXOlap4jConnection&quot; scope=&quot;prototype&quot;>
+  <property name=&quot;useExtendedColumnNames&quot; value=&quot;true&quot; />
+</bean></pre>
+            <div id="section_22" class="mt-page-section"><span id="Reference:_3"></span> 
+              <h5 class="editable">Reference:</h5>
+              <p>MDXOlap4jConnection JavaDoc:
+                <a class="external" title="http://javadoc.pentaho.com/bi-platform600/pentaho-platform-extensions-6.0.0.0-javadoc/org/pentaho/platform/plugin/services/connections/mondrian/MDXOlap4jConnection.html" rel="external nofollow"
+                href="http://javadoc.pentaho.com/bi-platform600/pentaho-platform-extensions-6.0.0.0-javadoc/org/pentaho/platform/plugin/services/connections/mondrian/MDXOlap4jConnection.html" target="_blank">http://javadoc.pentaho.com/bi-platform600/pentaho-platform-extensions-6.0.0.0-javadoc/org/pentaho/platform/plugin/services/connections/mondrian/MDXOlap4jConnection.html</a> 
+              </p>
+            </div>
+          </div>
+          <div id="section_23" class="mt-page-section"><span id="Create_a_Delegating_Role_Class"></span> 
+            <h4 class="editable">Create a Delegating Role Class</h4>
+            <p>The custom delegating role will be called whenever access needs to be determined, such as if a user is attempting to see data about a particular state. It is typical to extend the <span class="filepath style-wrap">DelegatingRole</span>  class
+              and override the getAccess() methods, depending on which one is to be checked (for example, Hierarchy or Member). Only the logic for determining access to a member is shown below. Note that a complete class will have a number of other methods:</p>
+            <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">protected  Access getAccess(Member member, Access access) {
+  String state = IPentahoSession session =
+    PentahoSessionHolder.getSession().getAttribute(&quot;state&quot;);
+  // Only check the Location dimension.
+  if (member.getHierarchy().getName().contains(&quot;Location&quot;)){
+    // Check ancestors as well for restriction.
+    List <Member> members = member.getAncestorMembers();
+      for (Member mem : members) {
+        if (state.equalsIgnoreCase(mem.getName())){
+          return Access.ALL;
+        }
+      }
+      // Check the member itself; is this the state that's allowed?
+      if (territory.equalsIgnoreCase(member.getName())){
+        return Access.ALL;
+      }
+    }
+    return Access.NONE;
+  }
+}</pre>
+            <div id="section_24" class="mt-page-section"><span id="Reference:_4"></span> 
+              <h5 class="editable">Reference:</h5>
+              <p>DelegatingRole JavaDoc:
+                <a class="external" target="_blank" title="http://javadoc.pentaho.com/mondrian390/mondrian/olap/Role.html" rel="external nofollow" href="http://javadoc.pentaho.com/mondrian390/mondrian/olap/Role.html">http://javadoc.pentaho.com/mondrian390/mondrian/olap/Role.html</a> 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="section_25" class="mt-page-section"><span id="Solution_Multi-Tenancy"></span> 
+        <h2 class="editable">Solution Multi-Tenancy</h2>
+        <div id="section_26" class="mt-page-section"><span id="Roles_and_Access_Control_Lists_(ACLs)"></span> 
+          <h3 class="editable">Roles and Access Control Lists (ACLs)</h3>
+          <p style="visibility: visible;">Pentaho uses roles and user IDs to enforce authorization to content in the solution repository. For multi-tenancy, <em>roles </em> are typically used instead of user IDs. A role for a user should be thought of as a piece of metadata about the
+            user and is simply a group which the user belongs to.&nbsp;User roles are set as part of the authentication and identification process when a user logs in. For example, a user might be in the 'West and Sales Managers group'.</p>
+          <p style="visibility: visible;">Access Control Lists (ACLs) are used to define which users or roles have access to content in the solution repository. As with roles, ACLs should be thought of as metadata about the repository content. An ACL might be that Sales Managers can
+            <em>read </em> and <em>edit </em> content in the Sales Managers folder, but not <em>delete</em>  it.</p>
+          <p style="visibility: visible;">When a user attempts to perform a task with content, an <em>ACL voter</em>  will determine if the user can perform the action. The voter&nbsp; compares the ACL against the user&rsquo;s ID and roles to determine the user's access permissions.
+            For example, if Sam is assigned the role of 'Sales Manager' and the Sales Manager role can <em>read </em> files in the Sales Managers folder, then Sam can see the content in that folder. However, Sam is not assigned the HR role, and since the
+            the HR folder is only viewable by users assigned the HR role, Sam can not see the content in the HR folder.</p>
+          <p style="visibility: visible;">For more information on roles and ACLs, see
+            <a title="https://help.pentaho.com/Documentation/5.3/0H0/060/010/040/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Manage_Users_and_Roles_in_PUC">Use Pentaho Security</a> .</p>
+          <p style="visibility: visible;">This feature can be used for multi-tenancy as well. Each user is assigned a role which associates that user with a tenant-specific folder which only that user can see. There also may be folders which are viewable by all tenants. When a user
+            logs on to the system, that user can only see shared folders and the folders for their tenant.</p>
+          <p style="visibility: visible;">The&nbsp;approach described&nbsp;works for many cases, but does not accommodate complex access rules. For this reason a better approach is often to use custom access&nbsp;voters. The next sections will describe how to create custom voters and
+            how to manage ACLs without using the User Console.</p>
+          <div id="section_27" class="mt-page-section"><span id="Reference:_5"></span> 
+            <h5 style="visibility: visible;" class="editable">Reference:</h5>
+            <p style="visibility: visible;">Role JavaDoc:
+              <a class="external" target="_blank" title="http://javadoc.pentaho.com/mondrian390/mondrian/olap/Role.html" rel="external nofollow" href="http://javadoc.pentaho.com/mondrian390/mondrian/olap/Role.html">http://javadoc.pentaho.com/mondrian390/mondrian/olap/Role.html </a> 
+            </p>
+          </div>
+        </div>
+        <div id="section_28" class="mt-page-section"><span id="Multi-Tenancy_at_the_Content_Level"></span> 
+          <h3 class="editable">Multi-Tenancy at the Content Level</h3>
+          <p>You can use the ACL system to manage access to content by tenant. If content needs to be restricted by more complex rules such as by tenant&nbsp;and then by role within the tenant, you can create a <em>custom access voter</em>  by implementing
+            <span class="filepath style-wrap">IRepositoryAccessVoter</span> . The only method that needs to be implemented is the hasAccess() method.</p>
+          <div id="section_29" class="mt-page-section"><span id="Reference:_6"></span> 
+            <h5 class="editable">Reference:</h5>
+            <p>IRepositoryAccessVoter:
+              <a class="external" href="http://javadoc.pentaho.com/bi-platform600/pentaho-platform-api-6.0.0.0-javadoc/org/pentaho/platform/api/repository2/unified/IRepositoryAccessVoter.html" rel="freeklink" title="http://javadoc.pentaho.com/bi-platform600/pentaho-platform-api-6.0.0.0-javadoc/org/pentaho/platform/api/repository2/unified/IRepositoryAccessVoter.html">http://javadoc.pentaho.com/bi-platfo...cessVoter.html</a> 
+            </p>
+          </div>
+        </div>
+        <div id="section_30" class="mt-page-section"><span id="Custom_Voters"></span> 
+          <h3 class="editable">Custom Voters</h3>
+          <p>Pentaho, through the Spring-based bean injection, allows you to apply a different <span class="filepath style-wrap">AccessVoter</span>  which can apply custom logic to determine access for users. For example, you may have common reports which
+            all users can access based on roles. as well as solution folders for specific tenants or business units. The ACL can allow a user to see all of the common reports, but only the tenant folders&nbsp;for which that user has access. Additional
+            fine-grained access control rules can be added as needed. Therefore, it is possible to have more than one <span class="filepath style-wrap">AccessVoter</span> &nbsp;and to have them chained. All instances of AccessVoters are managed by
+            <span
+            class="filepath style-wrap"> AccessVoterManager</span> . When implementing a new AccessVoter, consider the following:</p>
+          <ul class="pentaho-list-unordered">
+            <li>All users with the role of 'Administrator' will bypass all <span class="filepath style-wrap">AccessVoter</span>  logic.</li>
+            <li>AccessVoters are chained, and their order is specified in the<span class="filepath style-wrap"> repository.spring.xml </span> for bean <span class="filepath style-wrap">repositoryAccessVoterManager</span> .</li>
+          </ul> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.repository2.unified.RepositoryAccessVoterManager&quot; id=&quot;repositoryAccessVoterManager&quot;>
+  <constructor-arg ref=&quot;tenantedAccessVoter/>
+  <constructor-arg ref=&quot;authorizationPolicy&quot;/>
+  <constructor-arg ref=&quot;repositoryAdminUsername&quot;/>
+</bean></pre>
+          <ul class="pentaho-list-unordered">
+            <li>&nbsp;A user will have access to a resource if <em>all </em> AccessVoters in the chain allow access. The first AccessVoter in the chain which rejects access will break the chain, and the user will not have access to the resource.</li>
+          </ul>
+          <p>To implement a new AccessVoter, you need to write a java class which implements IRepositoryAccessVoter. This interface is for all resources which are stored in Pentaho&rsquo;s repository. The only method which needs to be implemented is the
+            hasAccess() method. This method is called for each object the user tries to access. In the following listing, the tenant-ID is retrieved from the session and then the tenant is compared to the folder name. All users and tenants will have an
+            individualized home directory under<span class="filepath style-wrap"> /home/${user}</span>  or <span class="filepath style-wrap">/home/${tenant}</span> . If the name matches, a call is made to check the parent permissions. A tenant is denied
+            access to folders which are not their own, but the standard role-based access permissions still apply.</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public boolean hasAccess(RepositoryFile file, RepositoryFilePermission operation,
+       RepositoryFileAcl acl, IPentahoSession session) {
+   String tenantid = (String)session.getAttribute(&quot;tenant-id&quot;);
+   String [] topLevelDirs = getTopLevelDirNames(file);
+   // a dir pattern name of /home/tenantid
+   if ((topLevelDirs != null ) &amp;&amp; (topLevelDirs.length > 2)){  
+      if ( rootDir.equals(topLevelDirs[1])){
+         if (tenantid.equals(topLevelDirs[2]) || 
+           topLevelDirs[2].equals(acl.getOwner().getName())){
+           return true;
+         } else {
+           // All the folder that are in /home but the user is not allowed to see
+           return false;
+         }
+      } else return true;
+   }
+   return true;
+}
+protected String [] getTopLevelDirNames(RepositoryFile f){
+    String fullpath = f.getPath();
+    if (fullpath != null){
+        String [] dirs = fullpath.split(&quot;/&quot;);
+        return dirs;
+    } else {
+        return null;
+    }
+}</pre> </div>
+        <div id="section_31" class="mt-page-section"><span id="Managing_ACLs_via_a_Web_Service"></span> 
+          <h3 class="editable">Managing ACLs via a Web Service</h3>
+          <p>As a part of multi-tenant solution, there is often a need create and manage files and folders in an unattended fashion. Pentaho has <span class="filepath style-wrap">SolutionRepositoryService</span>  with a RESTful interface that allows third
+            party scripts and applications to create new folders as well as set ACLs. Detailed information on this service can be found in the Pentaho SDK package, which can be downloaded from the
+            <a class="link-https" title="https://support.pentaho.com/home"
+            rel="external nofollow" href="https://support.pentaho.com/home" target="_blank">Pentaho support site</a> .</p>
+        </div>
+      </div>
+      <div id="section_32" class="mt-page-section"><span id="UI_Multi-Tenancy"></span> 
+        <h2 class="editable">UI Multi-Tenancy</h2>
+        <p>Each of the major components within the Pentaho Platform have a theme engine which allows you to control the presentation style through CSS and other methods. The reporting tools also have support for templates which allow you to apply structure
+          to the report.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Pentaho User Console (PUC): includes themes.</li>
+          <li>Pentaho Analyzer (PAZ): includes themes.</li>
+          <li>Pentaho Reporting: includes templates.</li>
+          <li>Pentaho Interactive Reports: includes themes and templates.</li>
+          <li>Pentaho Dashboard Designer: inlcudes themes and templates.</li>
+        </ul>
+        <div id="section_33" class="mt-page-section"><span id="Theming"></span> 
+          <h3 class="editable">Theming</h3>
+          <p>When you integrate content for users, you may want to make it look like the application into which it is being integrated. Furthermore, in multi-tenanted environments, you may want a different theme for each tenant. How to create additional
+            themes is covered in the
+            <a title="Pentaho User Console Styling" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/090/010">Custom User Console Themes</a>  article. This section focuses on setting the theme for different tenants.</p>
+          <div id="section_34" class="mt-page-section"><span id="Setting_the_theme_per_tenant"></span> 
+            <h5 class="editable">Setting the theme per tenant</h5>
+            <p>The Pentaho User Console will present the specified theme if the <span class="filepath style-wrap">pentaho-user-theme</span>  session variable is present. The other components with the user console will default to the same theme name which
+              the user console is presenting. Set the <span class="filepath style-wrap">pentaho-user-theme </span> attribute in the user session using one of the techniques described in the &quot;Preparing for Multi-Tenancy&quot; section. The value of
+              the attribute should be the name of the theme you have configured.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Introduction" rel="internal">Introduction</a> 
+        <ol>
+          <li> <a href="#Multi-Tenancy_in_Pentaho" rel="internal">Multi-Tenancy in Pentaho</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Preparing_for_Multi-Tenancy_in_Pentaho" rel="internal">Preparing for Multi-Tenancy in Pentaho</a>  </li>
+      <li>
+        <a href="#Data_Multi-Tenancy_and_Supported_Methods" rel="internal">Data Multi-Tenancy and Supported Methods</a> 
+        <ol>
+          <li>
+            <a href="#Sharding_Data_Multi-Tenancy" rel="internal">Sharding Data Multi-Tenancy</a> 
+            <ol>
+              <li> <a href="#Reference:" rel="internal">Reference:</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#IDBDatasourceService_Implementation_Example" rel="internal">IDBDatasourceService&nbsp;Implementation Example</a>  </li>
+          <li> <a href="#Configuring_IDBDatasourceService" rel="internal">Configuring IDBDatasourceService</a>  </li>
+          <li> <a href="#Using_the_Data_Source" rel="internal">Using the Data Source</a>  </li>
+          <li> <a href="#Striping_and_Data_Model_Multi-Tenancy" rel="internal">Striping and Data Model Multi-Tenancy</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Pentaho_Metadata_Security" rel="internal">Pentaho Metadata Security</a> 
+        <ol>
+          <li>
+            <a href="#SQL_Generator" rel="internal">SQL Generator</a> 
+            <ol>
+              <li> <a href="#Reference:_2" rel="internal">Reference:</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Analyzer_Data_Multi-Tenancy" rel="internal">Analyzer Data Multi-Tenancy</a> 
+        <ol>
+          <li>
+            <a href="#Dynamic_Schema_Processor" rel="internal">Dynamic Schema Processor</a> 
+            <ol>
+              <li>
+                <ol>
+                  <li> <a href="#References:" rel="internal">References:</a>  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Delegate_Roles" rel="internal">Delegate Roles</a> 
+            <ol>
+              <li> <a href="#Populate_the_User_Session" rel="internal">Populate the User Session</a>  </li>
+              <li> <a href="#Add_a_Role_to_the_Schema" rel="internal">Add a Role to the Schema</a>  </li>
+              <li> <a href="#Configure_the_Role_Mapper" rel="internal">Configure the Role Mapper</a>  </li>
+              <li>
+                <a href="#Create_a_Custom_Connection" rel="internal">Create a Custom Connection</a> 
+                <ol>
+                  <li> <a href="#Reference:_3" rel="internal">Reference:</a>  </li>
+                </ol>
+              </li>
+              <li>
+                <a href="#Create_a_Delegating_Role_Class" rel="internal">Create a Delegating Role Class</a> 
+                <ol>
+                  <li> <a href="#Reference:_4" rel="internal">Reference:</a>  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Solution_Multi-Tenancy" rel="internal">Solution Multi-Tenancy</a> 
+        <ol>
+          <li>
+            <a href="#Roles_and_Access_Control_Lists_(ACLs)" rel="internal">Roles and Access Control Lists (ACLs)</a> 
+            <ol>
+              <li> <a href="#Reference:_5" rel="internal">Reference:</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Multi-Tenancy_at_the_Content_Level" rel="internal">Multi-Tenancy at the Content Level</a> 
+            <ol>
+              <li> <a href="#Reference:_6" rel="internal">Reference:</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Custom_Voters" rel="internal">Custom Voters</a>  </li>
+          <li> <a href="#Managing_ACLs_via_a_Web_Service" rel="internal">Managing ACLs via a Web Service</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#UI_Multi-Tenancy" rel="internal">UI Multi-Tenancy</a> 
+        <ol>
+          <li>
+            <a href="#Theming" rel="internal">Theming</a> 
+            <ol>
+              <li> <a href="#Setting_the_theme_per_tenant" rel="internal">Setting the theme per tenant</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

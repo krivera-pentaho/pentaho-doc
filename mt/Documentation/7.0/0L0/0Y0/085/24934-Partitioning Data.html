@@ -1,0 +1,125 @@
+<content type="text/html" title="Partitioning Data">
+  <body>
+    <p>Partitioning simply splits a data set into a number of sub-sets according to a rule that is applied on a row of data.&nbsp; This rule can be anything you can come up with and this includes no rule at all.&nbsp; However, if no rule is applied we simply
+      call it (round robin) row distribution.&nbsp; You can create your own rules in the form of a&nbsp;
+      <a class="external" title="PDI Partition Method Plugin Development" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/PDI+Partition+Method+Plugin+Development"
+      target="_blank">partitioning method plugin</a> .</p>
+    <p>The reason for partitioning data up is invariably linked to parallel processing since it makes it possible to execute certain tasks in parallel where this is otherwise not possible.</p>
+    <p>The example used in these sections can be found in the <span style="font-family: courier new,courier,monospace;">samples/transformations/General - parallel reading and aggregation.ktr</span>  of the PDI distribution, version 4.2 or later.</p>
+    <div
+    id="section_1" class="mt-page-section"><span id="Partitioning_to_facilitate_parallel_processing"></span> 
+      <h1 class="editable">
+        <a name="PartitioningdatawithPDI-Partitioningtofacilitateparallelprocessing"></a> Partitioning to facilitate parallel processing</h1>
+      <p>Suppose you want to aggregate data by state, you can do an in-memory aggregation like this:</p>
+      <p style="text-align: center;"><span class="image-wrap"><a class="thumb" title="partitioning-usercase-simple.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11106/partitioning-usercase-simple.PNG"><img alt="partitioning-usercase-simple.PNG" class="internal default" style="width: 410px; height: 372px;" width="410px" height="372px" src="http://help.pentaho.com/@api/deki/files/11106/partitioning-usercase-simple.PNG?size=bestfit&amp;width=410&amp;height=372&amp;revision=1" /></a> </span> </p>
+      <p>Reading the data from the CSV file is something we can do in parallel.&nbsp; However if you would aggregate in parallel you would see incorrect results:&nbsp;</p>
+      <p style="text-align: center;">
+        <a class="thumb" title="partitioning-usercase-parallel-error.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11104/partitioning-usercase-parallel-error.PNG">
+          <img alt="partitioning-usercase-parallel-error.PNG" class="internal default" style="width: 463px; height: 378px;" width="463px" height="378px" src="http://help.pentaho.com/@api/deki/files/11104/partitioning-usercase-parallel-error.PNG?size=bestfit&amp;width=463&amp;height=378&amp;revision=1"
+          />
+        </a> 
+      </p>
+      <p>This is obviously because the rows are split up arbitrarily (without a specific rule) over the 2 copies of the &quot;count by state&quot; aggregation step.</p>
+      <p>What we need is a simple way to direct rows from the same state to the same step copy.&nbsp;&nbsp; This rule-based direction is what is we call &quot;partitioning&quot;.</p>
+      <p>In the example below we created a new partitioning schema called &quot;State&quot; that is applied to the &quot;count by state&quot; step.&nbsp; We selected &quot;Remainder of division&quot; partitioning rule applied to the &quot;state&quot; field.&nbsp;&nbsp;
+        Please note that in case the modulo (remainder of division) is calculated on a non-integer value Kettle actually calculates the modulo on a checksum created from the String, Date, Number value in question.&nbsp; As long as rows with the same state
+        value are sent to the same step copy and if the distribution of the rows is about fair among the steps we don't care. (see&nbsp;
+        <a class="external-link" href="http://jira.pentaho.com/browse/PDI-5514" rel="nofollow">PDI-5514</a> &nbsp;for a fixed bug on partitioning on negative values)</p>
+      <p style="text-align: center;">
+        <a class="thumb" title="partitioning-usercase-partitioned.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11105/partitioning-usercase-partitioned.PNG">
+          <img alt="partitioning-usercase-partitioned.PNG" class="internal default" style="width: 650px; height: 358px;" width="650px" height="358px" src="http://help.pentaho.com/@api/deki/files/11105/partitioning-usercase-partitioned.PNG?size=bestfit&amp;width=650&amp;height=358&amp;revision=1"
+          />
+        </a> 
+      </p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Re-partitioning_logic"></span> 
+        <h1 style="width: 942px;" class="editable">
+          <a name="PartitioningdatawithPDI-Repartitioninglogic"></a> Re-partitioning logic</h1>
+        <p>In the next image we show how the data is distributed in the steps:</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="partitioning-usrecase-distribution.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11107/partitioning-usrecase-distribution.PNG">
+            <img alt="partitioning-usrecase-distribution.PNG" class="internal default" style="width: 650px; height: 88px;" width="650px" height="88px" src="http://help.pentaho.com/@api/deki/files/11107/partitioning-usrecase-distribution.PNG?size=bestfit&amp;width=650&amp;height=88&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <p>As you can see, the &quot;CSV Input&quot; step nicely divides the work between 2 step copies and each copy nicely reads 50 rows of data.&nbsp; However, these 2 step copies also need to make sure that the rows end up on the correct &quot;count
+          by state&quot; step copy where they arrive in a 43/57 split.&nbsp; Because of that it's a general rule that the step that performs the re-partitioning of the data (a non-partitioned step before a partitioned one) has internal buffers&nbsp;<strong>from</strong> &nbsp;every
+          source step copy to&nbsp;<strong>every</strong> &nbsp;target step copy as shown in the following image:&nbsp;</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="partitioning-distribution-2.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11100/partitioning-distribution-2.PNG">
+            <img alt="partitioning-distribution-2.PNG" class="internal default" style="width: 306px; height: 200px;" width="306px" height="200px" src="http://help.pentaho.com/@api/deki/files/11100/partitioning-distribution-2.PNG?size=bestfit&amp;width=306&amp;height=200&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <p>If you would have 3 step copies reading our file and 4 partitions, Kettle will internally allocate buffers (row sets) as shown in the following image:&nbsp;</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="partitioning-distribution-3.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11101/partitioning-distribution-3.PNG">
+            <img alt="partitioning-distribution-3.PNG" class="internal default" style="width: 315px; height: 459px;" width="315px" height="459px" src="http://help.pentaho.com/@api/deki/files/11101/partitioning-distribution-3.PNG?size=bestfit&amp;width=315&amp;height=459&amp;revision=1"
+            />
+          </a> 
+        </p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Swim-lanes"></span> 
+        <h1 style="width: 942px;" class="editable">
+          <a name="PartitioningdatawithPDI-Swimlanes"></a> Swim-lanes</h1>
+        <p>When a partitioned step passes data to one another partitioned step and the partitioning schema is the same, Kettle will keep the data in so called swimming lanes.</p>
+        <p>For example, take the following example:</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="partitioning-swim-lanes.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11102/partitioning-swim-lanes.PNG">
+            <img alt="partitioning-swim-lanes.PNG" class="internal default" style="width: 476px; height: 144px;" width="476px" height="144px" src="http://help.pentaho.com/@api/deki/files/11102/partitioning-swim-lanes.PNG?size=bestfit&amp;width=476&amp;height=144&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <p>&nbsp;This will internally be executed as follows:</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="partitioning-swimlanes-explained.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11103/partitioning-swimlanes-explained.PNG">
+            <img alt="partitioning-swimlanes-explained.PNG" class="internal default" style="width: 469px; height: 230px;" width="469px" height="230px" src="http://help.pentaho.com/@api/deki/files/11103/partitioning-swimlanes-explained.PNG?size=bestfit&amp;width=469&amp;height=230&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <p>As you can see, no re-partitioning needs to be done, so no extra buffers (row sets) are allocated between the copies of steps &quot;count by state&quot; and &quot;Replace in string&quot;.&nbsp; The step copies are as such totally isolated from
+          one another.&nbsp; The rows of data are as such located in one of the so called data &quot;swimming lanes&quot; and they will continue to be in the same lane as long as the steps following are partitioned with the same partitioning schema.&nbsp;
+          No extra work needs to be done to keep data partitioned so you can chain as many partitioned steps as you like.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="The_rules"></span> 
+        <h1 style="width: 942px;" class="editable">
+          <a name="PartitioningdatawithPDI-Therules"></a> The rules</h1>
+        <p>Based on the examples above we can formulate the following rules:</p>
+        <ul class="pentaho-list-unordered">
+          <li>A partitioned step causes on step copy to be executed per partition in the partition schema</li>
+          <li>When a step needs to re-partition the data it creates buffers (row sets) from each source step copy to each target step copy (partition)</li>
+        </ul>
+        <p>Please note that while having a lot of buffers is a necessity it can cause memory usage problems if all the buffers fill up.</p>
+        <p>On the topic of when data is re-partitioned we also have a few rules of thumb:</p>
+        <ul class="pentaho-list-unordered">
+          <li>When rows of data pass from a non-partitioned step to a partitioned one, data is re-partitioned and extra buffers are allocated.</li>
+          <li>When rows of data pass from a partitioned step to another partitioned step, partitioned with the same partition schema, data is not re-partitioned.</li>
+          <li>When rows of data pass from a partitioned step to another partitioned step, partitioned with another partition schema, data is re-partitioned.</li>
+        </ul>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Clustering_and_partitioning"></span> 
+        <h1 style="width: 942px;" class="editable">
+          <a name="PartitioningdatawithPDI-Clusteringandpartitioning"></a> Clustering and partitioning</h1>
+        <p>When a step is assigned to run on a master (non-clustered in a clustered transformation) the same rules apply as shown above.</p>
+        <p>In case a clustered step is partitioned, the partitions are distributed over the number of slave servers.&nbsp; Because of this there is a general rule that the number of partitions needs to be equal to or higher than the number of slave servers
+          in the cluster schema.</p>
+        <p>Because of this general rule it's easier to have Kettle create the partition schema dynamically in a clustered environment.</p>
+        <p>&nbsp;
+          <a class="thumb" title="partitioning-clustered-dynamic.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/11099/partitioning-clustered-dynamic.PNG">
+            <img alt="partitioning-clustered-dynamic.PNG" class="internal default" style="width: 664px; height: 235px;" width="664px" height="235px" src="http://help.pentaho.com/@api/deki/files/11099/partitioning-clustered-dynamic.PNG?size=bestfit&amp;width=664&amp;height=235&amp;revision=1"
+            />
+          </a> 
+          <br /> Please make sure to limit re-partitioning on a cluster to a minimum since this incurs a serious networking and CPU overhead.&nbsp; That is caused by the massive passing of data from one server to another over TCP/IP sockets.&nbsp; Try to keep
+          the data in swimming lanes as shown above, for as long as possible, to get optimal performance on a cluster.</p>
+      </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Partitioning_to_facilitate_parallel_processing" rel="internal">Partitioning to facilitate parallel processing</a>  </li>
+      <li> <a href="#Re-partitioning_logic" rel="internal">Re-partitioning logic</a>  </li>
+      <li> <a href="#Swim-lanes" rel="internal">Swim-lanes</a>  </li>
+      <li> <a href="#The_rules" rel="internal">The rules</a>  </li>
+      <li> <a href="#Clustering_and_partitioning" rel="internal">Clustering and partitioning</a>  </li>
+    </ol>
+  </body>
+</content>

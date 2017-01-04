@@ -1,0 +1,38 @@
+<content type="text/html" title="Modify the JGroups Configuration">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="note restriction"><span class="restrictiontitle">Restriction:</span>  The segment cache features explained in this section are for very large OLAP deployments, and require a Pentaho Analysis Enterprise Edition license.</div>
+        <p class="p">The default Infinispan configuration uses JGroups to distribute the cache across all Mondrian instances it finds on the local network. If you want to modify how those communications are done, you must edit the JGroups configuration file.</p>
+        <div
+        class="note note"><span class="notetitle">Note:</span>  Fine-grained JGroups configuration is covered in the JGroups documentation; you should read through it before making changes.</div>
+      <p class="p">Each node might require a different configuration, so although the default configuration is highly portable, it might not work for you.</p>
+      <p class="p">If you are deploying this plugin on Amazon EC2, JGroups has a special configuration file that you copied to your <span class="ph filepath">/WEB-INF/classes/</span>  directory when you installed the Analysis Enterprise Edition package. Additionally,
+        default JGroups configuration files are inside of the JAR archive. To switch implementations, edit <strong class="ph b">infinispan-config.xml</strong>  and make the modification appropriate to your communication method:</p>
+      <table cellpadding="4"
+      cellspacing="0" summary="" border="1" class="simpletable">
+        <tr class="sthead">
+          <th valign="bottom" align="left" class="stentry" id="d09cfc74-ea72-4ac5-a9af-d62e0ce7b9fe__d4747e44">Comm. type</th>
+          <th valign="bottom" align="left" class="stentry" id="d09cfc74-ea72-4ac5-a9af-d62e0ce7b9fe__d4747e47">Config entry</th>
+        </tr>
+        <tr class="strow">
+          <td valign="top" headers="d4747e44" class="stentry">UDP communication</td>
+          <td valign="top" headers="d4747e47" class="stentry"><pre class="pre codeblock"><property name=&quot;configurationFile&quot; value=&quot;jgroups-udp.xml&quot;/></pre>
+          </td>
+        </tr>
+        <tr class="strow">
+          <td valign="top" headers="d4747e44" class="stentry">TCP communication</td>
+          <td valign="top" headers="d4747e47" class="stentry"><pre class="pre codeblock"><property name=&quot;configurationFile&quot; value=&quot;jgroups-tcp.xml&quot;/></pre>
+          </td>
+        </tr>
+        <tr class="strow">
+          <td valign="top" headers="d4747e44" class="stentry">Amazon EC2</td>
+          <td valign="top" headers="d4747e47" class="stentry"><pre class="pre codeblock"><property name=&quot;configurationFile&quot; value=&quot;jgroups-ec2.xml&quot;/></pre>
+          </td>
+        </tr>
+      </table>
+    </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

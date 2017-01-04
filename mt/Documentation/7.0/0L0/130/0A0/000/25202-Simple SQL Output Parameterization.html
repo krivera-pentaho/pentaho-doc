@@ -1,0 +1,107 @@
+<content type="text/html" title="Simple SQL Output Parameterization">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">This procedure requires a <strong class="ph b">JDBC</strong>  data source type.</div>
+        <div class="section context">
+          <p class="p">You can add dynamic interactivity to a published report such that when a user executes or views it, he can specify how to constrain certain parts of the query data. This is called <strong class="ph b">parameterization</strong> . Follow the procedure
+            below to parameterize a report by adding an SQL WHERE statement to your query.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  You can only use this procedure to parameterize data returned by a query. You cannot use a WHERE statement to dynamically choose columns or change the structure of tabular data. If you need to go beyond the
+            capabilities of the method explained in this section, see
+            <a class="xref" title="Documentation/5.1/0L0/130/0A0/010" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/130/0A0/010">Advanced SQL Output Parameterization</a>  to create a custom formula instead.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open the report you want to parameterize.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click the <strong class="ph b">Data</strong>  tab in the upper right pane.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Right-click the <strong class="ph b">Parameters</strong>  item in the Data pane, then select <strong class="ph b">Add Parameter...</strong>  from the context menu.</span>  The <strong class="ph b">Add Parameter</strong>  dialogue
+            will appear. </li>
+          <li class="li step"> <span class="ph cmd">Select or change the options according to the definitions below:</span> 
+            <table cellpadding="4" cellspacing="0" summary="" border="1" class="simpletable">
+              <tr class="sthead">
+                <th valign="bottom" align="left" class="stentry" id="9d112854-e7bf-4262-98be-5456c24e5d62__d113790e81">Field</th>
+                <th valign="bottom" align="left" class="stentry" id="9d112854-e7bf-4262-98be-5456c24e5d62__d113790e84">Purpose</th>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Name</td>
+                <td valign="top" headers="d113790e84" class="stentry">The name of the parameter within Report Designer</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Label</td>
+                <td valign="top" headers="d113790e84" class="stentry">The label of the parameter that will be shown to report readers -- a &quot;friendly name&quot;</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Value Type</td>
+                <td valign="top" headers="d113790e84" class="stentry">The data type of the column you chose in the Value field above</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Data Format</td>
+                <td valign="top" headers="d113790e84" class="stentry">Determines how the data specified by Value Type is formatted. For instance, dates and times can be formatted in a variety of different ways</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Default Value</td>
+                <td valign="top" headers="d113790e84" class="stentry">The value from the Value column that you want to pre-populate the parameter object with. This is a text field, so you must know the values in advance</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Default Value Formula</td>
+                <td valign="top" headers="d113790e84" class="stentry">Allows the Default Value to change dynamically, based on the formula you specify</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Post-Processing Formula</td>
+                <td valign="top" headers="d113790e84" class="stentry">Allows you to update a selected value according to conditions you specify in your formula</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Mandatory</td>
+                <td valign="top" headers="d113790e84" class="stentry">A checkbox which determines whether this parameter is required in order to display any data in the report</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Hidden</td>
+                <td valign="top" headers="d113790e84" class="stentry">A checkbox which hides the parameter from appearing when the value is already passed in a session variable</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Display Type</td>
+                <td valign="top" headers="d113790e84" class="stentry">The method of selection for this parameter; determines how report readers choose different values</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Query</td>
+                <td valign="top" headers="d113790e84" class="stentry">A drop-down list of queries that you have already defined. If you need to define a new query, use the toolbar above the left pane</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Value</td>
+                <td valign="top" headers="d113790e84" class="stentry">The value that is substituted into the query</td>
+              </tr>
+              <tr class="strow">
+                <td valign="top" headers="d113790e81" class="stentry">Display Value Formula</td>
+                <td valign="top" headers="d113790e84" class="stentry">Forces the display value to change depending on the conditions specified in your formula</td>
+              </tr>
+            </table>
+          </li>
+          <li class="li step"> <span class="ph cmd">Edit your target data source by double-clicking its entry in the Structure pane.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Below your <strong class="ph b">FROM</strong>  statement, add a <strong class="ph b">WHERE</strong>  statement that specifies which column you would like to query the user about, assigned to a parameter that has a name descriptive enough for users to understand.</span>             This should be one of the columns you have a <strong class="ph b">SELECT</strong>  statement for in the same query. </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">OK</strong>  to save the query.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Include the parameterized fields in your report by dragging them onto the canvas.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Publish or preview your report.</span>  </li>
+        </ol>
+        <div class="section result">When a user runs this report, he will be presented with an interactive field that specifies an adjustable constraint for the column you specified. For instance, in the example below, the constraint would be a specific product line from the PRODUCTLINE
+          column of the PRODUCTS table.</div>
+        <div class="example"> <pre class="pre codeblock">SELECT
+                PRODUCTLINE,
+                PRODUCTVENDOR,
+                PRODUCTCODE,
+                PRODUCTNAME,
+                PRODUCTSCALE,
+                PRODUCTDESCRIPTION,
+                QUANTITYINSTOCK,
+                BUYPRICE,
+                MSRP
+FROM
+                PRODUCTS
+WHERE PRODUCTLINE = ${ENTER_PRODUCTLINE}
+ORDER BY
+                PRODUCTLINE ASC,
+                PRODUCTVENDOR ASC,
+                PRODUCTCODE ASC</pre> </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

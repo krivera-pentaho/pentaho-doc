@@ -1,0 +1,324 @@
+<content type="text/html" title="Upgrade Pentaho Servers and Design Tools (JBoss)">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div id="section_1" class="mt-page-section"><span id="Upgrade_the_Pentaho_Business_Analytics_Server"></span> 
+      <h2 class="editable">Upgrade the Pentaho&nbsp;Business Analytics Server</h2>
+      <p>After you finish the prerequisite&nbsp;tasks located in&nbsp;
+        <a title="Prepare for Your Upgrade (JBoss)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Prepare_for_Your_Upgrade_(JBoss)">Prepare Your Pentaho&nbsp;Server&nbsp;for Upgrade</a>, there are a few&nbsp;tasks that you will need to complete in order to&nbsp;upgrade to Pentaho 6.1 successfully.</p>
+      <p>These sections&nbsp;will guide you through the remaining steps of the Pentaho BA upgrade process:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Copy and Save Files from Your 5.x or 6.0 BA Installation</li>
+        <li>Install&nbsp;Pentaho Business&nbsp;Analytics 6.1</li>
+        <li>Restore Your BA Server Configuration and Solutions Files
+          <ul>
+            <li>Enable Logging Before Restoring Files</li>
+          </ul>
+        </li>
+        <li>Test Your BA Server</li>
+        <li>Update&nbsp;Your Pentaho&nbsp;Client Tools</li>
+      </ul>
+      <div id="section_2" class="mt-page-section"><span id="Step_1:_Backup_Your_BA_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 1: Backup Your BA Server Configuration and Solutions Files</h3>
+        <p>For the manual upgrade process, you will need to copy and save some files into a temporary location, such as a folder on your desktop. Later in
+          <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)#Step_3:_Restore_Your_BA_Server_Configuration_and_Solutions_Files"
+          rel="internal" href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)#Step_3:_Restore_Your_BA_Server_Configuration_and_Solutions_Files">Step 3</a>, you can either drop them back into the respective directories or manually merge the files.</p>
+        <p class="pentaho-note">If you are using JBoss, you will also need to save a copy of your <strong>standalone.xml</strong>  file.</p>
+        <p>When you are done saving these files, make sure that the Application Server can still access your <strong>.installedLicenses.xml</strong> .</p>
+        <p>These are the files that you will need to work with:</p>
+        <ul>
+          <li>Files from
+            <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Files#pentaho.war_Files" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Server_Files_for_Backup_for_Upgrade_with_JBoss#pentaho.war_Files">within the <strong>pentaho.war</strong> </a> 
+          </li>
+          <li>Files from
+            <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Files#pentaho-solutions.2Fsystem_Directory_Files" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Server_Files_for_Backup_for_Upgrade_with_JBoss#pentaho-solutions.2Fsystem_Directory_Files">within the <strong>pentaho-solutions/system</strong>  directory</a> 
+          </li>
+          <li>Plugin and related files from
+            <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Files#pentaho-solutions.2Fsystem_sub-directory_and_plugin_files" rel="internal"
+            href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Server_Files_for_Backup_for_Upgrade_with_JBoss#pentaho-solutions.2Fsystem_sub-directory_and_plugin_files">subdirectories of the <strong>pentaho-solutions/system</strong>  directory</a> 
+          </li>
+        </ul>
+        <p>The next step is to install a new instance of the&nbsp;Pentaho 6.1 software.&nbsp;</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Step_2:_Install_Pentaho_Business_Analytics_6.1"></span> 
+        <h3 class="editable">Step 2: Install&nbsp;Pentaho&nbsp;Business Analytics&nbsp;6.1</h3>
+        <p>A fresh manual installation of the&nbsp;
+          <a class="link-https" title="https://support.pentaho.com/hc/en-us" rel="external nofollow" href="https://support.pentaho.com/hc/en-us" target="_blank">Pentaho&nbsp;BA 6.1 package</a> &nbsp;is needed as part of&nbsp;the upgrade process if you plan to use JBoss, after you have finished the upgrade prerequisites and backed up your Pentaho&nbsp;BA&nbsp;configuration and solutions files.&nbsp; You'll
+          need this in order to get all of the required&nbsp;
+          <a title="Documentation/6.1/0C0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0C0">updates</a> .</p>
+        <p>Next, do these tasks from the Prepare Your Environment section of the manual&nbsp;installation guides.&nbsp;Make sure that you leave&nbsp;your Pentaho&nbsp;5.x or 6.0 instance &quot;as is&quot; and unpack&nbsp;Pentaho 6.1 into a new directory.&nbsp;</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td style="width: 238px;">
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 1000px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="Documentation/6.1/0F0/0K0/020/0A0#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0K0/020/0A0#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="Documentation/6.1/0F0/0P0/020/0A0#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0P0/020/0A0#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 238px;">
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 1000px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="Documentation/6.1/0F0/0P0/020/0B0#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0P0/020/0B0#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="Documentation/6.1/0F0/0P0/020/0B0#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0P0/020/0B0#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>If you are using custom port numbers and a custom fully-qualified URL, there are some updates for 6.1 that you should be aware of.
+          <a title="Documentation/6.1/0P0/000/050" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/050">Change the Port Numbers for the BA Server</a>  has information and steps for how to do both of these things in Pentaho 6.1.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Step_3:_Restore_Your_BA_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 3:&nbsp;Restore Your BA Server Configuration and Solutions Files</h3>
+        <p>You can either drop and replace the files back into their appropriate&nbsp;directories&nbsp;or use a diff tool and manually merge your configuration and solutions&nbsp;files.</p>
+        <p class="pentaho-caution">If you are upgrading from Pentaho 5.x to 6.1, you will need to manually merge the&nbsp;<span class="filepath style-wrap">jboss-deployment-structure.xml</span>  file that you copied from the <span class="filepath style-wrap">pentaho.war.</span> </p>
+        <p>Make sure to update the <span class="filepath style-wrap">pentaho-solutions</span>  directory path in your <span class="filepath style-wrap">web.xml</span>  file so that it points to your Pentaho 6.1 directory.</p>
+        <p>If you aren't going to enable logging after restoring files, start the BA Server.&nbsp;Make sure not to interrupt the BA Server the first time you start it after restoring your data.</p>
+        <div id="section_5" class="mt-page-section"><span id="Optional:_Enable_Logging_before_Restoring_Files"></span> 
+          <h4 class="editable">Optional: Enable Logging before Restoring Files</h4>
+          <p>Before you restore your BA Server configuration and solutions files, enable logging in the logging configuration file:</p>
+          <ol class="pentaho-list-ordered">
+            <li>Locate the<span class="filepath style-wrap"> /biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes</span>  directory and open the<span class="filepath style-wrap"> log4j.xml</span>  file with any text editor.&nbsp;</li>
+            <li>Find the parameter for <span class="filepath style-wrap">Threshold </span> and change the value as shown here:</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <td style="width: 215px;"><strong>Old param value</strong> </td>
+                <td style="width: 1023px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><param name=&quot;Threshold&quot; value=&quot;ERROR&quot;/></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 215px;"><strong>New param value</strong> </td>
+                <td style="width: 1023px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><param name=&quot;Threshold&quot; value=&quot;INFO&quot;/></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Add this category:</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><category name=&quot;org.pentaho.platform.engine.core.system.status&quot;>
+<priority value=&quot;INFO&quot;/>
+</category></pre>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Save and close the <span class="filepath style-wrap">log4j.xml </span> file.</li>
+            <li> <a title="Documentation/6.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/000">Start the BA Server</a> .&nbsp; </li>
+          </ol>
+          <p>Make sure&nbsp;not to interrupt the BA Server the first time you start it after restoring your data.</p>
+        </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Step_4:_Test_Your_BA_Server"></span> 
+        <h3 class="editable">Step 4: Test Your BA Server</h3>
+        <p>The last thing that you will need to do before testing is to clear the cache from your web browser.</p>
+        <p class="pentaho-note">While starting the BA Server, it initializes by installing all the Karaf features. The system waits for these features to be installed before timing out. The default wait&nbsp;before timing out is 2 minutes. If you modify any Karaf feature, you
+          should consider&nbsp;
+          <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0P0/000/050#Change_the_Karaf_Startup_Timeout_Setting" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/050#Change_the_Karaf_Startup_Timeout_Setting">changing the&nbsp;Karaf startup timeout setting</a> .&nbsp;</p>
+        <p><span style="line-height: 1.5;">Here are some of the things that you might want to do&nbsp;to verify that your content has been restored to the BA Server:</span> </p>
+        <ul class="pentaho-list-unordered">
+          <li>Navigate to the your Pentaho&nbsp;URL&nbsp;and make sure the login screen appears.</li>
+          <li>Log into PUC and verify that you can run your old BA content.</li>
+          <li>Verify that your schedules exist and are working properly.</li>
+          <li>Make sure that your&nbsp;Pentaho plugins are installed and functional:
+            <ul>
+              <li>Open a report that requires no user prompts and a parameterized report.</li>
+              <li>Create a test report for Interactive Reporting and one for Analyzer, as appropriate.</li>
+              <li>Open a dashboard in Dashboard Designer.</li>
+              <li>Publish a report in Report Designer.</li>
+              <li>Publish an analysis schema from Spoon.</li>
+            </ul>
+          </li>
+          <li>Check your application server log.&nbsp;</li>
+        </ul>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Step_5:_Update_Your_Pentaho_BA_Design_Tools"></span> 
+        <h3 class="editable">Step 5: Update Your&nbsp;Pentaho&nbsp;BA&nbsp;Design&nbsp;Tools</h3>
+        <p>The Pentaho BA design tools are stand-alone tools&nbsp;and are easily updated on your workstations.&nbsp;Pentaho design tools can be found in the <span class="filepath style-wrap">Pentaho/design-tools</span>  directory.</p>
+        <ol class="pentaho-list-ordered">
+          <li> <a title="Documentation/6.1/0H0/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/020/000">Stop the design tool</a>, if it is currently&nbsp;running. </li>
+          <li>Move the old design tool out of the&nbsp;Pentaho&nbsp;folder structure to a temporary folder.</li>
+          <li>Copy the new version of the design tool into the&nbsp;Pentaho&nbsp;folder structure.</li>
+          <li>Restart your design tool.</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_8" class="mt-page-section"><span id="Upgrade_the_Pentaho_Data_Integration_Server"></span> 
+      <h2 class="editable">Upgrade the&nbsp;Pentaho Data Integration Server</h2>
+      <p>After you finish the prerequisite&nbsp;tasks located in&nbsp;
+        <a href="/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Prepare_for_Your_Upgrade_(JBoss)" rel="internal" title="Prepare for Your Upgrade (JBoss)">Prepare Your Pentaho&nbsp;Server&nbsp;for Upgrade</a>,&nbsp;there are a few&nbsp;tasks that you will need to complete in order to&nbsp;upgrade to Pentaho 6.1 successfully.</p>
+      <p>These sections&nbsp;will guide you through the remaining steps of the Pentaho&nbsp;DI&nbsp;upgrade process:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Copy and Save Files from your 5.x or 6.0 DI Installation</li>
+        <li>Install&nbsp;Pentaho&nbsp;Data Integration&nbsp;6.1&nbsp;</li>
+        <li>Restore Your DI Server Configuration and Solutions Files
+          <ul>
+            <li>Optional Step:&nbsp;Enable Logging Before Restoring Files</li>
+          </ul>
+        </li>
+        <li>Update&nbsp;Your Pentaho&nbsp;DI Client Tool</li>
+        <li>Test Your DI Server</li>
+      </ul>
+      <div id="section_9" class="mt-page-section"><span id="Step_1:_Backup_Your_DI_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 1:&nbsp;Backup Your DI Server&nbsp;Configuration and Solutions Files</h3>
+        <p>For the manual upgrade process, you will need to copy and save these files into a temporary location, such as a folder on your desktop. Later in Step 3 you can either drop them back into the respective directories or manually merge the files.</p>
+        <p class="pentaho-note">If you are using Jboss, you will also need to save a copy of your <strong>standalone.xml</strong>  file.</p>
+        <ul>
+          <li>Files from
+            <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Files#pentaho-di.war_Files" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Server_Files_for_Backup_for_Upgrade_with_JBoss#pentaho-di.war_Files">within the <strong>pentaho-di.war</strong> </a> 
+          </li>
+          <li>Files from
+            <a title="https://pentaho-new.mindtouch.us/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Files#pentaho-solutions.2Fsystem_Directory_Files_2" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0T0/Upgrade_BA_and_DI_with_JBoss/Upgrade_Pentaho_Servers_and_Design_Tools_(JBoss)/Server_Files_for_Backup_for_Upgrade_with_JBoss#pentaho-solutions.2Fsystem_Directory_Files_2">within the <strong>pentaho-solutions/system</strong>  directory</a> 
+          </li>
+        </ul>
+        <p>The next step is to install a new instance of Pentaho&nbsp;DI 6.1 software.</p>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Step_2:_Install_Pentaho_Data_Integration_6.1"></span> 
+        <h3 class="editable">Step 2:&nbsp;Install&nbsp;Pentaho Data Integration 6.1&nbsp;</h3>
+        <p>A fresh manual installation of the&nbsp;
+          <a class="link-https" title="https://support.pentaho.com/hc/en-us" rel="external nofollow" href="https://support.pentaho.com/hc/en-us" target="_blank">Pentaho&nbsp;DI&nbsp;6.1 package</a> &nbsp;is needed as part of&nbsp;the upgrade process if you are using JBoss, after you have finished the upgrade prerequisites and backed up your Pentaho&nbsp;DI configuration and solutions files.&nbsp; You'll
+          need this in order to get all of the required&nbsp;
+          <a title="Documentation/6.1/0C0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0C0">updates</a> .</p>
+        <p>Next, do these tasks from the Prepare Your Environment section of the archive installation guides.&nbsp;Make sure that you leave&nbsp;your Pentaho&nbsp;5.x instance &quot;as is&quot; and unpack&nbsp;Pentaho 6.1 into a new directory.&nbsp;</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td style="width: 237px;">
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 1001px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="Documentation/6.1/0F0/0O0/030/010#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0O0/030/010#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="Documentation/6.1/0F0/0O0/030/010#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0O0/030/010#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 237px;">
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 1001px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="Documentation/6.1/0F0/0O0/030/020#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0O0/030/020#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="Documentation/6.1/0F0/0O0/030/020#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0O0/030/020#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p><span>If you are using custom port numbers and a custom fully-qualified URL, there are some updates for 6.1 that you should be aware of. <a href="/Documentation/6.1/0P0/0U0/080#Change_the_DI_Server_URL" rel="internal" title="Documentation/6.1/0P0/0U0/080#Change_the_DI_Server_URL">Changing Ports and URLs</a>  has information and steps for how to do both of these things for the DI Server&nbsp;in Pentaho 6.1.</span> </p>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="Step_3:__Restore_Your_DI_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 3:&nbsp; Restore Your DI Server Configuration and Solutions Files</h3>
+        <p>You can either drop and replace the files into the appropriate directories or use a diff tool and merge your configuration and solutions&nbsp;files.</p>
+        <p class="pentaho-caution">If you are upgrading from Pentaho 5.x to 6.1, you will need to manually merge the&nbsp;<span class="filepath style-wrap">jboss-deployment-structure.xml</span>  file that you copied from the <span class="filepath style-wrap">pentaho.war.</span> </p>
+        <p>Make sure to update the <span class="filepath style-wrap">pentaho-solutions</span>  directory path in your web.xml file so that it points to your Pentaho 6.1 directory.</p>
+        <p>If you aren't going to enable logging after restoring files,
+          <a title="https://help.pentaho.com/Documentation/6.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/000">start the DI Server</a> .</p>
+        <p>Make sure not to interrupt the DI Server the first time you start it after restoring your data.</p>
+        <div id="section_12" class="mt-page-section"><span id="Optional:_Enable_Logging_before_Restoring_Files_2"></span> 
+          <h4 class="editable">Optional:&nbsp;Enable Logging before Restoring Files</h4>
+          <p>Before you restore your DI&nbsp;Server configuration and solutions files, enable logging in the logging configuration file:</p>
+          <ol class="pentaho-list-ordered">
+            <li>Locate the<span class="filepath style-wrap"> /data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/classes</span>  directory and open the<span class="filepath style-wrap"> log4j.xml</span>  file with any text editor.&nbsp;</li>
+            <li>Find the parameter for <span class="filepath style-wrap">Threshold </span> and change the value as shown here:</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <td style="width: 287px;"><strong>Old param value</strong> </td>
+                <td style="width: 951px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><param name=&quot;Threshold&quot; value=&quot;ERROR&quot;/></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 287px;"><strong>New param value</strong> </td>
+                <td style="width: 951px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><param name=&quot;Threshold&quot; value=&quot;INFO&quot;/></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Add this category:</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><category name=&quot;org.pentaho.platform.engine.core.system.status&quot;>
+<priority value=&quot;INFO&quot;/>
+</category></pre>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Save and close the <span class="filepath style-wrap">log4j.xml </span> file.</li>
+            <li> <a title="Documentation/6.1/0H0/070/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/000">Start the DI Server</a> . </li>
+          </ol>
+          <p>Make sure not to interrupt the DI Server the first time you start it after restoring your data.</p>
+        </div>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="Step_4:_Update_Your_Pentaho_DI_Client_Tool"></span> 
+        <h3 class="editable">Step 4:&nbsp;Update Your&nbsp;Pentaho DI&nbsp;Client&nbsp;Tool</h3>
+        <p>The Pentaho DI&nbsp;client&nbsp;tool, Spoon, is&nbsp;easily updated on your workstations.</p>
+        <ol class="pentaho-list-ordered">
+          <li> <a title="Documentation/6.1/0H0/070/020/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/020/000">Stop Spoon</a>, if it is currently&nbsp;running. </li>
+          <li>Move the old design tool out of the&nbsp;Pentaho&nbsp;folder structure to a temporary folder.</li>
+          <li>Copy the new version of the design tool into the&nbsp;Pentaho&nbsp;folder structure.</li>
+          <li>Restart your design tool.</li>
+        </ol>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id="Step_5:_Test_Your_New_DI_Server"></span> 
+        <h3 class="editable">Step 5:&nbsp;Test Your New DI Server</h3>
+        <p class="p">The last thing that you will need to do before testing is to clear the cache from your web browser.&nbsp;Pentaho design tools can be found in the <span class="filepath style-wrap">Pentaho/design-tools</span>  directory.</p>
+        <p class="pentaho-note">While starting the&nbsp;DI Server, it initializes by installing all the Karaf features. The system waits for these features to be installed before timing out. The default wait&nbsp;before timing out is 2 minutes. If you modify any Karaf feature,
+          you should consider&nbsp;
+          <a title="Documentation/6.1/0P0/000/050#Change_the_Karaf_Startup_Timeout_Setting" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/050#Change_the_Karaf_Startup_Timeout_Setting">changing the Karaf startup timeout setting</a> .</p>
+        <p>Make sure that the DI Server and Spoon are running, then use this list to verify that your content has been restored to the DI Server.</p>
+        <ul class="ul">
+          <li class="li">Open old jobs and transformations and ensure that they execute properly.</li>
+          <li class="li">Create a new job, transformation, and/or Agile BI analysis schema and save it as you normally would.</li>
+          <li class="li">Schedule a job or transformation and ensure that the schedule executes properly.</li>
+          <li class="li">Ensure that existing schedules are still valid.</li>
+          <li class="li">If you are using an enterprise repository, share a job or transformation between PDI users and verify that both can access it.</li>
+          <li class="li">Physically restart the server and ensure that the DI Server are automatically started as services.</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Upgrade_the_Pentaho_Business_Analytics_Server" rel="internal">Upgrade the Pentaho&nbsp;Business Analytics Server</a> 
+        <ol>
+          <li> <a href="#Step_1:_Backup_Your_BA_Server_Configuration_and_Solutions_Files" rel="internal">Step 1: Backup Your BA Server Configuration and Solutions Files</a>  </li>
+          <li> <a href="#Step_2:_Install_Pentaho_Business_Analytics_6.1" rel="internal">Step 2: Install&nbsp;Pentaho&nbsp;Business Analytics&nbsp;6.1</a>  </li>
+          <li>
+            <a href="#Step_3:_Restore_Your_BA_Server_Configuration_and_Solutions_Files" rel="internal">Step 3:&nbsp;Restore Your BA Server Configuration and Solutions Files</a> 
+            <ol>
+              <li> <a href="#Optional:_Enable_Logging_before_Restoring_Files" rel="internal">Optional: Enable Logging before Restoring Files</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Step_4:_Test_Your_BA_Server" rel="internal">Step 4: Test Your BA Server</a>  </li>
+          <li> <a href="#Step_5:_Update_Your_Pentaho_BA_Design_Tools" rel="internal">Step 5: Update Your&nbsp;Pentaho&nbsp;BA&nbsp;Design&nbsp;Tools</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Upgrade_the_Pentaho_Data_Integration_Server" rel="internal">Upgrade the&nbsp;Pentaho Data Integration Server</a> 
+        <ol>
+          <li> <a href="#Step_1:_Backup_Your_DI_Server_Configuration_and_Solutions_Files" rel="internal">Step 1:&nbsp;Backup Your DI Server&nbsp;Configuration and Solutions Files</a>  </li>
+          <li> <a href="#Step_2:_Install_Pentaho_Data_Integration_6.1" rel="internal">Step 2:&nbsp;Install&nbsp;Pentaho Data Integration 6.1&nbsp;</a>  </li>
+          <li>
+            <a href="#Step_3:__Restore_Your_DI_Server_Configuration_and_Solutions_Files" rel="internal">Step 3:&nbsp; Restore Your DI Server Configuration and Solutions Files</a> 
+            <ol>
+              <li> <a href="#Optional:_Enable_Logging_before_Restoring_Files_2" rel="internal">Optional:&nbsp;Enable Logging before Restoring Files</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Step_4:_Update_Your_Pentaho_DI_Client_Tool" rel="internal">Step 4:&nbsp;Update Your&nbsp;Pentaho DI&nbsp;Client&nbsp;Tool</a>  </li>
+          <li> <a href="#Step_5:_Test_Your_New_DI_Server" rel="internal">Step 5:&nbsp;Test Your New DI Server</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

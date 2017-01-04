@@ -1,0 +1,30 @@
+<content type="text/html" title="Variables">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A variable in PDI is a piece of user-supplied information that can be used dynamically and programmatically in a variety of different scopes. A variable can be local to a single step, or be available to the entire JVM that PDI is running in.</p>
+        <p class="p">PDI variables can be used in steps in both jobs and transformations. You define variables with the <strong class="ph b">Set Variable</strong>  step in a transformation, by hand through the <strong class="ph b">kettle.properties</strong>  file, or
+          through the <strong class="ph b">Set Environment Variables</strong>  dialogue in the <strong class="ph b">Edit</strong>  menu.</p>
+        <p class="p">The<strong class="ph b">Get Variable</strong>  step can explicitly retrieve a value from a variable, or you can use it in any PDI text field that has the diamond dollar sign
+          <img alt="File:/variable.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/3371/variable.png?revision=1"
+          /> icon next to it by using a metadata string in either the Unix or Windows formats:</p>
+        <ul class="ul">
+          <li class="li"><code class="ph codeph">${VARIABLE}</code></li>
+          <li class="li"><code class="ph codeph">%%VARIABLE%%</code></li>
+        </ul>
+        <p class="p">Both formats can be used and even mixed. In fact, you can create variable recursion by alternating between the Unix and Windows syntaxes. For example, if you wanted to resolve a variable that depends on another variable, then you could use this
+          example: <strong class="ph b">${%%inner_var%%}</strong> .</p>
+        <div class="note note"><span class="notetitle">Note:</span>  If there is a name collision with a parameter or argument, variables will defer.</div>
+        <p class="p">You can also use ASCII or hexidecimal character codes in place of variables, using the same format: <strong class="ph b">$[hex value]</strong> . This makes it possible to escape the variable syntax in instances where you need to put variable-like
+          text into a variable. For instance if you wanted to use <strong class="ph b">${foobar}</strong>  in your data stream, then you can escape it like this: <strong class="ph b">$[24]{foobar}</strong> . PDI will replace <strong class="ph b">$[24]</strong>           with a <strong class="ph b">$</strong>  without resolving it as a variable.</p>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/0Y0/090/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0L0/0Y0/090/020/000">Variable Scope</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/0Y0/090/020/010" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0L0/0Y0/090/020/010">Internal Variables</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

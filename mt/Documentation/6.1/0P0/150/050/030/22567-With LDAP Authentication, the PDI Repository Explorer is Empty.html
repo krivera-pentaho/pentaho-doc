@@ -1,0 +1,23 @@
+<content type="text/html" title="With LDAP Authentication, the PDI Repository Explorer is Empty">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">If you log into a solution repository from Spoon before you switch the authentication to LDAP, then the repository IDs and security structures will be broken. You won't see an error message, but the solution repository explorer will be empty
+            and you won't be able to create new folders or save PDI content to it. To fix the problem, you will have to delete the security settings established with the previously used authentication method, which will force the DI Server to regenerate
+            them for LDAP.</p>
+          <div class="cautiontitle">CAUTION:</div>
+          <div class="note caution">Following this procedure will destroy any previously defined&nbsp;Pentaho Repository users, roles, and access controls. You should back up the files that you delete in these instructions.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the DI Server</span> </li>
+          <li class="li step"><span class="ph cmd">Delete the security and default directories from the following directory: <span class="ph filepath">/pentaho-solutions/system/jackrabbit/repository/workspaces/</span> </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Start the DI Server</span> </li>
+        </ol>
+        <div class="section result">You should now have a proper LDAP-based&nbsp;Pentaho Repository that can store content and create new directories.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

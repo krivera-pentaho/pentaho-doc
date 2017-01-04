@@ -1,0 +1,44 @@
+<content type="text/html" title="Building Transformations Dynamically">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">To enable your application to respond quickly to changing conditions, you can build transformations dynamically. The example class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingTransformations</code>, shows you how.
+            It generates a transformation definition and saves it to a .<span class="ph filepath">ktr</span>  file. </p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Create and configure a transformation definition object.</span>  A transformation definition is represented by a
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object. Create this object using the default constructor. The transformation definition includes the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html#setName%28java.lang.String%29">name</a>,
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html#addParameterDefinition%28java.lang.String,%20java.lang.String,%20java.lang.String%29">the declared parameters</a>, and the required
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html#addDatabase%28org.pentaho.di.core.database.DatabaseMeta%29">database connections</a> .&nbsp; </li>
+          <li class="li step"> <span class="ph cmd">Populate the <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object with steps.</span>             The data flow of a transformation is defined by steps that are connected by hops.
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">Create the step by instantiating its class directly and configure it using its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. Transformation steps reside in sub-packages of <code class="ph codeph">org.pentaho.di.trans.steps</code>. For example, to use the <span class="ph uicontrol">Get File Names</span>                 step , create an instance of
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/steps/getfilenames/GetFileNamesMeta.html"><code class="ph codeph">org.pentaho.di.trans.steps.getfilenames.GetFileNamesMeta</code></a>  and use its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods to configure it. </span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Obtain the step id string. Each PDI step has an id that can be retrieved from the PDI <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/plugins/PluginRegistry.html">plugin registry</a> . A simple way to retrieve the step id is to call <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/plugins/PluginRegistry.html#getPluginId%28java.lang.Class,%20java.lang.Object%29"><code class="ph codeph">PluginRegistry.getInstance().getPluginId(StepPluginType.class, theStepMetaObject)</code></a> .&nbsp; </span>                 </li>
+              <li class="li substep"> <span class="ph cmd">Create an instance of <code class="ph codeph">org.pentaho.di.trans.step.StepMeta</code>, passing the step id string, the name, and the configured step object to the constructor. An instance of <code class="ph codeph">StepMeta</code> encapsulates the step properties, as well as controls the placement of the step on the Spoon canvas and connections to hops. Once the <code class="ph codeph">StepMeta</code> object has been created, call <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/step/StepMeta.html#setDraw(boolean)"> <span class="ph filepath">setDrawn(true)</span>  </a> 
+                and
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/step/StepMeta.html#setLocation(int,%20int)"><code class="ph codeph">setLocation(x,y)</code></a>  to make sure the step appears correctly on the Spoon canvas. Finally, add the step to the transformation, by calling
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html#addStep%28org.pentaho.di.trans.step.StepMeta%29"><code class="ph codeph">addStep()</code></a>  on the transformation definition object. </span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Once steps have been added to the transformation definition, they need to be connected by hops. To create a hop, create an instance of <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransHopMeta.html"><code class="ph codeph">org.pentaho.di.trans.TransHopMeta</code></a>, passing in the From and To steps as arguments to the constructor. Add the hop to the transformation definition by calling <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/TransMeta.html#addTransHop%28org.pentaho.di.trans.TransHopMeta%29"><code class="ph codeph">addTransHop()</code></a> . </span>                 </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="section result">After all steps have been added and connected by hops, the transformation definition object can be serialized to a .<span class="ph filepath">ktr</span>  file by calling <code class="ph codeph">getXML()</code> and opening it in Spoon for inspection.
+          The sample class <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingTransformations</code> generates this transformation.
+          <br />
+          <img class="image" id="48efda9b-8f56-4528-bfb8-dd70bb16cb06__building_transforms_on_the_fly__image_w4p_24q_mh" />
+          <br />
+          <br />
+          <img id="48efda9b-8f56-4528-bfb8-dd70bb16cb06__building_transforms_on_the_fly__image_gr3_j4q_mh" alt="File:/generated_trans.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/1628/generated_trans.png?revision=1" />
+          <br />
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

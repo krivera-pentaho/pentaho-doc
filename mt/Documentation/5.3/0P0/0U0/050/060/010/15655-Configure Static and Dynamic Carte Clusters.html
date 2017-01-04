@@ -1,0 +1,274 @@
+<content type="text/html" title="Configure Static and Dynamic Carte Clusters">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">If you want to speed the processing of your transformations, consider setting up a Carte cluster.&nbsp; A Carte cluster consists of two or more Carte slave servers and a Carte master server.&nbsp; When you run a transformation, the different
+              parts of it are distributed across Carte slave server nodes for processing, while the Carte master server node tracks the progress.</p>
+            <div id="section_1" class="mt-page-section"><span id="Configure_a_Static_Carte_Cluster"></span> 
+              <h3 class="editable">Configure a Static Carte Cluster</h3>
+              <p class="p">Follow the directions below to set up static Carte slave servers.</p>
+            </div>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Copy over any required JDBC drivers and PDI plugins from your development instances of PDI to the Carte instances.</span> </li>
+            <li class="li step"><span class="ph cmd">Run the Carte script with an IP address, hostname, or domain name of this server, and the port number you want it to be available on.</span>  <pre class="pre codeblock">
+./carte.sh 127.0.0.1 8081</pre> </li>
+            <li class="li step"><span class="ph cmd">If you will be executing content stored in a DI Repository, copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the same location
+              on your Carte slave.</span>  Without this file, the Carte slave will be unable to connect to the DI Repository to retrieve content.</li>
+            <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended, accessible from your primary PDI development machines, and that it can run your jobs and transformations.</span> </li>
+            <li class="li step"><span class="ph cmd">To start this slave server every time the operating system boots, create a startup or init script to run Carte at boot time with the same options you tested with.</span> </li>
+          </ol>
+          <div>
+            <div class="body">
+              <p class="pentaho-note">&nbsp;</p>
+            </div>
+            <div id="section_2" class="mt-page-section"><span id="Configure_a_Dynamic_Carte_Cluster"></span> 
+              <h3 class="editable">Configure a Dynamic Carte Cluster</h3>
+              <div class="section context">This procedure is only necessary for&nbsp;<span class="ph b">dynamic cluster</span> &nbsp;scenarios in which one Carte server will control multiple slave Carte instances.</div>
+              <p class="pentaho-note">The following instructions explain how to create <span class="filepath style-wrap">carte-master-config.xml</span>  and <span class="filepath style-wrap">carte-slave-config.xml</span>  files. &nbsp;You can rename these files if you want, but
+                you must specify the content in the files as per&nbsp;the instructions.&nbsp;</p>
+              <div id="section_3" class="mt-page-section"><span id="Configure_Carte_Master_Server"></span> 
+                <h4 class="editable">Configure Carte Master Server</h4>
+                <div>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">Follow the process below to configure the Carte Master Server.</p>
+                      <ol class="ol steps">
+                        <li class="li step"><span class="ph cmd"><span class="ph cmd">Copy over any </span> <span class="ph cmd">required JDBC drivers from your development instances of PDI to the Carte instances.</span> <span class="ph cmd">&nbsp; </span> </span> 
+                        </li>
+                        <li class="li step"><span class="ph cmd">Create a <strong class="ph b">carte-master-config.xml</strong>  configuration file using the following example as a template:</span> </li>
+                      </ol>
+                    </div> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+
+<!-- on a master server, the slaveserver node contains information about this Carte instance -->
+    <slaveserver>
+        <name>Master</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>Y</master>
+    </slaveserver>
+</slave_config></pre>
+                    <p class="pentaho-note">The <strong class="ph b"><name></strong> &nbsp;of the Master server<strong>&nbsp;must be unique</strong>  among all Carte instances in the cluster.</p>
+                    <ol class="ol steps" start="3">
+                      <li class="li step"><span class="ph cmd">Run the Carte script with the carte-slave-config.xml parameter. &nbsp;Note that if</span> &nbsp;you placed the <span class="filepath style-wrap">carte-master-config.xml</span>  file in a different directory than
+                        the Carte script, you will need to add the path to the file to the command. <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./carte.sh carte-master-config.xml</pre>                        </li>
+                    </ol>
+                    <ol class="ol steps" start="4">
+                      <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended.</span> </li>
+                      <li class="li step"><span class="ph cmd">To start this master server every time the operating system boots, create a startup or init script to run Carte at boot time.</span> </li>
+                    </ol>
+                    <div class="section result">You now have a Carte master server to use in a dynamic cluster. Next, configure the Carte slave servers.</div>
+                  </div>
+                </div>
+              </div>
+              <div id="section_4" class="mt-page-section"><span id="Configure_Carte_Slave_Servers"></span> 
+                <h4 class="editable">Configure Carte Slave Servers</h4>
+                <div>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">Follow the directions below to set up static Carte slave servers.</p>
+                    </div>
+                    <ol class="ol steps">
+                      <li class="li step">Follow the process to configure the Carte Master Server.</li>
+                      <li class="li step">Make sure the Master server is running.</li>
+                      <li class="li step">Copy over any required&nbsp;JDBC&nbsp;drivers from your development instances of PDI to the Carte instances.</li>
+                      <li class="li step">In the <span class="ph filepath">/pentaho/design-tools/</span>  directory,create a <strong class="ph b">carte-slave-config.xml</strong>  configuration file using the following example as a template:</li>
+                    </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+
+<!-- the masters node defines one or more load balancing Carte instances that will manage this slave -->
+    <masters>
+		<slaveserver>
+			<name>Master</name>
+			<hostname>yourhostname</hostname>
+			<port>9000</port>
+
+<!-- uncomment the next line if you want the DI Server to act as the load balancer -->
+
+<!--	    <webAppName>pentaho-di</webAppName> -->
+			<username>cluster</username>
+			<password>cluster</password>
+			<master>Y</master>
+		</slaveserver>
+	</masters>
+	<report_to_masters>Y</report_to_masters>
+
+<!-- the slaveserver node contains information about this Carte slave instance -->
+    <slaveserver>
+        <name>SlaveOne</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>N</master>
+    </slaveserver>
+</slave_config></pre>
+                    <p class="pentaho-note">The slaveserver <strong class="ph b"><name></strong>  must be unique among all Carte instances in the cluster.</p>
+                    <ol class="ol steps" start="5">
+                      <li class="li step">If you want a slave server to use the same kettle properties as the master server, add the <span class="filepath style-wrap"><get_properties_from_master></span>  and <span class="filepath style-wrap"><override_existing_properties></span>                         tags&nbsp;between the <span class="filepath style-wrap"><slaveserver></span>  and <span class="filepath style-wrap"></slaveserver></span>  tags for the slave server. &nbsp;Put the name of the master server between the &nbsp;
+                        <span
+                        class="filepath style-wrap">
+                          <get_properties_from_master>
+                            </span>  and <span class="filepath style-wrap"></get_properties_from_master></span>  tags. &nbsp;Here is an example.</li>
+                    </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- the slaveserver node contains information about this Carte slave instance -->
+    <slaveserver>
+        <name>SlaveOne</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>N</master>
+        <get_properties_from_master>Master</get_properties_from_master>
+        <override_existing_properties>Y</override_existing_properties>
+    </slaveserver></pre>
+                    <ol class="ol steps" start="6">
+                      <li class="li step">Save and close the file.</li>
+                      <li class="li step"><span style="line-height: 1.5;">Run the Carte script with the <span class="filepath style-wrap">carte-slave-config.xml</span>  parameter. &nbsp;Note that i</span> f you placed the <span class="filepath style-wrap">carte-slave-config.xml</span>                         file in a different directory than the Carte script, you will need to add the path to the file to the command.</li>
+                    </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./carte.sh carte-slave-config.xml</pre>
+                    <ol class="ol steps" start="8">
+                      <li class="li step"><span class="ph cmd">If you will be executing content stored in a DI Repository, copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the
+                        same location on your Carte slave.</span>  Without this file, the Carte slave will be unable to connect to the DI Repository to retrieve PDI content.</li>
+                      <li class="li step">Stop, then start the master and slave servers.</li>
+                      <li class="li step">Stop, then start the DI Server.</li>
+                      <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended.&nbsp;&nbsp;If you want to start<span class="ph cmd">&nbsp;this slave server every time the operating system boots, create a startup or init script to run Carte at boot time.</span> </span> 
+                      </li>
+                    </ol>
+                    <div id="section_5" class="mt-page-section"><span id="Changing_Jetty_Server_Parameters"></span> 
+                      <h3 class="editable">Changing Jetty Server Parameters</h3>
+                      <div class="section result">Carte runs on a Jetty server.&nbsp;You do not need to do anything to configure the Jetty server for Carte to work. But if you want to make changes to the default&nbsp;connection parameters, complete the steps in one of the subsections
+                        that follow.</div>
+                      <div class="section result">&nbsp;</div>
+                      <div class="section result">
+                        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 624px; table-layout: fixed;" title="Pentaho Table">
+                          <thead>
+                            <tr>
+                              <th style="width: 198px;">Jetty Server Parameters</th>
+                              <th style="width: 402px;">Definition</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td style="width: 198px;"><span class="filepath style-wrap">acceptors</span> </td>
+                              <td style="width: 402px;">The number of thread dedicated to accepting incoming connections. &nbsp;&nbsp;The number of acceptors should be below or equal to&nbsp;the number of CPUs.</td>
+                            </tr>
+                            <tr>
+                              <td style="width: 198px;"><span class="filepath style-wrap">acceptQueueSize</span> </td>
+                              <td style="width: 402px;">Number of connection requests that can be queued up before the operating system starts to send rejections.</td>
+                            </tr>
+                            <tr>
+                              <td style="width: 198px;">lowResourcesMaxIdleTime</td>
+                              <td style="width: 402px;">This allows the server to rapidly close idle connections in order to gracefully handle high load situations.</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <p class="pentaho-note">If you want to learn more about these options, check out the&nbsp;Jetty documentation here:&nbsp;
+                        <a class="external" title="http://wiki.eclipse.org/Jetty/Howto/Configure_Connectors#Configuration_Options" rel="external nofollow" href="http://wiki.eclipse.org/Jetty/Howto/Configure_Connectors#Configuration_Options"
+                        target="_blank">http://wiki.eclipse.org/Jetty/Howto/Configure_Connectors#Configuration_Options</a> . &nbsp;For more information about a&nbsp;high load setup read this article:
+                        <a class="link-https" title="https://wiki.eclipse.org/Jetty/Howto/High_Load"
+                        rel="external nofollow" href="https://wiki.eclipse.org/Jetty/Howto/High_Load" target="_blank">https://wiki.eclipse.org/Jetty/Howto/High_Load</a> .</p>
+                      <div id="section_6" class="mt-page-section"><span id="Setting_the_Jetty_Server_Parameters_in_the_carte-slave-config.xml_file"></span> 
+                        <h4 class="editable">Setting the Jetty Server Parameters&nbsp;in the carte-slave-config.xml file</h4>
+                        <div class="section result">To change the Jetty Server parameters in the <span class="filepath style-wrap">carte-slave-config.xml</span>  file, complete these steps.</div>
+                        <div class="section result">
+                          <ol class="ol steps">
+                            <li class="li step"><span class="ph cmd">In the&nbsp;<span class="ph filepath">/pentaho/design-tools/</span> &nbsp;directory, open the&nbsp;<strong class="ph b">carte-slave-config.xml</strong> &nbsp;and add these lines between the
+                              <slave_config>
+                              </slave_config> tags.</span> 
+                            </li>
+                          </ol> <pre class="pre codeblock li step" style="font-size: 12px;">
+<slave_config>
+...
+
+    <!-- Carte uses an embedded jetty server. Include this next section only if you want to change the default jetty configuration options.-->
+    <jetty_options>
+        <acceptors>2</acceptors>
+        <acceptQueueSize>2</acceptQueueSize>
+        <lowResourcesMaxIdleTime>2</lowResourcesMaxIdleTime>
+    </jetty_options>
+</slave_config>
+</pre>
+                          <ol class="ol steps" start="2">
+                            <li class="li step">Adjust the values for the parameters as necessary, then save and close the file.</li>
+                          </ol>
+                        </div>
+                      </div>
+                      <div id="section_7" class="mt-page-section"><span id="Setting_the_Jetty_Server_Parameters_in_the_kettle.properties_file"></span> 
+                        <h4 class="editable">Setting the Jetty Server Parameters in the kettle.properties file</h4>
+                        <div class="section result">To change the Jetty Server parameters in the <span class="filepath style-wrap">kettle.properties</span> &nbsp;file, configure the following parameters to the numeric value you want. See&nbsp;
+                          <a style="line-height: 1.5;" title="Set Kettle Variables"
+                          rel="internal" href="http://help.pentaho.com/Documentation/5.3/0L0/0Y0/090/020/000/010/010">Set Kettle Variables&nbsp;</a> <span style="line-height: 1.5;">&nbsp;if you need more infor</span> <span style="line-height: 1.5;">mation on how to do this.&nbsp;</span> </div>
+                        <div class="section result">
+                          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 697px; table-layout: fixed;" title="Pentaho Table">
+                            <thead>
+                              <tr>
+                                <th>Kettle Variable in &nbsp;<span class="filepath style-wrap">kettle.properties</span> &nbsp;</th>
+                                <th>Jetty Server Parameter</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><span class="filepath style-wrap">KETTLE_CARTE_JETTY_ACCEPTORS</span> </td>
+                                <td><span class="filepath style-wrap">acceptors</span> </td>
+                              </tr>
+                              <tr>
+                                <td><span class="filepath style-wrap">KETTLE_CARTE_JETTY_ACCEPT_QUEUE_SIZE</span> </td>
+                                <td><span class="filepath style-wrap">acceptQueueSize</span> </td>
+                              </tr>
+                              <tr>
+                                <td><span class="filepath style-wrap">KETTLE_CARTE_JETTY_RES_MAX_IDLE_TIME</span> </td>
+                                <td>lowResourcesMaxIdleTime</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="section result">
+                          <p>&nbsp;</p>
+                          <p>&nbsp;</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Configure_a_Static_Carte_Cluster" rel="internal">Configure a Static Carte Cluster</a>  </li>
+      <li>
+        <a href="#Configure_a_Dynamic_Carte_Cluster" rel="internal">Configure a Dynamic Carte Cluster</a> 
+        <ol>
+          <li> <a href="#Configure_Carte_Master_Server" rel="internal">Configure Carte Master Server</a>  </li>
+          <li> <a href="#Configure_Carte_Slave_Servers" rel="internal">Configure Carte Slave Servers</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Changing_Jetty_Server_Parameters" rel="internal">Changing Jetty Server Parameters</a> 
+        <ol>
+          <li> <a href="#Setting_the_Jetty_Server_Parameters_in_the_carte-slave-config.xml_file" rel="internal">Setting the Jetty Server Parameters&nbsp;in the carte-slave-config.xml file</a>  </li>
+          <li> <a href="#Setting_the_Jetty_Server_Parameters_in_the_kettle.properties_file" rel="internal">Setting the Jetty Server Parameters in the kettle.properties file</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

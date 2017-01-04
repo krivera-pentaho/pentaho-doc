@@ -1,0 +1,152 @@
+<content type="text/html" title="Use Calculated Members">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A calculated member is a dimension member that is resolved by calculating an MDX expression to return a value. The value is specified when the calculated member is defined. Calculated members can also be defined as measures.</p>
+        <p class="p">These topics show you how to work with clauses and named sets within a schema.</p>
+      </div>
+      <div class="topic concept nested1" id="a2a3cad2-8af0-4023-aaad-4c0f9ea10369__concept_use_clauses">
+        <div id="section_1" class="mt-page-section"><span id="Use_Clauses_to_Create_Measures"></span> 
+          <h2 class="editable">Use Clauses to Create Measures</h2>
+          <div class="body conbody">
+            <p class="p">Suppose you want to create a measure whose value comes not from a column of the fact table, but from an MDX formula. One way to do this is to use a WITH MEMBER clause, like this:</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">WITH MEMBER [Measures].[Profit] AS '[Measures].[Store Sales]-[Measures].[Store Cost]',
+   FORMAT_STRING = '$#,###'
+SELECT {[Measures].[Store Sales], [Measures].[Profit]} ON COLUMNS,
+  {[Product].Children} ON ROWS
+FROM [Sales]
+WHERE [Time].[1997]</pre> </div>
+            <p class="p">But rather than including this clause in every MDX query of your application, you can define the member in your schema, as part of your cube definition:</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMember name=&quot;Profit&quot; dimension=&quot;Measures&quot;>
+<Formula>[Measures].[Store Sales] - [Measures].[Store Cost]</Formula>
+<CalculatedMemberProperty name=&quot;FORMAT_STRING&quot; value=&quot;$#,##0.00&quot;/>
+</CalculatedMember></pre> </div>
+            <p class="p">You can also declare the formula as an XML attribute, if you prefer. The effect is just the same.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMember name=&quot;Profit&quot; dimension=&quot;Measures&quot; formula=&quot;[Measures].[Store Sales]-[Measures].[Store Cost]&quot;>
+<CalculatedMemberProperty name=&quot;FORMAT_STRING&quot; value=&quot;$#,##0.00&quot;/>
+</CalculatedMember></pre> </div>
+            <p class="p">Note that the <code class="ph codeph"><CalculatedMemberProperty></code>, not <code class="ph codeph"><Property></code>, element corresponds to the <code class="ph codeph">FORMAT_STRING = '$#,###'</code> fragment of the MDX statement. You can
+              define other properties here too, but <code class="ph codeph">FORMAT_STRING</code> is by far the most useful in practice.</p>
+            <p class="p">The <code class="ph codeph">FORMAT_STRING</code> property value can also be evaluated using an expression. When formatting a particular cell, first the expression is evaluated to yield a format string, then the format string is applied to
+              the cell value. Here is the same property with a conditional format string:</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMemberProperty name=&quot;FORMAT_STRING&quot; expression=&quot;Iif(Value < 0, '|($#,##0.00)|style=red',
+ '|$#,##0.00|style=green')&quot;/></pre> </div>
+            <p class="p">For more details about format strings, see the MDX specification.</p>
+            <p class="p">One additional calculated member property that is worth mentioning is <code class="ph codeph">DATATYPE</code>. As with measures, setting <code class="ph codeph">datatype</code> specifies how the calculated member is returned via XML for Analysis.
+              The <code class="ph codeph">DATATYPE</code> property of a calculated member can have values <code class="ph codeph">String</code>, <code class="ph codeph">Integer</code>, or <code class="ph codeph">Numeric</code>.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMemberProperty name=&quot;DATATYPE&quot; value=&quot;Numeric&quot;/></pre> </div>
+            <p class="p">You can specify <code class="ph codeph">SOLVE_ORDER</code> for the calculated member property. Solve order determines the priority of calculation in the event of competing expressions.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMemberProperty name=&quot;SOLVE_ORDER&quot; value=&quot;2000&quot;/></pre> </div>
+            <p class="p">You can make a calculated member or a measure invisible. If you specify <code class="ph codeph">visible=&quot;false&quot;</code> (the default is <code class="ph codeph">true</code>) in the <code class="ph codeph"><Measure></code> or
+              <code
+              class="ph codeph">
+                <CalculatedMember>
+                  </code> element, user-interfaces such as JPivot will notice this property and hide the member. This is useful if you want to perform calculations in a number of steps, and hide intermediate steps from end-users. For example, here only
+                  <code
+                  class="ph codeph">Margin per Sqft</code> is visible, and its factors <code class="ph codeph">Store Cost</code>, <code class="ph codeph">Margin</code>, and <code class="ph codeph">Store Sqft</code> are hidden.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Measure name=&quot;Store Cost&quot; column=&quot;store_cost&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot; visible=&quot;false&quot;/>
+<CalculatedMember name=&quot;Margin&quot; dimension=&quot;Measures&quot; visible=&quot;false&quot;>
+<Formula>([Measures].[Store Sales] - [Measures].[Store Cost]) / [Measures].[Store Cost]</Formula>
+</CalculatedMember>
+<CalculatedMember name=&quot;Store Sqft&quot; dimension=&quot;Measures&quot; visible=&quot;false&quot;>
+<Formula>[Store].Properties(&quot;Sqft&quot;)</Formula>
+</CalculatedMember>
+<CalculatedMember name=&quot;Margin per Sqft&quot; dimension=&quot;Measures&quot; visible=&quot;true&quot;>
+<Formula>[Measures].[Margin] / [Measures].[Store Cost]</Formula>
+<CalculatedMemberProperty name=&quot;FORMAT_STRING&quot; value=&quot;$#,##0.00&quot;/>
+</CalculatedMember></pre> </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="a2a3cad2-8af0-4023-aaad-4c0f9ea10369__concept_named_sets">
+        <div id="section_2" class="mt-page-section"><span id="Named_Sets"></span> 
+          <h2 class="editable">Named Sets</h2>
+          <div class="body conbody">
+            <p class="p">The <code class="ph codeph">WITH SET</code> clause of an MDX statement allows you to declare a set expression which can be used throughout that query.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">WITH SET [Top Sellers] AS 
+    'TopCount([Warehouse].[Warehouse Name].MEMBERS, 5, [Measures].[Warehouse Sales])'
+SELECT 
+    {[Measures].[Warehouse Sales]} ON COLUMNS,
+    {[Top Sellers]} ON ROWS
+FROM [Warehouse]
+WHERE [Time].[Year].[1997]</pre> </div>
+            <p class="p">The <code class="ph codeph">WITH SET</code> clause is very similar to the <code class="ph codeph">WITH MEMBER</code> clause, and as you might expect, it has a construct in schema analogous to <code class="ph codeph"><CalculatedMember></code>.
+              The <code class="ph codeph"><NamedSet></code> element allows you to define a named set in your schema as part of a cube definition. It is implicitly available for any query against that cube.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Cube name=&quot;Warehouse&quot;>
+...
+<NamedSet name=&quot;Top Sellers&quot;>
+<Formula>TopCount([Warehouse].[Warehouse Name].MEMBERS, 5, [Measures].[Warehouse Sales])</Formula>
+</NamedSet>
+</Cube>
+SELECT 
+    {[Measures].[Warehouse Sales]} ON COLUMNS,
+    {[Top Sellers]} ON ROWS
+FROM [Warehouse]
+WHERE [Time].[Year].[1997]</pre> </div>
+            <div class="p">
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a2a3cad2-8af0-4023-aaad-4c0f9ea10369__concept_named_sets__table_uhr_nfl_vm" rules="all" summary="">
+                  <thead align="left" class="thead">
+                    <tr class="row">
+                      <th class="entry" id="a2a3cad2-8af0-4023-aaad-4c0f9ea10369__d1692e258" valign="top" width="50%">Warehouse</th>
+                      <th class="entry" id="a2a3cad2-8af0-4023-aaad-4c0f9ea10369__d1692e261" valign="top" width="50%">Warehouse Sales</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" headers="d1692e258 " valign="top" width="50%">Treehouse Distribution</td>
+                      <td class="entry" headers="d1692e261 " valign="top" width="50%">31,116.37</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d1692e258 " valign="top" width="50%">Jorge Garcia, Inc.</td>
+                      <td class="entry" headers="d1692e261 " valign="top" width="50%">30,743.77</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d1692e258 " valign="top" width="50%">Artesia Warehousing, Inc.</td>
+                      <td class="entry" headers="d1692e261 " valign="top" width="50%">29,207.96</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d1692e258 " valign="top" width="50%">Jorgensen Service Storage</td>
+                      <td class="entry" headers="d1692e261 " valign="top" width="50%">22,869.79</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d1692e258 " valign="top" width="50%">Destination, Inc.</td>
+                      <td class="entry" headers="d1692e261 " valign="top" width="50%">22,187.42</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <p class="p">You can also define a named set as global to a schema.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema>
+<Cube name=&quot;Sales&quot; ... />
+<Cube name=&quot;Warehouse&quot; ... />
+<NamedSet name=&quot;CA Cities&quot; formula=&quot;{[Store].[USA].[CA].Children}&quot;/>
+<NamedSet name=&quot;Top CA Cities&quot;>
+<Formula>TopCount([CA Cities], 2, [Measures].[Unit Sales])</Formula>
+</NamedSet>
+</Schema></pre> </div>
+            <p class="p">A named set defined against a schema is available in all cubes in that schema. However, it is only valid if the cube contains dimensions with the names required to make the formula valid. For example, it would be valid to use <code class="ph codeph">[CA Cities]</code>              in queries against the <code class="ph codeph">[Sales]</code> and <code class="ph codeph">[Warehouse and Sales]</code> cubes, but if you used it in a query against the <code class="ph codeph">[Warehouse]</code> cube you would get an error,
+              because <code class="ph codeph">[Warehouse]</code> does not have a <code class="ph codeph">[Store]</code> dimension.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Use_Clauses_to_Create_Measures" rel="internal">Use Clauses to Create Measures</a>  </li>
+      <li> <a href="#Named_Sets" rel="internal">Named Sets</a>  </li>
+    </ol>
+  </body>
+</content>

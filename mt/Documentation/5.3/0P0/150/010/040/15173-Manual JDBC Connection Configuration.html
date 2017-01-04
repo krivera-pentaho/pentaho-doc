@@ -1,0 +1,81 @@
+<content type="text/html" title="Manual JDBC Connection Configuration">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You must have existing security tables in a relational database in order to proceed with this task.</div>
+        <div class="section context">
+          <p class="p">Follow the instructions below to switch from Pentaho default security to JDBC security, which will allow you to use your own security tables.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  If you are using the BA Server and choose to switch to a JDBC security shared object, you will no longer be able to use the role and user administration settings in the Administration portion of the User
+            Console.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Stop the BA Server by running the <strong class="ph b">stop-pentaho</strong>  script.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Open <span class="ph filepath">/pentaho-solutions/system/security.properties</span>  with a text editor.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Change the value of the provide property to <code class="ph codeph">jdbc</code>.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Set up the connection to the database that holds the user/authorities.</span> 
+            <ol type="a" class="ol substeps" id="193530c2-b397-4c08-8b5e-f01d60348f72__admin_authorization_jdbc__substeps_h2r_1fj_ql">
+              <li class="li substep"> <span class="ph cmd">Open the <span class="ph filepath">/pentaho-solutions/system/applicationContext-spring-security-jdbc.properties</span>  file with a text editor. Find these two lines and change the <strong class="ph b">jdbcDriver</strong>                 and <strong class="ph b">URL</strong>  as appropriate.</span>  <pre class="pre codeblock">datasource.driver.classname=org.hsqldb.jdbcDriver</pre> <pre class="pre codeblock">datasource.url=jdbc:hsqldb:hsql://localhost:9002/userdb</pre> </li>
+              <li class="li substep"> <span class="ph cmd">Change the user name and password by editing these two items.</span>  <pre class="pre codeblock">\datasource.username=sa, datasource.password=</pre> </li>
+              <li class="li substep"> <span class="ph cmd">Set the <strong class="ph b">validation query</strong>  by editing this row.</span>  There are examples of different validation queries in the file. <pre class="pre codeblock">datasource.validation.query=SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS</pre>                </li>
+              <li class="li substep"> <span class="ph cmd">Set the <strong class="ph b">wait timeout</strong>,<strong class="ph b"> max pool</strong>, and <strong class="ph b">max idle</strong>  by editing these three items to change the defaults.</span>  <pre class="pre codeblock">datasource.pool.max.wait=-1, datasource.pool.max.active=8, datasource.max.idle=4</pre>                </li>
+              <li class="li substep"> <span class="ph cmd">Save the file and close the editor.</span>  </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">If you need to, modify these two queries that pull information about users/authorities.</span> 
+            <ol type="a" class="ol substeps" id="193530c2-b397-4c08-8b5e-f01d60348f72__admin_authorization_jdbc__substeps_vdj_1fj_ql">
+              <li class="li substep"> <span class="ph cmd">Open <span class="ph filepath">/pentaho-solutions/system/applicationContext-spring-security-jdbc.xml</span>  with a text editor.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Find this line and change the <strong class="ph b">query</strong>  that returns the user and roles that the user is a member of as appropriate.</span>  <pre class="pre codeblock"><value>
+    <![CDATA[SELECT username, authority FROM GRANTED_AUTHORITIES WHERE username = ? ORDER BY authority]]>
+</value></pre> </li>
+              <li class="li substep"> <span class="ph cmd">Find this line and change the <strong class="ph b">query</strong>  that determines the user, password, and whether they can log in as appropriate.</span>  <pre class="pre codeblock"><value>
+    <![CDATA[SELECT username, password, enabled FROM USERS WHERE username = ? ORDER BY username]]>
+</value></pre> </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">If you need to, modify these three queries that pull information about users/authorities.</span> 
+            <ol type="a" class="ol substeps" id="193530c2-b397-4c08-8b5e-f01d60348f72__admin_authorization_jdbc__substeps_j2t_4l5_rl">
+              <li class="li substep"> <span class="ph cmd">Open the <span class="ph filepath">/pentaho-solutions/system/applicationContext-pentaho-security-jdbc.xml</span>  file with a text editor.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Find this line and change the <strong class="ph b">query</strong>  that shows the roles for security on objects as appropriate.</span>  <pre class="pre codeblock"><value>
+    <![CDATA[SELECT distinct(authority) as authority FROM AUTHORITIES ORDER BY authority]]>
+</value></pre> </li>
+              <li class="li substep"> <span class="ph cmd">Find this line and change the <strong class="ph b">query</strong>  that returns all users in a specific role as appropriate.</span>  <pre class="pre codeblock"><value>
+    <![CDATA[SELECT distinct(username) as username FROM GRANTED_AUTHORITIES where authority = ? ORDER BY username]]>
+</value></pre> </li>
+              <li class="li substep"> <span class="ph cmd">Find this line and change the <strong class="ph b">query</strong>  that returns all users in a specific role as appropriate.</span>  <pre class="pre codeblock"><value>
+    <![CDATA[SELECT distinct(username) as username FROM USERS ORDER BY username]]>
+</value></pre> </li>
+              <li class="li substep"> <span class="ph cmd">Save the file and close the editor.</span>  </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">Update the default Pentaho admin user on the system to map to your JDBC admin user.</span> 
+            <ol type="a" class="ol substeps" id="193530c2-b397-4c08-8b5e-f01d60348f72__admin_authorization_jdbc__substeps_wz5_hml_tl">
+              <li class="li substep"> <span class="ph cmd">Open the&nbsp;<span class="ph filepath">/pentaho-solutions/system/repository.spring.properties</span>  file with a text editor.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Find these lines and change the default value from <admin> to map to your <admin username> in your JDBC system. </span>  <pre class="pre codeblock">singleTenantAdminUserName=<Admin User></pre> </li>
+              <li class="li substep">
+              <span class="ph cmd">Save the file and close the editor.</span>  </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">To fully map the JDBC's admin role to other configuration files, specify the name of the administrator role for your JDBC authentication database in the <span class="ph filepath">applicationContext-pentaho-security-jdbc.xml</span>             file.</span> 
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">Open the <span class="ph filepath">/pentaho-solutions/system/applicationContext-pentaho-security-jdbc.xml</span>  file with a text editor.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Find these lines and change the entry key to the key assigned to the administrator role in your JDBC authentication database. </span>  <pre class="pre codeblock">
+<!-- map ldap role to pentaho security role -->
+<util:map id=&quot;jdbcRoleMap&quot;>
+   <entry key=&quot;Admin&quot; value=&quot;Administrator&quot;/>
+</util:map></pre> </li>
+              <li class="li substep"><span class="ph cmd">Save and close the file.</span> </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd">Start the server by running the <strong class="ph b">start-pentaho</strong>  script.</span>  </li>
+        </ol>
+        <div class="section result">The server is configured to authenticate users against the specified database.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

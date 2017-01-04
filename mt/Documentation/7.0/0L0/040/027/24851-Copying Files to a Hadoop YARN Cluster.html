@@ -1,0 +1,56 @@
+<content type="text/html" title="Copying Files to a Hadoop YARN Cluster">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to use the YARN Workspace folder.</p>
+        </div>
+      </div>
+      <p>If you start a job that will run&nbsp;on a YARN cluster, but it needs other files&nbsp;to execute - such as&nbsp;variables from your local copy of &nbsp;<span class="filepath style-wrap">kettle.properties -</span> &nbsp;those files&nbsp;will need
+        to be copied to the YARN cluster.&nbsp;An&nbsp;easy way to do this is to add&nbsp;those files to the&nbsp;YARN Workspace&nbsp;folder.&nbsp;At runtime&nbsp;PDI&nbsp;copies all of the files in the YARN Workspace folder to the YARN cluster. This
+        feature is well-suited for jobs that move through the&nbsp;development, testing, and&nbsp;staging lifecycle&nbsp;because the job uses the appropriate&nbsp;configuration files in the<span class="filepath style-wrap"> KETTLE_HOME</span>  directory
+        for&nbsp;the environment in which it runs.</p>
+      <p class="pentaho-caution"><strong>Files in the YARN Workspace folder are copied&nbsp;to the YARN cluster <em>every time&nbsp;</em> you run a job that starts the&nbsp;YARN Kettle Cluster. If you don't want to overwrite files that have the same names that are already on the YARN Kettle Cluster,&nbsp;delete files from the YARN Workspace folder. Then, in the Start a YARN Kettle Cluster step window, deselect the appropriate&nbsp;checkboxes in the Copy Local Resource Files to YARN section of the window.</strong> </p>
+      <div id="section_2" class="mt-page-section"><span id="Add_Files_to_the_YARN_Workspace_Folder"></span> 
+        <h3 class="editable">Add Files to the YARN Workspace Folder&nbsp;</h3>
+        <p>These instructions explain how to configure the&nbsp;<strong>Start a YARN Kettle Cluster </strong> entry so that the following&nbsp;files are copied&nbsp;at <em>runtime</em> &nbsp;to the YARN Workspace folder and then to the YARN cluster:<span class="mt-font-courier-new"> kettle.properties</span>,&nbsp;
+          <span
+          class="mt-font-courier-new">shared.xml</span>, and&nbsp;<span class="mt-font-courier-new">repositories.xml</span> . These instructions also explain how to manually copy additional&nbsp;files to the folder.&nbsp;
+            <br />
+            <br /> If the job is run from your local&nbsp;installation, the configuration&nbsp;files from your&nbsp;<span class="filepath style-wrap">KETTLE_HOME</span>  directory are copied to the YARN Workspace folder. If the job is scheduled or is&nbsp;run
+            on a Pentaho Server, the configuration&nbsp;files from the server's&nbsp;configured <span class="filepath style-wrap">KETTLE_HOME</span>  are copied to the YARN Workspace folder.</p>
+        <p>Complete these steps.</p>
+        <ol class="pentaho-list-ordered" type="1">
+          <li value="1"><span>Set the active YARN Hadoop cluster using the instructions found in <a class="external" title="undefined" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version" target="_blank">Configuring Pentaho for Your Hadoop Distro and Version</a> .</span> </li>
+          <li><span>Complete the instructions in the <a class="external" title="undefined" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+YARN+Shims" target="_blank">Additional Configuration for YARN shims</a>  article.</span> </li>
+          <li><span>In Spoon, create or open a job that contains the <strong>Start a YARN Kettle Cluster</strong>  entry.</span> </li>
+          <li><span>Open the <strong>Start a YARN Kettle Cluster&nbsp;</strong> entry.</span> </li>
+          <li>Select any combination of the<strong> kettle.properties</strong>,<strong> shared.xml</strong>, and<strong> repository.xml&nbsp;</strong> checkboxes <span>in the<strong> Copy Local Resource Files to YARN</strong> &nbsp;section of the window.</span> </li>
+          <li><span><span>Save and close the&nbsp;<strong>Start a YARN Kettle Cluster&nbsp;</strong> entry.</span> </span> 
+          </li>
+          <li><span><span>If you want to copy other files to the cluster,&nbsp;</span> </span> manually copy them to the&nbsp;YARN Workspace folder here:&nbsp;<span class="filepath style-wrap">pentaho-big-data-plugin/plugins/pentaho-kettle-yarn-plugin/workspace.</span> </li>
+          <li><span><span>Save and run the job.</span> </span> 
+          </li>
+        </ol>
+        <p>At runtime, the <span class="filepath style-wrap">kettle.properties</span>, <span class="filepath style-wrap">shared.xml</span>, and <span class="filepath style-wrap">repositories.xml</span>  files (whatever was selected)&nbsp;are copied to the
+          YARN Workspace folder and then to the YARN cluster.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Delete_Files_from_the_YARN_Workspace_Folder"></span> 
+        <h3 class="editable">Delete&nbsp;Files from the YARN Workspace Folder</h3>
+        <p>To delete files&nbsp;from the YARN Workspace folder manually remove them. The YARN Workspace Folder is kept here:&nbsp;<span class="filepath style-wrap">pentaho-big-data-plugin/plugins/pentaho-kettle-yarn-plugin/workspace.</span> </p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Overview" rel="internal">Overview</a> 
+        <ol>
+          <li> <a href="#Add_Files_to_the_YARN_Workspace_Folder" rel="internal">Add Files to the YARN Workspace Folder&nbsp;</a>  </li>
+          <li> <a href="#Delete_Files_from_the_YARN_Workspace_Folder" rel="internal">Delete&nbsp;Files from the YARN Workspace Folder</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

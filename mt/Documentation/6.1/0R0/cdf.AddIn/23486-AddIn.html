@@ -1,0 +1,408 @@
+<content type="text/html" title="AddIn">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div id="main">
+      <div id="section_1" class="mt-page-section"><span id="cdf.AddIn"></span> 
+        <h2 class="editable"><span class="ancestors"><a rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/cdf">cdf</a> .</span> 
+          <span>AddIn</span> 
+        </h2>
+        <p>Creates a new add-in. Add-ins come in two varieties: Static add-ins represent static data or behavior, while Scriptable add-ins represent dynamic, context-dependent behavior.</p>
+        <p> <strong>AMD Module</strong>  </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([&quot;cdf/AddIn&quot;], function(AddIn) { /* code goes here */ });</pre>
+        <div
+        id="section_2" class="mt-page-section"><span id="Constructor"></span> 
+          <h3 class="editable">Constructor</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#.AddIn"> new AddIn(options) </a> 
+                </td>
+                <td>
+                  <p>Class that allows creating Static or Scriptable add-ins.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Methods"></span> 
+        <h3 class="editable">Methods</h3>
+        <table class="api-ref-table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="#call"> call(target, state, options) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> | <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>                </td>
+              <td>
+                <p>Executes the add-in <code>_implementation</code> function or returns the value of <code>_value</code>.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#getLabel"> getLabel() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+              <td>
+                <p>Returns the add-in label.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#getName"> getName() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+              <td>
+                <p>Returns the add-in name.</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a href="#setDefaults"> setDefaults(defaults) </a> 
+              </td>
+              <td>
+                <p>Sets the default values of the configurable settings.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="h3">Constructor Details</p>
+        <table id=".AddIn">
+          <thead>
+            <tr>
+              <th><strong>new AddIn</strong> (options) </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>The constructor of an add-in.</p>
+                <p><strong>Source: </strong> 
+                  <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/AddIn.js#L20">AddIn.js, line 20</a> 
+                </p>
+                <table class="inner-table">
+                  <caption>Parameters:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Default Value</th>
+                      <th>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> options : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                      <td> &nbsp;</td>
+                      <td>
+                        <p>The options for the add-in. Needs a label, a name property, and either a value (for static add-ins) or an implementation member (for scriptable add-ins). If the add-in supports configuration, it should be provided via the <code>options.defaults</code>                          property.</p>
+                        <table class="inner-table">
+                          <caption>Parameters:</caption>
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Default Value</th>
+                              <th>Summary</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td> label : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                              <td> &nbsp;</td>
+                              <td>
+                                <p>The human-readable label of the add-in.</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> name : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                              <td> &nbsp;</td>
+                              <td>
+                                <p>The name of the add-in used as an internal identifier.</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> implementation : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code>
+                                <div>
+                                  <div class="badge badge-gray">
+                                    <div class="stripe">&nbsp;</div>
+                                    <div class="name">Optional</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td> &nbsp;</td>
+                              <td>
+                                <p>The implementation function of the add-in.</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> value : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>
+                                <div>
+                                  <div class="badge badge-gray">
+                                    <div class="stripe">&nbsp;</div>
+                                    <div class="name">Optional</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td> &nbsp;</td>
+                              <td>
+                                <p>The value of the add-in.</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td> defaults : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>
+                                <div>
+                                  <div class="badge badge-gray">
+                                    <div class="stripe">&nbsp;</div>
+                                    <div class="name">Optional</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td> &nbsp;</td>
+                              <td>
+                                <p>The default values of the configurable settings.</p>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="inner-table">
+                  <caption>Throws:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError" target="_blank">TypeError</a> </code> </td>
+                      <td>
+                        <p>If the <code>options</code> parameter is not an <code>object</code>.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError" target="_blank">TypeError</a> </code> </td>
+                      <td>
+                        <p>If <code>options.name</code> or <code>options.label</code> are not provided. Also, either <code>options.implementation</code> or <code>options.value</code> needs to be defined.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="h3">Methods Details</p>
+        <table id="call">
+          <thead>
+            <tr>
+              <th><strong>call</strong> (target, state, options) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> | <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>                </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>Call the add-in. If the add-in is static, all parametersare irrelevant, and this method will simply return the valueof <code>_value</code>.</p>
+                <p>In a dynamic add-in, the implementation will be passed tothe target DOM Element (whatever element is relevant, e.g. the element that was clicked on or the table cellthat is being processed), a state object with whatevercontext is relevant
+                  for the add-in to fulfill its purpose,and optionally any overriding options.</p>
+                <p>Components are allowed to pass <code>undefined</code> as the target if no elements make sense in context.</p>
+                <p><strong>Source: </strong> 
+                  <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/AddIn.js#L153">AddIn.js, line 153</a> 
+                </p>
+                <table class="inner-table">
+                  <caption>Parameters:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Default Value</th>
+                      <th>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> target : <code><a class=" external" rel="external nofollow" href="http://api.jquery.com/Types/#jQuery" target="_blank">jQuery</a> </code> </td>
+                      <td> &nbsp;</td>
+                      <td>
+                        <p>The relevant DOM element.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td> state : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                      <td> &nbsp;</td>
+                      <td>
+                        <p>A representation of the necessary context for the add-in to operate.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td> options : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                      <td> &nbsp;</td>
+                      <td>
+                        <p>Configuration options for the add-in.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="inner-table">
+                  <caption>Returns:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                      <td>
+                        <p>The value of <code>_value</code> if the <code>_implementation</code> function is undefined.</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                      <td>
+                        <p>The result of executing the <code>_implementation</code> function when it is available.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="getLabel">
+          <thead>
+            <tr>
+              <th><strong>getLabel</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>Returns the add-in label.</p>
+                <p><strong>Source: </strong> 
+                  <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/AddIn.js#L114">AddIn.js, line 114</a> 
+                </p>
+                <table class="inner-table">
+                  <caption>Returns:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                      <td>
+                        <p>The add-in label.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="getName">
+          <thead>
+            <tr>
+              <th><strong>getName</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>Returns the add-in name.</p>
+                <p><strong>Source: </strong> 
+                  <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/AddIn.js#L124">AddIn.js, line 124</a> 
+                </p>
+                <table class="inner-table">
+                  <caption>Returns:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                      <td>
+                        <p>The add-in name.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table id="setDefaults">
+          <thead>
+            <tr>
+              <th><strong>setDefaults</strong> (defaults) </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <p>Sets the default values of the configurable settings. If <code>defaults</code> is a <code>function</code> it will override any previous default values. If it is an <code>object</code> its properties will be used to extend the current default
+                  values.</p>
+                <p><strong>Source: </strong> 
+                  <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/AddIn.js#L176">AddIn.js, line 176</a> 
+                </p>
+                <table class="inner-table">
+                  <caption>Parameters:</caption>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Default Value</th>
+                      <th>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td> defaults : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                      <td> &nbsp;</td>
+                      <td>
+                        <p>The default values for the configurable settings.</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#cdf.AddIn" rel="internal">cdf.AddIn</a> 
+        <ol>
+          <li> <a href="#Constructor" rel="internal">Constructor</a>  </li>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,623 @@
+<content type="text/html" title="Develop and Optimize a Pentaho Data Service">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushSql.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div id="section_1" class="mt-page-section"><span id="Develop_a_Pentaho_Data_Service"></span> 
+      <h2 class="editable">
+        <a id="DevelopDS" name="DevelopDS"> <span style="color: rgb(0, 0, 0);">Develop a Pentaho Data Service</span>  </a> 
+      </h2>
+      <p>A Pentaho Data Service is a single, virtual table that contains the output of a transformation step. The Pentaho Data Service virtual table is&nbsp;JDBC-compliant data source that can be queried using SQL. You and others can connect to and query
+        a Pentaho Data Service from within Pentaho or with some&nbsp;other JDBC-compliant tools like RStudio or SQuirreL. You do need to have access to the&nbsp;Pentaho Server and repository to publish and query&nbsp;the data service. To learn more about
+        why you might want to use a Pentaho Data Service, see
+        <a title="Turn Transformation Step Results into a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090">Turn&nbsp;Transformation Step Results into a Pentaho Data Service</a> .</p>
+      <div id="section_2" class="mt-page-section"><span id="Create_a_Pentaho_Data_Service"></span> 
+        <h3 class="editable">
+          <a id="CreateDS" name="CreateDS"> <span style="color: rgb(0, 0, 0);">Create a Pentaho Data Service</span>  </a> 
+        </h3>
+        <p>To create a data service,&nbsp;name it, then select the step that outputs the data you want to be exposed to the data service. The virtual table that the data service creates has the same name as the data service. &nbsp;</p>
+        <ol class="pentaho-list-ordered">
+          <li>
+            <a title="Work with Transformations and Jobs in the Data Integration Perspective" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030">Create or open a transformation in Spoon</a> . &nbsp;It is helpful to review
+            <a title="Pentaho Data Service SQL Support Reference and Other Development Considerations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/080">Pentaho Data Service SQL Support Reference and Other Development&nbsp;Considerations</a> &nbsp;as you create or review the transformation so that you understand what SQL is supported.</li>
+          <li>Save the transformation to the Pentaho Data Server.</li>
+          <li>Right-click the step in the transformation that outputs the data you want to make available to the&nbsp;data service, then select <strong>Data Services > New ...</strong> .</li>
+          <li>Enter a name for the data service in <strong>Service Name (Virtual Table Name)</strong>  text box. Make sure the name is unique; no other data service stored locally or published to the Pentaho Server&nbsp;should have the same name.</li>
+          <li>Make sure the <strong>Output Step</strong>  is correct. &nbsp;If you need to change it, select an option from the drop down list.</li>
+          <li>Click <strong>OK </strong> to exit the window and to save the data service. The data service badge is added to the transformation step as highlighted in the following graphic.</li>
+        </ol>
+        <p>
+          <img alt="" class="internal default" src="http://help.pentaho.com/@api/deki/files/8400/dataservicebadge.PNG?revision=1" />
+        </p>
+        <ol class="pentaho-list-ordered" start="7" style="list-style-type: decimal;">
+          <li>A recommended but optional step, is to follow the steps in
+            <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#TestDS">Test a Pentaho Data Service</a>  so that you can test your data service. Testing can&nbsp;help&nbsp;you correct, refine, and optimize your data service so it runs more efficiently.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Open.2C_Edit_or_Delete_a_Pentaho_Data_Service"></span> 
+        <h3 class="editable">
+          <a id="EditDeleteDS" name="EditDeleteDS"> <span style="color: rgb(0, 0, 0);">Open, Edit or Delete a Pentaho Data Service</span>  </a> 
+        </h3>
+        <p>The following explains how to open a data service for editing or viewing, and how to&nbsp;delete a data service.</p>
+        <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" style="width: 650px;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 133px;">To Do This</th>
+              <th style="width: 314px;">Do One of These in Spoon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 133px;">Open&nbsp;a Data Service for Editing or Viewing</td>
+              <td style="width: 314px;">
+                <ul class="pentaho-list-unordered">
+                  <li>In the Spoon&nbsp;<strong>View&nbsp;</strong> tab, click <strong>Data Services</strong> . &nbsp;Right-click the data service you want to open or edit, then&nbsp;select <strong>Edit... &nbsp;</strong> </li>
+                  <li>Right-click the step in the transformation that contains the data service, then select&nbsp;<strong>Data Services > Edit...</strong> .&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 133px;">
+                <p>Delete a Data Service</p>
+              </td>
+              <td style="width: 314px;">
+                <ul class="pentaho-list-unordered">
+                  <li>In the Spoon&nbsp;<strong>View&nbsp;</strong> tab, click <strong>Data Services</strong> . &nbsp;Right-click the data service you want to open or edit, then&nbsp;select <strong>Delete</strong> .</li>
+                  <li>Right-click the step in the transformation that contains the data service, then select&nbsp;<strong>Data Services > Delete...</strong> .</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Test_a_Pentaho_Data_Service"></span> 
+        <h3 class="editable">
+          <a id="TestDS" name="TestDS"> <span style="color: rgb(0, 0, 0);">Test a Pentaho Data Service</span>  </a> 
+        </h3>
+        <p>After you&rsquo;ve created a&nbsp;Pentaho Data Service, test it to make sure that it runs properly and&nbsp;generates the data you need. Testing can uncover&nbsp;bottlenecks in your transformation and can help you&nbsp;discover places where
+          <a
+          title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizeDS">optimization techniques</a>  can be applied.</p>
+        <div id="section_5" class="mt-page-section"><span id="Run_a_Basic_Test"></span> 
+          <h4 class="editable">
+            <a id="BasicTest" name="BasicTest"> <span style="color: rgb(0, 0, 0);">Run&nbsp;a Basic Test</span>  </a> 
+          </h4>
+          <p>To run a basic test of the data service, complete these steps.</p>
+          <ol>
+            <li>Do one of these things to open the <strong>Test Data Service</strong>  window. &nbsp;The&nbsp;<strong>Test Data Service&nbsp;</strong> window is where you conduct your test.</li>
+          </ol>
+          <ul>
+            <li>In the <strong>Data Service</strong>  window, click <strong>Test Data Service</strong> .</li>
+            <li>In the Spoon&nbsp;<strong>View&nbsp;</strong> tab, click <strong>Data Services</strong> . &nbsp;Right-click the data service you want, then&nbsp;select <strong>Test...</strong> .</li>
+            <li>Right-click the step in the transformation that the data service is attached to, then select <strong>Data Services ></strong> &nbsp;<strong>Test...</strong> .</li>
+          </ul>
+          <ol>
+            <li value="2">There are a couple of optional settings that you can adjust.</li>
+          </ol>
+          <ul>
+            <li><strong>Log Level</strong>  sets the amount of detail shown in the logs the test generates. Log results appear in the <strong>Query Results</strong>, <strong>Optimized&nbsp;Queries</strong>, <strong>Service Transformation Logging</strong>,
+              <strong>Generated Transformation Logging</strong>, <strong>Service Metrics</strong>, and&nbsp;<strong>SQL Trans Metrics</strong> &nbsp;tabs. &nbsp;These tabs are detailed in
+              <a title="Develop and Optimize a Pentaho Data Service" rel="internal"
+              href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#ExamineTestResults">Examine&nbsp;Test Results</a> .</li>
+            <li><strong>Max Rows</strong>  lets you set&nbsp;the maximum number of rows you want to see in your test results.</li>
+          </ul>
+          <ol>
+            <li value="3">To run the test, click <strong>Execute SQL</strong> .</li>
+            <li value="4">Examine the test results using the instructions in
+              <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#Examine_Test_Results">Examine&nbsp;Test Results</a> .</li>
+            <li value="5">If you need to run another test,
+              <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#ClearCache">clear the cache</a>, then run the test again.</li>
+            <li value="6">Click <strong>OK</strong>  to exit the window.</li>
+            <li>Optionally, you can choose to&nbsp;
+              <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizeDS">add an optimization</a> &nbsp;if you want to make it run more efficiently.</li>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#PublishDS">Publish the Pentaho Data Service</a> . </li>
+          </ol>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Run_an_Optimization_Test"></span> 
+          <h4 class="editable">
+            <a id="OptimizationTest" name="OptimizationTest"> <span style="color: rgb(0, 0, 0);">Run&nbsp;an Optimization Test</span>  </a> 
+          </h4>
+          <p>If you have&nbsp;
+            <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizeDS">added&nbsp;an optimization</a>  of your data service, you will need to test it. &nbsp;To do this, first&nbsp;follow the instructions in the
+            <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#BasicTest">Run&nbsp;a Basic Test</a>  section,&nbsp;and then&nbsp;modify your query in the SQL area&nbsp;to pass a parameter for the optimization. Here is an example:</p> <pre class="brush: sql; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SELECT * FROM Mars WHERE rover=&rsquo;Curiosity&rsquo;</pre>
+          <ul class="pentaho-list-unordered">
+            <li>To preview the optimization click <strong>Preview Optimization</strong>  in the <strong>Test Data Service</strong>  window. &nbsp;</li>
+            <li>Use
+              <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#ExamineTestResults">Examine&nbsp;Test Results</a>  instructions to help you interpret your test results.</li>
+          </ul>
+          <div id="section_7" class="mt-page-section"><span id="Examine_Test_Results"></span> 
+            <h5 class="editable">
+              <a id="ExamineTestResults" name="ExamineTestResults"> <span style="color: rgb(0, 0, 0);">Examine&nbsp;Test Results</span>  </a> 
+            </h5>
+            <p>Test results appear in the tabs in the bottom half of the <strong>Test Data Service</strong>  window. The following table describes what appears in the tabs and provides test tips.</p>
+            <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table"
+            title="Pentaho Table">
+              <thead>
+                <tr>
+                  <th style="width: 179px;">Tab</th>
+                  <th style="width: 223px;">Description</th>
+                  <th style="width: 262.5px;">Test Tips</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p>Query Results</p>
+                  </td>
+                  <td>
+                    <p>Shows events that occurred during the test run, as well as the query results.</p>
+                  </td>
+                  <td>
+                    <p>Check this tab to make sure that you are getting the correct results.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Optimized Queries</p>
+                  </td>
+                  <td>
+                    <p>Displays processing information and the result of optimizations. Optimizations are techniques that can speed processing and help the Pentaho Data Service run more efficiently.</p>
+                  </td>
+                  <td>
+                    <p>Examine this tab for results of applied optimizations. This can help you verify that the optimization was applied correctly. Consider using these results along with <strong>Service Metrics</strong>  and <strong>Generated Transformation&nbsp;Logging </strong> results
+                      to see where optimizations are needed, and to assess whether optimizations are helping the transformation to run more efficiently. This tab shows the starting query as well as the input step queries after push down optimizations
+                      have been applied. There could be several input queries displayed in the tab: one for each input step that supports push down.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Service Transformation Logging</p>
+                  </td>
+                  <td>
+                    <p>Shows logs from the <em>service&nbsp;</em> transformation as it runs.
+                      <br />
+                      <br /> When you test or run a data service, there are two transformations that run: a <em>service</em>  transformation and a <em>generated</em>  transformation.</p>
+                    <p>The <em>service</em>  transformation is the one that you created. When the transformation runs, PDI generates a second transformation (the <em>generated</em>  transformation) that is written in SQL.</p>
+                  </td>
+                  <td>
+                    <p>Review this tab to search for problems in the way the transformation is designed or built. If you see errors, review your transformation and any optimizations you might have applied. It is helpful to review the <strong>Service Transformation Logging</strong>                       and <strong>Generated Transformation Logging</strong>  tabs together.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Generated Transformation Logging</p>
+                  </td>
+                  <td>
+                    <p>Shows logs from the <em>generated&nbsp;</em> transformation as it runs.
+                      <br />
+                      <br /> When you test or run a data services, there are two transformations that run: a <em>service</em>  transformation and a <em>generated</em>  transformation.</p>
+                    <p>The <em>service</em>  transformation is the one that you created. When the transformation runs, PDI generates a second transformation (the <em>generated</em>  transformation) that is written in SQL.</p>
+                  </td>
+                  <td>
+                    <p>Check this tab for problems with the way the PDI transformation was generated. If you find issues, look at
+                      <a title="Pentaho Data Service SQL Support Reference and Other Development Considerations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/080">Pentaho Data Service SQL Support Reference and Other Development&nbsp;Considerations </a> to make sure the SQL in the transformation is supported. It is helpful to review the <strong>Service Transformation Logging</strong>  and <strong>Generated Transformation Logging</strong>                       tabs together.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>Service Metrics</p>
+                  </td>
+                  <td>
+                    <p>Shows a GANTT chart of the amount of time, in milliseconds it took to run the different parts of the <em>service</em>  transformation.</p>
+                  </td>
+                  <td>
+                    <p>Examine the contents of this tab&nbsp;to find bottlenecks and to identify candidates for step optimization. Compare the <strong>Service Metrics</strong>  and <strong>SQL Trans Metrics</strong>  tabs to see if the same bottlenecks exist.
+                      If different bottlenecks occur, consider refining your transformation to eliminate or reduce them.</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>SQL Trans Metrics</p>
+                  </td>
+                  <td>
+                    <p>Shows a GANTT chart of the amount of time, in milliseconds it took to run the <em>generated</em>  transformation.</p>
+                  </td>
+                  <td>
+                    <p>Examine the contents of this tab&nbsp;to find bottlenecks and to identify candidates for step optimization. Compare the <strong>Service Metrics</strong>  and <strong>SQL Trans Metrics</strong>  tabs to see if the same bottlenecks exist.
+                      If different bottlenecks occur, consider refining your transformation to eliminate or reduce them.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="section_8" class="mt-page-section"><span id="Optimize_a_Pentaho_Data_Service"></span> 
+      <h2 class="editable">
+        <a id="OptimizeDS" name="OptimizeDS"> <span style="color: rgb(0, 0, 0);">Optimize a Pentaho Data Service</span>  </a> 
+      </h2>
+      <p>As you
+        <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#TestDS">test your&nbsp;data service</a>, you might notice that there are certain bottlenecks, or parts of the transformation that could run more efficiently. If you want to improve the performance of your data service, apply an optimization technique.
+        Here are a few techniques that are specifically designed for Pentaho Data Services.</p>
+      <p class="pentaho-note">Read the
+        <a class="link-https" target="_blank" title="https://support.pentaho.com/hc/en-us/articles/205715046-Best-Practice-Pentaho-Data-Integration-Performance-Tuning-" rel="external nofollow" href="https://support.pentaho.com/hc/en-us/articles/205715046-Best-Practice-Pentaho-Data-Integration-Performance-Tuning-">Best Practice - Pentaho Data Integration Performance Tuning</a>  article to learn about other general design and optimization techniques that can improve the performance of your transformation.</p>
+      <table border="1" cellpadding="0" cellspacing="0"
+      class="pentaho-table" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th style="width: 157px;">
+              <p align="center">Optimization Technique</p>
+            </th>
+            <th style="width: 471px;">
+              <p align="center">When to Use</p>
+            </th>
+          </tr>
+          <tr>
+            <td style="width: 157px;">
+              <p>
+                <a class="link-https" title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#Apply_the_Service_Cache_Optimization">Service Cache</a> 
+              </p>
+            </td>
+            <td style="width: 471px;">
+              <p>Adjusts how long data results are cached. Consider using this technique if either of the following apply.</p>
+              <ul class="pentaho-list-unordered">
+                <li>Your result set contains with modest data sizes.</li>
+                <li>You query Big Data sources. Increasing&nbsp;the cache duration can help subsequent follow-on queries run more quickly.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 157px;">
+              <p>
+                <a class="link-https" title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#Apply_a_Query_Pushdown_Optimization">Query Pushdown</a> 
+              </p>
+            </td>
+            <td style="width: 471px;">
+              <p>Handles input step queries at the source. Consider using this technique if both of the following apply.</p>
+              <ul class="pentaho-list-unordered">
+                <li>Your transformation contains the <strong>Table Input</strong>  or <strong>MongoDB Input</strong>  steps.</li>
+                <li>You are using simple or complex <span class="filepath style-wrap">WHERE</span>  clauses that include <span class="filepath style-wrap">AND</span>, <span class="filepath style-wrap">IN</span>, or other specific operators in your query. Limits
+                  for the <span class="filepath style-wrap">WHERE </span> clause construction appear in
+                  <a title="Pentaho Data Service SQL Support Reference and Other Development Considerations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/080">Pentaho Data Service SQL Support Reference and Other Development&nbsp;Considerations</a> .</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 157px;">
+              <p>
+                <a class="link-https" title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#Apply_a_Parameter_Pushdown_Optimization">Parameter Pushdown</a> 
+              </p>
+            </td>
+            <td style="width: 471px;">
+              <p>Handles step queries at the source. Consider using this technique if both of the following apply.</p>
+              <ul class="pentaho-list-unordered">
+                <li>Your transformation contains any step that should be optimized, including input steps like <strong>REST </strong> where a parameter in the URL could limit the results returned by a web service.</li>
+                <li>You do not use more complex <span class="filepath style-wrap">WHERE </span> clauses in your query that might contain <span class="filepath style-wrap">IN</span>  or <span class="filepath style-wrap">OR</span>  keywords such as <span class="filepath style-wrap">WHERE REGION = &quot;South&quot; OR Code = &quot;Yellow&quot;</span> .
+                  Limits for the <span class="filepath style-wrap">WHERE</span>  clause construction appear in
+                  <a title="Pentaho Data Service SQL Support Reference and Other Development Considerations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/080">Pentaho Data Service SQL Support Reference and Other Development&nbsp;Considerations</a> .</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="section_9" class="mt-page-section"><span id="Apply_the_Service_Cache_Optimization"></span> 
+        <h3 class="editable">
+          <a id="SvcCacheOpt" name="SvcCacheOpt"> <span style="color: rgb(0, 0, 0);">Apply the&nbsp;Service Cache Optimization</span>  </a> 
+        </h3>
+        <p>This optimization technique stores the Pentaho Data Service in a cache. By default, caching is enabled and the results are stored for an hour, but you can adjust the cache so that the results of the data service are stored for one second or longer.
+          &nbsp;Caching is a great technique to apply if you have moderately-sized&nbsp;data result sets, and you anticipate follow-on (subsequent) queries.</p>
+        <div id="section_10" class="mt-page-section"><span id="How_the_Service_Cache_Optimization_Technique_Works"></span> 
+          <h4 class="editable">
+            <a id="SvcCacheDetails" name="SvcCacheDetails"> <span style="color: rgb(0, 0, 0);">How the Service Cache Optimization Technique Works</span>  </a> 
+          </h4>
+          <p>If you run the data service during the time that the data service results are cached, PDI will run your query against the cached data set instead of running the entire transformation again only if certain conditions are met. These conditions
+            are determined by the other optimization techniques you choose to apply as well as whether the query results are a subset of the cached data set.</p>
+          <p>Enabling the cache tells PDI to store the results of the data service transformation for the length of time you specify.</p>
+          <p>
+            <img alt="" class="internal default" src="http://help.pentaho.com/@api/deki/files/8401/Slide1.PNG?revision=1" />
+          </p>
+          <p>If you <em>do not</em>  combine the Service Cache optimization with other optimization&nbsp;techniques and if you query the data service more than once before the cache expires, the query will run against the cached data set if the cached data
+            set contains <em>all</em>  of the matching records in the original data set. For example, if the initial run of the data service populates the cache with the results of <span class="filepath style-wrap">SELECT * FROM employee</span>, a subsequent
+            data service call that retrieves a subset of the data (e.g. <span class="filepath style-wrap">SELECT * FROM employee&nbsp;WHERE region = &quot;South&quot;</span> ) will be run against the cached data set. For this to happen, the original query
+            must have been run against the full data set.</p>
+          <p>When you run a test in in the <strong>Test Data Service</strong>  window, then adjust the query and run the test again, the query is not run against the cache. This is because when you run a test, the results only return a certain number of records
+            (100, 500, or 1000, depending on what you selected for <strong>Max Rows</strong> ). For example, you could run a test that uses the <span class="filepath style-wrap">SELECT * FROM employee&nbsp;</span> query to return the first 100 records from
+            a 5000 record table. The initial test query would return the first 100 records from the employee table. Let's assume that the cached result set consists of records for 50 males and 50 females. If you run a second test, but adjust the query
+            so that you only show records for females (<span class="filepath style-wrap">SELECT * FROM employee WHERE gender=&quot;F&quot;</span> ) running the query against the cached results would result in only 50 records being returned instead of 100.
+            To avoid this and to provide more accurate results, PDI runs the transformation again so that the second test query is run against the table and returns the first 100 matching results.</p>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Adjust_the_Cache_Duration"></span> 
+          <h4 class="editable">
+            <a id="AdjustCache" name="AdjustCache"> <span style="color: rgb(0, 0, 0);">Adjust the Cache Duration</span>  </a> 
+          </h4>
+          <p>To adjust the cache duration, complete the following steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Click the <strong>Service Cache</strong>  tab in the <strong>Data Service</strong>  window.</li>
+            <li>Make sure the cache is enabled making sure the <strong>Enable Caching</strong> &nbsp;checkbox is checked.</li>
+            <li>Modify the <strong>Cache Duration (seconds)</strong>  field.</li>
+            <li>Click <strong>OK</strong> .</li>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizationTest">Test the optimization</a> . </li>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#PublishDS">Publish the Pentaho Data Service</a> . </li>
+          </ol>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Disable_the_Cache"></span> 
+          <h4 class="editable">
+            <a name="DisableCache"> <span style="color: rgb(0, 0, 0);">Disable the Cache</span>  </a> 
+          </h4>
+          <p>To disable the cache, complete the following steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Click the <strong>Service Cache</strong>  tab in the <strong>Data Service</strong>  window.</li>
+            <li>Deselect <strong>Enable Caching&nbsp;</strong> to disable the cache.</li>
+            <li>Click <strong>OK</strong> .</li>
+          </ol>
+        </div>
+        <div id="section_13" class="mt-page-section"><span id="Clear_the_Cache"></span> 
+          <h4 class="editable">
+            <a id="ClearCache" name="ClearCache"> <span style="color: rgb(0, 0, 0);">Clear the Cache</span>  </a> 
+          </h4>
+          <p>To clear the cache, complete the following steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Click the <strong>Service Cache</strong>  tab in the <strong>Data Service</strong>  window.</li>
+            <li>Deselect <strong>Enable Caching&nbsp;</strong> to disable the cache.</li>
+            <li>Click <strong>OK</strong> &nbsp;to close the window.</li>
+            <li>Open the&nbsp;<strong>Data Service&nbsp;</strong> window again, and click the&nbsp;<strong>Service Cache&nbsp;</strong> tab.</li>
+            <li>Select <strong>Enable Caching&nbsp;</strong> to re-enable&nbsp;the cache.</li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id="Apply_a_Query_Pushdown_Optimization"></span> 
+        <h3 class="editable">
+          <a id="QueryPushdownOptimization" name="QueryPushdownOptimization"> <span style="color: rgb(0, 0, 0);">Apply a Query Pushdown Optimization</span>  </a> 
+        </h3>
+        <p>Use the Query Pushdown optimization technique to translate the <span class="filepath style-wrap">WHERE </span> clause in a SQL query run against a data service to a corresponding <span class="filepath style-wrap">WHERE </span> clause in the <strong>Table Input </strong> or
+          <strong>MongoDB Input</strong>  steps. Queries in these input steps are then filtered down and more efficiently handled at the data source.</p>
+        <div id="section_15" class="mt-page-section"><span id="How_the_Query_Pushdown_Optimization_Technique_Works"></span> 
+          <h4 class="editable">
+            <a id="QueryPushdownDetail" name="QueryPushdownDetail"> <span style="color: rgb(0, 0, 0);">How the Query Pushdown Optimization&nbsp;Technique Works</span>  </a> 
+          </h4>
+          <p>To apply Query Pushdown optimization, first set the input step optimization values, then add the optimization parameter to the input step query.</p>
+          <p>The optimization requires the creation of a parameter that takes the place of the <span class="filepath style-wrap">WHERE </span> clause, like this: &nbsp;<span class="filepath style-wrap">SELECT * FROM employee&nbsp;WHERE ${countryParam}</span> .</p>
+          <p>
+            <img alt="" class="internal default" src="http://help.pentaho.com/@api/deki/files/8402/Slide2.PNG?revision=1" />
+          </p>
+          <p>If you combine this optimization technique with Service Cache optimization and if you query the data service more than once before the cache expires, the query will run against the cached data set if the cached data set contains <em>all</em>             of the matching records in the original data set. Also, when you run a test in in the <strong>Test Data Service</strong>  window, then adjust the query and run the test again, the query is not run against the cache. This is because when you
+            run a test, the results only return a certain number of records (100, 500, or 1000, depending on what you selected for <strong>Max Rows</strong> ). For more information on the optimization technique, see the
+            <a title="Develop and Optimize a Pentaho Data Service"
+            rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#SvcCacheOpt">Apply a Service Cache Optimization</a>  section.</p>
+        </div>
+        <div id="section_16" class="mt-page-section"><span id="Add_the_Query_Pushdown_Parameter_to_the_Table_Input_or_MongoDB_Input_Steps"></span> 
+          <h4 class="editable">
+            <a id="AddQueryPushdownParameter" name="AddQueryPushdownParameter"> <span style="color: rgb(0, 0, 0);">Add the Query Pushdown Parameter to the Table Input or MongoDB Input Steps</span>  </a> 
+          </h4>
+          <p>The input step allows you to query the data source. These instructions explain how to add a parameter that will act as a <span class="filepath style-wrap">WHERE </span> clause in the SQL query or the equivalent type of clause in the MongoDB query.</p>
+          <ol>
+            <li> <a title="Create Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0J0/0C0/020">Create a&nbsp;transformation</a> &nbsp;that has a <strong>Table Input</strong>  or <strong>MongoDB Input </strong> step. </li>
+            <li> <a title="Running a Transformation" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030/030/010">Run the transformation</a>  to make sure it executes properly. </li>
+            <li>Double-click the input step (<strong>Table Input</strong>  or <strong>MongoDB Input</strong> ) that contains the query you want to optimize.</li>
+            <li>Add a parameter to the location of the <span class="filepath style-wrap">WHERE </span> clause value, like this:</li>
+          </ol>
+          <ul>
+            <li>SQL Query Example: <span class="filepath style-wrap">SELECT * FROM media WHERE ${countryParam}</span> </li>
+            <li>MongoDB Query Example: <span class="filepath style-wrap">{$match : ${mongoDbParam}}</span> </li>
+          </ul>
+          <ol>
+            <li value="4">Press <strong>[CTRL]+[SPACE]</strong>  to view the list of parameters. Click on a parameter from the list to add it to the query.</li>
+            <li value="5">Select&nbsp;the <strong>Replace Variables in Script?</strong>  checkbox.</li>
+            <li value="6">Click the <strong>OK </strong> button.</li>
+            <li value="7">
+              <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#SetUpOptimization">Set up the Query Pushdown Parameter Optimization</a> .</li>
+          </ol>
+        </div>
+        <div id="section_17" class="mt-page-section"><span id="Set_Up_Query_Pushdown_Parameter_Optimization"></span> 
+          <h4 class="editable">
+            <a id="SetUpOptimization" name="SetUpOptimization"> <span style="color: rgb(0, 0, 0);">Set Up Query Pushdown Parameter Optimization</span>  </a> 
+          </h4>
+          <p>To set up this optimization, complete these steps.</p>
+          <ol>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#EditDeleteDS">Open the&nbsp;<strong>Data Service&nbsp;</strong> window</a>, then&nbsp;click the <strong>Query Pushdown</strong>  tab. </li>
+            <li>Click the <strong>+</strong>  button near the <strong>Parameters </strong> label.</li>
+            <li>In the <strong>Create Parameter </strong> window add the name of an optimization parameter you created in the input step&rsquo;s SQL query.</li>
+            <li>Click <strong>OK</strong> .</li>
+            <li>Select the step that contains the parameter from&nbsp;<strong>Step Name</strong> .</li>
+            <li>In the <strong>Definitions </strong> area of the window, enter the <strong>Data Service Field</strong>  and the <strong>Step Field</strong>  you want to parameterize.</li>
+          </ol>
+          <ul>
+            <li>The <strong>Data Service Field</strong>  contains the <em>transformation's</em>  name of the field you want to parameterize. The name should be as it appears in the transformation's output field. For example, you might have renamed the
+              <span
+              class="filepath style-wrap">cty</span>  field from your data source to&nbsp;<span class="filepath style-wrap">country</span> . You would enter country in the <strong>Data Service Field</strong> .</li>
+            <li>The <strong>Step Field</strong>  should contain the <em>data source's</em>  name of the field you want to parameterize. For example, if you wanted to parameterize the <span class="filepath style-wrap">cty</span>  field in a MySQL database, enter
+              <span class="filepath style-wrap">cty</span>  in the <strong>Step Field</strong> .</li>
+          </ul>
+          <div>
+            <ol start="7" style="list-style-type: decimal;">
+              <li>Optionally, you can click the <strong>Get Optimizations</strong>  button to automatically generate input step optimizations based on the output fields for the step on which you've created the data service and input fields.</li>
+              <li>Click the <strong>OK </strong> button to save and close the window.</li>
+              <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizationTest">Test the optimization</a> . </li>
+              <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#PublishDS">Publish the Pentaho Data Service</a> . </li>
+            </ol>
+          </div>
+          <div id="section_18" class="mt-page-section"><span id="Disable_the_Query_Pushdown_Optimization"></span> 
+            <h5 class="editable">
+              <a id="DisableQueryPushdownOptimization" name="DisableQueryPushdownOptimization"> <span style="color: rgb(0, 0, 0);">Disable the Query Pushdown Optimization</span>  </a> 
+            </h5>
+            <p>To disable this optimization, click the <strong>Disable an Optimization</strong>  checkbox in the <strong>Data Services</strong>  window.</p>
+          </div>
+        </div>
+      </div>
+      <div id="section_19" class="mt-page-section"><span id="Apply_a_Parameter_Pushdown_Optimization"></span> 
+        <h3 class="editable">
+          <a id="ApplyParameterPushdownOptimization" name="ApplyParameterPushdownOptimization"> <span style="color: rgb(0, 0, 0);">Apply a Parameter Pushdown Optimization</span>  </a> 
+        </h3>
+        <p>The Parameter Pushdown optimization technique can be applied to any step in the transformation. Although similar to the Query Pushdown optimization, it differs not only because it can applied to any step, but also because it maps a field value
+          to a parameter in a simple <span class="filepath style-wrap">WHERE </span> clause in which a parameter is assigned a specific value using the equal operator like this: <span class="filepath style-wrap">WHERE region= &quot;South&quot;</span> .</p>
+        <div id="section_20" class="mt-page-section"><span id="How_the_Parameter_Pushdown_Optimization_Technique_Works"></span> 
+          <h4 class="editable">
+            <a id="ParameterPushdownDetail" name="ParameterPushdownDetail"> <span style="color: rgb(0, 0, 0);">How the Parameter Pushdown Optimization Technique Works</span>  </a> 
+          </h4>
+          <p>To set up the other the parameter pushdown optimization, first set up the optimization, then add the parameter to the transformation step.</p>
+          <p>
+            <img alt="" class="internal default" src="http://help.pentaho.com/@api/deki/files/8403/Slide3.PNG?revision=1" />
+          </p>
+          <p>If you combine this optimization technique with Service Cache optimization and if you query the data service more than once before the cache expires, the query will run against the cached data set if the cached data set contains <em>all</em>             of the matching records in the original data set. Also, when you run a test in in the <strong>Test Data Service</strong>  window, then adjust the query and run the test again, the query is not run against the cache. This is because when you
+            run a test, the results only return a certain number of records (100, 500, or 1000, depending on what you selected for <strong>Max Rows</strong> ). For more information on the optimization technique, see the
+            <a title="Develop and Optimize a Pentaho Data Service"
+            rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizationTest">Apply a Service Cache Optimization</a>  section.</p>
+        </div>
+        <div id="section_21" class="mt-page-section"><span id="Add_the_Parameter_Pushdown_Parameter_to_the_Step"></span> 
+          <h4 class="editable">
+            <a id="AddParameter" name="AddParameter"> <span style="color: rgb(0, 0, 0);">Add the Parameter Pushdown Parameter to the Step</span>  </a> 
+          </h4>
+          <p>These instructions explain how to add a parameter that will act to limit an input step (such as <strong>REST Client</strong> ) in some way.</p>
+          <ol class="pentaho-list-ordered">
+            <li> <a title="Create Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0J0/0C0/020">Create a&nbsp;transformation</a> . </li>
+            <li> <a title="Running Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/020/000">Run the transformation</a>  to make sure it executes properly. </li>
+            <li>Add the parameter you want to optimize&nbsp;to one of the steps. Typically, you would want to specify the parameter in a <strong>JSON </strong> or <strong>REST Client&nbsp;</strong> step. If you use a filtered step, you would need to use the
+              <strong>Get Variables</strong>  step before the filtered step.</li>
+            <li>Click the <strong>OK </strong> button.</li>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#SetUpParameterOptimization">Set up the Parameter Pushdown Optimization</a> . </li>
+          </ol>
+        </div>
+        <div id="section_22" class="mt-page-section"><span id="Set_Up_Parameter_Pushdown_Optimization"></span> 
+          <h4 class="editable">
+            <a id="SetUpParameterOptimization" name="SetUpParameterOptimization"> <span style="color: rgb(0, 0, 0);">Set Up Parameter Pushdown Optimization</span>  </a> 
+          </h4>
+          <p>To set up the parameter pushdown optimization, complete these steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#EditDeleteDS">Open&nbsp;the <strong>Data Service</strong>  window</a>, then click the <strong>Parameter Pushdown</strong>  tab. </li>
+            <li>In the <strong>WHERE Clause Column</strong>, click in a cell and enter the Data Service Field name from the existing fields listed in the pull&nbsp;down menu. The Data Service Field name is the virtual table field name in your <span class="filepath style-wrap">WHERE </span> clause.
+              &nbsp;Press<strong> [ENTER]</strong> . Possible values are defaulted for <strong>Transformation Parameter</strong>  and <strong>Value Format</strong> .</li>
+            <li>Adjust the name of the <strong>Transformation Parameter</strong>  as needed. The name is something that you create; it must be unique in the data service. Type the name in the <strong>Transformation Parameter </strong> field or in the window
+              transformation properties. (The parameter is created in the transformation properties or is something you specify in a field).</li>
+            <li>If needed, add a prefix or suffix to the default <span class="filepath style-wrap">%s</span>  in <strong>Value Format</strong>  field. For example, if you want to format a value, consider using <span class="filepath style-wrap">[value]=%s</span> .
+              In most cases, the default <span class="filepath style-wrap">%s</span>  is sufficient formatting.</li>
+            <li>Save the optimization and exit the window by clicking&nbsp;<strong>OK</strong> .</li>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#OptimizationTest">Test the optimization</a> . </li>
+            <li> <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#PublishDS">Publish the Pentaho Data Service</a> . </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div id="section_23" class="mt-page-section"><span id="Publish_a_Pentaho_Data_Service"></span> 
+      <h2 class="editable">
+        <a id="PublishDS" name="PublishDS"> <span style="color: rgb(0, 0, 0);">Publish a Pentaho Data Service</span>  </a> 
+      </h2>
+      <p>To publish a data service, save the transformation that contains the data service to the EE Repository on the Pentaho Repository. Complete these steps.</p>
+      <ol>
+        <li>The transformation should already be saved to the Pentaho&nbsp;Repository. Since the Pentaho Repository is located in the Pentaho Server.&nbsp;Make sure that any external assets needed by the transformation can be accessed remotely, even if the
+          transformation is run by a different user.</li>
+        <li>Open a browser and go to the Pentaho Server and log in.&nbsp; If you have installed the Pentaho Server locally, the URL is usually localhost:8080.</li>
+        <li>Validate that the data server was published by listing the data services on the server like this:</li>
+      </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://<Pentaho Server Host:Port>/pentaho-di/kettle/listServices</pre>
+      <ol start="4">
+        <li>Now you are ready to share the data service with others.</li>
+      </ol>
+    </div>
+    <div id="section_24" class="mt-page-section"><span id="Monitor_a_Pentaho_Data_Service"></span> 
+      <h2 class="editable">
+        <a name="MonitorDS"> <span style="color: rgb(0, 0, 0);">Monitor a Pentaho Data Service</span>  </a> 
+      </h2>
+      <p>To monitor a data service, type one of the following commands into your browser. &nbsp;Replace the <span class="filepath style-wrap"><Pentaho Server Host:Port></span>  of the Pentaho Server with the host name or IP address and the port of the Pentaho
+        Server you are running the data service on.&nbsp; You will need to have access to the Pentaho Server and be authenticated to run the following commands.</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th style="width: 320px;">List Names of Data Services on the Pentaho Server</th>
+            <th style="width: 305px;">List Status of Data Services on the Pentaho Server</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 320px;">
+              <p><span class="filepath style-wrap">http://<Pentaho Server Host:Port>/pentaho-di/kettle/listServices</span> </p>
+            </td>
+            <td style="width: 305px;">
+              <p><span class="filepath style-wrap">http://<Pentaho Server Host:Port>/pentaho-di/kettle/status</span> </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ul class="pentaho-list-unordered">
+        <li>If you want to query the Pentaho Data Service from another reporting tool, see the instructions in
+          <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040">Connect to a Pentaho Data Service</a> .</li>
+        <li>Read the
+          <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020#ShareDS">Share a Pentaho Data Service with Others</a>  section also to see what types of information you will need to supply to others using the data service.</li>
+      </ul>
+    </div>
+    <div id="section_25" class="mt-page-section"><span id="Share_a_Pentaho_Data_Service_with_Others"></span> 
+      <h2 class="editable">
+        <a id="ShareDS" name="ShareDS"> <span style="color: rgb(0, 0, 0);">Share a Pentaho Data Service with Others</span>  </a> 
+      </h2>
+      <p>Now that you&rsquo;ve created and tested a data service, you can share it with other people so that they can connect to and query it. Here are some things that you&rsquo;ll need to do.</p>
+      <ul class="pentaho-list-unordered">
+        <li>Make sure the person or group that you want to share the data service with has permissions to:
+          <ul>
+            <li>Connect, read, and execute a query on the Pentaho Server to retrieve data service data.</li>
+            <li>Read and execute the transformation that contains the data service.</li>
+          </ul>
+        </li>
+        <li>If you have optimized the data service, provide the person or group with names and definitions for any parameters that you have created. This will allow them to use the parameters when they query the data service.</li>
+        <li>Provide the person or group the instructions in
+          <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040">Connect to a Pentaho Data Service</a> .</li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Develop_a_Pentaho_Data_Service" rel="internal">Develop a Pentaho Data Service</a> 
+        <ol>
+          <li> <a href="#Create_a_Pentaho_Data_Service" rel="internal">Create a Pentaho Data Service</a>  </li>
+          <li> <a href="#Open.2C_Edit_or_Delete_a_Pentaho_Data_Service" rel="internal">Open, Edit or Delete a Pentaho Data Service</a>  </li>
+          <li>
+            <a href="#Test_a_Pentaho_Data_Service" rel="internal">Test a Pentaho Data Service</a> 
+            <ol>
+              <li> <a href="#Run_a_Basic_Test" rel="internal">Run&nbsp;a Basic Test</a>  </li>
+              <li>
+                <a href="#Run_an_Optimization_Test" rel="internal">Run&nbsp;an Optimization Test</a> 
+                <ol>
+                  <li> <a href="#Examine_Test_Results" rel="internal">Examine&nbsp;Test Results</a>  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Optimize_a_Pentaho_Data_Service" rel="internal">Optimize a Pentaho Data Service</a> 
+        <ol>
+          <li>
+            <a href="#Apply_the_Service_Cache_Optimization" rel="internal">Apply the&nbsp;Service Cache Optimization</a> 
+            <ol>
+              <li> <a href="#How_the_Service_Cache_Optimization_Technique_Works" rel="internal">How the Service Cache Optimization Technique Works</a>  </li>
+              <li> <a href="#Adjust_the_Cache_Duration" rel="internal">Adjust the Cache Duration</a>  </li>
+              <li> <a href="#Disable_the_Cache" rel="internal">Disable the Cache</a>  </li>
+              <li> <a href="#Clear_the_Cache" rel="internal">Clear the Cache</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Apply_a_Query_Pushdown_Optimization" rel="internal">Apply a Query Pushdown Optimization</a> 
+            <ol>
+              <li> <a href="#How_the_Query_Pushdown_Optimization_Technique_Works" rel="internal">How the Query Pushdown Optimization&nbsp;Technique Works</a>  </li>
+              <li> <a href="#Add_the_Query_Pushdown_Parameter_to_the_Table_Input_or_MongoDB_Input_Steps" rel="internal">Add the Query Pushdown Parameter to the Table Input or MongoDB Input Steps</a>  </li>
+              <li>
+                <a href="#Set_Up_Query_Pushdown_Parameter_Optimization" rel="internal">Set Up Query Pushdown Parameter Optimization</a> 
+                <ol>
+                  <li> <a href="#Disable_the_Query_Pushdown_Optimization" rel="internal">Disable the Query Pushdown Optimization</a>  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Apply_a_Parameter_Pushdown_Optimization" rel="internal">Apply a Parameter Pushdown Optimization</a> 
+            <ol>
+              <li> <a href="#How_the_Parameter_Pushdown_Optimization_Technique_Works" rel="internal">How the Parameter Pushdown Optimization Technique Works</a>  </li>
+              <li> <a href="#Add_the_Parameter_Pushdown_Parameter_to_the_Step" rel="internal">Add the Parameter Pushdown Parameter to the Step</a>  </li>
+              <li> <a href="#Set_Up_Parameter_Pushdown_Optimization" rel="internal">Set Up Parameter Pushdown Optimization</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Publish_a_Pentaho_Data_Service" rel="internal">Publish a Pentaho Data Service</a>  </li>
+      <li> <a href="#Monitor_a_Pentaho_Data_Service" rel="internal">Monitor a Pentaho Data Service</a>  </li>
+      <li> <a href="#Share_a_Pentaho_Data_Service_with_Others" rel="internal">Share a Pentaho Data Service with Others</a>  </li>
+    </ol>
+  </body>
+</content>

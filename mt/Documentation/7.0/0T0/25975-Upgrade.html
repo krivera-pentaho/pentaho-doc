@@ -1,0 +1,269 @@
+<content type="text/html" title="Upgrade">
+  <body>
+    <div class="wiki-toc noindex">
+      <ol>
+        <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+        <li>
+          <a href="#Get_the_Pentaho_Upgrade_and_Utility_Files" rel="internal">Get the Pentaho&nbsp;Upgrade and Utility Files&nbsp;</a> 
+          <ol>
+            <li> <a href="#Available_Update_Files" rel="internal">Available Update Files</a>  </li>
+            <li> <a href="#Unzipping_Distribution_Files" rel="internal">Unzipping Distribution Files</a>  </li>
+          </ol>
+        </li>
+        <li> <a href="#Choose_Upgrade_Instructions" rel="internal">Choose Upgrade&nbsp;Instructions</a>  </li>
+      </ol>
+    </div>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      var openlink = "<button class='wiki-toc-toggle mt-toggle mt-summary-toggle ui-button-icon mt-toggle-collapse'>Table of contents</button>";
+      $(".wiki-toc").prepend(openlink);
+      $(".wiki-toc-toggle").click(function() {
+        $(".wiki-toc ol").toggle();
+        $(".wiki-toc button").toggleClass("mt-toggle-collapse");
+        $(".wiki-toc button").toggleClass("mt-toggle-expand");
+      });
+      /*]]>*/
+    </script>
+    <p>This guide describes how to update from Pentaho Business Analytics (BA) and Pentaho Data Integration (PDI) 5.2.x /6.x&nbsp;to Pentaho 7.0. Our latest release contains multiple new features, platform upgrades, and fixes to improve the efficiency of
+      your Pentaho system.</p>
+    <p>You will need administrator privileges on the Pentaho Server, know where your data is stored, and how to connect to it in order to upgrade to Pentaho&nbsp;7.0. We recommend that you read through all related&nbsp;materials before starting the upgrade
+      process.</p>
+    <div id="section_1" class="mt-page-section"><span id="Before_You_Begin"></span> 
+      <h2 class="editable">Before You Begin</h2>
+      <p>Before you begin your Pentaho 7.0 upgrade, you'll need to do a few things.</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th style="width: 188px;">Task</th>
+            <th style="width: 443px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Verify Your Current Version of&nbsp;Pentaho Suite and PDI</td>
+            <td>You will need to&nbsp;start with a working installation of at least Pentaho Suite 5.2.x or&nbsp;PDI 5.2.x.</td>
+          </tr>
+          <tr>
+            <td>
+              <p>Verify Your System&nbsp;Components are Current</p>
+            </td>
+            <td>You will need to make sure that your system components, such as web browsers or repository databases, are
+              <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000">up-to-date for Pentaho</a> .</td>
+          </tr>
+          <tr>
+            <td>Backup Your Databases</td>
+            <td>Create backups of all Pentaho databases.
+              <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+                <tbody>
+                  <tr>
+                    <td><strong>BA Databases:</strong> </td>
+                    <td><strong>DI Databases:</strong> </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <ul>
+                        <li>hibernate</li>
+                        <li>quartz</li>
+                        <li>jackrabbit</li>
+                      </ul>
+                    </td>
+                    <td>
+                      <ul>
+                        <li>di_hibernate</li>
+                        <li>di_quartz</li>
+                        <li>di_jackrabbit</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>&nbsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Download and Configure Info-ZIP (Linux only)</td>
+            <td>Download, install, and configure Info-ZIP open source compression utility using the Info-ZIP documentation. Info-ZIP is available at
+              <a class="external" title="http://www.infozip.org/" rel="external nofollow" href="http://www.infozip.org/"
+              target="_blank">http://www.info&#8208;zip.org/</a> .
+              <p class="pentaho-note">The license is a BSD-style license and is provided for most Linux and Unix variants.</p>
+              <p>A Windows version of Info-ZIP is preconfigured and included in the Pentaho update package.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Verify That No Users Are Logged into the Server</td>
+            <td>We suggest that you perform this update during off-business hours to minimize impact to your day-to-day operations.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>These things are recommended, but not required, for the Pentaho&nbsp;7.0 upgrade.</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th style="width: 188px;">Task</th>
+            <th style="width: 443px;">Description</th>
+          </tr>
+          <tr>
+            <td style="width: 188px;">Review Pentaho 7.0 System Updates</td>
+            <td style="width: 443px;">
+              <ul class="pentaho-list-unordered">
+                <li> <a title="What&amp;#39;s New in Pentaho 7.0" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0C0">New Features in Pentaho&nbsp;7.0</a>  </li>
+                <li>
+                  <a title="Review Supported Technologies" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160">Review Supported Technologies</a> 
+                  <ul>
+                    <li>Make sure to get the correct version of Java for your system.</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 188px;">Review Previous Functionality Updates to Determine Upgrade Impacts</td>
+            <td style="width: 443px;">
+              <ul class="pentaho-list-unordered">
+                <li> <a title="New Features in Pentaho 5.3" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0T0/040">Minor Functionality Changes for 5.3</a>  </li>
+                <li> <a title="New Features in Pentaho 5.4" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0T0/040">Minor Functionality Changes for 5.4</a>  </li>
+                <li> <a title="What&amp;#39;s New in Pentaho 6.0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0C0">Minor Functionality Changes for 6.0</a>  </li>
+                <li> <a title="What&amp;#39;s New in Pentaho 6.1" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0C0">Minor Functionality Changes for 6.1</a>  </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Get_the_Pentaho_Upgrade_and_Utility_Files"></span> 
+      <h2 class="editable">Get the Pentaho&nbsp;Upgrade and Utility Files
+        <span style="color:rgb(255, 0, 0);">&nbsp;</span> 
+      </h2>
+      <p>Upgrade&nbsp;and utility files are available for download from the
+        <a class="link-https" title="https://support.pentaho.com/hc/en-us/categories/200568085-Downloads" rel="external nofollow" href="https://support.pentaho.com/hc/en-us/categories/200568085-Downloads"
+        target="_blank">Pentaho Customer Support Portal - Downloads</a> &nbsp;page.&nbsp;The portal&nbsp;requires you to log in with the Pentaho support user name and password provided in your Pentaho Welcome Packet.&#8203;</p>
+      <div id="section_3" class="mt-page-section"><span id="Available_Update_Files"></span> 
+        <h3 class="editable">Available Update Files</h3>
+        <p>Here is a list of BA and DI files that you should have in order to do a complete Pentaho 7.0 update.</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th rowspan="1" scope="col" style="width: 200px;">Component</th>
+              <th scope="col" style="width: 370px;">File Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 205px;">BA Server</td>
+              <td style="width: 441px;">
+                <p>biserver-ee-upgrade&#8208;7.0.x.yy-dist</p>
+                <p>pentaho-server-ee-7.0.x.yy-dist</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">DI Server</td>
+              <td style="width: 441px;">
+                <p>pdi&#8208;ee&#8208;upgrade-7.0.x.yy-dist</p>
+                <p>pentaho-server-ee-7.0.x.yy-dist</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">DI Client</td>
+              <td style="width: 441px;">pdi-e-client-7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Pentaho Analyzer</td>
+              <td style="width: 441px;">paz&#8208;plugin&#8208;ee&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Pentaho Dashboard Designer</td>
+              <td style="width: 441px;">pdd&#8208;plugin&#8208;ee&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Pentaho Interactive Reporting</td>
+              <td style="width: 441px;">pir&#8208;plugin&#8208;ee&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Pentaho Mobile</td>
+              <td style="width: 441px;">pentaho&#8208;mobile&#8208;plugin&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Report Designer</td>
+              <td style="width: 441px;">prd&#8208;ee&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Metadata Editor</td>
+              <td style="width: 441px;">pme&#8208;ee&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Schema Workbench</td>
+              <td style="width: 441px;">psw&#8208;ee&#8208;3.13.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">Aggregation Designer</td>
+              <td style="width: 441px;">pad&#8208;ee&#8208;7.0.x.yy-dist</td>
+            </tr>
+            <tr>
+              <td style="width: 205px;">License Files</td>
+              <td style="width: 441px;">Pentaho&nbsp;[component]&nbsp;Enterprise Edition.lic</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Unzipping_Distribution_Files"></span> 
+        <h3 class="editable">Unzipping Distribution Files</h3>
+        <p>The -dist.zip files include an End-User License Agreement, which you will be prompted to accept prior to extracting the files.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Unzip the selected <span class="filepath style-wrap">dist.zip</span>  file.</li>
+          <li>Execute the supplied <span class="filepath style-wrap">install.bat</span> &nbsp;or <span class="filepath style-wrap">install.sh</span>  files.</li>
+          <li>When prompted, agree to the end-user license agreement.</li>
+          <li>Choose the location to store the extracted files.</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Choose_Upgrade_Instructions"></span> 
+      <h2 class="editable">Choose Upgrade&nbsp;Instructions</h2>
+      <p>You are now ready to begin your Pentaho 7.0 upgrade.</p>
+      <ul class="pentaho-list-unordered">
+        <li> <a title="Upgrade Pentaho Servers and Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0T0/Upgrade_Pentaho_Servers_and_Design_Tools">Upgrade the Pentaho Business Analytics Server</a>  </li>
+        <li> <a title="Upgrade Pentaho Servers and Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0T0/Upgrade_Pentaho_Servers_and_Design_Tools#Upgrade_the_Pentaho_Data_Integration_Server">Upgrade the Pentaho Data Integration Server</a>  </li>
+      </ul>
+      <div class="mt-help-search mt-lsf-search" id="mt-portfolio-search">
+        <script type="text/javascript">
+          /*<![CDATA[*/
+          Deki.Utility.setLoc({
+            "Help.Widget.button.text": "Search",
+            "Help.Widget.label.text": "Query",
+            "Help.Widget.placeholder.text": "Search"
+          }); /*]]>*/
+        </script>
+        <input class="mt-help" data-url="/Special:Search" data-val="" data-label="Query" data-key="q" data-placeholder="Search Upgrade" data-buttontext="Search" data-params="{&quot;path&quot;:&quot;Documentation\/7.0\/0T0&quot;}"></input>
+        <script type="text/javascript">
+          /*<![CDATA[*/
+          $(function() {
+            $('.mt-help').inputRedirect();
+          }); /*]]>*/
+        </script>
+      </div>
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        $(function() {
+          $('div.mt-lsf-search input.mt-inputredirect-input').on('focus', function() {
+            $('button.mt-inputredirect-button').addClass('mt-search-active');
+          });
+          $('div.mt-lsf-search input.mt-inputredirect-input').on('blur', function() {
+            $('button.mt-inputredirect-button').removeClass('mt-search-active');
+          });
+        }); /*]]>*/
+      </script>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+      <li>
+        <a href="#Get_the_Pentaho_Upgrade_and_Utility_Files" rel="internal">Get the Pentaho&nbsp;Upgrade and Utility Files&nbsp;</a> 
+        <ol>
+          <li> <a href="#Available_Update_Files" rel="internal">Available Update Files</a>  </li>
+          <li> <a href="#Unzipping_Distribution_Files" rel="internal">Unzipping Distribution Files</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Choose_Upgrade_Instructions" rel="internal">Choose Upgrade&nbsp;Instructions</a>  </li>
+    </ol>
+  </body>
+</content>

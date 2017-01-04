@@ -1,0 +1,222 @@
+<content type="text/html" title="Set Up SAML/JDBC Hybrid Configuration for BA Server">
+  <body>
+    <p>You might need to create a hybrid between a 3rd-party&nbsp;SAML&nbsp;user Identification Provider (IdP)&nbsp;and a JDBC security table for role definitions. This is common in situations where SAML&nbsp;roles can't&nbsp;be redefined for BA Server use.</p>
+    <p class="pentaho-note">These instructions are provided for reference purposes only, to walk you through an example SAML set up. If you want to extend your SAML set up further, please work with with your Customer Success Manager.</p>
+    <p>The default role of <span class="filepath style-wrap">Authenticated</span>  is assigned to any SAML-authenticated user, unless you specify otherwise.</p>
+    <p>These&nbsp;instructions help you&nbsp;switch the BA Server's authentication back-end from the Pentaho data access object to a SAML/JDBC hybrid.</p>
+    <p>&nbsp;</p>
+    <div id="section_1" class="mt-page-section"><span id="Before_You_Begin"></span> 
+      <h2 class="editable">Before You Begin</h2>
+      <p>Before you begin configuring SAML&nbsp;and JDBC&nbsp;for the BA Server, you'll need to verify a couple of things.&nbsp;</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 150px;">Task</th>
+            <th scope="col" style="width: 425px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 184px;">Check For Functional Directory Server</td>
+            <td style="width: 491px;">Make sure that you have a working directory server with an established configuration.</td>
+          </tr>
+          <tr>
+            <td style="width: 184px;">Verify Database with User Roles</td>
+            <td style="width: 491px;">Verify that you have a database populated with your user&nbsp;roles.</td>
+          </tr>
+          <tr>
+            <td style="width: 184px;"><span>Set Up SAML for BA Server</span> </td>
+            <td style="width: 491px;">Make sure that you have completed the tasks described in
+              <a title="Set Up SAML for BA Server" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010/Set_Up_SAML_for_BA_Server">Set Up SAML for BA Server</a> .</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Preparing_the_BA_Server_for_Hybrid_SAML.2FJDBC"></span> 
+      <h2 class="editable">Preparing the BA Server for Hybrid&nbsp;SAML/JDBC&nbsp;</h2>
+      <p>After you finish the prerequisite tasks above, there are a few things that you need to do in order set up a hybrid SAML/JDBC configuration&nbsp;successfully.</p>
+      <p>These sections&nbsp;will guide you through the remaining steps of this&nbsp;process:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Create User/Authorities Database Tables</li>
+        <li>Set Up the JDBC Connection Properties</li>
+        <li>Enable JDBC Authorization Beans</li>
+      </ul>
+      <div id="section_3" class="mt-page-section"><span id="Step_1:_Create_User.2FAuthorities_Database_Tables"></span> 
+        <h3 class="editable">Step 1: Create User/Authorities Database Tables</h3>
+        <p>You'll need to create a few database tables in order to get SAML and JDBC to work together.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Create a table called USERS:</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 100px;">Column Name</th>
+              <th scope="col" style="width: 105px;">Column Type</th>
+              <th scope="col" style="width: 400px;">Column Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 100px;"><span><span>username</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>The User name.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 100px;"><span><span>password</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span>This column value is not considered in a hybrid SAML/JDBC solution; all authentication takes place in the 3<span style="font-size: 10px; line-height: 13.6364px;">rd-</span> party authentication service.&nbsp;you can fill this column
+                with <span class="filepath style-wrap"><empty string></span>, <span class="filepath style-wrap">ignored</span>, etc.</span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 100px;"><span><span>enabled</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(5)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>Set to &lsquo;true&rsquo; if user is enabled, &lsquo;false&rsquo; if not enabled.</span> </span> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Create a table called AUTHORITIES:</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 100px;">Column Name</th>
+              <th scope="col" style="width: 105px;">Column Type</th>
+              <th scope="col" style="width: 400px;">Column Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 100px;">authority</td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;">The Pentaho&nbsp;role, such as Administrator, Report Author, etc.</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Create a table called GRANTED_AUTHORITIES:</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 100px;">Column Name</th>
+              <th scope="col" style="width: 105px;">Column Type</th>
+              <th scope="col" style="width: 400px;">Column Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 100px;"><span><span>username</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>The User name.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 100px;"><span><span>authority</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(5)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>Associated Pentaho&nbsp;role.</span> </span> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Step_2:_Set_Up_the_JDBC_Connection_Properties"></span> 
+        <h3 class="editable">Step 2: Set Up the&nbsp;JDBC Connection Properties</h3>
+        <p>Next, you'll need to update a few things in the config file used for JDBC connections.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the pentaho-solutions/system/applicationContext-spring-security-jdbc.properties file and open it with any text editor.</li>
+          <li>Update the properties listed below to match your JDBC database.</li>
+          <li>When you are done, save and close the file.</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead> </thead>
+          <tbody>
+            <tr>
+              <td style="width: 175px;"><strong><em>datasource.driver.classname</em> </strong> </td>
+              <td style="width: 425px;"><span><span>Fully-qualified Java class name of the JDBC driver you are using.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong>datasource.url</strong> </em> </td>
+              <td style="width: 512px;"><span><span>Connection URL to be passed to your JDBC driver to establish a connection.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.username</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>Connection username to be passed to our JDBC driver to establish a connection</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.password</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>Connection password to be passed to our JDBC driver to establish a connection</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.validation.query</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>SQL query that is used to validate connections from this pool before returning them to the caller. This query must be a&nbsp;<span class="filepath style-wrap">SELECT </span> statement that returns at least one row.</span> 
+                </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.pool.max.wait</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>Maximum number of milliseconds that the pool will wait when there are no available connections. For a connection to be returned before throwing an exception, or <= 0, to wait indefinitely. Default is -1.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.pool.max.active</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>Maximum number of active connections that can be allocated from this pool at the same time, or negative for no limit. Default value is 8.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.max.idle</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>Maximum number of connections that can remain idle in the pool, without extra ones being destroyed, or negative for no limit. Default value is 8.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;"><em><strong><span><span>datasource.min.idle</span> </span> </strong> </em> </td>
+              <td style="width: 512px;"><span><span>Minimum number of active connections that can remain idle in the pool, without extra ones being created when&nbsp;the evictor runs, or 0 to create none. Default value is 0.</span> </span> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Step_3:_Enable_SAML.2FJDBC_Authorization"></span> 
+        <h3 class="editable">Step 3: Enable SAML/JDBC Authorization&nbsp;</h3>
+        <p>Last, you'll need to enable a JDBC&nbsp;Authorization bean.</p>
+        <ol class="pentaho-list-ordered">
+          <li>In the <span class="filepath style-wrap">pentaho.saml.cfg</span>  file, locate the property for authorization.provider.</li>
+          <li>Modify the <span class="filepath style-wrap">authorization.provider</span>  value so that it says <span class="filepath style-wrap">jdbc</span> .</li>
+          <li>Save and close the file.</li>
+          <li>Restart the BA Server.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+      <li>
+        <a href="#Preparing_the_BA_Server_for_Hybrid_SAML.2FJDBC" rel="internal">Preparing the BA Server for Hybrid&nbsp;SAML/JDBC&nbsp;</a> 
+        <ol>
+          <li> <a href="#Step_1:_Create_User.2FAuthorities_Database_Tables" rel="internal">Step 1: Create User/Authorities Database Tables</a>  </li>
+          <li> <a href="#Step_2:_Set_Up_the_JDBC_Connection_Properties" rel="internal">Step 2: Set Up the&nbsp;JDBC Connection Properties</a>  </li>
+          <li> <a href="#Step_3:_Enable_SAML.2FJDBC_Authorization" rel="internal">Step 3: Enable SAML/JDBC Authorization&nbsp;</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

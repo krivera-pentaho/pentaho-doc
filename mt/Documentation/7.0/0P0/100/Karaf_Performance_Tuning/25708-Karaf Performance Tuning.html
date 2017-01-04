@@ -1,0 +1,79 @@
+<content type="text/html" title="Karaf Performance Tuning">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>This guide will help you address performance issues with Karaf, using background information on known Karaf issues, as well as step-by-step instructions on addressing them for Pentaho.</p>
+    <div id="section_1" class="mt-page-section"><span id="Set_Up_Write_Permissions_for_Directories_Containing_Karaf"></span> 
+      <h2 class="editable">Set Up Write Permissions for Directories Containing Karaf</h2>
+      <p>Your users may experience performance issues when launching Kitchen or Pan unless you set up some variables specific to Karaf. You will need to set these up on individual workstations for users of Kitchen and Pan.&nbsp;Setting these variables makes
+        sure that Kitchen and Pan launch as quickly as they did for 5.x. You can use these variables for Pentaho Report Designer, which also uses Karaf.</p>
+      <div id="section_2" class="mt-page-section"><span id="Issue_Description"></span> 
+        <h3 class="editable">Issue Description</h3>
+        <p>Previously, non-admin users would need to have write permissions for the directories where they installed Pentaho client tools. If they had read and execute permissions only, their client tools would fail for two reasons:</p>
+        <ul>
+          <li>A <code>data/cache</code> folder could not be created</li>
+          <li>Contents in the&nbsp;<code>karaf/etc</code>&nbsp;folder could not be modified</li>
+        </ul>
+        <p class="pentaho-note">This same issue happened when trying to deploy a Pentaho&nbsp;Server within a Yarn or MapR cluster.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Solution_-_Define_-D_Variables_for_Karaf"></span> 
+        <h3 class="editable">Solution - Define -D Variables for Karaf</h3>
+        <p>As of 6.1.0.1, if a non-admin user is deploying a client tool with Karaf or executing a MapReduce job in Hadoop where their File System Level user only has read and execute permissions, the Karaf deployable content is written to a temporary directory
+          where the user has write access. In this case, Karaf deploys to the user&rsquo;s home directory OR a global tmp directory based on the file system. This deployment is used for this execution only and is deleted on exit of the application.</p>
+        <p>Two variables are used together specifically for Karaf deployments, one defines the location and the other allows for directory cleanup:</p>
+        <ul>
+          <li><strong>Location:</strong> &nbsp;<code>&nbsp;-Dpentaho.karaf.root.copy.dest.folder=/my/karaf/dir</code>
+            <p>If you are defining this variable, the final directory should not exist yet. When the client is started, it will create the ending directory you have specified in the variable.</p>
+          </li>
+          <li><strong>Directory cleanup:</strong> &nbsp;&nbsp;<code>-Dpentaho.karaf.root.transient=true</code>
+            <ul>
+              <li>True forces the karaf folder to delete itself on exit of the application.</li>
+              <li>False allows the deployed files to stay in this location and be reused for a later execution.</li>
+            </ul>
+          </li>
+        </ul>
+        <p>You can gain faster performance by using the following the Karaf variables guidelines in workstation environments to improve deployment speeds for Karaf enabled applications. It enables users to reuse the deployed Karaf content instead of re-deploying
+          for each execution.</p>
+        <p>Below is an example of how to configure these variables to leverage Karaf. You will need to define your system variable and then add <code>-D</code> parameters to Spoon and/or PRD.</p>
+        <div id="section_4" class="mt-page-section"><span id="Define_System_Variable"></span> 
+          <h4 class="editable">Define System Variable</h4>
+          <p>An Administrator will need to define the following system variable with the file system PENTAHO_KARAF_ROOT. The <span class="filepath style-wrap">dir </span> directory should not already exist, the executed application needs to create this directory
+            on initial execution.&nbsp;For example:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export PENTAHO_KARAF_ROOT=/my/karaf/dir</pre> </div>
+        <div id="section_5" class="mt-page-section"><span id="Add_-D_Parameters_to_Spoon_and.2For_PRD"></span> 
+          <h4 class="editable">Add -D Parameters to Spoon and/or PRD</h4>
+          <p>For this PENTAHO_KARAF_HOME variable to be used by the application, the following <code>&ndash;D</code> parameters need to be added to Spoon and/or PRD. Files such as Kitchen and Pan will reference these parameters from Spoon.</p>
+          <p>These <code>&ndash;D</code> parameters with their values are needed:</p> <pre>
+-Dpentaho.karaf.root.copy.dest.folder=$PENTAHO_KARAF_ROOT 
+-Dpentaho.karaf.root.transient=false
+</pre>
+          <p>In Spoon and PRD, these parameters need to be added to the java OPT location in the <code>spoon.sh</code> or <code>spoon.bat</code> files.&nbsp;Typically, these changes should only be applied to client tools.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Set_Up_Write_Permissions_for_Directories_Containing_Karaf" rel="internal">Set Up Write Permissions for Directories Containing Karaf</a> 
+        <ol>
+          <li> <a href="#Issue_Description" rel="internal">Issue Description</a>  </li>
+          <li>
+            <a href="#Solution_-_Define_-D_Variables_for_Karaf" rel="internal">Solution - Define -D Variables for Karaf</a> 
+            <ol>
+              <li> <a href="#Define_System_Variable" rel="internal">Define System Variable</a>  </li>
+              <li> <a href="#Add_-D_Parameters_to_Spoon_and.2For_PRD" rel="internal">Add -D Parameters to Spoon and/or PRD</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

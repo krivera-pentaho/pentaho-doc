@@ -1,0 +1,35 @@
+<content type="text/html" title="Advanced Conditional Formatting With MDX Expressions">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">If the premade conditional formatting options in Analyzer are not precise enough for your needs, you can apply custom formatting to a measure by using an MDX expression, as explained below.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Right-click a measure in the grid, then select <strong class="ph b">Column Name and Format...</strong>  from the context menu.</span>  The <strong class="ph b">Edit Column</strong>  dialogue will appear. </li>
+          <li class="li step"> <span class="ph cmd">Select <strong class="ph b">Expression</strong>  from the <strong class="ph b">Format</strong>  drop-down list.</span>  A default MDX expression that prints green or red arrows in cells if their values are greater than or less
+            than zero, respectively, will appear in the <strong class="ph b">MDX Format Expression</strong>  field: <pre class="pre codeblock">Case
+When [Measures].CurrentMember > 0
+Then '|#,##0|arrow=up'
+When [Measures].CurrentMember < 0
+Then '|#,##0|arrow=down'
+Else '|#,##0'
+End</pre> </li>
+          <li class="li step"> <span class="ph cmd">Modify the expression to suit your needs. Consult <a class="xref" title="Documentation/5.1/0N0/020/090/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/090/060/010/000">Conditional Formatting Expressions</a>  for more information on conditional formatting syntax and options.</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  If the MDX expression is invalid, an <strong class="ph b">invalid report definition</strong>  error will appear at the top of the dialogue.</div>
+          </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">OK</strong>  to commit the change.</span>  </li>
+        </ol>
+        <div class="section result">The analyzer report will refresh and apply the formatting choices you specified.</div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/020/090/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/090/060/010/000">Conditional Formatting Expressions</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

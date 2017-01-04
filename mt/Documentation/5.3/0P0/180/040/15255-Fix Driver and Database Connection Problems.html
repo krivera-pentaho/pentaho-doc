@@ -1,0 +1,89 @@
+<content type="text/html" title="Fix Driver and Database Connection Problems">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Information about common driver and database connection issues.</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p>There are several common driver and database connection problems.&nbsp; To fix them, read the following articles.</p>
+        <div id="section_2" class="mt-page-section"><span id="JDBC_Driver_Issues"></span> 
+          <h2 class="editable">JDBC Driver Issues</h2>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p class="p">Before you begin troubleshooting suspected&nbsp;JDBC&nbsp;driver issues, make sure that the&nbsp;
+          <a class="xref" title="Documentation/5.1/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__add_driver_for_ba" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__add_driver_for_ba">correct&nbsp;JDBC&nbsp;driver</a> &nbsp;JARs&nbsp;are installed to the correct locations, then double-check to make sure that there are no conflicting driver versions. Confirm with your database or driver vendor if you suspect you have having&nbsp;JDBC&nbsp;driver
+          compatibility issues.</p>
+        <p class="p">The BA and DI Servers need the appropriate driver to connect to the database that stores your data. You can download drivers from your database vendor's website. A&nbsp;JDBC&nbsp;Drivers reference article, with links to the corresponding websites,
+          can be found&nbsp;
+          <a class="xref" title="Documentation/5.1/160/010" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0D0/160/010">here</a> .&nbsp; To install your driver:</p>
+        <div class="p">
+          <ol class="ol" id="6e93e158-9c6a-4c50-b58b-01cd562a3540__troubleshooting_jdbc_java__ol_jyq_xkb_5m">
+            <li class="li">Stop the BA Server.</li>
+            <li class="li">Copy your driver into this location:&nbsp;<code class="ph codeph"><pentaho-install-directory>/server/biserver-ee/tomcat/lib</code>.</li>
+            <li class="li">Start the BA Server.</li>
+          </ol>
+        </div>
+        <p class="p">Now you should be able to use the&nbsp;
+          <a class="xref" title="Documentation/5.1/060/010/030" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/010/030">Manage Data Sources</a> &nbsp;window to create Pentaho data sources.</p>
+        <div id="section_3" class="mt-page-section"><span id="Fixing_JTDSvarchar(MAX)_Limitations_in_MSSQL_2005"></span> 
+          <h2 class="editable">Fixing JTDSvarchar(MAX) Limitations in MSSQL 2005</h2>
+        </div>
+      </div>
+      <p class="p">Creating a report that uses a column of type&nbsp;varchar(MAX) may result in a&nbsp;<strong class="ph b">net.sourceforge.jtds.jdbc.ClobImpl@83cf00</strong> &nbsp;error when using the&nbsp;JTDS&nbsp;SQL Server driver. This is caused by inherent limitations
+        in older versions of the&nbsp;JTDS&nbsp;driver. Additionally, the SQL Server&nbsp;JDBC&nbsp;driver version 1.2.2828 also has issues accessing a&nbsp;varchar(MAX) column.</p>
+      <p class="p">The solution is to upgrade the&nbsp;MSSQL&nbsp;2005&nbsp;JDBC&nbsp;driver to version 1.0.809.102 or later. To do this, download and install the&nbsp;
+        <a class="xref external" target="_blank" title="JDBC Driver" rel="external nofollow" href="http://msdn.microsoft.com/en-us/sqlserver/aa937724">http://msdn.microsoft.com/en-us/sqlserver/aa937724</a> &nbsp;file from microsoft.com, then restart your MSSQL server.</p>
+      <div class="related-links">
+        <div class="body conbody"> <span id="s9783"></span> <span id="Windows_Domains_Won't_Authenticate_When_Using_the_JTDS_Driver"></span> <span id="Windows_Domains_Won't_Authenticate_When_Using_the_JTDS_Driver-9783"></span> 
+          <h2>Windows Domains Won't Authenticate When Using the JTDS Driver</h2>
+          <div>
+            <div class="body conbody">
+              <p class="p">If you are using a JTDS JDBC driver and you want to use a Windows domain user to authenticate to a Microsoft SQL Server, be aware that the Windows syntax will not work for specifying the domain and user. In the URL field, the domain must
+                be appended to the end of the URL with a semicolon:</p> <pre class="pre codeblock">jdbc:jtds:sqlserver://svn-devel.example.com:1533/reportsInProgress;domain=testdomain</pre> </div>
+          </div>
+          <div id="section_4" class="mt-page-section"><span id="Data_Conversion_Issues_With_MySQL_Driver_5.0.8"></span> 
+            <h2 class="editable">Data Conversion Issues With MySQL Driver 5.0.8</h2>
+            <p class="p">The MySQL&nbsp;JDBC&nbsp;driver version 5.0.8 may cause data conversion errors in the BA Server. For example, SQL statements that convert a numeric field to a string are returned as a string with version 5.0.7, but return as a byte array in
+              5.0.8. To solve this problem, you must replace the&nbsp;<strong class="ph b">mysql-connector-java-5.0.8.jar</strong> &nbsp;with the&nbsp;<strong class="ph b">mysql-connector-java-5.0.7.jar</strong> &nbsp;in your client tool or application
+              server's&nbsp;<strong class="ph b">lib</strong> &nbsp;directory.</p>
+          </div>
+          <div id="section_5" class="mt-page-section"><span id="Varying_Context_and_Data_Source_Configuration_Methods"></span> 
+            <h2 class="editable">
+              <span>Varying Context and Data Source Configuration Methods</span> 
+            </h2>
+            <div class="body conbody">
+              <p class="p">The instructions in this section instruct you to edit the&nbsp;<strong class="ph b">context.xml</strong> &nbsp;file to override Tomcat default settings. Your application server may not support this method, or may not accept these files by
+                default. This will be especially true if you are using unsupported application servers or versions, or if you are on Linux and your distribution provider alters the default package configuration for Tomcat.</p>
+              <p class="p">There are other methods of changing context settings, especially through other kinds of configuration files such as&nbsp;<strong class="ph b">server.xml</strong> &nbsp;or application-specific XML files that your application server creates
+                for each deployed WAR. If the context and data source instructions in this section do not work for you, consult your application server's documentation to learn the preferred method of configuration, and adapt the&nbsp;Pentaho-supplied&nbsp;process
+                to accommodate it.</p>
+              <div id="section_6" class="mt-page-section"><span id="Using_ODBC"></span> 
+                <h2 class="editable">
+                  <span>Using ODBC</span> 
+                </h2>
+                <p class="p">Although ODBC can be used to connect to a&nbsp;JDBC&nbsp;compliant database,&nbsp;Pentaho&nbsp;does not recommend using it and it is not supported. For details, this article explains &quot;Why you should avoid ODBC.&quot;&nbsp;
+                  <a class="xref external"
+                  target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/pages/viewpage.action?pageId=14850644">http://wiki.pentaho.com/pages/viewpage.action?pageId=14850644</a> .</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#JDBC_Driver_Issues" rel="internal">JDBC Driver Issues</a>  </li>
+      <li> <a href="#Fixing_JTDSvarchar(MAX)_Limitations_in_MSSQL_2005" rel="internal">Fixing JTDSvarchar(MAX) Limitations in MSSQL 2005</a>  </li>
+      <li> <a href="#Windows_Domains_Won't_Authenticate_When_Using_the_JTDS_Driver" rel="internal">Windows Domains Won't Authenticate When Using the JTDS Driver</a>  </li>
+      <li> <a href="#Data_Conversion_Issues_With_MySQL_Driver_5.0.8" rel="internal">Data Conversion Issues With MySQL Driver 5.0.8</a>  </li>
+      <li> <a href="#Varying_Context_and_Data_Source_Configuration_Methods" rel="internal">Varying Context and Data Source Configuration Methods</a>  </li>
+      <li> <a href="#Using_ODBC" rel="internal">Using ODBC</a>  </li>
+    </ol>
+  </body>
+</content>

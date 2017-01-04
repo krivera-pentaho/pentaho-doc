@@ -1,0 +1,26 @@
+<content type="text/html" title="Configure the Security Service">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You must know the base URL for the Pentaho Server (the default URL is <strong class="ph b"><a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a> </strong>           as well as the name of the service to execute security information retrieval (the service is <strong class="ph b">ServiceAction</strong> ).</div>
+        <div class="section context">
+          <p class="p">The Pentaho Metadata Editor must be configured to connect to your Pentaho Server so that it can retrieve usernames, roles, and access control lists. Follow the below directions to set up Metadata Editor.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Start the Pentaho Metadata Editor.</span>  <pre class="pre codeblock">
+sh /pentaho/design-tools/metadata-editor/metaeditor.sh</pre> </li>
+          <li class="li step"><span class="ph cmd">Go to the <strong class="ph b">Tools</strong>  menu, then select <strong class="ph b">Security...</strong> .</span>  The Security Service dialogue will appear.</li>
+          <li class="li step"><span class="ph cmd">In the <strong class="ph b">Service URL</strong>  field, type in the base URL for the Pentaho Server plus the security service.</span>  <pre class="pre codeblock">
+http://localhost:8080/pentaho/api/userrolelist
+</pre> </li>
+          <li class="li step"><span class="ph cmd">Next, select the level of detailed security information you want: <strong class="ph b">All</strong>, <strong class="ph b">Users</strong>  or <strong class="ph b">Roles</strong> .</span>  If you have hundreds of users in your
+            system, you probably only want to return the roles, and use roles for security information properties. The access control lists are returned with all three options.</li>
+          <li class="li step"><span class="ph cmd">In the <strong class="ph b">Username</strong>  and <strong class="ph b">Password</strong>  fields, type in the login credentials for an administrator-level account.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Test</strong> .</span> </li>
+        </ol>
+        <div class="section result">A popup window with the returned XML should appear. If it does not, check that the information you typed into the fields mentioned above is correct.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

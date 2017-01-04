@@ -1,0 +1,395 @@
+<content type="text/html" title="Set Up DI Operations Mart">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushSql.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to set up the DI Operations Mart on PDI.</p>
+        </div>
+      </div>
+      <p>The DI Operations Mart is a centralized data mart that stores job or transformation log data for easy reporting and analysis. The data mart is a collection of tables organized as a data warehouse using a star schema. Together, dimension tables and
+        a fact table represent the logging data. These tables need to be created in the DI Operations Mart database. Pentaho provides SQL scripts to create these tables for MySQL, Oracle, and PostgresSQL databases. A Data Integration job populates the
+        time and date dimensions.</p>
+      <div id="section_2" class="mt-page-section"><span id="Unzip_DI_Operations_Mart_Files"></span> 
+        <h2 class="editable">Unzip DI Operations Mart Files</h2>
+        <p>The files needed to install the DI Operations Mart are already on your computer. Here is how to find and unzip those files, then set up the database.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Unzip the <span class="filepath style-wrap">pentaho-operations-mart-<version number>.zip</span>  file, which is located in the <span class="filepath style-wrap">data-integration-server/pentaho-solutions</span>  directory. <span class="filepath style-wrap"><version number></span>             indicates the version number Pentaho assigns to the build of the DI Operations Mart. We recommend that you unzip the file in a temporary directory outside of the pentaho directory structure.</li>
+          <li><span>When unzipped, the directory structure looks like this.</span> </li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">pdi-operations-mart/</span> </li>
+          <li><span class="filepath style-wrap">DDL/</span> </li>
+          <li><span class="filepath style-wrap">etl/</span> </li>
+          <li><span class="filepath style-wrap">models/</span> </li>
+          <li><span class="filepath style-wrap">pentaho_operations_mart/</span> </li>
+          <li><span class="filepath style-wrap">samples/</span> </li>
+          <li><span class="filepath style-wrap">exportManifest.xml</span> </li>
+        </ul>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Create_Logging_Tables_and_Datamart"></span> 
+        <h2 class="editable">Create Logging Tables and Datamart</h2>
+        <p>Logging tables must be created in the database.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li"><span>From any program that can run scripts against the logging data database, execute <span class="filepath style-wrap">pentaho_logging_<database>.sql</span> . (<span class="filepath style-wrap"><database></span>  is MySQL, Oracle, or PostgreSQL).
+            <span class="filepath style-wrap">pentaho_logging_<database>.sql</span>  is in the <span class="filepath style-wrap">pdi-operations-mart/DDL/<database></span>  directory. The script generates several logging schemas.&nbsp;</span> 
+          </li>
+          <li class="li"><span style="color: rgb(51, 51, 51); line-height: 1.5;">If you installed </span> PDI<span style="color: rgb(51, 51, 51); line-height: 1.5;"> using the custom or manual method, the </span> <span class="filepath style-wrap" style="color: rgb(51, 51, 51); line-height: 1.5;">pdi-operations-mart</span> 
+            <span
+            style="color: rgb(51, 51, 51); line-height: 1.5;"> database must be created. Execute the </span> DDL<span style="color: rgb(51, 51, 51); line-height: 1.5;"> script called </span> <span class="filepath style-wrap" style="color: rgb(51, 51, 51); line-height: 1.5;">pentaho_mart_<database>.sql</span> 
+              <span
+              style="color: rgb(51, 51, 51); line-height: 1.5;">, where
+                <database> is is the database vendor, such as MySQL, Oracle, or </span> PostgreSQL<span style="color: rgb(51, 51, 51); line-height: 1.5;">. The </span> DDL<span style="color: rgb(51, 51, 51); line-height: 1.5;"> script can be found in the </span> 
+                  <span
+                  class="filepath style-wrap" style="color: rgb(51, 51, 51); line-height: 1.5;">pdi-operations-mart/DDL/
+                    <database>
+                      </span> <span style="color: rgb(51, 51, 51); line-height: 1.5;">&nbsp; directory.&nbsp;</span> </li>
+          <li class="li"><span style="color: rgb(51, 51, 51); line-height: 1.5;">When complete, the following tables are created.</span> </li>
+        </ol>
+        <div>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Dimension Tables</th>
+                <th>Fact, Pro-Audit, and Staging Tables</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <ul>
+                    <li>dim_batch</li>
+                    <li>dim_component</li>
+                    <li>dim_content_item</li>
+                    <li>dim_date</li>
+                    <li>dim_execution</li>
+                    <li>dim_executor</li>
+                    <li>dim_instance</li>
+                    <li>dim_log_table</li>
+                    <li>dim_session</li>
+                    <li>dim_state</li>
+                    <li>dim_step</li>
+                    <li>dim_time</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul>
+                    <li>fact_component</li>
+                    <li>fact_execution</li>
+                    <li>fact_instance</li>
+                    <li>fact_jobentry_execution</li>
+                    <li>fact_perf_execution</li>
+                    <li>fact_session</li>
+                    <li>fact_step_execution</li>
+                    <li>pro_audit_staging</li>
+                    <li>pro_audit_tracker</li>
+                    <li>stg_content_item</li>
+                  </ul>
+                  <p>&nbsp;</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>Execute the following SQL script in the tool of your choice. &nbsp;The script enables DI Operations Mart to run on PostgreSQL.</li>
+        </ol> <pre class="brush: sql; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">ALTER TABLE pentaho_dilogs.jobentry_logs DROP COLUMN result;
+ALTER TABLE pentaho_dilogs.jobentry_logs ADD COLUMN &quot;result&quot; boolean;
+ALTER TABLE pentaho_operations_mart.fact_jobentry_execution DROP COLUMN result;
+ALTER TABLE pentaho_operations_mart.fact_jobentry_execution ADD COLUMN &quot;result&quot; CHAR(5);</pre> </div>
+      <div id="section_4" class="mt-page-section"><span id="Set_Global_Kettle_Logging_Variables"></span> 
+        <h2 class="editable">Set Global Kettle Logging Variables</h2>
+        <p>Set up Kettle logging variables so that by default, transformation, job, step, and performance logging data is captured in tables you specify.</p>
+        <ol class="pentaho-list-ordered">
+          <li><span>In Spoon, select <strong>Edit > Edit the kettle.properties</strong>  file.</span> </li>
+          <li><span>In the <strong>Kettle properties</strong>  window, set the following variable names and values. The variable names and values in this section are the default. If you have set up your operations mart differently, change the variable names and values so they match your environment.</span> </li>
+        </ol>
+        <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 304px;">Variable Name</th>
+              <th style="width: 124px;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_JOB_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_JOB_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">job_logs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_TRANS_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_TRANS_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">trans_logs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_STEP_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_STEP_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">step_logs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_JOBENTRY_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_JOBENTRY_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">jobentry_logs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_TRANS_PERFORMANCE_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_TRANS_PERFORMANCE_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">transperf_logs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_CHANNEL_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_CHANNEL_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">channel_logs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_METRICS_LOG_DB</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;"><span class="filepath style-wrap">KETTLE_METRICS_LOG_TABLE</span> </td>
+              <td style="width: 124px;"><span class="filepath style-wrap">metrics_logs</span> </td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="4" style="list-style-type: decimal;">
+          <li>If you choose to use a non-default schema, set these variables as well. Their values should match the name of your schema.</li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">KETTLE_JOB_LOG_SCHEMA</span> </li>
+          <li><span class="filepath style-wrap">KETTLE_TRANS_LOG_SCHEMA</span> </li>
+          <li><span class="filepath style-wrap">KETTLE_STEP_LOG_SCHEMA</span> </li>
+          <li><span class="filepath style-wrap">KETTLE_JOBENTRY_LOG_SCHEMA</span> </li>
+          <li><span class="filepath style-wrap">KETTLE_TRANS_PERFORMANCE_LOG_SCHEMA</span> </li>
+          <li><span class="filepath style-wrap">KETTLE_CHANNEL_LOG_SCHEMA</span> </li>
+          <li><span class="filepath style-wrap">KETTLE_METRICS_LOG_SCHEMA</span> </li>
+        </ul>
+        <ol class="pentaho-list-ordered" start="5" style="list-style-type: decimal;">
+          <li><span>Click <strong>OK</strong> .</span> </li>
+          <li><span>Restart Spoon and the DI Server.</span> </li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Import_DI_Operations_Mart"></span> 
+        <h2 class="editable">Import DI Operations Mart</h2>
+        <p>Follow these instructions to import DI Operations Mart tables, schema, and database connection into your database.</p>
+        <ol class="pentaho-list-ordered">
+          <li><span>Start Spoon, then connect to the DI Repository. </span> </li>
+          <li><span>Select <strong>Tools > Repository > Import Repository</strong> .</span> </li>
+          <li><span>Select <span class="filepath style-wrap">etl/pdi-operations-mart.xml</span>  then click <strong>Open</strong> . The <span class="filepath style-wrap">etl </span> directory is where you unzipped the <span class="filepath style-wrap">pentaho-operations-mart-<version number>.zip</span>             file.</span> 
+          </li>
+          <li><span>When prompted about setting rules for the import, click <strong>No</strong> .</span> </li>
+          <li><span>The <strong>Directory Selection</strong>  window appears. To create a new directory where the PDI Operations Mart will be stored:</span> 
+            <ol start="1" style="list-style-type: lower-alpha;">
+              <li><span>Right-click the <strong>public</strong>  folder and select <strong>New sub-directory</strong> .</span> </li>
+              <li><span>In the <strong>Enter the Directory Name</strong>  window, type <strong>pdi_operations_mart</strong>  then click <strong>OK</strong> .</span> </li>
+              <li><strong><span>pdi_operations_mart</span> </strong> <span> appears. Make sure it is highlighted, then click <strong>OK</strong> .</span> </li>
+              <li><span>Click <strong>OK</strong>  in the <strong>Enter comment</strong>  window.</span> </li>
+            </ol>
+          </li>
+          <li><span>The <strong>Repository Import</strong>  window appears with a status of the import. When the <em>Import finished</em>  message appears, click the <strong>Close</strong>  button.</span> </li>
+        </ol>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Set_Up_Database_Connections"></span> 
+        <h2 class="editable">Set Up Database Connections</h2>
+        <p>The connection information must match the credentials needed for your database.</p>
+        <ol class="pentaho-list-ordered">
+          <li>In Spoon, close open jobs and transformations.</li>
+          <li><span>Select <strong>Tools</strong>  > <strong>Repository</strong>  > <strong>Explore</strong>  from the drop-down menu. </span> </li>
+          <li><span>In the <strong>Repository Explorer</strong>  window, select the <strong>Connections</strong>  tab.</span> </li>
+          <li><span>Create a database connection&nbsp;</span> and name it&nbsp;<span class="filepath style-wrap"><strong>ive_logging_info</strong> </span> . In the&nbsp;<strong>Database Connection</strong>  window enter&nbsp;information for the connection that
+            gets the online logging data. The default connection information appears in the following table, but yours might be different, depending on the ports and password assigned during PDI installation.</li>
+        </ol>
+        <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 184px;">Item</th>
+              <th style="width: 116px;">Default Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 184px;">Connection Name</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">live_logging_info</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Hostname</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">localhost</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Database Name</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">di_hibernate</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Port Number</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">5432</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">User Name</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">hibuser</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Advanced/Preferred Schema</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">pentaho_dilogs</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Password</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">See your system administrator for the default value.</span> </td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="5">
+          <li><span>Click <strong>OK</strong>  to save the information.</span> </li>
+          <li>If you need to have multiple connections to get the online logging information, create new connections and enter the information for each connection.</li>
+          <li><span>Select the <span class="filepath style-wrap">pentaho_operations_mart</span>  from the <strong>Connections</strong>  tab and edit the entry by clicking the pencil icon in the upper-right corner. The <strong>Database Connection</strong>  window
+            opens. </span> 
+          </li>
+          <li><span>Enter the information for the connection. When finished, click <strong>OK</strong> .</span> </li>
+        </ol>
+        <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 184px;">Item</th>
+              <th style="width: 116px;">Default Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 184px;">Connection Name</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">pentaho_operations_mart</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Hostname</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">localhost</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Database Name</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">di_hibernate</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Port Number</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">5432</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">User Name</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">hibuser</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Advanced/Preferred Schema</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">pentaho_operations_mart</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 184px;">Password</td>
+              <td style="width: 116px;"><span class="filepath style-wrap">See your system administrator for the default value.</span> </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Update_Links"></span> 
+        <h2 class="editable">Update Links</h2>
+        <p>Update the <span class="filepath style-wrap">Fill in DIM_Date and DIM_Time</span>  job so it points to the version in the repository, then run the <span class="filepath style-wrap">Fill in DIM_Date and DIM_Time</span> &nbsp;job to finish setting
+          up the DI Operations Mart. &nbsp;&nbsp;</p>
+        <ol class="pentaho-list-ordered" start="1">
+          <li>In Spoon, select&nbsp;<strong>Tools</strong> &nbsp;>&nbsp;<strong>Repository</strong> &nbsp;>&nbsp;<strong>Explore</strong> .</li>
+          <li>In the&nbsp;<strong>Browse</strong> &nbsp;tab, click the&nbsp;<strong>pdi_operations_mart</strong> .</li>
+          <li>Double-click&nbsp;<span class="filepath style-wrap">Fill in DIM_Date&nbsp;and&nbsp;DIM_Time</span>  to open it in Spoon.</li>
+          <li>Click&nbsp;<strong>Close</strong> &nbsp;to close the Repository Explorer.</li>
+          <li>Double-click <span class="filepath style-wrap">Generate DIM_DATE</span> .
+            <ol start="1" style="list-style-type: lower-alpha;">
+              <li>In the&nbsp;<strong>Transformation specification</strong> &nbsp;tab, click&nbsp;<strong>Specify by name and directory</strong> .</li>
+              <li>There are two fields that become active. The first is where you specify the directory. The second is where you specify the name of the transformation. Position the cursor in the first field, then press&nbsp;<strong>[CTRL]+[SPACE]</strong> &nbsp;and
+                select&nbsp;<strong>${Internal.Job.Repository.Directory}</strong> &nbsp;from the options that appear.</li>
+              <li>In the second field enter <span class="filepath style-wrap">Generate_DIM_DATE.ktr</span> .</li>
+              <li>Click&nbsp;<strong>OK</strong> .</li>
+            </ol>
+          </li>
+          <li>Double-click <span class="filepath style-wrap">Generate DIM_TIME</span>  and repeat step 5a - 5d.&nbsp; For step 5c, enter <span class="filepath style-wrap">Generate_DIM_TIME.ktr</span>  instead of <span class="filepath style-wrap">Generate_DIM_DATE.ktr.</span> </li>
+          <li>Save the job, then run it.</li>
+          <li>When complete, close the job.</li>
+        </ol>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Test_DI_Operations_Mart"></span> 
+        <h2 class="editable">Test DI Operations Mart&nbsp;</h2>
+        <p>To run a test, build and run a simple transformation or job, then run the DI Operations Mart.</p>
+        <ol class="pentaho-list-ordered">
+          <li><span>In Spoon, create and save a transformation and a job. For more information on how to create a transformation or job, see the Get Started with DI tutorial. </span> </li>
+          <li><span>Select <strong>Tools</strong>  > <strong>Repository</strong>  > <strong>Explore</strong>, then select <strong>pdi_operations_mart</strong> . </span> </li>
+          <li><span>Select the <span class="filepath style-wrap">Update Dimensions then Logging Datamart.kjb</span>  job, then run it.</span> 
+          </li>
+        </ol>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Schedule_DI_Operations_Mart_Job"></span> 
+        <h2 class="editable">Schedule DI Operations Mart Job</h2>
+        <p>As a best practice, you should schedule the updating of Pentaho Operations Mart data so that you have up-to-date information for Operations Mart reports. It is recommended that you schedule log updates at least daily to ensure you have the freshest
+          data.</p>
+        <ol class="pentaho-list-ordered">
+          <li><span>In Spoon, select <strong>Tools</strong>  > <strong>Repository</strong>  > <strong>Explore</strong>, then select <strong>pdi_operations_mart</strong> . </span> </li>
+          <li><span>Select the <span class="filepath style-wrap">Update_Logging_Datamart.kjb</span>  job and open it. </span> 
+          </li>
+          <li><span>Set a schedule for this job by following the instructions in <span>Scheduling Transformations and Jobs from Spoon</span> . </span> 
+          </li>
+          <li><span>&nbsp;When finished, close and save the schedule and the job.</span> </li>
+        </ol>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Give_Users_Access_to_the_DI_Operations_Mart"></span> 
+        <h2 class="editable">Give Users Access to the DI Operations Mart</h2>
+        <p>You must have previously mapped user roles, as described in <span><span>Mondrian Role Mapping in the BA Server</span> </span> .</p>
+        <p>By default, only users who have the <strong>Admin</strong>  role can access the Pentaho Operations Mart. The <strong>Admin</strong>  role has access to all capabilities within all Pentaho products, including the Pentaho Operations Mart. If you want
+          to allow users to view and run the Pentaho Operations Mart only, you can assign them the <strong>Pentaho Operations</strong>  role. For example, a user who has been assigned the <strong>Pentaho Operations</strong>  user role is able to open and
+          view a report within the DI Operations mart, but does not have the ability to delete it.</p>
+        <p>To give users access to view the DI Operations Mart, assign the Pentaho Operations role to those users.</p>
+        <ol class="pentaho-list-ordered">
+          <li>From within the <span class="uicontrol style-wrap">Pentaho User Console</span>, select the <strong>Administration</strong>  tab.</li>
+          <li><span>From the left panel, select <strong>Security</strong>  > <strong>Users/Roles</strong> .</span> </li>
+          <li><span>Select the <strong>Roles</strong>  tab. </span> </li>
+          <li><span>Add the new role called <strong>Pentaho Operations</strong>  by following the instructions in <span>Adding Roles</span> .</span> 
+          </li>
+          <li><span>Assign the appropriate users to the new role, as described in <span>Adding Users to Roles</span> .</span> 
+          </li>
+          <li><span>Advise these users to log in to the Pentaho User Console, create a Pentaho Analyzer or Pentaho Interactive Report, and ensure that they can view the Pentaho Operations Mart in the <strong>Select a Data Source</strong>  dialog. </span> </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Unzip_DI_Operations_Mart_Files" rel="internal">Unzip DI Operations Mart Files</a>  </li>
+      <li> <a href="#Create_Logging_Tables_and_Datamart" rel="internal">Create Logging Tables and Datamart</a>  </li>
+      <li> <a href="#Set_Global_Kettle_Logging_Variables" rel="internal">Set Global Kettle Logging Variables</a>  </li>
+      <li> <a href="#Import_DI_Operations_Mart" rel="internal">Import DI Operations Mart</a>  </li>
+      <li> <a href="#Set_Up_Database_Connections" rel="internal">Set Up Database Connections</a>  </li>
+      <li> <a href="#Update_Links" rel="internal">Update Links</a>  </li>
+      <li> <a href="#Test_DI_Operations_Mart" rel="internal">Test DI Operations Mart&nbsp;</a>  </li>
+      <li> <a href="#Schedule_DI_Operations_Mart_Job" rel="internal">Schedule DI Operations Mart Job</a>  </li>
+      <li> <a href="#Give_Users_Access_to_the_DI_Operations_Mart" rel="internal">Give Users Access to the DI Operations Mart</a>  </li>
+    </ol>
+  </body>
+</content>

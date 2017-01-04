@@ -1,0 +1,36 @@
+<content type="text/html" title="Create a Dashboard Designer Template">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Follow the directions below to create a new Pentaho Dashboard Designer template.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  You will have to migrate this template by hand if/when you upgrade Dashboard Designer, since the template files will be stored in the Dashboard Designer plugin directory. The upgrade procedure that Pentaho
+            provides does not typically cover customizations like this one, except to mention that they must be migrated by hand.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the Pentaho Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/dashboards/templates/xul/</span>  directory.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">If you want to remove all templates that you know will never be used, you can safely delete their corresponding XUL files now. When you are done, also remove the corresponding files from the <strong class="ph b">html</strong>  sibling directory.</span> </li>
+          <li class="li step"><span class="ph cmd">Copy the existing XUL file that most closely resembles the template layout you want to create, giving the new XUL file a name that starts with a two-digit number that represents the template's order in the hierarchy, followed by a short description of its dimensions.</span>             All Dashboard Designer templates follow this naming convention.</li>
+          <li class="li step"><span class="ph cmd">Create a <strong class="ph b">.properties</strong>  file that corresponds to the one you just copied in the previous step, and put one item in it: <strong class="ph b">name=Description here</strong>, where &quot;Description here&quot; represents the display name of this template.</span> </li>
+          <li class="li step"><span class="ph cmd">Create a thumbnail graphic that fits the same dimensions as the other PNG thumbnails in this directory, and give it the same name as the previous two files, with a PNG extension.</span>  You should now have three new files,
+            all with the same name, with three different extensions: .xul, .properties, and .png.</li>
+          <li class="li step"><span class="ph cmd">Edit the new <strong class="ph b">.xul</strong>  file and change the <strong class="ph b">box</strong>  attributes to match your template specifications.</span> 
+            <p class="p">A <strong class="ph b">vbox</strong>  node creates a column; an <strong class="ph b">hbox</strong>  node creates a row; a <strong class="ph b">box</strong>  element defines an individual panel in each row.</p>
+            <p class="p"><strong class="ph b">height</strong>  and <strong class="ph b">width</strong>  define static widths in pixels; the <strong class="ph b">flex</strong>  size attribute defines a percentage of the total width of the dashboard. If you'd like more
+              extensive definitions of XUL elements, refer to the official XUL documentation:
+              <a class="xref external" target="_blank" rel="external nofollow" href="http://developer.mozilla.org/en/XUL_Reference">http://developer.mozilla.org/en/XUL_Reference</a> .</p>
+            <div class="note note"><span class="notetitle">Note:</span>  Ensure that each box, vbox, and hbox node has its own unique <strong class="ph b">id</strong> .</div>
+          </li>
+          <li class="li step"><span class="ph cmd">Save and close all open files, then start the Pentaho Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Test your new template and adjust its configuration accordingly.</span> </li>
+        </ol>
+        <div class="section result">You now have a custom Dashboard Designer template deployed to your <span class="ph cmd">Pentaho</span>  Server.</div>
+        <div class="section postreq">You must copy the template files by hand if you upgrade the <span class="ph cmd">Pentaho</span>  Server or Dashboard Designer in the future. You may want to back up your custom templates to a safe location right now just in case you forget to copy
+          them over during a future upgrade.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,24 @@
+<content type="text/html" title="Add Web Resource Authentication">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">To configure Web resource authentication in the BA Server to correspond with your user roles, follow the below instructions.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  These instructions are valid across all security DAOs.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Ensure that the BA Server is not currently running; if it is, run the <strong class="ph b">stop-pentaho</strong>  script.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Open a terminal or command prompt window and navigate to the <span class="ph filepath">.../pentaho-solutions/system/</span>  directory.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Edit the <strong class="ph b">applicationContext-spring-security.xml</strong>  file with a text editor.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Find and examine the following property: <code class="ph codeph"><property name=&quot;objectDefinitionSource&quot;></code></span>  </li>
+          <li class="li step"> <span class="ph cmd">Modify the regex patterns to include your roles.</span>  The <strong class="ph b">objectDefinitionSource</strong>  property associates URL patterns with roles. <strong class="ph b">RoleVoter</strong>  specifies that if any
+            role on the right hand side of the equals sign is granted to the user, the user may view any page that matches that URL pattern. The default roles in this file are not required; you can replace, delete, or change them in any way that suits
+            you. </li>
+        </ol>
+        <div class="section result">You should now have coarse-grained permissions established for user roles.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

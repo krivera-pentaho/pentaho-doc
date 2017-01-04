@@ -1,0 +1,93 @@
+<content type="text/html" title="Get/Set Report Options APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="How_to_Call_These_APIs"></span> 
+        <h2 class="editable">How to Call These APIs</h2>
+        <p>There are two calls related to Report Options: <span class="filepath style-wrap">getReportOption </span> and <span class="filepath style-wrap">setReportOption</span> .</p>
+        <ul class="pentaho-list-unordered">
+          <li>The <span class="filepath style-wrap">setReportOption </span> is used to designate a value for a specific report option.</li>
+          <li>The <span class="filepath style-wrap">getReportOption </span> allows you to view the current value assigned to that option.</li>
+        </ul> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(name:string, value:string);
+cv.api.report.getReportOption(name:string);</pre>
+        <p><span style="color: rgb(0,0,0);">To ensure your changes are reflected in the report, the <span class="filepath style-wrap">refreshReport </span> method should be called:</span> 
+        </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.operation.refreshReport();</pre>
+        <p>Acceptable values for setting a report option are '<span class="filepath style-wrap">true</span> ' and '<span class="filepath style-wrap">false</span> '. The <span class="filepath style-wrap">getReportOption </span> returns one of these same values.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Report_Options"></span> 
+        <h2 class="editable">Report Options</h2>
+        <p>The following lists report options.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="showRowGrandTotal"></span> 
+        <h2 class="editable">showRowGrandTotal</h2>
+        <p>This option allows you to set the visibility of row grand totals for the pivot table.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;showRowGrandTotal&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;showRowGrandTotal&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_5" class="mt-page-section"><span id="showColumnGrandTotal"></span> 
+        <h2 class="editable">showColumnGrandTotal</h2>
+        <p>This option allows you to set the visibility of column grand totals for the pivot table.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;showColumnGrandTotal&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;showColumnGrandTotal&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_6" class="mt-page-section"><span id="useNonVisualTotals"></span> 
+        <h2 class="editable">useNonVisualTotals</h2>
+        <p>This option allows you to set the visibility of non-visual totals for the pivot table.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;useNonVisualTotals&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;useNonVisualTotals&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_7" class="mt-page-section"><span id="showEmptyCells"></span> 
+        <h2 class="editable">showEmptyCells</h2>
+        <p>This option allows you to set the visibility of cells with no data.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;showEmptyCells&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;showEmptyCells&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_8" class="mt-page-section"><span id="showDrillLinks"></span> 
+        <h2 class="editable">showDrillLinks</h2>
+        <p>This option allows you to set the visibility of drillthrough links on cells for pivot table.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;showDrillLinks&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;showDrillLinks&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_9" class="mt-page-section"><span id="autoRefresh"></span> 
+        <h2 class="editable">autoRefresh</h2>
+        <p>This option allows you to set the ability to automatically refresh the report when a user makes a report definition change.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;autoRefresh&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;autoRefresh&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_10" class="mt-page-section"><span id="freezeColumns"></span> 
+        <h2 class="editable">freezeColumns</h2>
+        <p>This option allows you to set the freezing of the column headers in the pivot table when the user scrolls.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;freezeColumns&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;freezeColumns&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_11" class="mt-page-section"><span id="freezeRows"></span> 
+        <h2 class="editable">freezeRows</h2>
+        <p>This option allows you to set the freezing of the row headers in the pivot table when the user scrolls.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setReportOption(&quot;freezeRows&quot;, &quot;true&quot;);
+cv.api.report.getReportOption(&quot;freezeRows&quot;); // Returns &quot;true&quot;</pre> </div>
+      <div id="section_12" class="mt-page-section"><span id="URL_Parameters"></span> 
+        <h2 class="editable">URL Parameters</h2>
+        <p>All of the above report options can also be set through the URL as URL parameters.</p> <pre>
+http://localhost:8080/pentaho/api/repos/%3Apublic%3ASteel%20Wheels%3ALeading%20Product%20Lines%20(pivot%20table).xanalyzer/editor?ts=1421660200377&amp;showRowGrandTotal=true&amp;showColumnGrandTotal=true&amp;useNonVisualTotals=true&amp;showEmptyCells=true&amp;showDrillLinks=true&amp;autoRefresh=true&amp;freezeColumns=true&amp;freezeRows=true
+</pre>
+        <br />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#How_to_Call_These_APIs" rel="internal">How to Call These APIs</a>  </li>
+      <li> <a href="#Report_Options" rel="internal">Report Options</a>  </li>
+      <li> <a href="#showRowGrandTotal" rel="internal">showRowGrandTotal</a>  </li>
+      <li> <a href="#showColumnGrandTotal" rel="internal">showColumnGrandTotal</a>  </li>
+      <li> <a href="#useNonVisualTotals" rel="internal">useNonVisualTotals</a>  </li>
+      <li> <a href="#showEmptyCells" rel="internal">showEmptyCells</a>  </li>
+      <li> <a href="#showDrillLinks" rel="internal">showDrillLinks</a>  </li>
+      <li> <a href="#autoRefresh" rel="internal">autoRefresh</a>  </li>
+      <li> <a href="#freezeColumns" rel="internal">freezeColumns</a>  </li>
+      <li> <a href="#freezeRows" rel="internal">freezeRows</a>  </li>
+      <li> <a href="#URL_Parameters" rel="internal">URL Parameters</a>  </li>
+    </ol>
+  </body>
+</content>

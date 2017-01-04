@@ -1,0 +1,126 @@
+<content type="text/html" title="Work With Fields">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p"><strong class="ph b">Data Type</strong> </p>
+        <p class="p">
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  objects are used to determine the characteristics of the row fields. They are typically obtained from a <code class="ph codeph">RowMetaInterface</code> object, which is acquired by a call
+          to <code class="ph codeph">getInputRowMeta()</code>. The <code class="ph codeph">getType()</code> method returns one of the static constants declared by
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  to indicate the PDI field type. Each field type maps to a corresponding native Java type for the actual value. The following table illustrates the mapping of the most frequently used field
+          types.</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e64" valign="top"><strong class="ph b">PDI data type</strong> </th>
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e70" valign="top"><strong class="ph b">Type constant</strong> </th>
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e76" valign="top"><strong class="ph b">Java data type</strong> </th>
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e82" valign="top"><strong class="ph b">Description&nbsp;</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">String</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_STRING</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.String</code></td>
+                <td class="entry" headers="d28295e82 " valign="top">A variable unlimited length text encoded in UTF-8 (Unicode)&nbsp;</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">Integer</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_INTEGER</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.Long</code></td>
+                <td class="entry" headers="d28295e82 " valign="top">A signed long 64-bit integer&nbsp;</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">Number</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_NUMBER</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.Double </code></td>
+                <td class="entry" headers="d28295e82 " valign="top">A double precision floating point value&nbsp;</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">BigNumber</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_BIGNUMBER</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.math.BigDecimal </code></td>
+                <td class="entry" headers="d28295e82 " valign="top">An arbitrary unlimited precision number&nbsp;</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">Date</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_DATE</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.util.Date</code></td>
+                <td class="entry" headers="d28295e82 " valign="top">A date-time value with millisecond precision&nbsp;</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">Boolean</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_BOOLEAN</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.Boolean</code></td>
+                <td class="entry" headers="d28295e82 " valign="top">A boolean value <code class="ph codeph">true</code> or <code class="ph codeph">false</code></td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e64 " valign="top">Binary</td>
+                <td class="entry" headers="d28295e70 " valign="top">TYPE_BINARY</td>
+                <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.byte[] </code></td>
+                <td class="entry" headers="d28295e82 " valign="top">An array of bytes that contain any type of binary data.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">Do not assume that the Java value of a row field matches these data types directly. This may or may not be true, based on the storage type used for the field.&nbsp;</p>
+        <p class="p"><strong class="ph b">Storage Types</strong> </p>
+        <p class="p">In addition to the data type of a field, the storage type, <code class="ph codeph">getStorageType()</code>/<code class="ph codeph">setStorageType()</code>, is used to interpret the actual field value in a row array. These storage types are available.</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e266" valign="top"><strong class="ph b">Type constant</strong> </th>
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e272" valign="top"><strong class="ph b">Actual field data type</strong> </th>
+                <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e278" valign="top"><strong class="ph b">Interpretation&nbsp;</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d28295e266 " valign="top">STORAGE_TYPE_NORMAL</td>
+                <td class="entry" headers="d28295e272 " valign="top">As listed in previous table</td>
+                <td class="entry" headers="d28295e278 " valign="top">The value in the row array is of the type listed in the data type table above and represents the field value directly.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e266 " valign="top">STORAGE_TYPE_BINARY_STRING&nbsp;</td>
+                <td class="entry" headers="d28295e272 " valign="top"><code class="ph codeph">java.lang.byte[] </code></td>
+                <td class="entry" headers="d28295e278 " valign="top">The field has been created using the Lazy Conversion feature. This means it is a non-altered sequence of bytes as read from an external medium, usually a file.&nbsp;</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d28295e266 " valign="top">STORAGE_TYPE_INDEXED</td>
+                <td class="entry" headers="d28295e272 " valign="top"><code class="ph codeph">java.lang.Integer</code></td>
+                <td class="entry" headers="d28295e278 " valign="top">The row value is an integer index into a fixed array of possible values. The <code class="ph codeph">ValueMetaInterface</code> object maintains the set of possible values in <code class="ph codeph">getIndex()</code><em class="ph i">/</em> 
+                  <code
+                  class="ph codeph">setIndex()</code>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><strong class="ph b">Accessing Row Values</strong> </p>
+        <p class="p">In a typical data processing scenario, a step is not interested in dealing with the complexities of the storage type. It just needs the actual data value on which to do processing. In order to safely read the value of a field, the <code class="ph codeph">ValueMetaInterface</code>          object provides a set of accessor methods to get at the actual Java value. The argument is a value from a row array that corresponds to the <code class="ph codeph">ValueMetaInterface</code> object. The accessor methods always return a proper
+          data value, regardless of the field storage type.</p>
+        <ul class="ul">
+          <li class="li"><code class="ph codeph">getString()</code></li>
+          <li class="li"><code class="ph codeph">getInteger()</code></li>
+          <li class="li"><code class="ph codeph">getNumber()</code></li>
+          <li class="li"><code class="ph codeph">getBigNumber()</code></li>
+          <li class="li"><code class="ph codeph">getDate()</code></li>
+          <li class="li"><code class="ph codeph">getBoolean()</code></li>
+          <li class="li"><code class="ph codeph">getBinary()</code></li>
+        </ul>
+        <p class="p">For each of these methods, <code class="ph codeph">RowMetaInterface</code> has corresponding methods that require the row array and the index of the field as arguments.</p>
+        <p class="p"><strong class="ph b">Additional Field Characteristics</strong> </p>
+        <p class="p">
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  represents all aspects of a PDI field, including conversion masks, trim type, and alike. All of these are available using corresponding accessor methods, such as
+          <a class="xref external"
+          target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/row/ValueMetaInterface.html#getConversionMask%28%29"><code class="ph codeph">getConversionMask()</code></a>  and
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/row/ValueMetaInterface.html#getTrimType%28%29"><code class="ph codeph">getTrimType()</code></a> . Refer to the
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/row/ValueMetaInterface.html">Javadoc</a>  for a complete overview.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,36 @@
+<content type="text/html" title="Configure LDAP for the DI Server">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>You must have a working directory server with an established configuration before continuing. Follow the instructions below to manually switch from&nbsp;Pentaho&nbsp;default security to&nbsp;LDAP&nbsp;security.</p>
+    <ol class="ol steps">
+      <li class="li step">Stop the DI Server.</li>
+      <li class="li step">Change the&nbsp;securities.properties&nbsp;file located in&nbsp;<span class="ph filepath">/pentaho-solutions/system</span> &nbsp; folder from&nbsp;<span class="filepath style-wrap">provider=jackrabbit</span> &nbsp;to&nbsp;<span class="filepath style-wrap">provider=ldap</span> &nbsp;.</li>
+      <li class="li step">Save and close the file, then edit the&nbsp;<span class="ph filepath">/pentaho-solutions/system/applicationContext-security-ldap.properties</span> &nbsp;file and modify the&nbsp;<strong class="ph b">localhost</strong> &nbsp;and&nbsp;<strong class="ph b">password</strong> &nbsp;to
+        match your configuration. <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">contextSource.providerUrl=ldap\://localhost\:10389/ou\=system</pre> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">contextSource.password=secret</pre>        </li>
+      <li class="li step">Update <strong>adminRole </strong> and <strong>adminUser </strong> for your system, replacing <strong>adminRole </strong> with the administrator role that you have defined in your LDAP server, and replacing <strong>adminUser </strong> with the user
+        name that has the administrator role assigned to it. <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">adminRole=cn\=Administrator,ou\=roles
+adminUser=uid\=admin,ou\=users</pre> </li>
+      <li class="li step">Delete these two folders from the <span class="filepath style-wrap">/pentaho/server/data-integration-server/pentaho-solutions/system/jackrabbit/repository</span>  directory:
+        <ul class="ul">
+          <li class="li">repository</li>
+          <li class="li">workspaces</li>
+        </ul>
+      </li>
+      <li class="li"><strong>Optional:</strong>  for SNMP only, make sure you change the admin user and password in the <span><span class="filepath style-wrap">/data-integration-server/pentaho-solutions/system/karaf/etc/pentaho.jms.cfg</span>  file&nbsp;</span> to match&nbsp;your
+        LDAP Admin user and password located in the <span class="filepath style-wrap">repository.spring.properties</span>  file.&nbsp;</li>
+      <li class="li step">Restart the DI Server.</li>
+    </ol>
+    <p>The DI Server is now configured to authenticate users against your directory server. The&nbsp;
+      <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010/030/010">LDAP&nbsp;Properties</a> &nbsp;reference article contains supplemental information for&nbsp;LDAP&nbsp;values.</p>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

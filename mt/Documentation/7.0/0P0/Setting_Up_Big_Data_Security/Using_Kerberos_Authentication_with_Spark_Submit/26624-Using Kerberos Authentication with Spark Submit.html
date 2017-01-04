@@ -1,0 +1,86 @@
+<content type="text/html" title="Using Kerberos Authentication with Spark Submit">
+  <body>
+    <div class="mt-page-summary">
+      <div class="mt-page-overview">Learn how to execute Spark Submit jobs on secure Cloudera Hadoop clusters.</div>
+    </div>
+    <p>This article explains how to execute Spark Submit jobs on secure Cloudera Hadoop clusters version 5.7 and later using Kerberos authentication. Spark jobs can be submitted to the secure clusters by adding keytab and principal utility parameter values
+      to the job. These values are what enable Kerberos authentication &nbsp;for Spark.</p>
+    <div id="section_1" class="mt-page-section"><span id="Prerequisites"></span> 
+      <h2 class="editable">Prerequisites</h2>
+      <p>The following prerequisites must be completed before running the Spark jobs:</p>
+      <ul>
+        <li>A Spark client must be installed, Refer to the article
+          <a title="Spark Submit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0L0/Spark_Submit">Spark Submit</a>  for information on installing and configuring the Spark client.</li>
+        <li>The cluster must be secured with Kerberos, and the&nbsp;Kerberos server used by the cluster must be accessible to the Pentaho Server.</li>
+        <li>The Pentaho computer must have Kerberos installed and configured as explained in
+          <a title="Set Up Kerberos for Pentaho" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho">Set Up Kerberos for Pentaho</a> .</li>
+      </ul>
+      <p class="pentaho-note">A valid Kerberos ticket must already be in the ticket cache area on your client machine before you launch and submit the Spark Submit job.</p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Spark_Submit_Entry_Properties"></span> 
+      <h2 class="editable">
+        <span>Spark Submit Entry Properties</span> 
+      </h2>
+      <p>Configure your job setup with the parameters in the following table:</p>
+      <table class="pentaho-table" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th class="confluenceTh">Parameter</th>
+            <th class="confluenceTh">Value</th>
+          </tr>
+          <tr>
+            <td class="confluenceTd">Entry Name</td>
+            <td class="confluenceTd">Name of the entry. You can customize this, or leave it as the default.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">Spark Submit Utility</td>
+            <td class="confluenceTd">Script that launches the Spark job.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">Master URL</td>
+            <td class="confluenceTd">The master URL for the cluster. Two options are supported:&nbsp;
+              <ul>
+                <li>Yarn-Cluster, which runs the driver program as a thread of the yarn application master (one of the node managers in the cluster). This is very similar to the way MapReduce works.</li>
+                <li>Yarn-Client, which runs the driver program on the yarn client. Tasks are still executing&nbsp;in the node managers of the YARN cluster.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">Type</td>
+            <td class="confluenceTd">The file type of your Spark job to be submitted. Your job can be written in Java, Scala, or Python. The fields displayed in the <strong>Files</strong>  tab will depend on what&nbsp;language option you select.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">Utility Parameters</td>
+            <td class="confluenceTd">
+              <p><strong>Name</strong>  and <strong>Value</strong>  of optional Spark configuration parameters associated with the <span class="mt-font-courier-new">spark-defaults.conf</span>  file.&nbsp; Add the following name and value pairs:
+                <br /> Name: spark.yarn.keytab
+                <br /> Value: File path to the spark.yarn.keytab file</p>
+              <p>Name: spark.yarn.principal
+                <br /> Value: Kerberos principal used to authenticate to the cluster</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">Enable Blocking</td>
+            <td class="confluenceTd">
+              <font color="#333333">This option is enabled by default. If this option is selected, the job entry waits until the Spark job finishes running.</font>
+              <font color="#333333">&nbsp;If it is not, the job entry proceeds with its&nbsp;</font>
+              <font color="#333333">execution</font>
+              <font color="#333333">&nbsp;once the Spark job is submitted for&nbsp;</font>
+              <font color="#333333">execution.</font>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="pentaho-note">Authentication via password is not supported.</p>
+      <p>
+        <img alt="" class="internal" style="width: 530px; height: 659px;" width="530px" height="659px" src="http://help.pentaho.com/@api/deki/files/12081/SparkJob.png?size=bestfit&amp;width=530&amp;height=659&amp;revision=1" />
+      </p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Prerequisites" rel="internal">Prerequisites</a>  </li>
+      <li> <a href="#Spark_Submit_Entry_Properties" rel="internal">Spark Submit Entry Properties</a>  </li>
+    </ol>
+  </body>
+</content>

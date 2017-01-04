@@ -1,0 +1,148 @@
+<content type="text/html" title="Embedding Pentaho Data Integration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="body conbody">
+      <p class="p">You can get the accompanying sample project from the <span class="ph filepath">kettle-sdk-embedding-samples</span>  folder of the
+        <a class="xref" title="Get Started" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/000">sample code </a> package. The sample project is bundled with a minimal set of dependencies. In a real-world implementation, projects require the complete set of PDI dependencies that include all .<span class="ph filepath">jar</span>  files from
+        <span class="ph filepath">data-integration/lib</span> .</p>
+      <p class="p">For each embedding scenario, there is a sample class that can be executed as a stand-alone java application. You can execute the classes manually or run the Ant targets provided in <span class="ph filepath">build/build.xml</span>  to run the sample
+        classes.</p>
+      <div id="section_1" class="mt-page-section"><span id="Running_Transformations"></span> 
+        <h2 class="editable">Running Transformations</h2>
+        <p class="p">If you want to run a PDI transformation from Java code in a stand-alone application, take a look at this sample class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningTransformations</code>. It sets the parameters and executes
+          the transformation in <span class="ph filepath">etl/parametrized_transformation.ktr</span> . The transform can be run from the <span class="ph filepath">.ktr</span>  file using <code class="ph codeph">runTransformationFromFileSystem()</code> or
+          from a PDI repository using <code class="ph codeph">runTransfomrationFromRepository()</code>.</p>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span> </li>
+          <li class="li step"><span class="ph cmd">Prepare the transformation.</span>  The definition of a PDI transformation is represented by a
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"
+            rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object. You can load this object from a .<span class="ph filepath">ktr</span>  file, a PDI repository, or you can generate it dynamically. To query the declared parameters of the transformation definition
+            use <code class="ph codeph">listParameters()</code>, or to query the assigned values use <code class="ph codeph">setParameterValue()</code>.</li>
+          <li class="li step"><span class="ph cmd">Execute the transformation. </span>  An executable
+            <a class="external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Trans.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Trans.html"
+            target="_blank"><code class="ph codeph">Trans</code></a>  object is derived from the <code class="ph codeph">TransMeta</code> object that is passed to the constructor. The <code class="ph codeph">Trans</code> object starts and then executes asynchronously.
+            To ensure that all steps of the <code class="ph codeph">Trans</code> object have completed, call <code class="ph codeph">waitUntilFinished()</code>.</li>
+          <li class="li step"><span class="ph cmd">Evaluate the transformation outcome.</span>  After the <code class="ph codeph">Trans</code> object completes, you can access the result using <code class="ph codeph">getResult()</code>. The
+            <a class="xref external" target="_blank"
+            title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/Result.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/Result.html"><code class="ph codeph">Result</code></a>  object can be queried for success by evaluating <code class="ph codeph">getNrErrors()</code>. This method returns zero (0) on success and a non-zero value when there are errors. To get more information,
+            retrieve the transformation log lines.</li>
+        </ol>
+        <p>If you want to run a PDI job from Java code in a stand-alone application, take a look at this sample class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningJobs</code>. It sets the parameters and executes the job in <span class="ph filepath">etl/parametrized_job.kjb</span> .
+          The job can be run from the .<span class="ph filepath">kjb</span>  file using <code class="ph codeph">runJobFromFileSystem()</code> or from a repository using <code class="ph codeph">runJobFromRepository()</code>.</p>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs..</span> </li>
+          <li class="li step"><span class="ph cmd">Prepare the job. </span>  The definition of a PDI job is represented by a
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"
+            rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"><code class="ph codeph">JobMeta</code></a>  object. You can load this object from a .<span class="ph filepath">ktb</span>  file, a PDI repository, or you can generate it dynamically. To query the declared parameters of the job definition use
+            <code class="ph codeph">listParameters()</code>. To set the assigned values use <code class="ph codeph">setParameterValue()</code>.</li>
+          <li class="li step"><span class="ph cmd">Execute the job. </span>  An executable
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html"><code class="ph codeph">Job</code></a>  object is derived from the
+            <a class="external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"
+            target="_blank"><code class="ph codeph">JobMeta</code></a>  object that is passed in to the constructor. The
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html"><code class="ph codeph">Job</code></a>  object starts, and then executes in a separate thread. To wait for the job to complete, call <code class="ph codeph">waitUntilFinished()</code>.</li>
+          <li class="li step"><span class="ph cmd">Evaluate the job outcome. </span>  After the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/Job.html"><code class="ph codeph">Job</code></a>  completes, you can access the result using
+            <a class="external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/Job.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/Job.html"
+            target="_blank"><code class="ph codeph">getResult(</code>)</a> . The
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/Job.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/Job.html"><code class="ph codeph">Result</code></a>  object can be queried for success using <code class="ph codeph">getResult()</code>. This method returns <code class="ph codeph">true</code> on success and <code class="ph codeph">false</code> on failure.
+            To get more information, retrieve the job log lines.</li>
+        </ol>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Building_Transformations_Dynamically"></span> 
+        <h2 class="editable">Building Transformations Dynamically</h2>
+        <p class="p">To enable your application to respond quickly to changing conditions, you can build transformations dynamically. The example class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingTransformations</code>, shows you how. It
+          generates a transformation definition and saves it to a .<span class="ph filepath">ktr</span>  file.</p>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span> </li>
+          <li class="li step"><span class="ph cmd">Create and configure a transformation definition object.</span>  A transformation definition is represented by a
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"
+            rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object. Create this object using the default constructor. The transformation definition includes the name, the declared parameters, and the required database connections.&nbsp;</li>
+          <li class="li step"><span class="ph cmd">Populate the <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object with steps.</span>             The data flow of a transformation is defined by steps that are connected by hops.
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Create the step by instantiating its class directly and configure it using its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. Transformation steps reside in sub-packages of <code class="ph codeph">org.pentaho.di.trans.steps</code>. For example, to use the <span class="ph uicontrol">Get File Names</span>                 step , create an instance of
+                <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/steps/getfilenames/GetFileNamesMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/steps/getfilenames/GetFileNamesMeta.html"><code class="ph codeph">org.pentaho.di.trans.steps.getfilenames.GetFileNamesMeta</code></a>  and use its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods to configure it. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Obtain the step id string. Each PDI step has an id that can be retrieved from the PDI <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/plugins/PluginRegistry.html">plugin registry</a> . A simple way to retrieve the step id is to call <code class="ph codeph">PluginRegistry.getInstance().getPluginId(StepPluginType.class, theStepMetaObject)</code>.&nbsp; </span> </li>
+              <li class="li substep"><span class="ph cmd">Create an instance of <code class="ph codeph">org.pentaho.di.trans.step.StepMeta</code>, passing the step id string, the name, and the configured step object to the constructor. An instance of <code class="ph codeph">StepMeta</code> encapsulates the step properties, as well as controls the placement of the step on the Spoon canvas and connections to hops. Once the <code class="ph codeph">StepMeta</code> object has been created, call <span class="ph filepath">setDrawn(true)</span>                 and <code class="ph codeph">setLocation(x,y)</code> to make sure the step appears correctly on the Spoon canvas. Finally, add the step to the transformation, by calling <code class="ph codeph">addStep()</code> on the transformation definition
+                object. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Once steps have been added to the transformation definition, they need to be connected by hops. To create a hop, create an instance of <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransHopMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransHopMeta.html"><code class="ph codeph">org.pentaho.di.trans.TransHopMeta</code></a>, passing in the From and To steps as arguments to the constructor. Add the hop to the transformation definition by calling <code class="ph codeph">addTransHop()</code>. </span> </li>
+            </ol>
+          </li>
+        </ol> After all steps have been added and connected by hops, the transformation definition object can be serialized to a .<span class="ph filepath">ktr</span>  file by calling <code class="ph codeph">getXML()</code> and opening it in Spoon for inspection.
+        The sample class <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingTransformations</code> generates this transformation.
+        <div class="section result">
+          <img alt="" class="internal default" style="width: 434px; height: 108px;" width="434px" height="108px" src="http://help.pentaho.com/@api/deki/files/8316/buildtransformationdynamically.png?size=bestfit&amp;width=434&amp;height=108&amp;revision=1"
+          />
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Building_Jobs_Dynamically"></span> 
+        <h2 class="editable">Building Jobs Dynamically</h2>
+        <p class="p">To enable your application to respond quickly to changing conditions, you can build jobs dynamically. The example class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingJobs</code>, shows you how. It generates a job definition
+          and saves it to a .<span class="ph filepath">kjb</span>  file.</p>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span> </li>
+          <li class="li step"><span class="ph cmd">Create and configure a job definition object.</span>  A job definition is represented by a
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"
+            rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"><code class="ph codeph">JobMeta</code></a>  object. Create this object using the default constructor. The job definition includes the name, the declared parameters, and the required database connections.&nbsp;</li>
+          <li class="li step"><span class="ph cmd">Populate the <code class="ph codeph">JobMeta</code> object with job entries.</span>  The control flow of a job is defined by job entries that are connected by hops.
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Create the job entry by instantiating its class directly and configure it using its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The job entries reside in sub-packages of <code class="ph codeph">org.pentaho.di.job.entries</code>. For example, use the <span class="ph uicontrol">File Exists</span>                 job entry, create an instance of
+                <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/fileexists/JobEntryFileExists.html" rel="external nofollow"
+                href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/fileexists/JobEntryFileExists.html"><code class="ph codeph">org.pentaho.di.job.entries.fileexists.JobEntryFileExists</code></a>, and use <code class="ph codeph">setFilename()</code> to configure it. </span>  The <span class="ph uicontrol">Start</span>  job entry is implemented
+                by
+                <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/special/JobEntrySpecial.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/special/JobEntrySpecial.html"><code class="ph codeph">org.pentaho.di.job.entries.special.JobEntrySpecial</code>.</a> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Create an instance of <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryCopy.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryCopy.html"><code class="ph codeph">org.pentaho.di.job.entry.JobEntryCopy</code></a>  by passing the job entry created in the previous step to the constructor. An instance of <code class="ph codeph">JobEntryCopy</code> encapsulates the properties of a job entry, as well as controls the placement of the job entry on the Spoon canvas and connections to hops. Once created, call <code class="ph codeph">setDrawn(true)</code> and <code class="ph codeph">setLocation(x,y)</code> to make sure the job entry appears correctly on the Spoon canvas. Finally, add the job entry to the job by calling <code class="ph codeph">addJobEntry()</code> on the job definition object. </span>                 It is possible to&nbsp; place the same job entry in several places on the canvas by creating multiple instances of <code class="ph codeph">JobEntryCopy</code> and passing in the same job entry instance.&nbsp;</li>
+              <li class="li substep"><span class="ph cmd">Once job entries have been added to the job definition, they need to be connected by hops. To create a hop, create an instance of <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobHopMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobHopMeta.html"><code class="ph codeph">org.pentaho.di.job.JobHopMeta</code></a>, passing in the From and To job entries as arguments to the constructor. Configure the hop consistently. Configure it as a green or red hop by calling <code class="ph codeph">setConditional()</code> and <code class="ph codeph">setEvaluation(true/false)</code>. If it is an unconditional hop, call <code class="ph codeph">setUnconditional()</code>. Add the hop to the job definition by calling <code class="ph codeph">addJobHop()</code>. </span> </li>
+            </ol>
+          </li>
+        </ol>
+        <p class="p">After all job entries have been added and connected by hops, the job definition object can be serialized to a .<span class="ph filepath">kjb</span>  file by calling <code class="ph codeph">getXML()</code>, and opened in Spoon for inspection. The
+          sample class <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingJobs</code> generates this job.
+          <img class="image" id="c273df29-b884-4cef-b8a8-7f09f58dbcf2__building_jobs_on_the_fly__image_tnm_1rq_mh" />
+          <br />
+          <img alt="" class="internal default" src="http://help.pentaho.com/@api/deki/files/5198/buildjobdynamically.png?revision=1" />
+        </p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Obtaining_Logging_Information"></span> 
+        <h2 class="editable">Obtaining Logging Information</h2>
+        <p class="p">When you need more information about how transformations and jobs execute, you can view PDI log lines and text.</p>
+        <p class="p">PDI collects log lines in a central place. The class
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/KettleLogStore.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/KettleLogStore.html"><code class="ph codeph">org.pentaho.di.core.logging.KettleLogStore</code></a>  manages all log lines and provides methods for retrieving the log text for specific entities. To retrieve log text or log lines, supply the log channel id generated
+          by PDI during runtime. You can obtain the log channel id by calling <code class="ph codeph">getLogChannelId()</code>, which is part of
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/LoggingObjectInterface.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/LoggingObjectInterface.html"><code class="ph codeph">LoggingObjectInterface</code></a> . Jobs, transformations, job entries, and transformation steps all implement this interface.&nbsp;</p>
+        <p>For example, assuming the job variable is an instance of a running or completed job. This is how you retrieve its log lines:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">LoggingBuffer appender = KettleLogStore.getAppender();
+String logText = appender.getBuffer(job.getLogChannelId(), false).toString();</pre>
+        <p class="p">The main methods in the sample classes <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningJobs</code> and <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningTransformations</code> retrieve log information from
+          the executed job or transformation in this manner.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Exposing_a_Transformation_or_Job_as_a_Web_Service"></span> 
+        <h2 class="editable">Exposing a Transformation or Job as a Web Service</h2>
+        <p class="p">Running a PDI job or transformation as part of a web-service is implemented by writing a servlet that maps incoming parameters for a
+          <a title="Running Transformations" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/020">transformation</a>  or
+          <a title="Documentation/5.1/0R0/0V0/020/010" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/020">job entry</a>  and executes them as part of the request cycle.</p>
+        <p class="p">Alternatively, you can use the&nbsp;Carte server&nbsp;or the Pentaho&nbsp;Server directly by building a transformation that writes its output to the HTTP response of the Carte server. This is achieved by using the <span class="ph uicontrol">Pass Output to Servlet</span>           feature of the Text output, XML output, JSON output, or scripting steps. For an example, run the sample transformation, <span class="ph filepath">/data-integration/samples/transformations/Servlet Data Example.ktr</span>, on Carte.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Running_Transformations" rel="internal">Running Transformations</a>  </li>
+      <li> <a href="#Building_Transformations_Dynamically" rel="internal">Building Transformations Dynamically</a>  </li>
+      <li> <a href="#Building_Jobs_Dynamically" rel="internal">Building Jobs Dynamically</a>  </li>
+      <li> <a href="#Obtaining_Logging_Information" rel="internal">Obtaining Logging Information</a>  </li>
+      <li> <a href="#Exposing_a_Transformation_or_Job_as_a_Web_Service" rel="internal">Exposing a Transformation or Job as a Web Service</a>  </li>
+    </ol>
+  </body>
+</content>

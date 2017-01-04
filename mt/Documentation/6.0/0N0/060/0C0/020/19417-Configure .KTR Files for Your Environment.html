@@ -1,0 +1,38 @@
+<content type="text/html" title="Configure .KTR Files for Your Environment">
+  <body>
+    <div>
+      <p>If you are NOT using Postgres and a default installation, you will need to configure a few of the sample .KTRs in Spoon in order to use the SDR form.</p>
+      <ol class="pentaho-list-ordered">
+        <li>Click <strong>File </strong> > <strong>Open </strong> and navigate to find the <span class="filepath style-wrap">SDR_data.ktr</span>  in this directory: <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/SDR/endpoints/kettle</span> .
+          Right-click on the <strong>Set Local Variables</strong>  step to edit, and enter the URL for your BA Server. Click <strong>OK</strong> .
+          <p style="text-align: center;">
+            <img alt="ssSDRdata_ktr.png" class="internal default" style="width: 550px; height: 349px;" width="550px" height="349px" src="http://help.pentaho.com/@api/deki/files/6403/ssSDRdata_ktr.png?size=bestfit&amp;width=550&amp;height=349&amp;revision=1"
+            />
+          </p>
+        </li>
+        <li>In the same transformation, right-click on the <span class="filepath style-wrap">Call_ML_SDR </span> Job and select<strong> Open Referenced Object </strong> ><strong> Job</strong>  to open the _<span class="filepath style-wrap">ML_SDR</span> 
+          <span
+          class="filepath style-wrap">.job</span> . Right-click to edit the <strong>Create Table</strong>  step to point to your staging database. Click <strong>OK</strong> .
+            <p style="text-align: center;">
+              <a class="thumb" title="ssOrchestrateSDR.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/6402/ssOrchestrateSDR.png">
+                <img alt="ssOrchestrateSDR.png" class="internal default" style="width: 550px; height: 348px;" width="550px" height="348px" src="http://help.pentaho.com/@api/deki/files/6402/ssOrchestrateSDR.png?size=bestfit&amp;width=550&amp;height=348&amp;revision=1"
+                />
+              </a> 
+            </p>
+        </li>
+        <li>Next, right-click to edit the <strong>Publish Model</strong>  step and enter your user id and password for the BA Server. Click <strong>Test Connection</strong>, then click <strong>OK</strong> .</li>
+        <li>Open the _<span class="filepath style-wrap">ML_SDR_REFINERY.ktr</span> . Right-click to edit the <strong>Out to Staging DB</strong>  step and select your staging database from the drop-down menu.
+          <p style="text-align: center;">
+            <a class="thumb" title="ssStagingDB_SDR.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/6404/ssStagingDB_SDR.png">
+              <img alt="ssStagingDB_SDR.png" class="internal default" style="width: 550px; height: 335px;" width="550px" height="335px" src="http://help.pentaho.com/@api/deki/files/6404/ssStagingDB_SDR.png?size=bestfit&amp;width=550&amp;height=335&amp;revision=1"
+              />
+            </a> 
+          </p>
+        </li>
+        <li>Save all of these files and exit out of Spoon.</li>
+        <li>Restart the BA server.</li>
+      </ol>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,33 @@
+<content type="text/html" title="Streamline Printed Output">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Pentaho Reporting's overall performance is chiefly affected by the amount of printed content that it has to generate. The more content you generate, the more time the Reporting engine will take to perform all layout computations.</p>
+        <p class="p">Large inline subreports are notorious for poor performance. This is because the layouted output of an inline subreport is always stored in memory. The master report's layouting pauses until the subreport is fully generated, then it's inserted
+          into the master report's layout model and subsequently printed. Memory consumption for this layouting model is high because the full layout model is kept in memory until the report is finished. If there is a large amount of content in the subreport,
+          you will run into &quot;out of memory&quot; exceptions.</p>
+        <p class="p">An inline subreport that consumes the full width of the root-level band should be converted into a banded subreport. Banded subreports are layouted and all output is generated while the subreport is processed. The memory footprint for that is
+          small because only the active band or the active page has to be held in memory.</p>
+        <p class="p">When images are embedded from remote servers (HTTP/FTP sources), you must ensure that the server produces a <strong class="ph b">LastModifiedDate</strong>  header. The Reporting engine uses that header as part of its caching system, and if it is
+          missing, the remote images will not be cached, forcing the engine to retrieve them every time they're needed.</p>
+        <p class="p">Caching must be configured properly via a valid ehcache configuration file, which is stored in the Pentaho Web app in the <span class="ph filepath">/WEB-INF/classes/</span>  directory. If caching is disabled or misconfigured, then there will be
+          performance problems when loading reports and resources.</p>
+        <p class="p">Within Pentaho Reporting there are three output types, each with its own memory and CPU consumption characteristics. Each is listed below with an explanation of how it is optimized.</p>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/030/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/030/010/000">Paginated Exports</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/030/010/010" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/030/010/010">Table Exports</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/030/010/020" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/030/010/020">HTML Exports</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

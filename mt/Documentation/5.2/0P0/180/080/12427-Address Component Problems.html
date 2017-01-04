@@ -1,0 +1,171 @@
+<content type="text/html" title="Address Component Problems">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides information on how to address MonetDB and other problems.</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p>The resolution for several common component problems appear in the following sections.</p>
+        <div id="section_2" class="mt-page-section"><span id="Troubleshooting_MonetDB_for_Instaview"></span> 
+          <h2 class="editable">Troubleshooting MonetDB for Instaview</h2>
+          <p class="p">Instaview loads ETL models, dimensional schema, and data in a MonetDB-based database. When a new Instaview project is created or an existing one is opened, the MonetDB server is started. Most issues that can occur relate to the way that Pentaho
+            controls MonetDB.</p>
+          <p class="p"><strong class="ph b">Connection Errors</strong> </p>
+          <p class="p">Connection errors sometimes occur if there are MonetDB port conflicts. This sometimes occurs if you have installed Instaview in the past using one method, then reinstalled it using a different method. Check the share.xml file and modify the
+            MonetDB port number in the Agile BI section so that it is not 50000, but another number such as 50006. Exit from Instaview and Spoon and try to start them both again.</p>
+          <p class="p"><strong class="ph b">General Errors</strong> </p>
+          <p class="p">The Monetdb server is started when a new Instaview project is created or an existing one is opened. The server is shutdown when the project is closed. Pentaho provides scripts to start and stop the server. These scripts are located in the
+            <span
+            class="ph filepath">data-integration/plugins/spoon/agile-bi/platform/pentaho-solutions/system/instaview/scripts</span>  directory.</p>
+          <p class="p">For testing or debugging, these scripts can be run with no arguments passed in. However, defaults are used for parameters that are not passed in. Each operating system has different defaults, the configuration definitions in the previous examples
+            drive the values passed in to these scripts when executed from within PDI/Instaview. When running the scripts, take care to pass in the correct values, otherwise the database may not start up properly. Open the script in a text editor before
+            calling it to determine what parameters you might need. Here are some example paramaters. None of the parameters are required, but are key if you stray from the default configurations.</p>
+          <p class="p"><strong class="ph b">For Windows</strong> </p>
+          <div class="p"> <pre class="pre codeblock">
+startMonetDb.bat DB_NAME MONETDB_INSTALL_DIR
+</pre>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__trouble_shooting_monetdb_instaview_config__table_uys_mzg_d3" rules="all" summary="">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e61" valign="top" width="50%">Parameter</th>
+                    <th class="entry" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e64" valign="top" width="50%">Default Value</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d102905e61 " valign="top" width="50%"><code class="ph codeph">DB_NAME </code></td>
+                    <td class="entry" headers="d102905e64 " valign="top" width="50%"><code class="ph codeph">pentaho-instaview </code></td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d102905e61 " valign="top" width="50%"><code class="ph codeph">MONETDB_INSTALL_PATH </code></td>
+                    <td class="entry" headers="d102905e64 " valign="top" width="50%"><code class="ph codeph">MONETDB_INSTALL_DIR</code> environment variable</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="p"><strong class="ph b">For Mac or Linux</strong> </p>
+          <div class="p"> <pre class="pre codeblock">
+./startMonetDb.sh DB_NAME DB_FARM_LOCATION MONETDB_CMD MONETDBD_CMD MONETDB_PORT PASSPHRASE
+   </pre>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__trouble_shooting_monetdb_instaview_config__table_lvb_zzg_d3" rules="all" summary="">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e127" valign="top" width="25%">Parameter</th>
+                    <th class="entry" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e130" valign="top" width="25%">Mac Default Value</th>
+                    <th class="entry" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e133" valign="top" width="25%">Linux Default Value</th>
+                    <th class="entry" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e136" valign="top" width="25%">Comment</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d102905e127 " valign="top" width="25%">DB_NAME</td>
+                    <td class="entry" headers="d102905e130 " valign="top" width="25%">pentaho-instaview</td>
+                    <td class="entry" headers="d102905e133 " valign="top" width="25%">&nbsp;</td>
+                    <td class="entry" headers="d102905e136 " valign="top" width="25%">&nbsp;</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d102905e127 " valign="top" width="25%">DB_FARM_LOCATION</td>
+                    <td class="entry" headers="d102905e130 " valign="top" width="25%">$HOME/.kettle/instaview/dbfarm</td>
+                    <td class="entry" headers="d102905e133 " valign="top" width="25%">$HOME/.kettle/instaview/dbfarm</td>
+                    <td class="entry" headers="d102905e136 " valign="top" width="25%">&nbsp;</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d102905e127 " valign="top" width="25%">MONETDB_CMD</td>
+                    <td class="entry" headers="d102905e130 " valign="top" width="25%">/usr/local/monetdb/bin/monetdb</td>
+                    <td class="entry" headers="d102905e133 " valign="top" width="25%">/usr/bin/monetdb</td>
+                    <td class="entry" headers="d102905e136 " valign="top" width="25%">&nbsp;</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d102905e127 " valign="top" width="25%">MONETDBD_CMD</td>
+                    <td class="entry" headers="d102905e130 " valign="top" width="25%">/usr/local/monetdb/bin/monetdbd</td>
+                    <td class="entry" headers="d102905e133 " valign="top" width="25%">/usr/bin/monetdbd</td>
+                    <td class="entry" headers="d102905e136 " valign="top" width="25%">&nbsp;</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d102905e127 " valign="top" width="25%">MONETDB_PORT</td>
+                    <td class="entry" headers="d102905e130 " valign="top" width="25%">50000</td>
+                    <td class="entry" headers="d102905e133 " valign="top" width="25%">50000</td>
+                    <td class="entry" headers="d102905e136 " valign="top" width="25%">To avoid port conflicts, this port number is sometimes changed to 50006.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d102905e127 " valign="top" width="25%">PASSPHRASE</td>
+                    <td class="entry" headers="d102905e130 " valign="top" width="25%">monetdb</td>
+                    <td class="entry" headers="d102905e133 " valign="top" width="25%">monetdb</td>
+                    <td class="entry" headers="d102905e136 " valign="top" width="25%">Required for remote control of Monetdb</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="p">Also, check the AgileBI shared connection in PDI that Instaview creates and uses to talk to Monetdb. You can open this connection in PDI and test or explore it. This connection is used by the templates. If you open the <span class="ph filepath">.ktr</span>             file used by Instaview you can run it that way as long as Monetdb is running.</p>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+      <div id="section_3" class="mt-page-section"><span id="Manage_Multiple_Outer-Joins"></span> 
+        <h2 class="editable">
+          <span>Manage Multiple Outer-Joins</span> 
+        </h2>
+        <p class="p">When you have three or more tables that require outer joins, the&nbsp;<em class="ph i">order</em> &nbsp;in which the tables are joined is critical. Consider the example below:</p>
+        <p>
+          <img alt="48_outer_joins.png" class="internal default" src="http://help.pentaho.com/@api/deki/files/2692/48_outer_joins.png?revision=1" />
+        </p>
+        <p class="p">In the sample preview below, the entries, 1, 2 ,3, and 4, in&nbsp;Table4&nbsp;are taken and outer-joined with the records in the two other tables. The three other tables contain fewer records. The relationships are defined but now the order of
+          execution critical. Relationship A is executed first, followed by B, then C.</p>
+        <p>
+          <img alt="49_execution_of_joins.png" class="internal default" src="http://help.pentaho.com/@api/deki/files/2693/49_execution_of_joins.png?revision=1" />
+        </p>
+        <p class="p">Below is the query that is generated:</p>
+        <p>
+          <img alt="50_query_outer_joins.png" class="internal default" src="http://help.pentaho.com/@api/deki/files/2694/50_query_outer_joins.png?revision=1" />
+        </p>
+        <p class="p">The nested join syntax that is generated forces the order of execution:</p>
+        <ul class="ul">
+          <li class="li">Join Table1 and Table2 (shown in red)</li>
+          <li class="li">Join&nbsp;Table3&nbsp;and A = B (shown in blue)</li>
+          <li class="li">Join&nbsp;Table4&nbsp;with B = Result</li>
+        </ul>
+        <p class="p">Other orders of execution are just as valid depending on the business context to which they are applied. Another order of execution will generate a different result. To allow business model designers to ensure that user selections are executed
+          in a specific way, a&nbsp;<strong class="ph b">Join Order Key</strong> &nbsp;is added to the&nbsp;<strong class="ph b">Relationship Properties</strong> &nbsp;dialog box.</p>
+        <p>
+          <img alt="51_relationship_properties_dialog_box.png" class="internal default" style="width: 550px; height: 281px;" width="550px" height="281px" src="http://help.pentaho.com/@api/deki/files/2695/51_relationship_properties_dialog_box.png?size=bestfit&amp;width=550&amp;height=281&amp;revision=1"
+          />
+        </p>
+        <p class="p">The join order key is relevant only in instances in which outer joins are deployed in business models. To make the importance of the execution order apparent, this information is displayed in the graphical view of the model, as shown below.</p>
+        <div class="p">
+          <div class="note note"><span class="notetitle">Note:</span> &nbsp;It is not mandatory to use uppercase letters, (A, B, C, as shown in the first image), to set the order in which tables are executed. Any alphanumeric characters (0-9, A-Z) can be used. The system will
+            calculate the ASCII values of each character; the values are then used to determine the order of execution. In the example, A, B, C, AA, AB,&nbsp;Pentaho&nbsp;Metadata Editor will execute the table relationships in the following order: A,
+            AA, AB, B, C.</div>
+        </div>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Use_the_Delay_Outer_Join_Conditions_Property"></span> 
+        <h2 class="editable">Use the Delay Outer Join Conditions Property</h2>
+        <div class="related-links">
+          <div class="section context">
+            <p class="p">To force conditions that would ordinarily be processed in the JOIN condition to be processed in the WHERE clause, follow the directions below to create a&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;custom property.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Right-click on a business model and select&nbsp;<strong class="ph b">Edit</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Add a property by clicking the green&nbsp;<strong class="ph b">+</strong> &nbsp;icon.</span> </li>
+            <li class="li step"><span class="ph cmd">Select&nbsp;<strong class="ph b">Add a Custom Property</strong> &nbsp;and set its ID to&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;and select&nbsp;<strong class="ph b">boolean</strong> &nbsp;for the&nbsp;<strong class="ph b">Type</strong>, then click&nbsp;<strong class="ph b">OK</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Select the newly-created&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;property, then click the checkbox for&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;under the&nbsp;<strong class="ph b">Custom</strong> &nbsp;heading on the right side of the window, then click&nbsp;<strong class="ph b">OK</strong> .</span> </li>
+          </ol>
+          <p>Instead of the conditions being rolled into the JOIN clause, they will be allowed to roll down into the WHERE clause.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Troubleshooting_MonetDB_for_Instaview" rel="internal">Troubleshooting MonetDB for Instaview</a>  </li>
+      <li> <a href="#Manage_Multiple_Outer-Joins" rel="internal">Manage Multiple Outer-Joins</a>  </li>
+      <li> <a href="#Use_the_Delay_Outer_Join_Conditions_Property" rel="internal">Use the Delay Outer Join Conditions Property</a>  </li>
+    </ol>
+  </body>
+</content>

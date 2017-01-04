@@ -1,0 +1,92 @@
+<content type="text/html" title="Analysis Issues">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">Follow the suggestions in these topics to help resolve a common issue&nbsp;with Pentaho&nbsp;Analyzer:</p>
+        <ul>
+          <li class="p">Multi-Byte Characters Do Not Appear in PDFs Exported from Analyzer</li>
+          <li class="p">Geo Maps Partially Rendering</li>
+        </ul>
+        <div class="body">
+          <p>See Pentaho&nbsp;
+            <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+        </div>
+      </div>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="Multi-Byte_Characters_Do_Not_Appear_in_PDFs_Exported_from_Analyzer"></span> 
+      <h2 class="editable">Multi-Byte Characters Do Not Appear in PDFs Exported from Analyzer</h2>
+      <p>If you are using a multi-byte character set, such as would be used for languages like Japanese or Chinese, and find that you have missing or corrupted output when exporting Analyzer reports to PDF, you will have to specify a default TrueType font
+        for PDF rendering that supports multi-byte characters. The default PDF font in Analyzer is Helvetica, which does not support multi-byte character sets.</p>
+      <div class="section context">
+        <p class="p">When displaying data in Analyzer, your reports will use the default browser fonts. However, the PDF export function may not have the same fonts available when creating a PDF from your Analyzer report. The&nbsp;resulting output will not&nbsp;look
+          the same in PDF as it did in the browser. The default font for PDF&nbsp;is Helvetica, but you can specify any TrueType font or collection to replace it using&nbsp;the following&nbsp;instructions:</p>
+        <p>&nbsp;</p>
+      </div>
+      <ol class="ol steps">
+        <li class="li step">
+          <p>Stop the Pentaho&nbsp;Server and User Console.</p>
+        </li>
+        <li class="li step">
+          <p><span class="ph cmd">Edit the <code>analyzer.properties</code>&nbsp;file in the <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/analyzer/</span>  folder.</span> 
+          </p>
+        </li>
+        <li class="li step"><span class="ph cmd">Uncomment the <code>renderer.pdf.font.path</code>&nbsp;line, as shown in the following sample line of code:</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">renderer.pdf.font.path=C:/WINDOWS/Fonts/MSGOTHIC.TTC,1</pre>          </li>
+        <li class="li step"><span class="ph cmd">Replace the value of this line with the TrueType font or collection that you want to use as the default.</span>  If you are specifying a collection, you must put a <code>,1</code>&nbsp;after the font name, as shown in the above
+          example. This does not apply to individual fonts (TTF files). <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">renderer.pdf.font.path=/usr/share/fonts/truetype/freefont/FreeSans.ttf</pre>          </li>
+        <li class="li step"><span class="ph cmd">Save and close the file, and start the Pentaho Server.</span> </li>
+      </ol>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Geo_Maps_Partially_Rendering"></span> 
+      <h2 class="editable">Geo Maps Partially Rendering</h2>
+      <p class="p">If your Geo Map visualizations in Analyzer are not correctly displaying, the Pentaho Server is not giving them enough time to fully render.</p>
+      <p class="p">The Pentaho Server has&nbsp;a static length of time it&nbsp;waits for a Geo Map to finish rendering before the image is captured.&nbsp;This delay allows for all map tiles to be downloaded and points to be plotted. The default wait time is 1200 milliseconds,
+        and it is set through the <code><map-export-javascript-delay></code>&nbsp;node in the <span class="ph filepath">/pentaho-solutions/system/pentaho-geo/settings.xml</span>  file, as shown in the following sample line of code:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><map-export-javascript-delay>1200</map-export-javascript-delay></pre>
+      <div id="section_3" class="mt-page-section"><span id="The_following_instructions_show_how_to_extend_the_cache_value_for_Geo_Maps:"></span> 
+        <h3 class="editable">
+          <span class="mt-font-size-16" style="line-height:1.4;font-weight:normal;">The following instructions show how to&nbsp;extend&nbsp;the cache value for Geo Maps:</span> 
+        </h3>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the <span class="filepath style-wrap">...pentaho-server/tomcat/webapps/pentaho/WEB-INF/classes</span>  directory and open <span class="filepath style-wrap">ehcache.xml</span>  in a text editor.</li>
+          <li>Look for the <span class="filepath style-wrap">cache </span> element and increase the value for <span class="filepath style-wrap">maxElementsInMemory</span> &nbsp;as shown in the following example:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><cache
+    name=&quot;pentaho-geo-{CUSTOM_ROLE_TYPE}&quot;
+    maxElementsInMemory=&quot;1000&quot;
+    eternal=&quot;false&quot;
+    overflowToDisk=&quot;true&quot;
+    timeToIdleSeconds=&quot;0&quot;
+    timeToLiveSeconds=&quot;0&quot;
+    diskPersistent=&quot;false&quot;
+    diskExpiryThreadIntervalSeconds=&quot;120&quot;
+  /></pre>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Save and close the <span class="filepath style-wrap">ehcache.xml</span>  file.</li>
+          <li>Restart the Pentaho Server.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Multi-Byte_Characters_Do_Not_Appear_in_PDFs_Exported_from_Analyzer" rel="internal">Multi-Byte Characters Do Not Appear in PDFs Exported from Analyzer</a>  </li>
+      <li>
+        <a href="#Geo_Maps_Partially_Rendering" rel="internal">Geo Maps Partially Rendering</a> 
+        <ol>
+          <li> <a href="#The_following_instructions_show_how_to_extend_the_cache_value_for_Geo_Maps:" rel="internal">The following instructions show how to&nbsp;extend&nbsp;the cache value for Geo Maps:</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

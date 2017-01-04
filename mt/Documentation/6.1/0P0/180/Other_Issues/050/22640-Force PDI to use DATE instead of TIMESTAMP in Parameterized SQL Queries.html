@@ -1,0 +1,19 @@
+<content type="text/html" title="Force PDI to use DATE instead of TIMESTAMP in Parameterized SQL Queries">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">If your query optimizer is incorrectly using the predicate TIMESTAMP, it is likely because the JDBC driver/database normally converts the data type from a TIMESTAMP to a DATE. In special circumstances this casting prevents the query optimizer
+          of the database not to use the correct index.</p>
+        <p>Use a <code class="ph codeph">Select Values</code> step and set the <code class="ph codeph">Precision</code> to 1 and <code class="ph codeph">Value</code> to DATE. This forces the parameter to set as a DATE instead of a TIMESTAMP.</p>
+        <div class="p">
+          <p>For example, if Oracle says it cannot use the index, and generates an error message that states:</p> <pre class="pre codeblock">
+The predicate DATE used at line ID 1 of the execution plan contains an implicit
+   data type conversion on indexed column DATE. This implicit data type conversion prevents
+   the optimizer from selecting indices on table A.</pre> </div>
+        <p>After changing the <code class="ph codeph">Precision</code> to 1, setting the Value as a DATE, the index can be used correctly.</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

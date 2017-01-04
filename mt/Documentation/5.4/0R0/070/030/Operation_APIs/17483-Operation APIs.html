@@ -1,0 +1,288 @@
+<content type="text/html" title="Operation APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="api.operation_Class"></span> 
+        <h2 class="editable">api.operation Class</h2>
+        <p>Operation definition for <span class="filepath style-wrap">api class</span> . Contains all operation-related API calls.</p>
+        <div id="section_2" class="mt-page-section"><span id="Methods"></span> 
+          <h3 class="editable">Methods</h3>
+          <div class="method item" id="method_clearCache">
+            <div id="section_3" class="mt-page-section"><span id="clearCache_(successCallback.2C_errorCallback.2C_suppressSuccessNotification)"></span> 
+              <h2 class="editable">clearCache <span class="paren">(</span> successCallback, errorCallback, suppressSuccessNotification
+                <span class="paren">)</span> 
+              </h2>
+              <div class="description">
+                <p>Clears the entire cache associated with the current data source, including Analyzer's metadata cache, the Mondrian schema cache, and the Mondrian segment cache.</p>
+              </div>
+              <div class="example">
+                <div class="params">
+                  <p><strong>Parameters:</strong> </p>
+                  <ul class="pentaho-list-unordered">
+                    <li class="param"><code class="param-name">successCallback</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                      <div class="param-description">
+                        <p>The optional function which is executed when the report has been successfully saved.</p>
+                      </div>
+                    </li>
+                    <li class="param"><code class="param-name">errorCallback</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                      <div class="param-description">
+                        <p>The optional function which is executed when an exception is thrown when saving the report.</p>
+                      </div>
+                    </li>
+                    <li class="param"><code class="param-name">suppressSuccessNotification</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> )</span> 
+                      <div class="param-description">
+                        <p>The optional parameter which controls the display of the default success notification. By default, it is set to 'false'.</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="example">
+                  <p><strong>Example:</strong> </p>
+                  <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var successCallback = function() {alert(&quot;Success!&quot;);}; var errorCallback = function() {alert(&quot;Error!&quot;);}; api.operation.clearCache(successCallback, errorCallback, true);</pre>                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_clearDropTargetIndicator">
+            <div id="section_4" class="mt-page-section"><span id="clearDropTargetIndicator_(dropTarget)"></span> 
+              <h2 class="editable">clearDropTargetIndicator <span class="paren">(</span> dropTarget
+                <span class="paren">)</span> 
+              </h2>
+              <p>Clears a drop target indicator, provided there is a drop target. This can only be seen if an indicator has been shown previously for the given drop target.</p>
+              <p><strong>Parameter:</strong> </p>
+              <ul class="pentaho-list-unordered">
+                <li class="param"><code class="param-name">dropTarget</code> <span class="type">(JSON)</span> 
+                  <div class="param-description">
+                    <p>The drop target, which represents the location upon which the user will drop a draggable object.</p>
+                  </div>
+                </li>
+              </ul>
+              <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var dropTarget = api.operation.getDropTarget(0, 0, &quot;[MDX].[Formula]&quot;); api.operation.clearDropTargetIndicator(dropTarget);</pre>              </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_completeDrop">
+            <div id="section_5" class="mt-page-section"><span id="completeDrop_(dropTarget)"></span> 
+              <h2 class="editable">completeDrop (dropTarget)</h2>
+              <p>Completes the drop, provided there is a drop target. The result of this drop depends on the drop target and what custom drop action is bound to the specified drop target.</p>
+              <div class="params">
+                <p><strong>Parameter:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">dropTarget</code> <span class="type">(JSON)</span> 
+                    <div class="param-description">
+                      <p>The drop target, which represents the location upon which the user will drop a draggable object.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var dropTarget = api.ui.getDropTarget(0, 0, &quot;[MDX].[Formula]&quot;); api.operation.completeDrop(dropTarget);</pre>                  </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_getDropTarget">
+            <div id="section_6" class="mt-page-section"><span id="getDropTarget_(x_y_formula)__JSON_.7C_Null"></span> 
+              <h2 class="editable">getDropTarget <span class="paren">(</span> x y formula<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">JSON | Null</span>  </span> &nbsp;
+              </h2>
+              <p>Retrieves the drop target, depending on the x and y coordinates provided. The x and y coordinates are relative to the frame in which Analyzer is loaded, and not the parent frame. Any x and y coordinates from a parent window's mouse position
+                needs to be translated such that (0, 0) is the top left corner of the frame. Valid drop targets include the filter panel, filter toggle arrow and label, and the report area.</p>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">x</code> <span class="type">(Integer)</span> 
+                    <div class="param-description">
+                      <p>The x coordinate.</p>
+                    </div>
+                  </li>
+                  <li class="param"><code class="param-name">y</code> <span class="type">(Integer)</span> 
+                    <div class="param-description">
+                      <p>The y coordinate.</p>
+                    </div>
+                  </li>
+                  <li class="param"><code class="param-name">formula</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                    <div class="param-description">
+                      <p>The MDX of the object which the user would want to drop onto Analyzer.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns</strong> :</p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">JSON | Null</span> 
+                    <p>If no drop target is at the provided x and y coordinates, null is returned. Otherwise, the drop target is returned as a JSON</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example</strong> :</p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.operation.getDropTarget(0, 0, &quot;[MDX].[Formula]&quot;);</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_redo">
+            <div id="section_7" class="mt-page-section"><span id="redo_(_)"></span> 
+              <h2 class="editable">redo 
+                <span class="paren">( )</span> 
+              </h2>
+              <div class="meta">
+                <p>Reapplies events in the order they were removed or undone.</p>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.operation.redo();</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_refreshReport">
+            <div id="section_8" class="mt-page-section"><span id="refreshReport_(_)"></span> 
+              <h2 class="editable">refreshReport ( )</h2>
+              <div class="description">
+                <p>Refreshes the report, showing any changes made to the report.</p>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.operation.refreshReport();</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_resetReport">
+            <div id="section_9" class="mt-page-section"><span id="resetReport_(_)"></span> 
+              <h2 class="editable">resetReport 
+                <span class="paren">( )</span> 
+              </h2>
+              <div class="meta">
+                <p>Resets the state of the report back to the most recently saved state.</p>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.operation.resetReport();</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_saveReport">
+            <div id="section_10" class="mt-page-section"><span id="saveReport_(name.2C_path.2C_successCallback.2C_errorCallback.2C_suppressSuccessNotification)"></span> 
+              <h2 class="editable">saveReport (name, path, successCallback, errorCallback, suppressSuccessNotification)</h2>
+              <p>Saves the report.</p>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">name</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                    <div
+                    class="param-description">
+                      <p>The name of the&nbsp;report without extension.</p>
+              </div>
+              </li>
+              <li class="param"><code class="param-name">path</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String">String</a> )</span> 
+                <div class="param-description">
+                  <p>The existing path of the repository to store the report without the report's name.</p>
+                </div>
+              </li>
+              <li class="param"><code class="param-name">successCallback</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                <div class="param-description">
+                  <p>The optional function which is executed when the report has been successfully saved.</p>
+                </div>
+              </li>
+              <li class="param"><code class="param-name">errorCallback</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                <div class="param-description">
+                  <p>The optional function which is executed when an exception was thrown while saving the&nbsp;report.</p>
+                </div>
+              </li>
+              <li class="param"><code class="param-name">suppressSuccessNotification</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Boolean">Boolean</a> )</span> 
+                <div class="param-description">
+                  <p>The optional parameter to control displaying the default success notification. By default, it is false.</p>
+                </div>
+              </li>
+              </ul>
+            </div>
+            <div class="example">
+              <p><strong>Example:</strong> </p>
+              <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var name =&quot;Test name of report&quot;;
+var path =&quot;/public/my_test&quot;;
+var successCallback =function(){alert(&quot;Success!&quot;);};
+var errorCallback =function(){alert(&quot;Error!&quot;);};
+api.operation.saveReport(name, path, successCallback, errorCallback);</pre> </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="method item" id="method_showDropTargetIndicator">
+          <div id="section_11" class="mt-page-section"><span id="showDropTargetIndicator_(dropTarget)"></span> 
+            <h2 class="editable">showDropTargetIndicator <span class="paren">(</span> dropTarget
+              <span class="paren">)</span> 
+            </h2>
+            <div class="description">
+              <p>Shows the drop target indicator, provided a drop target. Depending on the portion of the screen where the drop is occurring, the drop indicator may look different or move.</p>
+            </div>
+            <div class="params">
+              <p><strong>Parameters</strong> :</p>
+              <ul class="pentaho-list-unordered">
+                <li class="param"><code class="param-name">dropTarget</code> <span class="type">(JSON)</span> 
+                  <div class="param-description">
+                    <p>The drop target, which represents the location upon which the user will drop a draggable object</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="example">
+              <p><strong>Example</strong> :</p>
+              <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var dropTarget = api.operation.getDropTarget(0, 0, &quot;[MDX].[Formula]&quot;); api.operation.showDropTargetIndicator(dropTarget);</pre>                </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="method item" id="method_undo">
+          <div id="section_12" class="mt-page-section"><span id="undo_(_)"></span> 
+            <h2 class="editable">undo 
+              <span class="paren">( )</span> 
+            </h2>
+            <div class="meta">
+              <p>Removes events in the order they occurred.</p>
+            </div>
+            <div class="example">
+              <p><strong>Example:</strong> </p>
+              <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.operation.undo();</pre> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#api.operation_Class" rel="internal">api.operation Class</a> 
+        <ol>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#clearCache_(successCallback.2C_errorCallback.2C_suppressSuccessNotification)" rel="internal">clearCache (successCallback, errorCallback, suppressSuccessNotification)</a>  </li>
+      <li> <a href="#clearDropTargetIndicator_(dropTarget)" rel="internal">clearDropTargetIndicator (dropTarget)</a>  </li>
+      <li> <a href="#completeDrop_(dropTarget)" rel="internal">completeDrop (dropTarget)</a>  </li>
+      <li> <a href="#getDropTarget_(x_y_formula)__JSON_.7C_Null" rel="internal">getDropTarget (x y formula) JSON | Null &nbsp;</a>  </li>
+      <li> <a href="#redo_(_)" rel="internal">redo ( )</a>  </li>
+      <li> <a href="#refreshReport_(_)" rel="internal">refreshReport ( )</a>  </li>
+      <li> <a href="#resetReport_(_)" rel="internal">resetReport ( )</a>  </li>
+      <li> <a href="#saveReport_(name.2C_path.2C_successCallback.2C_errorCallback.2C_suppressSuccessNotification)" rel="internal">saveReport (name, path, successCallback, errorCallback, suppressSuccessNotification)</a>  </li>
+      <li> <a href="#showDropTargetIndicator_(dropTarget)" rel="internal">showDropTargetIndicator (dropTarget)</a>  </li>
+      <li> <a href="#undo_(_)" rel="internal">undo ( )</a>  </li>
+    </ol>
+  </body>
+</content>

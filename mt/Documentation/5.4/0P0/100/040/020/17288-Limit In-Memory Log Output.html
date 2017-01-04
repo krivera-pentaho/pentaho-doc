@@ -1,0 +1,25 @@
+<content type="text/html" title="Limit In-Memory Log Output">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">PDI logs data about transformations and jobs according to default parameters that control how many lines are allowed in the log and how long the oldest line should stay in memory before it is released. Obviously the more lines that are recorded
+          and the longer they are kept, the more heap space is consumed by them. If you are experiencing memory shortages or slow performance in your PDI content, you can address the problem by modifying in-memory logging.</p>
+        <p class="p">In Spoon, the following parameters control logging:</p>
+        <ul class="ul">
+          <li class="li"><strong class="ph b">KETTLE_MAX_LOG_SIZE_IN_LINES</strong>, which sets the maximum number of log lines that are kept internally by Kettle. Setting this to <strong class="ph b">0</strong>  (the default) forces PDI to keep all rows.</li>
+          <li class="li"><strong class="ph b">KETTLE_MAX_LOG_TIMEOUT_IN_MINUTES</strong>, which represents the maximum age (in minutes) that a log line should be kept internally by PDI. Setting this to <strong class="ph b">0</strong>  (the default) keeps all rows indefinitely.</li>
+          <li class="li"><strong class="ph b">KETTLE_MAX_JOB_TRACKER_SIZE</strong>, which sets the maximum number of job trackers kept in memory. Default value is 1000.</li>
+          <li class="li"><strong class="ph b">KETTLE_MAX_JOB_ENTRIES_LOGGED</strong>, which sets the maximum number of job entry results kept in memory for logging purposes. Default value is 1000.</li>
+          <li class="li"><strong class="ph b">KETTLE_MAX_LOGGING_REGISTRY_SIZE</strong>, which sets the maximum number of logging registry entries kept in memory for logging purposes. Default value is 1000.</li>
+        </ul>
+        <p class="p">The equivalent parameters to the first two variables, which can be set on each KTR or KJB individually using Kitchen or Pan, are:</p>
+        <ul class="ul">
+          <li class="li">maxloglines</li>
+          <li class="li">maxlogtimeout</li>
+        </ul>
+        <p class="p">Set these values to the lowest non-zero values that your operations can tolerate. If you are using logging for any purpose, you must balance between tolerable performance and necessary functionality.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

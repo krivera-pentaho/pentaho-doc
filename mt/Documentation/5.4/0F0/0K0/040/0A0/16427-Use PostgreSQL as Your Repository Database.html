@@ -1,0 +1,265 @@
+<content type="text/html" title="Use PostgreSQL as Your Repository Database">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p class="p">Explains how to configure and use PostgreSQL&nbsp;as your BA Repository database.</p>
+        </div>
+      </div>
+      <p class="p">Before you prepare your Business Analytics (BA) Repository, complete the tasks in
+        <a title="Prepare Environment" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0K0/020">Prepare Environment</a> .</p>
+      <p>The BA Repository resides on the database that you installed during the Prepare Environment step, and consists of four repositories: <em class="ph i">Jackrabbit</em>, <em class="ph i">Quartz</em>, <em class="ph i">Hibernate, </em> and <em class="ph i">Pentaho Operations Mart</em> .</p>
+      <ul class="ul" id="8ca72d85-6842-4cc7-a840-1b25b94c0382__prepare_solution_repository_platform__ul_ccy_xlm_rj">
+        <li class="li"><em class="ph i">Jackrabbit</em>  contains the solution repository, examples, security data, and content data from reports that you use Pentaho software to create.</li>
+        <li class="li"><em class="ph i">Quartz</em>  holds data that is related to scheduling reports and jobs.</li>
+        <li class="li"><em class="ph i">Hibernate</em>  holds data that is related to audit logging.</li>
+        <li class="li"><em>Pentaho Operations Mart</em>  reports on system usage and performance.</li>
+      </ul> <span id="Initialize_PostgreSQL_BA_Repository_Database"></span> <span id="Initialize_PostgreSQL_BA_Repository_Database-15883"></span> 
+      <h2 class="title topictitle2">Initialize PostgreSQL BA Repository Database</h2>
+      <p>To initialize PostgreSQL so that it serves as the BA Repository, you will need to run a few SQL scripts to create the Hibernate, Quartz, Jackrabbit (JCR), and Pentaho Operations Mart databases.</p>
+      <p class="pentaho-note">Use the ASCII character set when you run these scripts. Do not use UTF-8 because there are text string length limitations that might cause the scripts to fail.</p>
+      <p class="p">These sections take you through the steps to initialize the PostgreSQL BA repository database.</p> <span id="Change_Default_Passwords"></span> <span id="Change_Default_Passwords-15883"></span> 
+      <h3>Change Default Passwords</h3>
+      <p class="li step"><span class="ph cmd">We recommend that you change the default passwords in the SQL script files. If you are evaluating Pentaho, you might want to skip this step. </span> </p>
+      <p class="li step"><span class="ph cmd">If you do decide to make the databases more secure, use any text editor to change the passwords in these files:</span> </p>
+      <ul class="ul" id="8ca72d85-6842-4cc7-a840-1b25b94c0382__archive_initialize_mysql__d122e511">
+        <li class="li"><span class="ph filepath">pentaho/server/biserver-ee/data/postgresql/create_jcr_postgresql.sql</span> </li>
+        <li class="li"><span class="ph filepath">pentaho/server/biserver-ee/data/postgresql/create_quartz_postgresql.sql</span> </li>
+        <li class="li"><span class="ph filepath">pentaho/server/biserver-ee/data/postgresql/create_repository_postgresql.sql</span> </li>
+        <li class="li"><span class="ph filepath">pentaho/server/biserver-ee/data/postgresql/pentaho_mart_postgresql.sql</span> </li>
+      </ul> <span id="Run_SQL_Scripts"></span> <span id="Run_SQL_Scripts-15883"></span> 
+      <h3>Run SQL Scripts</h3>
+      <p class="li step"><span class="ph cmd">Once you change the passwords, you will need to run these SQL scripts. You will need administrator permissions on the server in order to run these scripts. The process for running SQL scripts is the same for Windows or Linux machines. The list of&nbsp; SQL scripts is shown in the table below.</span> </p>
+      <p class="pentaho-caution">If you have a different port or different password, make sure that you change the password and port number in these examples to match the ones in your configuration.</p>
+      <p class="li step"><span class="ph cmd">Run these scripts from the <strong>PSQL Console </strong> window in the <strong>pgAdminIII </strong> tool.</span> </p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+      title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 165px;">Action</th>
+            <th scope="col" style="width: 490px;">SQL Script</th>
+          </tr>
+        </thead>
+        <caption>SQL Scripts</caption>
+        <tbody>
+          <tr>
+            <td style="width: 165px;">Create Quartz</td>
+            <td style="width: 490px;"><span class="filepath style-wrap">\i <your filepath>/data/postgresql/create_quartz_postgresql.sql</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">Create Hibernate repository</td>
+            <td style="width: 490px;"><span class="filepath style-wrap">\i <your filepath>/data/postgresql/create_repository_postgresql.sql</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">Create Jackrabbit</td>
+            <td style="width: 490px;"><span class="filepath style-wrap">\i <your filepath>/data/postgresql/create_jcr_postgresql.sql</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 165px;">Create Pentaho Operations mart</td>
+            <td style="width: 490px;"><span class="filepath style-wrap">\i <your filepath>/data/postgresql/pentaho_mart_postgresql.sql</span> </td>
+          </tr>
+        </tbody>
+      </table> <span id="Verify_PostgreSQL_Initialization"></span> <span id="Verify_PostgreSQL_Initialization-15883"></span> 
+      <h3>Verify PostgreSQL Initialization</h3>
+      <p>After you run the scripts, this list will help you verify that databases and user roles&nbsp;have been created.</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Open the <strong>pgAdminIII </strong> tool.</li>
+        <li class="li step">Verify that you can log in as <strong>hibuser</strong> .</li>
+        <li class="li step">Once logged in, make sure that the Quartz, Jackrabbit (JCR), Hibernate, and Pentaho Operations mart databases are present.</li>
+        <li class="li step">Exit from the <strong><span class="ph uicontrol">pgAdminIII</span> </strong> .</li>
+      </ol> <span id="Configure_PostgreSQL_BA_Repository_Database"></span> <span id="Configure_PostgreSQL_BA_Repository_Database-15883"></span> 
+      <h2 class="title topictitle2">Configure PostgreSQL BA Repository Database</h2>
+      <p class="p">Now that you have initialized your repository database, you will need to configure Quartz, Hibernate, Jackrabbit, and Pentaho Operations Mart for a PostgreSQL database.</p>
+      <p>By default, the examples in this section are for a PostgreSQL database that runs on port 5432. The default password is also in these examples. If you have a different port or different password, complete all of the instructions in these steps.</p>
+      <p class="pentaho-caution">If you have a different port or different password, make sure that you change the password and port number in these examples to match the ones in your configuration.</p> <span id="Set_Up_Quartz_on_PostgreSQL_BA_Repository_Database"></span> 
+      <span
+      id="Set_Up_Quartz_on_PostgreSQL_BA_Repository_Database-15883"></span> 
+        <h3>Set Up Quartz on PostgreSQL BA Repository Database</h3>
+        <p>Event information, such as scheduled reports, is stored in the Quartz JobStore. During the installation process, you must indicate where the <strong>JobStore</strong>  is located. You do this by modifying the <span class="filepath style-wrap"><span class="ph filepath">quartz.properties</span> </span> 
+          file.</p>
+        <ol class="pentaho-list-ordered" id="3f2d2327-25c4-4078-b046-05a702be7817__d93e400__d93e419">
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/quartz/quartz.properties</span>  file in any text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Locate the <span class="filepath style-wrap">#_replace_jobstore_properties</span>  section and set the <span class="filepath style-wrap">org.quartz.jobStore.driverDelegateClass</span>  as shown here. </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.PostgreSQLDelegate</pre>            </li>
+          <li>Locate the <span class="filepath style-wrap"># Configure Datasources </span> section and set the <span class="filepath style-wrap">org.quartz.dataSource.myDS.jndiURL</span>  equal to <span class="filepath style-wrap">Quartz</span>, like this.&nbsp;This
+            setting varies depending on the web server you have chosen for this installation.
+            <ul style="list-style-type: disc;">
+              <li>If using JBoss, this setting should be: <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.dataSource.myDS.jndiURL = jboss/datasources/Quartz</pre> </li>
+              <li>If using Tomcat, this setting should be: <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.dataSource.myDS.jndiURL = Quartz</pre> </li>
+            </ul>
+          </li>
+          <li class="li step"><span class="ph cmd">Save the file and close the text editor.</span> </li>
+        </ol>
+        <span id="Set_Hibernate_Settings_for_PostgreSQL"></span> <span id="Set_Hibernate_Settings_for_PostgreSQL-15883"></span> 
+        <h3>Set Hibernate Settings for PostgreSQL</h3>
+        <p>Modify the hibernate settings file to specify where Pentaho should find the BA Repository&rsquo;s hibernate config file. The hibernate config file specifies driver and connection information, as well as dialects and how to handle connection closes
+          and timeouts. The files in this section are located in the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/hibernate</span>  directory.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">hibernate-settings.xml</span>  file in a text editor. Find the <span class="filepath style-wrap"><config-file></span>  tags and confirm that it is configured for PostgreSQL.</span> &nbsp;
+            <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><config-file>system/hibernate/postgresql.hibernate.cfg.xml</config-file></pre> </li>
+          <li class="li step"><span class="ph cmd">Save the file if you made changes, and close the file.</span> </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap">postgresql.hibernate.cfg.xml</span>  file in a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Make sure that the password and port number match the ones you specified in your configuration. Make changes if necessary, then save and close the file.</span> </li>
+        </ol> <span id="Modify_Jackrabbit_Repository_Information_for_PostgreSQL"></span> <span id="Modify_Jackrabbit_Repository_Information_for_PostgreSQL-15883"></span> 
+        <h3>Modify Jackrabbit Repository Information for PostgreSQL</h3>
+        <p>There are parts of code that you will need to alter in order to change the default jackrabbit repository to PostgreSQL.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Navigate to the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/jackrabbit</span>  and open the <span class="filepath style-wrap">repository.xml </span> file with any text editor.</li>
+          <li>Following the table below, locate and verify or change the code so that the PostgreSQL lines are <strong>not </strong> commented out, but the MySQL, Oracle, and MS SQL Server lines <strong>are </strong> commented out.</li>
+        </ol>
+        <p class="pentaho-caution">If you have a different port or different password, make sure that you change the password and port number in these examples to match the ones in your configuration.</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+        title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 160px;">Item:</th>
+              <th scope="col" style="width: 475px;">Code Section:</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 174px;"><strong>Repository</strong> </td>
+              <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+    <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+    <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/jackrabbit&quot;/>
+    ...
+  </FileSystem></pre> </td>
+            </tr>
+            <tr>
+              <td style="width: 174px;"><strong>DataStore</strong> </td>
+              <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/jackrabbit&quot;/>
+    ...
+  </DataStore></pre> </td>
+            </tr>
+            <tr>
+              <td style="width: 174px;"><strong>Workspaces</strong> </td>
+              <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/jackrabbit&quot;/>
+     ...
+    </FileSystem></pre> </td>
+            </tr>
+            <tr>
+              <td style="width: 174px;">
+                <p><strong>PersistenceManage</strong> r</p>
+                <p>(1st part)</p>
+              </td>
+              <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.PostgreSQLPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/jackrabbit&quot;/>
+      ...
+    </PersistenceManager></pre> </td>
+            </tr>
+            <tr>
+              <td style="width: 174px;"><strong>Versioning</strong> </td>
+              <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/jackrabbit&quot;/>
+     ...
+    </FileSystem></pre> </td>
+            </tr>
+            <tr>
+              <td style="width: 174px;">
+                <p><strong>PersistenceManager</strong> </p>
+                <p>(2nd part)</p>
+              </td>
+              <td style="width: 500px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.PostgreSQLPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/jackrabbit&quot;/>
+      ...
+    </PersistenceManager></pre> </td>
+            </tr>
+          </tbody>
+        </table> <span id="Configure_Pentaho_Operations_Mart"></span> <span id="Configure_Pentaho_Operations_Mart-15883"></span> 
+        <h3>Configure Pentaho Operations Mart</h3>
+        <p>If you changed the user or password in the previous sections, make sure that you also update that information for the Pentaho Operations Mart repository.</p>
+        <div id="section_2" class="mt-page-section"><span id="Are_you_using_JBoss.3F"></span> 
+          <h3 class="editable">Are you using JBoss?</h3>
+          <p>If you are using JBoss, you can skip the Tomcat section and move on to
+            <a title="Prepare JBoss Connections and Web App Servers" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0K0/060">Prepare JBoss Connections and Web App Servers</a> .</p>
+          <div id="section_3" class="mt-page-section"><span id="Perform_Tomcat-Specific_Connection_Tasks"></span> 
+            <h2 class="editable">Perform Tomcat-Specific Connection Tasks</h2>
+            <p class="p" style="visibility: visible;">After your repository has been configured, you must configure the web application servers to connect to the BA Repository. In this step, JDBC and JNDI connections are made to the Hibernate, Jackrabbit, and Quartz databases.</p>
+            <p class="p"
+            style="visibility: visible;">By default, the BA Server software is configured to be deployed and run on the Tomcat server. As such, connections have already been specified and only the Tomcat <span class="filepath style-wrap">context.xml</span>  file must be modified.</p>
+            <p class="p">If you plan to run the BA Server on Tomcat, you must modify JDBC Connection information.</p>
+            <div id="section_4" class="mt-page-section"><span id="Download_Drivers_and_Install_with_the_JDBC_Distribution_Tool"></span> 
+              <h3 class="editable">Download Drivers and Install with the JDBC Distribution Tool</h3>
+              <a class="mt-disabled" rel="broken">Upgrade - Installation - Data Connection</a> 
+            </div>
+            <div id="section_5" class="mt-page-section"><span id="Modify_JDBC_Connection_Information_in_the_Tomcat_context.xml_File"></span> 
+              <h3 class="editable">Modify JDBC Connection Information in the Tomcat context.xml File</h3>
+              <p>Database connection and network information, such as the username, password, driver class information, IP address or domain name, and port numbers for your BA Repository database are stored in the <span class="ph filepath">context.xml</span>                 file. Modify this file to reflect the database connection and network information to reflect your operating environment. You also modify the values for the <span class="ph filepath">validationQuery</span>  parameters in this file if you
+                have chosen to use an BA Repository database other than PostgreSQL.</p>
+              <p class="pentaho-caution">If you have a different port, password, user, driver class information, or IP address, make sure that you change the password and port number in these examples to match the ones in your configuration environment.</p>
+              <ol class="pentaho-list-ordered">
+                <li class="li step"><span class="ph cmd">Consult your database documentation to determine the JDBC class name and connection string for your BA Repository database.</span> </li>
+                <li class="li step"><span class="ph cmd">Go to the&nbsp;<span class="ph filepath">biserver-ee/tomcat/webapps/pentaho/META-INF</span>  directory and open the <span class="ph filepath">context.xml</span>  file with any file editor.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Comment out the resource references that refer to databases other than PostgreSQL&nbsp; such as MySQL, MS SQL Server, and Oracle. Then, add the following code to the file if it does not already exist. Be sure to adjust the port numbers and passwords to reflect your environment, if necessary.</span>                   <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Hibernate&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Audit&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/quartz&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;pentaho_user&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Quartz&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/PDI_Operations_Mart&quot;/></pre>                  </li>
+                <li class="li step"><span class="ph cmd">Make sure that the <span class="filepath style-wrap">validationQuery </span> variable for your database is set to this: </span> <span class="filepath style-wrap">validationQuery=&quot;select 1&quot;</span> </li>
+                <li class="li step"
+                value="6"><span class="ph cmd">Save the <span class="filepath style-wrap"><span class="ph filepath">context.xml </span> </span> file, then close it. </span> 
+                </li>
+                <li class="li step"><span class="ph cmd">To make sure that the changes that you made in the context.xml file take effect when Tomcat is started, navigate to the </span> <span class="mt-font-courier-new">pentaho/server/biserver-ee/tomcat/conf/Catalina/localhost</span> 
+                  <span
+                  class="ph cmd"> directory. If the <span class="ph filepath">pentaho.xml</span>  file is present, delete it. It will be generated again when you start the BA Server, but will contain the changes that you just made in the <span class="ph filepath">context.xml</span>                     file.</span> 
+                </li>
+              </ol>
+            </div>
+          </div>
+          <div id="section_6" class="mt-page-section"><span id="Next_Steps"></span> 
+            <h2 class="editable">Next Steps</h2>
+            <p>Now it is time to
+              <a title="Start BA Server" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0P0/060"> start your server</a> .</p>
+          </div>
+        </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Initialize_PostgreSQL_BA_Repository_Database" rel="internal">Initialize PostgreSQL BA Repository Database</a> 
+        <ol>
+          <li> <a href="#Change_Default_Passwords" rel="internal">Change Default Passwords</a>  </li>
+          <li> <a href="#Run_SQL_Scripts" rel="internal">Run SQL Scripts</a>  </li>
+          <li> <a href="#Verify_PostgreSQL_Initialization" rel="internal">Verify PostgreSQL Initialization</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Configure_PostgreSQL_BA_Repository_Database" rel="internal">Configure PostgreSQL BA Repository Database</a> 
+        <ol>
+          <li> <a href="#Set_Up_Quartz_on_PostgreSQL_BA_Repository_Database" rel="internal">Set Up Quartz on PostgreSQL BA Repository Database</a>  </li>
+          <li> <a href="#Set_Hibernate_Settings_for_PostgreSQL" rel="internal">Set Hibernate Settings for PostgreSQL</a>  </li>
+          <li> <a href="#Modify_Jackrabbit_Repository_Information_for_PostgreSQL" rel="internal">Modify Jackrabbit Repository Information for PostgreSQL</a>  </li>
+          <li> <a href="#Configure_Pentaho_Operations_Mart" rel="internal">Configure Pentaho Operations Mart</a>  </li>
+          <li> <a href="#Are_you_using_JBoss.3F" rel="internal">Are you using JBoss?</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Perform_Tomcat-Specific_Connection_Tasks" rel="internal">Perform Tomcat-Specific Connection Tasks</a> 
+        <ol>
+          <li> <a href="#Download_Drivers_and_Install_with_the_JDBC_Distribution_Tool" rel="internal">Download Drivers and Install with the JDBC Distribution Tool</a>  </li>
+          <li> <a href="#Modify_JDBC_Connection_Information_in_the_Tomcat_context.xml_File" rel="internal">Modify JDBC Connection Information in the Tomcat context.xml File</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Next_Steps" rel="internal">Next Steps</a>  </li>
+    </ol>
+  </body>
+</content>

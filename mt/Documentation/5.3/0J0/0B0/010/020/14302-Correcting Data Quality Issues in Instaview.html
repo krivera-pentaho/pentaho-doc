@@ -1,0 +1,73 @@
+<content type="text/html" title="Correcting Data Quality Issues in Instaview">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Review the table you created using the procedures in
+            <a class="xref" title="Creating an Analyzer Report in Instaview" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0J0/0B0/010/010">Creating an Analyzer Report in Instaview</a> . Do you notice a problem with the quality of the data? Within the table is a record for <span class="ph uicontrol">United States</span>  and a record for <span class="ph uicontrol">USA</span>, each
+            with separate sales figures.</p>
+          <img alt="File:/instaview_data_quality_problem.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__image_pj3_vyc_b3" src="http://help.pentaho.com/@api/deki/files/3094/instaview_data_quality_problem.png?revision=1"
+          />
+          <p class="p">This is a data quality issue. Within an organization, acceptable data quality is crucial to the reliability of business analytics reporting. The way data is entered, stored, and managed can have an impact on data quality. Maintaining data quality
+            requires going through the data periodically and scrubbing it. Typically this involves updating, standardizing, and removing duplicating records to create a single view of the data.</p>
+          <p class="p">Follow these instructions to correct the data quality issue.</p>
+        </div>
+        <ol>
+          <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol"><strong>Configure</strong> </span>  on the <strong>Configure mode switch</strong>  at the top.</span>  You are now in <strong>Configure mode</strong>  .</li>
+          <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">Data Integration</span>  panel, click <span class="ph uicontrol">Edit</span> . An alert dialog box appears warning you that making changes to the transformation could cause your Instaview
+            to no longer work as you expect.</span>  This brings you to the Data Integration perspective.</li>
+          <li class="li step"><span class="ph cmd">Right-click the <span class="ph uicontrol">Input</span>  step from the flow and choose <span class="ph uicontrol">Detach step</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">Design</span>  tab on the left, under the <span class="ph uicontrol">Transform</span>  folder locate the <span class="ph uicontrol">Value Mapper</span>  transformation step and drag it onto
+            the canvas on the right, in-between the <span class="ph uicontrol">Input</span>  and <span class="ph uicontrol">Do Not Edit</span>  steps.</span> 
+            <img alt="File:/instaview_value_mapper_callout.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__image_m2w_wcd_b3"
+            src="http://help.pentaho.com/@api/deki/files/3098/instaview_value_mapper_callout.png?revision=1" />
+          </li>
+          <li class="li step"><span class="ph cmd">Press <span class="ph uicontrol">CNTRL</span>  and select the <span class="ph uicontrol">Input</span>  step then the <span class="ph uicontrol">Value Mapper</span>  step. Then right-click on either step and select <span class="ph uicontrol">New Hop</span>             from the menu.</span> 
+            <p class="p">A dialog box appears. Confirm the <span class="ph uicontrol">From step</span>  is <span class="ph uicontrol">Input</span>  and the <span class="ph uicontrol">To step</span>  is <span class="ph uicontrol">Value Mapper</span>, then click
+              <span
+              class="ph uicontrol">OK</span>  to create the new hop.</p>
+            <p class="p">
+              <img alt="File:/instaview_value_mapper_hop.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__image_rhb_jdd_b3" src="http://help.pentaho.com/@api/deki/files/3099/instaview_value_mapper_hop.png?revision=1"
+              />
+            </p>
+            <p class="p">Repeat this step to create another hop from the <span class="ph uicontrol">Value Mapper</span>  step to the <span class="ph uicontrol">Do Not Edit</span>  step.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Configure the <span class="ph uicontrol">Value Mapper</span>  step by double-clicking it. </span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Fieldname to use</span>, select <span class="ph uicontrol">COUNTRY</span>  from the drop-down list.</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Source Value</span>, enter <span class="ph uicontrol">USA</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Target value</span>, enter <span class="ph uicontrol">United States</span> .</span> 
+              </li>
+            </ol>
+          </li>
+        </ol>
+        <p class="li stepsection">
+          <img alt="File:/instaview_value_mapper_step.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__instaview_value_mapper_step" src="http://help.pentaho.com/@api/deki/files/3100/instaview_value_mapper_step.png?revision=1"
+          />
+        </p>
+        <ol start="7">
+          <li class="li step"><span class="ph cmd">Save the transformation by clicking the save icon <img alt="File:/instaview_pdi_save_button.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__image_l25_rjf_vh" src="http://help.pentaho.com/@api/deki/files/3096/instaview_pdi_save_button.png?revision=1" />.</span> </li>
+          <li class="li step"><span class="ph cmd">Run the transformation by click the Run icon <img alt="File:/instaview_run_icon.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__instaview_run_icon" src="http://help.pentaho.com/@api/deki/files/3097/instaview_run_icon.png?revision=1" />.</span> 
+            <p class="p">The transformation runs successfully, indicated by green check marks in the upper-right corner of each step.</p>
+            <p class="p">
+              <img alt="File:/instaview_data_quality_successful_trasnformation.png" class="image internal" id="25908761-c660-4df1-a94d-fa34eb353783__task_instaview_correcting_data_quality_issue__image_vcw_rld_b3" src="http://help.pentaho.com/@api/deki/files/3095/instaview_data_quality_successful_trasnformation.png?revision=1"
+              />
+            </p>
+          </li>
+          <li class="li step"><span class="ph cmd">Switch back to the Instaview perspective by clicking <span class="ph uicontrol">Instaview</span>  on the <span class="ph uicontrol">Perspective</span>  toolbar.</span> 
+          </li>
+        </ol>
+        <div class="section result">
+          <p class="p">You are now back in Configure mode and you configured the transformation to join the duplicate fields. To verify the changes took affect in View mode, you must first clear and refresh the data cache from within Configure mode. See
+            <a class="xref"
+            title="Clearing and Refreshing the Data Cache in Instaview" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0J0/0B0/010/030">Clearing the Data Cache in Instaview</a>  for instructions clearing and refreshing the data cache, and confirming the data quality issue was corrected.</p>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

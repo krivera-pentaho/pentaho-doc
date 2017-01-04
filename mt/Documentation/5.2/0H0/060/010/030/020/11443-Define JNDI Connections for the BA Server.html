@@ -1,0 +1,413 @@
+<content type="text/html" title="Define JNDI Connections for the BA Server">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">Once you have
+          <a class="xref" title="Documentation/5.1/0H0/060/010/030" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/030">chosen to use the JNDI access protocol</a>, here are configuration tasks you can perform.
+          <ul class="ul" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__task_adding_jndi_data_connection__ul_lgc_p3z_ck">
+            <li class="li">
+              <a class="xref" href="#">Add Drivers</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0H0/060/010/030/020#ec1bbe4d-5117-4c98-b107-61834b3eb955__task_specify_jndi_connection" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/030/020#ec1bbe4d-5117-4c98-b107-61834b3eb955__task_specify_jndi_connection">Specify Connections</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0H0/060/010/030/020#ec1bbe4d-5117-4c98-b107-61834b3eb955__adding_tomcat_jndi_data_connections" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/030/020#ec1bbe4d-5117-4c98-b107-61834b3eb955__adding_tomcat_jndi_data_connections">Tomcat JNDI Connections</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0H0/060/010/030/020#ec1bbe4d-5117-4c98-b107-61834b3eb955__asdf" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/030/020#ec1bbe4d-5117-4c98-b107-61834b3eb955__asdf">JBoss JNDI Connections</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__id_opb_tmz_ck">
+        <div id="section_1" class="mt-page-section"><span id="Add_Drivers"></span> 
+          <h2 class="editable">Add Drivers</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The BA Server needs the appropriate driver to connect to the database that stores your data. Your database administrator, Chief Intelligence Officer, or IT manager should be able to provide the appropriate driver. If not, you can download
+                drivers from your database vendor's website. The
+                <a class="xref" title="Review Supported Technologies" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0D0/160">Supported Technologies</a>  section contains a list of drivers.</p>
+              <p class="p">Once you have the correct driver, copy it to this directory for the BA Server: <span class="ph filepath">/pentaho/server/biserver-ee/tomcat/lib/</span> .</p>
+              <p class="p">There should be only one driver for your database in this directory. Ensure that there are no other versions of the same vendor's driver in this directory. If there are, back up the old driver files and remove them to avoid version conflicts.
+                This is a concern when you are adding a driver for the same database type as your Pentaho BA repository. If you have any concerns about how to proceed, contact
+                <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/Get_Help_and_Support/001">Pentaho support</a> .</p>
+              <p class="p"><strong class="ph b">Driver for Microsoft SQL Server</strong> </p>
+              <p class="p">If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+                <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/Get_Help_and_Support/001">Pentaho support</a>  to ensure that you are adding the correct driver.</p>
+              <p class="p">For Microsoft Windows, most JDBC drivers support Type 2 integrated authentication through the <span class="ph filepath">integratedSecurity</span>  connection string property. To use integrated authentication, copy the <span class="ph filepath">sqljdbc_auth.dll</span>                 file to all machines and directories to which you copied the JDBC driver. You can find this file in this location.</p>
+              <div class="p"> <pre class="pre codeblock">
+<installation directory>\sqljdbc_<version>\<language>\auth\</pre> </div>
+              <div class="p">
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__id_opb_tmz_ck__d13e108" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__d8708e118" valign="top">If running:</th>
+                        <th class="entry" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__d8708e121" valign="top">Use the sqljdbc_auth.dll file here:</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d8708e118 d8708e121 " valign="top">32-bit Java Virtual Machine (JVM) even if the operating system is version x64</td>
+                        <td class="entry" headers="d8708e118 d8708e121 " valign="top">x86 folder</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d8708e118 d8708e121 " valign="top">64-bit JVM on a x64 processor</td>
+                        <td class="entry" headers="d8708e118 d8708e121 " valign="top">x64 folder</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d8708e118 d8708e121 " valign="top">64-bit JVM on an Itanium processor</td>
+                        <td class="entry" headers="d8708e118 d8708e121 " valign="top">IA64 folder</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__task_specify_jndi_connection">
+        <div id="section_2" class="mt-page-section"><span id="Specify_JNDI_Connection_Information"></span> 
+          <h2 class="editable">Specify JNDI Connection Information</h2>
+          <div class="body taskbody">
+            <div class="section context">Instructions for adding JNDI vary depending on which web application server you are using.
+              <ul class="ul" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__task_specify_jndi_connection__ul_ob4_vvf_dk">
+                <li class="li">If you used the <strong class="ph b">Pentaho Trial Download</strong>,
+                  <a class="xref" title="Wizard Installation Process Overview" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0J0/010">Installation Wizard</a>, or
+                  <a class="xref" title="Install BA Server with Your Own BA Repository" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0P0">Archive Installation</a>, you are using a
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://tomcat.apache.org/">Tomcat</a>  web application server.</li>
+                <li class="li">If you used the
+                  <a class="xref" title="Use Manual BA Server Installation" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0K0">Manual Installation</a>, you could be using either
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://tomcat.apache.org/">Tomcat</a>  or
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://www.jboss.org/overview/">JBoss</a> .</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__adding_tomcat_jndi_data_connections">
+        <div id="section_3" class="mt-page-section"><span id="Tomcat_JNDI_Connections"></span> 
+          <h2 class="editable">Tomcat JNDI Connections</h2>
+          <div class="body taskbody">
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/000">Stop the Tomcat and BA servers</a> .</span> </li>
+              <li class="li step"><span class="ph cmd">Consult your database documentation to determine the class name and connection string for your database.</span> </li>
+              <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">/tomcat/webapps/pentaho/WEB-INF/web.xml</span>  file.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">At the end of the <code class="ph codeph"><web-app></code> element, in the same part of the file where you see <code class="ph codeph">
+<!-- insert additional resource-refs --></code>, add this XML snippet.</span> 
+                <pre
+                class="pre codeblock">
+                  <resource-ref>
+                    <description>myDataSource</description>
+                    <res-ref-name>jdbc/myDataSource</res-ref-name>
+                    <res-type>javax.sql.DataSource</res-type>
+                    <res-auth>Container</res-auth>
+                  </resource-ref>
+                  </pre> Change the <code class="ph codeph">description</code> and <code class="ph codeph">res-ref-name</code> nodes, as well as any others that apply to your situation and fit your database. You may need to consult
+                  <a class="xref external" target="_blank"
+                  rel="external nofollow" href="http://tomcat.apache.org/tomcat-6.0-doc/jndi-datasource-examples-howto.html">http://tomcat.apache.org/tomcat-6.0-doc/jndi-datasource-examples-howto.html</a>  to see if there are other things to consider.</li>
+              <li class="li step"><span class="ph cmd">Save and close the<span class="ph filepath"> web.xml</span>  file.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">/tomcat/conf/context.xml</span>  with a text editor.</span>  Alternatively, you can modify the <span class="ph filepath">/tomcat/webapps/pentaho/META-INF/context.xml</span>  file if you
+                want this data connection to be available only to the BA Server. Adding JNDI connections to the <span class="ph filepath">context.xml</span>  makes them available to all of the webapps deployed to this Tomcat instance.</li>
+              <li class="li step"><span class="ph cmd">Anywhere inside of the <code class="ph codeph"><Context></code> element, add this XML snippet. Then save and close the <span class="ph filepath">context.xml</span>  file.</span>  <pre class="pre codeblock">
+<Resource name=&quot;jdbc/myDataSource&quot; 
+    auth=&quot;Container&quot; type=&quot;javax.sql.DataSource&quot;
+    factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; 
+    maxActive=&quot;20&quot; 
+    maxIdle=&quot;5&quot;
+    maxWait=&quot;10000&quot; 
+    username=&quot;dbuser&quot; 
+    password=&quot;password&quot; 
+    driverClassName=&quot;org.postgresql.Driver&quot;
+    url=&quot;jdbc:postgresql://127.0.0.1:5432/myDataSource&quot;
+/>   </pre> This example shows a simple PostgreSQL configuration. Replace the <code class="ph codeph">Resource name</code>, <code class="ph codeph">username</code>, <code class="ph codeph">password</code>, <code class="ph codeph">driverClassName</code>,
+                and <code class="ph codeph">url</code> parameters, or any relevant connection settings, to match your database connection information and the details you supplied in the <span class="ph filepath">web.xml</span>  file earlier.</li>
+              <li class="li step"><span class="ph cmd">Delete the <span class="ph filepath">pentaho.xml</span>  filed located in the <span class="ph filepath">/tomcat/conf/catalina/directory</span> .</span>  The <span class="ph filepath">pentaho.xml</span>  is a cached copy
+                of the <span class="ph filepath">context.xml</span>  file you modified. Since the cache is not usually configured to update frequently, you have to delete the <span class="ph filepath">pentaho.xml</span>  file and let Tomcat recreate it
+                when it starts up.</li>
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/000">Start the Tomcat and BA Server.</a> </span> </li>
+            </ol>
+            <div class="section result">Tomcat can now properly connect to your data. Please go on to the next stop on the <em class="ph i">Guide Post</em>  graphic.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__id_ij2_rgx_2m">
+        <div id="section_4" class="mt-page-section"><span id="Install_JDBC_Driver_as_a_Module_in_JBoss"></span> 
+          <h2 class="editable">Install JDBC Driver as a Module in JBoss</h2>
+          <div class="body taskbody">
+            <div class="section context">In JBoss, JDBC driver information is stored in a module, which is an XML file that you create. You must download the JDBC driver software component to the correct directory, then create <span class="ph filepath">module.xml</span>  files for
+              each database. You need to create a file for the database that hosts the BA Repository (either PostgreSQL, MySQL, or Oracle).</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/modules/system/layers/base/org</span>  folder and create one of the following paths for the database on which you
+                are hosting the BA Repository.</span> 
+                <ul class="ul">
+                  <li class="li"><strong class="ph b">PostgreSQL:</strong>  <span class="ph filepath">postgresql/main</span> </li>
+                  <li class="li"><strong class="ph b">MySQL:</strong>  <span class="ph filepath">mysql/main</span> </li>
+                  <li class="li"><strong class="ph b">Oracle:</strong>  <span class="ph filepath">oracle/main</span> </li>
+                </ul>
+              </li>
+              <li class="li step"><span class="ph cmd">Download the supported JDBC driver for your DI Repository database to the <span class="ph filepath">postgresql/main</span>, <span class="ph filepath">mysql/main</span>, or <span class="ph filepath">oracle/main</span>                 directories (which ever one you created). See the
+                <a class="xref" title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0D0/160/010">JDBC Drivers Reference</a>  for a list of supported drivers.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">In the <span class="ph filepath">postgresql/main</span>, <span class="ph filepath">mysql/main</span>, or <span class="ph filepath">oracle/main</span>  (which ever one you created), do the following things.</span> 
+                <ol
+                class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">Use an editor to create a text file named <span class="ph filepath">module.xml</span> .</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Copy the following code to the <span class="ph filepath">module.xml</span>  file, then modify it so that the name of the JDBC driver you just downloaded appears. </span> 
+                    <ul class="ul">
+                      <li class="li"><strong class="ph b">PostgreSQL:</strong>  If you are using PostgreSQL, copy the following code in the <span class="ph filepath">module.xml</span>  file. Replace the name of the <code class="ph codeph">resource-root path</code> parameter
+                        with the name of the JDBC driver you downloaded.</li>
+                    </ul><pre class="pre codeblock">
+    <?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+    <module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.postgresql&quot;>
+        <resources>
+            <resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+        </resources>
+        <dependencies><module name=&quot;javax.api&quot;/></dependencies>
+    </module>  </pre>
+                    <ul class="ul">
+                      <li class="li"><strong class="ph b">MySQL:</strong>  If you are using MySQL, copy the following code in the <span class="ph filepath">module.xml</span>  file. Replace the name of the <code class="ph codeph">resource-root path</code> parameter with
+                        the name of the JDBC driver you downloaded.</li>
+                    </ul><pre class="pre codeblock">
+    <?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+    <module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.mysql&quot;>
+        <resources>
+            <resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+        </resources>
+        <dependencies><module name=&quot;javax.api&quot;/></dependencies>
+    </module>  </pre>
+                    <ul class="ul">
+                      <li class="li"><strong class="ph b">Oracle:</strong>  If you are using Oracle, copy the following code in the <span class="ph filepath">module.xml</span>  file. Replace the name of the <code class="ph codeph">resource-root path</code> parameter with
+                        the name of the JDBC driver you downloaded. <pre class="pre codeblock">
+    <?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+    <module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.oracle&quot;>
+        <resources>
+            <resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+        </resources>
+        <dependencies><module name=&quot;javax.api&quot;/></dependencies>
+    </module>  </pre> </li>
+                    </ul>
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Save and close the <span class="ph filepath">module.xml</span>  file.</span> 
+                  </li>
+            </ol>
+            </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__asdf">
+        <div id="section_5" class="mt-page-section"><span id="JBoss_JNDI_Connections"></span> 
+          <h2 class="editable">JBoss JNDI Connections</h2>
+          <div class="body taskbody">
+            <ol class="ol steps" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__asdf__steps_xsr_tjw_dm">
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/000">Stop the JBoss and BA servers</a> .</span> </li>
+              <li class="li step"><span class="ph cmd">Consult your database documentation to determine the class name and connection string for your database.</span> </li>
+              <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">pentaho/server/biserver-ee/jboss/standalone/configuration/standalone.xml</span>  file.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Append the file to include a definition for each of your data sources. Note that you should consult your JBoss documentation for proper setup information.</span>  <pre class="pre codeblock">
+                <datasource jndi-name=&quot;java:jboss/datasources/Hibernate&quot; pool-name=&quot;hibpool&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/hibernate
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                hibuser
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource>
+                    <datasource jndi-name=&quot;java:jboss/datasources/Quartz&quot; pool-name=&quot;quartzpool&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/quartz
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                pentaho_user
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource>
+                    <datasource jndi-name=&quot;java:jboss/datasources/Audit&quot; pool-name=&quot;auditpool&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/hibernate
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                pentaho_user
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource>
+ <datasource jndi-name=&quot;java:jboss/datasources/Operations_Mart&quot; pool-name=&quot;Operations_Mart&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/hibernate
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                pentaho_user
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource></pre> </li>
+              <li class="li step"><span class="ph cmd">If your environment (e.g. port numbers, IP address), solution repository, or database password and user name information differs from the code in the above example, modify it to match your specifications.</span> </li>
+              <li class="li step"><span class="ph cmd">Add the driver definition in the driver section of the file. Here is an example of the PostgreSQL driver definition. If you are using MySQL or Oracle, modify the driver name, module, and data source class accordingly.</span>                 <pre class="pre codeblock">
+ <driver name=&quot;org.postgresql&quot; module=&quot;org.postgresql&quot;>
+  <xa-datasource-class>
+      org.postgresql.xa.PGXADataSource
+      </xa-datasource-class>
+  </driver></pre> </li>
+              <li class="li step"><span class="ph cmd">Close and save the <code class="ph codeph">standalone.xml</code>file.</span> </li>
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/000">Start the JBoss and BA Server.</a> </span> </li>
+            </ol>
+          </div>
+          <div class="topic task nested2" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__id_ssn_tjw_dm">
+            <div id="section_6" class="mt-page-section"><span id="Remove_JNDI_Resource_References_in_JBoss"></span> 
+              <h3 class="editable">Remove JNDI Resource References in JBoss</h3>
+              <div class="body taskbody">
+                <div class="section context">Because JBoss has its own mechanism for referencing JNDI data sources, the resource-references in the <span class="ph filepath">web.xml</span>  file located in the <span class="ph filepath">pentaho.war</span>  are not needed. You must remove
+                  these resource-references for the BA Server to operate properly.</div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/standalone/deployments</span>  directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a zip extraction utility (such as 7-Zip, Winzip, or Archive) to view the contents of the <span class="ph filepath">pentaho.war</span>  file. Do not unzip or extract the contents of the file.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">WEB-INF</span>  directory and open the <span class="ph filepath">web.xml</span>  file in a text editor.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Delete all <code class="ph codeph"><resource-ref></code> tagged entries including everything between the <code class="ph codeph"><resource-ref></code> and <code class="ph codeph"></resource ref></code> tags.</span> </li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                  <li class="li step"><span class="ph cmd">The zip extraction utility that you used might show a prompt that asks whether you would like to update the file in the <strong class="ph b">pentaho.war</strong>  archive. If this happens, confirm that you would like to do this.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="ec1bbe4d-5117-4c98-b107-61834b3eb955__UpdateJNDIDatasourceReferenceJBoss">
+            <div id="section_7" class="mt-page-section"><span id="Update_JNDI_Data_Source_Reference_to_Conform_to_JBoss_Standards"></span> 
+              <h3 class="editable">Update JNDI Data Source Reference to Conform to JBoss Standards</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Update these files so that referenced JNDI datasources conform to JBoss standards.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/quartz/quartz.properties</span>  file. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Change the <code class="ph codeph">org.quartz.dataSource.myDS.jndiURL</code> value to <code class="ph codeph">jboss/datasources/Quartz</code>, then save and close the file.</span> </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/audit_sql.xml</span>  file.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Change the JNDI value to <code class="ph codeph">jboss/datasources/Hibernate</code>, then save and close the file.</span> </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/data-access/settings.xml</span>  file.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Change the <code class="ph codeph">data-access-staging-jndi</code> value to <code class="ph codeph">jboss/datasources/Hibernate</code>, then save and close the file.</span> </li>
+                  <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/audit/dialects/</span>  folder for your appropriate database. Use the text editor to open each file and make the following changes,
+                    using your appropriate database:</span> 
+                    <ul class="ul">
+                      <li class="li">Change <code class="ph codeph"> <database>Audit</database></code> to <code class="ph codeph"><database>jboss/datasources/Audit</database></code>.</li>
+                      <li class="li">Change <code class="ph codeph"> <database>Hibernate</database></code> to <code class="ph codeph"> <database>jboss/datasources/Hibernate</database></code>.</li>
+                    </ul>
+                  </li>
+                </ol>
+                <div class="section result">JBoss can now properly connect to your data. Please go on to the next stop on the <em class="ph i">Guide Post</em>  graphic.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Add_Drivers" rel="internal">Add Drivers</a>  </li>
+      <li> <a href="#Specify_JNDI_Connection_Information" rel="internal">Specify JNDI Connection Information</a>  </li>
+      <li> <a href="#Tomcat_JNDI_Connections" rel="internal">Tomcat JNDI Connections</a>  </li>
+      <li> <a href="#Install_JDBC_Driver_as_a_Module_in_JBoss" rel="internal">Install JDBC Driver as a Module in JBoss</a>  </li>
+      <li>
+        <a href="#JBoss_JNDI_Connections" rel="internal">JBoss JNDI Connections</a> 
+        <ol>
+          <li> <a href="#Remove_JNDI_Resource_References_in_JBoss" rel="internal">Remove JNDI Resource References in JBoss</a>  </li>
+          <li> <a href="#Update_JNDI_Data_Source_Reference_to_Conform_to_JBoss_Standards" rel="internal">Update JNDI Data Source Reference to Conform to JBoss Standards</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

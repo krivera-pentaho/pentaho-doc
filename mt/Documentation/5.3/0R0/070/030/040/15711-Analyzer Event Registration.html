@@ -1,0 +1,105 @@
+<content type="text/html" title="Analyzer Event Registration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <p>Analyzer events are API hooks which allow you to register custom listeners into the inner workings of Analyzer. These locations can range from when Analyzer is initialized to when a cell is clicked.&nbsp;</p>
+      <div id="section_2" class="mt-page-section"><span id="Event_Registration"></span> 
+        <h2 id="AnalyzerEventRegistration-EventRegistration" class="editable">Event Registration</h2>
+        <p><span>Event registration occurs before Analyzer is initialized. Events are registered using the Analyzer API, which has to be required using&nbsp;<a class="external-link" href="http://requirejs.org/" rel="nofollow">RequireJS</a> . When triggered, event listeners will execute in the order in which they were registered.</span> </p>
+        <p>All registered event listeners receive at least three function parameters: <span class="filepath style-wrap">e</span>  (the event object), <span class="filepath style-wrap">cv</span>  (global analyzer namespace), and <span class="filepath style-wrap">report</span>           (the report against which the function is being run).</p>
+        <p><strong>Example:</strong> </p>
+        <div class="container" title="Hint: double-click to select code"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([&quot;analyzer/cv_api&quot;], function(api) {
+  api.event.registerInitListener(function(e, cv, report){
+	// Perform Action
+  });
+}</pre> </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Stop_Immediate_Propagation"></span> 
+        <h2 id="AnalyzerEventRegistration-StopImmediatePropagation" class="editable">Stop Immediate Propagation</h2>
+        <p>There may be a time when, under special circumstances, a prior event listener will not want any further listeners to be executed. This can be performed by stopping the immediate propagation on the event chain. The function is attached to the event
+          object (<span class="filepath style-wrap">e</span> ), which is passed into the listeners.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerInitListener(function(e, cv, report) {
+  // Perform Action 1
+  e.stopImmediatePropagation();
+});
+ 
+api.event.registerInitListener(function(e, cv, report) {
+  // Perform Action 2
+});</pre>
+        <p>In the above code sample, even though two event listeners have been registered, since the first listener stopped the immediate propagation, the 2nd (and any subsequent) event listener will not be fired.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Prevent_Default"></span> 
+        <h2 id="AnalyzerEventRegistration-PreventDefault" class="editable">Prevent Default</h2>
+        <p>All events have a default behavior associated with them and, in some cases, this behavior can be completely prevented. As with <span class="filepath style-wrap">stopImmediatePropagation</span>, this is also attached the to the event object (
+          <span
+          class="filepath style-wrap">e</span> ) and needs to be called within the listener's code block.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerInitListener(function(e, cv, report) {
+  // Perform Action
+  e.preventDefault();
+});</pre> </div>
+      <div id="section_5" class="mt-page-section"><span id="Removing_Listeners"></span> 
+        <h2 id="AnalyzerEventRegistration-RemovingListeners" class="editable">Removing Listeners</h2>
+        <p>It is possible to remove listeners once they have been registered. &nbsp;A register event listener function returns a handler for that event listener which has a remove function attached to it. Calling this function removes the listener from the
+          event chain.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var initListenerHandler = api.event.registerInitListener(function(e, cv, report) {
+  // Perform Action
+  e.preventDefault();
+});
+ 
+initListenerHandler.remove();</pre> </div>
+      <div id="section_6" class="mt-page-section"><span id="Attaching_Event_Listener_Code"></span> 
+        <h2 id="AnalyzerEventRegistration-AttachingEventListenerCode" class="editable">Attaching Event Listener Code</h2>
+        <p>To insert your own custom javascript file, you must modify <span class="filepath style-wrap">plugin.xml</span>  inside of the analyzer plugin folder. Currently, there is a commented line which is pointed at an example file inside of the plugin's
+          script folder. If you would like to see this file working or see the sample code to change to point to your own javascript file, uncomment that line by deleting the <span class="filepath style-wrap">
+<!--</span>  and <span class="filepath style-wrap">--></span>           surrounding the <span class="filepath style-wrap"><file></span>  tag. You <strong>must</strong>  <strong>restart</strong>  your server to see these changes.</p>
+        <div class="code panel" style="border-width: 1px;">
+          <div class="codeHeader panelHeader" style="border-bottom-width: 1px;"><strong>Example:</strong> </div>
+          <div class="codeHeader panelHeader" style="border-bottom-width: 1px;"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- <file context=&quot;analyzer&quot;>content/analyzer/scripts/api_examples/EventRegistration.js</file> --></pre> </div>
+        </div>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Events"></span> 
+        <h2 id="AnalyzerEventRegistration-Events" class="editable">Events</h2>
+        <p>The following are events in Analyzer.</p>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="init"></span> 
+        <h2 id="AnalyzerEventRegistration-init" class="editable">init</h2>
+        <p class="p1"><span class="s1">The init event occurs after Analyzer's UI has initialized and the report definition (if opening a saved report) has been loaded into the editor.&nbsp; Once all init handlers have been called, the report will automatically refresh its data so you do not need to call <span class="filepath style-wrap">refreshReport </span> in
+          the init handler.</span> 
+        </p>
+        <p class="p1"><strong><span class="s1">Example:</span> </strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerInitListener(function(e, cv, report) {
+  // Perform Action
+  // e.stopImmediatePropagation();
+});</pre>
+        <br />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Event_Registration" rel="internal">Event Registration</a>  </li>
+      <li> <a href="#Stop_Immediate_Propagation" rel="internal">Stop Immediate Propagation</a>  </li>
+      <li> <a href="#Prevent_Default" rel="internal">Prevent Default</a>  </li>
+      <li> <a href="#Removing_Listeners" rel="internal">Removing Listeners</a>  </li>
+      <li> <a href="#Attaching_Event_Listener_Code" rel="internal">Attaching Event Listener Code</a>  </li>
+      <li> <a href="#Events" rel="internal">Events</a>  </li>
+      <li> <a href="#init" rel="internal">init</a>  </li>
+    </ol>
+  </body>
+</content>

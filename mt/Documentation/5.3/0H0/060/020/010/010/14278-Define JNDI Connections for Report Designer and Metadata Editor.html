@@ -1,0 +1,173 @@
+<content type="text/html" title="Define JNDI Connections for Report Designer and Metadata Editor">
+  <body>
+    <div>
+      <div>
+        <p class="p">
+          <img alt="File:/grGetStartedCreateInteractiveSteps.png" class="image internal" id="7b764c85-3dce-4ea5-9bf7-01e96edc2de8__task_nested_H1__image_r4h_hj5_bl" src="http://help.pentaho.com/@api/deki/files/3165/grGetStartedCreateInteractiveSteps.png?revision=1"
+          />
+        </p>
+      </div>
+      <p>Once you have
+        <a class="xref" title="Documentation/5.1/0H0/060/020/010" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/010">chosen to use the JNDI access protocol</a>, here are configuration tasks you can perform.</p>
+      <ul class="ul" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__asdf4__ul_lgc_p3z_ck">
+        <li class="li">
+          <a class="xref" title="Documentation/5.1/0H0/060/020/010/010#5a37f13e-3fb8-4472-a291-510e5cda8d3f__add_driver_ba_clients" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/010/010#5a37f13e-3fb8-4472-a291-510e5cda8d3f__add_driver_ba_clients">Add Drivers</a> 
+        </li>
+        <li class="li">
+          <a class="xref" title="Documentation/5.1/0H0/060/020/010/010#5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_report_designer" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/010/010#5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_report_designer">Edit the Properties File for Report Designer</a> 
+        </li>
+        <li class="li">
+          <a class="xref" title="Documentation/5.1/0H0/060/020/010/010#5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_metadata_editor" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/010/010#5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_metadata_editor">Edit the Properties File for Metadata Editor</a> 
+          <p class="p">When you are done, please go on to the next stop on the <em class="ph i">Guide Post</em>  graphic.</p>
+        </li>
+      </ul>
+      <div id="section_1" class="mt-page-section"><span id="Add_Drivers"></span> 
+        <h2 class="editable">Add Drivers</h2>
+        <p class="p">The driver enables design tools to connect to the BA Server and verify that the model is correct. Your database administrator, Chief Intelligence Officer, or IT manager should be able to provide the appropriate driver. If not, you can download
+          drivers from your database vendor's website. See the
+          <a class="xref" title="Documentation/5.1/0D0/160" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0D0/160">Supported Technologies</a>  to ensure that your database and its driver is supported.</p>
+        <p class="p">When you have the correct driver, copy it to these directories on <em class="ph i">all</em>  machines that run the design tools you chose to install. Design tools should not be running when you do this. Once the driver is in place, you can start
+          the design tools.</p>
+        <ul class="ul" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__add_driver_ba_clients__d95e49">
+          <li class="li"><strong class="ph b">Aggregation Designer:</strong>  <span class="ph filepath">/pentaho/design-tools/agg-designer/drivers/</span> </li>
+          <li class="li"><strong class="ph b">Metadata Editor:</strong>  <span class="ph filepath">/pentaho/design-tools/metadata-editor/libext/JDBC/</span> </li>
+          <li class="li"><strong class="ph b">Report Designer:</strong>  <span class="ph filepath">/pentaho/design-tools/report-designer/lib/jdbc/</span> </li>
+          <li class="li"><strong class="ph b">Schema Workbench:</strong>  <span class="ph filepath">/pentaho/design-tools/schema-workbench/drivers/</span> </li>
+        </ul>
+        <p class="p">There should be only one driver for your database in this directory. Ensure that there are no other versions of the same vendor's driver in this directory. If there are, back up the old driver files and remove them to avoid version conflicts.
+          If you have any concerns about how to proceed, contact
+          <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/Get_Help_and_Support/001">Pentaho support</a> .</p>
+        <p class="p"><strong class="ph b">Driver for Microsoft SQL Server</strong> </p>
+        <p class="p">If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+          <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/Get_Help_and_Support/001">Pentaho support</a>  to ensure that you are adding the correct driver.</p>
+        <p class="p">For Microsoft Windows, most JDBC drivers support Type 2 integrated authentication through the <span class="ph filepath">integratedSecurity</span>  connection string property. To use integrated authentication, copy the <span class="ph filepath">sqljdbc_auth.dll</span>           file to all machines and directories to which you copied the JDBC driver. You can find this file in this location.</p>
+        <div class="p"> <pre class="pre codeblock">
+<installation directory>\sqljdbc_<version>\<language>\auth\</pre> </div>
+        <div class="p">
+          <ul class="ul">
+            <li class="li">Use the <span class="ph filepath">sqljdbc_auth.dll</span>  file, in the x86 folder, if you are running a 32-bit Java Virtual Machine (JVM) even if the operating system is version x64.</li>
+            <li class="li">Use the <span class="ph filepath">sqljdbc_auth.dll</span>  file in the x64 folder, if you are running a 64-bit JVM on a x64 processor.</li>
+            <li class="li">Use the <span class="ph filepath">sqljdbc_auth.dll</span>  file in the IA64 folder, you are running a 64-bit JVM on an Itanium processor.</li>
+          </ul>
+        </div>
+        <div class="topic task nested1" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_report_designer">
+          <div id="section_2" class="mt-page-section"><span id="Edit_the_Properties_File_for_Report_Designer"></span> 
+            <h2 class="editable">Edit the Properties File for Report Designer</h2>
+            <div class="body taskbody">
+              <ol class="ol steps" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_report_designer__steps_xpv_t3n_yj">
+                <li class="li step"><span class="ph cmd">On the workstation where you want to run Report Designer, <a class="xref" title="Documentation/5.1/0H0/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/000">stop Report Designer</a>  and the <a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/010/000">BA server</a>  if it is running on the same workstation. </span> </li>
+                <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">.pentaho</span>  directory in the user or home directory.</span>  For example, if the user name is <span class="ph filepath">fbueller</span>  for Microsoft Windows, the pentaho
+                  directory is <span class="ph filepath">C:\Users\fbueller\.pentaho\</span>, and for Linux or Solaris the directory is <span class="ph filepath">/home/fbueller/.pentaho/</span> .</li>
+                <li class="li step"><span class="ph cmd">Switch to the <span class="ph filepath">~/.pentaho/simple-jndi/</span>  subdirectory. If it does not exist, create it.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">default.properties</span>  file found there. If it does not exist, create it according to this example.</span>  <pre class="pre codeblock">
+SampleData/type=javax.sql.DataSource
+SampleData/driver=org.hsqldb.jdbcDriver
+SampleData/user=pentaho_user
+SampleData/password=password
+SampleData/url=jdbc:hsqldb:mem:SampleData</pre> In the example, <code class="ph codeph">SampleData</code> is the name of the JNDI connection. Each line must begin with the JNDI connection name and a forward slash (/), followed by these required parameters.
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_report_designer__table_hgx_xzm_yj" rules="all" summary="">
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__d18004e246" valign="top" width="19.493177387914233%">Parameter</th>
+                          <th class="entry" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__d18004e249" valign="top" width="80.50682261208577%">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d18004e246 " valign="top" width="19.493177387914233%">type</td>
+                          <td class="entry" headers="d18004e249 " valign="top" width="80.50682261208577%"><code class="ph codeph">javax.sql.DataSource</code> defines a JNDI data source type.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e246 " valign="top" width="19.493177387914233%">driver</td>
+                          <td class="entry" headers="d18004e249 " valign="top" width="80.50682261208577%">The driver class name provided by your database vendor.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e246 " valign="top" width="19.493177387914233%">user</td>
+                          <td class="entry" headers="d18004e249 " valign="top" width="80.50682261208577%">A user account that can connect to this database.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e246 " valign="top" width="19.493177387914233%">password</td>
+                          <td class="entry" headers="d18004e249 " valign="top" width="80.50682261208577%">The password for the previously declared user.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e246 " valign="top" width="19.493177387914233%">url</td>
+                          <td class="entry" headers="d18004e249 " valign="top" width="80.50682261208577%">The database connection string provided by your database vendor.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+                <li class="li step"><span class="ph cmd">Save and close the file. </span> </li>
+                <li class="li step"><span class="ph cmd">In order for this change to take effect,<a class="xref" title="Documentation/5.1/0H0/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/000">restart the design tools</a>  and the <a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/010/000">server</a>  if the server and design tools are running on the same workstation. </span> </li>
+              </ol>
+              <div class="section result">You now have a properties file that defines a JNDI connection for Report Designer. Remember, if you run this tool on more than one workstation, repeat this process on <em class="ph i">all</em>  of the other workstations.</div>
+            </div>
+          </div>
+        </div>
+        <div class="topic task nested1" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_metadata_editor">
+          <div id="section_3" class="mt-page-section"><span id="Edit_the_Properties_File_for_Metadata_Editor"></span> 
+            <h2 class="editable">Edit the Properties File for Metadata Editor</h2>
+            <div class="body taskbody">
+              <ol class="ol steps" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_metadata_editor__steps_xpv_t3n_yj">
+                <li class="li step"><span class="ph cmd">On the workstation where you want to run Metadata Editor, <a class="xref" title="Documentation/5.1/0H0/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/000">stop Metadata Editor</a>  and the <a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/010/000">server</a>  if it is running on the same workstation. </span> </li>
+                <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">metadata-editor/simple_jndi</span>  directory where you installed the Metadata Editor.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">JDBC.properties</span>  file found there. If it does not exist, create it according to this example.</span>  <pre class="pre codeblock">
+SampleData/type=javax.sql.DataSource
+SampleData/driver=org.hsqldb.jdbcDriver
+SampleData/user=pentaho_user
+SampleData/password=password
+SampleData/url=jdbc:hsqldb:mem:SampleData</pre> In the example, <code class="ph codeph">SampleData</code> is the name of the JNDI connection. Each line must begin with the JNDI connection name and a forward slash (/), followed by these required parameters.
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__task_jndi_properties_for_metadata_editor__table_hgx_xzm_yj" rules="all" summary="">
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__d18004e406" valign="top" width="19.493177387914233%">Parameter</th>
+                          <th class="entry" id="5a37f13e-3fb8-4472-a291-510e5cda8d3f__d18004e409" valign="top" width="80.50682261208577%">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d18004e406 " valign="top" width="19.493177387914233%">type</td>
+                          <td class="entry" headers="d18004e409 " valign="top" width="80.50682261208577%"><code class="ph codeph">javax.sql.DataSource</code> defines a JNDI data source type.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e406 " valign="top" width="19.493177387914233%">driver</td>
+                          <td class="entry" headers="d18004e409 " valign="top" width="80.50682261208577%">The driver class name provided by your database vendor.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e406 " valign="top" width="19.493177387914233%">user</td>
+                          <td class="entry" headers="d18004e409 " valign="top" width="80.50682261208577%">A user account that can connect to this database.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e406 " valign="top" width="19.493177387914233%">password</td>
+                          <td class="entry" headers="d18004e409 " valign="top" width="80.50682261208577%">The password for the previously declared user.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d18004e406 " valign="top" width="19.493177387914233%">url</td>
+                          <td class="entry" headers="d18004e409 " valign="top" width="80.50682261208577%">The database connection string provided by your database vendor.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </li>
+                <li class="li step"><span class="ph cmd">Save and close the file. </span> </li>
+                <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/020/000">For these changes to take effect, restart the Metadata Editor</a>  and the <a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0H0/060/010/000">BA server</a>  if it is running on the same workstation.</span> </li>
+              </ol>
+              <div class="section result">You now have a properties file that defines a JNDI connection for Report Designer. Remember, if you run this tool on more than one workstation, repeat this process on <em class="ph i">all</em>  the other workstations.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Add_Drivers" rel="internal">Add Drivers</a>  </li>
+      <li> <a href="#Edit_the_Properties_File_for_Report_Designer" rel="internal">Edit the Properties File for Report Designer</a>  </li>
+      <li> <a href="#Edit_the_Properties_File_for_Metadata_Editor" rel="internal">Edit the Properties File for Metadata Editor</a>  </li>
+    </ol>
+  </body>
+</content>

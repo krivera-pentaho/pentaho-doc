@@ -1,0 +1,22 @@
+<content type="text/html" title="Troubleshooting a Corrupted DI Server Repository">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">If the DI Repository becomes corrupt, it will be unresponsive, content may be missing or inaccessible, and an error message similar to this will appear in the <span class="ph filepath">/data-integration-server/tomcat/logs/catalina.out</span>  log
+          file:</p> <pre class="pre codeblock">
+ERROR [ConnectionRecoveryManager] could not execute statement, reason: File corrupted while reading record: &quot;page[48970] data leaf table:8 entries:1 parent:49157 keys:[118547] offsets:[737]&quot;. Possible solution: use the recovery tool [90030-131], state/code: 90030/90030</pre>
+        <p class="p">If this happens, shut down the DI Server and restore your solution repository from a recent backup.</p>
+        <p class="p">If you do not have a viable backup, you may be able to minimize data loss by identifying the exact file that is corrupt. To do this, enable debug logging by adding the following XML snippet above the <strong class="ph b"><root></strong>  element
+          in the <span class="ph filepath">/WEB-INF/classes/log4j.xml</span>  inside your deployed pentaho.war:</p> <pre class="pre codeblock">
+<category name=&quot;org.pentaho.platform&quot;>
+     <priority value=&quot;DEBUG&quot;/>
+</category></pre>
+        <p class="p">Restart the DI Server and retry the action that caused the original error. If it occurs again, shut down the DI Server and open the <strong class="ph b">catalina.out</strong>  log file in Tomcat. Look for the last line that appears before the error;
+          it usually contains the name of the file that has been damaged. When you are finished investigating the data corruption, remove the extra logging capabilities so that your DI Server log files don't become large and unmanageable.</p> <pre class="pre codeblock">
+reading file with id 'xyz' and path '/public/a.txt'</pre>
+        <p class="p">&nbsp;</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

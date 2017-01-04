@@ -1,0 +1,51 @@
+<content type="text/html" title="Breaking Down Your Chart by Deal Size">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to apply ranges to charts.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Your source data does not contain an attribute for Deal Size. Use the <strong class="ph b">Data Integration</strong>  perspective to add this new field.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Select&nbsp;<strong class="ph b">Data Integration</strong>  in the <strong>Perspective </strong> dropdown of the main toolbar.</span> </li>
+          <li class="li step"><span class="ph cmd"><strong>Detach </strong> the <strong>Write to Database </strong> step from the <strong>Value Mapper </strong> step.</span> </li>
+          <li class="li step"><span class="ph cmd">Expand the <strong class="ph b">Transform</strong>  folder and drag a <strong class="ph b">Number Range</strong>  step onto the graphical workspace</span> .</li>
+          <li class="li step">Create a hop from <strong>Value Mapper </strong> to <strong>Number Range.</strong> </li>
+          <li class="li step"><strong>C</strong> reate another hop from <strong>Number Range </strong> to <strong>Write to Database</strong> . <span class="ph cmd">When prompted, select the <strong>Main output of the step&nbsp;</strong> option.</span> </li>
+        </ol>
+        <p class="li step">&nbsp;
+          <img alt="File:/pdi_number_range_tbl_output.png" class="internal default" style="width: 350px; height: 110px;" width="350px" height="110px" src="http://help.pentaho.com/@api/deki/files/5981/AddNumberRange.png?size=bestfit&amp;width=350&amp;height=110&amp;revision=1"
+          />
+        </p>
+        <ol class="ol steps" start="6">
+          <li class="li step"><span class="ph cmd">Double-click <strong class="ph b">Number range</strong>  to open its edit properties dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">Choose the <strong class="ph b">SALES</strong>  field as your Input field.</span> </li>
+          <li class="li step"><span class="ph cmd">Type <strong class="ph b">DEALSIZE</strong>  as the name for the <strong class="ph b">Output</strong>  field.</span> </li>
+          <li class="li step"><span class="ph cmd">In the <strong class="ph b">Ranges</strong>  table, define number ranges as shown in the example below. Click <strong class="ph b">OK</strong> .</span> 
+            <img alt="File:/agile_bi_number_ranges.png" class="internal default" style="width: 550px; height: 313px;"
+            width="550px" height="313px" src="http://help.pentaho.com/@api/deki/files/5984/NumberRanges.png?size=bestfit&amp;width=550&amp;height=313&amp;revision=1" />
+            <div class="note note"><span class="notetitle">Note:</span>  Because this step adds a new field into the stream, you must update your target database table to add the new column in the next steps.</div>
+          </li>
+          <li class="li step"><span class="ph cmd">Double-click on the <strong class="ph b">Write to Database</strong>  (Table output) step.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">SQL</strong>  to generate the DDL necessary to update the target table.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Execute</strong>  to run the SQL. Click <strong class="ph b">OK</strong>  to close the results dialog box. Click <strong class="ph b">Close</strong>  to exit the <strong class="ph b">Simple SQL Editor</strong>  dialog box. Click <strong class="ph b">OK</strong>  to close the edit step properties dialog.</span> </li>
+          <li class="li step"><span class="ph cmd">Save and run your transformation to re-populate your target database.</span> 
+            <img alt="File:/pdi_transformation_final.png" class="internal default" style="width: 550px; height: 228px;" width="550px" height="228px" src="http://help.pentaho.com/@api/deki/files/5983/fulltutorialtransformation.png?size=bestfit&amp;width=550&amp;height=228&amp;revision=1"
+            />
+          </li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

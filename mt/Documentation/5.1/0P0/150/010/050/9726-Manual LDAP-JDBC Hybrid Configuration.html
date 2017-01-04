@@ -1,0 +1,59 @@
+<content type="text/html" title="Manual LDAP/JDBC Hybrid Configuration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You must have a working directory server with an established configuration, and a database containing your user roles before continuing.</div>
+        <div class="section context">
+          <p class="p">It is possible to use a directory server for user authentication and a JDBC security table for role definitions. This is common in situations where LDAP roles cannot be redefined for BA Server use. Follow the below instructions to switch the
+            BA Server's authentication back end from the Pentaho data access object to an LDAP/JDBC hybrid.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  Replace the <strong class="ph b">pentahoAdmins</strong>  and <strong class="ph b">pentahoUsers</strong>  references in the examples below with the appropriate roles from your LDAP configuration.</div>
+        </div>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Stop the BA Server and User Console.</span> </li>
+          <li class="li step"><span class="ph cmd">Open <span class="ph filepath">/pentaho-solutions/system/security.properties</span>  with a text editor. </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Add this value beneath the <code class="ph codeph">provider=ldap</code> line, then save and close the file: </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">role.provider=jdbc</pre>            </li>
+          <li class="li step"><span class="ph cmd">Open the<span class="ph filepath"> /pentaho-solutions/system/pentahoObjects.spring.xml</span>  with a text editor. </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Find these code blocks and change the <strong class="ph b">providerName</strong>  to <code class="ph codeph">jdbc</code>.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- Reference to a bean in one of the applicationContext-pentaho-security-*.xml; selected by configured provider-->
+  <pen:bean id=&quot;activeUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+    <pen:attributes>
+      <pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+    </pen:attributes>
+  </pen:bean></pre> </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho-solutions/system/applicationContext-spring-security-jdbc.properties</span>  file with a text editor and edit to show your database connection information.</span>  Save and close
+            the file.</li>
+          <li class="li step"><span class="ph cmd">Open <span class="ph filepath">/pentaho-solutions/system/applicationContext-pentaho-security-jdbc.xml</span> . Find this code block and change <code class="ph codeph">Admin</code> to an appropriate administrator role in your
+            JDBC authentication database. </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- map ldap role to pentaho security role -->
+<util:map id=&quot;jdbcRoleMap&quot;>
+   <entry key=&quot;Admin&quot; value=&quot;Administrator&quot;/>
+</util:map></pre> </li>
+          <li class="li step">Open the /pentaho-solutions/system/applicationContext-springsecurity-ldap.xml file and replace the populator bean difinition with this one. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;populator&quot; class=&quot;org.springframework.security.
+ldap.populator.UserDetailsServiceLdapAuthoritiesPopulator&quot;>
+<constructor-arg ref=&quot;jdbcUserDetailsService&quot; />
+</bean></pre> </li>
+          <li class="li step"><span class="ph cmd">Delete the <span class="ph filepath">/tomcat/work/</span>  and <span class="ph filepath">/tomcat/temp/</span>  directories.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Start the BA Server and User Console.</span> </li>
+          <li class="li step"><span class="ph cmd">Log into the User Console.</span> </li>
+          <li class="li step"><span class="ph cmd">Configure the Pentaho LDAP connection as explained in <a class="xref" title="Documentation/5.1/0P0/150/010/030/010" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/150/010/030/010">LDAP Properties</a> .</span> </li>
+        </ol>
+        <div class="section result">The BA Server is configured to authenticate users against your directory server.</div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

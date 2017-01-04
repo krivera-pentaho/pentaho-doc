@@ -1,0 +1,47 @@
+<content type="text/html" title="Transformations, Steps, and Hops">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>&nbsp;</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p class="p">A <strong class="ph b">transformation</strong>  is a network of logical tasks called <em class="ph i">steps</em> . Transformations are essentially <em class="ph i">data flows</em> . In the example below, the database developer has created a transformation
+          that reads a flat file, filters it, sorts it, and loads it to a relational database table. Suppose the database developer detects an error condition and instead of sending the data to a Dummy step, (which does nothing), the data is logged back
+          to a table. The transformation is, in essence, a directed graph of a logical set of data transformation configurations. Transformation file names have a .ktr extension.</p>
+        <p class="p">
+          <img alt="File:/pdi_basic_transformation.png" class="image internal" id="d9079c50-0384-492a-9c9a-306016dcd1f7__concept_pdi_usr_transformations__image_7d40b7f0-1f0e-49dc-867e-065419ec1634" src="http://help.pentaho.com/@api/deki/files/2520/pdi_basic_transformation.png?revision=1"
+          />
+        </p>
+        <p class="p">The two main components associated with transformations are <strong class="ph b">steps</strong>  and <strong class="ph b">hops</strong> :</p>
+        <p class="p"><strong class="ph b">Steps</strong>  are the building blocks of a transformation, for example a text file input or a table output. There are over 140 steps available in Pentaho Data Integration and they are grouped according to function; for example,
+          input, output, scripting, and so on. Each step in a transformation is designed to perform a specific task, such as reading data from a flat file, filtering rows, and logging to a database as shown in the example above. Steps can be configured
+          to perform the tasks you require.</p>
+        <p class="p"><strong class="ph b">Hops</strong>  are data pathways that connect steps together and allow schema metadata to pass from one step to another. In the image above, it seems like there is a sequential execution occurring; however, that is not true.
+          Hops determine the flow of data <em class="ph i">through</em>  the steps not necessarily the sequence in which they run. When you run a transformation, each step starts up in its own thread and pushes and passes data.</p>
+        <div class="p">
+          <div class="note note"><span class="notetitle">Note:</span>  All steps are started and run in parallel so the initialization sequence is not predictable. That is why you cannot, for example, set a variable in a first step and attempt to use that variable in a subsequent
+            step.</div>
+        </div>
+        <p class="p">You can connect steps together, edit steps, and open the step contextual menu by clicking
+          <img alt="File:/edit.png" class="image internal" id="d9079c50-0384-492a-9c9a-306016dcd1f7__concept_pdi_usr_transformations__image_94b813a7-a615-4393-abd1-d2d5fefe104e"
+          src="http://help.pentaho.com/@api/deki/files/2519/edit.png?revision=1" /> to edit a step. Click the down arrow to open the contextual menu. For information about connecting steps with hop, see
+          <a class="xref" title="Documentation/5.1/0L0/0Y0/040/020" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0L0/0Y0/040/020">More About Hops</a> .</p>
+        <p class="p">
+          <img alt="File:/pdi_mouseover_menu.png" class="image internal" id="d9079c50-0384-492a-9c9a-306016dcd1f7__concept_pdi_usr_transformations__image_40ecc751-79c7-40eb-b6a1-e27295d6d1c7" src="http://help.pentaho.com/@api/deki/files/2521/pdi_mouseover_menu.png?revision=1"
+          />
+        </p>
+        <p class="p">A step can have many connections &mdash; some join two steps together, some only serve as an input or output for a step. The data stream flows through steps to the various steps in a transformation. Hops are represented in Spoon as arrows. Hops
+          allow data to be passed from step to step, and also determine the direction and flow of data through the steps. If a step sends outputs to more than one step, the data can either be copied to each step or distributed among them.</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

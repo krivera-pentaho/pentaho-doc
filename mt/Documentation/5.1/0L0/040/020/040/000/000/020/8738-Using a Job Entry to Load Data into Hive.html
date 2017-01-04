@@ -1,0 +1,115 @@
+<content type="text/html" title="Using a Job Entry to Load Data into Hive">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">In order to follow along with this tutorial, you will need
+          <ul class="ul" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__ul_jql_jxj_c3">
+            <li class="li">Hadoop</li>
+            <li class="li">Pentaho Data Integration</li>
+            <li class="li">Hive</li>
+          </ul>
+        </div>
+        <div class="section context">
+          <p class="p">PDI jobs can be used to put files into Hive from many different sources. This tutorial instructs you how to use a PDI job to load a sample data file into a Hive table.</p>
+          <div class="p">
+            <div class="note note"><span class="notetitle">Note:</span>  Hive could be defined with external data. Using the external option, you could define a Hive table that uses the HDFS directory that contains the parsed file. For this tutorial, we chose not to use the
+              external option to demonstrate the ease with which files can be added to non-external Hive tables.</div>
+          </div>
+          <p class="p">If not already running, start Hadoop, PDI, and the Hive server. Unzip the sample data files and put them in a convenient location:
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/download/attachments/23530622/weblogs_parse.txt.zip">weblogs_parse.txt.zip</a> .</p>
+          <p class="p">This file should be placed in the <span class="ph filepath">/user/pdi/weblogs/parse</span>  directory of HDFS using these three commands.</p>
+          <div class="p"> <pre class="pre codeblock">
+hadoop fs -mkdir /user/pdi/weblogs
+hadoop fs -mkdir /user/pdi/weblogs/parse
+hadoop fs -put weblogs_parse.txt /user/pdi/weblogs/parse/part-00000</pre> </div>
+          <p class="p">If you previously completed the
+            <a class="xref" title="Documentation/5.1/0L0/0Y0/0F0/040/010/010" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0L0/0Y0/0F0/040/010/010">Using Pentaho MapReduce to Parse Weblog Data</a> tutorial, the necessary files will already be in the proper directory.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Create a Hive Table.</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Open the Hive shell by entering <code class="ph codeph">'hive'</code> at the command line. </span> </li>
+              <li class="li substep"><span class="ph cmd">Create a table in Hive for the sample data by entering</span>  <pre class="pre codeblock">
+create table weblogs (
+client_ip    string,
+full_request_date string,
+day    string,
+month    string,
+month_num int,
+year    string,
+hour    string,
+minute    string,
+second    string,
+timezone    string,
+http_verb    string,
+uri    string,
+http_status_code    string,
+bytes_returned        string,
+referrer        string,
+user_agent    string)
+row format delimited
+fields terminated by '\t';                            </pre> </li>
+              <li class="li substep"><span class="ph cmd">Close the Hive shell by entering <code class="ph codeph">'quit'</code>.</span> </li>
+            </ol>
+          </li>
+          <li class="li step" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__create_new_job_step1"><span class="ph cmd">Create a new Job to load the sample data into a Hive table by selecting <span class="ph uicontrol">File</span>  > <span class="ph uicontrol">New</span>  > <span class="ph uicontrol">Job</span> .</span> 
+          </li>
+          <li class="li step" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__create_new_job_step2"><span class="ph cmd">Add a Start job entry to the canvas. From the <span class="ph uicontrol">Design</span>  palette on the left, under the <span class="ph uicontrol">General</span>  folder, drag a <span class="ph uicontrol">Start</span>  job entry
+            onto the canvas. </span> 
+            <img alt="File:/loading_data_into_hdfs_step2.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__loading_data_into_hdfs_step2" src="http://help.pentaho.com/@api/deki/files/1210/loading_data_into_hdfs_step2.png?revision=1"
+            />
+          </li>
+          <li class="li step" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__create_new_job_step3"><span class="ph cmd">Add a Hadoop Copy Files job entry to the canvas. From the <span class="ph uicontrol">Design</span>  palette, under the <span class="ph uicontrol">Big Data</span>  folder, drag a <span class="ph uicontrol">Hadoop Copy Files</span>             job entry onto the canvas.</span> 
+            <img alt="File:/loading_data_into_hdfs_step3.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__loading_data_into_hdfs_step3" src="http://help.pentaho.com/@api/deki/files/1211/loading_data_into_hdfs_step3.png?revision=1"
+            />
+          </li>
+          <li class="li step" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__create_new_job_step4"><span class="ph cmd">Connect the two job entries by hovering over the <span class="ph uicontrol">Start</span>  entry and selecting the output connector
+            <img alt="File:/loading_data_into_hdfs_step4a.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__loading_data_into_hdfs_step4a"
+            src="http://help.pentaho.com/@api/deki/files/1212/loading_data_into_hdfs_step4a.png?revision=1" />, then drag the connector arrow to the <span class="ph uicontrol">Hadoop Copy Files</span>  entry.</span> 
+            <img alt="File:/loading_data_into_hdfs_step4.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__loading_data_into_hdfs_step4"
+            src="http://help.pentaho.com/@api/deki/files/1213/loading_data_into_hdfs_step4.png?revision=1" />
+          </li>
+          <li class="li step"><span class="ph cmd">Enter the source and destination information within the properties of the <span class="ph uicontrol">Hadoop Copy Files</span>  entry by double-clicking it. </span> 
+            <ol class="ol substeps" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__substeps_wxk_kkv_zh"
+            type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">File/Folder source(s)</span>, enter <code class="ph codeph">hdfs://<NAMENODE>:<PORT>/user/pdi/weblogs/parse</code>, where NAMENODE and PORT reflect your Hadoop destination. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">File/Folder destination(s)</span>, enter <code class="ph codeph">hdfs://<NAMENODE>:<PORT>/user/hive/warehouse/weblogs</code>. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Wildcard (RegExp)</span>, enter <code class="ph codeph">part-.*</code>.</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Click the <span class="ph uicontrol">Add</span>  button to add the entries to the list of files to copy.</span> 
+              </li>
+            </ol>
+            <p class="p">When you are done your window should look like this (your file paths may be different)</p>
+            <p class="p">
+              <img alt="File:/loading_data_into_hive_step6_result.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__image_gwk_flv_zh" src="http://help.pentaho.com/@api/deki/files/1214/loading_data_into_hive_step6_result.png?revision=1"
+              />
+            </p>
+            <p class="p">Click <span class="ph uicontrol">OK</span>  to close the window.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Save the job by selecting <span class="ph uicontrol">Save as</span>  from the <span class="ph uicontrol">File</span>  menu. Enter <code class="ph codeph">load_hive.kjb</code> as the file name within a folder of your choice.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Run the job by clicking the green Run button on the job toolbar <img alt="File:/loading_data_into_hive_result_run.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__image_r5q_zlv_zh" src="http://help.pentaho.com/@api/deki/files/1215/loading_data_into_hive_result_run.png?revision=1" />, or by selecting <span class="ph uicontrol">Action</span>             > <span class="ph uicontrol">Run</span>  from the menu. The <span class="ph uicontrol">Execute a job</span>  window opens. Click <span class="ph uicontrol">Launch</span> .</span> 
+            <p class="p">An <span class="ph uicontrol">Execution Results</span>  panel opens at the bottom of the Spoon interface and displays the progress of the job as it runs. After a few seconds the job finishes successfully.</p>
+            <p class="p">
+              <img alt="File:/loading_data_into_hive_result.png" class="image internal" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__image_tbk_qmv_zh" src="http://help.pentaho.com/@api/deki/files/1216/loading_data_into_hive_result.png?revision=1"
+              />
+            </p>
+            <p class="p">If any errors occurred the job entry that failed will be highlighted in red and you can use the <span class="ph uicontrol">Logging</span>  tab to view error messages.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Verify the data was loaded by querying Hive.</span> 
+            <ol class="ol substeps" id="17125a24-1e33-4ebb-8df1-b1e044714ce4__task_task_hadoop_loading_data_into_hive_orig__substeps_4cr_44v_zh" type="a">
+              <li class="li substep"><span class="ph cmd">Open the Hive shell from the command line by entering <code class="ph codeph">hive</code>.</span> </li>
+              <li class="li substep"><span class="ph cmd">Enter this query to very the data was loaded correctly into Hive.</span>  <pre class="pre codeblock">
+select * from weblogs limit 10;</pre> </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="section result">Ten rows of data are returned.</div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

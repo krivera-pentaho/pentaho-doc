@@ -1,0 +1,43 @@
+<content type="text/html" title="Conditional Formatting">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">The formula described here will highlight a given data cell with either a red or green background depending on a string value from a field in your result set. You can easily modify these instructions to use different indicators or thresholds
+            to match your preference.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open an existing report or create a new report and establish a data source and query, then drag your data-driven fields onto the canvas.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select (left click) the data field you want to conditionally highlight.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click the <strong class="ph b">Structure</strong>  tab and click <strong class="ph b">bg-color</strong>  in the <strong class="ph b">text</strong>  section under the <strong class="ph b">Style</strong>  tab.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click the round green <strong class="ph b">+</strong>  (Add Expression) icon in the <strong class="ph b">Formula</strong>  column.</span>  The <strong class="ph b">Expression</strong>  dialogue will appear. </li>
+          <li class="li step"> <span class="ph cmd">Click the ellipsis (...) to open the <strong class="ph b">Formula Editor</strong>  dialog box.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select <strong class="ph b">Logical</strong>  from the <strong class="ph b">Category</strong>  drop-down box.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Double-click the <strong class="ph b">IF</strong>  statement in the list on the left.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click the <strong class="ph b">Select Field</strong>  icon, (on the far right), next to the <strong class="ph b">Test</strong>  line.</span>  </li>
+          <li class="li step"> <span class="ph cmd">In the <strong class="ph b">Select Field</strong>  box, choose the field you want to conditionally format, then click <strong class="ph b">OK</strong>  to return to the Formula Editor.</span>  Alternatively, you can simply
+            type the field name in [square brackets] if you already know what it is. </li>
+          <li class="li step"> <span class="ph cmd">Add a conditional statement to the <strong class="ph b">Test</strong>  line, after your field name.</span>  This is one of your formatting conditionals. For instance if you wanted to highlight cancelled orders in red, and
+            this field contained order status, you could put <strong class="ph b">[STATUS]=&quot;Cancelled&quot;</strong>  in the Test line, then a color value for red in the <strong class="ph b">Then_value</strong>  line, as shown in the next step.
+            <pre
+            class="pre codeblock">[STATUS]=&quot;Cancelled&quot;</pre>
+          </li>
+          <li class="li step"> <span class="ph cmd">In the <strong class="ph b">Then_value</strong>  line, type the color value or name you want to highlight this field with if the condition in the Test line is met.</span>  This can be a standard hexadecimal color value (such
+            as <strong class="ph b">#FF0000</strong>  for red), or a standard HTML color name (red, green, white, black, etc.).
+            <div class="note note"><span class="notetitle">Note:</span>  This value must be in quotes.</div>
+          </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">OK</strong>  to exit the Formula Editor dialog box; click <strong class="ph b">Close</strong>  to exit the <strong class="ph b">Expression</strong>  dialog box.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">Preview</strong>  and verify that your conditional formatting is properly executed. You may have to adjust your query if it does not produce a testable result set.</span>  </li>
+          <li class="li step"><strong>Optional: </strong>  <span class="ph cmd">To add more conditions -- such as to highlight both cancelled and disputed orders in red -- add an <strong class="ph b">OR</strong>  statement at the beginning of your <strong class="ph b">Test</strong>  line, enclose the conditions in parenthesis, and separate them with semicolons.</span>             <pre class="pre codeblock">OR([STATUS]=&quot;Cancelled&quot;;[STATUS]=&quot;Disputed&quot;)</pre> </li>
+        </ol>
+        <div class="section result">Your report output should now be formatted according to the specified conditions.</div>
+        <div class="example">
+          <p class="p">This is the resultant formula, following the above example for one condition and red and green colors:</p>
+          <div style="margin-bottom: 0;"><strong>Simple conditional formatting</strong> </div><pre class="pre codeblock">=IF([STATUS]=&quot;Cancelled&quot;;&quot;#FF0000&quot;;&quot;#00CC00&quot;)</pre>
+          <p class="p">This is the resultant formula, following the above example for two conditions and red and green colors:</p>
+          <div style="margin-bottom: 0;"><strong>Multiple conditions</strong> </div><pre class="pre codeblock">=IF(OR([STATUS]=&quot;Cancelled&quot;;[STATUS]=&quot;Disputed&quot;);&quot;#FF0000&quot;;&quot;#00CC00&quot;)</pre> </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,134 @@
+<content type="text/html" title="Start BA Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to start BA Server.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the BA installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/2176/grBaInstallArchivelStartBAServer.png?revision=1" />
+          </p>
+          <p class="p">After you've complete the tasks in the
+            <a class="xref" title="Documentation/5.1/0F0/0P0/020" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0P0/020">Prepare Environment</a>,
+            <a class="xref" title="Documentation/5.1/0F0/0P0/030" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0P0/030">Initialize Repository</a>, and
+            <a class="xref" title="Documentation/5.1/0F0/0P0/040" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0P0/040">Configure Repository</a>  steps, you can start the BA Server. Complete these tasks.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__archive_license">
+        <div id="section_2" class="mt-page-section"><span id="Install_BA_Server_License_Keys"></span> 
+          <h2 class="editable">Install BA Server License Keys</h2>
+          <div class="body taskbody">
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Download the .lic file you want to install.</span> </li>
+              <li class="li step"><span class="ph cmd">Copy your .lic files to the BA Server.</span> </li>
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">/license-installer/</span>  directory.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Run the license installation script.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">For Linux:</strong>  Run <span class="ph filepath">install_license.sh</span>  with the install switch and the location and name of your .lic file as a parameter. You can specify multiple .lic files
+                    separated by spaces. Be sure to use backslashes to escape any spaces in the path or file name.</span>  <span class="ph filepath">install_license.sh install /home/dvader/downloads/Pentaho\ BI\ Platform\ Enterprise\ Edition.lic</span> </li>
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">For Windows:</strong>  Run <span class="ph filepath">install_license.bat</span>  with the install switch and the location and name of your license file as a parameter.</span>  <span class="ph filepath">install_license.bat install &quot;C:\Users\dvader\Downloads\Pentaho BA Platform Enterprise Edition.lic</span> &quot;</li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__manual_tomcat_startup_scripts">
+        <div id="section_3" class="mt-page-section"><span id="Modify_Tomcat_Startup_Script"></span> 
+          <h2 class="editable">Modify Tomcat Startup Script</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The Tomcat startup script must be modified to include the <code class="ph codeph">CATALINA_OPTS</code> variable. <code class="ph codeph">CATALINA_OPTS</code> indicates the amount of memory to allocate. It also indicates where Pentaho licenses
+                are installed. Specific instructions on how to modify the startup script depend on your operating system.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__manual_deployment_tomcat_windows_startup">
+            <div id="section_4" class="mt-page-section"><span id="Modify_the_Tomcat_Windows_Startup_Script"></span> 
+              <h3 class="editable">Modify the Tomcat Windows Startup Script</h3>
+              <div class="body taskbody">
+                <ol class="ol steps" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__manual_deployment_tomcat_windows_startup__steps_ywf_kzf_yl">
+                  <li class="li step"><span class="ph cmd">Make sure the Tomcat web application server is not running by starting the Windows <span class="ph uicontrol">Task Manager</span>  and looking for <strong class="ph b">Tomcat</strong>  in the <span class="ph uicontrol">Applications </span> tab.
+                    If the server is running, stop it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">startup.bat</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line directly before the <code class="ph codeph">call &quot;%EXECUTABLE%&quot; start %CMD_LINE_ARGS%</code> line, which is located near the end of the file.</span>  <code class="ph codeph">set CATALINA_OPTS=-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH%</code></li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__archive_install_starting_servers">
+        <div id="section_5" class="mt-page-section"><span id="Starting_the_BA_Server"></span> 
+          <h2 class="editable">Starting the BA Server</h2>
+          <div class="topic task nested2" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__archive_install_starting_server_windows">
+            <div id="section_6" class="mt-page-section"><span id="Windows_Pentaho_Archive_Installation"></span> 
+              <h3 class="editable">Windows Pentaho Archive Installation</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">If you used the Archive Installation, we provide individual control scripts to start and stop the BA server and BA repository. Here is where you can find the individual control scripts.</p>
+                  <p class="p"><strong class="ph b">BA Repository</strong> </p>
+                  <ul class="ul">
+                    <li class="li">The Archive Installation enables you to install either PostgreSQL, MySQL, or Oracle as the repository. Consult the documentation for the RDBMS you selected for information about starting and stopping.
+                      <p class="p">The BA repository must be started before the BA Server.</p>
+                    </li>
+                  </ul>
+                  <p class="p"><strong class="ph b">BA Server </strong> </p>
+                  <ul class="ul">
+                    <li class="li"><span class="ph filepath">/pentaho/server/biserver-ee/start-pentaho.bat and stop-pentaho.bat</span> </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="552c6a16-d062-4d16-a9eb-a8500cdcc43a__archive_install_starting_server_linux">
+            <div id="section_7" class="mt-page-section"><span id="Linux_Pentaho_Archive_Installation"></span> 
+              <h3 class="editable">Linux Pentaho Archive Installation</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">If you used the Archive Installation, Pentaho provides individual control scripts to start and stop the Tomcat application server, BA Server, and BA repository. Here is where you can find the individual control scripts.</p>
+                  <p class="p"><strong class="ph b">BA Repository</strong> </p>
+                  <ul class="ul">
+                    <li class="li">The Archive Installation enables you to install either PostgreSQL, MySQL, or Oracle as the BA repository. Consult the documentation for the RDBMS you selected for information about starting and stopping.
+                      <p class="p">The BA repository must be started before the BA Server.</p>
+                    </li>
+                  </ul>
+                  <p class="p"><strong class="ph b">BA Server </strong> </p>
+                  <ul class="ul">
+                    <li class="li"><span class="ph filepath">/pentaho/server/biserver-ee/start-pentaho.sh and stop-pentaho.sh</span> </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_BA_Server_License_Keys" rel="internal">Install BA Server License Keys</a>  </li>
+      <li>
+        <a href="#Modify_Tomcat_Startup_Script" rel="internal">Modify Tomcat Startup Script</a> 
+        <ol>
+          <li> <a href="#Modify_the_Tomcat_Windows_Startup_Script" rel="internal">Modify the Tomcat Windows Startup Script</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Starting_the_BA_Server" rel="internal">Starting the BA Server</a> 
+        <ol>
+          <li> <a href="#Windows_Pentaho_Archive_Installation" rel="internal">Windows Pentaho Archive Installation</a>  </li>
+          <li> <a href="#Linux_Pentaho_Archive_Installation" rel="internal">Linux Pentaho Archive Installation</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

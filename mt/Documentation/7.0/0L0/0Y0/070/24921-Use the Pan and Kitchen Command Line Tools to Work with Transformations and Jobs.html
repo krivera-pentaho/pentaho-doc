@@ -1,0 +1,491 @@
+<content type="text/html" title="Use the Pan and Kitchen Command Line Tools to Work with Transformations and Jobs">
+  <body>
+    <p>You can use PDI's command line tools to execute PDI content from outside of Spoon. Typically you would use these tools in the context of creating a script or a cron job to run the job or transformation based on some condition outside of the realm
+      of Pentaho software.</p>
+    <div class="body conbody">
+      <p class="p"><strong class="ph b">Pan</strong>  is the PDI command line tool for executing transformations.</p>
+      <p class="p"><strong class="ph b">Kitchen</strong>  is the PDI command line tool for executing jobs.</p>
+      <p class="p">Both of these programs are explained in detail below.</p>
+      <div id="section_1" class="mt-page-section"><span id="Pan_Options_and_Syntax"></span> 
+        <h2 class="editable">Pan Options and Syntax</h2>
+      </div>
+    </div>
+    <div class="related-links">
+      <div class="body refbody">
+        <p>Pan runs transformations, either from a PDI repository (database or enterprise), or from a local file. The syntax for the batch file and shell script are shown below. All Pan options are the same for both.</p>
+        <p><em><strong><span class="mt-color-red"><span class="mt-font-Open Sans,sans-serif">Note:</span> </span> </strong> <span class="mt-color-red"><span class="mt-font-Open Sans,sans-serif"> Windows systems use syntax with the forward slash (&ldquo;/&rdquo;) and colon (&ldquo;:&rdquo;). If spaces are present in the option values, use single quotes (&ldquo;) and double quotes (&ldquo;&rdquo;) to keep spaces together, for example,&nbsp;</span> </span> <span class="mt-font-courier-new">&quot;-param:MASTER_HOST=192.168.1.3&quot; &quot;-param:MASTER_PORT=8181&quot;</span> </em> </p>
+        <pre>
+<span class="ph synph"> <span class="ph var">pan.sh -option=value arg1 arg2</span> </span> 
+</pre> <pre>
+<span class="ph synph"> <span class="ph var">pan.bat /option: value arg1 arg2</span> </span> 
+</pre>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="8032da14-53bb-4347-9db3-7c263bb83ee8__d89987e94" valign="bottom" width="NaN%">Switch</th>
+              <th align="left" class="stentry propvaluehd" id="8032da14-53bb-4347-9db3-7c263bb83ee8__d89987e97" valign="bottom" width="NaN%">Purpose</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">rep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Enterprise or database repository name, if you are using one</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">user</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Repository username</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">pass</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Repository password</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">trans</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The name of the transformation (as it appears in the repository) to launch</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">dir</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The repository directory that contains the transformation, including the leading slash</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">file</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">If you are calling a local KTR file, this is the filename, including the path if it is not in the local directory</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">level</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">logfile</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">A local filename to write log output to</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listdir</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Lists the directories in the specified repository</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listtrans</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Lists the transformations in the specified repository directory</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listrep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Lists the available repositories</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">exprep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Exports all repository objects to one XML file</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">norep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Prevents Pan from logging into a repository. If you have set the KETTLE_REPOSITORY, KETTLE_USER, and KETTLE_PASSWORD environment variables, then this option will enable you to prevent Pan from logging into the specified repository, assuming
+                you would like to execute a local KTR file instead.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">safemode</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Runs in safe mode, which enables extra checking</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">version</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Shows the version, revision, and build date</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">param</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Set a named parameter in a <strong class="ph b">name=value</strong>  format. For example: <strong class="ph b">-param:FOO=bar</strong> </td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listparam</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">List information about the defined named parameters in the specified transformation.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">maxloglines</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The maximum number of log lines that are kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows (default)</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">maxlogtimeout</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The maximum age (in minutes) of a log line while being kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows indefinitely (default)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="example">
+          <pre class="pre codeblock">
+sh pan.sh -rep=initech_pdi_repo -user=pgibbons -pass=lumburghsux -trans=TPS_reports_2011</pre>
+        </div>
+        <div class="example">
+          <pre class="pre codeblock">
+pan.bat /rep:initech_pdi_repo /user:pgibbons /pass:lumburghsux /trans:TPS_reports_2011</pre>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Pan_Status_Codes"></span> 
+        <h3 class="editable">Pan Status Codes</h3>
+        <div class="body refbody">
+          <p>When you run Pan, there are seven possible return codes that indicate the result of the operation. All of them are defined below.</p>
+          <div class="tablenoborder">
+            <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+              <thead align="left" class="thead">
+                <tr class="row">
+                  <th class="entry" id="15c18d60-8823-4e61-88fc-74548c6b4293__d90852e27" valign="top">Status code</th>
+                  <th class="entry" id="15c18d60-8823-4e61-88fc-74548c6b4293__d90852e30" valign="top">Definition</th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">0</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">The transformation ran without a problem.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">1</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">Errors occurred during processing</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">2</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">An unexpected error occurred during loading / running of the transformation</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">3</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">Unable to prepare and initialize this transformation</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">7</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">The transformation couldn't be loaded from XML or the Repository</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">8</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">Error loading steps or plugins (error in loading one of the plugins mostly)</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">9</td>
+                  <td class="entry" headers="d90852e27 d90852e30 " valign="top">Command line usage printing</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Kitchen_Options_and_Syntax"></span> 
+          <h2 class="editable">Kitchen Options and Syntax</h2>
+          <div class="body refbody">
+            <p>Kitchen runs jobs, either from a PDI repository (database or enterprise), or from a local file. The syntax for the batch file and shell script are shown below. All Kitchen options are the same for both.</p>
+            <p><em><strong><span class="mt-color-red"><span class="mt-font-Open Sans,sans-serif">Note:</span> </span> </strong> <span class="mt-color-red"><span class="mt-font-Open Sans,sans-serif"> Windows systems use syntax with the forward slash (&ldquo;/&rdquo;) and colon (&ldquo;:&rdquo;). If spaces are present in the option values, use single quotes (&ldquo;) and double quotes (&ldquo;&rdquo;) to keep spaces together, for example,&nbsp;</span> </span> <span class="mt-font-courier-new"><span class="mt-color-red"><span class="mt-font-Courier New"><span class="mt-font-size-11.0pt">&quot;-param:MASTER_HOST=192.168.1.3&quot; &quot;-param:MASTER_PORT=8181&quot;</span> </span> </span> </span> </em> </p>
+            <pre>
+<span class="ph synph"><span class="ph var">kitchen.sh -option=value arg1 arg2</span>  </span> </pre> <pre>
+<span class="ph synph"><span class="ph var">kitchen.bat /option: value arg1 arg2</span>  </span> </pre>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="7e4ebb7d-9d24-4137-b177-5b16a58f55fb__d88631e98" valign="top">Switch</th>
+                    <th class="entry" id="7e4ebb7d-9d24-4137-b177-5b16a58f55fb__d88631e101" valign="top">Purpose</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">rep</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Enterprise or database repository name, if you are using one</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">user</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Repository username</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">pass</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Repository password</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">job</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">The name of the job (as it appears in the repository) to launch</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">dir</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">The repository directory that contains the job, including the leading slash</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">file</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">If you are calling a local KJB file, this is the filename, including the path if it is not in the local directory</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">level</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">The logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">logfile</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">A local filename to write log output to</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">listdir</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Lists the sub-directories within the specified repository directory</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">listjob</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Lists the jobs in the specified repository directory</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">listrep</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Lists the available repositories</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">export</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Exports all linked resources of the specified job. The argument is the name of a ZIP file.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">norep</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Prevents Kitchen from logging into a repository. If you have set the KETTLE_REPOSITORY, KETTLE_USER, and KETTLE_PASSWORD environment variables, then this option will enable you to prevent Kitchen from logging into the specified repository,
+                      assuming you would like to execute a local KTR file instead.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">version</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Shows the version, revision, and build date</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">param</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">Set a named parameter in a <strong class="ph b">name=value</strong>  format. For example: <strong class="ph b">-param:FOO=bar</strong> </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">listparam</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">List information about the defined named parameters in the specified job.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">maxloglines</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">The maximum number of log lines that are kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows (default)</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">maxlogtimeout</td>
+                    <td class="entry" headers="d88631e98 d88631e101 " valign="top">The maximum age (in minutes) of a log line while being kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows indefinitely (default)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="example">
+              <pre class="pre codeblock">
+sh kitchen.sh -rep=initech_pdi_repo -user=pgibbons -pass=lumburghsux -job=TPS_reports_2011</pre>
+            </div>
+            <div class="example">
+              <pre class="pre codeblock">
+kitchen.bat /rep:initech_pdi_repo /user:pgibbons /pass:lumburghsux /job:TPS_reports_2011</pre>
+            </div>
+          </div>
+          <div id="section_4" class="mt-page-section"><span id="Kitchen_Status_Codes"></span> 
+            <h3 class="editable">Kitchen Status Codes</h3>
+            <p>When you run Kitchen, there are seven possible return codes that indicate the result of the operation. All of them are defined below.</p>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="9fcfea6c-3c3c-4e1c-8728-00d1f4445615__d89481e27" valign="top">Status code</th>
+                    <th class="entry" id="9fcfea6c-3c3c-4e1c-8728-00d1f4445615__d89481e30" valign="top">Definition</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">0</td>
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">The job ran without a problem.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">1</td>
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">Errors occurred during processing</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">2</td>
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">An unexpected error occurred during loading or running of the job</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">7</td>
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">The job couldn't be loaded from XML or the Repository</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">8</td>
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">Error loading steps or plugins (error in loading one of the plugins mostly)</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">9</td>
+                    <td class="entry" headers="d89481e27 d89481e30 " valign="top">Command line usage printing</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Importing_KJB_or_KTR_Files_From_a_Zip_Archive"></span> 
+          <h2 class="editable">Importing KJB or KTR Files From a Zip Archive</h2>
+          <div class="body conbody">
+            <p class="p">Both Pan and Kitchen can pull PDI content files from out of Zip files. To do this, use the <strong class="ph b">!</strong>  switch, as in this example:</p> <pre class="pre codeblock">
+Kitchen.bat /file:&quot;zip:file:///C:/Pentaho/PDI Examples/Sandbox/linked_executable_job_and_transform.zip!Hourly_Stats_Job_Unix.kjb&quot;</pre>
+            <p class="p">If you are using Linux or Solaris, the ! must be escaped:</p> <pre class="pre codeblock">
+./kitchen.sh -file:&quot;zip:file:////home/user/pentaho/pdi-ee/my_package/linked_executable_job_and_transform.zip\!Hourly_Stats_Job_Unix.kjb&quot;</pre>
+          </div>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Connecting_to_a_DI_Solution_Repository_with_Command-Line_Tools"></span> 
+          <h2 class="editable">Connecting to a DI Solution Repository with Command-Line Tools</h2>
+          <div class="body refbody">
+            <div class="section">
+              <p>To export repository objects into XML format using command-line tools instead of exporting repository configurations from within Spoon, use named parameters and command-line options when calling Kitchen or Pan from a command-line prompt.</p>
+              <p>The following is an example command-line entry to execute an export job using Kitchen:</p> <pre class="pre codeblock">
+    call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb
+    &quot;/param:rep_name=PDI2000&quot; &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot;
+    &quot;/param:rep_folder=/public/dev&quot;
+    &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   </pre>
+            </div>
+            <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+              <tbody>
+                <tr class="sthead prophead">
+                  <th align="left" class="stentry proptypehd" id="314fc193-cc3b-4214-acb8-1db359bc7a9d__d87356e32" valign="bottom" width="NaN%">Parameter</th>
+                  <th align="left" class="stentry propvaluehd" id="314fc193-cc3b-4214-acb8-1db359bc7a9d__d87356e35" valign="bottom" width="NaN%">Description</th>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_folder</code></td>
+                  <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Folder</td>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_name</code></td>
+                  <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Name</td>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_password</code></td>
+                  <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Password</td>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_user</code></td>
+                  <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Username</td>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">target_filename</code></td>
+                  <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Target Filename</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="section">
+              <div class="note note"><span class="notetitle">Note:</span>  It is also possible to use obfuscated passwords with Encr a command line tool for encrypting strings for storage or use by PDI.</div>
+              <p>The following is an example command-line entry to execute a complete command-line call for the export in addition to checking for errors:</p> <pre class="pre codeblock">
+   @echo off
+   ECHO This an example of a batch file calling the repository_export.kjb
+   
+   cd C:\Pentaho\pdi-ee-<filepath>--check--</filepath>{{contentVars.PDIvernum3}}>\data-integration
+   
+   call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb &quot;/param:rep_name=PDI2000&quot;
+   &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot; &quot;/param:rep_folder=/public/dev&quot;
+   &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   
+   if errorlevel 1 goto error
+   echo Export finished successfull.
+   goto finished
+   
+   :error
+   echo ERROR: An error occured during repository export.
+   :finished
+   REM Allow the user to read the message when testing, so having a pause
+   pause
+   </pre>
+            </div>
+          </div>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Exporting_Content_from_Solutions_Repositories_with_Command-Line_Tools"></span> 
+          <h2 class="editable">Exporting Content from Solutions Repositories with Command-Line Tools</h2>
+          <div class="body refbody">
+            <div class="section">
+              <p class="p">To export repository objects into XML format, using command-line tools instead of exporting repository configurations from within Spoon, use named parameters and command-line options when calling Kitchen or Pan from a command-line prompt.</p>
+              <p class="p">The following is an example command-line entry to execute an export job using Kitchen:</p> <pre class="pre codeblock">
+    call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb
+    &quot;/param:rep_name=PDI2000&quot; &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot;
+    &quot;/param:rep_folder=/public/dev&quot;
+    &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   </pre>
+            </div>
+            <div class="section">
+              <table border="1" cellpadding="4" cellspacing="0" class="simpletable properties" summary="">
+                <tbody>
+                  <tr class="sthead prophead">
+                    <th align="left" class="stentry proptypehd" id="818585ab-e40c-411a-8001-f7489c4d3a78__d87852e32" valign="bottom" width="NaN%">
+                      <p class="p">Parameter</p>
+                    </th>
+                    <th align="left" class="stentry propvaluehd" id="818585ab-e40c-411a-8001-f7489c4d3a78__d87852e35" valign="bottom" width="NaN%">
+                      <p class="p">Description</p>
+                    </th>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                      <p class="p"><span class="ph filepath">rep_folder</span> </p>
+                    </td>
+                    <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                      <p class="p">Repository Folder</p>
+                    </td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                      <p class="p"><span class="ph filepath">rep_name</span> </p>
+                    </td>
+                    <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                      <p class="p">Repository Name</p>
+                    </td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                      <p class="p"><span class="ph filepath">rep_password</span> </p>
+                    </td>
+                    <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                      <p class="p">Repository Password</p>
+                    </td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                      <p class="p"><span class="ph filepath">rep_user</span> </p>
+                    </td>
+                    <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                      <p class="p">Repository Username</p>
+                    </td>
+                  </tr>
+                  <tr class="strow property">
+                    <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                      <p class="p"><span class="ph filepath">target_filename</span> </p>
+                    </td>
+                    <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                      <p class="p">Target Filename</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="section">
+              <p class="p">It is also possible to use obfuscated passwords with Encr, the command line tool for encrypting strings for storage/use by PDI. The following is an example command-line entry to execute a complete command-line call for the export in addition
+                to checking for errors:</p> <pre class="pre codeblock">
+   @echo off
+   ECHO This an example of a batch file calling the repository_export.kjb
+   
+   cd C:\Pentaho\pdi-ee-<filepath>--check--</filepath>{{contentVars.PDIvernum3}}>\data-integration
+   
+   call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb &quot;/param:rep_name=PDI2000&quot;
+   &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot; &quot;/param:rep_folder=/public/dev&quot;
+   &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   
+   if errorlevel 1 goto error
+   echo Export finished successful.
+   goto finished
+   
+   :error
+   echo ERROR: An error occurred during repository export.
+   :finished
+   REM Allow the user to read the message when testing, so having a pause
+   pause
+  </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Pan_Options_and_Syntax" rel="internal">Pan Options and Syntax</a> 
+        <ol>
+          <li> <a href="#Pan_Status_Codes" rel="internal">Pan Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Kitchen_Options_and_Syntax" rel="internal">Kitchen Options and Syntax</a> 
+        <ol>
+          <li> <a href="#Kitchen_Status_Codes" rel="internal">Kitchen Status Codes</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Importing_KJB_or_KTR_Files_From_a_Zip_Archive" rel="internal">Importing KJB or KTR Files From a Zip Archive</a>  </li>
+      <li> <a href="#Connecting_to_a_DI_Solution_Repository_with_Command-Line_Tools" rel="internal">Connecting to a DI Solution Repository with Command-Line Tools</a>  </li>
+      <li> <a href="#Exporting_Content_from_Solutions_Repositories_with_Command-Line_Tools" rel="internal">Exporting Content from Solutions Repositories with Command-Line Tools</a>  </li>
+    </ol>
+  </body>
+</content>

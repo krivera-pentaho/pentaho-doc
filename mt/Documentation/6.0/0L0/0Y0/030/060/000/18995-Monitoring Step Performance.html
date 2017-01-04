@@ -1,0 +1,50 @@
+<content type="text/html" title="Monitoring Step Performance">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">There are a few ways that you can monitor step performance in PDI.&nbsp; Two tools are particularly helpful:&nbsp; the Sniff Test tool and the Monitoring tab.</p>
+        <div id="section_1" class="mt-page-section"><span id="Sniff_Test_Tool"></span> 
+          <h2 class="editable">Sniff Test Tool</h2>
+          <p class="p">The sniff test displays data as it travels from one step to another in the stream.&nbsp;&nbsp; To use this, complete these steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="p">Right-click a step in the transformation as it runs and select <strong>Sniff Test During Execution</strong> .&nbsp; There are three options in this menu:</li>
+          </ol>
+          <ul class="pentaho-list-unordered">
+            <li>Sniff test input rows - Shows the data inputted into the step.</li>
+            <li>Sniff test output rows - Shows the data outputted from the step.</li>
+            <li>Sniff test error handling - Shows error handling data.</li>
+          </ul>
+          <ol class="pentaho-list-ordered" start="2">
+            <li style="visibility: visible;">After you've selected an option, values in the data stream appear.&nbsp; You are also able to observe throughput.&nbsp;</li>
+          </ol>
+          <p style="visibility: visible;">The sniff test is designed to be used as a supplement to logs so that you can debug complex situations. Applying a sniff test slows transformation run speed, so use with care.&nbsp;</p>
+        </div>
+        <div id="section_2" class="mt-page-section"><span id="Monitoring_Tab"></span> 
+          <h2 class="editable">Monitoring Tab</h2>
+          <p class="p">Pentaho Data Integration provides you with a tool for tracking the performance of individual steps in a transformation. By helping you identify the slowest step in the transformation, you can fine-tune and enhance the performance of your transformations.</p>
+          <p class="p">You enable the step performance monitoring in the <strong class="ph b">Transformation Properties</strong>  dialog box. To access the dialog box right-click in the workspace that is displaying your transformation and choose, <strong class="ph b">Transformation Settings</strong> .
+            You can also access this dialog box, by pressing
+            <<strong class="ph b">CTRL + T</strong> >.</p>
+          <img alt="TransformationProperties_Monitoring.png" class="internal default" style="width: 651px; height: 253px;" width="651px" height="253px" src="http://help.pentaho.com/@api/deki/files/6262/TransformationProperties_Monitoring.png?size=bestfit&amp;width=651&amp;height=253&amp;revision=1"
+          />
+          <p class="p">As shown in the sample screen capture above, the option to track performance (<strong class="ph b">Enable step performance monitoring?</strong> ) is not selected by default. Step performance monitoring may cause memory consumption problems in
+            long-running transformations. By default, a performance snapshot is taken for all the running steps every second. This is not a CPU-intensive operation and, in most instances, does not negatively impact performance unless you have many steps
+            in a transformation or you take a lot of snapshots (several per second, for example). You can control the number of snapshots in memory by changing the default value next to <strong class="ph b">Maximum number of snapshots in memory</strong> .
+            In addition, if you run in Spoon locally you may consume a fair amount of CPU power when you update the JFreeChart graphics under the Performance tab. Running in &quot;headless&quot; mode (Kitchen, Pan, DI Server (slave server), Carte, Pentaho
+            BI platform, and so on) does not have this drawback and should provide you with accurate performance statistics.</p>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/6.0/0L0/0Y0/030/060/000/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/030/060/000/000">Using Performance Graphs</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Sniff_Test_Tool" rel="internal">Sniff Test Tool</a>  </li>
+      <li> <a href="#Monitoring_Tab" rel="internal">Monitoring Tab</a>  </li>
+    </ol>
+  </body>
+</content>

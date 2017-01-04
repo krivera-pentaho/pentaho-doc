@@ -1,0 +1,69 @@
+<content type="text/html" title="Report Design Wizard Template Design Guidelines">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Methodology"></span> 
+            <h2 class="editable">Methodology</h2>
+            <p class="p">To create a new RDW template, you must use Report Designer to create a report with certain template-specific properties enabled. The resultant PRPT file is then deployed to the Report Designer and/or Pentaho Data Integration template directory.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Requirements"></span> 
+            <h2 class="editable">Requirements</h2>
+            <p class="p">The <strong class="ph b">generated-content-marker</strong>  attribute in the <strong class="ph b">wizard</strong>  group is the flag that turns a normal report into a template. This attribute can only be applied to a band (group header, group
+              footer, details header, details footer, details, or sub-band).</p>
+            <p class="p">RDW will insert its auto-generated content into the first band with the <strong class="ph b">generated-content-marker</strong>  set to true. This applies to the group header, group footer, details header, details footer, and the details bands.
+              In the event there are more groups defined in the Report Design Wizard than defined in the template, it repeats the last defined group header and footer in the template.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Formatting_Inheritance"></span> 
+            <h2 class="editable">Formatting Inheritance</h2>
+            <p class="p">Formatting styles are inherited, so any formatting applied to a band will also be applied to the elements used within it. Formatting is applied in three ways and in the following order:</p>
+            <ol class="pentaho-list-ordered">
+              <li class="li">Through the template via band inheritance</li>
+              <li class="li">Through query data where it is defined in Pentaho Metadata</li>
+              <li class="li">As defined by RDW users through the RDW interface</li>
+            </ol>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_4" class="mt-page-section"><span id="Inheriting_Styles_from_the_Data_Query"></span> 
+            <h2 class="editable">Inheriting Styles from the Data Query</h2>
+            <p class="p">The <strong class="ph b">query-metadata</strong>  section of the Attributes tab contains options that determine whether formatting styles can come from the data query and be applied to the detail header, details, or detail footer band. This
+              must be set directly on the detail header, detail footer, or details band; and the <strong class="ph b">style-format</strong>  option must be set to <strong class="ph b">true</strong>  for it to work. You must also disable any individual formatting
+              styles (enable-style-*=true) that you don&rsquo;t want to come from the query.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_5" class="mt-page-section"><span id="Padding_and_Grid_Lines"></span> 
+            <h2 class="editable">Padding and Grid Lines</h2>
+            <p class="p">Since the Details band is dynamically generated, you have to specify grid line and padding settings in the template definition. This is done through the <strong class="ph b">wizard</strong>  attribute group for the band that has the
+              <strong
+              class="ph b">generated-content-marker</strong>  enabled.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_6" class="mt-page-section"><span id="Updating"></span> 
+            <h2 class="editable">Updating</h2>
+            <p class="p">An RDW template is only a set of initial defaults for a report, so if a template is updated, completed reports that were based on that template will not be affected; there is no connection between the template and the report once the report
+              is saved. If you want to update an RDW-based report to reflect template changes, you can edit the report with Report Design Wizard, make any necessary selections, and re-save it.</p>
+            <div class="note note"><span class="notetitle">Note:</span>  Interactive Reporting templates have the opposite behavior because the report links itself to the template; when an IR template is changed, all reports based on that template will automatically inherit
+              the updated template.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Methodology" rel="internal">Methodology</a>  </li>
+      <li> <a href="#Requirements" rel="internal">Requirements</a>  </li>
+      <li> <a href="#Formatting_Inheritance" rel="internal">Formatting Inheritance</a>  </li>
+      <li> <a href="#Inheriting_Styles_from_the_Data_Query" rel="internal">Inheriting Styles from the Data Query</a>  </li>
+      <li> <a href="#Padding_and_Grid_Lines" rel="internal">Padding and Grid Lines</a>  </li>
+      <li> <a href="#Updating" rel="internal">Updating</a>  </li>
+    </ol>
+  </body>
+</content>

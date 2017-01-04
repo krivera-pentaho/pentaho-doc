@@ -1,0 +1,197 @@
+<content type="text/html" title="Install PDI">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to install and uninstall DI.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="File:/grDiWizardInstallInstallAndStart.png" class="image internal" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__install_pentaho__image_o4k_tcc_ck" src="http://help.pentaho.com/@api/deki/files/1568/grDiWizardInstallInstallAndStart.png?revision=1"
+            />
+          </p> After you have
+          <a class="xref" title="Documentation/5.1/0F0/0J0/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0J0/020">prepared your environment</a>, use the Wizard to install Pentaho Data Integration. You only need to perform two tasks.
+          <ul class="ul" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__install_pentaho__ul_xbp_qvw_fl">
+            <li class="li">Install PDI with the Wizard - Run the installation wizard to install PDI.</li>
+            <li class="li">Verify Installation - Review the directory structure to ensure that PDI was installed correctly.</li>
+          </ul>
+          <p class="p">If you need to uninstall the software, information on how to do that appears below the installation tasks.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__installer_steps">
+        <div id="section_2" class="mt-page-section"><span id="Install_PDI_with_the_Wizard"></span> 
+          <h2 class="editable">Install PDI with the Wizard</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Use the wizard to install PDI. The wizard installs PDI software, the Tomcat web application server, and PostgreSQL, which is the default database that houses the DI Repository. The DI Repository holds audit, scheduling, and solution content
+                data.</p>
+              <p class="p">Installation instructions are the same for the Windows, Linux, and Mac platforms.</p>
+              <p class="p">To install the software, complete these steps.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Make sure that you are logged into the computer on which you want to install PDI. You should be logged on with an account that allows you to install software. On Windows, this is typically an account that has administrator privileges. On Linux, <a title="/Documentation/5.1/0F0/0J0/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0J0/020">use the <strong class="ph b">pentaho</strong>  account that you created during the previous step</a> .</span> </li>
+              <li class="li step"><span class="ph cmd">Download the correct installation wizard's file for your operating system.</span> 
+                <ul class="ul" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__installer_steps__ul_k3n_scw_zk">
+                  <li class="li"><strong class="ph b">Windows</strong> : <span class="ph filepath">pdi-</span> <span class="ph filepath">5.1.0</span> <span class="ph filepath">-x64.exe</span> </li>
+                  <li class="li"><strong class="ph b">Linux</strong> : <span class="ph filepath">pdi-</span> <span class="ph filepath">5.1.0</span> <span class="ph filepath">-x64.bin</span> </li>
+                  <li class="li"><strong class="ph b">Mac</strong> : <span class="ph filepath">pdi-</span> <span class="ph filepath">5.1.0</span> <span class="ph filepath">-x64.app.tar.gz</span> </li>
+                </ul>
+              </li>
+              <li class="li step" value="3"><span class="ph cmd">If you are using Linux, make sure that you have the appropriate permission to execute the file. Open a <strong class="ph b">Terminal</strong>  window, navigate to the directory where you just downloaded the file, then enter the following at the prompt.</span> </li>
+              <li class="li step"><span class="ph cmd">If you are using Linux, make sure that you have the appropriate permission to execute the file. Open a <strong class="ph b">Terminal</strong>  window, navigate to the directory where you just downloaded the file, then enter the following at the prompt.</span>                 <pre class="pre codeblock">
+<span class="ph filepath">chmod a+x ./pdi-<filepath>--check--</filepath>{{contentVars.BAvernum3}}-x64.bin</span> </pre> </li>
+              <li class="li step"><span class="ph cmd">Do one of these things to launch the installation wizard.</span> 
+                <ol class="ol substeps" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__installer_steps__substeps_jlc_lsc_hl" type="a">
+                  <li class="li substep" value="2"><span class="ph cmd"><strong class="ph b">If you are using Windows:</strong>  Open <span class="ph uicontrol">Windows Explorer</span>  and navigate to the installation file you just downloaded. Double-click the <span class="ph filepath">pdi-</span> 
+                    <span
+                    class="ph filepath">5.1.0</span> <span class="ph filepath">-x64.exe</span>  file to launch it.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">If you are using Mac:</strong>  Double-click the <span class="ph filepath">pdi-</span> <span class="ph filepath">5.1.0</span> <span class="ph filepath">-x64.app.tar.gz</span>  installation app.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">If you are using Linux and your computer <em class="ph i">can</em>  display graphics:</strong>  Open a <span class="ph uicontrol">Terminal</span>  window and navigate to the installation file you
+                    just downloaded. Enter this command at the prompt, then press <span class="ph uicontrol">Enter</span> .</span>  <pre class="pre codeblock">
+./pdi-<span class="ph filepath">--check--</span> <span class="ph filepath">{{contentVars.BAvernum3}}</span> <span class="ph filepath">-x64.bin</span> </pre> </li>
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">If you are using Linux and your computer <em class="ph i">cannot</em>  display graphics:</strong>  Open a <span class="ph uicontrol">Terminal</span>  window and navigate to the installation file
+                    you just downloaded. At the prompt enter <em class="ph i">one</em>  of these commands, then press <span class="ph uicontrol">Enter</span> .</span>  <strong class="ph b">Enter this command if you have GTK libraries on your system and want to use the GTK Toolkit: </strong>                     <pre class="pre codeblock">
+./pdi-<span class="ph filepath">--check--</span> <span class="ph filepath">{{contentVars.BAvernum3}}</span> <span class="ph filepath">-x64.bin</span>  --mode text
+</pre> <strong class="ph b">Enter this command if you do not have GTK libraries on your system or if you want to use OpenMotif instead: </strong>  <pre class="pre codeblock">
+./pdi-<span class="ph filepath">--check--</span> <span class="ph filepath">{{contentVars.BAvernum3}}</span> <span class="ph filepath">-x64.bin</span>  --mode xwindow
+</pre> </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd">The Pentaho Wizard Splash Screen appears, then the <strong class="ph b">Welcome</strong>  window. Click <span class="ph uicontrol">Next</span> .</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Read the license agreement. To continue, accept the license agreement, then click <strong class="ph b">Next </strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">When the <span class="ph uicontrol">Installation Folder</span>  window appears, do one of these things.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">Accept the default directory and click <span class="ph uicontrol">Next</span>  to continue.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Enter a different directory by entering the path in the text box or click <span class="ph uicontrol">Browse</span>  to navigate to the place where you want PDI to be installed. Click <span class="ph uicontrol">Next</span>                     to continue.</span> 
+                  </li>
+                </ol>
+                <div class="note note"><span class="notetitle">Note:</span>  You cannot install into a directory that already exists. If you try, you will get an error message. If you are using Linux, we do not recommend that you install the software in the <code class="ph codeph">/opt/</code>                  directory. The complicated permissions requirements and general isolation from the rest of the system can cause unintended issues to arise if the software is installed there.</div>
+              </li>
+              <li class="li step"><span class="ph cmd">When the <span class="ph uicontrol">PostgreSQL postgres user password</span>  window appears, enter the password you want to assign to the PostgreSQL database's admin user. Do not use these characters in the password
+                because the Wizard cannot process them:</span>  <pre class="pre codeblock">
+'  &quot;   &amp;    <   >  \  </pre> </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Next</span>  to continue. The <span class="ph uicontrol">Ready to Install</span>  window appears. Click the <span class="ph uicontrol">Next</span>  button to install the software.</span> 
+                The <span class="ph uicontrol">Generating Evaluation Licenses</span>  window appears as evaluation licenses are installed. If they are not able to install, a window appears that shows the reasons the evaluation licenses were not installed.</li>
+              <li class="li step"><span class="ph cmd">The <strong class="ph b">Installation in Progress</strong>  window appears. Make sure the software installs completely before moving on to the next step.</span> 
+                <div class="note note"><span class="notetitle">Note:</span>  An error occurs if the DI Server port numbers (<strong class="ph b">9092</strong>, <strong class="ph b">9080</strong>, <strong class="ph b">9443</strong>, and <strong class="ph b">5432</strong> ) are
+                  not available on your system and if the additional ports that the wizard has tried are not available. If the wizard cannot find an available port, you are prompted to enter port numbers you want to use.</div>
+              </li>
+              <li class="li step"><span class="ph cmd">The <span class="ph uicontrol">Installation Complete</span>  window appears. Click the <span class="ph uicontrol">Open Pentaho Data Integration</span>  and <span class="ph uicontrol">Begin in Instaview</span>  options to
+                view <strong class="ph b">Spoon</strong> . Click <span class="ph uicontrol">Finish</span>  to end the process.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd"><strong class="ph b">Spoon</strong>  and <strong class="ph b">Instaview</strong>  are launched.</span> </li>
+              <li class="li step"><span class="ph cmd">If you have trouble with the installer, check the <a class="xref" title="Documentation/5.1/0P0/170/060" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/170/060">Troubleshooting</a>  documentation.</span> 
+                <p class="p"><strong class="ph b">Note:</strong>  Once the installation wizard is complete, the DI Server are running with the default parameters. Terminal windows might remain open after installation. If you close them, the DI Servers stop. On Windows,
+                  the DI Server are installed as system services, meaning that they start when you start your computer, and they stop when you shut down your computer. Spoon and other tools must be manually run. In the next step of these instructions
+                  there are links to documentation that explains how to start and stop servers manually.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__directories">
+        <div id="section_3" class="mt-page-section"><span id="Verify_Installation"></span> 
+          <h2 class="editable">Verify Installation</h2>
+          <div class="body taskbody">
+            <div class="section context">To verify that the installation occurred properly, review the software directory structure.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Open a file explorer window like <span class="ph uicontrol">Windows Explorer</span>  or a command line tool such as the <span class="ph uicontrol">Command Prompt</span>  or <span class="ph uicontrol">Terminal</span>  windows.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Navigate to the directory where you installed PDI, then compare this directory structure with yours.</span>  <pre class="pre codeblock">
+pentaho/
+pentaho/server/
+pentaho/server/data-integration-server/
+pentaho/server/data-integration-server/licenses/
+pentaho/server/data-integration-server/logs/
+pentaho/server/data-integration-server/pentaho-solutions/
+pentaho/server/data-integration-server/scripts/
+pentaho/server/data-integration-server/tomcat/
+pentaho/design-tools/
+pentaho/design-tools/data-integration/
+pentaho/common/
+pentaho/documentation/
+pentaho/java/
+pentaho/licenses/
+pentaho/postgresql/
+pentaho/monetdb/
+pentaho/scripts/</pre> </li>
+              <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">installation-summary.txt</span>  file. Make sure that the design tools and plugins that you installed are listed. </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Review the following locations of files and directories before going to the next step.</span> 
+                <p class="p">Top-level files:</p>
+                <p class="p">These files are found in the top-level <span class="ph filepath">/pentaho</span>  directory:</p>
+                <ul class="ul" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__directories__ul_kns_12x_fl">
+                  <li class="li"><strong class="ph b">ctlscript.sh:</strong>  Starts, stops, restarts, and shows the status of Pentaho services. Available on Linux only.</li>
+                  <li class="li"><strong class="ph b">installation-summary.txt:</strong>  Contains the information from the summary screen at the end of the installation process.</li>
+                  <li class="li"><strong class="ph b">uninstall:</strong>  A script that removes what has been installed.</li>
+                </ul>
+                <p class="p">Locations of specific programs</p>
+                <ul class="ul" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__directories__ul_qns_12x_fl">
+                  <li class="li"><strong class="ph b">DI Server:</strong>  <span class="ph filepath">/pentaho/server/data-integration-server/</span> </li>
+                  <li class="li"><strong class="ph b">Spoon:</strong>  <span class="ph filepath">/pentaho/design-tools/data-integration/</span> </li>
+                  <li class="li"><strong class="ph b">License Installer:</strong>  <span class="ph filepath">/pentaho/license/</span> </li>
+                </ul>
+                <p class="p">Location of logs:</p>
+                <div class="p">
+                  <ul class="ul" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__directories__ul_udc_yvw_gl">
+                    <li class="li"><strong class="ph b">DI Server Logs</strong> : <span class="ph filepath">pentaho/server/data-integration-server/logs/</span> </li>
+                    <li class="li"><strong class="ph b">Tomcat Logs for DI Server</strong> : <span class="ph filepath">pentaho/server/data-integration-server/tomcat/logs/</span> </li>
+                  </ul>
+                </div>
+                <p class="p">Location of JDBC drivers:</p>
+                <div class="p">
+                  <ul class="ul" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__directories__ul_udc_yvw_gl">
+                    <li class="li"><strong class="ph b">DI Server</strong> : <span style="color: rgb(51, 51, 51); font-family: 'courier new', courier, monospace; font-size: 12px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 22.80000114440918px; orphans: auto; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: rgb(255, 255, 255);">pentaho/server/data-integration-server/tomcat/lib</span> </li>
+                    <li class="li"><strong class="ph b">Spoon</strong> : <span style="color: rgb(51, 51, 51); font-family: 'courier new', courier, monospace; font-size: 12px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 22.80000114440918px; orphans: auto; text-align: left; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; display: inline !important; float: none; background-color: rgb(255, 255, 255);">pentaho/design-tools/data-integration/lib/</span> </li>
+                  </ul>
+                </div>
+                <p class="p">Default Port Numbers (your port numbers might differ if these ports are already used for other programs):</p>
+                <ul class="ul">
+                  <li class="li"><strong class="ph b">5434</strong> : PostgreSQL Server</li>
+                  <li class="li"><strong class="ph b">9080</strong> : DI Server Port</li>
+                  <li class="li"><strong class="ph b">9001</strong> : HSQL Server Port</li>
+                  <li class="li"><strong class="ph b">9092</strong> : Embedded H2 Database</li>
+                  <li class="li"><strong class="ph b">50000 or 50006</strong> : Monet Database Port</li>
+                </ul>
+                <p class="p"><strong class="ph b">Note:</strong>  The license installer can also be found in the <span class="ph filepath">data-integration</span>  directory. All of these license installers perform the same functions, but are available in separate places
+                  to account for instances where only specific parts of the Pentaho suite are installed to a particular server or workstation. It does not matter which one you use. You can also install licenses through the User Console if you have already
+                  installed the BA Server. See the
+                  <a class="xref" title="Documentation/5.1/0F0/0J0/040" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0J0/040">next step</a>  for more information on licenses.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="ceaf7248-a351-4c7f-9868-ca5144b003e1__uninstall">
+        <div id="section_4" class="mt-page-section"><span id="Uninstall_Pentaho"></span> 
+          <h2 class="editable">Uninstall Pentaho</h2>
+          <div class="body taskbody">
+            <div class="section context">If you need to uninstall Pentaho, complete these steps.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">pentaho</span>  directory, and run the <span class="ph filepath">uninstall</span>  file.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">The Uninstall Wizard is launched.</span> </li>
+              <li class="li step"><span class="ph cmd">When prompted, indicate whether you want to delete the data files.</span> </li>
+              <li class="li step"><span class="ph cmd">When prompted at the end of the process, restart your computer.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_PDI_with_the_Wizard" rel="internal">Install PDI with the Wizard</a>  </li>
+      <li> <a href="#Verify_Installation" rel="internal">Verify Installation</a>  </li>
+      <li> <a href="#Uninstall_Pentaho" rel="internal">Uninstall Pentaho</a>  </li>
+    </ol>
+  </body>
+</content>

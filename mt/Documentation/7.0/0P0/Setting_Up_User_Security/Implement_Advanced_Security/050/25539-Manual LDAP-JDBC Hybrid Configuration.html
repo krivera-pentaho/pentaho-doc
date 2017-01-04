@@ -1,0 +1,368 @@
+<content type="text/html" title="Manual LDAP/JDBC Hybrid Configuration">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>You might need to create a hybrid between an LDAP&nbsp;security solution&nbsp;and a JDBC security table for role definitions. This is common in situations where LDAP&nbsp;roles can't&nbsp;be redefined for Pentaho&nbsp;Server use. These&nbsp;instructions
+      help you&nbsp;switch the Pentaho Server's authentication back-end from the Pentaho data access object to an&nbsp;LDAP/JDBC hybrid.&nbsp;</p>
+    <div id="section_1" class="mt-page-section"><span id="Before_You_Begin"></span> 
+      <h2 class="editable">Before You Begin</h2>
+      <p>Before you begin configuring LDAP&nbsp;and JDBC&nbsp;for the Pentaho Server, you'll need to verify a couple of things.&nbsp;</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 150px;">Task</th>
+            <th scope="col" style="width: 425px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 184px;">Verify Successful Default Pentaho Security Deployment</td>
+            <td style="width: 491px;">Make sure your Pentaho Server has been successfully deployed using default Pentaho Security (Jackrabbit authentication).</td>
+          </tr>
+          <tr>
+            <td style="width: 184px;">Configure Pentaho for LDAP&nbsp;Authentication</td>
+            <td style="width: 491px;">Verify that your Pentaho system is configured for&nbsp;LDAP&nbsp;authentication.</td>
+          </tr>
+          <tr>
+            <td style="width: 184px;">Verify Database with User Roles</td>
+            <td style="width: 491px;">Verify that you have a database populated with your user&nbsp;roles.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Preparing_the_Pentaho_Server_for_Hybrid_LDAP.2FJDBC"></span> 
+      <h2 class="editable">Preparing the Pentaho Server for Hybrid LDAP/JDBC&nbsp;</h2>
+      <p>After you finish the prerequisite tasks above, there are a few things that you need to do in order set up a hybrid LDAP/JDBC configuration&nbsp;successfully. The table structure described here is for example purposes.&nbsp;</p>
+      <p>These sections&nbsp;will guide you through the remaining steps of this&nbsp;process:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Create User/Authorities Database Tables</li>
+        <li>Set Up Inserts for Tables</li>
+        <li>Update JDBC Security Queries</li>
+        <li>Enable JDBC Authorization Beans</li>
+        <li>Verify LDAP/JDBC Configuration</li>
+      </ul>
+      <div id="section_3" class="mt-page-section"><span id="Step_1:_Create_User.2FAuthorities_Database_Tables"></span> 
+        <h3 class="editable">Step 1: Create User/Authorities Database Tables</h3>
+        <p>You'll need to create a few database tables in order to get LDAP&nbsp;and JDBC to work together.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Create a table called USERS:</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 100px;">Column Name</th>
+              <th scope="col" style="width: 105px;">Column Type</th>
+              <th scope="col" style="width: 400px;">Column Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 100px;"><span><span>username</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>The User name.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 100px;"><span><span>password</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span>This column value is not considered in a hybrid LDAP/JDBC solution.</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 100px;"><span><span>enabled</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(100)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>Set to &lsquo;true&rsquo; if user is enabled, &lsquo;false&rsquo; if not enabled.</span> </span> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Create a table called AUTHORITIES:</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 100px;">Column Name</th>
+              <th scope="col" style="width: 105px;">Column Type</th>
+              <th scope="col" style="width: 400px;">Column Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 100px;">authority</td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;">The Pentaho&nbsp;role, such as Administrator, Report Author, etc.</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Create a table called GRANTED_AUTHORITIES:</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 100px;">Column Name</th>
+              <th scope="col" style="width: 105px;">Column Type</th>
+              <th scope="col" style="width: 400px;">Column Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 100px;"><span><span>username</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(50)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>The User name.</span> </span> 
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 100px;"><span><span>authority</span> </span> 
+              </td>
+              <td style="width: 105px;"><span><span>VARCHAR(5)</span> </span> 
+              </td>
+              <td style="width: 458px;"><span><span>Associated Pentaho&nbsp;role.</span> </span> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Step_2:_Update_User_and_Role_Values_for_Tables"></span> 
+        <h3 class="editable">Step 2: Update User and Role Values&nbsp;for Tables</h3>
+        <p>Next, you'll need to perform a series of updates for&nbsp;the tables you just created. Users will be authenticated using their Active Directory password.&nbsp;</p>
+        <p class="pentaho-note">Some syntax examples&nbsp;are provided here for you to customize with your own values.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Update usernames and passwords in the USERS table as shown:&nbsp;</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSERT INTO USERS VALUES('username','Password1','1',NULL)</pre>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Update roles in the AUTHORITIES&nbsp;table as shown:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSERT INTO AUTHORITIES VALUES('DBPentAdmins','Super User')
+INSERT INTO AUTHORITIES VALUES('DBPentHR','HR Users')
+INSERT INTO AUTHORITIES VALUES('DBPentFinance','Finance Users')
+INSERT INTO AUTHORITIES VALUES('DBPentUsers','User has not logged in')</pre>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Update users with their associated&nbsp;roles in the GRANTED_AUTHORITIES table as shown:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSERT INTO GRANTED_AUTHORITIES VALUES('admin','DBPentAdmins')
+INSERT INTO GRANTED_AUTHORITIES VALUES('admin','DBPentUsers')
+INSERT INTO GRANTED_AUTHORITIES VALUES('tiffany','DBPentUsers')
+INSERT INTO GRANTED_AUTHORITIES VALUES('tiffany','DBPentFinance')
+INSERT INTO GRANTED_AUTHORITIES VALUES('pat','DBPentUsers')
+INSERT INTO GRANTED_AUTHORITIES VALUES('pat','DBPentHR')</pre> </div>
+      <div id="section_5" class="mt-page-section"><span id="Step_3:_Update_JDBC_Security_Queries"></span> 
+        <h3 class="editable">Step 3: Update JDBC&nbsp;Security Queries</h3>
+        <p>You might have different names for your created tables than are provided in these examples. If so, after you have updated your user and role values in your tables, you need to update a couple of &nbsp;queries and other items&nbsp;to match your
+          system&nbsp;names.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the&nbsp;<span>/pentaho-server/pentaho-solutions/system directory and update these two files with the noted information.</span> 
+            <ol>
+              <li><span class="filepath style-wrap">applicationContext-pentaho-security-jdbc.xml</span> </li>
+              <li><span class="filepath style-wrap">applicationContext-spring-security-jdbc.xml</span> </li>
+            </ol>
+          </li>
+        </ol>
+        <p>Update the query, as well as field names such as <span class="filepath style-wrap">username</span>, <span class="filepath style-wrap">password</span>, and <span class="filepath style-wrap">enabled </span> that are expected by spring&nbsp;framework
+          security. Be sure to use an alias if you are using different field names.&nbsp;</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SELECT userid as username, 'password' as password, 'enabled' as enabled FROM USERS_ROLES WHERE userid= ? ORDER BY userid</pre>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Stop the Pentaho Server.</li>
+          <li>Copy your respective
+            <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/010"> database JDBC driver</a>  to the <span class="filepath style-wrap">tomcat/lib</span>  directory.</li>
+        </ol>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Step_4:_Enable_JDBC_Authorization_Beans"></span> 
+        <h3 class="editable">Step 4: Enable JDBC Authorization Beans</h3>
+        <p>Last, you'll need to enable some&nbsp;JDBC&nbsp;Authorization beans.</p>
+        <div id="section_7" class="mt-page-section"><span id="Update_security.properties"></span> 
+          <h4 class="editable">Update security.properties</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Stop the Pentaho Server.</li>
+            <li>Locate the<span class="filepath style-wrap"> pentaho-server/pentaho-solutions/system</span>  directory.</li>
+            <li>Open the<span class="filepath style-wrap"> security.properties</span>  file with any text editor.
+              <ol>
+                <li>Locate the LDAP&nbsp;property bean and add the role provider as shown here:</li>
+              </ol>
+            </li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">provider=ldap
+role.provider=jdbc</pre>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Update_applicationContext-spring-security-jdbc.properties"></span> 
+          <h4 class="editable">Update&nbsp;applicationContext-spring-security-jdbc.properties</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Open the<span class="filepath style-wrap"> applicationContext-spring-security-jdbc.properties</span>  file.</li>
+            <li>Add or update this database information with your system values.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <td style="width: 175px;"><strong><em>datasource.driver.classname</em> </strong> </td>
+                <td style="width: 425px;">Fully-qualified Java class name of the JDBC driver you are using.</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.url</strong> </em> </td>
+                <td style="width: 512px;">Connection URL to be passed to your JDBC driver to establish a connection.</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.username</strong> </em> </td>
+                <td style="width: 512px;">Connection username to be passed to our JDBC driver to establish a connection</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.password</strong> </em> </td>
+                <td style="width: 512px;">Connection password to be passed to our JDBC driver to establish a connection</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.validation.query</strong> </em> </td>
+                <td style="width: 512px;">SQL query that is used to validate connections from this pool before returning them to the caller. This query must be a&nbsp;<span class="filepath style-wrap">SELECT </span> statement that returns at least one row.</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.pool.max.wait</strong> </em> </td>
+                <td style="width: 512px;">Maximum number of milliseconds that the pool will wait when there are no available connections. For a connection to be returned before throwing an exception, or
+                  <=0 , to wait indefinitely. Default is -1.</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.pool.max.active</strong> </em> </td>
+                <td style="width: 512px;">Maximum number of active connections that can be allocated from this pool at the same time, or negative for no limit. Default value is 8.</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.max.idle</strong> </em> </td>
+                <td style="width: 512px;">Maximum number of connections that can remain idle in the pool, without extra ones being destroyed, or negative for no limit. Default value is 8.</td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><em><strong>datasource.min.idle</strong> </em> </td>
+                <td style="width: 512px;">Minimum number of active connections that can remain idle in the pool, without extra ones being created when&nbsp;the evictor runs, or 0 to create none. Default value is 0.</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Update_applicationContext-pentaho-security-jdbc.xml"></span> 
+          <h4 class="editable">Update applicationContext-pentaho-security-jdbc.xml</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <span class="filepath style-wrap">applicationContext-pentaho-security-jdbc.xml </span> file.</li>
+            <li>Change the entry key to show your admin role for your database.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <thead> </thead>
+            <tbody>
+              <tr>
+                <td style="width: 140px;"><strong><em>From:</em> </strong> </td>
+                <td style="width: 490px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><util:map id=&quot;jdbcRoleMap&quot;>
+<entry key=&quot;Admin&quot; value=&quot;Administrator&quot;/>
+</util:map></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><strong><em>To:</em> </strong> </td>
+                <td style="width: 512px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><util:map id=&quot;jdbcRoleMap&quot;>
+<entry key=&quot;DBPentAdmins&quot; value=&quot;Administrator&quot;/>
+</util:map></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Update_pentahoObjects.spring.xml"></span> 
+          <h4 class="editable">Update pentahoObjects.spring.xml&nbsp;</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Open the<span class="filepath style-wrap"> pentahoObjects.spring.xml</span>  file.&nbsp;</li>
+            <li>Change these beans as shown, then&nbsp;save and close the file:</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <thead> </thead>
+            <tbody>
+              <tr>
+                <td style="width: 140px;"><strong><em>From:</em> </strong> </td>
+                <td style="width: 490px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean id=&quot;activeUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+<pen:attributes>
+<pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+</pen:attributes>
+</pen:bean></pre> </td>
+              </tr>
+              <tr>
+                <td style="width: 162px;"><strong><em>To:</em> </strong> </td>
+                <td style="width: 512px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean id=&quot;activeUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+<pen:attributes>
+<pen:attr key=&quot;providerName&quot; value=&quot;jdbc&quot;/>
+</pen:attributes>
+</pen:bean></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Update_applicationContext-spring-security-ldap.xml"></span> 
+          <h4 class="editable">&nbsp;Update&nbsp;applicationContext-spring-security-ldap.xml</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <span class="filepath style-wrap">applicationContext-spring-security-ldap.xml</span> .&nbsp;</li>
+            <li>Remove the&nbsp;bean for <span><span class="filepath style-wrap">org.springframework.security.ldap.populator.DefaultLdapAuthoritiesPopulator</span>  and replace it with this one:</span> &nbsp;</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;populator&quot; class=&quot;org.springframework.security.ldap.populator.UserDetailsServiceLdapAuthoritiesPopulator&quot;>
+<constructor-arg ref=&quot;jdbcUserDetailsService&quot; />
+</bean></pre>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Update_repository.spring.properties"></span> 
+          <h4 class="editable">Update&nbsp;repository.spring.properties</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <span class="filepath style-wrap">repository.spring.properties</span>  file.
+              <ol>
+                <li>
+                  <p>Locate the value for the <code>singleTenantAdminUserName</code> and make sure that it points to the correct admin user for your system.</p>
+                </li>
+              </ol>
+            </li>
+            <li>
+              <p>Restart the Pentaho Server.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="Step_5:_Verify_LDAP.2FJDBC_Configuration"></span> 
+        <h3 class="editable">Step 5: Verify LDAP/JDBC&nbsp;Configuration&nbsp;</h3>
+        <p>Pentaho should now be successfully configured with Hybrid Authentication that has users being authenticated through LDAP, and the roles being authorized through JDBC. You can verify this by logging into PUC as an admin and checking in the <strong>Users &amp; Roles</strong>           tab in the <strong>Administration </strong> perspective.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+      <li>
+        <a href="#Preparing_the_Pentaho_Server_for_Hybrid_LDAP.2FJDBC" rel="internal">Preparing the Pentaho Server for Hybrid LDAP/JDBC&nbsp;</a> 
+        <ol>
+          <li> <a href="#Step_1:_Create_User.2FAuthorities_Database_Tables" rel="internal">Step 1: Create User/Authorities Database Tables</a>  </li>
+          <li> <a href="#Step_2:_Update_User_and_Role_Values_for_Tables" rel="internal">Step 2: Update User and Role Values&nbsp;for Tables</a>  </li>
+          <li> <a href="#Step_3:_Update_JDBC_Security_Queries" rel="internal">Step 3: Update JDBC&nbsp;Security Queries</a>  </li>
+          <li>
+            <a href="#Step_4:_Enable_JDBC_Authorization_Beans" rel="internal">Step 4: Enable JDBC Authorization Beans</a> 
+            <ol>
+              <li> <a href="#Update_security.properties" rel="internal">Update security.properties</a>  </li>
+              <li> <a href="#Update_applicationContext-spring-security-jdbc.properties" rel="internal">Update&nbsp;applicationContext-spring-security-jdbc.properties</a>  </li>
+              <li> <a href="#Update_applicationContext-pentaho-security-jdbc.xml" rel="internal">Update applicationContext-pentaho-security-jdbc.xml</a>  </li>
+              <li> <a href="#Update_pentahoObjects.spring.xml" rel="internal">Update pentahoObjects.spring.xml&nbsp;</a>  </li>
+              <li> <a href="#Update_applicationContext-spring-security-ldap.xml" rel="internal">&nbsp;Update&nbsp;applicationContext-spring-security-ldap.xml</a>  </li>
+              <li> <a href="#Update_repository.spring.properties" rel="internal">Update&nbsp;repository.spring.properties</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Step_5:_Verify_LDAP.2FJDBC_Configuration" rel="internal">Step 5: Verify LDAP/JDBC&nbsp;Configuration&nbsp;</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

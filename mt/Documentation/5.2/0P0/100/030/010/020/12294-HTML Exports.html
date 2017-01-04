@@ -1,0 +1,22 @@
+<content type="text/html" title="HTML Exports">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">In HTML exports, there are a few Reporting engine settings that can affect export performance. The first is <strong class="ph b">CopyExternalImages</strong> :</p> <pre class="pre codeblock">org.pentaho.reporting.engine.classic.core.modules.output.table.html.CopyExternalImages=
+  true</pre>
+        <p class="p">This controls whether images from HTTP/HTTPS or FTP sources are linked from their original source or copied (and possibly re-encoded) into the output directory. The default is <strong class="ph b">true</strong> ; this ensures that reports always
+          have the same image. Set to <strong class="ph b">false</strong>  if the image is dynamically generated, in which case you'd want to display the most recent view.</p>
+        <p class="p">The <strong class="ph b">Style</strong>  and <strong class="ph b">ForceBufferedWriting</strong>  settings control how stylesheets are produced and whether the generated HTML output will be held in a buffer until the report processing is finished:</p>
+        <pre class="pre codeblock">org.pentaho.reporting.engine.classic.core.modules.output.table.html.
+  ForceBufferedWriting=true</pre>
+        <p class="p">Style information can be stored inline, or in the
+          <head> element of the generated HTML file:</p> <pre class="pre codeblock">org.pentaho.reporting.engine.classic.core.modules.output.table.html.InlineStyles=true</pre>
+        <p class="p">Or in an external CSS file:</p> <pre class="pre codeblock">org.pentaho.reporting.engine.classic.core.modules.output.table.html.ExternalStyle=true</pre>
+        <p class="p"><strong class="ph b">ForceBufferedWriting</strong>  should be set to true if a report uses an external CSS file. Browsers request all resources they find in the HTML stream, so if a browser requests a style sheet that has not yet been fully generated,
+          the report cannot display correctly. It is safe to disable buffering if the styles are inline because the browser will not need to fetch an external style sheet in that case. Buffered content will appear slower to the user than non-buffered
+          content because browsers render partial HTML pages while data is still being received from the server. Buffering will delay that rendering until the report is fully processed on the server.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

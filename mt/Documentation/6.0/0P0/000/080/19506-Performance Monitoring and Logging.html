@@ -1,0 +1,139 @@
+<content type="text/html" title="Performance Monitoring and Logging">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p class="p">To help you maintain the health of your Pentaho system, we provide features that help you diagnose processing errors and monitor the BA Server performance.</p>
+        </div>
+      </div>
+      <p class="p">To help you maintain the health of your Pentaho system, we provide features that help you diagnose processing errors and monitor the BA Server performance.</p>
+      <div class="topic task nested1" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_disable_server_timeouts">
+        <div id="section_2" class="mt-page-section"><span id="Disable_Server_and_Session-Related_Timeouts_to_Debug"></span> 
+          <h2 class="editable">Disable Server and Session-Related Timeouts to Debug</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Follow the instructions below to disable server and session timeouts associated with the User Console.</p>
+              <div class="note important"><span class="importanttitle">Important:</span>  These instructions are applicable when you are in a <em class="ph i">test</em>  environment. Once you go live, it is recommended that you set your timeouts to five or ten minutes so that sensitive
+                BA Server-related data can be protected. The time must be expressed in minutes.</div>
+            </div>
+            <ol class="ol steps" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_disable_server_timeouts__steps_jks_xwc_4k">
+              <li class="li step"><span class="ph cmd">Open the file, <strong class="ph b">server.xml</strong>, located under <code class="ph codeph">&hellip;\biserver-ee\tomcat\conf</code>. </span> </li>
+              <li class="li step"><span class="ph cmd">Find the <strong class="ph b">connectionTimeout=&quot;20000&quot;</strong>  parameter and change its value to zero (&quot;<strong class="ph b">0</strong> &quot;). If this value is set to a negative number it will never timeout.</span> </li>
+              <li class="li step"><span class="ph cmd">Open the file <strong class="ph b">web.xml</strong>, located under <code class="ph codeph">... \bi-server_ee\tomcat\webapps\penaho\WEB-INF\web.xml</code>. </span> </li>
+              <li class="li step"><span class="ph cmd">Find the <strong class="ph b">session-timeout</strong>  parameter and change its value to negative one (&quot;<strong class="ph b">-1</strong> &quot;).</span> </li>
+              <li class="li step"><span class="ph cmd">Save the file and refresh the user console.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_log_rotation">
+        <div id="section_3" class="mt-page-section"><span id="Log_Rotation"></span> 
+          <h2 class="editable">Log Rotation</h2>
+          <div class="body taskbody">
+            <div class="section prereq p">This procedure assumes that you do not have or do not want to use an operating system-level log rotation service. If you are using such a service on your Pentaho server, connect to the BA Server and Data Integration Server and use that instead
+              of implementing this solution.</div>
+            <div class="section context">
+              <p class="p">The Business Analysis and Data Integration servers use the Apache log4j Java logging framework to store server feedback. The default settings in the log4j.xml configuration file may be too verbose and grow too large for some production environments.
+                Follow these instructions to modify the settings so that Pentaho server log files are rotated and compressed.</p>
+            </div>
+            <ol class="ol steps" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_log_rotation__steps_fql_bxc_4k">
+              <li class="li step"><span class="ph cmd">Stop all relevant Pentaho servers.</span> </li>
+              <li class="li step"><span class="ph cmd">Download a .zip archive of the Apache Extras Companion for log4j package: <a class="xref external" target="_blank" rel="external nofollow" href="http://archive.apache.org/dist/logging/log4j/companions/extras/">Apache Logging Services</a> .</span> </li>
+              <li class="li step"><span class="ph cmd">Unpack the <strong class="ph b">apache-log4j-extras</strong>  JAR file from the zip archive, and copy it to the following locations:</span> 
+                <ul class="ul" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_log_rotation__ul_grl_bxc_4k">
+                  <li class="li"><strong class="ph b">Business Analytics Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho/WEB-INF/lib/</span> </li>
+                  <li class="li"><strong class="ph b">Data Integration Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho-di/WEB-INF/lib/</span> </li>
+                </ul>
+              </li>
+              <li class="li step"><span class="ph cmd">Edit the <strong class="ph b">log4j.xml</strong>  settings file for each server that you are configuring. The files are in the following locations:</span> 
+                <ul class="ul" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_log_rotation__ul_jrl_bxc_4k">
+                  <li class="li"><strong class="ph b">BA Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho/WEB-INF/classes/</span> </li>
+                  <li class="li"><strong class="ph b">DI Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho-di/WEB-INF/classes/</span> </li>
+                </ul>
+              </li>
+              <li class="li step"><span class="ph cmd">Remove all <strong class="ph b">PENTAHOCONSOLE</strong>  appenders from the configuration.</span> </li>
+              <li class="li step"><span class="ph cmd">Modify the <strong class="ph b">PENTAHOFILE</strong>  appenders to match the log rotation conditions that you prefer.</span>  You may need to consult the log4j documentation to learn more about configuration options. Two
+                examples that many Pentaho customers find useful are listed:
+                <p class="p"><strong class="ph b">Daily (date-based) log rotation with compression:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><appender name=&quot;PENTAHOFILE&quot; class=&quot;org.apache.log4j.rolling.RollingFileAppender&quot;>
+
+    <!-- The active file to log to; this example is for BA/DI Server.-->
+    <param name=&quot;File&quot; value=&quot;../logs/pentaho.log&quot; />
+    <param name=&quot;Append&quot; value=&quot;false&quot; />
+    <rollingPolicy class=&quot;org.apache.log4j.rolling.TimeBasedRollingPolicy&quot;>
+
+        <!-- See javadoc for TimeBasedRollingPolicy -->
+        <param name=&quot;FileNamePattern&quot; value=&quot;../logs/pentaho.%d.log.gz&quot; />
+    </rollingPolicy>
+    <layout class=&quot;org.apache.log4j.PatternLayout&quot;>
+        <param name=&quot;ConversionPattern&quot; value=&quot;%d %-5p [%c] %m%n&quot;/>
+    </layout>
+</appender></pre>
+                <p class="p"><strong class="ph b">Size-based log rotation with compression:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><appender name=&quot;PENTAHOFILE&quot; class=&quot;org.apache.log4j.rolling.RollingFileAppender&quot;>
+
+    <!-- The active file to log to; this example is for BA/DI Server.-->
+    <param name=&quot;File&quot; value=&quot;../logs/pentaho.log&quot; />
+    <param name=&quot;Append&quot; value=&quot;false&quot; />
+    <rollingPolicy class=&quot;org.apache.log4j.rolling.FixedWindowRollingPolicy&quot;>
+        <param name=&quot;FileNamePattern&quot; value=&quot;../logs/pentaho.%i.log.gz&quot; />
+        <param name=&quot;maxIndex&quot; value=&quot;10&quot; />
+        <param name=&quot;minIndex&quot; value=&quot;1&quot; />
+    </rollingPolicy>
+    <triggeringPolicy class=&quot;org.apache.log4j.rolling.SizeBasedTriggeringPolicy&quot;>
+
+        <!-- size in bytes -->
+        <param name=&quot;MaxFileSize&quot; value=&quot;10000000&quot; />
+    </triggeringPolicy>
+    <layout class=&quot;org.apache.log4j.PatternLayout&quot;>
+        <param name=&quot;ConversionPattern&quot; value=&quot;%d %-5p [%c] %m%n&quot; />
+    </layout>
+</appender></pre> </li>
+              <li class="li step"><span class="ph cmd">Save and close the file, then start all affected servers to test the configuration.</span> </li>
+            </ol>
+            <div class="section result">You have an independent log rotation system in place for all modified Pentaho servers.</div>
+            <div class="section result">
+              <div id="section_4" class="mt-page-section"><span id="Define_Result_Row_Limit_and_Timeout"></span> 
+                <h2 class="editable">Define Result Row Limit and Timeout</h2>
+                <p>When a query in the User Console returns an unusually large number of rows, this may impact server performance. To limit the number of rows returned by a query and to set up a timeout, you must create two custom properties, <strong class="ph b">max_rows</strong>                   and <strong class="ph b">timeout</strong>, in the Metadata Editor.</p>
+                <p>The values you define for the row number limit (max-rows) and timeout properties are passed to the JDBC driver.</p>
+                <p>To define max rows and timeout...</p>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">In the Metadata Editor, expand the <strong class="ph b">Business Model</strong>  node and select <strong class="ph b">Orders</strong> .</span> </li>
+                  <li class="li step"><span class="ph cmd">Right-click Orders and choose <strong class="ph b">Edit</strong> .</span>  The <strong class="ph b">Business Model Properties</strong>  page displays a list of properties that were previously defined.</li>
+                  <li class="li step">In the <strong>Business Model Properties</strong>  page, click the <strong>Add </strong> icon. The <strong>Add New Property page </strong> dialog box appears.</li>
+                  <li class="li step">Enable <strong>Add a custom property</strong> .</li>
+                  <li class="li step"><span class="ph cmd">In the <strong class="ph b">ID</strong>  text box, type <strong class="ph b">max_rows</strong> . <strong>IMPORTANT</strong> </span> : The ID is case-sensitive and must be typed exactly as shown.</li>
+                  <li class="li step"><span class="ph cmd">Click the down-arrow in the <strong class="ph b">Type</strong>  field and choose, <strong class="ph b">Numeric</strong> .</span>  The <strong class="ph b">Business Model Properties</strong>  page appears. The
+                    <strong
+                    class="ph b">max_rows</strong>  property is listed under <strong class="ph b">Custom</strong>  in the navigation tree.</li>
+                  <li class="li step"><span class="ph cmd">In the right pane, under <strong class="ph b">Custom</strong>, enter a value for your <strong class="ph b">max_rows</strong>  property. For example, if you enter &quot;3000&quot; as your value, the number of rows allowed to display in a query result is constrained to 3,000.</span> </li>
+                  <li class="li step"><span class="ph cmd">Repeat steps 3 through 6 to for the <strong class="ph b">timeout</strong>  custom property.</span> </li>
+                  <li class="li step"><span class="ph cmd">In the right pane, under <strong class="ph b">Custom</strong>, enter a value for your <strong class="ph b">timeout</strong>  property. The timeout property requires a numeric value defined in number of seconds. For example, if you enter, 3600, the limit for query results is one minute. </span> </li>
+                  <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  in the Business Model Properties page to save your newly created properties.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Disable_Server_and_Session-Related_Timeouts_to_Debug" rel="internal">Disable Server and Session-Related Timeouts to Debug</a>  </li>
+      <li> <a href="#Log_Rotation" rel="internal">Log Rotation</a>  </li>
+      <li> <a href="#Define_Result_Row_Limit_and_Timeout" rel="internal">Define Result Row Limit and Timeout</a>  </li>
+    </ol>
+  </body>
+</content>

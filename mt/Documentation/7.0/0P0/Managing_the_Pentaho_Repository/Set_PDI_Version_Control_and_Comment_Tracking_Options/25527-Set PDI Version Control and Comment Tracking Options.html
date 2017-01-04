@@ -1,0 +1,151 @@
+<content type="text/html" title="Set PDI Version Control and Comment Tracking Options">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Learn how to turn version control and comment tracking on and off.</p>
+        </div>
+      </div>
+      <p>Pentaho Data Integration (PDI)&nbsp;can track versions and comments for jobs, transformations, and connection information when you save them. &nbsp;You can&nbsp;turn version control and comment tracking on or off by modifying their related statements
+        in the <span class="filepath style-wrap">repository.spring.properties</span>  text file.</p>
+      <p><em>Note<strong>:</strong>  By default, version control and comment tracking are disabled (set to <code>false</code>).</em> </p>
+      <div id="section_2" class="mt-page-section"><span id="Editing_the_Version_Control_Statement"></span> 
+        <h2 class="editable">Editing the Version Control Statement</h2>
+        <ol class="pentaho-list-ordered">
+          <li>Exit from the PDI client (also called Spoon).</li>
+          <li>Stop the Pentaho Server.&nbsp;For instructions, see
+            <a title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop the Pentaho Server for Configuration</a> .</li>
+          <li>Open the&nbsp;<span class="filepath style-wrap">pentaho-server/pentaho-solution/systems/repository.spring.properties</span> &nbsp;file in a text editor.&nbsp;</li>
+        </ol>
+        <div id="section_3" class="mt-page-section"><span id="To_Enable_Version_Control"></span> 
+          <h3 class="editable">To Enable Version Control</h3>
+          <p>Edit the <span class="filepath style-wrap">versioningEnabled</span> &nbsp;statement and set it to <span class="filepath style-wrap">true.</span> </p>
+          <div class="pentaho-code-block style-wrap">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=true</pre>
+          </div>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="To_Disable_Version_Control"></span> 
+          <h3 class="editable">To Disable Version Control</h3>
+          <p>Edit the <span class="filepath style-wrap">versioningEnabled</span> &nbsp;statement and set it to <span class="filepath style-wrap">false.</span> </p>
+          <div class="pentaho-code-block style-wrap">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=false</pre>
+          </div>
+          <p><em>Note: If you disable version control, comment tracking is also disabled.</em> </p>
+          <ol class="pentaho-list-ordered" start="4" style="list-style-type: decimal;">
+            <li>Save and close the file.</li>
+            <li>Start the Pentaho Server. For instructions, see
+              <a title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop the Pentaho Server for Configuration</a> .&nbsp;</li>
+            <li>Start the PDI Client (also called Spoon).</li>
+            <li>Verify that version control is set as you intended.</li>
+          </ol>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Verifying_the_Version_Control_Option"></span> 
+          <h3 class="editable">Verifying the Version Control Option</h3>
+          <ol>
+            <li>Connect to the Pentaho Repository</li>
+            <li>In the PDI&nbsp;Client, click <strong>Tools</strong>  > <strong>Explore</strong> .</li>
+            <li>In the <strong><span class="uicontrol style-wrap">Repository Explorer</span> </strong>  window, click on the <strong>Browse&nbsp;</strong> tab, then click on a file name. &nbsp;</li>
+            <li>Verify that version control is enabled or disabled:</li>
+          </ol>
+          <ul>
+            <li><strong>Enabled</strong>  - You can see the <strong>Access Control&nbsp;</strong> &nbsp;tab, and the&nbsp;<strong><span class="uicontrol style-wrap">Version History</span> </strong>  tab is visible.</li>
+          </ul>
+          <p style="margin-left: 40px;">
+            <img alt="Version History tab is visible." class="internal default" src="http://help.pentaho.com/@api/deki/files/12145/Access_Tab_-_With_History_2016-11-08_15-50-44.png?revision=1" />
+          </p>
+          <ul>
+            <li><strong>Disabled</strong>  - You can see the <strong>Access Control</strong>  tab, but the<strong> Version History</strong>  tab is hidden.&nbsp;</li>
+          </ul>
+          <p style="margin-left: 40px;">
+            <img alt="Access Control tab is visible - Version History is invisible." class="internal default" style="width: 1054px; height: 230px;" width="1054px" height="230px" src="http://help.pentaho.com/@api/deki/files/12146/Access_Tab_-_No_History_2016-11-08_15-50-44.png?size=bestfit&amp;width=1054&amp;height=230&amp;revision=1"
+            />
+          </p>
+        </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Editing_the_Comment_Tracking_Statement"></span> 
+        <h2 class="editable">Editing the Comment Tracking Statement</h2>
+        <ol class="pentaho-list-ordered" start="1" style="list-style-type: decimal;">
+          <li>Exit from the PDI Client (also called Spoon).</li>
+          <li>Stop the Pentaho Server.&nbsp;For instructions, see
+            <a title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop the Pentaho Server for Configuration</a> .</li>
+          <li>Open the&nbsp;<span class="filepath style-wrap">pentaho-server/pentaho-solution/systems/repository.spring.properties</span> &nbsp;file in a text editor.</li>
+        </ol>
+        <div id="section_7" class="mt-page-section"><span id="To_Enable_Comment_Tracking"></span> 
+          <h3 class="editable">To Enable Comment Tracking</h3>
+          <p>Edit the <code>versionCommentsEnabled</code> statement and set it to <code>true</code>.</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versionCommentsEnabled=true</pre>          </div>
+        <div id="section_8" class="mt-page-section"><span id="To_Disable_Comment_Tracking"></span> 
+          <h3 class="editable">To Disable Comment Tracking</h3>
+          <p>If you want version control, but <em><strong>not</strong> </em>  comment tracking:</p>
+          <ul>
+            <li>Edit the versioningEnabled statement and set it to <code>true</code>.</li>
+            <li>Edit the versionCommentsEnabled statement and set it to <code>false</code>.</li>
+          </ul> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=true
+versionCommentsEnabled=false</pre>
+          <ol class="pentaho-list-ordered" start="4" style="list-style-type: decimal;">
+            <li>Save and close the file.</li>
+            <li>Start the Pentaho Server.&nbsp;For instructions, see
+              <a title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop the Pentaho Server for Configuration</a> .</li>
+            <li>Start the PDI&nbsp;Client (also called Spoon). &nbsp;</li>
+            <li>Verify that Version Control and Comment Tracking are set as you intended.</li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Verifying_the_Comment_Tracking_Option"></span> 
+          <h3 class="editable">Verifying the Comment Tracking Option</h3>
+          <ol>
+            <li>Connect to the Pentaho Repository.</li>
+            <li>In the PDI Client, click <strong>Tools > Explore</strong> .</li>
+            <li>In the <strong><span class="uicontrol style-wrap">Repository Explorer</span> </strong>  window, click on the <strong>Browse&nbsp;</strong> tab, then click on a file name.</li>
+            <li>Verify that comment tracking is enabled or disabled.</li>
+          </ol>
+          <ul>
+            <li><strong>Enabled</strong>  - The<strong> Version History</strong>  tab appears with the <strong>Comments</strong>  field. When you save a transformation, job, or connection information, you are prompted to enter a comment.&nbsp;</li>
+          </ul>
+          <p style="margin-left: 40px;">
+            <img alt="Comment Field Enabled" class="internal default" style="width: 1050px; height: 228px;" width="1050px" height="228px" src="http://help.pentaho.com/@api/deki/files/12147/Comment_Field_Enabled_-_2016-11-08_16-23-04.png?size=bestfit&amp;width=1050&amp;height=228&amp;revision=1"
+            />
+          </p>
+          <ul>
+            <li><strong>Disabled</strong>  - The <strong>Version History</strong>  tab appears and the <strong>Comment</strong>  field is hidden. When you save a transformation, job, or connection information, you are no longer prompted to enter a comment.&nbsp;</li>
+          </ul>
+          <p style="margin-left: 40px;">
+            <img alt="Versioning, but not comments" class="internal default" style="width: 1047px; height: 230px;" width="1047px" height="230px" src="http://help.pentaho.com/@api/deki/files/12148/versioning_-_no_-_comments_2016-11-08_16-35-47.png?size=bestfit&amp;width=1047&amp;height=230&amp;revision=1"
+            />
+          </p>
+          <p>&nbsp;</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Editing_the_Version_Control_Statement" rel="internal">Editing the Version Control Statement</a> 
+        <ol>
+          <li> <a href="#To_Enable_Version_Control" rel="internal">To Enable Version Control</a>  </li>
+          <li> <a href="#To_Disable_Version_Control" rel="internal">To Disable Version Control</a>  </li>
+          <li> <a href="#Verifying_the_Version_Control_Option" rel="internal">Verifying the Version Control Option</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Editing_the_Comment_Tracking_Statement" rel="internal">Editing the Comment Tracking Statement</a> 
+        <ol>
+          <li> <a href="#To_Enable_Comment_Tracking" rel="internal">To Enable Comment Tracking</a>  </li>
+          <li> <a href="#To_Disable_Comment_Tracking" rel="internal">To Disable Comment Tracking</a>  </li>
+          <li> <a href="#Verifying_the_Comment_Tracking_Option" rel="internal">Verifying the Comment Tracking Option</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

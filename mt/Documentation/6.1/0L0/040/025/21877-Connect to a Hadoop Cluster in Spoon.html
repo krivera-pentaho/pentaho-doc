@@ -1,0 +1,587 @@
+<content type="text/html" title="Connect to a Hadoop Cluster in Spoon">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Explains how to connect to a Hadoop cluster.</p>
+      </div>
+    </div>
+    <p>To connect Pentaho to a Hadoop cluster you will need to do two things:</p>
+    <ol class="pentaho-list-ordered">
+      <li>Set the active <em>shim</em> </li>
+      <li>Create and test the connection</li>
+    </ol>
+    <p>A <em>shim </em> is a bit like an adapter that enables Pentaho to connect to a Hadoop distribution, like Cloudera Distribution for Hadoop (CDH).&nbsp; The <em>active </em> shim is used by default when you run big data transformations, jobs, and reports.&nbsp;When
+      you first install Pentaho, no shim is active, so this is the first thing you need to do before you try to connect to a Hadoop cluster.</p>
+    <p>After the active shim is set, you must configure, then test the connection.&nbsp; Spoon has built in tools to help you do this.</p>
+    <div id="section_2" class="mt-page-section"><span id="Before_You_Begin"></span> 
+      <h2 class="editable">Before You Begin</h2>
+      <p>Before you begin, make sure that your Hadoop Administrator has granted you permission to access the HDFS directories you need.&nbsp; This typically includes your home directory as well as any other directories you need to do your work.&nbsp; Your
+        Hadoop Administrator should have already configured Pentaho to connect to the Hadoop cluster on your computer.&nbsp; For more details on how to do this, see the
+        <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)" rel="internal"
+        href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article.&nbsp; You also need to know these things:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Distribution and version of the cluster (e.g. Cloudera Distribution 5.4)</li>
+        <li>IP Addresses and Port Numbers for HDFS, JobTracker, and Zookeeper (if used).</li>
+        <li>Oozie URL (if used)<span id="cke_bm_169E" style="display: none;">&nbsp;</span> </li>
+      </ul>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Set_the_Active_Shim_in_Spoon"></span> 
+      <h2 class="editable">Set the Active Shim in Spoon</h2>
+      <p>Set the active shim when you want to connect to a Hadoop cluster the first time, or when you want to switch clusters.&nbsp; Only one shim can be active at a time.</p>
+      <ol class="pentaho-list-ordered">
+        <li> <a title="https://help.pentaho.com/Documentation/6.0/0H0/070/010/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020">Start Spoon</a> . </li>
+        <li>Select <strong>Hadoop Distribution... </strong> from the <strong>Tools </strong> menu.</li>
+      </ol>
+      <p>
+        <img alt="HadoopDistribution.png" class="internal default" style="width: 350px; height: 173px;" width="350px" height="173px" src="http://help.pentaho.com/@api/deki/files/7504/HadoopDistribution.png?size=bestfit&amp;width=350&amp;height=173&amp;revision=1"
+        />
+      </p>
+      <ol class="pentaho-list-ordered" start="3">
+        <li>In the <strong>Hadoop Distribution</strong>  window, select the Hadoop distribution you want.</li>
+        <li>Click <strong>OK</strong> .</li>
+        <li>Stop, then restart Spoon.</li>
+      </ol>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Configure_and_Test_the_Cluster_Connection"></span> 
+      <h2 class="editable">Configure and Test the Cluster Connection</h2>
+      <p>Configured connection information is available for reuse in other steps and entries.&nbsp; Whether you are connected to the Pentaho Repository when you create the connection determines who can reuse it.</p>
+      <ul class="pentaho-list-unordered">
+        <li>If you <em>are </em> connected to the Pentaho Repository when you create the connection, you and other users can reuse the connection.&nbsp;&nbsp; &nbsp;</li>
+        <li>If you <em>are not </em> connected to the Pentaho Repository when you create the connection, only you can reuse the connection.&nbsp;</li>
+      </ul>
+      <div id="section_5" class="mt-page-section"><span id="Open_the_Hadoop_Cluster_Window"></span> 
+        <h3 class="editable">Open the Hadoop Cluster Window</h3>
+        <p>Connection settings are set in the <strong>Hadoop cluster</strong>  window.&nbsp; You can get to the settings from these places:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Steps and Entries</li>
+          <li><strong>View </strong> tab in a transformation or job</li>
+          <li><strong>Repository Explorer </strong> window</li>
+        </ul>
+        <div id="section_6" class="mt-page-section"><span id="Steps_and_Entries"></span> 
+          <h4 class="editable">
+            <a id="StepsandEntries" name="StepsandEntries"></a> Steps and Entries</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Create a new job or transformation or open an existing one.</li>
+            <li>Add a&nbsp;step or entry that can connect to a Hadoop cluster to the Spoon canvas. &nbsp;</li>
+            <li>Click the <strong>New&nbsp;</strong> button next to the <strong>Hadoop&nbsp;Cluster&nbsp;</strong> field.&nbsp;The <strong>Hadoop cluster</strong>  window appears.&nbsp;</li>
+            <li> <a title="Connect to a Hadoop Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025#ConfigureandTestConnection">Configure and Test the Hadoop Cluster connection</a> . </li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="View_Tab"></span> 
+          <h4 class="editable">
+            <a id="ViewTab" name="ViewTab"></a> View Tab</h4>
+          <ol class="pentaho-list-ordered">
+            <li>In Spoon, create a new job or transformation or open an existing one.</li>
+            <li>Click the <strong>View</strong>  tab.</li>
+          </ol>
+          <p>
+            <img alt="clusterss.png" class="internal default" style="width: 160px; height: 149px;" width="160px" height="149px" src="http://help.pentaho.com/@api/deki/files/7723/clusterss.png?size=bestfit&amp;width=160&amp;height=149&amp;revision=1" />
+          </p>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Right-click the<strong>&nbsp;Hadoop cluster</strong>  folder, then click <strong>New</strong> .&nbsp; The <strong>Hadoop cluster</strong>  window appears. &nbsp;</li>
+            <li> <a title="Connect to a Hadoop Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025#ConfigureandTestConnection">Configure and Test the Hadoop Cluster connection</a> . </li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Repository_Explorer"></span> 
+          <h4 class="editable">
+            <a id="RepositoryExplorer" name="RepositoryExplorer"></a> Repository Explorer</h4>
+          <ol class="pentaho-list-ordered">
+            <li>In Spoon, connect to the repository where you want to store the transformation or job.</li>
+            <li>Select <strong>Repository </strong> from the <strong>Tools </strong> menu.</li>
+            <li>Select <strong>Explore</strong>  to open the&nbsp;<strong>Repository Explorer&nbsp;</strong> window.</li>
+            <li>Click the <strong>Hadoop clusters </strong> tab.</li>
+            <li>Click the <strong>New </strong> button. The <strong>Hadoop&nbsp;Cluster</strong>  window appears.</li>
+            <li> <a title="Connect to a Hadoop Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025#ConfigureandTestConnection">Configure and Test the Hadoop Cluster connection</a> . </li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Configure_and_Test_Connection"></span> 
+        <h3 class="editable">
+          <a id="ConfigureandTestConnection" name="ConfigureandTestConnection"></a> Configure and Test Connection</h3>
+        <p>Once you have opened the Hadoop cluster window from a step or entry, the View tab, or the Repository Explorer window, configure the connection.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Enter information in the <strong>Hadoop cluster</strong>  window.&nbsp; You can get most of the information you need from your Hadoop Administrator.</li>
+        </ol>
+        <p class="pentaho-note">As a best practice, use Kettle variables for each connection parameter value to mitigate risks associated with running jobs and transformations in environments that are disconnected from the repository.&nbsp;</p>
+        <p>
+          <img alt="HadoopClusterWindow.png" class="internal default" style="width: 239px; height: 350px;" width="239px" height="350px" src="http://help.pentaho.com/@api/deki/files/7503/HadoopClusterWindow.png?size=bestfit&amp;width=239&amp;height=350&amp;revision=1"
+          />
+        </p>
+        <table class="pentaho-table" height="457" title="Pentaho Table" width="605">
+          <tbody>
+            <tr>
+              <th style="width: 171px;">Option</th>
+              <th style="width: 400px;">Definition</th>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Cluster Name</td>
+              <td style="width: 503px;">Name that you assign the cluster connection.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Use MapR Client</td>
+              <td style="width: 503px;">Indicates that this connection is for a MapR cluster. &nbsp;If this box is checked, the fields in the HDFS and JobTracker sections are disabled because those parameters are not needed to configure MapR.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Hostname (in HDFS section)</td>
+              <td style="width: 503px;">Hostname for the HDFS node in your Hadoop cluster.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Port&nbsp;(in HDFS section)</td>
+              <td style="width: 503px;">Port for the HDFS node in your Hadoop cluster. &nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Username&nbsp;(in HDFS section)</td>
+              <td style="width: 503px;">Username for the HDFS node.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Password&nbsp;(in HDFS section)</td>
+              <td style="width: 503px;">Password for the HDFS node.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Hostname (in JobTracker section)</td>
+              <td style="width: 503px;">Hostname for the JobTracker node in your Hadoop cluster. &nbsp;If you have a separate job tracker node, type in the hostname here. Otherwise use the HDFS hostname.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Port (in JobTracker section)</td>
+              <td style="width: 503px;">Port for the JobTracker in your Hadoop cluster. &nbsp;Job tracker port number; this cannot be the same as the HDFS port number.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Hostname (in ZooKeeper section)</td>
+              <td style="width: 503px;">Hostname for the Zookeeper node in your Hadoop cluster.&nbsp; Supply this only if you want to connect to a Zookeeper service.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">Port (in Zookeeper section)</td>
+              <td style="width: 503px;">Port for the Zookeeper node in your Hadoop cluster.&nbsp; Supply this only if you want to connect to a Zookeeper service.</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">URL (in Oozie section)</td>
+              <td style="width: 503px;">Oozie client address.&nbsp; Supply this only if you want to connect to the Oozie service.</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Click the&nbsp;<strong>Test&nbsp;</strong> button.&nbsp; Test results appear in the <strong>Hadoop Cluster Test </strong> window.&nbsp; If you have problems, see
+            <a title="Connect to a Hadoop Cluster in Spoon" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025#Troubleshoot_Connection_Issues">Troubleshoot Connection Issues</a>  to resolve the issues, then test again.</li>
+        </ol>
+        <p>
+          <a class="thumb" title="HadoopClusterTest.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7502/HadoopClusterTest.png">
+            <img alt="HadoopClusterTest.png" class="internal default" style="width: 325px; height: 350px;" width="325px" height="350px" src="http://help.pentaho.com/@api/deki/files/7502/HadoopClusterTest.png?size=bestfit&amp;width=325&amp;height=350&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>If there are no more errors, congratulations!&nbsp; The connection is properly configured.&nbsp; Click the <strong>Close </strong> button to the remaining <strong>Hadoop Cluster Test </strong> window.</li>
+          <li>When complete, click the <strong>OK </strong> button to close the <strong>Hadoop cluster </strong> window.</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_10" class="mt-page-section"><span id="Troubleshoot_Connection_Issues"></span> 
+      <h2 class="editable">Troubleshoot Connection Issues</h2> <span id="General_Configuration_Problems"></span> <span id="General_Configuration_Problems-22622"></span> 
+      <h3>
+        <a id="bigdata_general" name="bigdata_general"></a> General Configuration Problems</h3>
+      <p>The issues in this section explain how to resolve common configuration problems.&nbsp;</p> <span id="Shim_and_Configuration_Issues"></span> <span id="Shim_and_Configuration_Issues-22622"></span> 
+      <h4>
+        <a id="bigdata_general_shim_loading" name="bigdata_general_shim_loading"></a> Shim and Configuration Issues</h4>
+      <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+        <tbody>
+          <tr>
+            <th style="width: 152px;">Symptoms</th>
+            <th style="width: 226px;">Common Causes</th>
+            <th>Common Resolutions</th>
+          </tr>
+          <tr>
+            <td style="width: 152px;">
+              <p>No shim</p>
+            </td>
+            <td style="width: 226px;">
+              <ul class="pentaho-list-unordered">
+                <li>Active shim was not selected.</li>
+                <li>Shim was installed in the&nbsp; wrong place.</li>
+                <li>Shim name was not entered correctly in the <span class="filepath style-wrap">plugin.properties</span>  file.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Verify that the plugin name that is in the <span class="filepath style-wrap">plugin.properties</span>  file <span style="color:#000000;">matches the directory name in the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations</span>                   directory</span> .&nbsp;</li>
+                <li>Make sure the shim is installed in the <span style="color:#000000;">correct place</span> .</li>
+                <li>Check the instructions for your Hadoop distribution in the
+                  <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article for more details on how to verify the plugin name and shim installation directory.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 152px;">Shim doesn't load</td>
+            <td style="width: 226px;">
+              <ul class="pentaho-list-unordered">
+                <li>Required licenses are not installed.</li>
+                <li>You tried to load a shim that is not supported by your version of Pentaho.</li>
+                <li>If you are using MapR, the client might not have been installed correctly.&nbsp;</li>
+                <li>Configuration file changes were made incorrectly.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Verify the
+                  <a title="Enter Licenses and Connect to the DI Repository" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/020/020">required licenses are installed</a>  and have not expired.</li>
+                <li>Verify that the shim is supported by your version of Pentaho.
+                  <a title="https://help.pentaho.com/Documentation/6.0/0L0/0Y0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/010">Find your version of Pentaho</a>, then look for the corresponding
+                  <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/000#Big_Data_Sources">Components Reference</a>  for more details.</li>
+                <li>Verify that configuration file changes were made correctly.&nbsp; Contact your Hadoop Administrator or see the
+                  <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article.</li>
+                <li>If you are connecting to MapR, verify that the client was properly installed.&nbsp; See MapR documentation for details.</li>
+                <li>Restart Spoon, then test again.</li>
+                <li>If this error continues to occur, files might be corrupted.&nbsp; Download a new copy of the shim from the Pentaho Customer Support Portal.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 152px;">The file system's URL does not match the URL in the configuration file.</td>
+            <td style="width: 226px;">Configuration files (<span class="filepath style-wrap">*-site.xml</span>  files) were not configured properly.&nbsp;</td>
+            <td>Verify that the configuration files were configured correctly.&nbsp; Verify that the <span class="filepath style-wrap">core-site.xml</span>  file is configured correctly.&nbsp; See the instructions for your Hadoop distribution in the
+              <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)"
+              rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article for details.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+      <span id="Connection_Problems"></span> <span id="Connection_Problems-22622"></span> 
+      <h4>
+        <a id="bigdata_general_cluster_connect" name="bigdata_general_cluster_connect"></a> Connection Problems</h4>
+      <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+        <tbody>
+          <tr>
+            <th style="width: 151px;">Symptoms</th>
+            <th style="width: 227px;">Common Causes</th>
+            <th>Common Resolutions</th>
+          </tr>
+          <tr>
+            <td style="width: 143px;">Hostname incorrect or not resolving properly.</td>
+            <td style="width: 180px;">
+              <ul class="pentaho-list-unordered">
+                <li>No hostname has been specified.</li>
+                <li>Hostname/IP Address is incorrect.</li>
+                <li>Hostname is not resolving properly in the DNS.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Verify that the Hostname/IP address is correct.</li>
+                <li>Check the DNS to make sure the Hostname is resolving properly.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 143px;">Port name is incorrect.</td>
+            <td style="width: 180px;">
+              <ul class="pentaho-list-unordered">
+                <li>No port number has been specified.</li>
+                <li>Port&nbsp; number is incorrect.</li>
+                <li>Port number is not numeric.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Verify that the port number is correct.</li>
+                <li>If you don't have a port number, determine whether your cluster has been enabled for high availability. If it has, then you do not need a port number.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 143px;">Can't connect.</td>
+            <td style="width: 180px;">
+              <ul class="pentaho-list-unordered">
+                <li>Firewall is a barrier to connecting.</li>
+                <li>Other networking&nbsp;issues are occurring.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Verify that a firewall is not impeding the connection and that there aren't other network issues.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table> <span id="Directory_Access_or_Permissions_Issues"></span> <span id="Directory_Access_or_Permissions_Issues-22622"></span> 
+      <h4>
+        <a id="bigdata_general_accessdirectory" name="bigdata_general_accessdirectory"></a> Directory Access or Permissions Issues</h4>
+      <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+        <tbody>
+          <tr>
+            <th style="width: 151px;">Symptoms</th>
+            <th style="width: 227px;">Common Causes</th>
+            <th>Common Resolutions</th>
+          </tr>
+          <tr>
+            <td style="width: 143px;">
+              <p>Can't access directory.</p>
+            </td>
+            <td style="width: 180px;">
+              <ul class="pentaho-list-unordered">
+                <li>Authorization and/or authentication&nbsp;issues.</li>
+                <li>Directory is not on the cluster.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Make sure the user has been granted read, write, and execute access to the directory.&nbsp;</li>
+                <li>Ensure security settings for the cluster and shim allow access.</li>
+                <li>Verify the hostname and port number are correct for the Hadoop File System's&nbsp;namenode.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 143px;">
+              <p>Can't create, read, update, or delete files or directories</p>
+            </td>
+            <td style="width: 180px;">
+              <p>Authorization and/or authentication&nbsp;issues.</p>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Make sure the user has been authorized execute&nbsp;access to the directory.&nbsp;</li>
+                <li>Ensure security settings for the cluster and shim allow access.</li>
+                <li>Verify that the hostname and port number are correct for the Hadoop File System's&nbsp;namenode.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 143px;">Test file cannot be overwritten.&nbsp;</td>
+            <td style="width: 180px;">Pentaho test file is already in the directory.</td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>A file with the same name as the Pentaho test file is already in the directory.&nbsp; The test file is used to make sure that the user can create, write, and delete in the user's home directory.</li>
+                <li>The test was run, but the file was not deleted.&nbsp; You will need to manually delete the test file.&nbsp; Check the log fo the test file name.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table> <span id="Oozie_Issues"></span> <span id="Oozie_Issues-22622"></span> 
+      <h4>
+        <a id="bigdata_general_oozie" name="bigdata_general_oozie"></a> Oozie Issues</h4>
+      <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+        <tbody>
+          <tr>
+            <th style="width: 151px;">Symptoms</th>
+            <th style="width: 227px;">Common Causes</th>
+            <th>Common Resolutions</th>
+          </tr>
+          <tr>
+            <td style="width: 143px;">
+              <p>Can't connect to Oozie.</p>
+            </td>
+            <td style="width: 180px;">
+              <ul class="pentaho-list-unordered">
+                <li>Firewall issue.</li>
+                <li>Other networking&nbsp;issues.</li>
+                <li>Oozie URL is incorrect.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Verify that the Oozie URL was correctly entered.</li>
+                <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table> <span id="Zookeeper_Problems"></span> <span id="Zookeeper_Problems-22622"></span> 
+      <h4>
+        <a id="bigdata_general_zookeeper" name="bigdata_general_zookeeper"></a> Zookeeper Problems</h4>
+      <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+        <tbody>
+          <tr>
+            <th style="width: 151px;">Symptoms</th>
+            <th style="width: 227px;">Common Causes</th>
+            <th>Common Resolutions</th>
+          </tr>
+          <tr>
+            <td style="width: 191px;">
+              <p>Can't connect to Zookeeper.</p>
+            </td>
+            <td style="width: 193px;">
+              <ul class="pentaho-list-unordered">
+                <li>Firewall is hindering connection with the Zookeeper service.</li>
+                <li>Other networking&nbsp;issues.</li>
+              </ul>
+            </td>
+            <td style="width: 297px;">
+              <ul class="pentaho-list-unordered">
+                <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>Zookeeper hostname or port not found or doesn't resolve properly.&nbsp;&nbsp;</p>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Hostname/IP Address and Port name is missing or is incorrect.</li>
+              </ul>
+            </td>
+            <td>
+              <ul class="pentaho-list-unordered">
+                <li>Try to connect to the Zookeeper nodes using ping or another method.</li>
+                <li>Verify that the Hostname/IP Address and Port numbers are correct.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_11" class="mt-page-section"><span id="Manage_Existing_Hadoop_Cluster_Connections"></span> 
+      <h2 class="editable">Manage Existing Hadoop Cluster Connections</h2>
+      <p>Once cluster connections have been created, you can manage them.</p>
+      <ul class="pentaho-list-unordered">
+        <li>Edit Hadoop Cluster Connections</li>
+        <li>Duplicate Hadoop Cluster Connections</li>
+        <li>Delete Hadoop Cluster Connections</li>
+      </ul>
+      <div id="section_12" class="mt-page-section"><span id="Edit_Hadoop_Cluster_Connections"></span> 
+        <h3 class="editable">Edit&nbsp;Hadoop Cluster Connections</h3>
+        <p>How updates occur depend on whether you are connected to the repository.</p>
+        <ul class="pentaho-list-unordered">
+          <li><strong>If you <em>are </em> connected to a repository:&nbsp;</strong>  Hadoop Cluster connection changes are picked up by all transformations and jobs in the repository. &nbsp; The Hadoop Cluster connection information is loaded during execution
+            unless it cannot be found. &nbsp;If the connection information cannot be&nbsp;found, the connection values that were stored when the transformation or job was saved are used instead.</li>
+          <li><strong>If you <em>are not </em> connected to a repository:</strong> &nbsp;&nbsp; Hadoop Cluster connection changes are only picked up by your local (file system) transformations and jobs. &nbsp;If you run these transformations and jobs outside
+            of Kettle, they will not have access to the Hadoop Cluster connection, so a copy of the connection is saved as a <em>fallback</em> . &nbsp;Note that changes to the Hadoop Cluster connection are not updated in any transformations or jobs for
+            the purpose of <em>fallback</em>  unless they are saved again. &nbsp;</li>
+        </ul>
+        <p>You can edit Hadoop&nbsp;cluster connections&nbsp;in three places:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Steps and entries</li>
+          <li><strong>View</strong>  tab</li>
+          <li><strong>Repository Explorer </strong> window</li>
+        </ul>
+        <div id="section_13" class="mt-page-section"><span id="Steps_and_Entries_2"></span> 
+          <h4 class="editable">Steps and Entries</h4>
+          <p>To edit Hadoop&nbsp;cluster connection in a step or entry, complete these steps.&nbsp;&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <strong>Hadoop cluster </strong> window in a step or entry.</li>
+            <li>Make changes, then click <strong>Test</strong> .</li>
+            <li>Click the <strong>OK </strong> button.</li>
+          </ol>
+        </div>
+        <div id="section_14" class="mt-page-section"><span id="View_Tab_2"></span> 
+          <h4 class="editable">View Tab</h4>
+          <p>To edit Hadoop&nbsp;cluster connection from the transformation or job <strong>View </strong> tab,&nbsp;complete these steps.&nbsp;&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>Click the <strong>Hadoop&nbsp;Clusters</strong>  folder in the <strong>View </strong> tab.</li>
+            <li>Right-click a connection, then select <strong>Edit</strong> .&nbsp;</li>
+            <li>The <strong>Hadoop cluster </strong> window appears.&nbsp;</li>
+            <li>Make changes, then click <strong>Test</strong> .</li>
+            <li>Click the <strong>OK </strong> button.</li>
+          </ol>
+        </div>
+        <div id="section_15" class="mt-page-section"><span id="Repository_Explorer_2"></span> 
+          <h4 class="editable">Repository Explorer</h4>
+          <p>To edit Hadoop&nbsp;cluster connection from the <strong>Repository Explorer</strong>  window, do the following.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Click the <strong>Hadoop Clusters </strong> tab in the <strong>Repository Explorer </strong> window.</li>
+            <li>Select a connection, then click <strong>Edit</strong> .</li>
+            <li>The <strong>Hadoop cluster</strong>  window appears.&nbsp;</li>
+            <li>Make changes, then click <strong>Test</strong> .</li>
+            <li>Click the <strong>OK </strong> button.</li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_16" class="mt-page-section"><span id="Duplicate_a_Hadoop_Cluster_Connection"></span> 
+        <h3 class="editable">Duplicate a Hadoop Cluster Connection</h3>
+        <p>You can only duplicate or clone a Hadoop Cluster connection in the Spoon <strong>View </strong> tab.&nbsp;</p>
+        <ol class="pentaho-list-ordered">
+          <li>Click the <strong>Hadoop clusters </strong> folder in the <strong>View </strong> tab.</li>
+          <li>Right-click a connection and select <strong>Duplicate</strong> .</li>
+          <li>The&nbsp;<strong>Hadoop cluster&nbsp;</strong> window appears. &nbsp;Enter a different name in the&nbsp;<strong>Cluster Name&nbsp;</strong> field.</li>
+          <li>Make changes, then click <strong>Test</strong> .</li>
+          <li>Click the <strong>OK </strong> button.</li>
+        </ol>
+      </div>
+      <div id="section_17" class="mt-page-section"><span id="Delete_a_Hadoop_Cluster_Connection"></span> 
+        <h3 class="editable">Delete a Hadoop Cluster Connection</h3>
+        <p>Deleted connections cannot be restored.&nbsp; But, you can still run transformations and jobs that reference them because deleted connections details are stored in the&nbsp;transformation&nbsp;and job&nbsp;metadata files.</p>
+        <p>You can delete Hadoop&nbsp;cluster connections&nbsp;in two places:</p>
+        <ul class="pentaho-list-unordered">
+          <li><strong>View</strong>  tab</li>
+          <li><strong>Repository Explorer </strong> window</li>
+        </ul>
+        <div id="section_18" class="mt-page-section"><span id="View_Tab_3"></span> 
+          <h4 class="editable">View Tab</h4>
+          <p>To delete Hadoop&nbsp;cluster connection in&nbsp;a transformation or job, complete these steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Click the <strong>Hadoop clusters </strong> folder in the <strong>View </strong> tab.</li>
+            <li>Right-click a Hadoop cluster connection and select <strong>Delete</strong> .</li>
+            <li>A message appears asking whether you really want to delete the connection.&nbsp; Click <strong>Yes</strong> .</li>
+          </ol>
+        </div>
+        <div id="section_19" class="mt-page-section"><span id="Repository_Explorer_3"></span> 
+          <h4 class="editable">Repository Explorer</h4>
+          <p>To delete Hadoop&nbsp;cluster connections&nbsp;&nbsp;from the <strong>Repository Explorer</strong>  window, do the following.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Connect to the <strong>Repository Explorer</strong> .</li>
+            <li>Click the <strong>Hadoop&nbsp;Clusters</strong>  tab.</li>
+            <li>Select a Hadoop cluster connection, then click <strong>Delete</strong> .</li>
+            <li>A message appears asking if you really want to delete the Hadoop cluster connection.&nbsp; Click <strong>Yes</strong> .</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+      <li> <a href="#Set_the_Active_Shim_in_Spoon" rel="internal">Set the Active Shim in Spoon</a>  </li>
+      <li>
+        <a href="#Configure_and_Test_the_Cluster_Connection" rel="internal">Configure and Test the Cluster Connection</a> 
+        <ol>
+          <li>
+            <a href="#Open_the_Hadoop_Cluster_Window" rel="internal">Open the Hadoop Cluster Window</a> 
+            <ol>
+              <li> <a href="#Steps_and_Entries" rel="internal">Steps and Entries</a>  </li>
+              <li> <a href="#View_Tab" rel="internal">View Tab</a>  </li>
+              <li> <a href="#Repository_Explorer" rel="internal">Repository Explorer</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Configure_and_Test_Connection" rel="internal">Configure and Test Connection</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Troubleshoot_Connection_Issues" rel="internal">Troubleshoot Connection Issues</a> 
+        <ol>
+          <li>
+            <a href="#General_Configuration_Problems" rel="internal">General Configuration Problems</a> 
+            <ol>
+              <li> <a href="#Shim_and_Configuration_Issues" rel="internal">Shim and Configuration Issues</a>  </li>
+              <li> <a href="#Connection_Problems" rel="internal">Connection Problems</a>  </li>
+              <li> <a href="#Directory_Access_or_Permissions_Issues" rel="internal">Directory Access or Permissions Issues</a>  </li>
+              <li> <a href="#Oozie_Issues" rel="internal">Oozie Issues</a>  </li>
+              <li> <a href="#Zookeeper_Problems" rel="internal">Zookeeper Problems</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Manage_Existing_Hadoop_Cluster_Connections" rel="internal">Manage Existing Hadoop Cluster Connections</a> 
+        <ol>
+          <li>
+            <a href="#Edit_Hadoop_Cluster_Connections" rel="internal">Edit&nbsp;Hadoop Cluster Connections</a> 
+            <ol>
+              <li> <a href="#Steps_and_Entries_2" rel="internal">Steps and Entries</a>  </li>
+              <li> <a href="#View_Tab_2" rel="internal">View Tab</a>  </li>
+              <li> <a href="#Repository_Explorer_2" rel="internal">Repository Explorer</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Duplicate_a_Hadoop_Cluster_Connection" rel="internal">Duplicate a Hadoop Cluster Connection</a>  </li>
+          <li>
+            <a href="#Delete_a_Hadoop_Cluster_Connection" rel="internal">Delete a Hadoop Cluster Connection</a> 
+            <ol>
+              <li> <a href="#View_Tab_3" rel="internal">View Tab</a>  </li>
+              <li> <a href="#Repository_Explorer_3" rel="internal">Repository Explorer</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

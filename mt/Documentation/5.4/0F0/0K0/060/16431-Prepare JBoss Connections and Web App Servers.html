@@ -1,0 +1,536 @@
+<content type="text/html" title="Prepare JBoss Connections and Web App Servers">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <p>After your repository has been configured, you must configure the web application servers to connect to the BA Repository. In this step, JDBC and JNDI connections are made to the Hibernate, Jackrabbit, and Quartz databases. By default, the BA Server
+        software is configured to be deployed and run on the Tomcat server.</p>
+      <p>If you are using JBoss, both JDBC and JNDI connection information must be specified.&nbsp;</p>
+      <div id="section_2" class="mt-page-section"><span id="Perform_JBoss-Specific_Connection_Tasks"></span> 
+        <h2 class="editable">Perform JBoss-Specific Connection Tasks</h2>
+        <div id="section_3" class="mt-page-section"><span id="Install_JDBC_Driver_as_a_Module_in_JBoss"></span> 
+          <h3 class="editable">Install JDBC Driver as a Module in JBoss</h3>
+          <p>In JBoss, JDBC driver information is stored in a module, which is an XML file that you create. You must download the JDBC driver software component to the correct directory, then create <span class="ph filepath">module.xml</span>  files for each
+            database.</p>
+          <p>The
+            <a class="xref" href="/Documentation/5.3/0D0/160/010" rel="internal" title="Documentation/5.1/0D0/160/010">JDBC Drivers Reference</a>  has a list of supported drivers.</p>
+          <div id="section_4" class="mt-page-section"><span id="Create_Module_File_for_BA_Repository_Database"></span> 
+            <h4 class="editable">Create Module File for BA Repository Database</h4>
+            <p>You need to create a file for the database that hosts the BA Repository (either PostgreSQL, MySQL, or Oracle), as well as for HSQLDB.</p>
+            <ol class="pentaho-list-ordered">
+              <li class="li step">Locate the <span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/modules/system/layers/base/org</span>  folder and create one of the following paths for the database on which you are hosting the BA Repository.
+                <ul class="ul">
+                  <li class="li"><strong>PostgreSQL:</strong>  <span class="ph filepath">postgresql/main</span> </li>
+                  <li class="li"><strong>MySQL:</strong>  <span class="ph filepath">mysql/main</span> </li>
+                  <li class="li"><strong>Oracle: </strong> <span class="ph filepath">oracle/main</span> </li>
+                  <li class="li"><strong>MS SQL Server:&nbsp;</strong> <span class="filepath style-wrap">sqlserver/main</span> </li>
+                </ul>
+              </li>
+              <li>Download the supported JDBC driver for your BA Repository database to the <span class="filepath style-wrap">postgresql/main</span>, <span class="filepath style-wrap">mysql/main</span>, or <span class="filepath style-wrap">oracle/main</span>                 directories (which ever one you created).</li>
+              <li>In the <span class="ph filepath">postgresql/main</span>, <span class="ph filepath">mysql/main</span>, or <span class="ph filepath">oracle/main</span>  (which ever one you created), do the following things.
+                <ol>
+                  <li>Use an editor to create a text file named <span class="ph filepath">module.xml</span> .</li>
+                  <li>Copy the appropriate code into the <span class="ph filepath">module.xml</span>  file, then modify it so that the name of the JDBC driver you just downloaded appears.</li>
+                  <li>Save and close the module.xml file.</li>
+                </ol>
+              </li>
+            </ol>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+              <thead>
+                <tr>
+                  <th scope="col" style="width: 243px;">Repository Type</th>
+                  <th scope="col" style="width: 400px;">Module code</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="width: 243px;">PostgreSQL</td>
+                  <td style="width: 400px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+    <module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.postgresql&quot;>
+        <resources>
+            <resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+        </resources>
+        <dependencies><module name=&quot;javax.api&quot;/></dependencies>
+    </module></pre> </td>
+                </tr>
+                <tr>
+                  <td style="width: 243px;">MySQL</td>
+                  <td style="width: 400px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+    <module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.mysql&quot;>
+        <resources>
+            <resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+        </resources>
+        <dependencies><module name=&quot;javax.api&quot;/></dependencies>
+    </module></pre> </td>
+                </tr>
+                <tr>
+                  <td style="width: 243px;">Oracle</td>
+                  <td style="width: 400px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+    <module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.oracle&quot;>
+        <resources>
+            <resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+        </resources>
+        <dependencies><module name=&quot;javax.api&quot;/></dependencies>
+    </module></pre> </td>
+                </tr>
+                <tr>
+                  <td style="width: 243px;">MS SQL Server</td>
+                  <td style="width: 400px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<module xmlns=&quot;urn:jboss:module:1.0&quot;
+name=&quot;org.sqlserver&quot;>
+<resources>
+<resource-root path=&quot;[Name of JDBC
+Jar You Downloaded Here]&quot;/>
+</resources>
+<dependencies><module name=&quot;javax.
+api&quot;/></dependencies>
+</module></pre> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_5" class="mt-page-section"><span id="Create_Module_File_for_HSQL_Database"></span> 
+            <h4 class="editable">Create Module File for HSQL Database</h4>
+            <p>You need to create a module file for the HSQL database.</p>
+            <ol class="pentaho-list-ordered">
+              <li>Locate the <span class="filepath style-wrap">pentaho/server/biserver-ee/<your jboss installation directory>/modules/system/layers/base/org</span>  directory and create the following path: <span class="filepath style-wrap">hsqldb/main</span> .</li>
+              <li>Download the supported JDBC driver for HSQLDB and place it in the <span class="filepath style-wrap">hsqldb/main</span>  directory.</li>
+              <li>In the <span class="filepath style-wrap">hsqldb/main</span>  directory, create a text file named <span class="filepath style-wrap">module.xml</span> .</li>
+              <li>Copy this code into the <span class="filepath style-wrap">module.xml</span>  file, then modify it so that the name of the JDBC driver you just downloaded appears in the <span class="filepath style-wrap">resource-root</span>  path. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<module xmlns=&quot;urn:jboss:module:1.0&quot; name=&quot;org.hsqldb&quot;>
+<resources>
+<resource-root path=&quot;[Name of JDBC Jar You Downloaded Here]&quot;/>
+</resources>
+<dependencies><module name=&quot;javax.api&quot;/></dependencies>
+</module></pre> </li>
+              <li>Save and close the <span class="filepath style-wrap">module.xml</span>  file.</li>
+            </ol>
+          </div>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Define_JNDI_Database_Connection_Information_in_JBoss"></span> 
+          <h3 class="editable">Define JNDI Database Connection Information in JBoss</h3>
+          <p class="p">JNDI is used to specify port, driver, user name, and password information for the Audit and Quartz databases that are housed on your BA Repository database. This section shows you how to define your JNDI database connection information.</p>
+          <p class="pentaho-caution">If you have&nbsp;a different database than PostgreSQL, or if you are using a&nbsp;different port, password, user, driver class information, or IP address, make sure that you adjust the&nbsp;examples in this section&nbsp;to match the ones in
+            your environment.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Copy the <span class="filepath style-wrap">pentaho-style.war</span>  and <span class="filepath style-wrap">pentaho.war</span>  files into the <span class="filepath style-wrap"><span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/standalone</span> /deployment</span> 
+              directory.</li>
+            <li>Locate the&nbsp;<span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/standalone/configuration/standalone.xml</span>  file and open it with a text editor.</li>
+            <li>Insert these lines after the definition for <span class="ph filepath">ExampleDS</span>  data source. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><datasource jndi-name=&quot;java:/Hibernate&quot; pool-name=&quot;hibpool&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/hibernate
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                hibuser
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource>
+                    <datasource jndi-name=&quot;java:/Quartz&quot; pool-name=&quot;quartzpool&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/quartz
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                pentaho_user
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource>
+                    <datasource jndi-name=&quot;java:/Audit&quot; pool-name=&quot;auditpool&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;>
+                        <connection-url>
+                            jdbc:postgresql://localhost:5432/hibernate
+                        </connection-url>
+                        <driver-class>
+                            org.postgresql.Driver
+                        </driver-class>
+                        <driver>
+                            org.postgresql
+                        </driver>
+                        <pool>
+                            <prefill>
+                                false
+                            </prefill>
+                            <use-strict-min>
+                                false
+                            </use-strict-min>
+                            <flush-strategy>
+                                FailingConnectionOnly
+                            </flush-strategy>
+                        </pool>
+                        <security>
+                            <user-name>
+                                pentaho_user
+                            </user-name>
+                            <password>
+                                password
+                            </password>
+                        </security>
+                    </datasource>
+ <datasource jndi-name=&quot;java:/PDI_Operations_Mart&quot; pool-name=&quot;PDI_Operations_Mart&quot; enabled=&quot;true&quot; jta=&quot;true&quot; use-java-context=&quot;true&quot; use-ccm=&quot;true&quot;> 
+     <connection-url> 
+         jdbc:postgresql://localhost:5432/hibernate 
+     </connection-url> 
+     <driver-class> 
+         org.postgresql.Driver 
+     </driver-class> 
+     <driver> 
+         org.postgresql 
+     </driver> 
+     <pool> 
+         <prefill> 
+             false 
+         </prefill> 
+         <use-strict-min> 
+             false 
+         </use-strict-min> 
+         <flush-strategy> 
+             FailingConnectionOnly 
+         </flush-strategy> 
+     </pool> 
+     <security> 
+         <user-name> 
+             hibuser 
+         </user-name> 
+         <password> 
+            password 
+         </password> 
+     </security> 
+</datasource></pre> </li>
+            <li>Add the driver definition in the driver section of the file. Here is an example of the PostgreSQL driver definition. If you are using MySQL or Oracle, modify the driver name, module, and data source class accordingly. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><driver name=&quot;org.postgresql&quot; module=&quot;org.postgresql&quot;>
+  <xa-datasource-class>
+      org.postgresql.xa.PGXADataSource
+      </xa-datasource-class>
+  </driver></pre> </li>
+            <li>Close and save the <span class="ph filepath">standalone.xml</span>  file.</li>
+            <li>Open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/applicationContext-spring-security-jdbc.xml</span>  file. Change the port number, driver class name, user name, and password to reflect your environment's
+              settings, if necessary. When complete, save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Add_JBoss_Deployment_Structure_File_to_pentaho.war"></span> 
+          <h3 class="editable">Add JBoss Deployment Structure File to pentaho.war</h3>
+          <p>The <span class="filepath style-wrap">jboss-deployment-structure.xml</span>  file controls class loading. It prevents automatic dependencies from being added, adds dependencies, defines additional modules, changes isolated class loading behavior,
+            and adds additional resource roots to a module. You will need to create, then add a JBoss deployment structure file (<span class="filepath style-wrap">jboss-deployment-structure.xml</span> ) to the pentaho.war.</p>
+          <p class="pentaho-caution">If you have&nbsp;a different database than PostgreSQL, adjust the module name information in this section&nbsp;to match the ones in your environment.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Use a text editor to create a new file named <span class="filepath style-wrap">jboss-deployment-structure.xml</span> .</li>
+            <li>Copy the following code snippet to the <span class="filepath style-wrap">jboss-deployment-structure.xml</span>  file.</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jboss-deployment-structure>
+<deployment>
+<exclude-subsystems>
+<subsystem name=&quot;resteasy&quot; />
+<subsystem name=&quot;jaxrs&quot; />
+<subsystem name=&quot;webservices&quot; />
+</exclude-subsystems>
+<dependencies>
+<module name=&quot;org.postgresql&quot; />
+<module name=&quot;org.hsqldb&quot; />
+</dependencies>
+</deployment>
+</jboss-deployment-structure></pre>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+            <li>Use a zip extraction utility (such as 7-Zip, Winzip, or Archive) to view the contents of the <span class="filepath style-wrap">pentaho.war</span>  file. Do not unzip or extract the contents of the file.</li>
+            <li>Navigate to the <span class="filepath style-wrap">WEB-INF </span> directory and add the <span class="filepath style-wrap">jboss-deployment-structure.xml</span>  file that you just created to it.</li>
+            <li>Close the <span class="filepath style-wrap">pentaho.war</span>  file. The zip extraction utility that you used might show a prompt that asks whether you would like to update the file in the pentaho.war archive. If this happens, confirm that
+              you would like to do this.</li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Remove_JNDI_Resource_References_in_JBoss"></span> 
+          <h3 class="editable">
+            <span>Remove JNDI Resource References in JBoss</span> 
+          </h3>
+          <p>Because JBoss has its own mechanism for referencing JNDI data sources, the resource-references in the <span class="ph filepath">web.xml</span>  file located in the <span class="ph filepath">pentaho.war</span>  are not needed. You must remove these
+            resource-references for the BA Server to operate properly.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho/server/biserver-ee/<your jboss installation directory>/standalone/deployments </span> directory.</li>
+            <li>Use a zip extraction utility (such as 7-Zip, Winzip, or Archive) to view the contents of the <span class="ph filepath">pentaho.war</span>  file. Do not unzip or extract the contents of the file.</li>
+            <li>Navigate to the <span class="ph filepath">WEB-INF</span>  directory and open the <span class="ph filepath">web.xml</span>  file in a text editor.</li>
+            <li>Delete all <span class="filepath style-wrap"><resource-ref></span>  tagged entries including everything between the <span class="filepath style-wrap"><resource-ref></span>  and <span class="filepath style-wrap"></resource ref></span>  tags.</li>
+            <li>Save and close the file.</li>
+            <li>The zip extraction utility that you used might show a prompt that asks whether you would like to update the file in the <span class="filepath style-wrap">pentaho.war</span>  archive. If this happens, confirm that you would like to do this.</li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Update_JNDI_Data_Source_Reference_to_Conform_to_JBoss_Standards"></span> 
+          <h3 class="editable">
+            <span>Update JNDI Data Source Reference to Conform to JBoss Standards</span> 
+          </h3>
+          <p>Update these files so that referenced JNDI datasources conform to JBoss standards.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Use a text editor to open the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/quartz/quartz.properties</span>  file.</li>
+            <li>Change the <span class="filepath style-wrap">org.quartz.dataSource.myDS.jndiURL</span>  value to <span class="filepath style-wrap">jboss/datasources/Quartz</span>, then save and close the file.</li>
+            <li>Use a text editor to open the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/audit_sql.xml</span>  file.</li>
+            <li>Change the JNDI value to <span class="filepath style-wrap">jboss/datasources/Hibernate</span>, then save and close the file.</li>
+            <li>Open the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/audit/dialects/h2</span>  folder. Use the text editor to open each file and make the following changes:&nbsp;</li>
+          </ol>
+          <ul class="pentaho-list-unordered">
+            <li>Change <span class="filepath style-wrap"><database>Audit</database></span>  to <span class="filepath style-wrap"><database>jboss/datasources/Audit</database></span> .</li>
+            <li>Change <span class="filepath style-wrap"><database>Hibernate</database>to&nbsp;<database>jboss/datasources/Hibernate</database></span> .</li>
+          </ul>
+        </div>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Prepare_JBoss_Web_Application_Servers"></span> 
+        <h2 class="editable">Prepare JBoss Web Application Servers</h2>
+        <p class="p">If you have installed the JBoss web application server, you must manually complete several configuration tasks.<span style="color:#FF0000;">&nbsp;</span> </p>
+        <div id="section_11" class="mt-page-section"><span id="Increase_the_Amount_of_Time_JBoss_Allows_for_BA_Server_Deployment"></span> 
+          <h3 class="editable">Increase the Amount of Time JBoss Allows for BA Server Deployment</h3>
+          <p>By default, JBoss allows up to one minute for a web application to be deployed. If the web application is not deployed within that timeframe, an error occurs.</p>
+          <p>Because the BA Server deployment requires more than one minute, manually edit the <span class="ph filepath">standalone.xml</span>  file to increase the deployment time.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Use a text editor to open the <span class="ph filepath"><your jboss installation directory>/standalone/configuration/standalone.xml</span>  file.</li>
+            <li class="li step">Find the <span class="filepath style-wrap"><deployment-scanner> </span> tag, add the <span class="filepath style-wrap">deployment-timeout</span>  attribute, then set the attribute equal to <span class="filepath style-wrap">480</span> . Note that
+              if you are installing the BA Server on a VM, you might want to increase the <span class="filepath style-wrap">deployment-timeout</span>  attribute's value to give the BA Server more time to deploy. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><deployment-scanner scan-interval=&quot;5000&quot; relative-to=&quot;jboss.server.base.dir&quot; path=&quot;deployments&quot; scan-enabled=&quot;true&quot; deployment-timeout=&quot;480&quot;/></pre>              </li>
+            <li class="li step">Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Disable_the_JBoss_RESTEasy_Scan"></span> 
+          <h3 class="editable">Disable the JBoss RESTEasy Scan</h3>
+          <p class="p">To load pentaho REST services correctly, the RESTEasy scan in JBoss must be disabled. These instructions explain how to do this.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the contents of the <span class="ph filepath"><your jboss installation directory>/standalone/deployments/pentaho.war</span>  file. Do not unzip the <span class="ph filepath">pentaho.war</span>               file, just view its contents.</li>
+            <li class="li step">Navigate to the <span class="ph filepath">WEB-INF</span>  directory in the <span class="ph filepath">pentaho.war</span>  file and open the <span class="ph filepath">web.xml</span>  file in a text editor.
+              <</li>
+            </li>
+            <li class="li step">At the end of the
+              <context-param> tags, add this code. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context-param>
+             <param-name>resteasy.scan</param-name>
+             <param-value>false</param-value>
+        </context-param>
+        <context-param>
+             <param-name>resteasy.scan.resources</param-name>
+             <param-value>false</param-value>
+        </context-param>
+        <context-param>
+             <param-name>resteasy.scan.providers</param-name>
+             <param-value>false</param-value>
+</context-param></pre> </li>
+            <li class="li step">In the <span class="ph filepath">web.xml</span>  file, change the BA Server fully qualified URL by modifying the port number to match your SSL-enabled port number. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context-param>
+    <param-name>fully-qualified-server-url</param-name>
+    <param-value>http://localhost:8080/pentaho/</param-value>
+</context-param></pre> </li>
+            <li class="li step">Save the changes and close the file.</li>
+            <li class="li step">The zip extraction utility that you used might show a prompt that asks whether you would like to update the file in the <span class="ph filepath">pentaho.war</span>  archive. If this happens, confirm that you would like to do this.</li>
+          </ol>
+        </div>
+        <div id="section_13" class="mt-page-section"><span id="Set_the_Location_of_the_pentaho-solutions_Directory"></span> 
+          <h3 class="editable">Set the Location of the pentaho-solutions Directory</h3>
+          <p class="p">To deploy JBoss correctly, Pentaho recommends that you define the location of the Pentaho solutions directory in the <span class="ph filepath">web.xml</span>  file. These instructions explain how to do this.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">If you have not done so already, use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the contents of the <span class="ph filepath">jboss/standalone/deployments/pentaho.war</span>  file. Do not unzip the <span class="ph filepath">pentaho.war</span>               file, just view its contents.</li>
+            <li class="li step">Navigate to the <span class="ph filepath">WEB-INF</span>  directory in the <span class="ph filepath">pentaho.war</span>  file and open the <span class="ph filepath">web.xml</span>  file in a text editor.</li>
+            <li class="li step">Locate the following
+              <context-param> tags. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context-param>
+      <param-name>solution-path</param-name>
+      <param-value></param-value>
+ </context-param></pre> </li>
+            <li class="li step">Set the paramater value of the solution-path to the pentaho-solutions path. An example of the code is below. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context-param>
+     <param-name>solution-path</param-name>
+     <param-value>/home/pentaho/server/biserver-ee/pentaho-solutions</param-value>
+ </context-param></pre> </li>
+            <li class="li step">Save the changes and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_14" class="mt-page-section"><span id="Increase_JBoss_Default_Memory_Settings"></span> 
+          <h3 class="editable">Increase JBoss Default Memory Settings</h3>
+          <p class="p">Before you deploy the BA Server, modify the JBoss startup script to match the BA Server's memory resource requirements. If this step is not performed, the BA Server will not start.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Use a text editor to open the standalone configuration file. The file you open depends on your operating system.
+              <ul class="ul">
+                <li class="li"><strong class="ph b">Microsoft Windows:</strong>  <span class="ph filepath"><your jboss installation directory>/bin/standalone-conf.bat</span> </li>
+                <li class="li"><strong class="ph b">Linux:</strong>  <span class="ph filepath"><your jboss installation directory>/bin/standalone.conf</span> </li>
+              </ul>
+            </li>
+            <li class="li step">Change the following code from <span class="filepath style-wrap">-Xms1303m -Xmx1303m -XX:MaxPermSize=256m</span>  to this: <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">-Xms4096m -Xmx6144m -XX:MaxPermSize=256m</pre>              </li>
+            <li class="li step">Save the changes and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_15" class="mt-page-section"><span id="Delete_jsf-api.jar_(JBoss_6.2.x_only)"></span> 
+          <h3 class="editable">Delete&nbsp;jsf-api.jar (JBoss&nbsp;6.2.x only)</h3>
+          <p>If you are deploying Pentaho on JBoss 6.2.x, delete&nbsp;the <span class="filepath style-wrap">jsf-api.jar</span>  file. &nbsp;Here is how to do this.</p>
+          <ol class="pentaho-list-ordered">
+            <li>If you have not done so already, use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the&nbsp;contents of the&nbsp;<span class="filepath style-wrap"><your jboss installation directory>/standalone/deployments/pentaho</span> 
+              <span
+              class="filepath style-wrap">.war</span> &nbsp;file. Do not unzip the&nbsp;<span class="filepath style-wrap">pentaho.war</span> &nbsp;file, just view its contents.</li>
+            <li class="li step">Delete&nbsp;the<span class="filepath style-wrap"> jsf-api.jar</span>  from&nbsp;the&nbsp;<span class="filepath style-wrap">WEB-INF/lib</span>  directory.</li>
+            <li>Save&nbsp;and close&nbsp;the war file.</li>
+          </ol>
+        </div>
+        <div id="section_16" class="mt-page-section"><span id="Optional:_Add_JBoss_Logging"></span> 
+          <h3 class="editable">Optional: Add JBoss Logging</h3>
+          <p class="p">You can add Pentaho application level logging to the JBoss logging subsystem.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Open the <span class="ph filepath">standalone.xml</span>  file in the <span class="ph filepath"><your jboss directory>/standalone/configuration</span>  directory.</li>
+            <li class="li step">Under the <span class="ph filepath"></extensions></span>  tag add this code. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><system-properties>
+      <property name=&quot;org.jboss.as.logging.per-deployment&quot; value=&quot;false&quot;/>
+  </system-properties></pre> </li>
+            <li class="li step">Find the <span class="ph filepath"><console-handler ...></span>  or <span class="ph filepath"><file-handler ...></span>  sections and add the following two handlers. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><console-handler name=&quot;PENTAHOCONSOLE&quot;>
+<level name=&quot;ALL&quot;/>
+</console-handler>
+   <file-handler name=&quot;PENTAHOFILE&quot;>
+    <file relative-to=&quot;jboss.server.log.dir&quot; path=&quot;pentaho.log&quot;/>
+    <append value=&quot;false&quot;/>
+</file-handler></pre> </li>
+            <li class="li step">Under the file handlers section, there is a section containing <span class="ph filepath"><logger></span>  tags. Configure the <span class="ph filepath"><root-logger></span>  handler to use these handlers. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><handler name=&quot;PENTAHOCONSOLE&quot;/>
+<handler name=&quot;PENTAHOFILE&quot;/></pre> </li>
+            <li class="li step">Add the following loggers above <span class="ph filepath"><root-logger>.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><logger category=&quot;org.hibernate&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;net.sf.ehcache&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+   </logger>
+<logger category=&quot;org.quartz&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+</handlers>
+</logger>
+    <logger category=&quot;org.springframework&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;org.springframework.security&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;com.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.jfree.JCommon&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.apache.jackrabbit.core.security.authentication.AbstractLoginModule&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;RepositoryImportLog&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;INFO&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger></pre> </li>
+            <li class="li step">Save and close the file.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Perform_JBoss-Specific_Connection_Tasks" rel="internal">Perform JBoss-Specific Connection Tasks</a> 
+        <ol>
+          <li>
+            <a href="#Install_JDBC_Driver_as_a_Module_in_JBoss" rel="internal">Install JDBC Driver as a Module in JBoss</a> 
+            <ol>
+              <li> <a href="#Create_Module_File_for_BA_Repository_Database" rel="internal">Create Module File for BA Repository Database</a>  </li>
+              <li> <a href="#Create_Module_File_for_HSQL_Database" rel="internal">Create Module File for HSQL Database</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Define_JNDI_Database_Connection_Information_in_JBoss" rel="internal">Define JNDI Database Connection Information in JBoss</a>  </li>
+          <li> <a href="#Add_JBoss_Deployment_Structure_File_to_pentaho.war" rel="internal">Add JBoss Deployment Structure File to pentaho.war</a>  </li>
+          <li> <a href="#Remove_JNDI_Resource_References_in_JBoss" rel="internal">Remove JNDI Resource References in JBoss</a>  </li>
+          <li> <a href="#Update_JNDI_Data_Source_Reference_to_Conform_to_JBoss_Standards" rel="internal">Update JNDI Data Source Reference to Conform to JBoss Standards</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Prepare_JBoss_Web_Application_Servers" rel="internal">Prepare JBoss Web Application Servers</a> 
+        <ol>
+          <li> <a href="#Increase_the_Amount_of_Time_JBoss_Allows_for_BA_Server_Deployment" rel="internal">Increase the Amount of Time JBoss Allows for BA Server Deployment</a>  </li>
+          <li> <a href="#Disable_the_JBoss_RESTEasy_Scan" rel="internal">Disable the JBoss RESTEasy Scan</a>  </li>
+          <li> <a href="#Set_the_Location_of_the_pentaho-solutions_Directory" rel="internal">Set the Location of the pentaho-solutions Directory</a>  </li>
+          <li> <a href="#Increase_JBoss_Default_Memory_Settings" rel="internal">Increase JBoss Default Memory Settings</a>  </li>
+          <li> <a href="#Delete_jsf-api.jar_(JBoss_6.2.x_only)" rel="internal">Delete&nbsp;jsf-api.jar (JBoss&nbsp;6.2.x only)</a>  </li>
+          <li> <a href="#Optional:_Add_JBoss_Logging" rel="internal">Optional: Add JBoss Logging</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

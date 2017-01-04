@@ -1,0 +1,29 @@
+<content type="text/html" title="Add Web Resource Authentication">
+  <head>
+    <style type="text/css">
+      /*<![CDATA[*/
+      /*]]>*/
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">To configure Web resource authentication&nbsp;to correspond with your user roles in the Pentaho Server, perform the following instructions.</p>
+          <p class="pentaho-note">These instructions are valid across all security&nbsp;data access objects (DAOs).</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Ensure that the Pentaho&nbsp;Server is not currently running; if it is, run the <code>stop-pentaho</code>&nbsp;script.</span> </li>
+          <li class="li step"><span class="ph cmd">Open a terminal or command prompt window and navigate to the <span class="ph filepath">.../pentaho-solutions/system/</span>  directory.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Edit the <code>applicationContext-spring-security.xml</code>&nbsp;file with a text editor.</span> </li>
+          <li class="li step"><span class="ph cmd">Find and examine the following property: <code class="ph codeph"><property name=&quot;objectDefinitionSource&quot;></code></span> </li>
+          <li class="li step"><span class="ph cmd">Modify the regex patterns to include your roles.</span>  The <code>objectDefinitionSource</code>&nbsp;property associates URL patterns with roles. <code>RoleVoter</code>&nbsp;specifies that if any role on the right hand side
+            of the equals sign is granted to the user, the user may view any page that matches that URL pattern. The default roles in this file are not required. You can replace, delete, or change them in any way that suits you.</li>
+        </ol>
+        <p class="li step">You should now have coarse-grained permissions established for user roles.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

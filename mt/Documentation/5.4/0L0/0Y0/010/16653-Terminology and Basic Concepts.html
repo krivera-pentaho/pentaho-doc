@@ -1,0 +1,167 @@
+<content type="text/html" title="Terminology and Basic Concepts">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Presents basic terminology and concepts that will help you understand how to use PDI.</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p class="p">It is helpful to understand basic terminology and concepts before you use PDI. &nbsp;For an overview of PDI components, see the
+          <a title="Data Integration Components" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0D0/050/020">Data Integration Components</a> &nbsp;article.&#8203;</p>
+        <div class="body">
+          <div class="section">
+            <div id="section_2" class="mt-page-section"><span id="Transformations.2C_Steps.2C_and_Hops"></span> 
+              <h2 class="editable">Transformations, Steps, and Hops</h2>
+            </div>
+          </div>
+        </div>
+        <div class="body conbody">
+          <p class="p">A <strong class="ph b">transformation</strong>  is a network of logical tasks called <em class="ph i">steps</em> . Transformations are essentially <em class="ph i">data flows</em> . In the example below, the database developer has created a transformation
+            that reads a flat file, filters it, sorts it, and loads it to a relational database table. Suppose the database developer detects an error condition and instead of sending the data to a Dummy step, (which does nothing), the data is logged
+            back to a table. The transformation is, in essence, a directed graph of a logical set of data transformation configurations. Transformation file names have a .ktr extension.</p>
+          <p class="p">
+            <img alt="stepandhop.png" class="internal default" style="width: 350px; height: 190px;" width="350px" height="190px" src="http://help.pentaho.com/@api/deki/files/4780/stepandhop.png?size=bestfit&amp;width=350&amp;height=190&amp;revision=2" />
+          </p>
+          <p class="p">The two main components associated with transformations are <strong class="ph b">steps</strong>  and <strong class="ph b">hops</strong> :</p>
+          <ul class="pentaho-list-unordered">
+            <li class="p"><strong class="ph b">Steps</strong>  are the building blocks of a transformation, for example a text file input or a table output. There are over 140 steps available in Pentaho Data Integration and they are grouped according to function; for
+              example, input, output, scripting, and so on. Each step in a transformation is designed to perform a specific task, such as reading data from a flat file, filtering rows, and logging to a database as shown in the example above. Steps can
+              be configured to perform the tasks you require.</li>
+            <li class="p"><strong class="ph b">Hops</strong>  are data pathways that connect steps together and allow schema metadata to pass from one step to another. In the image above, it seems like there is a sequential execution occurring; however, that is not
+              true. Hops determine the flow of data <em class="ph i">through</em>  the steps not necessarily the sequence in which they run. When you run a transformation, each step starts up in its own thread and pushes and passes data.</li>
+          </ul>
+          <div class="p">
+            <p class="pentaho-note">All steps in a transformation are started and run in parallel so the initialization sequence is not predictable. That is why you cannot, for example, set a variable in a first step and attempt to use that variable in a subsequent step.</p>
+          </div>
+          <p class="p">You can connect steps together, edit steps, and open the step contextual menu by clicking&nbsp;to edit a step. Click the down arrow to open the contextual menu. For information about connecting steps with hop, see
+            <a class="xref" title="Documentation/5.1/0L0/0Y0/040/020"
+            rel="internal" href="http://help.pentaho.com/Documentation/5.4/0L0/0Y0/040/020">About Hops</a> .</p>
+          <p class="p">
+            <img alt="ContextMenu.png" class="internal default" style="width: 160px; height: 112px;" width="160px" height="112px" src="http://help.pentaho.com/@api/deki/files/4781/ContextMenu.png?size=bestfit&amp;width=160&amp;height=112&amp;revision=1"
+            />
+          </p>
+          <p class="p">A step can have many connections &mdash; some join other&nbsp;steps together, some serve as an input or output for another step. The data stream flows through steps to the various steps in a transformation. Hops are represented in Spoon as arrows.
+            Hops allow data to be passed from step to step, and also determine the direction and flow of data through the steps. If a step sends outputs to more than one step, the data can either be copied to each step or distributed among them.</p>
+          <div
+          id="section_3" class="mt-page-section"><span id="About_Jobs"></span> 
+            <h2 class="editable">About Jobs</h2>
+            <div class="body conbody">
+              <p class="p">Jobs are workflow-like models for coordinating resources, execution, and dependencies of ETL activities.</p>
+              <p class="p">Jobs aggregate&nbsp;individual pieces of functionality to implement an entire process. Examples of common tasks performed in a job include getting FTP files, checking conditions such as existence of a necessary target database table, running
+                a transformation that populates that table, and e-mailing an error log if a transformation fails. The final job outcome might be a nightly warehouse update, for example.</p>
+              <p class="p">
+                <img alt="Job_Entry_Hop.png" class="internal default" style="width: 350px; height: 150px;" width="350px" height="150px" src="http://help.pentaho.com/@api/deki/files/4782/Job_Entry_Hop.png?size=bestfit&amp;width=350&amp;height=150&amp;revision=1"
+                />
+              </p>
+              <p class="p">Jobs are composed of <strong class="ph b">job hops</strong>, <strong class="ph b">job entries</strong>, and <strong class="ph b">job settings</strong> . Job entries are the individual configured pieces as shown in the example above; they
+                are the primary building blocks of a job. In data transformations these individual pieces are called steps. Job entries can provide you with a wide range of functionality ranging from executing transformations to getting files from a Web
+                server. A single job entry can be placed multiple times on the canvas; for example, you can take a single job entry such as a transformation run and place it on the canvas multiple times using different configurations. Job settings are
+                the options that control the behavior of a job and the method of logging a job&rsquo;s actions. Job file names have a .kjb extension.</p>
+              <p class="p">Hops behave differently when used in a job than when used in a transformation. &nbsp;See&nbsp;
+                <a class="xref" title="Documentation/5.1/0L0/0Y0/040/020" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0L0/0Y0/040/020">More About Hops</a> &nbsp;for details.&nbsp;</p>
+              <div id="section_4" class="mt-page-section"><span id="More_About_Hops"></span> 
+                <h2 class="editable">More About Hops</h2>
+                <div class="body conbody">
+                  <p class="p">A hop connects one transformation step or job entry with another. The direction of the data flow is indicated by an arrow. To create the hop, click the source step, then press the
+                    <<strong class="ph b">SHIFT</strong> > key down and draw a line to the target step. Alternatively, you can draw hops by hovering over a step until the hover menu appears. Drag the hop painter icon from the source step to your target step.</p>
+                  <p class="p">
+                    <img alt="ContextMenu_Circle.png" class="internal default" style="width: 100px; height: 94px;" width="100px" height="94px" src="http://help.pentaho.com/@api/deki/files/4783/ContextMenu_Circle.png?size=bestfit&amp;width=100&amp;height=94&amp;revision=1"
+                    />
+                  </p>
+                  <p class="p">Additional methods for creating hops include:</p>
+                  <ul class="ul">
+                    <li class="li">Click on the source step, hold down the middle mouse button, and drag the hop to the target step.</li>
+                    <li class="li">Select two steps, then choose New Hop from the right-click menu.</li>
+                    <li class="li">Use
+                      <CTRL + left-click> to select two steps the right-click on the step and choose <strong class="ph b">New Hop</strong> .</li>
+                  </ul>
+                  <p class="p">To <strong class="ph b">split a hop</strong>, insert a new step into the hop between two steps by dragging the step over a hop. Confirm that you want to split the hop. This feature works with steps that have not yet been connected to
+                    another step only.</p>
+                  <p class="p"><strong class="ph b">Loops</strong>  are not allowed in transformations because Spoon depends heavily on the previous steps to determine the field values that are passed from one step to another. Allowing loops in transformations may
+                    result in endless loops and other problems. Loops are allowed in jobs because Spoon executes job entries sequentially; however, make sure you do not create endless loops.</p>
+                  <p class="p"><strong class="ph b">Mixing rows</strong>  that have a different layout is not allowed in a transformation; for example, if you have two table input steps that use a varying number of fields. Mixing row layouts causes steps to fail because
+                    fields cannot be found where expected or the data type changes unexpectedly. The trap detector displays warnings at design time if a step is receiving mixed layouts.</p>
+                  <p class="p">You can specify if data can either be <strong class="ph b">copied</strong>, <strong class="ph b">distributed</strong>, or <strong class="ph b">load balanced</strong>  between multiple hops leaving a step. Select the step, right-click
+                    and choose <strong class="ph b">Data Movement</strong> .</p>
+                  <p class="p">
+                    <img alt="distributedandcopied.png" class="internal default" style="width: 350px; height: 298px;" width="350px" height="298px" src="http://help.pentaho.com/@api/deki/files/4784/distributedandcopied.png?size=bestfit&amp;width=350&amp;height=298&amp;revision=1"
+                    />
+                  </p>
+                  <p class="p">A hop can be enabled or disabled (for testing purposes for example). Right-click on the hop to display the options menu.</p>
+                  <div id="section_5" class="mt-page-section"><span id="Job_Hops"></span> 
+                    <h3 class="editable">Job Hops</h3>
+                    <div class="section">
+                      <p class="p">Besides the execution order, a hop also specifies the condition on which the next job entry will be executed. You can specify the <strong class="ph b">Evaluation</strong>  mode by right clicking on the job hop. A job hop is just a
+                        flow of control. Hops link to job entries and, based on the results of the previous job entry, determine what happens next.</p>
+                      <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+                        <tbody>
+                          <tr class="sthead">
+                            <th align="left" class="stentry" style="width: 81px;" valign="bottom">
+                              <p>Option</p>
+                            </th>
+                            <th align="left" class="stentry" style="width: 595px;" valign="bottom">
+                              <p>Description</p>
+                            </th>
+                          </tr>
+                          <tr class="strow">
+                            <td class="stentry" headers="d83672e111" style="width: 81px;" valign="top">
+                              <p><strong class="ph b">Unconditional</strong> </p>
+                            </td>
+                            <td class="stentry" headers="d83672e114" style="width: 595px;" valign="top">
+                              <p>Specifies that the next job entry will be executed regardless of the result of the originating job entry</p>
+                            </td>
+                          </tr>
+                          <tr class="strow">
+                            <td class="stentry" headers="d83672e111" style="width: 81px;" valign="top">
+                              <p><strong class="ph b">Follow when result is true</strong> </p>
+                            </td>
+                            <td class="stentry" headers="d83672e114" style="width: 595px;" valign="top">
+                              <p>Specifies that the next job entry will be executed only when the result of the originating job entry is true; this means a successful execution such as, file found, table found, without error, and so on</p>
+                            </td>
+                          </tr>
+                          <tr class="strow">
+                            <td class="stentry" headers="d83672e111" style="width: 81px;" valign="top">
+                              <p><strong class="ph b">Follow when result is false</strong> </p>
+                            </td>
+                            <td class="stentry" headers="d83672e114" style="width: 595px;" valign="top">
+                              <p>Specifies that the next job entry will only be executed when the result of the originating job entry was false, meaning unsuccessful execution, file not found, table not found, error(s) occurred, and so on</p>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div id="section_6" class="mt-page-section"><span id="What's_with_all_the_Culinary_Terms.3F"></span> 
+                        <h2 class="editable">What's with all the Culinary Terms?</h2>
+                        <div class="section">
+                          <p class="p">If you are new to Pentaho, you may sometimes see or hear Pentaho Data Integration referred to as, &quot;Kettle.&quot; To avoid confusion, all you must know is that Pentaho Data Integration began as an open source project called.
+                            &quot;Kettle.&quot; The term, K.E.T.T.L.E is a recursive that stands for <strong class="ph b">K</strong> ettle <strong class="ph b">E</strong> xtraction <strong class="ph b">T</strong> ransformation <strong class="ph b">T</strong> ransport
+                            <strong class="ph b">L</strong> oad <strong class="ph b">E</strong> nvironment. When Pentaho acquired Kettle, the name was changed to <strong class="ph b">Pentaho Data Integration</strong> . Other PDI components such as Spoon,
+                            Pan, and Kitchen, have names that were originally meant to support a &quot;restaurant&quot; metaphor of ETL offerings.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Transformations.2C_Steps.2C_and_Hops" rel="internal">Transformations, Steps, and Hops</a>  </li>
+      <li> <a href="#About_Jobs" rel="internal">About Jobs</a>  </li>
+      <li>
+        <a href="#More_About_Hops" rel="internal">More About Hops</a> 
+        <ol>
+          <li> <a href="#Job_Hops" rel="internal">Job Hops</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#What's_with_all_the_Culinary_Terms.3F" rel="internal">What's with all the Culinary Terms?</a>  </li>
+    </ol>
+  </body>
+</content>

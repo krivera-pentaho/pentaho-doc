@@ -1,0 +1,339 @@
+<content type="text/html" title="Get/Set Chart Options APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="ChartOptions_Javascript_API"></span> 
+        <h2 class="editable">ChartOptions Javascript API</h2>
+        <p>This API allows for the manipulation of a wide range of chart options for Analyzer reports. Depending on the visualization type, different types of options are available. &nbsp;As these values are set, the result will be reflected in the report
+          once a refresh is called. Methods and example calls for each option are provided below.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="How_to_Call_These_APIs"></span> 
+        <h2 class="editable">How to Call These APIs</h2>
+        <p>There are two functions for editing field options,<span class="filepath style-wrap"> getChartOption</span>  and <span class="filepath style-wrap">setChartOption</span> .&nbsp; The <span class="filepath style-wrap">getChartOption</span>  returns the
+          value of the option specified in the call. Method signatures are below:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption(name:string, value:string);</pre>        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption(name:string);</pre>
+        <p>To make sure changes are reflected in the report, the <span class="filepath style-wrap">refreshReport</span>  method needs to be called.&nbsp;</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.operation.refreshReport();</pre>        </div>
+      <div id="section_4" class="mt-page-section"><span id="Available_Options"></span> 
+        <h2 class="editable">Available Options</h2>
+        <p>Below is a listing of all of the available chart options along with how to set their values.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="legendPosition"></span> 
+        <h2 class="editable">legendPosition</h2>
+        <p>This option allows the user to set the position of the legend on a report.</p>
+        <p>The following string values are allowed:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">TOP </span> - positions the legend at the top of the report</li>
+          <li><span class="filepath style-wrap">BOTTOM </span> - positions the legend at the bottom of the report</li>
+          <li><span class="filepath style-wrap">RIGHT </span> - positions the legend to the right of the report</li>
+          <li><span class="filepath style-wrap">LEFT </span> - positions the legend to the left of the report</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('legendPosition', 'LEFT');</pre>
+        <p>The current value of <span class="filepath style-wrap">legendPosition</span>  for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the legend position as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('legendPosition');</pre> </div>
+      <div id="section_6" class="mt-page-section"><span id="showLegend"></span> 
+        <h2 class="editable">showLegend</h2>
+        <p>This option allows the user to hide or show the legend on a report. There are the two acceptable strings for the value parameter '<span class="filepath style-wrap">true</span> ' and '<span class="filepath style-wrap">false</span> '.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('showLegend', 'true');</pre>
+        <p>The current value of <span class="filepath style-wrap">showLegend </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns either '<span class="filepath style-wrap">true</span> '
+          or '<span class="filepath style-wrap">false</span> ' as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('showLegend');</pre>        </div>
+      <div id="section_7" class="mt-page-section"><span id="autoRange"></span> 
+        <h2 class="editable">autoRange</h2>
+        <p>This option allows the user to turn <span class="filepath style-wrap">autoRange </span> on and off for the primary axis. When turned on, <span class="filepath style-wrap">autoRange </span> will calculate the lower and upper limits of the primary
+          axis automatically.&nbsp; There are two acceptable strings for the value parameter, '<span class="filepath style-wrap">true</span> ' and '<span class="filepath style-wrap">false</span> '.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('autoRange', 'true');</pre>
+        <p>The current value of <span class="filepath style-wrap">autoRange </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns either '<span class="filepath style-wrap">true</span> '
+          or '<span class="filepath style-wrap">false</span> ' as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('autoRange');</pre>        </div>
+      <div id="section_8" class="mt-page-section"><span id="valueAxisLowerLimit"></span> 
+        <h2 class="editable">valueAxisLowerLimit</h2>
+        <p>This option allows the user to set the lower limit for the primary axis. The value parameter accepts any double as a string. &nbsp;</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('valueAxisLowerLimit', '10.55');</pre>
+        <p>The current value of <span class="filepath style-wrap">valueAxisLowerLimit </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option
+          as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('valueAxisLowerLimit');</pre> </div>
+      <div id="section_9" class="mt-page-section"><span id="valueAxisUpperLimit"></span> 
+        <h2 class="editable">valueAxisUpperLimit</h2>
+        <p>This option allows the user to set the upper limit for the primary axis.&nbsp;&nbsp; The value parameter accepts any double as a string. &nbsp;</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('valueAxisUpperLimit', '10.55');</pre>
+        <p>The current value of <span class="filepath style-wrap">valueAxisUpperLimit </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option
+          as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('valueAxisUpperLimit');</pre> </div>
+      <div id="section_10" class="mt-page-section"><span id="displayUnits"></span> 
+        <h2 class="editable">displayUnits</h2>
+        <p>This option allows the user to set the scale of units for the for the primary axis.&nbsp;&nbsp; The value parameter accepts one of the following string parameters:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">UNITS_0</span>  - default value</li>
+          <li><span class="filepath style-wrap">UNITS_2</span>  - increase the scale to the hundreds place</li>
+          <li><span class="filepath style-wrap">UNITS_3</span>  - increase the scale to the thousands place</li>
+          <li><span class="filepath style-wrap">UNITS_4</span>  - increase the scale to the ten thousands place</li>
+          <li><span class="filepath style-wrap">UNITS_5</span>  - increase the scale to one hundred thousands place</li>
+          <li><span class="filepath style-wrap">UNITS_6</span>  - increase the scale to the millions place</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('displayUnits', 'UNITS_2');</pre>
+        <p>The current value of <span class="filepath style-wrap">displayUnits </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option as
+          a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('displayUnits');</pre> </div>
+      <div id="section_11" class="mt-page-section"><span id="autoRangeSecondary"></span> 
+        <h2 class="editable">autoRangeSecondary</h2>
+        <p>This option allows the user to turn <span class="filepath style-wrap">autoRangeSecondary </span> on and off for the secondary axis. When turned on, <span class="filepath style-wrap">autoRangeSecondary </span> will calculate the lower and upper limits
+          the secondary axis automatically.&nbsp; There are two acceptable strings for the value parameter, '<span class="filepath style-wrap">true</span> ' and '<span class="filepath style-wrap">false</span> '.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('autoRangeSecondary', 'true');</pre>
+        <p>The current value of <span class="filepath style-wrap">autoRangeSecondary </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns either '<span class="filepath style-wrap">true</span> '
+          or '<span class="filepath style-wrap">false</span> ' as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('autoRangeSecondary');</pre>        </div>
+      <div id="section_12" class="mt-page-section"><span id="valueAxisLowerLimitSecondary"></span> 
+        <h2 class="editable">valueAxisLowerLimitSecondary</h2>
+        <p>This option allows the user to set the lower limit for the secondary axis.&nbsp;&nbsp; The value parameter accepts any double as a string.&nbsp;</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('valueAxisLowerLimitSecondary', '10.55');</pre>
+        <p>The current value of <span class="filepath style-wrap">valueAxisLowerLimit </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option
+          as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('valueAxisLowerLimitSecondary');</pre> </div>
+      <div id="section_13" class="mt-page-section"><span id="valueAxisUpperLimitSecondary"></span> 
+        <h2 class="editable">valueAxisUpperLimitSecondary</h2>
+        <p>This option allows the user to set the upper limit for the secondary axis.&nbsp;&nbsp; The value parameter accepts any double as a string. &nbsp;
+          <br /> <strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('valueAxisUpperLimitSecondary', '10.55');</pre>
+        <p>The current value of <span class="filepath style-wrap">valueAxisUpperLimit </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option
+          as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('valueAxisUpperLimitSecondary');</pre> </div>
+      <div id="section_14" class="mt-page-section"><span id="displayUnitsSecondary"></span> 
+        <h2 class="editable">displayUnitsSecondary</h2>
+        <p>This option allows the user to set the scale of units for the for the secondary axis.&nbsp;&nbsp; The value parameter accepts one of the following string parameters:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">UNITS_0</span>  - default value</li>
+          <li><span class="filepath style-wrap">UNITS_2</span>  - increase the scale to the hundreds place</li>
+          <li><span class="filepath style-wrap">UNITS_3</span>  - increase the scale to the thousands place</li>
+          <li><span class="filepath style-wrap">UNITS_4</span>  - increase the scale to the ten thousands place</li>
+          <li><span class="filepath style-wrap">UNITS_5</span>  - increase the scale to one hundred thousands place</li>
+          <li><span class="filepath style-wrap">UNITS_6</span>  - increase the scale to the millions place</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('displayUnitsSecondary', 'UNITS_2');</pre>
+        <p>The current value of <span class="filepath style-wrap">displayUnitsSecondary </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option
+          as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('displayUnitsSecondary');</pre> </div>
+      <div id="section_15" class="mt-page-section"><span id="maxValues"></span> 
+        <h2 class="editable">maxValues</h2>
+        <p>This option allows the user to set a maximum number of plot values in a report.&nbsp; The value parameter accepts any integer as a string.&nbsp; When setting this value, the user's value will be rounded to the closest predefined max value.&nbsp;
+          Each visualization has its own list of max values.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('maxValues', '250');</pre>
+        <p>For a scatter plot the predefined values are 1000, 2500, 5000, and 10000.&nbsp; So the above call of '<span class="filepath style-wrap">250</span> ' would set the <span class="filepath style-wrap">maxValues </span> to 1000.&nbsp; Below are some
+          more examples:</p>
+        <ul class="pentaho-list-unordered">
+          <li>'<span class="filepath style-wrap">100</span> ' will set maxValues to 1000</li>
+          <li>'<span class="filepath style-wrap">2500</span> ' will set maxValues to 2500</li>
+          <li>'<span class="filepath style-wrap">50000</span> ' will set maxValues to 10000</li>
+          <li>'<span class="filepath style-wrap">1750</span> ' will set maxValues to 1000</li>
+          <li>'<span class="filepath style-wrap">1751</span> ' will set maxValues to 2500</li>
+        </ul>
+        <p>The current value of <span class="filepath style-wrap">maxValues </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option as a string.</p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('maxValues');</pre> </div>
+      <div id="section_16" class="mt-page-section"><span id="backgroundColor"></span> 
+        <h2 class="editable">backgroundColor</h2>
+        <p>This option allows the user to set the background color of the report.&nbsp; It will only work if the <span class="filepath style-wrap">backgroundFilll </span> option is not set to 'NONE'.&nbsp; The value parameter accepts hexidecimal color values.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('backgroundColor', '#aaaabb');</pre>
+        <p>The current value of <span class="filepath style-wrap">backgroundColor </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method.&nbsp; This function returns the current value of this option
+          as a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('backgroundColor');</pre> </div>
+      <div id="section_17" class="mt-page-section"><span id="labelColor"></span> 
+        <h2 class="editable">labelColor</h2>
+        <p>This option allows the user to set the label color of the report. The value parameter accepts hexidecimal color values.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('labelColor', '#aacc11');</pre>
+        <p>The current value of <span class="filepath style-wrap">labelColor </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method. This function returns the current value of this option as a string.</p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('labelColor');</pre> </div>
+      <div id="section_18" class="mt-page-section"><span id="labelSize"></span> 
+        <h2 class="editable">labelSize</h2>
+        <p>This option allows the user to set the font size for axis labels on the report. The value parameter accepts integer values as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('labelSize', '14');</pre>
+        <p>The current value of <span class="filepath style-wrap">labelSize </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method. This function returns the current value of this option as a string.</p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('labelSize');</pre>
+        <p>Each visualization has a predefined list of font sizes.&nbsp; An example list could be 7, 8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40.&nbsp; When a user sets a <span class="filepath style-wrap">labelSize</span>, the algorithm searches
+          to find the closest size available.&nbsp; Below are some examples:</p>
+        <ul class="pentaho-list-unordered">
+          <li>A value of '<span class="filepath style-wrap">1</span> ' will set the labelSize to 7</li>
+          <li>A value of '<span class="filepath style-wrap">14</span> ' will set the labelSize to 14</li>
+          <li>A value of '<span class="filepath style-wrap">50</span> ' will set the labelSize to 40</li>
+          <li>A value of '<span class="filepath style-wrap">30</span> ' will set the labelSize to 28</li>
+          <li>A value of '<span class="filepath style-wrap">31</span> ' will set the labelSize to 32</li>
+        </ul>
+      </div>
+      <div id="section_19" class="mt-page-section"><span id="backgroundFill"></span> 
+        <h2 class="editable">backgroundFill</h2>
+        <p>This option allows users to set the type of background used on the report.&nbsp; The value parameter accepts the following strings:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">NONE </span> - Default value.&nbsp; The background of the report has no color</li>
+          <li><span class="filepath style-wrap">SOLID </span> - The background of the report is set to the color chosen in the <span class="filepath style-wrap">backgroundColor </span> option.</li>
+          <li><span class="filepath style-wrap">GRADIENT </span> - The background of the report is a gradient with a starting value chosen by the <span class="filepath style-wrap">backgroundColor </span> option and the ending value set by the <span class="filepath style-wrap">backgroundColorEnd </span> option.</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('backgroundFill', 'SOLID');</pre>
+        <p>The current value of <span class="filepath style-wrap">backgroundFill </span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('backgroundFill');</pre>        </div>
+      <div id="section_20" class="mt-page-section"><span id="maxChartsPerRow"></span> 
+        <h2 class="editable">maxChartsPerRow</h2>
+        <p>This option allows the user to set the maximum number of multi-charts which appear on each row of a report. The value parameter accepts integer values as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('maxChartsPerRow', '4');</pre>
+        <p>The current value of <span class="filepath style-wrap">maxChartsPerRow </span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('maxChartsPerRow');</pre>
+        <p>Each visualization has a predefined list of acceptable values. An example list could be 1, 2, 3, 4, 5. When a user sets <span class="filepath style-wrap">maxChartsPerRow</span>, the algorithm searches to find the closest size available. Below
+          are some examples:</p>
+        <ul class="pentaho-list-unordered">
+          <li>A value of '<span class="filepath style-wrap">1</span> ' will set the <span class="filepath style-wrap">maxChartsPerRow </span> to 1</li>
+          <li>A value of '<span class="filepath style-wrap">3</span> ' will set the <span class="filepath style-wrap">maxChartsPerRow </span> to 3</li>
+          <li>A value of '<span class="filepath style-wrap">10</span> ' will set the <span class="filepath style-wrap">maxChartsPerRow </span> to 10</li>
+          <li>A value of '<span class="filepath style-wrap">50</span> ' will set the <span class="filepath style-wrap">maxChartsPerRow</span>  to 50</li>
+        </ul>
+      </div>
+      <div id="section_21" class="mt-page-section"><span id="multiChartRangeScope"></span> 
+        <h2 class="editable">multiChartRangeScope</h2>
+        <p>This option allows users to set set the axis range for multi-charts in a report.&nbsp; The value parameter accepts the following strings:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">GLOBAL </span> - default value.&nbsp; Use the same value for all multi-charts.</li>
+          <li><span class="filepath style-wrap">CELL </span> - Each cell uses its own range values.</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('multiChartRangeScope', 'GLOBAL');</pre>
+        <p>The current value of <span class="filepath style-wrap">multiChartRangeScope </span> for a report can be retrieved using the <span class="filepath style-wrap">getChartOption </span> method. This function returns the current value of this option as
+          a string.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('multiChartRangeScope');</pre> </div>
+      <div id="section_22" class="mt-page-section"><span id="emptyCellMode"></span> 
+        <h2 class="editable">emptyCellMode</h2>
+        <p>This option allows you to set how empty cells appear in the Line and Area charts.&nbsp;<span>The value parameter accepts the following strings:</span> </p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">GAP </span> - show gap</li>
+          <li><span class="filepath style-wrap">ZERO </span> - treat as zero</li>
+          <li><span class="filepath style-wrap">LINEAR </span> - connect with dotted line</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('emptyCellMode', 'LINEAR');</pre>
+        <p>The current value of <span class="filepath style-wrap">emptyCellMode </span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('emptyCellMode');</pre>        </div>
+      <div id="section_23" class="mt-page-section"><span id="sizeByNegativesMode"></span> 
+        <h2 class="editable">sizeByNegativesMode</h2>
+        <p>This option allows you to control the domain of the size scale (treat negative values)<span>.&nbsp;</span> <span>The value parameter accepts the following strings:</span> </p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">NEG_LOWEST</span>  - Default smallest values. The values of the 'Size' gembar is taken directly such that the lowest value of the size scale can be negative;</li>
+          <li><span class="filepath style-wrap">USE_ABS</span>  - Absolute. The values of the 'Size' gembar are taken first, where the absolute value and the values are mapped to the size range in pixels.</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('sizeByNegativeMode', 'USE_ABS');</pre>
+        <p>The current value of <span class="filepath style-wrap">sizeByNegativesMode </span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('sizeByNegativeMode');</pre>        </div>
+      <div id="section_24" class="mt-page-section"><span id="backgroundColorEnd"></span> 
+        <h2 class="editable">backgroundColorEnd</h2>
+        <p>This option allows you to set the second background color of the chart for gradient. This property is only used if the <span class="filepath style-wrap">backgroundFill </span> option is set to &lsquo;<span class="filepath style-wrap">GRADIENT</span> &rsquo;.
+          <span>The value parameter accepts</span> &nbsp;values of hex type.
+          <br /> <strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('backgroundColorEnd', '#AA9922');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">backgroundColorEnd</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('backgroundColorEnd');</pre> </div>
+      <div id="section_25" class="mt-page-section"><span id="labelStyle"></span> 
+        <h2 class="editable">labelStyle</h2>
+        <p>This option allows you to set the style for axis labels of the chart.&nbsp;<span>The value parameter accepts the following strings:</span> </p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">PLAIN </span> - default normal style;</li>
+          <li><span class="filepath style-wrap">BOLD </span> - bold style;</li>
+          <li><span class="filepath style-wrap">ITALIC </span> - italic style.</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('labelStyle', 'BOLD');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">labelStyle</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('labelStyle');</pre> </div>
+      <div id="section_26" class="mt-page-section"><span id="legendBackgroundColor"></span> 
+        <h2 class="editable">legendBackgroundColor</h2>
+        <p>This option allows you to set the background color of the chart&rsquo;s legend.&nbsp;<span>The value parameter accepts</span> <span>&nbsp;values of hex type.</span> </p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('legendBackgroundColor', '#aaaabb');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">legendBackgroundColor</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('legendBackgroundColor');</pre> </div>
+      <div id="section_27" class="mt-page-section"><span id="legendSize"></span> 
+        <h2 class="editable">legendSize</h2>
+        <p>This option allows you to set the font size for legend of the chart. <span>The value parameter accepts</span> <span>&nbsp;values of&nbsp;</span> integer type. When the value is set, a special algorithm of searching for the&nbsp;closest value from
+          predefined values is used.
+          <br /> <strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('legendSize', '14');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">legendSize</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('legendSize');</pre>
+        <p>Visualizations have a predefined list of font sizes. When you set the <span class="filepath style-wrap">labelSize </span> option, it searches for the closest size from the predefined list. The predefined size values are 7, 8, 9, 10, 11, 12, 14,
+          16, 18, 20, 24, 28, 32, 36, 40. Below are some examples:</p>
+        <ul class="pentaho-list-unordered">
+          <li>A value of '<span class="filepath style-wrap">1</span> ' will set the legendSize to 7</li>
+          <li>A value<span> of</span>  '<span class="filepath style-wrap">14</span> ' will set he legendSize to 14</li>
+          <li>A value<span> of</span>  '<span class="filepath style-wrap">50</span> ' will set the legendSize to 40</li>
+          <li>A value<span> of</span>  '<span class="filepath style-wrap">30</span> ' will set the legendASize to 28</li>
+          <li>A value<span> of</span>  '<span class="filepath style-wrap">31</span> ' will set the legendSize to 32</li>
+        </ul>
+      </div>
+      <div id="section_28" class="mt-page-section"><span id="legendColor"></span> 
+        <h2 class="editable">legendColor</h2>
+        <p>Chart option '<span class="filepath style-wrap">legendColor</span> ' allows you to set the font color for legend of the chart.&nbsp;<span>The value parameter accepts</span> <span>&nbsp;values of hex type.</span> 
+          <br /> <strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('legendColor', '#aacc11');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">backgroundColorEnd</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('legendColor');</pre> </div>
+      <div id="section_29" class="mt-page-section"><span id="legendStyle"></span> 
+        <h2 class="editable">legendStyle</h2>
+        <p>This option allows you to set the font style for legend of the chart.&nbsp;<span>The value parameter accepts the following strings:</span> </p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">PLAIN </span> - default normal style</li>
+          <li><span class="filepath style-wrap">BOLD </span> - bold style</li>
+          <li><span class="filepath style-wrap">ITALIC </span> - italic style</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('legendStyle', 'BOLD');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">legendStyle</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('legendStyle');</pre> </div>
+      <div id="section_30" class="mt-page-section"><span id="labelFontFamily"></span> 
+        <h2 class="editable">labelFontFamily</h2>
+        <p>This option allows you to set the font family for axis labels of the chart.&nbsp;<span>The value parameter accepts strings.</span> 
+          <br /> <strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('labelFontFamily', 'Times New Roman');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">labelFontFamily</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('labelFontFamily');</pre> </div>
+      <div id="section_31" class="mt-page-section"><span id="legendFontFamily"></span> 
+        <h2 class="editable">legendFontFamily</h2>
+        <p>This option allows you to set the font family for legend of the chart. The value parameter accepts strings.
+          <br /> <strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setChartOption('legendFontFamily', 'Times New Roman');</pre>
+        <p><span>The current value of&nbsp;<span class="filepath style-wrap">legendFontFamily</span> </span> <span><span class="filepath style-wrap">&nbsp;</span> for a report can be retrieved as a string using the <span class="filepath style-wrap">getChartOption </span> method.</span> 
+        </p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getChartOption('legendFontFamily');</pre> </div>
+      <div id="section_32" class="mt-page-section"><span id="URL_parameters"></span> 
+        <h2 class="editable">URL parameters</h2>
+        <p>All of the above options are available through the URL via URL parameters. For a hex value you should escape the '#' character for URL. For example, instead of writing 'legendBackgroundColor=#EEAADD' you can write 'legendBackgroundColor=<strong>%</strong> <strong>23</strong> EEAADD'.</p>
+        <p><strong>Example URL with all parameters:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/pentaho/api/repos/%3Apublic%3ASteel%20Wheels%3ALeading%20Product%20Lines%20%28pivot%20table%29.xanalyzer/editor?ts=1421660200377&amp;showFieldList=true&amp;showFieldLayout=true&amp;vizId=ccc_scatter&amp;showLegend=true&amp;legendPosition=LEFT&amp;legendBackgroundColor=%23EEAADD&amp;legendSize=12&amp;legendColor=%23AA11AA&amp;legendStyle=BOLD&amp;legendFontFamily=Times%20New%20Roman&amp;backgroundFill=SOLID&amp;backgroundColor=%23DDBBCC&amp;labelColor=%23FF2322&amp;labelSize=14&amp;backgroundColorEnd=%23EEAADD&amp;labelStyle=BOLD&amp;labelFontFamily=Times%20New%20Roman&amp;autoRange=false&amp;autoRangeSecondary=false&amp;displayUnits=UNITS_2&amp;displayUnitsSecondary=UNITS_2&amp;valueAxisLowerLimit=500&amp;valueAxisUpperLimit=9000&amp;valueAxisLowerLimitSecondary=4&amp;valueAxisUpperLimitSecondary=55.5&amp;maxValues=3&amp;maxChartsPerRow=2&amp;multiChartRangeScope=GLOBAL&amp;emptyCellMode=GAP&amp;sizeByNegativesMode=USE_ABS</pre>
+        <br
+        />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#ChartOptions_Javascript_API" rel="internal">ChartOptions Javascript API</a>  </li>
+      <li> <a href="#How_to_Call_These_APIs" rel="internal">How to Call These APIs</a>  </li>
+      <li> <a href="#Available_Options" rel="internal">Available Options</a>  </li>
+      <li> <a href="#legendPosition" rel="internal">legendPosition</a>  </li>
+      <li> <a href="#showLegend" rel="internal">showLegend</a>  </li>
+      <li> <a href="#autoRange" rel="internal">autoRange</a>  </li>
+      <li> <a href="#valueAxisLowerLimit" rel="internal">valueAxisLowerLimit</a>  </li>
+      <li> <a href="#valueAxisUpperLimit" rel="internal">valueAxisUpperLimit</a>  </li>
+      <li> <a href="#displayUnits" rel="internal">displayUnits</a>  </li>
+      <li> <a href="#autoRangeSecondary" rel="internal">autoRangeSecondary</a>  </li>
+      <li> <a href="#valueAxisLowerLimitSecondary" rel="internal">valueAxisLowerLimitSecondary</a>  </li>
+      <li> <a href="#valueAxisUpperLimitSecondary" rel="internal">valueAxisUpperLimitSecondary</a>  </li>
+      <li> <a href="#displayUnitsSecondary" rel="internal">displayUnitsSecondary</a>  </li>
+      <li> <a href="#maxValues" rel="internal">maxValues</a>  </li>
+      <li> <a href="#backgroundColor" rel="internal">backgroundColor</a>  </li>
+      <li> <a href="#labelColor" rel="internal">labelColor</a>  </li>
+      <li> <a href="#labelSize" rel="internal">labelSize</a>  </li>
+      <li> <a href="#backgroundFill" rel="internal">backgroundFill</a>  </li>
+      <li> <a href="#maxChartsPerRow" rel="internal">maxChartsPerRow</a>  </li>
+      <li> <a href="#multiChartRangeScope" rel="internal">multiChartRangeScope</a>  </li>
+      <li> <a href="#emptyCellMode" rel="internal">emptyCellMode</a>  </li>
+      <li> <a href="#sizeByNegativesMode" rel="internal">sizeByNegativesMode</a>  </li>
+      <li> <a href="#backgroundColorEnd" rel="internal">backgroundColorEnd</a>  </li>
+      <li> <a href="#labelStyle" rel="internal">labelStyle</a>  </li>
+      <li> <a href="#legendBackgroundColor" rel="internal">legendBackgroundColor</a>  </li>
+      <li> <a href="#legendSize" rel="internal">legendSize</a>  </li>
+      <li> <a href="#legendColor" rel="internal">legendColor</a>  </li>
+      <li> <a href="#legendStyle" rel="internal">legendStyle</a>  </li>
+      <li> <a href="#labelFontFamily" rel="internal">labelFontFamily</a>  </li>
+      <li> <a href="#legendFontFamily" rel="internal">legendFontFamily</a>  </li>
+      <li> <a href="#URL_parameters" rel="internal">URL parameters</a>  </li>
+    </ol>
+  </body>
+</content>

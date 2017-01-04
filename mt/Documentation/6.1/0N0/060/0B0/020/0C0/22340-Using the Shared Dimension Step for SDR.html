@@ -1,0 +1,142 @@
+<content type="text/html" title="Using the Shared Dimension Step for SDR">
+  <body>
+    <div>
+      <p style="visibility: visible;">The Shared Dimension step works in much the same way as the
+        <a href="/Documentation/6.0/0N0/060/0B0/020/0B0" rel="internal" title="Annotate Stream (step)">Annotate Stream</a>  step, refining your data through the creation of dimensions which can be shared for later use. You will need to designate one annotation in the shared dimension step as the dimension key.</p>
+      <p style="visibility: visible;">You can create multiple annotations on the same field, such as an attribute and a dimension key. For example, in the Shared Dimension step, you can select the field 'Year' and annotate it as a Dimension Key. You may also select the field 'Year'
+        again to annotate as an attribute. You can also create multiple annotations to modify the same data model.</p>
+      <p style="visibility: visible;">The transformation which builds a Shared Dimension should run before the
+        <a title="Build Model (job entry)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/060/0B0/020/0A0">Build Model </a> job entry or in a separate job which runs before the Build Model. Here is an example transformation for a Shared Dimension.</p>
+      <p style="text-align: center; visibility: visible;">
+        <img alt="SDRSharedDimensionWorkflow.png" class="internal default" style="width: 599px; height: 74px;" width="599px" height="74px" src="http://help.pentaho.com/@api/deki/files/8122/SDRSharedDimensionWorkflow.png?size=bestfit&amp;width=599&amp;height=74&amp;revision=1"
+        />
+      </p>
+      <p style="visibility: visible;">After you are done with your data model, you will be ready to
+        <a href="/Documentation/6.0/0N0/060/0B0/020/0D0" rel="internal" title="Publish Model (job entry)">publish </a> it.</p>
+      <div class="mt-page-section" id="section_2">
+        <div id="section_1" class="mt-page-section"><span id="Creating_a_Shared_Dimension"></span> 
+          <h2 style="visibility: visible;" class="editable">
+            <span>Creating a Shared Dimension</span> 
+          </h2>
+          <div class="editIcon" style="visibility: hidden;">
+            <a title="Edit section" rel="internal" href="http://help.pentaho.com/Draft_Content/Virginia/Working_with_the_Streamlined_Data_Refinery/0B0/020/0C0?action=edit&amp;sectionId=2"> <span class="icon"><img alt="Edit section" class="sectionedit" src="https://a.mtstatic.com/skins/common/icons/icon-trans.gif?_=74adc75c:site_4511" /></span>  </a> 
+          </div>
+          <p style="visibility: visible;">This section describes how to create a Shared Dimension.&nbsp;</p>
+          <p class="pentaho-note" style="visibility: visible;">Be sure to create one annotation to serve as the Dimension Key.</p>
+          <ol class="pentaho-list-ordered">
+            <li>In the <strong>Design </strong> tab, click the <strong>Flow </strong> folder, and then double-click the <strong>Shared Dimension </strong> step. Alternatively, you can drag the step icon on to the transformation canvas.</li>
+          </ol>
+          <p style="text-align: center; visibility: visible;">
+            <img alt="SharedDimensionIcon2.png" class="internal default" style="width: 165px; height: 44px;" width="165px" height="44px" src="http://help.pentaho.com/@api/deki/files/8127/SharedDimensionIcon2.png?size=bestfit&amp;width=165&amp;height=44&amp;revision=1"
+            />
+          </p>
+          <ol class="pentaho-list-ordered" start="2">
+            <li>Double-click the <strong>Shared Dimension</strong>  icon to open the Shared Dimension dialog box.</li>
+            <li>Enter a name for the step in the <strong>Step Name</strong>  field.</li>
+            <li>If you are basing your new dimension on an existing shared dimension, select it from the <strong>Shared Dimension Name</strong>  drop-down list of available shared dimensions, or enter a new name for it.</li>
+            <li>Select a source to associate your dimension from the <strong>Data Provider Step</strong>  drop-down list. The following steps are valid sources:
+              <ul>
+                <li>Combination Lookup</li>
+                <li>Database Lookup</li>
+                <li>Dimension Lookup</li>
+                <li>Insert/Update</li>
+                <li>Table Output</li>
+                <li>Vertica Bulk Loader</li>
+              </ul>
+            </li>
+            <li>Enter a description of the shared dimension in the <strong>Description </strong> field.</li>
+            <li>Select available fields for annotation.
+              <ol>
+                <li>Click the <strong>Select Fields</strong>  button to open the Select Fields to Annotate dialog box.</li>
+                <li>Double-click the fields in the Available Fields list to add them to the Selected Fields list. For example, you might select 'Year' to annotate as your dimension key and 'Year', 'Month', and 'Week' to annotate as attributes Optionally,
+                  you can use the arrows to move one or more fields to the Selected Fields list.</li>
+                <li>When finished, click <strong>OK </strong> to close the dialog box.The selected fields now display in the Annotations table featuring the following columns:
+                  <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+                    <tbody>
+                      <tr>
+                        <td style="width: 134px;"><strong>Column</strong> </td>
+                        <td style="width: 492px;"><strong>Description</strong> </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 134px;">Field</td>
+                        <td style="width: 492px;">Lists the names of the fields selected for annotation.</td>
+                      </tr>
+                      <tr>
+                        <td style="width: 134px;">Model Action</td>
+                        <td style="width: 492px;">Specifies which model action is being taken:
+                          <ul>
+                            <li> <a href="/Documentation/6.0/0N0/060/0B0/020/0B0/020" rel="internal" title="Creating Attributes">Create Attribute </a>  </li>
+                            <li> <a title="Creating Link Dimensions" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/060/0B0/020/0B0/030#Creating_a_Dimension_Key">Create a Dimension Key</a> : the selected field will be designated as the dimension key for the shared dimension. </li>
+                          </ul>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="width: 134px;">Summary</td>
+                        <td style="width: 492px;">Displays a summary of that specific annotation.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </li>
+              </ol>
+            </li>
+            <li>Now you can create
+              <a href="/Documentation/6.0/0N0/060/0B0/020/0B0" rel="internal" title="Annotate Stream (step)">annotations </a> for the selected fields.
+              <ol>
+                <li>To annotate a field, double-click it in the Annotations section<strong>.&nbsp;</strong> The Annotate dialog box appears for the selected field. Optionally, you can select the select the field in the Annotations table and then select the
+                  <strong>Edit </strong> (pencil) icon in the upper-right corner.</li>
+                <li>In the Actions field, click the drop-down arrow to select one of the following actions. (For help on selecting values, select the topic link beside each action.)
+                  <ul>
+                    <li>Create Attribute. See
+                      <a title="Creating Attributes" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/060/0B0/020/0B0/020">Creating Attributes</a> .</li>
+                    <li>Create Dimension Key. See
+                      <a title="Creating Link Dimensions" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/060/0B0/020/0B0/030#Creating_a_Dimension_Key">Creating a Dimension Key</a> .</li>
+                  </ul>
+                </li>
+                <li>You can use the <strong>Previous </strong> and <strong>Next </strong> buttons to navigate through the fields. When finished, click <strong>OK </strong> to continue or <strong>Cancel </strong> to close the dialog box without saving your annotations.</li>
+              </ol>
+            </li>
+          </ol>
+          <p class="pentaho-note" style="margin-left: 40px; visibility: visible;">You can remove a field from the Annotations section by selecting it in the table and then clicking the <strong>Delete </strong> ('<strong>X</strong> ') icon in the upper-right corner.</p>
+          <ol class="pentaho-list-ordered" start="9">
+            <li>Click <strong>Apply </strong> to save changes you made to an annotation. Click <strong>OK </strong> to continue or <strong>Cancel </strong> to close the dialog box.</li>
+          </ol>
+          <p style="visibility: visible;">This is an example of the Shared Dimensions dialog box.</p>
+          <p style="text-align: center; visibility: visible;">
+            <img alt="SharedDimension.png" class="internal default" style="width: 550px; height: 409px;" width="550px" height="409px" src="http://help.pentaho.com/@api/deki/files/8123/SharedDimension.png?size=bestfit&amp;width=550&amp;height=409&amp;revision=1"
+            />
+          </p>
+        </div>
+      </div>
+      <div class="mt-page-section" id="section_3">
+        <div id="section_2" class="mt-page-section"><span id="Creating_a_Dimension_Key"></span> 
+          <h2 style="visibility: visible;" class="editable">
+            <span>Creating a Dimension Key</span> 
+          </h2>
+          <div class="editIcon" style="visibility: hidden;">
+            <a title="Edit section" rel="internal" href="http://help.pentaho.com/Draft_Content/Virginia/Working_with_the_Streamlined_Data_Refinery/0B0/020/0C0?action=edit&amp;sectionId=3"> <span class="icon"><img alt="Edit section" class="sectionedit" src="https://a.mtstatic.com/skins/common/icons/icon-trans.gif?_=74adc75c:site_4511" /></span>  </a> 
+          </div>
+          <p style="visibility: visible;">To use a shared dimension, you will need to designate one annotation in the Shared Dimension step as the dimension key. Since you can create multiple annotations on the same field, you can use a selected field as an annotation and as the dimension
+            key. For example, you might want to create an attribute and a dimension key on the field 'Year' in your time dimension.</p>
+          <ol class="pentaho-list-ordered">
+            <li>If you haven't done so already, complete steps 1-8 of
+              <a href="/Documentation/6.0/0N0/060/0B0/020/0C0#Creating_a_Shared_Dimension" rel="internal" title="Shared Dimension Step">Creating a Shared Dimension</a> .</li>
+            <li>Select <strong>Create Dimension Key</strong>  from the Actions menu. The Name - Value table auto-populates with the Dimension attribute.</li>
+            <li>Enter or select a dimension in the Value field for <strong>Dimension</strong> . The selected field will be used as the key for this dimension.</li>
+            <li>Click <strong>OK </strong> to finish or click <strong>Cancel </strong> to exit.</li>
+          </ol>
+          <p style="text-align: center; margin-left: 40px; visibility: visible;">
+            <img alt="Dimension_Key.PNG" class="internal default" style="width: 550px; height: 411px;" width="550px" height="411px" src="http://help.pentaho.com/@api/deki/files/8121/Dimension_Key.PNG?size=bestfit&amp;width=550&amp;height=411&amp;revision=1"
+            />
+          </p>
+          <p class="pentaho-note" style="visibility: visible;">You can use a single field more than once, so you will be able to use the field you selected here for both the key and to create annotations.</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Creating_a_Shared_Dimension" rel="internal">Creating a Shared Dimension</a>  </li>
+      <li> <a href="#Creating_a_Dimension_Key" rel="internal">Creating a Dimension Key</a>  </li>
+    </ol>
+  </body>
+</content>

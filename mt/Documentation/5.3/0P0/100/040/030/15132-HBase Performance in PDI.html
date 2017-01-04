@@ -1,0 +1,39 @@
+<content type="text/html" title="HBase Performance in PDI">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="HBase_Output_Performance_Considerations"></span> 
+            <h2 class="editable">HBase Output Performance Considerations</h2>
+            <p class="p">The <strong class="ph b">Configure connection</strong>  tab provides a field for setting the size of the write buffer used to transfer data to HBase. A larger buffer consumes more memory (on both the client and server), but results in fewer
+              remote procedure calls. The default (defined in the hbase-default.xml file) is 2MB. When left blank, the buffer is 2MB, <strong class="ph b">auto flush</strong>  is enabled, and <strong class="ph b">Put</strong>  operations are executed immediately.
+              This means that each row will be transmitted to HBase as soon as it arrives at the step. Entering a number (even if it is the same as the default) for the size of the write buffer will disable auto flush and will result in incoming rows
+              only being transferred once the buffer is full.</p>
+            <p class="p">There is also a checkbox for disabling writing to the <strong class="ph b">Write Ahead Log</strong>  (WAL). The WAL is used as a lifeline to restore the status quo if the server goes down while data is being inserted. However, the tradeoff
+              for error-recovery is speed.</p>
+            <p class="p">The <strong class="ph b">Create/edit mappings</strong>  tab has options for creating new tables. In the <strong class="ph b">HBase table name</strong>  field, you can suffix the name of the new table with parameters for specifying what kind
+              of compression to use, and whether or not to use Bloom filters to speed up lookups. The options for compression are: NONE, GZ and LZO; the options for Bloom filters are: NONE, ROW, ROWCOL. If nothing is selected (or only the name of the
+              new table is defined), then the default of NONE is used for both compression and Bloom filters. For example, the following string entered in the HBase table name field specifies that a new table called &quot;NewTable&quot; should be created
+              with GZ compression and ROWCOL Bloom filters:</p> <pre class="pre codeblock">NewTable@GZ@ROWCOL</pre>
+            <div class="note note"><span class="notetitle">Note:</span>  Due to licensing constraints, HBase does not ship with LZO compression libraries; these must be manually installed on each node if you want to use LZO compression.</div>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="HBase_Input_Performance_Considerations"></span> 
+            <h2 class="editable">HBase Input Performance Considerations</h2>
+            <p class="p">Specifying fields in the Configure query tab will result in scans that return just those columns. Since HBase is a sparse column-oriented database, this requires that HBase check to see whether each row contains a specific column. More lookups
+              equate to reduced speed, although the use of Bloom filters (if enabled on the table in question) mitigates this to a certain extent. If, on the other hand, the fields table in the Configure query tab is left blank, it results in a scan that
+              returns rows that contain all columns that exist in each row (not only those that have been defined in the mapping). However, the HBase Input step will only omit those columns that are defined in the mapping being used. Because all columns
+              are returned, HBase does not have to do any lookups. However, if the table in question contains many columns and is dense, then this will result in more data being transferred over the network.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#HBase_Output_Performance_Considerations" rel="internal">HBase Output Performance Considerations</a>  </li>
+      <li> <a href="#HBase_Input_Performance_Considerations" rel="internal">HBase Input Performance Considerations</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,367 @@
+<content type="text/html" title="Maintain the Pentaho Server Manually">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="section context">
+        <p class="p">The Pentaho&nbsp;Server has options that must be set manually, outside of the
+          <a class="xref" title="Access the User Console" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Access_the_Pentaho_User_Console">Administration</a>  page of the User Console. You can do any or all of these tasks depending on your needs.</p>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_disable_widgets">
+        <div id="section_1" class="mt-page-section"><span id="Disable_Home_Perspective_Widgets"></span> 
+          <h2 class="editable">Disable Home Perspective Widgets</h2>
+          <p class="p">The default console <strong>Home</strong>  perspective contains the <strong>Getting Started</strong>  widget, which has easy instructions and tutorials for evaluators. The directions below show you how to hide not only the <strong>Getting Started</strong>             widget, but also other <strong>Home </strong> perspective widgets, as needed:</p>
+          <ol class="pentaho-list-ordered" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_disable_widgets__steps_lb1_fhm_kk">
+            <li class="li step"><span class="ph cmd">Shut down the Pentaho&nbsp;Server, if it is currently running.</span> </li>
+            <li class="li step"><span class="ph cmd">If you have not deployed yet, navigate to the <span class="ph filepath">/pentaho-platform/user-console/source/org/pentaho/mantle/home/properties/config.properties</span>  file.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">If you have manually deployed and want to hide widgets at a later time, navigate to /<span class="ph filepath">pentaho-server/tomcat/webapps/pentaho/mantle/home/properties/config.properties</span>  file.</span> 
+            </li>
+            <li class="li step">Find the line that starts with <span class="ph filepath">disabled-widgets=</span>  and type in the ID of the widget <span class="ph filepath">getting-started</span> . You can also disable the <strong><span class="ph uicontrol">Recents</span>  </strong> and
+              <strong>Favorites </strong> widgets using the same method, as shown here. Save and close the file. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">disabled-widgets=getting-started,recents,favorites</pre>              </li>
+            <li class="li step">Locate the /<span class="filepath style-wrap">pentaho-server/tomcat/webapps/pentaho/mantle/home</span>  and open the <span class="filepath style-wrap">index.jsp</span>  file with any text editor.</li>
+            <li class="li step">Find this line and comment it out, then save and close the file. <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><script language='JavaScript' type='text/javascript' src='http://admin.brightcove.com/js/BrightcoveExperiences.js'></script></pre>              </li>
+            <li class="li step"><span class="ph cmd">Start the Pentaho&nbsp;Server and log in to the User Console.</span> </li>
+          </ol>
+          <p>You now have a Home page that is scrubbed of the specified widget(s).</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_autocomplete_off">
+        <div id="section_2" class="mt-page-section"><span id="Turn_Autocomplete_Off_for_Web_App_Login_Screen"></span> 
+          <h2 class="editable">Turn Autocomplete Off for Web App Login Screen</h2>
+          <p class="p">The User Console's login settings have autocomplete turned off by default; if you need to, here is how to manually disable the autocomplete.</p>
+          <ol class="pentaho-list-ordered" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_autocomplete_off__steps_dfm_r4b_zl">
+            <li class="li step">Stop the Pentaho&nbsp;Server.</li>
+            <li class="li step">Navigate to the <span class="ph filepath">/pentaho-server<span class="rangySelectionBoundary" id="selectionBoundary_1472738654318_5354190551431017" style="line-height:0;display:none;">&#65279;</span> /tomcat/webapps/pentaho/jsp</span>  directory
+              and open the <span class="ph filepath">PUCLogin.jsp</span>  file with any text editor.</li>
+            <li class="li step">Find the following two sections of text and change the <span class="ph filepath">autocomplete</span>  entry to <span class="ph filepath">off</span>, as shown. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><input id=&quot;j_username&quot; name=&quot;j_username&quot; type=&quot;text&quot; placeholder=&quot;&quot; autocomplete=&quot;off&quot;></pre>              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><input id=&quot;j_password&quot; name=&quot;j_password&quot; type=&quot;password&quot; placeholder=&quot;&quot; autocomplete=&quot;off&quot;></pre>              </li>
+            <li class="li step">Save and close the <span class="ph filepath">PUCLogin.jsp</span>  file.</li>
+            <li class="li step">Restart the Pentaho&nbsp;Server.</li>
+          </ol>
+          <p>Autocomplete for user names and passwords is now disabled for the User Console login screen.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_enable_samples">
+        <div id="section_3" class="mt-page-section"><span id="Remove_Sample_Data_from_the_Pentaho_Server"></span> 
+          <h2 class="editable">Remove Sample Data from the Pentaho&nbsp;Server</h2>
+          <p>By default, Pentaho provides a sample data source and a solution directory filled with example content. These samples are provided for evaluation and testing. Once you are ready to move from an evaluation or testing scenario to development or
+            production, you can remove the sample content. Follow the instructions below to completely remove the Pentaho sample data and solutions:</p>
+          <ol class="pentaho-list-ordered" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_enable_samples__steps_lm4_ssm_wk">
+            <li class="li step"><span class="ph cmd">Stop the Pentaho&nbsp;Server.</span> </li>
+            <li class="li step"><span class="ph cmd">Delete the <code>samples.zip</code> file from the <span class="ph filepath">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="ph cmd"><span class="ph filepath">/pentaho-solutions/system/default-content</span>               directory. </span>  If you performed a manual WAR build and deployment, then the file path is <span class="ph filepath">/pentaho-server/pentaho-solutions/system</span> .</li>
+            <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">/pentaho/WEB-INF/web.xml</span>  file inside of the deployed <code>pentaho.war</code>.</span>  As laid down by the Pentaho graphical installer and archive packages, this path should be
+              <span class="ph filepath">/pentaho-server/tomcat/webapps/pentaho/WEB-INF/web.xml</span> . If you performed a manual WAR build and deployment, then you must adjust the path to fit your configuration.</li>
+            <li class="li step"><span class="ph cmd">Remove the <code>hsqldb-databases</code> section from the <span class="ph filepath">/pentaho/WEB-INF/web.xml</span>  file:</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- [BEGIN HSQLDB DATABASES] -->
+    <context-param>
+        <param-name>hsqldb-databases</param-name>
+        <param-value>sampledata@../../data/hsqldb/sampledata</param-value>
+    </context-param>
+
+<!-- [END HSQLDB DATABASES] --></pre> </li>
+            <li class="li step"><span class="ph cmd">Remove the <code>hsqldb-starter</code>&nbsp;section from the <span class="ph filepath">/pentaho/WEB-INF/web.xml</span>  file:</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- [BEGIN HSQLDB STARTER] --> 
+<listener> 
+<listener-class>org.pentaho.platform.web.http.context.HsqldbStartupListener</listener-class> 
+</listener>
+ 
+<!-- [END HSQLDB STARTER] --></pre> </li>
+            <li class="li step"><span class="ph cmd">Remove the <code>SystemStatusFilter</code>:</span> 
+              <p class="pentaho-note">This is not part of the Pentaho samples; it provides error status messages that are only useful for development and testing purposes, and should be removed from a production system.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter>
+    <filter-name>SystemStatusFilter</filter-name>
+    <filter-class>com.pentaho.ui.servlet.SystemStatusFilter</filter-class>
+    <init-param>
+        <param-name>initFailurePage</param-name>
+        <param-value>InitFailure</param-value>
+        <description>This page is displayed if the PentahoSystem fails to properly initialize.</description>
+    </init-param>
+</filter></pre> </li>
+            <li class="li step"><span class="ph cmd">Remove the filter mapping for the SystemStatusFilter:</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter-mapping>
+    <filter-name>SystemStatusFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping></pre> </li>
+            <li class="li step"><span class="ph cmd">Save and close the <code>web.xml</code> file.</span> </li>
+            <li class="li step"><span class="ph cmd">Delete the <span class="ph filepath">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="ph cmd"><span class="ph filepath">/data/</span>  directory.</span>  This directory does not exist if you installed
+              Pentaho with the installation wizard. It contains a sample database, control scripts for that database, the environment settings it needs to run, and SQL scripts to initialize a new repository.</li>
+            <li class="li step"><span class="ph cmd">Restart the Pentaho&nbsp;Server.</span> </li>
+            <li class="li step"><span class="ph cmd"><a class="xref" title="Access the User Console" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Access_the_Pentaho_User_Console">Log on to the User Console</a>  with the administrator user name and password and go to the <strong class="ph b">Browse Files</strong>  page.</span> 
+              <ol class="ol substeps" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_enable_samples__substeps_qp5_bw4_bl" type="a">
+                <li class="li substep"><span class="ph cmd">In the <strong class="ph b">Folders</strong>  pane, expand the <strong class="ph b">Public</strong>  folder and click to highlight the folder containing the <strong class="ph b">Steel Wheels</strong>  sample data. Click <strong class="ph b">Move to Trash</strong>  in the <strong class="ph b">Folder Actions</strong>  pane and confirm the deletion. </span> </li>
+                <li class="li substep"><span class="ph cmd">Highlight the folder containing the <strong class="ph b">Pentaho Operations Mart</strong>  sample data. Click <strong class="ph b">Move to Trash</strong>  in the <strong class="ph b">Folder Actions</strong>  pane and confirm the deletion. </span> </li>
+              </ol>
+            </li>
+          </ol>
+          <p>Your <span class="ph cmd">Pentaho</span>  Server instance is now cleaned of samples and development/testing pieces, and is streamlined for production.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_enable_jpivot">
+        <div id="section_4" class="mt-page-section"><span id="Enable_JPivot_in_the_User_Console"></span> 
+          <h2 class="editable">Enable JPivot in the User Console</h2>
+          <p>We recommend that you use Pentaho Analyzer for analytic reporting. However, perform the following steps&nbsp;if you need to enable JPivot on the <span class="ph cmd">Pentaho</span>  Server:</p>
+          <p class="pentaho-caution">JPivot was deprecated in Pentaho 5.0 and is no longer supported by Pentaho Customer Support.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step"><span class="ph cmd">Shut down the Pentaho Server if it is currently running.</span> </li>
+            <li class="li step"><span class="ph cmd">Navigate to <span class="ph filepath">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="ph cmd"><span class="ph filepath">/pentaho-solutions/system/pentaho-jpivot-plugin-legacy/plugin.xml</span>               file and delete file.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Rename the file called <span class="ph filepath">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="ph cmd"><span class="ph filepath">/pentaho-solutions/system/pentaho-jpivot-plugin-legacy/plugin.xml.enabled</span>               to <span class="ph filepath">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="ph cmd"><span class="ph filepath">/pentaho-solutions/system/pentaho-jpivot-plugin-legacy/plugin.xml</span>  and save it.</span>  You can
+              either turn off the deprecation message for JPivot, or restart the <span class="ph cmd">Pentaho</span>  at this point.</li>
+          </ol>
+          <p class="li stepsection"><span class="ph uicontrol">Turn Off Deprecation Message for JPivot - Optional</span> </p>
+          <ol class="pentaho-list-ordered" start="4">
+            <li class="li step"><span class="ph cmd">Shut down the Pentaho Server if it is currently running. </span> </li>
+            <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">/pentaho-solutions/system/pentaho-jpivot-plugin-legacy/settings.xml</span>  and open the file.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Change the Boolean value as shown and save the file.</span> 
+              <br /> <span class="ph uicontrol"><strong>From</strong> :</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><show-deprecation-warning>true</show-deprecation-warning></pre>              <span class="ph uicontrol"><strong>To</strong> :</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><show-deprecation-warning>false</show-deprecation-warning></pre>              </li>
+            <li class="li step"><span class="ph cmd">Restart the Pentaho Server.</span> </li>
+          </ol>
+          <p>The JPivot plug-in is enabled in the User Console and the deprecation message is turned off.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_location_server_log">
+        <div id="section_5" class="mt-page-section"><span id="Change_the_Location_of_the_Server_Log_File"></span> 
+          <h2 class="editable">Change the Location of the Server Log File</h2>
+          <p class="p"><strong>For Windows:</strong> </p>
+          <p>If you used the install wizard to install, the <span class="filepath style-wrap">pentaho.log</span>  is written to the <span class="filepath style-wrap">C:/WINDOWS/system32</span>  directory. To change the location of the <code>pentaho.log</code>            file, you must edit <span class="filepath style-wrap">log4j.xml</span>  in&nbsp;<span class="ph filepath">/pentaho-server/tomcat/webapps/pentaho/WEB-INF/classes/</span> .</p>
+          <p>Modify the location as shown in the sample below, using the appropriate path to your installation:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><param name=&quot;File&quot; value=&quot;C:/Program Files/pentaho/server/pentaho-server/logs/pentaho.log&quot;/> 
+<param name=&quot;Append&quot; value=&quot;true&quot;/></pre>
+          <p class="p"><strong>For Linux:</strong> </p>
+          <p>If you are using Linux, the <span class="filepath style-wrap">log4j.xml</span>  file is found in&nbsp;<span class="ph filepath">/pentaho-server/tomcat/webapps/pentaho/WEB-INF/classes/</span> .</p>
+          <p>Modify the location as shown in the sample below, using the appropriate path to your installation:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><param name=&quot;File&quot; value=&quot;home/pentaho/server/pentaho-server/logs/pentaho.log&quot;/> 
+<param name=&quot;Append&quot; value=&quot;true&quot;/></pre> </div>
+        <div id="section_6" class="mt-page-section"><span id="Change_the_Quartz_Misfire_Threshold"></span> 
+          <h2 class="editable">Change the Quartz Misfire Threshold</h2>
+          <p>With Quartz, sometimes scheduled jobs, transformations, or reports might try to run several times when they are manually stopped and restarted, instead of running only once. This is typically caused by the <span class="filepath style-wrap">misfireThreshold</span>             property in Quartz being set at too high of a number.</p>
+          <p>These steps show how to reset the <span class="filepath style-wrap">misfireThreshold </span> to a lower numerical value.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Stop the <span class="ph cmd">Pentaho</span>  Server.</li>
+            <li>Locate the <span class="filepath style-wrap">/</span> <span class="ph filepath">pentaho-server</span> <span class="filepath style-wrap">/pentaho-solutions/system/quartz</span>  directory.</li>
+            <li>Open the <span class="filepath style-wrap">quartz.properties</span>  file with any text editor.</li>
+            <li>Find the property shown below and change the default to a smaller number, such as 5000. The default value represents the number of milliseconds. <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.jobStore.misfireThreshold = 60000</pre>              </li>
+            <li>Save and close the <span class="filepath style-wrap">quartz.properties </span> file.</li>
+            <li>Restart the <span class="ph cmd">Pentaho</span>  Server.</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Set_System_Max_Row_Limit_for_Interactive_Reports"></span> 
+          <h2 class="editable">Set System Max Row Limit for Interactive Reports</h2>
+          <p>You can prevent too many resources from hitting your database server at once by setting a system-wide maximum row-limit for Pentaho Interactive Reports. Your users can still define their own design-time row limits in PIR, but they will never
+            be able to go over the maximum number of rows that you have specified while designing their reports.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Shut down the <span class="ph cmd">Pentaho</span>  Server.</li>
+            <li>Locate the /<span class="ph filepath">pentaho-server</span> <span class="filepath style-wrap">/pentaho-solutions/system/pentaho-interactive-reporting</span>  directory.</li>
+            <li>Open the<span class="filepath style-wrap"> settings.xml</span>  file with any text editor.</li>
+            <li>Find the <span class="filepath style-wrap"><query-limit></span>  tag and change the default number of <code>100000</code> within the tags to the maximum number of rows desired. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- The maximum number of rows that will be rendered in a report on PIR edit and
+view mode. A zero value means no limit. -->
+<query-limit>100000</query-limit></pre> </li>
+            <li>Save and close the <span class="filepath style-wrap">settings.xml</span>  file.</li>
+            <li>Start the <span class="ph cmd">Pentaho</span>  Server.</li>
+          </ol>
+          <p>If you are migrating content from a previous version, you will need to add the <span class="filepath style-wrap"><query-limit></span>  tag to your<span class="filepath style-wrap"> settings.xml</span>  for PIR.</p>
+          <div id="section_8" class="mt-page-section"><span id="Roll_Back_System_Max_Row_Limit"></span> 
+            <h3 class="editable">Roll Back System Max Row Limit</h3>
+            <p>These instructions show you how to return the system maximum row limit to the Pentaho 5.3 settings.</p>
+            <ol class="pentaho-list-ordered">
+              <li>Shut down the <span class="ph cmd">Pentaho</span>  Server.</li>
+              <li>Locate the /<span class="ph filepath">pentaho-server</span> <span class="filepath style-wrap">/pentaho-solutions/system/pentaho-interactive-reporting</span>  directory.</li>
+              <li>Open the<span class="filepath style-wrap"> settings.xml</span>  file with any text editor.
+                <ol>
+                  <li>To change the maximum number of rows that will be rendered in a Pentaho Interactive Report in edit or view mode, find the <span class="filepath style-wrap"><design-query-limit></span>  tag and change the default number of 500 back to
+                    25.
+                    <p><strong>FROM:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><design-query-limit>500</design-query-limit></pre>
+                    <p><strong>TO:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><design-query-limit>25</design-query-limit></pre> </li>
+                  <li>To turn the<span class="filepath style-wrap"> design-query-limit</span>  to be OFF by default, find the <span class="filepath style-wrap"><design-query-limit-enabled> </span> tags and change the value to <span class="filepath style-wrap">false</span> .
+                    <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><design-query-limit-enabled>false</design-query-limit-enabled></pre> </li>
+                </ol>
+              </li>
+              <li>Save and close the <span class="filepath style-wrap">settings.xml</span>  file.</li>
+              <li>Restart the server.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_increase_csv_limit">
+        <div id="section_9" class="mt-page-section"><span id="Increase_the_CSV_File_Upload_Limit"></span> 
+          <h2 class="editable">Increase the CSV File Upload Limit</h2>
+          <p>You may find that you need to increase the size of the upload limit for your CSV files. These steps guide you through this process.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Go to <span class="filepath style-wrap">/</span> <span class="ph filepath">pentaho-server</span> <span class="filepath style-wrap">/pentaho-solutions/system</span>  and open the <span class="filepath style-wrap">pentaho.xml</span>  file.</li>
+            <li class="li step">Edit the XML as needed (sizes are measured in bytes): <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><file-upload-defaults>
+      <relative-path>/system/metadata/csvfiles/</relative-path>
+
+      <!-- max-file-limit is the maximum file size, in bytes, to allow to be uploaded to the server -->
+      <max-file-limit>10000000</max-file-limit>
+
+      <!-- max-folder-limit is the maximum combined size of all files in the upload folder, in bytes. -->
+      <max-folder-limit>500000000</max-folder-limit>
+</file-upload-defaults></pre> </li>
+            <li class="li step">Save your changes to the file.</li>
+            <li class="li step">In the <strong class="ph b">User Console</strong>, go to <strong class="ph b">Tools</strong>  > <strong class="ph b">Refresh System Settings</strong>  to ensure that the change is implemented.</li>
+            <li class="li step">Restart the User Console.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_staging_db_csv">
+        <div id="section_10" class="mt-page-section"><span id="Change_the_Staging_Database_for_CSV_Files"></span> 
+          <h2 class="editable">Change the Staging Database for CSV Files</h2>
+          <p class="p">Hibernate is the default staging database for CSV files. Follow these instructions if you want to change the staging database.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Go to <span class="filepath style-wrap">/pentaho-solutions/system/data-access</span>  and open the <span class="filepath style-wrap">settings.xml</span>  file with any text editor.</li>
+            <li class="li step">Edit the <span class="filepath style-wrap">settings.xml</span>  file as needed. The default value is shown in the sample below. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- settings for Agile Data Access -->
+<data-access-staging-jndi>hibernate</data-access-staging-jndi></pre> This value can be a JNDI name or the name of a
+              <a class="xref" title="Documentation/7.0/0N0/110/040/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/110/040/000">Pentaho Database Connection</a>  .</li>
+            <li class="li step">Save and close the file.</li>
+            <li class="li step">Restart the User Console.</li>
+          </ol>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Change_the_Karaf_Startup_Timeout_Setting"></span> 
+          <h2 class="editable">Change the Karaf Startup Timeout Setting</h2>
+          <p>Upon start up, the system waits for Karaf to install all of its features before timing out. If you modify Karaf and it now takes longer to install during start up, you may need to extend the default timeout setting to allow Karaf more time to
+            install. The current default timeout is 2 minutes (120000 milliseconds).</p>
+          <p>You can change this default timeout by editing the <span class="mt-font-courier-new">server.properties</span>  file.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Stop the <span class="ph cmd">Pentaho</span>  Server.</li>
+            <li>Navigate to the&nbsp;<span class="mt-font-courier-new"><span class="filepath style-wrap">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="mt-font-courier-new"><span class="filepath style-wrap">/pentah<span class="rangySelectionBoundary" id="selectionBoundary_1451332484617_45933082169407663" style="line-height:0;display:none;">&#65279;</span> o-s
+              <span
+              class="rangySelectionBoundary" id="selectionBoundary_1451332484721_3862032738411595" style="line-height:0;display:none;">&#65279;</span> olutions/system<span class="rangySelectionBoundary" id="selectionBoundary_1451332486215_516655221033313" style="line-height:0;display:none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1451332486138_5519182963104872"
+                style="line-height:0;display:none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1451332475806_10706091973948584" style="line-height:0;display:none;">&#65279;</span> </span> 
+                </span>  directory.</li>
+            <li>Open the <span class="mt-font-courier-new">server.properties</span>  file with any text editor, and search for the <span class="mt-font-courier-new">karafWaitForBoot</span>  parameter.</li>
+            <li>Uncomment the line containing the parameter and set it to your desired wait time in milliseconds.</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># This sets the amount of time the system will wait for karaf to install all of
+# it's features before timing out.  The default value is 2 minutes but can be
+# overridden here.
+#karafWaitForBoot = 120000</pre>
+          <ol class="pentaho-list-ordered" start="5">
+            <li>Save and close the file.</li>
+            <li>Restart the <span class="ph cmd">Pentaho</span>  Server.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_change_port_numbers_BAserver">
+        <div id="section_12" class="mt-page-section"><span id="Change_the_Port_Numbers_for_the_Pentaho_Server"></span> 
+          <h2 class="editable">Change the Port Numbers for the 
+            <span class="ph cmd">Pentaho</span>  Server
+          </h2>
+          <p class="p">Follow the instructions below to change the port through which the <span class="ph cmd">Pentaho</span>  Server runs:</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Stop the <span class="ph cmd">Pentaho</span>  Server.</li>
+            <li class="li step">Navigate to the <span class="filepath style-wrap"><span class="ph filepath">/</span> </span> <span class="ph filepath">pentaho-server</span> <span class="filepath style-wrap"><span class="ph filepath">/tomcat/conf/</span> </span>  directory.</li>
+            <li class="li step">Open the <span class="filepath style-wrap">server.xml </span> file with any text editor, and search for the value for <span class="filepath style-wrap">Define a non-SSL HTTP/1.1 Connector</span> . Change the port number in the connector port
+              element below from <span class="filepath style-wrap">8080 </span> to your preferred port number. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- Define a non-SSL HTTP/1.1 Connector on port 8080 -->
+    <Connector port=&quot;8080&quot; maxHttpHeaderSize=&quot;8192&quot;
+               maxThreads=&quot;150&quot; minSpareThreads=&quot;25&quot; maxSpareThreads=&quot;75&quot;
+               enableLookups=&quot;false&quot; redirectPort=&quot;8443&quot; acceptCount=&quot;100&quot;
+               connectionTimeout=&quot;20000&quot; disableUploadTimeout=&quot;true&quot; /></pre> </li>
+            <li class="li step">Save and close the <span class="filepath style-wrap">server.xml</span>  file.</li>
+            <li class="li step">Navigate to the <code>/pentaho-server<span class="rangySelectionBoundary" id="selectionBoundary_1472738895043_2056006600942265" style="line-height:0;display:none;">&#65279;</span> /pentaho-solutions/system</code>&nbsp;directory and open the
+              server.properties&nbsp;file with any text editor.</li>
+            <li class="li step">Change the <span class="filepath style-wrap">fully-qualified-server-url</span>  entry to match the new port number you specified in <span class="filepath style-wrap">server.xml</span> . <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">fully-qualified-server-url=http://localhost:8080/pentaho/</pre>              </li>
+            <li>Save and close the file.</li>
+            <li>Restart the <span class="ph cmd">Pentaho</span>  Server.</li>
+          </ol>
+          <p>If you recently upgraded to Pentaho&nbsp;6.0, you may need to remove the <span class="filepath style-wrap"><context-param></span>  entry for the <span class="filepath style-wrap">fully-qualified-server-url</span> &nbsp;from the&nbsp;<span class="filepath style-wrap">/tomcat/webapps/pentaho/WEB-INF/web.xml</span> .
+            If so, restart the <span class="ph cmd">Pentaho</span>  Server after removing it.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__change_puc_name_port">
+        <div id="section_13" class="mt-page-section"><span id="Change_the_Web_Application_Name_or_Port"></span> 
+          <h2 class="editable">Change the Web Application Name or Port</h2>
+          <p class="p">The Pentaho <span class="ph cmd">Pentaho</span>  Server and web application default port number is <code>8080</code>. The default web application name is <code>pentaho</code>, which is the name of the <span class="ph filepath">.war</span>  file
+            archive, the name of the directory that your application server creates, and also part of the URL structure for all content in the User Console.</p>
+          <p class="p">If you need to change the User Console application name to something else, or if your Web application server is running on a port other than 8080, follow these instructions for either JBoss or Tomcat.</p>
+          <div class="topic task nested2" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_webapp_context_tomcaat.xml">
+            <div id="section_14" class="mt-page-section"><span id="Change_the_Web_Application_Name_on_Tomcat"></span> 
+              <h3 class="editable">Change the Web Application Name on Tomcat</h3>
+              <p>These instructions only work on Tomcat servers that are configured to accept <span class="ph filepath">context.xml</span>  overrides built into deployed <span class="ph filepath">.war</span>  files. Some Tomcat deployments may not have this
+                feature turned on. You can change the Tomcat configuration on your own, or consult your Tomcat documentation to learn about other methods of changing a web application context. Use the XML snippet in these instructions in whichever configuration
+                file you end up creating or modifying.</p>
+              <p>Follow these instructions to change the web application context for a Pentaho <span class="ph filepath">.war</span>  file that you deployed to a Tomcat server.&nbsp;<span class="mt-font-Calibri,sans-serif"><span class="mt-font-size-11.0pt">While the example below uses 'sample' as the context name, you can use whatever context name you choose.</span> </span> 
+              </p>
+              <ol class="pentaho-list-ordered">
+                <li class="li step">Stop the server.</li>
+                <li class="li step">Open the&nbsp;<code>pentaho/server/pentaho-server/tomcat/webapps/pentaho/META-INF/context.xml</code>&nbsp;file in a text editor, and change the&nbsp;<code>pentaho</code>&nbsp;references in the&nbsp;<code>context path</code>&nbsp;tag to
+                  your preferred context name. For example, to specify a context name of '<code>sample</code>', modify <code>context path</code> as follows.</li>
+              </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context path=&quot;/sample&quot; docbase=&quot;webapps/sample/&quot;></pre>
+              <ol class="pentaho-list-ordered" start="3">
+                <li class="li step">Save and close the file.</li>
+                <li class="li step">Navigate to the <code>pentaho/server/pentaho-server/tomcat/webapps</code> folder, and rename the <code>pentaho</code> folder to your preferred context name. In this example, rename the <code>pentaho</code> folder to <code>sample</code>.</li>
+                <li class="li step">Edit the&nbsp;<code>pentaho/server/pentaho-server/tomcat/webapps/ROOT/index.jsp</code>&nbsp;file to change the&nbsp;<code>pentaho</code>&nbsp;reference in the&nbsp;<code>URL</code>&nbsp;property to your preferred context name. In this
+                  example, use the following line of code to specify '<code>sample</code>' as the new context name:</li>
+              </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><meta http-equiv=&rdquo;refresh&rdquo; content=&rdquo;0;URL=/sample&rdquo;></pre>
+              <ol class="pentaho-list-ordered"
+              start="7">
+                <li>Edit the <code>pentaho/server/pentaho-server/pentaho-solutions/system/server.properties</code> file to change <code>pentaho</code>&nbsp;in the value of the <code>fully-qualified-server-url</code> setting to your preferred context name.
+                  In this example, set the <code>fully-qualified-server-url</code> as follows.</li>
+              </ol> <pre class="pre codeblock">
+fully-qualified-server-url=http://localhost:8080/sample/</pre>
+              <ol class="pentaho-list-ordered" start="8">
+                <li>Start the server.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="topic task nested2" id="a739188f-7dcd-41ea-8c4f-ed82b2abdb03__task_change_console_name_jboss">
+            <div id="section_15" class="mt-page-section"><span id="Change_the_Web_Application_Name_on_JBoss"></span> 
+              <h3 class="editable">Change the Web Application Name on JBoss</h3>
+              <p class="p">Follow these instructions to change the Web application context for a <span class="ph filepath">Pentaho.war</span>  file that you deployed to a JBoss server.</p>
+              <ol class="pentaho-list-ordered">
+                <li class="li step">After deployment is successful, delete the original <span class="filepath style-wrap"><span class="ph filepath">pentaho.xml</span> </span>  file.</li>
+                <li class="li step">Open the jboss-web.xml file with any text editor.</li>
+                <li class="li step">Add the following text inside of the <span class="filepath style-wrap">jboss-web</span>  section, replacing <code>example</code>&nbsp;with your new context name: <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context-root>example</context-root></pre>                  </li>
+                <li class="li step">Save and close that file, then open the <span class="filepath style-wrap">web.xml</span>  file and modify the <span class="filepath style-wrap">fully-qualified-server-url</span>  entry to match your new context name and port number.
+                  <pre
+                  class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+                    <context-param>
+                      <param-name>fully-qualified-server-url</param-name>
+                      <param-value>http://localhost:5150/example/</param-value>
+                    </context-param>
+                    </pre>
+                </li>
+                <li class="li step">Save and close the file.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Disable_Home_Perspective_Widgets" rel="internal">Disable Home Perspective Widgets</a>  </li>
+      <li> <a href="#Turn_Autocomplete_Off_for_Web_App_Login_Screen" rel="internal">Turn Autocomplete Off for Web App Login Screen</a>  </li>
+      <li> <a href="#Remove_Sample_Data_from_the_Pentaho_Server" rel="internal">Remove Sample Data from the Pentaho&nbsp;Server</a>  </li>
+      <li> <a href="#Enable_JPivot_in_the_User_Console" rel="internal">Enable JPivot in the User Console</a>  </li>
+      <li> <a href="#Change_the_Location_of_the_Server_Log_File" rel="internal">Change the Location of the Server Log File</a>  </li>
+      <li> <a href="#Change_the_Quartz_Misfire_Threshold" rel="internal">Change the Quartz Misfire Threshold</a>  </li>
+      <li>
+        <a href="#Set_System_Max_Row_Limit_for_Interactive_Reports" rel="internal">Set System Max Row Limit for Interactive Reports</a> 
+        <ol>
+          <li> <a href="#Roll_Back_System_Max_Row_Limit" rel="internal">Roll Back System Max Row Limit</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Increase_the_CSV_File_Upload_Limit" rel="internal">Increase the CSV File Upload Limit</a>  </li>
+      <li> <a href="#Change_the_Staging_Database_for_CSV_Files" rel="internal">Change the Staging Database for CSV Files</a>  </li>
+      <li> <a href="#Change_the_Karaf_Startup_Timeout_Setting" rel="internal">Change the Karaf Startup Timeout Setting</a>  </li>
+      <li> <a href="#Change_the_Port_Numbers_for_the_Pentaho_Server" rel="internal">Change the Port Numbers for the Pentaho Server</a>  </li>
+      <li>
+        <a href="#Change_the_Web_Application_Name_or_Port" rel="internal">Change the Web Application Name or Port</a> 
+        <ol>
+          <li> <a href="#Change_the_Web_Application_Name_on_Tomcat" rel="internal">Change the Web Application Name on Tomcat</a>  </li>
+          <li> <a href="#Change_the_Web_Application_Name_on_JBoss" rel="internal">Change the Web Application Name on JBoss</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

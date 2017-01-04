@@ -1,0 +1,102 @@
+<content type="text/html" title="Increase the Pentaho Server Memory Limit">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to increase memory limits.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">We recommend that you increase PDI's memory limit so the Pentaho Server and the PDI&nbsp;Client (also known as the desing tool Spoon)&nbsp;can perform memory-intensive tasks, like sorting, grouping large datasets, or running complex transformations
+            and jobs. You will need to increase the memory limit for both the Pentaho Server and the PDI client. If you choose to not increase the memory limit, PDI uses the default memory settings in the PDI startup scripts.</p>
+          <p class="p">The way that you increase the memory settings for the Pentaho Server depends on your operating system and how you installed PDI:</p>
+          <ul class="ul">
+            <li class="li">Increase Pentaho Server Memory Limit for Installations on Windows</li>
+            <li class="li">Increase Pentaho Server Memory Limit for Installations on Linux</li>
+            <li class="li">Increase Pentaho Server Memory Limit for Custom Installations on Windows or Linux</li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_windows">
+        <div id="section_2" class="mt-page-section"><span id="Increase_Pentaho_Server_Memory_Limit_for_Installations_on_Windows"></span> 
+          <h2 class="editable">Increase Pentaho Server Memory Limit for Installations on Windows</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used the Pentaho&nbsp;Installation Wizard&nbsp;to install the Pentaho Server on a Windows machine, you can increase the server's memory limits by editing the Java memory settings for Tomcat. Tomcat is the web application server that
+                the Pentaho Server runs on, and is installed by the Pentaho Installation Wizard. If you didn't use the installation wizard&nbsp;or you are not running PDI on a Windows machine, refer to the appropriate section below.</p>
+            </div>
+            <ol class="ol steps" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_windows__steps_kjt_bss_qm">
+              <li class="li step"><span class="ph cmd">Stop the Pentaho Server if it is running. </span> </li>
+              <li class="li step"><span class="ph cmd">Type <span class="ph filepath">services.msc</span>  into the <strong class="ph b">Windows Search Box</strong> .</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Find the Pentaho Server name&nbsp; and open it so you can find the <strong class="ph b">service name</strong> . The <strong class="ph b">service name</strong>  should appear at the top of the first tab (<strong class="ph b">General</strong> ). It will be <strong class="ph b">pentahoserver</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Go into the bin file (<span class="ph filepath">C:\pentaho\server\pentaho-server\tomcat\bin\</span> ) and rename the <strong class="ph b">tomcat8w.exe</strong>  file to match the <strong class="ph b">service name</strong>                 (<strong class="ph b">pentahoserverw.exe</strong> ). This will ensure that the server starts with the software.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">After you have renamed the file, open it by double-clicking on it. This will not open the file, it will allow you to edit it. You may need to right-click and select <span class="ph uicontrol">Run as Administrator</span> .
+                This depends on your user permission settings.</span>  The <strong class="ph b">Properties Window</strong>  will open.</li>
+              <li class="li step"><span class="ph cmd">Select the <strong class="ph b">Java</strong>  tab.</span> </li>
+              <li class="li step"><span class="ph cmd">Set the memory setting to a minimum of <strong class="ph b">4096 M</strong>  and a maximum of <strong class="ph b">6144 M</strong>, depending on your computer's memory capabilities.</span> </li>
+              <li class="li step"><span class="ph cmd"><a class="xref" target="_blank" title="Start and Stop the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start the Tomcat server or service</a> .</span> </li>
+            </ol>
+            <p class="pentaho-note">Make sure to also
+              <a class="xref" target="_blank" title="Increase the Spoon Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_PDI_Client_Memory_Limit">increase the Spoon memory limit</a> .</p>
+            <div class="section result">&nbsp;</div>
+            <div class="section result">Your Tomcat server now has increased minimum and maximum memory limits. You can adjust the <span class="ph filepath">JvmMx</span>  parameter&nbsp;to a higher number if you prefer. However, if the Java virtual machine refuses to start with increased
+              limits, then you will have to add more RAM to your system, stop some memory-intensive services, or reduce the maximum memory limit. This problem occurs when there is not enough contiguous memory available to assign to the JVM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_linux">
+        <div id="section_3" class="mt-page-section"><span id="Increase_Pentaho_Server_Memory_Limit_for_Installations_on_Linux"></span> 
+          <h2 class="editable">Increase Pentaho Server Memory Limit for Installations on Linux</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used the Pentaho&nbsp;Installation Wizard&nbsp;to install PDI on your Linux machine, you can increase memory limits by editing a variable in one of the Pentaho-supplied scripts. If you did not&nbsp;use the installation wizard, see
+                the
+                <a title="Increase the Pentaho Server Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_Pentaho_Server_Memory_Limit#Increase_Pentaho_Server_Memory_Limit_for_Custom_Installations_on_Windows_or_Linux">Increase Pentaho Server Memory Limit for Custom Installations on Windows or Linux</a>  section below.</p>
+            </div>
+            <ol class="ol steps" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_linux__steps_nv4_trs_qm">
+              <li class="li step"><span class="ph cmd">Go to <span class="ph filepath">/pentaho/server/pentaho-server/tomcat/bin/ directory</span>  and run the <span class="ph filepath">./shutdown.sh</span>  command to stop the appropriate server.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Change the directory to <strong class="ph b">pentaho-server/scripts</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Edit the <strong class="ph b">ctl.sh</strong>  file.</span> </li>
+              <li class="li step"><span class="ph cmd">Locate the line under <strong class="ph b">start tomcat</strong>, which looks like this: <code class="ph codeph">export JAVA OPTS=&quot;-Dpentaho.installed.licenses.file=/opt/pentaho/.installedLicenses.xml -Xms128m Xmx768m -XX-MaxPermSize=256m -Dsun.rmi.dyc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</code></span> </li>
+              <li class="li step"><span class="ph cmd">Set the memory to a minimum of <strong class="ph b">4096 M</strong>  and a maximum of <strong class="ph b">6144 M</strong>, depending on your computer's memory capabilities.</span> </li>
+              <li class="li step"><span class="ph cmd">Start the Tomcat server or service.</span> </li>
+            </ol>
+            <p class="pentaho-note">&nbsp;Make sure to also
+              <a class="xref" title="Increase the PDI Client Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_PDI_Client_Memory_Limit">increase the Spoon memory limit</a> .</p>
+            <div class="section result">&nbsp;</div>
+            <div class="section result">Your Tomcat server now has increased minimum and maximum memory limits. You can adjust the <span class="ph filepath">JvmMx</span>  parameter to specify a higher maximum limit if you prefer. However, if the Java virtual machine refuses to start
+              with increased limits, then you will have to add more RAM to your system, stop some memory-intensive services, or reduce the maximum memory limit. This problem occurs when there is not enough contiguous memory available to assign to the
+              JVM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_manual">
+        <div id="section_4" class="mt-page-section"><span id="Increase_Pentaho_Server_Memory_Limit_for_Custom_Installations_on_Windows_or_Linux"></span> 
+          <h2 class="editable">Increase Pentaho Server Memory Limit for Custom Installations on Windows or Linux</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used a custom method to install PDI on your Windows or Linux machine, you can increase memory limits by editing the Tomcat or JBoss startup script as described in the article
+                <a target="_blank" title="Starting the Pentaho Server after Manual Installation"
+                rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0/0P0/Starting_the_Pentaho_Server_after_Manual_Installation">Starting the Pentaho Server after Manual Installation. </a> If you used the Pentaho Installation Wizard to install PDI, then refer to the previous sections of this article.</p>
+              <div class="note note"><span class="notetitle">Note:</span>  Make sure to also
+                <a class="xref" title="Increase the PDI Client Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_PDI_Client_Memory_Limit">increase the Spoon memory limit</a> .</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Increase_Pentaho_Server_Memory_Limit_for_Installations_on_Windows" rel="internal">Increase Pentaho Server Memory Limit for Installations on Windows</a>  </li>
+      <li> <a href="#Increase_Pentaho_Server_Memory_Limit_for_Installations_on_Linux" rel="internal">Increase Pentaho Server Memory Limit for Installations on Linux</a>  </li>
+      <li> <a href="#Increase_Pentaho_Server_Memory_Limit_for_Custom_Installations_on_Windows_or_Linux" rel="internal">Increase Pentaho Server Memory Limit for Custom Installations on Windows or Linux</a>  </li>
+    </ol>
+  </body>
+</content>

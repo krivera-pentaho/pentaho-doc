@@ -1,0 +1,122 @@
+<content type="text/html" title="Enable Logging">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">The logging functionality in Data Integration enables you to more easily troubleshoot complex errors and failures, and measure performance. &nbsp;Here is how to turn on&nbsp;logging in Data Integration.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Create a database or table space called <strong class="ph b">pdi_logging</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Start Spoon, and open a transformation or job for which you want to enable logging.</span> </li>
+          <li class="li step"><span class="ph cmd">Go to the <strong class="ph b">Edit</strong>  menu and select <strong class="ph b">Settings...</strong> </span>  The <span class="ph uicontrol">Settings</span>  dialog appears.</li>
+          <li class="li step"><span class="ph cmd">Select the <strong class="ph b">Logging</strong>  tab.</span> </li>
+        </ol>
+        <p class="li step"><span class="ph cmd">&#8203;<a class="thumb" title="logging.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/4822/logging.png"><img alt="logging.png" class="internal default" style="width: 550px; height: 391px;" width="550px" height="391px" src="http://help.pentaho.com/@api/deki/files/4822/logging.png?size=bestfit&amp;width=550&amp;height=391&amp;revision=1" /></a> </span> </p>
+        <ol class="ol steps" start="5">
+          <li class="li step"><span class="ph cmd">In the list on the left, select the function you want to log.</span> </li>
+          <li class="li step"><span class="ph cmd">Click the <strong class="ph b">New</strong>  button next to the <strong class="ph b">Log Connection</strong>  field.</span>  The <strong class="ph b">Database Connection</strong>  dialogue appears.</li>
+          <li class="li step"><span class="ph cmd">Enter your database connection details, then click <strong class="ph b">Test</strong>  to ensure that they are correct. Click <strong class="ph b">OK</strong>  when you are done.</span> </li>
+          <li class="li step"><span class="ph cmd">Look through the list of fields to log, and ensure that the correct fields are selected.</span> 
+            <div class="note warning"><span class="warningtitle">Warning:</span>  Monitoring the <strong class="ph b">LOG_FIELD</strong>  field can negatively impact BA Server or DI Server performance. However, if you don't select all fields, including LOG_FIELD, when configuring
+              transformation logging, you will not see information about this transformation in the Operations Mart logging.</div>
+          </li>
+        </ol>
+        <div class="section result">Logging is enabled for the job or transformation.</div>
+        <div class="section postreq">When you run a job or transformation that has logging enabled, you have the option of choosing the log verbosity level in the execution dialogue:
+          <ul class="ul">
+            <li class="li"><strong class="ph b">Nothing</strong>  Do not record any output</li>
+            <li class="li"><strong class="ph b">Error</strong>  Only show errors</li>
+            <li class="li"><strong class="ph b">Minimal</strong>  Only use minimal logging</li>
+            <li class="li"><strong class="ph b">Basic</strong>  This is the default level</li>
+            <li class="li"><strong class="ph b">Detailed</strong>  Give detailed logging output</li>
+            <li class="li"><strong class="ph b">Debug</strong>  For debugging purposes, very detailed output</li>
+            <li class="li"><strong class="ph b">Row level</strong>  Logging at a row level. This will generate a lot of log data</li>
+          </ul>
+          <p class="p">If the <strong class="ph b">Enable time</strong>  option is enabled, all lines in the logging will be preceded by the time of day.</p>
+        </div>
+      </div>
+      <div id="section_1" class="mt-page-section"><span id="Log_Rotation"></span> 
+        <h2 class="editable">Log Rotation</h2>
+        <div class="topic task nested1" id="0b9101da-dc25-464e-bd2d-3a76404667b4__task_pvz_4nr_2l">
+          <div class="body taskbody">
+            <div class="section prereq p">This procedure assumes that you do not have or do not want to use an operating system-level log rotation service. If you are using such a service on your Pentaho server, connect to the BA Server and Data Integration Server and use that instead
+              of implementing this solution.</div>
+            <div class="section context">
+              <p class="p">The Business Analysis and Data Integration servers use the Apache log4j Java logging framework to store server feedback. The default settings in the log4j.xml configuration file may be too verbose and grow too large for some production environments.
+                Follow these instructions to modify the settings so that Pentaho server log files are rotated and compressed.</p>
+            </div>
+            <ol class="ol steps" id="0b9101da-dc25-464e-bd2d-3a76404667b4__task_pvz_4nr_2l__d279e148">
+              <li class="li step"><span class="ph cmd">Stop all relevant Pentaho servers.</span> </li>
+              <li class="li step"><span class="ph cmd">Download a .zip archive of the Apache Extras Companion for log4j package: <a class="xref external" target="_blank" title="http://archive.apache.org/dist/logging/log4j/companions/extras/" rel="external nofollow" href="http://archive.apache.org/dist/logging/log4j/companions/extras/">Apache Logging Services</a> .</span> </li>
+              <li class="li step"><span class="ph cmd">Unpack the <strong class="ph b">apache-log4j-extras</strong>  JAR file from the zip archive, and copy it to the following locations:</span> 
+                <ul class="ul" id="0b9101da-dc25-464e-bd2d-3a76404667b4__task_pvz_4nr_2l__d279e175">
+                  <li class="li"><strong class="ph b">Business Analytics Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho/WEB-INF/lib/</span> </li>
+                  <li class="li"><strong class="ph b">Data Integration Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho-di/WEB-INF/lib/</span> </li>
+                </ul>
+              </li>
+              <li class="li step" value="4"><span class="ph cmd">Edit the <strong class="ph b">log4j.xml</strong>  settings file for each server that you are configuring. The files are in the following locations:</span> 
+                <ul class="ul" id="0b9101da-dc25-464e-bd2d-3a76404667b4__task_pvz_4nr_2l__d279e204">
+                  <li class="li"><strong class="ph b">BA Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho/WEB-INF/classes/</span> </li>
+                  <li class="li"><strong class="ph b">DI Server:</strong>  <span class="ph filepath">/tomcat/webapps/pentaho-di/WEB-INF/classes/</span> </li>
+                </ul>
+              </li>
+              <li class="li step" value="5"><span class="ph cmd">Remove all <strong class="ph b">PENTAHOCONSOLE</strong>  appenders from the configuration.</span> </li>
+              <li class="li step"><span class="ph cmd">Modify the <strong class="ph b">PENTAHOFILE</strong>  appenders to match the log rotation conditions that you prefer.</span>  You may need to consult the log4j documentation to learn more about configuration options. Two
+                examples that many Pentaho customers find useful are listed:
+                <p class="p"><strong class="ph b">Daily (date-based) log rotation with compression:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><appender name=&quot;PENTAHOFILE&quot; class=&quot;org.apache.log4j.rolling.RollingFileAppender&quot;>
+
+    <!-- The active file to log to; this example is for BA/DI Server.-->
+    <param name=&quot;File&quot; value=&quot;../logs/pentaho.log&quot; />
+    <param name=&quot;Append&quot; value=&quot;false&quot; />
+    <rollingPolicy class=&quot;org.apache.log4j.rolling.TimeBasedRollingPolicy&quot;>
+
+        <!-- See javadoc for TimeBasedRollingPolicy -->
+        <param name=&quot;FileNamePattern&quot; value=&quot;../logs/pentaho.%d.log.gz&quot; />
+    </rollingPolicy>
+    <layout class=&quot;org.apache.log4j.PatternLayout&quot;>
+        <param name=&quot;ConversionPattern&quot; value=&quot;%d %-5p [%c] %m%n&quot;/>
+    </layout>
+</appender></pre>
+                <p class="p"><strong class="ph b">Size-based log rotation with compression:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><appender name=&quot;PENTAHOFILE&quot; class=&quot;org.apache.log4j.rolling.RollingFileAppender&quot;>
+
+    <!-- The active file to log to; this example is for BA/DI Server.-->
+    <param name=&quot;File&quot; value=&quot;../logs/pentaho.log&quot; />
+    <param name=&quot;Append&quot; value=&quot;false&quot; />
+    <rollingPolicy class=&quot;org.apache.log4j.rolling.FixedWindowRollingPolicy&quot;>
+        <param name=&quot;FileNamePattern&quot; value=&quot;../logs/pentaho.%i.log.gz&quot; />
+        <param name=&quot;maxIndex&quot; value=&quot;10&quot; />
+        <param name=&quot;minIndex&quot; value=&quot;1&quot; />
+    </rollingPolicy>
+    <triggeringPolicy class=&quot;org.apache.log4j.rolling.SizeBasedTriggeringPolicy&quot;>
+
+        <!-- size in bytes -->
+        <param name=&quot;MaxFileSize&quot; value=&quot;10000000&quot; />
+    </triggeringPolicy>
+    <layout class=&quot;org.apache.log4j.PatternLayout&quot;>
+        <param name=&quot;ConversionPattern&quot; value=&quot;%d %-5p [%c] %m%n&quot; />
+    </layout>
+</appender></pre> </li>
+              <li class="li step"><span class="ph cmd">Save and close the file, then start all affected servers to test the configuration.</span> </li>
+            </ol>
+            <div class="section result">You have an independent log rotation system in place for all modified Pentaho servers.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Log_Rotation" rel="internal">Log Rotation</a>  </li>
+    </ol>
+  </body>
+</content>

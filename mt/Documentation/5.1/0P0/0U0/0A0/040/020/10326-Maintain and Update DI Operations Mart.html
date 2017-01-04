@@ -1,0 +1,124 @@
+<content type="text/html" title="Maintain and Update DI Operations Mart">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to maintain and update the DI Operations Mart.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Override_Kettle_Logging_Variable_Settings"></span> 
+        <h2 class="editable">Override Kettle Logging Variable Settings</h2>
+        <p>If you want to override the Kettle logging variable settings for where logging data is stored in a specific transformation or job, complete these steps. Even if you override those settings, logging information will be used to create Operations
+          Mart reports.</p>
+        <ol class="pentaho-list-ordered">
+          <li><span>From within Spoon, open a job or transformation.</span> </li>
+          <li><span>Select the <strong>View</strong>  tab, then right-click the job or transformation and select <strong>Transformation Settings</strong>  or <strong>Job Settings</strong> . </span> </li>
+          <li><span>Select the <strong>Logging</strong>  tab and choose the appropriate selection from the left pane.</span> </li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><span>For jobs, select <strong>Job</strong> .</span> </li>
+          <li><span>For transformations, select <strong>Transformation</strong> .</span> </li>
+        </ul>
+        <ol class="pentaho-list-ordered" start="4">
+          <li><span>In the <strong>Log Connection</strong>  field, enter or select the appropriate <span>database connection</span> . If you are using the default settings, choose <span class="filepath style-wrap">live_logging_info</span> . Otherwise, enter
+            or choose the database connection that reflects your environment's configuration.</span> 
+          </li>
+          <li><span>In the <strong>Log table name</strong>  field</span> </li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><span>For jobs, enter <span class="filepath style-wrap">LOG_JOB</span> .</span> 
+          </li>
+          <li><span>For transformations, enter <span class="filepath style-wrap">LOG_TRANS</span> .</span> 
+          </li>
+        </ul>
+        <ol class="pentaho-list-ordered" start="6">
+          <li><span>In order to collect row input or output information for jobs or transformations, for instance for throughput calculations, specify an Input and output step for each transformation that collects external input or output data.</span> </li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><span>For <span class="filepath style-wrap">LINES_INPUT</span>, specify the step collecting external input data.</span> 
+          </li>
+          <li><span>For <span class="filepath style-wrap">LINES_OUTPUT</span>, specify the step collecting output data.</span> 
+          </li>
+        </ul>
+        <ol class="pentaho-list-ordered" start="7">
+          <li><span>Ensure all entries under <strong>Fields To Log</strong>  are selected. &nbsp;If the <span class="filepath style-wrap">LOG_JOB</span>  or <span class="filepath style-wrap">LOG_TRANS</span>  table has not been created in the database, click
+            the <strong>SQL</strong>  button and then click the <strong>Execute</strong>  button in the subsequent dialog box.</span> 
+          </li>
+          <li><span>Click <strong>OK</strong> .</span> </li>
+          <li><span>In the <strong>Monitoring</strong>  tab in the <strong>Transformation Properties</strong>  or <strong>Job Properties</strong>  window, check the box labeled <strong>Enable step performance monitoring?</strong> </span> </li>
+          <li><span>Click <strong>OK</strong>  to exit the dialog box, then save the job or transformation. </span> </li>
+        </ol>
+        <p>The DI Operations Mart is configured to collect ETL logging data.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Update_Operations_Mart"></span> 
+        <h2 class="editable">Update Operations Mart&nbsp;</h2>
+        <p>You can monitor the latest performance of your ETL operations by updating the logging data within the DI Operations Mart. As a prerequisite, the Operations Mart must have previously been created&nbsp;and configured with the logging data&nbsp;you
+          want to collect.</p>
+        <p>Your data logs need to be updated if you modified these types of data.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Logging table</li>
+          <li><span>Database connection</span> </li>
+          <li><span>Transformation step</span> </li>
+          <li><span>Job entry</span> </li>
+        </ul>
+        <p><span>You must update and then populate the executor and log dimensions table if you want to log the most current data. </span> </p>
+        <p>If you modified the logging table, database connection, operations mart transformation steps or job entries, you need to manually update the DI operations mart executor, log dimension tables, and then refresh the data.</p>
+        <ol class="pentaho-list-ordered">
+          <li>From within Spoon, select <strong>Tools</strong>  > <strong>Repository</strong>  > <strong>Explore</strong> .</li>
+          <li><span>Select <strong>pdi_operations_mart</strong> .</span> </li>
+          <li><span>Choose the appropriate job or transformation from the table.</span> </li>
+        </ol>
+        <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th>If you want to</th>
+              <th>Choose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Update the executor and log dimension tables.</td>
+              <td><span class="filepath style-wrap">Update Executor and Log Table Dimensions.ktr</span> </td>
+            </tr>
+            <tr>
+              <td>Populate the Pentaho Operations Mart with the logging information <em>without</em>  updating executor and log dimension tables.</td>
+              <td><span class="filepath style-wrap">Update_Logging_Datamart.kjb</span> </td>
+            </tr>
+            <tr>
+              <td>Update the executor and log dimension tables with the latest logging data. Then, update the Pentaho Operations Mart with that new data.</td>
+              <td><span class="filepath style-wrap">Update_Dimensions_then_Logging_Datamart.kjb</span> </td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>Schedule the&nbsp;<span class="filepath style-wrap">Update_Logging_Datamart.kjb</span>  job to run periodically. For more information on how to schedule the job, see <em>Scheduling Transformations and Jobs From Spoon</em> .</li>
+        </ol>
+        <p>&nbsp;The job or transformation runs. The Operations Mart updates and/or populates with the latest logging data.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Clean_Up_Operations_Mart_Tables"></span> 
+        <h2 class="editable">Clean Up Operations Mart Tables</h2>
+        <p>Cleaning up the PDI Operation Mart consists of running a job or transformation that deletes data older than the specified maximum age. The transformation and job for cleaning up the PDI Operations Mart can be found in the &quot;etl&quot; folder.</p>
+        <ol class="pentaho-list-ordered">
+          <li><span>In Spoon, open&nbsp;<span class="filepath style-wrap">Clean_up_PDI_Operations_Mart.kjb, then set</span> </span> <span style="line-height: 1.5;">&nbsp;these parameters.</span> </li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><strong><span>max.age</span> </strong> <span> (required)&mdash;the maximum age in days of the data. Job and transformation data older than the maximum age will be deleted from the datamart.</span> </li>
+          <li><strong><span>schema.prefix</span> </strong> <span> (optional)&mdash;for PostgreSQL databases, enter the schema name followed by a period (.), this will be applied to the SQL statements. For other databases, leave the value blank.</span> </li>
+        </ul>
+        <ol class="pentaho-list-ordered" start="2">
+          <li>Data that was not within the specified date range is now deleted.</li>
+          <li>To schedule regular clean up of the PDI Operations Mart, see <span><span>Create DI Solutions</span> </span> .</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Override_Kettle_Logging_Variable_Settings" rel="internal">Override Kettle Logging Variable Settings</a>  </li>
+      <li> <a href="#Update_Operations_Mart" rel="internal">Update Operations Mart&nbsp;</a>  </li>
+      <li> <a href="#Clean_Up_Operations_Mart_Tables" rel="internal">Clean Up Operations Mart Tables</a>  </li>
+    </ol>
+  </body>
+</content>

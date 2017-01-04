@@ -1,0 +1,66 @@
+<content type="text/html" title="Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>Once you have
+        <a class="xref" title="Specify Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server">chosen to use either the Native (JDBC) or OCI access protocol</a>, there are configuration and maintenance tasks that you need to perform.</p>
+      <div id="section_1" class="mt-page-section"><span id="Add_Drivers"></span> 
+        <h2 class="editable">Add Drivers</h2>
+        <p class="p">The Pentaho Server needs the appropriate driver to connect to the database that stores your data. Your database administrator, Chief Intelligence Officer, or IT manager should be able to provide the appropriate driver. If not, you can download
+          drivers from your database vendor's website. The
+          <a class="xref" title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000">Supported Technologies</a>  section contains a list of drivers.</p>
+        <p class="p">Once you have the correct driver, copy it to the following directories:</p>
+        <ul>
+          <li class="p"><strong>Pentaho Server</strong> : <span class="ph filepath">/pentaho/server/pentaho-server/tomcat/lib/</span> </li>
+          <li class="p"><strong>Spoon</strong> : <span class="ph filepath">data-integration/lib&nbsp;</span> </li>
+        </ul>
+        <p class="pentaho-note" style="margin-left: 40px;">You must restart Spoon for the driver to take effect.</p>
+        <p class="p">There should be only one driver for your database in the&nbsp;directory. Ensure that there are no other versions of the same vendor's driver in this directory. If there are, back up the old driver files and remove them to avoid version conflicts.
+          This is a concern when you are adding a driver for the same database type as your Pentaho&nbsp;Repository. If you have any concerns about how to proceed, contact
+          <a class="xref" title="Additional Resources" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Additional_Resources">Pentaho Support</a> .</p>
+        <p class="p">When the driver files are in place, restart the server.</p>
+        <p class="p"><strong class="ph b">Driver for Microsoft SQL Server</strong> </p>
+        <p class="p">If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+          <a class="xref" title="Additional Resources" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Additional_Resources">Pentaho Support</a>  to ensure that you are adding the correct driver.</p>
+        <p class="p">For Microsoft Windows, most JDBC drivers support Type 2 integrated authentication through the <span class="ph filepath">integratedSecurity</span>  connection string property. To use integrated authentication, copy the <span class="ph filepath">sqljdbc_auth.dll</span>           file to all machines and directories to which you copied the JDBC driver. You can find this file in the following location:</p>
+        <div class="filepath style-wrap">
+          <div class="filepath style-wrap">
+            <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><installation directory>\sqljdbc_<version>\<language>\auth\</pre>
+          </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="1dcd1ca0-f592-4732-938d-12cab14beb53__add_driver_for_ba__table_zvv_by2_wk" rules="all" summary="">
+          <thead align="left" class="thead">
+            <tr class="row">
+              <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e135" valign="top">If running:</th>
+              <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e138" valign="top">Use the sqljdbc_auth.dll file here:</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr class="row">
+              <td class="entry" headers="d5948e135 d5948e138 " valign="top">64-bit JVM on a x64 processor</td>
+              <td class="entry" headers="d5948e135 d5948e138 " valign="top">x64 folder</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d5948e135 d5948e138 " valign="top">64-bit JVM on an Itanium processor</td>
+              <td class="entry" headers="d5948e135 d5948e138 " valign="top">IA64 folder</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Add_Drivers" rel="internal">Add Drivers</a>  </li>
+    </ol>
+  </body>
+</content>

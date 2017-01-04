@@ -1,0 +1,225 @@
+<content type="text/html" title="LDAP Properties">
+  <body>
+    <script type="text/javascript">
+      /*<![CDATA[*/ < script >
+        (function(i, s, o, g, r, a, m) {
+          i['GoogleAnalyticsObject'] = r;
+          i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+          }, i[r].l = 1 * new Date();
+          a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+          a.async = 1;
+          a.src = g;
+          m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+      ga('create', 'UA-69496435-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    /*]]>*/</script>
+    <div>
+      <div class="body refbody">
+        <p>You can configure LDAP values by editing the <span class="ph filepath">/pentaho-solutions/system/applicationContext-security-ldap.properties</span>  file in your BA Server or DI Server directory, or through the User Console for the BA Server (the
+          LDAP options in the console apply only to the BA Server, not the DI Server).</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Connection_Information_(Context)"></span> 
+            <h2 class="editable">Connection Information (Context)</h2>
+            <p class="p">These entries define connections involving LDAP users (typically administrators) that can execute directory searches.</p>
+          </div>
+        </div>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__security_ldap_properties__table_pfj_4fm_mj" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e37" valign="top">LDAP Property</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e40" valign="top">Purpose</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e43" valign="top">Example</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">contextSource.providerUrl</td>
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">LDAP connection URL</td>
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">contextSource.providerUrl=
+                  <a class="external" href="ldap://holly:389/DC=Valyant,DC=local" rel="freeklink" title="ldap://holly:389/DC=Valyant,DC=local">ldap://holly:389/DC=Valyant,DC=local</a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">contextSource.userDn</td>
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">Distinguished name of a user with read access to directory</td>
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">contextSource.userDn=CN= Administrator, CN=Users,DC=Valyant,DC=local</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">contextSource.password</td>
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">Password for the specified user</td>
+                <td class="entry" headers="d81757e37 d81757e40 d81757e43 " valign="top">contextSource.password=secret</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Users"></span> 
+            <h2 class="editable">Users</h2>
+            <p class="p">These options control how the LDAP server is searched for user names that are entered in the Pentaho login dialog box.</p>
+            <div class="note note"><span class="notetitle">Note:</span>  The <strong class="ph b">{0}</strong>  token will be replaced by the user name from the login dialogue.</div>
+            <div class="note note"><span class="notetitle">Note:</span>  The example above defines <strong class="ph b">DC=Valyant,DC=local</strong>  in <strong class="ph b">contextSource.providerURL</strong> . Given that definition, you would not need to repeat that in
+              <strong
+              class="ph b">userSearch.searchBase</strong>  below because it will be appended automatically to the defined value here.</div>
+          </div>
+        </div>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__security_ldap_properties__table_wsr_bzn_pj" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e124" valign="top">LDAP Property</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e127" valign="top">Purpose</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e130" valign="top">Example</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d81757e124 d81757e127 d81757e130 " valign="top">userSearch.searchBase</td>
+                <td class="entry" headers="d81757e124 d81757e127 d81757e130 " valign="top">Base (by user name) for user searches</td>
+                <td class="entry" headers="d81757e124 d81757e127 d81757e130 " valign="top">userSearch.searchBase=CN=Users</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e124 d81757e127 d81757e130 " valign="top">userSearch.searchFilter</td>
+                <td class="entry" headers="d81757e124 d81757e127 d81757e130 " valign="top">Filter (by user name) for user searches. The attribute you specify here must contain the value that you want your users to log into Pentaho with. Active Directory user names are represented by<span class="ph uicontrol">sAMAccountName</span>                   ; full names are represented by <span class="ph uicontrol">displayName</span> .</td>
+                <td class="entry" headers="d81757e124 d81757e127 d81757e130 " valign="top">userSearch.searchFilter= (sAMAccountName={0})</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Populator"></span> 
+            <h2 class="editable">Populator</h2>
+            <p class="p">The populator matches fully distinguished user names from <strong class="ph b">userSearch</strong>  to distinguished role names for roles those users belong to.</p>
+            <div class="note note"><span class="notetitle">Note:</span>  The {0} token will be replaced with the user DN found during a user search; the {1} token is replaced with the user name entered in the login screen.</div>
+          </div>
+        </div>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__security_ldap_properties__table_ffq_kzn_pj" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e194" valign="top">LDAP Property</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e197" valign="top">Purpose</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e200" valign="top">Example</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.convertToUpperCase</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">Indicates whether or not retrieved role names are converted to uppercase</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.convertToUpperCase=false</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.groupRoleAttribute</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">The attribute to get role names from</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.groupRoleAttribute=cn</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.groupSearchBase</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">Base (by user DN or user name) for role searches.</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.groupSearchBase=ou= Pentaho</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.groupSearchFilter</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">The special nested group filter for Active Directory is shown in the example; this will not work with non-MSAD directory servers.</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.groupSearchFilter= (memberof:1.2.840.113556.1.4.1941: =({0}))</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.rolePrefix</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">A prefix to add to the beginning of the role name found in the group role attribute; the value can be an empty string.</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.rolePrefix=</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">populator.searchSubtree</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 " valign="top">Indicates whether or not the search must include the current object and all children. If set to <span class="ph uicontrol">false</span>, the search must include the current object only.</td>
+                <td class="entry" headers="d81757e194 d81757e197 d81757e200 "
+                valign="top">populator.searchSubtree=true</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div id="section_4" class="mt-page-section"><span id="All_Authorities_Search"></span> 
+            <h2 class="editable">All Authorities Search</h2>
+            <p class="p">These entries populate the BA Server Access Control List (ACL) roles. These should be similar or identical to the Populator entries.</p>
+          </div>
+        </div>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__security_ldap_properties__table_kxd_5zn_pj" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e303" valign="top">LDAP Property</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e306" valign="top">Purpose</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e309" valign="top">Example</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">allAuthoritiesSearch.roleAttribute</td>
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">The attribute used for role values</td>
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">allAuthoritiesSearch.roleAttribute=cn</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">allAuthoritiesSearch.searchBase</td>
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">Base for &quot;all roles&quot; searches</td>
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">allAuthoritiesSearch.searchBase=ou= Pentaho</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">allAuthoritiesSearch.searchFilter</td>
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 " valign="top">Filter for &quot;all roles&quot; searches. Active Directory requires that the <span class="ph uicontrol">objectClass</span>  value be set to <span class="ph uicontrol">group</span> .</td>
+                <td class="entry" headers="d81757e303 d81757e306 d81757e309 "
+                valign="top">allAuthoritiesSearch.searchFilter= (objectClass=group)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div id="section_5" class="mt-page-section"><span id="All_user_name_search"></span> 
+            <h2 class="editable">All user name search</h2>
+            <p class="p">These entries populate the BA Server ACL users.</p>
+          </div>
+        </div>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__security_ldap_properties__table_hvl_5zn_pj" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e378" valign="top">LDAP Property</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e381" valign="top">Purpose</th>
+                <th class="entry" id="a158b95d-d774-4b30-9a4b-b19e4aef27e3__d81757e384" valign="top">Example</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">allUsernamesSearch.username Attribute</td>
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">The attribute used for user values</td>
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">allUsernamesSearch.username Attribute= sAMAccountName</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">allUsernamesSearch.searchBase</td>
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">Base for &quot;all users&quot; searches</td>
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">allUsernamesSearch.searchBase= CN=users</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">allUsernamesSearch.searchFilter</td>
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">Filter for &quot;all users&quot; searches</td>
+                <td class="entry" headers="d81757e378 d81757e381 d81757e384 " valign="top">allUsernamesSearch.searchFilter= objectClass=person</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Connection_Information_(Context)" rel="internal">Connection Information (Context)</a>  </li>
+      <li> <a href="#Users" rel="internal">Users</a>  </li>
+      <li> <a href="#Populator" rel="internal">Populator</a>  </li>
+      <li> <a href="#All_Authorities_Search" rel="internal">All Authorities Search</a>  </li>
+      <li> <a href="#All_user_name_search" rel="internal">All user name search</a>  </li>
+    </ol>
+  </body>
+</content>

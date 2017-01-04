@@ -1,0 +1,129 @@
+<content type="text/html" title="Export Data from BA Server 4.8.x">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to use the Migrator Tool to export data from version 4.8.x of the BA Server.</p>
+        </div>
+      </div>
+      <p><span style="display: none;">&nbsp;</span> After you have prepared your environment, export data from the 4.8.x version of the server.</p>
+      <div id="section_2" class="mt-page-section"><span id="Stop_4.8.x_Version_of_the_Server"></span> 
+        <h2 class="editable">Stop 4.8.x Version of the Server</h2>
+        <p><span style="display: none;">&nbsp;</span> Stop the 4.8.x version of the BA Server, as well as the web application server. To do this, complete these steps.</p>
+        <p>1. Log out of the <strong>User Console</strong>  and stop the server.&nbsp;
+          <br /> 2. Ensure the web application server on which the server is deployed has also been stopped.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Ensure_4.8.x_BA_Repository_Database_Is_Running"></span> 
+        <h2 class="editable">Ensure 4.8.x BA Repository Database Is Running</h2>
+        <p><span style="display: none;">&nbsp;</span> Ensure the database that houses the 4.8.x version of the BA Repository is running. If it is not, start it.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Use_Migration_Tool_to_Export_Data_From_4.8.x_Version_of_the_Server"></span> 
+        <h2 class="editable">Use Migration Tool to Export Data From 4.8.x Version of the Server</h2>
+        <p><span style="display: none;">&nbsp;</span> Use the Migration Tool to export solution and generated content, data sources, schedules, user preferences, as well as users and roles from the 4.8.x server. The Prepare DI Migration Plan step outlines
+          the data that the Migration Tool exports. Exported data is saved in a migration bundle file. A log file that contains additional details about the extraction process is also stored in the migration bundle file. After you complete the tasks in
+          this section, you will import this migration bundle file. Instructions for that appear in the next section of this documentation.</p>
+        <p>To use the Migration Tool to import data, complete these steps.</p>
+        <ol class="pentaho-list-ordered">
+          <li>If you have not done so already, identify the paths to the pentaho-solutions diretory, where the BA Server is deployed, as well as paths to additional servlets or jar files that you want to export.</li>
+          <li>Open a <strong>Terminal </strong> or <strong>Command Prompt </strong> window, then navigate to the directory where the Migration Tool is installed.</li>
+          <li>Issue a command in the <strong>Terminal </strong> or <strong>Command Prompt </strong> windows that indicates the action you want the Migration Tool to perform, as well as the locations to the pentaho-solutions directory, the path to the webapps
+            file, and optionally any additional servlets and jar files that you want to migrate. Also indicate where you want the Migration Tool to place the migration bundle file.&nbsp; The Migration Tool command contains these parameters: &#9702;</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td style="width: 162px;">Parameter</td>
+              <td style="width: 514px;">Description</td>
+            </tr>
+            <tr>
+              <td style="width: 162px;">
+                <p><span class="filepath style-wrap">export</span> </p>
+              </td>
+              <td style="width: 514px;">
+                <p>Indicates this is an export command. This parameter is required if you want to export a migration bundle file.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;">
+                <p><span class="filepath style-wrap">migration-bundle-file</span> </p>
+              </td>
+              <td style="width: 514px;">
+                <p>Specifies the directory where you want the migration file to be stored. This parameter is optional. If you do not supply it, the migration bundle file is stored in the same directory where the Migration Tool is installed.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;">
+                <p><span class="filepath style-wrap">pentaho-solutions-dir</span> </p>
+              </td>
+              <td style="width: 514px;">
+                <p>Indicates the path to the&nbsp;pentaho-solutions&nbsp;directory for the 4.8.x version of the BA Server. This parameter is required.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;">
+                <p><span class="filepath style-wrap">pentaho-war</span> </p>
+              </td>
+              <td style="width: 514px;">
+                <p>Indicates the path where the 4.8.x version of the BA Server is deployed. This parameter is required.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 162px;">
+                <p><span class="filepath style-wrap">extra-paths</span> </p>
+              </td>
+              <td style="width: 514px;">
+                <p>Indicates the files in your&nbsp;classpath&nbsp;that are needed to run the BA Server. Files in the&nbsp;classpath&nbsp;include&nbsp;JDBC&nbsp;drivers, the servlet.api file, and any relevant configuration folders. Whether you include this
+                  parameter depends on the platform on which your BA Server is deployed.&nbsp;<em>If your BA Server is deployed on Tomcat</em>, do NOT include the extra-paths parameter because the&nbsp;classpaths&nbsp;are sensed by the Migration Tool
+                  when you run it.&nbsp;<em>If your BA Server is deployed on another web application server</em>, use the extra-paths parameter to the files indicated in your&nbsp;classpath.&nbsp;</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="pentaho-list-unordered">
+          <li>
+            <p><strong>Windows</strong> : Enter a migration command that follows this format in the Command Prompt window that uses the parameters described at the beginning of this step. Make sure that you specify a unique, but descriptive name for the migration
+              bundle file. The command should be formatted like this example.</p>
+          </li>
+        </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">migrator.bat --export --migration-bundle-file=C:\Users\pentaho\migrationBAExport.zip --pentaho-solutions-dir=C:\Users\pentaho\biserver-4.8\biserver-ee\pentaho-solutions --pentaho-war=C:\Users\pentaho\biserver-4.8\biserver-ee\tomcat\webapps\pentaho --extra-paths=C:Users\pentaho\biserver-4.8\biserver-ee\company-reports\,\Users\pentaho\mycompany\biserver-ee\company-libs\company.jar</pre>
+        <ul class="pentaho-list-unordered">
+          <li><strong>Linux</strong> : Enter a command that follows this format in the Terminal window that uses the parameters described at the beginning of this step. The command should be formatted like this example.</li>
+        </ul> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./migrator.sh --export --migration-bundle-file=/Users/mycompany/migrationBAExport.zip --pentaho-solutions-dir=/Users/mycompany/biserver-4.8/biserver-ee/pentaho-solutions --pentaho-war=/Users/mycompany/biserver-4.8/biserver-ee/tomcat/webapps/pentaho --extra-paths=/Users/mycompany/biserver-ee/company-reports/,/Users/mycompany/biserver-ee/company-libs/company.jar</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>The Migration Tool runs. The progress of the tool is displayed in the Command Prompt or Terminal window.</li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Verify_Export_Process"></span> 
+        <h2 class="editable">Verify Export Process</h2>
+        <p>To verify that the migration bundle has been created properly and that data was extracted, do these things.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open a <strong>Terminal </strong> or <strong>Command Prompt</strong>  window and navigate to the directory where the migration bundle file is stored.&nbsp;&nbsp;</li>
+          <li>Verify that the bundle exists and that the file size is not zero.</li>
+          <li>Navigate to the directory where the Migration Tool was installed. The migrator.log file should appear. The migrator.log file contains a log of the export process.</li>
+          <li>Open the migrator.log file and note any failures or errors. If any failures or errors exist, you might need to migrate that data manually.&nbsp;</li>
+          <li>Close the file, then rename the migrator.log file to something else. It is very important that you do this. If you do not rename the file, the migrator.log file will be overwritten when you perform the tasks in the Import Data to New Server
+            step. We suggest that you name the file something meaningful to you, like migrator_ba_export_09212013.log.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Stop_4.8.x_Version_of_the_Server" rel="internal">Stop 4.8.x Version of the Server</a>  </li>
+      <li> <a href="#Ensure_4.8.x_BA_Repository_Database_Is_Running" rel="internal">Ensure 4.8.x BA Repository Database Is Running</a>  </li>
+      <li> <a href="#Use_Migration_Tool_to_Export_Data_From_4.8.x_Version_of_the_Server" rel="internal">Use Migration Tool to Export Data From 4.8.x Version of the Server</a>  </li>
+      <li> <a href="#Verify_Export_Process" rel="internal">Verify Export Process</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,92 @@
+<content type="text/html" title="Working with Measures in Analyzer">
+  <body>
+    <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+      <h2 class="editable">Overview</h2>
+      <p style="visibility: visible;">In Analyzer, you can work with measures in several ways to accomplish tasks, such as renaming a measure and creating a calculated measure. When updating the details of a measure or adding a calculated measure, you are making changes to the data
+        model from within Analyzer. When you save these changes, they are now a part of the data source for other users to access. We call these types of changes to the data source <em>inline modeling</em>  since these changes are reflected immediately
+        in the data source you are working with. This approach allows you to make model changes easily in Analyzer which benefits other users immediately.</p>
+      <p style="visibility: visible;">To make these types of changes, you must be assigned the 'Manage Data Sources' operation permission in Users and Roles. For more information on setting and maintaining permissions and roles for users, see
+        <a href="/Documentation/6.0/0H0/060/010/040/000"
+        rel="internal" title="https://help.pentaho.com/Documentation/6.0/0H0/060/010/040/000">Use Pentaho Security</a> .</p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Updating_Measure_Properties"></span> 
+      <h2 style="visibility: visible;" class="editable">Updating Measure Properties</h2>
+      <p>You can update the properties on a <em>base measure </em> from within Analyzer. For example, you may want to rename 'QTY' to 'Quantity,' or change the aggregation method from a sum to an average. When you make and save such a change to a measure,
+        you are making a change to the data source which will affect all users who are creating reports based on that data source.</p>
+      <p class="pentaho-note">You can only update the properties for base measures, not for calculated measures which were added to the data source in Analyzer or PDI.</p>
+      <p>These instructions assume you are creating or editing a report in Analyzer.</p>
+      <ol class="pentaho-list-ordered">
+        <li>In the Available fields list on the left, click the name of the measure you want to edit, and then click the down arrow&nbsp; to the right of the measure name. A shortcut menu appears.</li>
+        <li>Click <strong>Properties</strong> . The Properties dialog box appears. Note that the Properties menu option is only available for base measures and not for calculated measures added to the data source.</li>
+        <li>You can edit the following fields.
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="116" style="table-layout: fixed;" title="Pentaho Table" width="613">
+            <tbody>
+              <tr>
+                <td style="width: 217px;"><strong>Field</strong> </td>
+                <td style="width: 373px;"><strong>Description</strong> </td>
+              </tr>
+              <tr>
+                <td style="width: 217px;">Display Name</td>
+                <td style="width: 373px;">The name of the measure as it displays in the model.</td>
+              </tr>
+              <tr>
+                <td style="width: 217px;">Aggregation</td>
+                <td style="width: 373px;">Select an aggregation type using the drop-down list. Options include:
+                  <ul>
+                    <li>SUM</li>
+                    <li>AVERAGE</li>
+                    <li>COUNT</li>
+                    <li>COUNT_DISTINCT</li>
+                    <li>MINIMUM</li>
+                    <li>MAXIMUM</li>
+                  </ul> Note that COUNT and COUNT-DISTINCT are only applicable for non-numeric fields.</td>
+              </tr>
+              <tr>
+                <td style="width: 217px;">Format</td>
+                <td style="width: 373px;">Choose how this measure should be formatted, such as currency, general number, or percentage. Use the drop-down arrow to select a format from a system-defined list, or select the 'Text' icon next to the field to enter a custom format.</td>
+              </tr>
+            </tbody>
+          </table>
+        </li>
+        <li>When finished editing, click <strong>OK </strong> to save and apply your changes, or <strong>Cancel </strong> to close the dialog box without saving your changes to the measure.</li>
+      </ol>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Adding_a_Calculated_Measure_to_the_Data_Source"></span> 
+      <h2 class="editable">Adding a Calculated Measure to the Data Source</h2>
+      <p style="visibility: visible;">Calculated measures are user-defined measures based on a user's customizations to base measures in the data model. By applying a formula, in this case an MDX statement, to a selected base measure, the user creates a calculated measure to use in
+        her Analyzer report.</p>
+      <p style="visibility: visible;">In Pentaho 6.0, you can save your calculated measure to the data model while creating or editing your report in Analyzer. Previously, if you wanted to add a calculated measure to the model for others to use in their reports, you had to submit a
+        request to IT and wait until it was available. Now you can save the calculated measure to the model from within Analyzer so you can use that new measure without reloading your report. In addition, after you save your report, other users can benefit
+        immediately from your calculated measure.</p>
+      <p style="visibility: visible;">If you want to create a calculated measure to only use in the report, see
+        <a title="Using Calculated Measures in an Analyzer Report" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/120/030/Using_Calculated_Measures_in_an_Analyzer_Report#Creating_a_Calculated_Measure_in_a_Report">Creating a Calculated Measure in a Report</a> .</p>
+      <div id="section_4" class="mt-page-section"><span id="To_Add_a_New_Calculated_Measure_to_the_Data_Source"></span> 
+        <h4 style="visibility: visible;" class="editable">To Add a New Calculated Measure to the Data Source</h4>
+        <p style="visibility: visible;">When you create a calculated measure using a measure in the Available Fields list in Analyzer, it is added to the data source when you save your report. To create a calculated measure within Analyzer, create or open an existing report in Analyzer.</p>
+        <ol class="pentaho-list-ordered">
+          <li>In the Available Fields list, click a measure to select it and then click the down arrow next to it.</li>
+          <li>From the shortcut menu which appears, select <strong>Create Calculated Measure</strong> . The New Calculated Measure dialog box appears.</li>
+          <li>In the Name field, enter a name for your calculated measure.</li>
+          <li>In the Format field, specify how you want the results of your measure to appear in your report. Optionally, specify the number of decimal places for the results.</li>
+          <li>In the right panel, enter the formula for your calculated measure. You can write the MDX statement, or you can use the list on the left to drag measures into the right panel. You can also use the symbol buttons below to help create your statement,
+            or just use your keyboard to write the expression.</li>
+          <li>Select the <strong>Calculate subtotals using measure formula </strong> check box to use this calculated measure when adding up subtotals in your report.</li>
+          <li>Click <strong>OK</strong>  to save this calculated measure. When you save your report, your calculated measure will also be saved to the data model. Once you save the report, the measure will be available for future reports which use this data
+            source.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Updating_Measure_Properties" rel="internal">Updating Measure Properties</a>  </li>
+      <li>
+        <a href="#Adding_a_Calculated_Measure_to_the_Data_Source" rel="internal">Adding a Calculated Measure to the Data Source</a> 
+        <ol>
+          <li> <a href="#To_Add_a_New_Calculated_Measure_to_the_Data_Source" rel="internal">To Add a New Calculated Measure to the Data Source</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

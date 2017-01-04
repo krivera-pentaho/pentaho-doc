@@ -1,0 +1,38 @@
+<content type="text/html" title="Disable Drill-Through Links">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">You can permanently disable drill-through links for all analysis reports by editing the <strong class="ph b">analyzer.properties</strong>  file, or you can disable drill-through links on a cube-by-cube basis. Both methods are described in these
+            steps.</p>
+        </div>
+        <ol class="ol steps" id="fd35b147-baea-4d2b-b71b-71976aac67dc__task_nested_H1__steps_yz4_d1v_rm">
+          <li class="li step"> <span class="ph cmd"><strong class="ph b">Global Disable</strong> : Follow these steps to disable drill-through links for all cubes and analysis data sources.</span> 
+            <ol type="a" class="ol substeps" id="fd35b147-baea-4d2b-b71b-71976aac67dc__task_nested_H1__substeps_jj3_qkf_tm">
+              <li class="li substep"> <span class="ph cmd">Open your <strong class="ph b">analyzer.properties</strong>  file with a text editor and look for the property called <code class="ph codeph">report.drill.links.disabled</code>.</span>  </li>
+              <li class="li substep"> <span class="ph cmd">Set the value from <strong class="ph b">false</strong>  to <strong class="ph b">true</strong>  as shown here.</span> 
+                <p class="p"><strong class="ph b">From:</strong> </p> <pre class="pre codeblock"><code class="ph codeph">report.drill.links.disabled=false</code>
+</pre>
+                <p class="p"><strong class="ph b">To:</strong> </p> <pre class="pre codeblock"><code class="ph codeph">report.drill.links.disabled=true</code>
+</pre> </li>
+            </ol>
+            <p class="p">&nbsp;</p>
+            <p class="p">Drill-through links are now disabled for all cubes and analysis data sources. The option for drill-through links is no longer visible on the Report Options dialog box.</p>
+            <p class="p">&nbsp;</p>
+          </li>
+          <li class="li step"> <span class="ph cmd"><strong class="ph b">Individual Cubes</strong> : Follow these steps to disable drill-through links on a cube-by-cube basis. </span> 
+            <ol type="a" class="ol substeps" id="fd35b147-baea-4d2b-b71b-71976aac67dc__task_nested_H1__substeps_hgh_xkf_tm">
+              <li class="li substep"> <span class="ph cmd">Open the schema for the particular cube on which you want to disable drill-through links. </span>  </li>
+              <li class="li substep"> <span class="ph cmd">Find the Cube element in the schema file and add this annotation to disable the links: </span> 
+                <div class="p"> <pre class="pre codeblock"><code class="ph codeph"><Annotations><Annotation name=&quot;AnalyzerDisableDrillLinks&quot;>true</Annotation></Annotations></code></pre> </div>
+              </li>
+              <li class="li substep"> <span class="ph cmd">Save and close the schema.</span>  </li>
+            </ol>
+            <p class="p">Drill-through links are now completely disabled for that cube, and the option to show drill-through links is no longer visible on the Report Options dialog box for the cube.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

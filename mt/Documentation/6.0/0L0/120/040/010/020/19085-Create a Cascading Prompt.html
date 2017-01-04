@@ -1,0 +1,59 @@
+<content type="text/html" title="Create a Cascading Prompt">
+  <body>
+    <p class="p">A cascading prompt changes based on the value a user selects. For example, when the value in the drop-down list 'Country'&nbsp; changes, this prompt is automatically applied to the second prompt, <strong>'City'</strong>  which changes its values.</p>
+    <div id="section_1" class="mt-page-section"><span id="Use_Case:_Creating_a_Country-City_Cascading_Prompt"></span> 
+      <h3 class="editable">Use Case: Creating a Country-City Cascading Prompt</h3>
+      <p>
+        <img alt="File:/82_cascading_filter_sample.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_79330da9-9f21-41b9-8143-b4f97a094957" src="http://help.pentaho.com/@api/deki/files/6600/82_cascading_filter_sample.png?revision=1"
+        />
+      </p>
+      <ol class="pentaho-list-ordered">
+        <li class="p">Use a Metadata List to create the drop-down prompt <strong>'Country'</strong> .</li>
+      </ol>
+      <center>
+        <img alt="File:/84_cascading_metadata_query_sample_filter.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_7733b1c8-7529-41c8-8c9b-13cf77722a1a" src="http://help.pentaho.com/@api/deki/files/6601/84_cascading_metadata_query_sample_filter.png?revision=1"
+        />
+      </center>
+      <ol class="pentaho-list-ordered" start="2">
+        <li class="p">Use a SQL List which includes a parameter, <strong class="ph b">${selected_country}</strong>, in its associated query for the check box prompt '<strong class="ph b">City'. </strong> </li>
+      </ol>
+      <center>
+        <img alt="File:/85_cascading_sql_query_sample_filter.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_23ef537e-46d9-43ef-ba1a-9a55977f6be6" src="http://help.pentaho.com/@api/deki/files/6602/85_cascading_sql_query_sample_filter.png?revision=1"
+        />
+      </center>
+      <ol class="pentaho-list-ordered" start="3">
+        <li class="p">Set the 'Default Value' for the <strong class="ph b">selected_country</strong>  parameter to '<strong class="ph b">USA'</strong>  with New York City ('<strong class="ph b">NYC'</strong> ) as the initially selected value for the check box prompt.</li>
+      </ol>
+      <center>
+        <img alt="File:/86_cascading_sql_query_parm.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_4df09320-ce31-4b82-8e32-6912b5f95597" src="http://help.pentaho.com/@api/deki/files/6603/86_cascading_sql_query_parm.png?revision=1"
+        />
+      </center>
+      <ol class="pentaho-list-ordered" start="4">
+        <li class="p">To link the City prompt to the Country prompt, another <strong class="ph b">Source</strong>  for the <strong class="ph b">selected_country</strong>  parameter was chosen. The alternate source is the <strong class="ph b">Country</strong>  prompt.
+          When the prompts are linked, users can choose a country and then choose a city (or cities) in the country of their choice.</li>
+      </ol>
+      <center>
+        <img alt="File:/87_cascading_filter_select_source.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_de6293f1-7a76-4270-b7bc-37f010c9beeb" src="http://help.pentaho.com/@api/deki/files/6604/87_cascading_filter_select_source.png?revision=1"
+        />
+      </center>
+      <p class="p">Using this example, the report designer can now add a data table, chart, or other content in the dashboard which can be driven by the prompt he or she just created. Suppose the designer decides to add a pie chart to the dashboard. The pie chart
+        will display the percentage of sales per city. In the Query Editor, the report designer creates a parameter, {<strong class="ph b">City</strong> }, with an extended default value: <strong class="ph b">NYC|Las Vegas</strong> . The resulting pie chart
+        displays values for New York City and Las Vegas. Under the Parameters tab associated with the pie chart, the <strong class="ph b">Source</strong>  value for the City parameter is changed to the <strong class="ph b">City</strong>  prompt.</p>
+      <p
+      class="p">
+        <img alt="File:/88_cascading_filter_init_piechrt.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_1da9bb9a-f4a6-4624-b3c5-6cdc7ae1c947" src="http://help.pentaho.com/@api/deki/files/6605/88_cascading_filter_init_piechrt.png?revision=1"
+        />
+        </p>
+        <p class="p">When the report is saved, users of the dashboard can see results for a country and multiple cities in that country.</p>
+        <p class="p">
+          <img alt="File:/89_cascading_filter_final_piechrt.png" class="image internal" id="cb2a0ee5-c8ec-4e5e-8458-bfdab3a4cba6__concept_creating_cascading_filter__image_97e4318d-3c87-49d2-b7e2-f8a7d3f1cfb3" src="http://help.pentaho.com/@api/deki/files/6606/89_cascading_filter_final_piechrt.png?revision=1"
+          />
+        </p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Use_Case:_Creating_a_Country-City_Cascading_Prompt" rel="internal">Use Case: Creating a Country-City Cascading Prompt</a>  </li>
+    </ol>
+  </body>
+</content>

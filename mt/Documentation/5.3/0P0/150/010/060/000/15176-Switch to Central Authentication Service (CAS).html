@@ -1,0 +1,65 @@
+<content type="text/html" title="Switch to Central Authentication Service (CAS)">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>Pentaho integrates with Central Authentication Service (CAS). You must have a CAS server installed and running before you continue.</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Stop the BA Server.</li>
+        <li class="li step">Download the
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://repo1.maven.org/maven2/org/jasig/cas/cas-client-core/3.1.5/cas-client-core-3.1.5.jar">cas-client-core-3.1.5.jar</a>  and copy it to <span class="filepath style-wrap"><span class="ph filepath">biserver-ee/tomcat/webapps/pentaho/WEB-INF/lib</span> </span>  folder.</li>
+        <li class="li step">Download the
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://repo1.maven.org/maven2/org/springframework/security/spring-security-cas-client/2.0.5.RELEASE/spring-security-cas-client-2.0.5.RELEASE.jar">spring-security-cas-client-2.0.5.RELEASE.jar</a>  and copy it to <span class="filepath style-wrap"><span class="ph filepath">biserver-ee/tomcat/webapps/pentaho/WEB-INF/lib</span> </span>  folder.</li>
+        <li class="li step">Open the <span class="filepath style-wrap">pentaho-spring-beans.xml</span>  file with any file editor and update it as follows.
+          <ol class="ol substeps" id="acc7ec11-6ba5-4f19-a141-e43bb6b044b2__admin_authorization__substeps_cx4_fhp_gl" type="a">
+            <li class="li substep">Add <span class="filepath style-wrap"><import resource=&quot;applicationContext-spring-security-cas.xml&quot; /></span>  to the list of imports after all other <span class="filepath style-wrap">applicationContext*.xml</span>  files.</li>
+          </ol>
+        </li>
+        <li class="li step">Open the <span class="filepath style-wrap">applicationContext-spring-security-cas.xml</span>  file with any file editor and update it as follows.
+          <ol class="ol substeps" id="acc7ec11-6ba5-4f19-a141-e43bb6b044b2__admin_authorization__substeps_wv1_shp_gl"
+          type="a">
+            <li class="li substep">Change all the references of this URL
+              <a class="link-https" href="https://localhost:8443/cas" rel="freeklink" title="https://localhost:8443/cas">https://localhost:8443/cas</a>  to your working CAS server URL if you are using SSL.</li>
+            <li class="li substep">If you are not using Pentaho with SSL, then update references to this URL:
+              <a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a> .</li>
+            <li class="li substep">Find the bean for <span class="filepath style-wrap">casAuthenticationProvider.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;casAuthenticationProvider&quot;
+class=&quot;org.springframework.security.providers.cas.CasAuthenticationProvider&quot;>
+<property name=&quot;userDetailsService&quot;>
+ <ref bean=&quot;userDetailsService&quot; />
+</property></pre> Change it based on your configuration to the appropriate one as shown below. You must use the publicly available IP address for all URLs in this file. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">casAuthenticationProvider.MemoryUserDetailsService</pre>              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">casAuthenticationProvider.hibernateUserDetailsService</pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">casAuthenticationProvider.jdbcUserDetailsService</pre>              <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">casAuthenticationProvider.ldapUserDetailsService</pre> </li>
+          </ol>
+        </li>
+        <li class="li step">Add the following in their respective sections to the <span class="filepath style-wrap">web.xml</span> . <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><servlet>
+  <servlet-name>casFailed</servlet-name>
+  <jsp-file>/jsp/casFailed.jsp</jsp-file>
+</servlet></pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><servlet-mapping>
+  <servlet-name>casFailed</servlet-name>
+  <url-pattern>/public/casFailed</url-pattern>
+</servlet-mapping></pre> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+<listener>
+    <listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>  
+</listener>
+--></pre> </li>
+        <li class="li step">If you are using a self-signed certificate, you must do these steps. If not, follow the instructions in step 8.
+          <ol class="ol substeps" id="acc7ec11-6ba5-4f19-a141-e43bb6b044b2__admin_authorization__substeps_ssn_dvg_dm" type="a">
+            <li class="li substep">For <span class="filepath style-wrap">memory</span>  only, open the <span class="filepath style-wrap">applicationContext-spring-security-memory.xml</span>  with a file editor and search for the <span class="filepath style-wrap">DaoAuthenticationProvider </span> bean.
+              Add <span class="filepath style-wrap">id=authenticationProvider</span>  to the bean.</li>
+            <li class="li substep">Make sure that <span class="filepath style-wrap">SSL</span>  is enabled on CAS.</li>
+          </ol>
+        </li>
+        <li class="li step">Start the BA Server.</li>
+      </ol>
+      <p>The BA Server is now configured to authenticate users against your central authentication server.</p>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

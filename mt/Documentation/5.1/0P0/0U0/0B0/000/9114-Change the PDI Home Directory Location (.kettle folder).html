@@ -1,0 +1,39 @@
+<content type="text/html" title="Change the PDI Home Directory Location (.kettle folder)">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The default location for the Pentaho Data Integration home directory is the <strong class="ph b">.kettle</strong>  directory in your system user's home directory.</p>
+        <ul class="ul">
+          <li class="li"><strong class="ph b">Windows:</strong>  <span class="ph filepath">C:\Documents and Settings\example_user\.kettle</span> </li>
+          <li class="li"><strong class="ph b">Linux:</strong>  <span class="ph filepath">~/.kettle</span> )</li>
+        </ul>
+        <p class="p">There will be a different .kettle directory, and therefore a different set of configuration files, for each system user that runs PDI.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Standalone_PDI_client_tool_deployments"></span> 
+            <h2 class="editable">Standalone PDI client tool deployments</h2>
+            <p class="p">You can specify a single, universal .kettle directory for all users by declaring a KETTLE_HOME environment variable in your operating system. When declaring the variable, leave out the <strong class="ph b">.kettle</strong>  portion of it; this
+              is automatically added by PDI.</p> <pre class="pre codeblock">export KETTLE_HOME=/home/pentaho/examplepath/pdi</pre> </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="BA_Server_deployments_that_run_PDI_content"></span> 
+            <h2 class="editable">BA Server deployments that run PDI content</h2>
+            <p class="p">If you followed a manual deployment or archive package installation path, you can set a system environment variable as explained above, but it must be declared before the BA Server service starts. You can alternatively change the <strong class="ph b">CATALINA_OPTS</strong>               system variable to include the -D flag for KETTLE_HOME, or you can edit the script that runs the BA Server and set the flag inline, as in this example from the <strong class="ph b">start-pentaho.sh</strong>  script:</p> <pre class="pre codeblock">export CATALINA_OPTS=&quot;--Xms2048m -Xmx2048m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot; -DKETTLE_HOME=/home/pentaho/examplepath/pdi</pre>            </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Windows_service_modification"></span> 
+            <h2 class="editable">Windows service modification</h2>
+            <p class="p">If you used the graphical utility to install the DI Server, then you must modify the Java options flag that runs the BA Server Tomcat service. Here is an example command that will change the value of KETTLE_HOME to <span class="ph filepath">C:\<examplepath>\pdi\.kettle</span> :</p>
+            <pre class="pre codeblock">tomcat6.exe //US//pentahobiserver ++JvmOptions -DKETTLE_HOME=C:\examplepath\pdi</pre>
+            <p class="p">Modify the <strong class="ph b">DI Server</strong>  in the same way, changing the service name:</p> <pre class="pre codeblock">tomcat6.exe //US//pentahoDataIntegrationServer ++JvmOptions -DKETTLE_HOME=C:\<examplepath>\pdi</pre> </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Standalone_PDI_client_tool_deployments" rel="internal">Standalone PDI client tool deployments</a>  </li>
+      <li> <a href="#BA_Server_deployments_that_run_PDI_content" rel="internal">BA Server deployments that run PDI content</a>  </li>
+      <li> <a href="#Windows_service_modification" rel="internal">Windows service modification</a>  </li>
+    </ol>
+  </body>
+</content>

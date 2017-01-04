@@ -1,0 +1,64 @@
+<content type="text/html" title="Configure LDAP for the DI Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to configure LDAP for the DI Server.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section prereq p">
+          <div class="body taskbody">
+            <div class="section prereq p">You must have a working directory server with an established configuration before continuing.</div>
+            <div class="section context">
+              <p class="p">Follow the instructions below to manually switch from&nbsp;Pentaho&nbsp;default security to&nbsp;LDAP&nbsp;security.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Stop the DI Server.</span> </li>
+              <li class="li step"><span class="ph cmd">Change the&nbsp;<code class="ph codeph">securities.properties</code>&nbsp;file located in&nbsp;<span class="ph filepath">/pentaho-solutions/system</span> &nbsp;folder from<code class="ph codeph">&nbsp;provider=jackrabbit</code>&nbsp;to&nbsp;
+                <code
+                class="ph codeph">provider=ldap</code>&nbsp;.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Save and close the file, then edit the&nbsp;<span class="ph filepath">/pentaho-solutions/system/applicationContext-security-ldap.properties</span> &nbsp;file and modify the&nbsp;<strong class="ph b">localhost</strong> &nbsp;and&nbsp;
+                <strong
+                class="ph b">password</strong> &nbsp;to match your configuration.</span>  <pre class="pre codeblock">
+<code class="ph codeph">contextSource.providerUrl=ldap\://<strong class="ph b">localhost</strong> \:10389/ou\=system</code></pre> <pre class="pre codeblock">
+<code class="ph codeph">contextSource.password=<strong class="ph b">secret</strong> </code></pre> </li>
+              <li class="li step">
+                <div dir="ltr">Update <strong>adminRole </strong> and <strong>adminUser </strong> for your system, replacing <strong>adminRole </strong> with the administrator role that you have</div>
+                <div dir="ltr">defined in your LDAP server, and replacing <strong>adminUser </strong> with the user name that has the administrator role assigned</div>
+                <div dir="ltr">to it.</div> <pre class="pre codeblock">
+<code class="ph codeph">adminRole=cn\=Administrator,ou\=roles
+adminUser=uid\=admin,ou\=users</code></pre> </li>
+              <li class="li step"><span class="ph cmd">Save and close the file, then edit the following files in the&nbsp;<span class="ph filepath">/pentaho/server/data-integration-server/pentaho-solutions/system/</span> &nbsp;directory and change all instances of the&nbsp;
+                <strong
+                class="ph b">Administrator</strong> &nbsp;and&nbsp;<strong class="ph b">Authenticated</strong> &nbsp;role values to match the appropriate roles in your&nbsp;LDAP&nbsp;configuration:</span> pentaho.xmlrepository.spring.propertiesapplicationContext-spring-security.xml
+                  <ul class="ul">
+                    <li class="li">pentaho.xml</li>
+                    <li class="li">repository.spring.properties</li>
+                    <li class="li">applicationContext-spring-security.xml</li>
+                  </ul>
+              </li>
+              <li class="li step"><span class="ph cmd">Delete these two folders from the&nbsp;<code class="ph codeph">/pentaho/server/data-integration-server/pentaho-solutions/system/jackrabbit/repository</code>&nbsp;directory:</span> 
+                <ul class="ul" id="f197e044-99bf-4109-b5f8-881089ac8174__admin_ldap_dao__ul_pm1_mpx_5m">
+                  <li class="li">repository</li>
+                  <li class="li">workspaces</li>
+                </ul>
+              </li>
+              <li class="li step"><span class="ph cmd">Restart the DI Server.</span> </li>
+            </ol>
+            <div class="section result">The DI Server is now configured to authenticate users against your directory server. The&nbsp;
+              <a class="xref" title="Documentation/5.1/150/010/030/010" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/150/010/030/010">LDAP&nbsp;Properties</a> &nbsp;reference article contains supplemental information for&nbsp;LDAP&nbsp;values.</div>
+          </div>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

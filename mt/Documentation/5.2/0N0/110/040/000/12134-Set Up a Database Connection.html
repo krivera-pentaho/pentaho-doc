@@ -1,0 +1,80 @@
+<content type="text/html" title="Set Up a Database Connection">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A connection represents connection information of a specific database, and acts as the parent in the hierarchy for all physical tables and physical columns that are defined for that database. </p>
+        <p class="p">Pentaho metadata models can connect to most common relational databases using JDBC. The Pentaho Metadata Editor (and the Pentaho Metadata Architecture) supports a vast and rich set of data sources. Before you begin defining your business model,
+          you must first describe the database or data source that you would like to model. You do this by defining one or more connections in the editor.</p>
+        <p class="p">
+          <img alt="PME Data Source" class="image internal" src="http://help.pentaho.com/@api/deki/files/2648/04_pme_data_source.png?revision=1" /> </p>
+        <div class="note note"><span class="notetitle">Note:</span>  While the current implementation of Pentaho Metadata Editor supports multiple connections and multiple business models in the same domain, each business model must use physical objects (columns and tables)
+          from a single connection only. </div>
+        <p class="p">To create a new connection...</p>
+        <div class="tablenoborder">
+          <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all">
+            <thead class="thead" align="left">
+              <tr class="row">
+                <th class="entry" valign="top" id="61fe88b1-6e37-4871-9f3a-dc2260ba4567__d3269e42">Step</th>
+                <th class="entry" valign="top" id="61fe88b1-6e37-4871-9f3a-dc2260ba4567__d3269e45">Description</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">1</td>
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">Right-click <strong class="ph b">Connections</strong>  in the navigation pane.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">2</td>
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">Select <strong class="ph b">New Connection</strong> .The <strong class="ph b">Database Connection</strong>  dialog box appears. </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">3</td>
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">Enter a <strong class="ph b">Connection Name</strong> .</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">4</td>
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">Define your database connection as needed.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">5</td>
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">Click <strong class="ph b">Test</strong>  to ensure that your entries as correct. </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">6</td>
+                <td class="entry" valign="top" headers="d3269e42 d3269e45 ">Click <strong class="ph b">OK</strong>  to save your connection. The list of tables in your database to be imported appear. If you want to find a specific table, enter the table name in the search box or use a regular expression. Select
+                  the tables you want to import and click <strong class="ph b">OK</strong>  or <strong class="ph b">Cancel</strong>  when you are done.
+                  <div class="note note"><span class="notetitle">Note:</span>  You don't need to import tables at this point. See
+                    <a class="xref" title="Documentation/5.1/0N0/110/040/010" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0N0/110/040/010">Importing Physical Tables and Columns</a>  for more information.</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Connection_Types_-_Adding_a_New_Database_Type"></span> 
+            <h2 class="editable">Connection Types - Adding a New Database Type</h2>
+            <p class="p">First, note the <strong class="ph b">Connection Type</strong>  list in the dialog box. This is the list of database connections that the Pentaho Metadata Editor and metadata models can support. The list is quite extensive. If you do not see
+              your database in the Connection Type list, you may be able to add it. </p>
+            <p class="p">To add a new database type, you must copy the JDBC driver archive for your database into the PME install directory <code class="ph codeph">...\metadata-editor\lib</code>. Restart the Pentaho Metadata Editor, and you will see your database
+              in the Connection Type list. </p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Method_of_Access"></span> 
+            <h2 class="editable">Method of Access</h2>
+            <p class="p">Under Connection Type, you will see the <strong class="ph b">Access</strong>  list. Defining a JDBC or OBDC connection typically requires all of the remaining fields associated with the <strong class="ph b">General</strong>  tab to have the
+              correct information; however, if you are into abstracting those details from your metadata domain, then use the JNDI method of access. </p>
+            <p class="p">The JNDI access method keeps your server implementation cleaner as well; once you publish your domain to the server, as long as you have defined the JNDI connections with the same names, you still have a good implementation where your database
+              information is only described to the JNDI layer. To take advantage of the JNDI method of access in the Pentaho Metadata Editor, you must define your database connection information in a properties file for the editor. </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Connection_Types_-_Adding_a_New_Database_Type" rel="internal">Connection Types - Adding a New Database Type</a>  </li>
+      <li> <a href="#Method_of_Access" rel="internal">Method of Access</a>  </li>
+    </ol>
+  </body>
+</content>

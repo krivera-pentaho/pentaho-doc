@@ -1,0 +1,50 @@
+<content type="text/html" title="Troubleshooting Geo Maps">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Geo_Maps_Partially_Rendering"></span> 
+        <h2 class="editable">Geo Maps Partially Rendering</h2>
+        <p class="p">If your Geo Map visualizations in Analyzer are not correctly displaying, it's possible that the BA Server is not giving them enough time to fully render.</p>
+        <p class="p">There is a static length of time that the BA Server waits for a Geo Map to finish rendering before the image is captured; this allows for all map tiles to be downloaded and points to be plotted. The default wait time is <strong class="ph b">1200 milliseconds</strong>,
+          and it is set through the <strong class="ph b"><map-export-javascript-delay></strong>  node in the <span class="ph filepath">/pentaho-solutions/system/pentaho-geo/settings.xml</span>  file:</p> <pre class="pre codeblock">
+<map-export-javascript-delay>1200</map-export-javascript-delay>
+</pre> </div>
+      <div id="section_2" class="mt-page-section"><span id="Extend_the_Cache_Value_for_Geo_Maps"></span> 
+        <h2 class="editable">Extend the Cache Value for Geo Maps</h2>
+        <p>If you run a Geo Map report and you do not see all of the points on the map that you expected, one thing you could try is extending the cache value for Geo Maps.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the <span class="filepath style-wrap">...biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes</span>  directory and open <span class="filepath style-wrap">ehcache.xml</span>  with a text editor.</li>
+          <li>Look for the <span class="filepath style-wrap">cache </span> element and change the value for <span class="filepath style-wrap">maxElementsInMemory </span> to a larger number.</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><cache
+    name=&quot;pentaho-geo-{CUSTOM_ROLE_TYPE}&quot;
+    maxElementsInMemory=&quot;1000&quot;
+    eternal=&quot;false&quot;
+    overflowToDisk=&quot;true&quot;
+    timeToIdleSeconds=&quot;0&quot;
+    timeToLiveSeconds=&quot;0&quot;
+    diskPersistent=&quot;false&quot;
+    diskExpiryThreadIntervalSeconds=&quot;120&quot;
+  /></pre>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Save and close the <span class="filepath style-wrap">ehcache.xml</span>  file.</li>
+          <li>Restart the BA Server.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Geo_Maps_Partially_Rendering" rel="internal">Geo Maps Partially Rendering</a>  </li>
+      <li> <a href="#Extend_the_Cache_Value_for_Geo_Maps" rel="internal">Extend the Cache Value for Geo Maps</a>  </li>
+    </ol>
+  </body>
+</content>

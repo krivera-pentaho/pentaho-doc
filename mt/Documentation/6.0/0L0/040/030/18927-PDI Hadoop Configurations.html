@@ -1,0 +1,77 @@
+<content type="text/html" title="PDI Hadoop Configurations">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides information on Hadoop configurations.</p>
+        </div>
+      </div>
+      <div class="body refbody">
+        <div class="section">
+          <p>Within PDI, a Hadoop configuration is the collection of Hadoop libraries required to communicate with a specific version of Hadoop and related tools, such as Hive HBase, Sqoop, or Pig.</p>
+          <p>Hadoop configurations are defined in the <span class="ph filepath">plugin.properties</span>  file and are designed to be easily configured within PDI by changing the <span class="ph filepath">active.hadoop.configuration</span>  property. The
+            <span
+            class="ph filepath">plugin.properties</span>  file resides in the <span class="ph filepath">pentaho-big-data-plugin/</span>  folder.</p>
+          <div class="p">
+            <p>All Hadoop configurations share a basic structure. Elements of the structure are defined in the table following this code block.</p> <pre>
+configuration/
+|-- lib/
+|--  |-- client/
+|--  |-- pmr/
+|--  '-- *.jar
+|-- config.properties
+|-- core-site.xml
+`-- configuration-implementation.jar</pre> </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="0a7db645-765c-4c81-bf83-0a1531363de2__d5271e46" valign="bottom" width="NaN%">Configuration Element</th>
+              <th align="left" class="stentry propvaluehd" id="0a7db645-765c-4c81-bf83-0a1531363de2__d5271e49" valign="bottom" width="NaN%">Definition</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">lib/</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%">Libraries specific to the version of Hadoop this configuration was created to communicate with.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">client/</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%">Libraries that are only required on a Hadoop client, for instance <span class="ph filepath">hadoop-core-*</span>  or <span class="ph filepath">hadoop-client-*</span> </td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">pmr/</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%"><span class="ph filepath">Jar</span>  files that contain libraries required for parsing data in input/output formats or otherwise outside of any PDI-based execution.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">*.jar</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%">All other libraries required for Hadoop configuration that are not client-only or special <span class="ph filepath">pmr jar</span>  files that need to be available to the entire JVM of Hadoop job tasks.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">config.properties</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%">Contains metadata and configuration options for this Hadoop configuration. Provides a way to define a configuration name, additional classpath, and native libraries the configuration requires. See the comments in this file for more details.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">core-site.xml</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%">Configuration file that can be replaced to set a site-specific configuration, for example <span class="ph filepath">hdfs-site.xml</span>  would be used to configure HDFS.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d5271e46" valign="top" width="NaN%"><span class="ph filepath">configuration-implementation.jar</span> </td>
+              <td class="stentry propvalue" headers="d5271e49" valign="top" width="NaN%">File that must be replaced in order to communicate with this configuration.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/040/030/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/040/030/000">Create a New Hadoop Configuration</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/040/030/010" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/040/030/010">Include or Exclude Classes or Packages for a Hadoop Configuration</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

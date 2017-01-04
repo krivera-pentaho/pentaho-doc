@@ -1,0 +1,47 @@
+<content type="text/html" title="Pentaho MapReduce Workflow">
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">PDI and Pentaho MapReduce enables you to pull data from a Hadoop cluster, transform it, and pass it back to the cluster. Here is how you would approach doing this.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="PDI_Transformation"></span> 
+            <h2 class="editable">PDI Transformation</h2>
+            <p class="p">Start by deciding what you want to do with your data, open a PDI transformation, and drag the appropriate steps onto the canvas, configuring the steps to meet your data requirements. Drag the specifically-designed Hadoop <span class="ph uicontrol">MapReduce Input</span>               and Hadoop <span class="ph uicontrol">MapReduce Output</span>  steps onto the canvas. PDI provides these steps to completely avoid the need to write Java classes for this functionality. Configure both of these steps as needed. Once you have
+              configured all the steps, add hops to sequence the steps as a transformation. Follow the workflow as shown in this sample transformation in order to properly communicate with Hadoop. Name this transformation Mapper.</p>
+            <img alt="File:/hadoop_transformation_workflow.jpg"
+            class="image" id="e7a88e46-91ed-4b46-ac56-1e3557185c31__PDI_hadoop_workflow__image_m2g_xs4_zh" src="File:hadoop_transformation_workflow.jpg" />
+            <p class="p">Hadoop communicates in key/value pairs. PDI uses the <strong class="ph b">MapReduce Input</strong>  step to define how key/value pairs from Hadoop are interpreted by PDI. The <span class="ph uicontrol">MapReduce Input</span>  dialog box enables
+              you to configure the <span class="ph uicontrol">MapReduce Input</span>  step.</p>
+            <img alt="File:/hadoop_mr_input.jpg" class="image" id="e7a88e46-91ed-4b46-ac56-1e3557185c31__PDI_hadoop_workflow__image_p2g_xs4_zh" src="File:hadoop_mr_input.jpg"
+            />
+            <p class="p">PDI uses a <strong class="ph b">MapReduce Output</strong>  step to pass the output back to Hadoop. The <span class="ph uicontrol">MapReduce Output</span>  dialog box enables you to configure the <span class="ph uicontrol">MapReduce Output</span>               step.</p>
+            <img alt="File:/hadoop_mr_output.jpg" class="image" id="e7a88e46-91ed-4b46-ac56-1e3557185c31__PDI_hadoop_workflow__image_gfg_xs4_zh" src="File:hadoop_mr_output.jpg" />
+            <p class="p">What happens in the middle is entirely up to you. Pentaho provides many sample steps you can alter to create the functionality you need.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="PDI_Job"></span> 
+            <h2 class="editable">PDI Job</h2>
+            <p class="p">Once you have created the Mapper transformation, you are ready to include it in a <span class="ph uicontrol">Pentaho MapReduc</span> e job entry and build a MapReduce job. Open a PDI job and drag the specifically-designed <strong class="ph b">Pentaho MapReduce</strong>               job entry onto the canvas. In addition to ordinary transformation work, this entry is designed to execute mapper/reducer functions within PDI. Again, no need to provide a Java class to achieve this.</p>
+            <p class="p">Configure the <span class="ph uicontrol">Pentaho MapReduce</span>  entry to use the transformation as a mapper. Drag and drop a Start job entry, other job entries as needed, and result jobentries to handle the output onto the canvas. Add hops
+              to sequence the entries into a job that you execute in PDI.</p>
+            <p class="p">The workflow for the job should look something like this.</p>
+            <p class="p">
+              <img alt="File:/hadoop_transformation_job_workflow.jpg" class="image" id="e7a88e46-91ed-4b46-ac56-1e3557185c31__PDI_hadoop_workflow__image_art_z4p_zh" src="File:hadoop_transformation_job_workflow.jpg" />
+            </p>
+            <p class="p">The Pentaho <span class="ph uicontrol">MapReduce</span>  dialog box enables you to configure the Pentaho MapReduce entry.</p>
+            <img alt="File:/hadoop_transformation_job_config.jpg" class="image" id="e7a88e46-91ed-4b46-ac56-1e3557185c31__PDI_hadoop_workflow__image_jlw_4s4_zh"
+            src="File:hadoop_transformation_job_config.jpg" />
+          </div>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#PDI_Transformation" rel="internal">PDI Transformation</a>  </li>
+      <li> <a href="#PDI_Job" rel="internal">PDI Job</a>  </li>
+    </ol>
+  </body>
+</content>

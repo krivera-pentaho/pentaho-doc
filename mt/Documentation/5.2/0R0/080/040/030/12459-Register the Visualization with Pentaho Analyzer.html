@@ -1,0 +1,129 @@
+<content type="text/html" title="Register the Visualization with Pentaho Analyzer">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">After registering the component with the Visualization API, you need to register the component with Pentaho Analyzer. This step is necessary so that Analyzer can customize its layout panel for the visualization, and to manage the serialization
+          of the visualization's metadata.</p>
+        <p class="p">To register with Analyzer, create a file in the <span class="ph filepath">example-visualization/resources</span>  folder called <span class="ph filepath">example_analyzer_plugin.js</span>, and add the following content to the file: </p> <pre class="pre codeblock">
+var analyzerPlugins = analyzerPlugins || []; 
+analyzerPlugins.push( 
+{ 
+  init:function () { 
+	// Register visualizations to display in Analyzer 
+    cv.pentahoVisualizations.push(pentaho.visualizations.getById(
+      'pentaho_sample_KPI')); 
+    /* 
+     Helpers contain code that knows about the Analyzer specific context. The one 
+     function that's required &quot;generateOptionsFromAnalyzerState&quot; is called so the 
+     visualization can set its own options based on Analyzer's current report. 
+     */ 
+    cv.pentahoVisualizationHelpers['pentaho_sample_KPI'] = { 
+    // Use one of Analyzer's stock placeholder images. 
+    placeholderImageSrc: CONTEXT_PATH 
+      + 'content/analyzer/images/viz/VERTICAL_BAR.png', 
+    /*
+     This method allows a visualization to generate visualization specific 
+     options based on Analyzer&rsquo;s report definition.&nbsp;In the following example, 
+     this visualisation is setting a background color using the same background 
+     color setting in Chart Options. You can figure out the existing chart 
+     options by looking at the report XML by clicking the XML link in Analyzer.    
+     @return a hash object containing the custom state of your visualization.
+     */
+    generateOptionsFromAnalyzerState:function (report) { 
+      return {myBackgroundColor: 
+      report.reportDoc.getChartOption(&quot;backgroundColor&quot;)}; 
+    }
+  };
+    /*
+     LayoutConfig objects manage the interaction between Analyzer's Layout Panel
+     and the visualization's settings.
+     */
+    // Declare a new class which extends the built-in version from Analyzer. 
+    dojo.declare(&quot;SampleConfig&quot;, [analyzer.LayoutConfig], { 
+    /** 
+     * @param config    The parse Configuration object which serves 
+     *                  as the model of the Panel. 
+     * @param item      The item in the panel which originated the event. 
+     * @param eventName The name of the event (clicked, value, etc). 
+     * @param args      A Hash Object containing relevent values (prevVal, 
+     *                  newVal, etc). 
+     */ 
+    onModelEvent: function(config, item, eventName, args) {
+    if (eventName == &quot;value&quot;) {
+    // This component has a single argument, so we assume if this event is 
+    // fired it is for the aggregate option.
+    // This will update the visualization args with the new value for 
+    // aggregate. Also note that when the Analyser report is saved, a 
+    // snapshot of the visualization args will be saved to the report XML.
+    this.report.visualization.args['aggregate'] = 
+      config.byId('aggregate').value; 
+    //Add a report state item to the undo/redo history stack. 
+    this.report.history.add(new cv.ReportState(&quot;Update KPI Aggregation&quot;));
+    //Trigger a report refresh so that the visualization is updated with the
+    //change.
+    this.report.refreshReport();
+    }
+    this.inherited(arguments); 
+    // Let super class handle the insertAt and removedGem events. 
+    }
+  });
+    // Register the Layout Panel Configuration Manager. 
+    // Note that the string entry matches 'JSON_' plus the visualization id 
+    // defined earlier.
+    analyzer.LayoutPanel.configurationManagers['JSON_pentaho_sample_KPI'] = 
+      SampleConfig; 
+    }
+  }
+);
+</pre>
+        <p class="p">In this example, you register a single visualization with Analyzer. The object definition in this JavaScript contains three main components. The first is the <code class="ph codeph">init()</code> method call, this is called when Analyzer initializes
+          the visualization. In this method, the visualization registers all the necessary handlers for working directly with Analyzer. The two handlers are the <code class="ph codeph">VisualizationHelper</code> object and the <code class="ph codeph">LayoutConfig</code>          class.</p>
+        <p class="p">The <code class="ph codeph">VisualizationHelper</code> object contains code that is specific to getting your visualization to work in the context of Analyzer. The key function is to implement <code class="ph codeph">generateOptionsFromAnalyzerState</code>,
+          which is used to extract settings from the Analyzer report XML which can then be used in your own visualization.</p>
+        <p class="p">The Layout Panel in Analyzer is generated dynamically from the JSON data requirements definition of the visualization, which was defined in <em class="ph i">Pentaho Visualization API Registration</em> . For example, notice that the visualization
+          automatically generated Level, Measure, and Aggregation components based on the rows, measures, and aggregate dataReq items:</p>
+        <p class="p">
+          <img alt="File:/simple_config.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/2697/simple_config.png?revision=1" />
+        </p>
+        <p class="p"> In order for your visualization to respond to changes made in the panel, you registered the <code class="ph codeph">SampleConfig</code> configuration manager with Analyzer.</p>
+        <div class="p">Configuration Managers may extend the following methods:
+          <div class="tablenoborder">
+            <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all">
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" valign="top"><code class="ph codeph">getConfiguration()</code>:</td>
+                  <td class="entry" valign="top">Returns the layout panel definition.&nbsp; Normally, you will not need to extend this method.&nbsp; The default implementation in <code class="ph codeph">LayoutConfig</code> will create gembars for dataReqs with <code class="ph codeph">dataStructure = column or row</code>                    and restore the state by looking at the report XML attributes and measures.&nbsp; For custom properties such as the Aggregation dropdown in the above example, the default implementation will retrieve the current value from either the
+                    <code class="ph codeph">generateOptionsFromAnalyzerState</code> function or from the <code class="ph codeph">visualization.args</code> hash map.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top"><code class="ph codeph">updateConfiguration(config)</code>:</td>
+                  <td class="entry" valign="top">This is called on every report change and allows you to modify the layout panel state based on the current configuration. An example use case would be to make all gembars no longer required if any one of them contained at least one gem
+                    item.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top"><code class="ph codeph">checkAcceptance(source, nodes, silent)</code>:</td>
+                  <td class="entry" valign="top">Called by Drag and Drop operations in the panel. Return true if the operation is allowed. Normally you would not need to extend this method.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top"><code class="ph codeph">onModelEvent(config, item, eventName, args)</code>:</td>
+                  <td class="entry" valign="top">All layout panel interactions result in <code class="ph codeph">onModelEvent</code> calls to the active Configuration Manager. These events will typically do one of three things:
+                    <ul class="ul">
+                      <li class="li">Add, remove or move gems. The base <code class="ph codeph">LayoutConfig</code> will handle these events, update the report definition, and refresh the report.</li>
+                      <li class="li">Update report chart properties. When <code class="ph codeph">eventName</code> == &lsquo;value&rsquo; and the <code class="ph codeph">item.id</code> matches the property defined in the visualization dataReq, you can manually update
+                        the corresponding chart option in the report XML. The benefit of saving state in chart options is that it can be shared across visualizations. You can only set chart options that were previously supported in Analyzer, such as background
+                        color or label fonts/colors. </li>
+                      <li class="li">Update visualization args. When <code class="ph codeph">eventName</code> == &lsquo;value&rsquo; and the <code class="ph codeph">item.id</code> matches the property defined in the visualization dataReq, you can manually update the
+                        current visualization args. These changes will be passed back to you in the draw method&rsquo;s <code class="ph codeph">vizOptions</code> parameter. Anything stored in <code class="ph codeph">visualization.args</code> will be saved
+                        with the Analyzer report and is specific to your visualization only.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

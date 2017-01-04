@@ -1,0 +1,179 @@
+<content type="text/html" title="Integrate Pentaho with 3rd-Party Monitoring through SNMP">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+      </div>
+    </div>
+    <p>The main goal of the Simple Network Management Protocol&nbsp;(SNMP) plugin is to provide large enterprises a way to integrate with 3rd-party tools to monitor Data Integration (DI)&nbsp;events. The information received&nbsp;through&nbsp;SNMP will help
+      you figure out the run-time for your transformations or jobs and&nbsp;identify unusually long-running events impacting&nbsp;network performance. These&nbsp;SNMP&nbsp;events can be directly tied to a particular point in time within the execution,
+      such as the moment a transformation started, or a Kettle step finished execution. These events can be used in a&nbsp;broader scope, such as a successful database connection or a Carte server initialization.&nbsp;</p>
+    <p>The SNMP plugin works by leveraging&nbsp;
+      <a title="Available Extension Points for SNMP Monitoring" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Monitoring_System_Performance/Integrate_Pentaho_with_3rd-Party_Monitoring_through_SNMP/Available_Extension_Points_for_SNMP_Monitoring">existing extension points</a>  within the Kettle ecosystem to generate events.&nbsp;These events are then converted into SNMP traps, such as unsolicited or asynchronous messages, that are sent along from an SNMP agent. From there, the&nbsp;events
+      are forwarded&nbsp;to the SNMP manager, which is passively listening for such messages.</p>
+    <div id="section_2" class="mt-page-section"><span id="Before_You_Begin"></span> 
+      <h2 class="editable">Before You Begin</h2>
+      <p>You'll need to download&nbsp;a copy of the <span class="filepath style-wrap">Pentaho-MIB-V2C.mib</span> &nbsp;file from the
+        <a class="link-https" title="https://support.pentaho.com/hc" rel="external nofollow" href="https://support.pentaho.com/hc"
+        target="_blank">Pentaho&nbsp;Customer Support Portal</a> &nbsp;in order to set up a server to send SNMP traps. In order to <em>receive </em> trap events, you will need to have access to&nbsp;or be able to&nbsp;download and install&nbsp;a 3rd-party SNMP monitoring
+        tool, such as&nbsp;
+        <a class="link-https" href="https://www.nagios.org/" rel="external nofollow" target="_blank" title="https://www.nagios.org/">Nagios</a> &nbsp;or something comparable. Make sure that you<span>&nbsp;also&nbsp;know the IP addresses of your DI and monitoring servers. </span> </p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Send_Traps_through_a_Centralized_Monitoring_Server"></span> 
+      <h2 class="editable">Send Traps through&nbsp;a Centralized Monitoring Server</h2>
+      <p>One option for setting up SNMP monitoring on your network is to use one of your existing&nbsp;Pentaho&nbsp;Server as a JMS monitoring server&nbsp;to&nbsp;handle the trap events it receives from a queue. This&nbsp;server then forwards those&nbsp;events
+        available through SNMP to whichever 3rd-party monitoring tool you have installed.&nbsp;
+        <img alt="SNMP_op1.jpg" class="internal default" src="http://help.pentaho.com/@api/deki/files/11446/SNMP_op1.jpg?revision=1" />
+      </p>
+      <div id="section_4" class="mt-page-section"><span id="Step_1:_Configure_Pentaho_Server_to_Send_Trap_Events"></span> 
+        <h3 class="editable">Step 1:&nbsp;Configure Pentaho&nbsp;Server&nbsp;to Send Trap Events</h3>
+        <p>These steps guide you through the process of configuring the Pentaho Server to work together for SNMP monitoring.&nbsp;The Pentaho&nbsp;Server&nbsp;only needs to know your JMS monitoring server&rsquo;s IP address&nbsp;to start sending out messages
+          to an event queue. You can also set up the
+          <a title="Integrate Pentaho with 3rd-Party Monitoring through SNMP" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Monitoring_System_Performance/Integrate_Pentaho_with_3rd-Party_Monitoring_through_SNMP#Configuring_the_Type_of_Events_to_Be_Monitored">specific types of events&nbsp;you want to monitor</a> .&nbsp;<span style="line-height:1.5;">If the servers are on two different machines with different IP addresses, please make sure that they are able to establish communication by pinging.</span> </p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate this directory and open the&nbsp;the&nbsp;<span class="file path"><span class="filepath style-wrap">pentaho-osgi-config-1.0-6.0.0-snmp.cfg</span>  file in any text editor. </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">pentaho-solutions/system/karaf/system/pentaho/pentaho-osgi-config</pre>            </li>
+          <li>Find the property for <span class="filepath">fromHost</span>  and set the IP address to match your Pentaho&nbsp;Server.</li>
+          <li>Find&nbsp;the property for <span class="filepath style-wrap"><span class="file path">toHost</span> </span> &nbsp;and replace it with the IP address of your monitoring&nbsp;server.</li>
+          <li>If your SNMP port is something other than the default (port 162), change it in this file to match your&nbsp;port.</li>
+          <li>Configure your other Pentaho Server&nbsp;to NOT&nbsp;perform SNMP monitoring. They are configured to do so by default.
+            <ol>
+              <li>Open the<span class="filepath style-wrap"> org.apache.karaf.features.cfg</span>  file, located in the <span class="filepath style-wrap">pentaho-solutions/system/karaf/etc/&nbsp;</span> directory.</li>
+              <li>Find the <span class="filepath style-wrap">featuresBoot </span> property and delete <span class="filepath style-wrap">pentaho-monitoring-2-snmp</span>  and <span class="filepath style-wrap">pentaho-monitoring-jms-broker</span> .</li>
+              <li>Add&nbsp;<span class="filepath style-wrap">pentaho-brokering-jms</span>  within the <span class="filepath style-wrap">featuresBoot </span> property.</li>
+            </ol>
+          </li>
+          <li>Save and close the <span class="filepath style-wrap">org.apach.karaf.features.cfg&nbsp;</span> file and start the Pentaho Server.</li>
+        </ol>
+        <p>Each time you make changes to the&nbsp;<span class="file path"><span class="filepath style-wrap">pentaho-osgi-config-6.0.0-snmp.cfg</span> </span>, you need to delete the <span class="filepath style-wrap">pentaho.snmp.cfg</span>  file located in
+          the<span class="filepath style-wrap">&nbsp;pentaho-server/pentaho-solutions/system/karaf/etc/&nbsp;</span> directory<span class="filepath style-wrap">.&nbsp;</span> </p>
+        <p>A new <span class="filepath style-wrap">pentaho.snmp.cfg</span>  file is automatically generated based on the updated&nbsp;information contained in <span class="filepath style-wrap">pentaho-osgi-config-6.0.0-snmp.cfg</span> .</p>
+        <p>After you are done with this procedure, any kettle jobs or transformations that are executed on that Pentaho Server will send SNMP trap events to the designated monitoring<span class="mt-color-ff0000">&nbsp;</span> server&rsquo;s IP address.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Step_2:_Configure_the_Monitoring_Tool_to_Receive_Trap_Events"></span> 
+        <h3 class="editable">Step 2:&nbsp;Configure the Monitoring Tool to Receive Trap Events</h3>
+        <p>The&nbsp;Pentaho Server is already configured by default to handle messages.&nbsp;A management information database (MIB) is used for managing entities in a communications network. The structure is hierarchical with each entry assigned an object
+          identifier (OID).</p>
+        <p class="pentaho-note">We are using Nagios as an example in this section, but if you are using a different tool, these processes will&nbsp;be different.</p>
+        <div id="section_6" class="mt-page-section"><span id="Upload_the_MIB_File_to_Monitoring_Tool"></span> 
+          <h4 class="editable">Upload&nbsp;the MIB File to Monitoring Tool</h4>
+          <p>These steps will guide you through the process of configuring the server to receive trap events from the Pentaho Server.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Access the 3rd-party SNMP tool web interface.</li>
+            <li>Locate an&nbsp;option for managing&nbsp;MIBs.</li>
+            <li>Upload the&nbsp;<span class="filepath style-wrap">PENTAHO-MIB-V2C.mib</span>  file that you downloaded earlier.</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Convert_the_MIB_file_to_a_.conf_File"></span> 
+          <h4 class="editable">Convert&nbsp;the MIB file to a .conf File</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Access the monitoring server through SSH protocol with the root user, for example:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">ssh root@10.100.9.174</pre>
+          <ol class="pentaho-list-ordered" start="2">
+            <li>After successfully logging in, find the directory containing your uploaded&nbsp;MIB file, such as<span class="filepath style-wrap">&nbsp;/</span> <span style="line-height:1.5;"><span class="filepath style-wrap">usr/share/snmp/mibs/</span> .</span> 
+            </li>
+            <li>Run the <span class="filepath style-wrap"><span class="file path">snmpttconvertmib </span> </span> command, stating the path to the uploaded file, and the path for the compiled output file:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">snmpttconvertmib
+--in=<PATH_TO_UPLOADED_MIB_FILE>
+--out=<PATH_TO_COMPILED_OUTPUT_FILE>--
+exec='/usr/local/bin/snmptraphandling.py &quot;$r&quot; &quot;SNMP Traps&quot; &quot;$s&quot; &quot;$@&quot; &quot;$-*&quot;'</pre>
+          <p>In this example, we have compiled a configuration file, which we called<span class="filepath style-wrap"> <span class="s4">pentaho.di.conf</span> </span>, based on the previously uploaded Pentaho MIB file:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">snmpttconvertmib --in=/usr/share/snmp/mibs/PENTAHO-MIB-V2C.mib --out=/etc/snmp/pentaho.di.conf --exec='/usr/local/bin/snmptraphandling.py &quot;$r&quot; &quot;SNMP Traps&quot; &quot;$s&quot; &quot;$@&quot; &quot;$-*&quot;</pre>          </div>
+        <div id="section_8" class="mt-page-section"><span id="Add_the_Newly_Generated_.conf_file_to_the_snmptt.ini"></span> 
+          <h4 class="editable">Add&nbsp;the Newly Generated .conf file to the snmptt.ini</h4>
+          <ol class="pentaho-list-ordered">
+            <li>Open and edit&nbsp;the file <span class="file path"><span class="filepath style-wrap">/etc/snmp/snmptt.ini</span>  </span> using a text editor.</li>
+            <li>Locate the <span class="file path"><span class="filepath style-wrap">[TrapFiles]</span>  </span> section - it should be at the bottom of the file.</li>
+            <li>Place your newly created <code>config</code> file after the main one but&nbsp;before the END declaration. For example, if you use a default <span class="filepath style-wrap"><span class="file path">snmptt.ini</span> </span>  file, it should
+              look something like this:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[TrapFiles] snmptt_conf_files = <<END
+/etc/snmp/snmptt.conf
+/etc/snmp/pentaho.di.conf END</pre>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Save and close the file.</li>
+            <li>Restart the monitoring server and the <span class="filepath style-wrap">snmptt </span> service:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/etc/rc.d/init.d/nagios stop 
+/etc/init.d/snmptt stop (wait ~5 seconds)
+/etc/init.d/snmptt start
+/etc/rc.d/init.d/nagios start</pre> </div>
+      </div>
+    </div>
+    <div id="section_9" class="mt-page-section"><span id="Send_Traps_from_PDI_Tools_to_Monitoring_Tool"></span> 
+      <h2 class="editable">Send Traps from PDI Tools to Monitoring Tool</h2>
+      <p>Instead of sending traps through a centralized monitoring server first, you can set up your SNMP system to have the trap events sent directly from PDI&nbsp;client tools, such&nbsp;as Pan, Kitchen, or Spoon.&nbsp;A couple of different ways are available
+        to set up the monitoring application through these tools.&nbsp;</p>
+      <p style="text-align: center;">
+        <img alt="SNMP_op2b.jpg" class="internal default" src="http://help.pentaho.com/@api/deki/files/11448/SNMP_op2b.jpg?revision=1" />
+      </p>
+      <p>Follow one of&nbsp;these options to configure your SNMP environment to run through the PDI client tools.</p>
+      <p><strong>From all PDI&nbsp;client tools:&nbsp;</strong> </p>
+      <ol class="pentaho-list-ordered">
+        <li>Locate the below&nbsp;directory and open the <span class="filepath style-wrap">org.pentaho.features.cfg</span>  file with any text editor.&nbsp; <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">data-integration/system/karaf/system/pentaho/pentaho-osgi-config/6.0.0</pre>          </li>
+      </ol>
+      <ol class="pentaho-list-ordered" start="2">
+        <li>Add <span class="filepath style-wrap">pentaho-monitoring-to-snmp</span> &nbsp;as a feature at the end of the <span class="filepath style-wrap">featuresBoot </span> list.</li>
+        <li>If your SNMP port is something other than the default (port 162), change it in this file to match your port.</li>
+        <li>Save and close the file.&nbsp;</li>
+      </ol>
+      <p><strong>From a specific PDI client tool such as Carte:</strong> </p>
+      <ol class="pentaho-list-ordered">
+        <li>Find the&nbsp;<span class="filepath style-wrap">org.pentaho.features.cfg</span>  file in that client's&nbsp;<span class="filepath style-wrap">etc&nbsp;</span> folder,</li>
+        <li>Add <span class="filepath style-wrap">pentaho-monitoring-to-snmp</span>  to the <span class="filepath style-wrap">runtimeFeatures </span> list.
+          <ol>
+            <li>By default, everything BUT Spoon features are disabled, so you will have to uncomment the <span class="filepath style-wrap">runtimeFeatures&nbsp;</span> for the other tools.</li>
+          </ol>
+        </li>
+        <li>If your SNMP port is something other than the default (port 162), you will need to change it in this file to match your&nbsp;port.</li>
+        <li>Save and close the file.</li>
+      </ol>
+    </div>
+    <div id="section_10" class="mt-page-section"><span id="Configuring_the_Type_of_Events_to_Be_Monitored"></span> 
+      <h2 class="editable">Configuring the Type of Events to Be Monitored</h2>
+      <p>The Pentaho Server will monitor by default all possible event types occurring when executing a kettle job or transformation, but&nbsp;you can also
+        <a title="Available Extension Points for SNMP Monitoring" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Monitoring_System_Performance/Integrate_Pentaho_with_3rd-Party_Monitoring_through_SNMP/Available_Extension_Points_for_SNMP_Monitoring">specify the type of events</a>  you want to monitor&nbsp;by removing items from the list. These steps describe&nbsp;how to specify&nbsp;events.</p>
+      <ol class="pentaho-list-ordered">
+        <li>Locate the&nbsp;directory:&nbsp;<span class="filepath style-wrap"><span class="file path">/pentaho-server/pentaho-solutions/system/karaf/system/pentaho-osgi-config-6.0.0-pdi-monitoring.&nbsp;</span> </span> 
+        </li>
+        <li>Open and edit the <span class="file path"><span class="filepath style-wrap">monitoring.properties</span>  </span> file as needed.</li>
+        <li>Locate the property for <span class="filepath style-wrap"><span class="file path">extension.point.plugins.enabled</span> </span>, which holds a comma-separated list of event types for which SNMP trap events will be sent to the monitoring server.&nbsp;
+          <ol>
+            <li>Immediately above that property, a comment section lists all possible event types, as well as a brief description for each event type.</li>
+            <li>Edit that list, leaving only the items you would like to use as SNMP trap events.</li>
+          </ol>
+        </li>
+        <li>Save the file and restart the Pentaho Server.</li>
+      </ol>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+      <li>
+        <a href="#Send_Traps_through_a_Centralized_Monitoring_Server" rel="internal">Send Traps through&nbsp;a Centralized Monitoring Server</a> 
+        <ol>
+          <li> <a href="#Step_1:_Configure_Pentaho_Server_to_Send_Trap_Events" rel="internal">Step 1:&nbsp;Configure Pentaho&nbsp;Server&nbsp;to Send Trap Events</a>  </li>
+          <li>
+            <a href="#Step_2:_Configure_the_Monitoring_Tool_to_Receive_Trap_Events" rel="internal">Step 2:&nbsp;Configure the Monitoring Tool to Receive Trap Events</a> 
+            <ol>
+              <li> <a href="#Upload_the_MIB_File_to_Monitoring_Tool" rel="internal">Upload&nbsp;the MIB File to Monitoring Tool</a>  </li>
+              <li> <a href="#Convert_the_MIB_file_to_a_.conf_File" rel="internal">Convert&nbsp;the MIB file to a .conf File</a>  </li>
+              <li> <a href="#Add_the_Newly_Generated_.conf_file_to_the_snmptt.ini" rel="internal">Add&nbsp;the Newly Generated .conf file to the snmptt.ini</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Send_Traps_from_PDI_Tools_to_Monitoring_Tool" rel="internal">Send Traps from PDI Tools to Monitoring Tool</a>  </li>
+      <li> <a href="#Configuring_the_Type_of_Events_to_Be_Monitored" rel="internal">Configuring the Type of Events to Be Monitored</a>  </li>
+    </ol>
+  </body>
+</content>

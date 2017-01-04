@@ -1,0 +1,106 @@
+<content type="text/html" title="Creating Database Plugins">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p>PDI uses database plugins to support specific database systems beyond generic JDBC functionality. A database plugin helps in the following areas:</p>
+        <ul class="ul" id="a4fb9fad-3911-4f3a-8069-f60c4476a5ca__creating_database_plugins__ul_lr2_xbq_ck">
+          <li class="li">constructing connection strings</li>
+          <li class="li">passing connection settings to JDBC</li>
+          <li class="li">dialect-aware SQL generation</li>
+          <li class="li">detecting special abilities and limitations of JDBC drivers</li>
+        </ul>
+      </div>
+      <p class="p">A database plugin introduces a new entry in the PDI database dialog.&nbsp;</p>
+      <p>
+        <br />
+        <img alt="File:/screenshot_database_dialog.png" class="image internal" id="a4fb9fad-3911-4f3a-8069-f60c4476a5ca__creating_database_plugins__image_py5_b23_nh" src="http://help.pentaho.com/@api/deki/files/1622/screenshot_database_dialog.png?revision=1"
+        />
+      </p>
+      <p class="p">This section explains the architecture and programming concepts for creating your own database plugin. We recommended that you open and refer to the
+        <a class="xref" title="Sample Database Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/0V0/010/020/020">
+        sample database plugin sources</a>  while following these instructions.</p>
+      <div class="tablenoborder">
+        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+          <tbody class="tbody">
+            <tr class="row">
+              <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+              <td class="entry" valign="top" width="75%">
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html"><code class="ph codeph">org.pentaho.di.core.database.DatabaseInterface</code> </a> 
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+              <td class="entry" valign="top" width="75%">
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/BaseDatabaseMeta.html"><code class="ph codeph">org.pentaho.di.core.database.BaseDatabaseMeta</code> </a> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="p">PDI database plugins consist of a single Java class that implements the interface
+        <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html"><code class="ph codeph">org.pentaho.di.core.database.DatabaseInterface</code></a> .&nbsp;</p>
+      <p class="p">In order for PDI to recognize the database plugin, the class implementing <code class="ph codeph">DatabaseInterface</code> must also be annotated with the Java annotation
+        <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/plugins/DatabaseMetaPlugin.html"><code class="ph codeph">org.pentaho.di.core.plugins.DatabaseMetaPlugin</code></a> .&nbsp;</p>
+      <p class="p">Supply these annotation attributes.</p>
+      <div class="tablenoborder">
+        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="a4fb9fad-3911-4f3a-8069-f60c4476a5ca__creating_database_plugins__table_jc3_3kq_ck" rules="all" summary="">
+          <thead align="left" class="thead">
+            <tr class="row">
+              <th class="entry" id="a4fb9fad-3911-4f3a-8069-f60c4476a5ca__d14689e134" valign="top" width="25%"><strong class="ph b">Attribute</strong> </th>
+              <th class="entry" id="a4fb9fad-3911-4f3a-8069-f60c4476a5ca__d14689e140" valign="top" width="75%"><strong class="ph b">Description</strong> </th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr class="row">
+              <td class="entry" headers="d14689e134 " valign="top" width="25%"><code class="ph codeph">type</code></td>
+              <td class="entry" headers="d14689e140 " valign="top" width="75%">A globally unique ID for database plugin</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d14689e134 " valign="top" width="25%"><code class="ph codeph">typeDescription</code></td>
+              <td class="entry" headers="d14689e140 " valign="top" width="75%">The label to use in the database dialog</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="p">It is recommended to extend
+        <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/BaseDatabaseMeta.html"><code class="ph codeph">org.pentaho.di.core.database.BaseDatabaseMeta</code></a>, which provides default implementations for most of the methods in <code class="ph codeph">DatabaseInterface</code>. Existing PDI database interfaces are a great
+        source of information when developing a new database plugin.</p>
+      <p class="p">The following section classifies some of the most commonly overridden methods. They can be roughly classified into three subject areas: information about connections, SQL dialect, and general capability flags.&nbsp;</p>
+      <p class="p"><strong class="ph b">1. Connection Details</strong> </p>
+      <p>These methods are called when PDI establishes a connection to the database, or the database dialog is populated with database-specific defaults.</p>
+      <ul class="ul">
+        <li class="li"><code class="ph codeph">public String <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getDriverClass()">getDriverClass()</a> </code></li>
+        <li class="li"><code class="ph codeph">public int <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getDefaultDatabasePort()">getDefaultDatabasePort()</a> </code></li>
+        <li class="li"><code class="ph codeph">public int[] <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getAccessTypeList()">getAccessTypeList()</a> </code></li>
+        <li class="li"><code class="ph codeph">public boolean <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#supportsOptionsInURL()">supportsOptionsInURL()</a> </code></li>
+        <li class="li"><code class="ph codeph">public String <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getURL(java.lang.String,%20java.lang.String,%20java.lang.String)">getURL()</a> </code></li>
+      </ul>
+      <p><strong class="ph b">2. SQL Generation</strong> </p>
+      <p>These methods are called when PDI constructs SQL. </p>
+      <ul class="ul">
+        <li class="li"><code class="ph codeph">public String <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getFieldDefinition(org.pentaho.di.core.row.ValueMetaInterface,%20java.lang.String,%20java.lang.String,%20boolean,%20boolean,%20boolean)">getFieldDefinition()</a> </code></li>
+        <li class="li"><code class="ph codeph">public String <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getAddColumnStatement(java.lang.String,%20org.pentaho.di.core.row.ValueMetaInterface,%20java.lang.String,%20boolean,%20java.lang.String,%20boolean)">getAddColumnStatement()</a> </code></li>
+        <li class="li"><code class="ph codeph">public String <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getSQLColumnExists(java.lang.String,%20java.lang.String)">getSQLColumnExists()</a> </code></li>
+        <li class="li"><code class="ph codeph">public String <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#getSQLQueryFields(java.lang.String)">getSQLQueryFields()</a> &nbsp;</code></li>
+      </ul>
+      <p><strong class="ph b">3. Capability Flags</strong>  </p>
+      <p>These methods are called when PDI determines the run-time characteristics of the database system. For instance, the database systems may support different notions of metadata retrieval.</p>
+      <div class="p">
+        <ul class="ul">
+          <li class="li"><code class="ph codeph">public boolean <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#supportsTransactions()">supportsTransactions()</a> </code></li>
+          <li class="li"><code class="ph codeph">public boolean <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#releaseSavepoint()">releaseSavepoint()</a> </code></li>
+          <li class="li"><code class="ph codeph">public boolean <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#supportsPreparedStatementMetadataRetrieval()">supportsPreparedStatementMetadataRetrieval()</a> </code></li>
+          <li class="li"><code class="ph codeph">public boolean <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/database/DatabaseInterface.html#supportsResultSetMetadataRetrievalOnly()">supportsResultSetMetadataRetrievalOnly()</a> </code></li>
+        </ul>
+      </div>
+      <div class="related-links">
+        <ul class="pentaho-list-unordered">
+          <li class="link ulchildlink"><strong><a title="Exploring Existing Database Implementations" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/0V0/010/020/000">Exploring Existing Database Implementations</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Deploying Database Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/0V0/010/020/010">Deploying Database Plugins</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Sample Database Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/0V0/010/020/020">Sample Database Plugin</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,25 @@
+<content type="text/html" title="LDAP Roles Are Not &quot;Admin&quot; and &quot;Authenticated&quot;">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">You must not use <strong class="ph b">Admin</strong>  and <strong class="ph b">Authenticated</strong>  roles in your LDAP. Instead you must configure your system to use <strong class="ph b">pentahoAdmins</strong>  and <strong class="ph b">pentahoUsers</strong>           or other easily identifiable role names. Edit <code class="ph codeph">/pentaho-solutions/system/applicationContext-spring-security.xml</code>. At the bottom of this file, you will find a number of lines that look like: <code class="ph codeph">A/docs/.*Z=Anonymous,Authenticated</code>.</p>
+        <p class="p">These are entries for URL Security. They are regular expressions to match a path on the browser&rsquo;s URL that require the user to be a member of the defined role to gain access. In the example above, both Anonymous and Authenticated get access.
+          In the example above, use <strong class="ph b">pentahoUsers</strong>  in the place of <strong class="ph b">Authenticated</strong> . by entering <code class="ph codeph">A/docs/.*Z=Anonymous,pentahoUsers</code>. For all entries that show Authenticated,
+          replace it with <strong class="ph b">pentahoUsers</strong>  or your chosen name. Replace <strong class="ph b">Admin</strong>  with <strong class="ph b">pentahoAdmins</strong>  or your chosen name. For the change from <strong class="ph b">Authenticated</strong>           to <strong class="ph b">pentahoUsers</strong>  replace all occurrences. For <strong class="ph b">Admin</strong>  to <strong class="ph b">pentahoAdmins</strong>  you need to be a little more careful because there are some entries that look like
+          this: <code class="ph codeph">A/admin.*Z=pentahoAdmins</code>.</p>
+        <p class="p">Edit the <span class="ph filepath">/pentaho-solutions/system/repository.spring.xml</span>  file and change:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAuthenticatedAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;Authenticated&quot; />
+   </bean></pre>
+        <p class="p">to:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAuthenticatedAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;pentahoUsers&quot; />
+   </bean></pre>
+        <p class="p">and:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAdminAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;Admin&quot; />
+   </bean></pre>
+        <p class="p">to:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAdminAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;pentahoAdmins&quot; />
+   </bean></pre> </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

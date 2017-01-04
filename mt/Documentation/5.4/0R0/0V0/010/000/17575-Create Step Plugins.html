@@ -1,0 +1,153 @@
+<content type="text/html" title="Create Step Plugins">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A transformation step implements a data processing task in an ETL data flow. It operates on a stream of data rows. Transformation steps are designed for input, processing, or output. Input steps fetch data rows from external data sources, such
+          as files or databases. Processing steps work with data rows, perform field calculations, and stream operations, such as joining or filtering. Output steps write the processed data back to storage, files, or databases.
+          <br />
+          <img alt="createStepPlugins.png" class="internal default" style="width: 550px; height: 180px;" width="550px" height="180px" src="http://help.pentaho.com/@api/deki/files/5191/createStepPlugins.png?size=bestfit&amp;width=550&amp;height=180&amp;revision=1"
+          />
+        </p>
+        <p class="p">This section explains the architecture and programming concepts for creating your own PDI transformation step plugin. We recommended that you open and refer to the
+          <a class="xref" title="Sample Step Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/040">sample step plugin sources</a>  while following these instructions.</p>
+        <p class="p">A step plugin integrates with PDI by implementing four distinct Java interfaces. Each interface represents a set of responsibilities performed by a PDI step. Each of the interfaces has a base class that implements the bulk of the interface in
+          order to simplify plugin development.</p>
+        <p class="p">Unless noted otherwise, all step interfaces and corresponding base classes are part of the <code class="ph codeph">org.pentaho.di.trans.step</code> package.&nbsp;</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e54" valign="top" width="26.595744680851062%"><strong class="ph b">Java Interface</strong> </th>
+                <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e60" valign="top" width="52.12765957446809%"><strong class="ph b">Base Class</strong> </th>
+                <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e66" valign="top" width="21.27659574468085%"><strong class="ph b">Main Responsibilities</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepMetaInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">BaseStepMeta</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul">
+                    <li class="li">Maintain step settings</li>
+                    <li class="li">Validate step settings</li>
+                    <li class="li">Serialize step settings</li>
+                    <li class="li">Provide access to step classes</li>
+                    <li class="li">Perform row layout changes</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepDialogInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">org.pentaho.di.ui.trans.step.BaseStepDialog</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_jcv_5m2_4h">
+                    <li class="li">Step settings dialog</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">BaseStep</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_gyg_vm2_4h">
+                    <li class="li">Process rows</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepDataInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">BaseStepData</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_zfv_vm2_4h">
+                    <li class="li">Store processing state, and to declare and serve as a place for field variables during row processing</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="section_1" class="mt-page-section"><span id="Using_Your_Icon_in_PDI"></span> 
+        <h2 class="editable">Using Your Icon in PDI&nbsp; &nbsp;</h2>
+        <p>Now that you have an image which provides a quick, intuitive representation of what your Step or Entry does and
+          <br /> maintains consistency with other user interface elements within PDI, you need to save it delete in the proper format and to the proper location.</p>
+        <div id="section_2" class="mt-page-section"><span id="Including_Images_in_a_Built-In_Kettle_Transformation_or_Job"></span> 
+          <h3 class="editable">
+            <span>Including Images in a Built-In Kettle Transformation or Job</span> 
+          </h3>
+          <ol class="pentaho-list-ordered">
+            <li>Save your icon to Scalable Vector Graphics (SVG) Version 1.1 format.</li>
+            <li>
+              <p>If you want to include an image in a built-in Kettle transformation or job, do the following: &nbsp;Place the SVG (and PNG) images in the&nbsp;<strong>pentaho-kettle/ui/packages-res/ui/images</strong> </p>
+            </li>
+            <li>
+              <p>Edit the kettle-job-entries.xml or kettle-steps.xml file to point to the new icon file. This file is located inside of the&nbsp;<strong>{kettle-install}/lib/kettle-engine-VERSION.jar.&nbsp;</strong> This can be done like this:</p>
+            </li>
+          </ol>
+          <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed;">
+            <tbody>
+              <tr>
+                <td style="width: 653px; vertical-align: top;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><job-entry id=&quot;COPY_FILES&quot;> <description>i18n:org.pentaho.di.job.entry:JobEntry.CopyFiles.TypeDesc</description> 
+<classname>org.pentaho.di.job.entries.copyfiles.JobEntryCopyFiles</classname> <category>i18n:org.pentaho.di.job:JobCategory.Category.FileManagement</category> 
+<tooltip>i18n:org.pentaho.di.job.entry:JobEntry.CopyFiles.Tooltip</tooltip> <iconfile>ui/images/CPY.svg</iconfile> 
+<documentation_url>http://wiki.pentaho.com/display/EAI/Copy+Files</documentation_url> <cases_url/> <forum_url/> </job-entry></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Including_Images_in_a_Kettle_Plugin"></span> 
+          <h3 class="editable">
+            <span>Including Images in a Kettle Plugin</span> 
+          </h3>
+          <ol class="pentaho-list-ordered">
+            <li>Save your icon to Scalable Vector Graphics (SVG) Version 1.1 format.</li>
+            <li>
+              <p>Place the image in the plugin. &nbsp;The specifics of the plugin's assembly will indicate where to put the image, but usually it is placed in the <strong>your-plugin-project/src</strong>  folder. &nbsp;</p>
+            </li>
+            <li>
+              <p>The image will be loaded, at runtime, from the plugin&rsquo;s jar file. &nbsp;The location of the file is indicated by the JobMeta or StepMeta for your plugin. &nbsp;This is usually accomplished with a Java annotation, like in this example:</p>
+              <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@JobEntry( id = &quot;HadoopCopyFilesPlugin&quot;, image = &quot;HDM.svg&quot;, name = &quot;HadoopCopyFilesPlugin.Name&quot;,
+    description = &quot;HadoopCopyFilesPlugin.Description&quot;,
+    categoryDescription = &quot;i18n:org.pentaho.di.job:JobCategory.Category.BigData&quot;,
+    i18nPackageName = &quot;org.pentaho.di.job.entries.hadoopcopyfiles&quot; )
+public class JobEntryHadoopCopyFiles extends JobEntryCopyFiles {</pre> </li>
+            <li>If you have developed a dialog (UI) for your plugin, you might want an SVG graphic to appear, as per UX standards. &nbsp;This code should be put in your plugin, in the Job or Step classes.&nbsp;This can be done like this: <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">icon.setImage(UIResource.getInstance().getImage(&quot;ModelAnnotation.svg&quot;, getClass().getClassLoader(), ConstUI.ICON_SIZE, ConstUI.ICON_SIZE));</pre>              </li>
+          </ol>
+          <div class="related-links">
+            <p><em>Related Content </em> </p>
+            <ul class="pentaho-list-unordered">
+              <li class="link ulchildlink"><strong><a title="Maintaining Step Settings" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/000">Maintaining Step Settings</a> </strong> </li>
+              <li class="link ulchildlink"><strong><a title="Implementing the Step Settings Dialog Box" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/010">Implementing the Step Settings Dialog Box</a> </strong> </li>
+              <li class="link ulchildlink"><strong><a title="Processing Rows" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/020">Processing Rows</a> </strong> </li>
+              <li class="link ulchildlink"><strong><a title="Deploying Step Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/030">Deploying Step Plugins</a> </strong> </li>
+              <li class="link ulchildlink"><strong><a title="Sample Step Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/040">Sample Step Plugin</a> </strong> </li>
+              <li class="link ulchildlink"><strong><a title="Exploring More Steps" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/050">Exploring More Steps</a> </strong> </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Using_Your_Icon_in_PDI" rel="internal">Using Your Icon in PDI&nbsp; &nbsp;</a> 
+        <ol>
+          <li> <a href="#Including_Images_in_a_Built-In_Kettle_Transformation_or_Job" rel="internal">Including Images in a Built-In Kettle Transformation or Job</a>  </li>
+          <li> <a href="#Including_Images_in_a_Kettle_Plugin" rel="internal">Including Images in a Kettle Plugin</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

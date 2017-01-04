@@ -1,0 +1,50 @@
+<content type="text/html" title="Segment Cache Architecture">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="note restriction"><span class="restrictiontitle">Restriction:</span>  The segment cache features explained in this section are for very large OLAP deployments, and require a Pentaho Analysis Enterprise Edition license.</div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="How_the_Analysis_Engine_Uses_Memory"></span> 
+            <h2 class="editable">How the Analysis Engine Uses Memory</h2>
+            <p class="p">Each Mondrian segment cache node, regardless of which configuration it uses, loads the segments required to answer a given query into system memory. This cache space is called the <strong class="ph b">query cache</strong>, and it is composed
+              of hard Java references to the segment objects. Each individual node must have enough memory space available to answer any given query. This might seem like a big limitation, but Mondrian uses deeply optimized data structures which usually
+              take no more than a few megabytes, even for queries returning thousands of rows.</p>
+            <p class="p">Once the query finishes, Mondrian will usually try to keep the data locally, using a weak reference to the segment data object. A weak reference is a special type of Java object reference which doesn't force the JVM to keep this object in
+              memory. As the Mondrian node keeps answering queries, the JVM might decide to free up that space for something more important, like answering a particularly big query. This cache is referred to as the <strong class="ph b">local cache</strong> .</p>
+            <p class="p">The local cache can be switched on or off by editing the Pentaho Analysis EE configuration file and modifying the value (set it to <strong class="ph b">true</strong>  or <strong class="ph b">false</strong> ) of the <strong class="ph b">DISABLE_LOCAL_SEGMENT_CACHE</strong>               property. Setting this property will not affect the query cache.</p>
+            <p class="p">This is the order in which Mondrian will try to obtain data for a required segment once a query is received:</p>
+            <ol class="ol">
+              <li class="li">The node will parse the query and figure out which segments it must load to answer that particular query</li>
+              <li class="li">It checks into the local cache, if enabled.</li>
+              <li class="li">If the data could not be loaded from the local cache, it checks into the external segment cache, provided by the Pentaho Analysis plugin, and it places a copy inside the query cache.</li>
+              <li class="li">If the data is not available from the external cache, it loads the data form SQL and places it into the query cache.</li>
+              <li class="li">If the data was loaded form SQL, it places a copy in the query cache and it sends it to the external cache to be immediately shared with the other Mondrian nodes.</li>
+              <li class="li">The node can now answer the query.</li>
+              <li class="li">Once the query is answered, Mondrian will release the data from the query cache.</li>
+              <li class="li">If the local cache is enabled, a weak reference to the data is kept there.</li>
+            </ol>
+            <img alt="File:/MondrianSegmentCacheSPI_new.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/11334/MondrianSegmentCacheSPI_new.png?revision=1" />
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Cache_Control_and_Propagation"></span> 
+            <h2 class="editable">Cache Control and Propagation</h2>
+            <p class="p">All cache control operations are performed through Mondrian's CacheControl API, which is documented in the Mondrian project documentation at
+              <a class="xref external" target="_blank" rel="external nofollow" href="http://mondrian.pentaho.com">http://mondrian.pentaho.com</a> . The CacheControl API allows you to modify the contents of the cache of a particular node. It controls both the data cache and the OLAP schema member cache.</p>
+            <p class="p">When flushing a segment region on a node, that node will propagate the change to the external cache by using the SegmentCache SPI. If the nodes are not using the local cache space, then the next node to pick up a query requiring that segment
+              data will likely fetch it again through SQL. Once the data is loaded from SQL, it will again be stored in the external segment cache.</p>
+            <p class="p">You should not use the local cache space when you are using the external cache. For this reason, it is disabled by default in Pentaho Analysis Enterprise Edition.</p>
+            <p class="p">Using the local cache space on a node can improve performance with increased data locality, but it also means that all the nodes have to be notified of that change. Mondrian nodes don't propagate the cache control operations among the members
+              of a cluster. If you deploy a cluster of Mondrian nodes and don't propagate the change manually across all of them, then some nodes will answer queries with stale data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#How_the_Analysis_Engine_Uses_Memory" rel="internal">How the Analysis Engine Uses Memory</a>  </li>
+      <li> <a href="#Cache_Control_and_Propagation" rel="internal">Cache Control and Propagation</a>  </li>
+    </ol>
+  </body>
+</content>

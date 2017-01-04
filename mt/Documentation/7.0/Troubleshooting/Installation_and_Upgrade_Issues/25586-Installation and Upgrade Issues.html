@@ -1,0 +1,116 @@
+<content type="text/html" title="Installation and Upgrade Issues">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">Follow the suggestions in these topics to help resolve common issues associated with installing and upgrading your Pentaho system:</p>
+      </div>
+      <div class="related-links">
+        <ul>
+          <li>User Console Themes Render Improperly After Upgrade</li>
+          <li>Pentaho Server Does Not Start When Installed on a Virtual Machine</li>
+          <li>Context XML Changes Do Not Take Effect After Deploying a WAR</li>
+          <li>
+            <p>No Search Manager Configured for the Java Repository</p>
+          </li>
+          <li>Cannot Create Jackrabbit Tables in MySQL</li>
+          <li>Unable to Use the Database Init Scripts for PostgreSQL</li>
+          <li>JBoss Fails to Start</li>
+          <li>Not All Content is Migrated with the Migration Utility</li>
+        </ul>
+        <div class="body">
+          <p>See Pentaho&nbsp;
+            <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+        </div>
+        <div id="section_1" class="mt-page-section"><span id="User_Console_Themes_Render_Improperly_After_Upgrade"></span> 
+          <h2 class="editable">User Console Themes Render Improperly After Upgrade</h2>
+          <p>If you are seeing unusual&nbsp;rendering problems in the User Console shortly after performing a Pentaho Server upgrade, the problem may be related to old JavaScript files being held in the browser cache.</p>
+          <p>To fix this problem, clear your web browser's cache, then reload the Pentaho User Console.</p>
+        </div>
+        <div id="section_2" class="mt-page-section"><span id="Pentaho_Server_Does_Not_Start_When_Installed_on_a_Virtual_Machine"></span> 
+          <h2 class="editable">Pentaho Server Does Not Start When Installed on a Virtual Machine</h2>
+          <p>The Pentaho&nbsp;Server does not start&nbsp;when installed on a Virtual Machine&nbsp;and deployed on the JBoss&nbsp;web application server.</p>
+          <p>To fix this problem,&nbsp;increase the amount of time JBoss allows for application deployment to 240 seconds or longer. For information on how to increase the amount of time, see&nbsp;
+            <a title="Prepare JBoss Connections and Web App Servers"
+            rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0/0P0/Prepare_JBoss_Connections_and_Web_App_Servers#Step_1:_Increase_the_Amount_of_Time_JBoss_Allows_for_Pentaho_Server_Deployment">Increase the Amount of Time JBoss Allows for Pentaho Deployment</a> .</p>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Context_XML_Changes_Do_Not_Take_Effect_After_Deploying_a_WAR"></span> 
+          <h2 class="editable">Context XML Changes Do Not Take Effect After Deploying a WAR</h2>
+          <p class="p">With a manual installation, if you deploy a WAR with a custom <code>context.xml</code>, the <code>context.xml</code> file may not be overwritten.</p>
+          <p class="p">The location and naming convention for this file are: <code>$CATALINA_HOME/conf/Catalina/<host>/<war name>.xml</code>. An example of this file path is&nbsp;&nbsp;<code>/tomcat/conf/Catalina/localhost/pentaho.xml</code>. If this file exists,
+            you will have to delete it prior to deploying the <span class="ph filepath">pentaho.war</span>  if you have made any changes to <span class="ph filepath">context.xml</span> .</p>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="No_Search_Manager_Configured_for_the_Java_Repository"></span> 
+          <h2 class="editable">No Search Manager Configured for the Java Repository</h2>
+          <p>If you see a <code>Javax.jcr.RepositoryException: no search manager configured for this workspace</code>&nbsp;error message in your Pentaho&nbsp;Server log, then there was an error in the PDI upgrade process6.17.0. Specifically, the&nbsp;<code>SearchIndex</code>&nbsp;XML
+            nodes were not properly modified.</p>
+          <p>To fix this problem, refer to the
+            <a title="Upgrade Pentaho Servers and Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0T0/Upgrade_Pentaho_Servers_and_Design_Tools">Upgrade Pentaho Servers and Design Tools</a> &nbsp;article and closely follow the instructions for modifying repository configuration files.</p>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Cannot_Create_Jackrabbit_Tables_in_MySQL"></span> 
+          <h2 class="editable">Cannot Create Jackrabbit Tables in MySQL</h2>
+          <p>The Pentaho solution repository uses long text strings that require a longer maximum character limit than the default UTF-8 configuration allows.&nbsp;Using UTF-8 will prevent the MySQL initialization scripts from running during installation.</p>
+          <p>If your MySQL character set is configured to use UTF-8, you must change it to ASCII to use it as a Pentaho solution database.</p>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Unable_to_Use_the_Database_Init_Scripts_for_PostgreSQL"></span> 
+          <h2 class="editable">Unable to Use the Database Init Scripts for PostgreSQL</h2>
+          <p>The&nbsp;<code>pg_hba.conf</code>&nbsp;file contains host-based authentication information. If you cannot run the SQL scripts that generate the Jackrabbit and Quartz databases, it is probably because the default user accounts for each database
+            do not have the right permissions.</p>
+          <p>To change these permissions, edit the file to ensure that connections from local users created by the Pentaho SQL scripts (such as <code>pentaho_user</code>) will be able to connect.&nbsp;The default on Debian-based systems is for local connections
+            you use <strong class="ph b">ident</strong>  authentication, which means that database users must have local user accounts. In other words, to continue using <strong class="ph b">ident</strong>, you would have to create a local <code>pentaho_user</code>&nbsp;account.
+            An easier resolution might be&nbsp;to just change the authentication method to something less restrictive. Consult&nbsp;your IT manager to assess if this approach is possible.</p>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="JBoss_Fails_to_Start"></span> 
+          <h2 class="editable">JBoss Fails to Start</h2>
+          <p>If JBoss fails to start, check to see if these conditions&nbsp;apply to your situation:</p>
+          <div id="section_8" class="mt-page-section"><span id="JBoss_Fails_to_Start_When_the_Pentaho_HSQLDB_Sample_Database_Is_Running"></span> 
+            <h3 class="editable">JBoss Fails to Start When the Pentaho HSQLDB Sample Database Is Running</h3>
+            <p class="pentaho-note">This problem can also manifest as the Pentaho sample database refusing to start when the Pentaho Server is deployed to JBoss.</p>
+            <p class="p">The Pentaho-supplied HSQLDB sample database operates on the default HSQLDB port of 9001. JBoss has its own HSQLDB instance running on the same port.&nbsp;This&nbsp;port collision will prevent the JBoss version from starting&nbsp;and cause
+              the startup process to halt.</p>
+            <p class="p">You can change the Pentaho sample database port by editing the <code>start_hypersonic</code>&nbsp;script and adding the <code>-port 9002</code>&nbsp;switch to the last line, as shown in the following code sample:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">&quot;$_PENTAHO_JAVA&quot; -cp $THE_CLASSPATH org.hsqldb.Server -port 9002 -database.0 $DIR_REL/hsqldb/sampledata -dbname.0 sampledata -database.1 $DIR_REL/hsqldb/hibernate -dbname.1 hibernate -database.2 $DIR_REL/hsqldb/quartz -dbname.2 quartz</pre>            </div>
+          <div id="section_9" class="mt-page-section"><span id="JBoss_Fails_to_Start_After_Manually_Unpacking_Pentaho_WAR"></span> 
+            <h3 class="editable">JBoss Fails to Start After Manually Unpacking Pentaho WAR</h3>
+            <p>If you unpack the WAR file to any other folder name, including <code>pentaho</code>&nbsp;without the <code>.war</code> extension, JBoss will fail to deploy the WAR without any meaningful warnings.</p>
+            <p>You must also&nbsp;name the resultant folder <code>pentaho.war</code>&nbsp;when manually&nbsp;unpacking the <code>pentaho.war</code> file.</p>
+          </div>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Not_All_Content_is_Migrated_with_the_Migration_Utility"></span> 
+          <h2 class="editable">Not All Content is Migrated with the Migration Utility</h2>
+          <p>When you use the Migration Utility, if content such as transformations, partitions, clusters, and slave servers&nbsp;contains&nbsp;special characters (for example,&nbsp;a colon for the port number:&nbsp;<span class="filepath style-wrap">localhost:8080</span> ),
+            then the content might not be migrated.</p>
+          <p>To avoid this issue, set the <span class="filepath style-wrap">KETTLE_COMPATIBILITY_PUR_OLD_NAMING_MODE</span>  variable to <span class="filepath style-wrap">Y</span> . When it&nbsp;is set to <span class="filepath style-wrap">Y</span>, the migrator
+            tool preserves special character formatting. For information on how to make changes to Kettle variables, see
+            <a title="Set Kettle Variables" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050/020/000/010/010">Set Kettle Variables</a> .</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#User_Console_Themes_Render_Improperly_After_Upgrade" rel="internal">User Console Themes Render Improperly After Upgrade</a>  </li>
+      <li> <a href="#Pentaho_Server_Does_Not_Start_When_Installed_on_a_Virtual_Machine" rel="internal">Pentaho Server Does Not Start When Installed on a Virtual Machine</a>  </li>
+      <li> <a href="#Context_XML_Changes_Do_Not_Take_Effect_After_Deploying_a_WAR" rel="internal">Context XML Changes Do Not Take Effect After Deploying a WAR</a>  </li>
+      <li> <a href="#No_Search_Manager_Configured_for_the_Java_Repository" rel="internal">No Search Manager Configured for the Java Repository</a>  </li>
+      <li> <a href="#Cannot_Create_Jackrabbit_Tables_in_MySQL" rel="internal">Cannot Create Jackrabbit Tables in MySQL</a>  </li>
+      <li> <a href="#Unable_to_Use_the_Database_Init_Scripts_for_PostgreSQL" rel="internal">Unable to Use the Database Init Scripts for PostgreSQL</a>  </li>
+      <li>
+        <a href="#JBoss_Fails_to_Start" rel="internal">JBoss Fails to Start</a> 
+        <ol>
+          <li> <a href="#JBoss_Fails_to_Start_When_the_Pentaho_HSQLDB_Sample_Database_Is_Running" rel="internal">JBoss Fails to Start When the Pentaho HSQLDB Sample Database Is Running</a>  </li>
+          <li> <a href="#JBoss_Fails_to_Start_After_Manually_Unpacking_Pentaho_WAR" rel="internal">JBoss Fails to Start After Manually Unpacking Pentaho WAR</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Not_All_Content_is_Migrated_with_the_Migration_Utility" rel="internal">Not All Content is Migrated with the Migration Utility</a>  </li>
+    </ol>
+  </body>
+</content>

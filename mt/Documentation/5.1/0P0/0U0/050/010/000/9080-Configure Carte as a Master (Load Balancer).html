@@ -1,0 +1,46 @@
+<content type="text/html" title="Configure Carte as a Master (Load Balancer)">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">This procedure is only necessary for <strong class="ph b">dynamic cluster</strong>  scenarios in which one Carte server will load-balance multiple slave Carte instances. If you are implementing a static cluster, which is where Carte slaves are
+          individually declared in the PDI user interface, then skip these instructions.</div>
+        <div class="section context">
+          <p class="p">Follow the process below to establish a dynamic Carte load balancer (master server).</p>
+          <div class="note note"><span class="notetitle">Note:</span>  You do not have to use Carte as a load balancer; you can use the DI Server instead. If you decide to use the DI Server, you must enable the proxy trusting filter as explained in
+            <a class="xref" title="Execute Scheduled Jobs on a Remote Carte Server"
+            rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/0U0/050/050">Execute Scheduled Jobs on a Remote Carte Server</a>, then set up your dynamic Carte slaves and define the DI Server as the master.</div>
+          <div class="note note"><span class="notetitle">Note:</span>  If you already have Carte installed on the target machine, you can skip the initial installation steps.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Retrieve a <strong class="ph b">pdi-ee-client</strong>  archive package from the Pentaho Customer Support Portal.</span> </li>
+          <li class="li step"><span class="ph cmd">Create a <span class="ph filepath">/pentaho/design-tools/</span>  directory.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Unpack the archive to the <span class="ph filepath">/pentaho/design-tools/</span>  directory on each machine.</span>  Two directories will be created: <strong class="ph b">data-integration</strong>  and <strong class="ph b">license-installer</strong> .</li>
+          <li class="li step"><span class="ph cmd">Copy over any required JDBC drivers from your development instances of PDI to the Carte instances.</span> </li>
+          <li class="li step"><span class="ph cmd">Create a <strong class="ph b">carte-master-config.xml</strong>  configuration file using the following example as a basis:</span>  <pre class="pre codeblock">
+<slave_config>
+
+<!-- on a master server, the slaveserver node contains information about this Carte instance -->
+	<slaveserver>
+		<name>Master</name>
+		<hostname>localhost</hostname>
+		<port>9001</port>
+		<username>cluster</username>
+		<password>cluster</password>
+		<master>Y</master>
+	</slaveserver>
+</slave_config></pre>
+            <div class="note note"><span class="notetitle">Note:</span>  The <strong class="ph b"><name></strong>  must be unique among all Carte instances in the cluster.</div>
+          </li>
+          <li class="li step"><span class="ph cmd">Run the Carte script with the carte-slave-config.xml parameter.</span>  <pre class="pre codeblock">
+./carte.sh carte-master-config.xml</pre> </li>
+          <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended.</span> </li>
+          <li class="li step"><span class="ph cmd">To start this master server every time the operating system boots, create a startup or init script to run Carte at boot time with the same config file option you specified earlier.</span> </li>
+        </ol>
+        <div class="section result">You now have a Carte master to use in a dynamic cluster. You must configure one or more Carte slave servers in order for this to be useful.</div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

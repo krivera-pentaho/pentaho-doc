@@ -1,0 +1,1709 @@
+<content type="text/html" title="Transformations">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Provides web services to create, update, and delete transformations. &nbsp;Calls for getting images, statuses and starting, pausing, preparing, and stopping transformations are also included.</p>
+        </div>
+      </div>
+      <p>Provides web service calls to create, update, and delete transformations. &nbsp;Calls for getting images, statuses and starting, pausing, preparing, and stopping transformations are also included.</p>
+      <p class="pentaho-note">You will need to modify the example URLs if you are working with the PDI server instead of a standalone Carte server.</p>
+      <p>These are the resources that are available:</p>
+      <ul class="pentaho-list-unordered">
+        <li>/kettle/addTrans&nbsp;(
+          <a title="Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070/020/020/020#Deprecation Note">Deprecated</a> )</li>
+        <li>/kettle/t<span style="line-height:1.5;background-color:transparent;">ransImage</span> </li>
+        <li>/kettle/transStatus</li>
+        <li>/kettle/p<span style="line-height:1.5;background-color:transparent;">repareExec</span> </li>
+        <li>/kettle/s<span style="line-height:1.5;background-color:transparent;">tartExec</span> </li>
+        <li>/kettle/startTrans</li>
+        <li>/kettle/runTrans</li>
+        <li>/kettle/executeTrans</li>
+        <li>/kettle/p<span style="line-height:1.5;background-color:transparent;">auseTrans</span> </li>
+        <li><span style="line-height:1.5;background-color:transparent;">/kettle/s<span style="line-height:1.5;background-color:transparent;">topTrans</span> </span> 
+        </li>
+        <li><span style="line-height:1.5;background-color:transparent;"><span style="line-height:1.5;background-color:transparent;">/kettle/removeTrans</span> </span> 
+        </li>
+        <li><span style="line-height:1.5;background-color:transparent;"><span style="line-height:1.5;background-color:transparent;">/kettle/cleanupTrans</span> </span> 
+        </li>
+        <li><span style="line-height:1.5;background-color:transparent;"><span style="line-height:1.5;background-color:transparent;">/kettle/sniffStep&#8203;</span> </span> 
+        </li>
+        <li><span style="line-height:1.5;background-color:transparent;"><span style="line-height:1.5;background-color:transparent;">/kettle/registerTrans</span> </span> 
+        </li>
+      </ul>
+      <p class="pentaho-note">
+        <a id="Deprecation Note" name="Deprecation Note"></a> An API marked as &quot;deprecated&quot; has been restructured and modified, with new classes and methods which provide similar functionality. Whenever possible, you should modify your application to remove references to deprecated methods
+        and classes&nbsp;and use the new alternatives.</p>
+      <div id="section_2" class="mt-page-section"><span id=".2Fkettle.2FaddTrans_(Deprecated)"></span> 
+        <h2 class="editable">/kettle/addTrans (Deprecated)</h2>
+        <p>This API has been deprecated. Use
+          <a title="Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070/020/020/020#.2Fkettle.2FregisterTrans">/kettle/registerTrans</a> .</p>
+        <div id="section_3" class="mt-page-section"><span id="Overview_2"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Uploads and executes transformation configuration XML file.</p>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="POST"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Uploads xml file containing transformation and transformation_execution_configuration (wrapped in transformation_configuration tag) to be executed and executes it. Method relies on the input parameter to determine if xml or html reply should
+            be produced. The transformation_configuration xml is transferred within request body. <code>transformation name of the executed transformation </code> will be returned in the Response object or <code>message</code> describing error occurred.
+            To determine if the call successful or not you should rely on <code>result</code> parameter in response.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/addTrans/?xml=Y</pre>
+          <p>Request body should contain xml containing transformation_configuration (transformation and transformation_execution_configuration wrapped in transformation_configuration tag).</p>
+          <div id="section_5" class="mt-page-section"><span id="Parameters"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag set to either <code>Y</code> or <code>N</code> describing if xml or html reply should be produced.</td>
+                  <td>boolean, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_6" class="mt-page-section"><span id="Response_Body"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">element:</td>
+                  <td>(custom)</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response wraps transformation name that was executed or error stack trace if an error occurred. Response has <code>result</code> OK if there were no errors. Otherwise it returns ERROR.</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Transformation 'dummy-trans' was added to Carte with id eb4a92ff-6852-4307-9f74-3c74bd61f829</message>
+      <id>eb4a92ff-6852-4307-9f74-3c74bd61f829</id>
+    </webresult></pre> </div>
+          <div id="section_7" class="mt-page-section"><span id="Status_Codes"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed and XML response is returned.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              <a name="toString()"> </a> 
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id=".2Fkettle.2FtransImage"></span> 
+        <h2 class="editable">/kettle/transImage</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETtransImage">GET</a>  </li>
+          <li> <a href="#POSTtransImage">POST</a>  </li>
+        </ul>
+        <div id="section_9" class="mt-page-section"><span id="Overview_3"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Generates PNG image of the specified transformation currently present on Carte server. Transformation name and Carte transformation ID (optional) are used for specifying which transformation to get information for. Response is a binary of the
+            PNG image.</p>
+          <p>
+            <a name="GETtransImage"></a> 
+          </p>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="GET"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/transImage?name=dummy-trans</pre>
+          <p>
+            <a name="POSTtransImage"></a> 
+          </p>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="POST_2"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/transImage/
+POST body
+name=dummy-trans</pre>
+          <div id="section_12" class="mt-page-section"><span id="Parameters_2"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be used for image generation.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte id of the transformation to be used for image generation.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_13" class="mt-page-section"><span id="Response_Body_2"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">binary streak:</td>
+                  <td>image</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>image/png</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>A binary PNG image or empty response is presented if no transformation is found.</p>
+          </div>
+          <div id="section_14" class="mt-page-section"><span id="Status_Codes_2"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_15" class="mt-page-section"><span id=".2Fkettle.2FtransStatus"></span> 
+        <h2 class="editable">/kettle/transStatus</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETtransStatus">GET</a>  </li>
+          <li> <a href="#POSTtransStatus">POST</a>  </li>
+        </ul>
+        <div id="section_16" class="mt-page-section"><span id="Overview_4"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Retrieves status of the specified transformation. Status is returned as HTML or XML output depending on the input parameters. Status contains information about last execution of the transformation.</p>
+          <p>
+            <a name="GETtransStatus"></a> 
+          </p>
+        </div>
+        <div id="section_17" class="mt-page-section"><span id="GET_2"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/transStatus/?name=dummy-trans&amp;xml=Y</pre>
+          <p>
+            <a name="POSTtransStatus"></a> 
+          </p>
+        </div>
+        <div id="section_18" class="mt-page-section"><span id="POST_3"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/transStatus/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_19" class="mt-page-section"><span id="Parameters_3"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be used for status generation.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which defines output format <code>Y</code> forces XML output to be generated. HTML is returned otherwise.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte id of the transformation to be used for status generation.</td>
+                  <td>query, optional</td>
+                </tr>
+                <tr>
+                  <td>from</td>
+                  <td>Start line number of the execution log to be included into response.</td>
+                  <td>integer, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_20" class="mt-page-section"><span id="Response_Body_3"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">element:</td>
+                  <td>(custom)</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML response containing details about the transformation specified. If an error occurs during method invocation <code>result</code> field of the response will contain <code>ERROR</code> status.</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><transstatus>
+        <transname>dummy-trans</transname>
+        <id>c56961b2-c848-49b8-abde-76c8015e29b0</id>
+        <status_desc>Stopped</status_desc>
+        <error_desc/>
+        <paused>N</paused>
+        <stepstatuslist>
+          <stepstatus><stepname>Dummy (do nothing)</stepname>
+          <copy>0</copy><linesread>0</linesread>
+          <lineswritten>0</lineswritten><linesinput>0</linesinput>
+          <linesoutput>0</linesoutput><linesupdated>0</linesupdated>
+          <linesrejected>0</linesrejected><errors>0</errors>
+          <statusdescription>Stopped</statusdescription><seconds>0.0</seconds>
+          <speed>-</speed><priority>-</priority><stopped>Y</stopped>
+          <paused>N</paused>
+          </stepstatus>
+        </stepstatuslist>
+        <first_log_line_nr>0</first_log_line_nr>
+        <last_log_line_nr>37</last_log_line_nr>
+        <result>
+          <lines_input>0</lines_input>
+          <lines_output>0</lines_output>
+          <lines_read>0</lines_read>
+          <lines_written>0</lines_written>
+          <lines_updated>0</lines_updated>
+          <lines_rejected>0</lines_rejected>
+          <lines_deleted>0</lines_deleted>
+          <nr_errors>0</nr_errors>
+          <nr_files_retrieved>0</nr_files_retrieved>
+          <entry_nr>0</entry_nr>
+          <result>Y</result>
+          <exit_status>0</exit_status>
+          <is_stopped>Y</is_stopped>
+          <log_channel_id>10e2c832-07da-409a-a5ba-4b90a234e957</log_channel_id>
+          <log_text/>
+          <result-file/>
+          <result-rows/>
+        </result>
+        <logging_string><![CDATA[H4sIAAAAAAAAADMyMDTRNzTUNzJRMDSyMrC0MjFV0FVIKc3NrdQtKUrMKwbyXDKLCxJLkjMy89IViksSi0pSUxTS8osUwPJARm5iSWZ+nkI0kq5YXi4AQVH5bFoAAAA=]]></logging_string>
+       </transstatus></pre> </div>
+          <div id="section_21" class="mt-page-section"><span id="Status_Codes_3"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_22" class="mt-page-section"><span id=".2Fkettle.2FprepareExec"></span> 
+        <h2 class="editable">/kettle/prepareExec</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETprepareExec">GET</a>  </li>
+          <li> <a href="#POSTprepareExec">POST</a>  </li>
+        </ul>
+        <div id="section_23" class="mt-page-section"><span id="Overview_5"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Prepares previously loaded transformation for execution. Method is used for preparing previously uploaded transformation for execution by its name.</p>
+          <p>
+            <a name="GETprepareExec"></a> 
+          </p>
+        </div>
+        <div id="section_24" class="mt-page-section"><span id="GET_3"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/prepareExec/?name=dummy-trans2&amp;xml=Y</pre>
+          <p>
+            <a name="POSTprepareExec"></a> 
+          </p>
+        </div>
+        <div id="section_25" class="mt-page-section"><span id="POST_4"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/prepareExec/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_26" class="mt-page-section"><span id="Parameters_4"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be prepared for execution.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be prepared for execution.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_27" class="mt-page-section"><span id="Response_Body_4"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+    <result>OK</result>
+    <message/>
+    <id/>
+  </webresult></pre> </div>
+          <div id="section_28" class="mt-page-section"><span id="Status_Codes_4"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_29" class="mt-page-section"><span id=".2Fkettle.2FstartExec"></span> 
+        <h2 class="editable">/kettle/startExec</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETstartExec">GET</a>  </li>
+          <li> <a href="#POSTstartExec">POST</a>  </li>
+        </ul>
+        <div id="section_30" class="mt-page-section"><span id="Overview_6"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Starts transformation. If the transformation is not ready, an error is returned.</p>
+          <p>
+            <a name="GETstartExec"></a> 
+          </p>
+        </div>
+        <div id="section_31" class="mt-page-section"><span id="GET_4"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/startExec/?name=dummy-trans&amp;xml=Y</pre>
+          <p>
+            <a name="POSTstartExec"></a> 
+          </p>
+        </div>
+        <div id="section_32" class="mt-page-section"><span id="POST_5"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/startExec/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_33" class="mt-page-section"><span id="Parameters_5"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be executed.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be executed. This parameter is optional when xml=Y is used.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_34" class="mt-page-section"><span id="Response_Body_5"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message/>
+      <id/>
+    </webresult></pre> </div>
+          <div id="section_35" class="mt-page-section"><span id="Status_Codes_5"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_36" class="mt-page-section"><span id=".2Fkettle.2FstartTrans"></span> 
+        <h2 class="editable">/kettle/startTrans</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETstartTrans">GET</a>  </li>
+          <li> <a href="#POSTstartTrans">POST</a>  </li>
+        </ul>
+        <div id="section_37" class="mt-page-section"><span id="Overview_7"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Executes transformation previously uploaded to Carte server.</p>
+          <p>
+            <a name="GETstartTrans"></a> 
+          </p>
+        </div>
+        <div id="section_38" class="mt-page-section"><span id="GET_5"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/startTrans/?name=dummy-trans&amp;xml=Y</pre>
+          <p>
+            <a name="POSTstartTrans"></a> 
+          </p>
+        </div>
+        <div id="section_39" class="mt-page-section"><span id="POST_6"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/startTrans/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_40" class="mt-page-section"><span id="Parameters_6"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be executed.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be executed. This parameter is optional when xml=Y is used.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_41" class="mt-page-section"><span id="Response_Body_6"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Transformation [dummy-trans] was started.</message>
+      <id/>
+    </webresult></pre> </div>
+          <div id="section_42" class="mt-page-section"><span id="Status_Codes_6"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_43" class="mt-page-section"><span id=".2Fkettle.2FrunTrans"></span> 
+        <h2 class="editable">/kettle/runTrans</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETrunTrans">GET</a>  </li>
+          <li> <a href="#POSTrunTrans">POST</a>  </li>
+        </ul>
+        <div id="section_44" class="mt-page-section"><span id="Overview_8"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Execute transformation from enterprise repository. Repository should be configured in Carte xml file. Response contains <code>ERROR</code> result if error happened during transformation execution.</p>
+          <p>
+            <a name="GETrunTrans"></a> 
+          </p>
+        </div>
+        <div id="section_45" class="mt-page-section"><span id="GET_6"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/runTrans?trans=home%2Fadmin%2Fdummy-trans&amp;level=Debug</pre>
+          <p>
+            <a name="POSTrunTrans"></a> 
+          </p>
+        </div>
+        <div id="section_46" class="mt-page-section"><span id="POST_7"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/runTrans/
+POST body
+trans=home%2Fadmin%2Fdummy-trans&amp;level=Debug</pre>
+          <div id="section_47" class="mt-page-section"><span id="Parameters_7"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>trans</td>
+                  <td>Full path to the transformation in repository.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>level</td>
+                  <td>Logging level to be used for transformation execution (i.e. Debug).</td>
+                  <td>query</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_48" class="mt-page-section"><span id="Response_Body_7"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">element:</td>
+                  <td>(custom)</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response contains result of the operation. It is either <code>OK</code> or <code>ERROR</code>. If an error occurred during transformation execution, response also contains information about the error.</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Transformation started</message>
+      <id>7c082e8f-b4fe-40bc-b424-e0f881a61874</id>
+    </webresult></pre> </div>
+          <div id="section_49" class="mt-page-section"><span id="Status_Codes_7"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_50" class="mt-page-section"><span id=".2Fkettle.2FexecuteTrans"></span> 
+        <h2 class="editable">/kettle/executeTrans</h2>
+        <div id="section_51" class="mt-page-section"><span id="Overview_9"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Executes transformation from the specified repository. Connects to the repository provided as a parameter, loads the transformation from it, and executes it. Empty response is returned or response contains output of an error happened during
+            the transformation execution. Response contains <code>ERROR</code> result if error happened during transformation execution.</p>
+          <ul class="pentaho-list-unordered">
+            <li> <a href="#GETexecuteTrans">GET</a>  </li>
+            <li> <a href="#POSTexecuteTrans">POST</a>  </li>
+          </ul>
+          <p>
+            <a name="GETexecuteTrans"></a> 
+          </p>
+        </div>
+        <div id="section_52" class="mt-page-section"><span id="GET_7"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/executeTrans/?rep=my_repository&amp;user=my_user&amp;pass=my_password&amp;trans=my_trans&amp;level=INFO
+GET /kettle/executeTrans/?trans=PathToFile/&amp;level=Debug</pre>
+          <p>
+            <a name="POSTexecuteTrans"></a> 
+          </p>
+        </div>
+        <div id="section_53" class="mt-page-section"><span id="POST_8"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/executeTrans/
+    
+POST body
+    
+user=admin&amp;pass=password&amp;trans=home%2fadmin%2fdummy-trans&amp;level=Debug&amp;rep=di</pre>
+          <div id="section_54" class="mt-page-section"><span id="Parameters_8"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>rep</td>
+                  <td>Repository id to connect to.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>user</td>
+                  <td>User name to be used to connect to repository.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>pass</td>
+                  <td>User password to be used to connect to repository.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>trans</td>
+                  <td>Transformation name to be loaded and executed.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>level</td>
+                  <td>Logging level to be used for transformation execution (i.e. Debug).</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>*any name*</td>
+                  <td>All the other parameters will be sent to the transformation for using as variables. When necessary you can add custom parameters to the request. They will be used to set the transformation variables values..</td>
+                  <td>query</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_55" class="mt-page-section"><span id="Response_Body_8"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">element:</td>
+                  <td>(custom)</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>application/xml</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response contains error output of the transformation executed or nothing if the execution was successful.</p>
+            <p><strong>Example Error Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+    <result>ERROR</result>
+    <message>Unexpected error executing the transformation: 
+    
+org.pentaho.di.core.exception.KettleException: 
+    
+Unable to find transformation 'dummy-trans.ktr' in directory 
+    :/home/admin
+ at 
+    org.pentaho.di.www.ExecuteTransServlet.loadTransformation(ExecuteTransServlet.java:214)
+ 
+    at org.pentaho.di.www.ExecuteTransServlet.doGet(ExecuteTransServlet.java:104)
+  
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:707)
+  
+    at javax.servlet.http.HttpServlet.service(HttpServlet.java:820)
+  
+    at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:511)
+  
+    at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:390)
+  
+    at org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:182)
+  
+    at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:765)
+  
+    at org.mortbay.jetty.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:230)
+  
+    at org.mortbay.jetty.handler.HandlerCollection.handle(HandlerCollection.java:114)
+  
+    at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+  
+    at org.mortbay.jetty.Server.handle(Server.java:326)
+  
+    at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:536)
+ 
+    at org.mortbay.jetty.HttpConnection$RequestHandler.headerComplete(HttpConnection.java:915)
+  
+    at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:539)
+ 
+    at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:212)
+  
+    at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:405)
+ 
+    at org.mortbay.jetty.bio.SocketConnector$Connection.run(SocketConnector.java:228)
+ 
+    at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
+    </message>
+    <id/>
+  </webresult></pre> </div>
+          <div id="section_56" class="mt-page-section"><span id="Status_Codes_8"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_57" class="mt-page-section"><span id=".2Fkettle.2FpauseTrans"></span> 
+        <h2 class="editable">/kettle/pauseTrans</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETpauseTrans">GET</a>  </li>
+          <li> <a href="#POSTpauseTrans">POST</a>  </li>
+        </ul>
+        <div id="section_58" class="mt-page-section"><span id="Overview_10"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Pauses transformation to be executed. Method is used for pausing running transformation by its name.</p>
+          <p>
+            <a name="GETpauseTrans"></a> 
+          </p>
+        </div>
+        <div id="section_59" class="mt-page-section"><span id="GET_8"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/pauseTrans/?name=dummy-trans&amp;xml=Y</pre>
+          <p>
+            <a name="POSTpauseTrans"></a> 
+          </p>
+        </div>
+        <div id="section_60" class="mt-page-section"><span id="POST_9"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/pauseTrans/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_61" class="mt-page-section"><span id="Parameters_9"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be paused.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be paused. This parameter is optional when xml=Y is used.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_62" class="mt-page-section"><span id="Response_Body_9"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+    <result>OK</result>
+    <message>Transformation [dummy-trans (master)] : pause requested.</message>
+    <id/>
+  </webresult></pre> </div>
+          <div id="section_63" class="mt-page-section"><span id="Status_Codes_9"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_64" class="mt-page-section"><span id=".2Fkettle.2FstopTrans"></span> 
+        <h2 class="editable">/kettle/stopTrans</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETstopTrans">GET</a>  </li>
+          <li> <a href="#POSTstopTrans">POST</a>  </li>
+        </ul>
+        <div id="section_65" class="mt-page-section"><span id="Overview_11"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Stops transformation execution on Carte server.</p>
+          <p>
+            <a name="GETstopTrans"></a> 
+          </p>
+        </div>
+        <div id="section_66" class="mt-page-section"><span id="GET_9"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/stopTrans/?name=dummy-trans&amp;xml=Y</pre>
+          <p>
+            <a name="POSTstopTrans"></a> 
+          </p>
+        </div>
+        <div id="section_67" class="mt-page-section"><span id="POST_10"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/stopTrans/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_68" class="mt-page-section"><span id="Parameters_10"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be stopped.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be stopped. This parameter is optional when xml=Y is used.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_69" class="mt-page-section"><span id="Response_Body_10"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Transformation [dummy-trans] stop requested.</message>
+      <id>c56961b2-c848-49b8-abde-76c8015e29b0</id>
+    </webresult></pre> </div>
+          <div id="section_70" class="mt-page-section"><span id="Status_Codes_10"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_71" class="mt-page-section"><span id=".2Fkettle.2FremoveTrans"></span> 
+        <h2 class="editable">/kettle/removeTrans</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETremoveTrans">GET</a>  </li>
+          <li> <a href="#POSTremoveTrans">POST</a>  </li>
+        </ul>
+        <div id="section_72" class="mt-page-section"><span id="Overview_12"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Removes specified transformation from Carte server.</p>
+          <p>
+            <a name="GETremoveTrans"></a> 
+          </p>
+        </div>
+        <div id="section_73" class="mt-page-section"><span id="GET_10"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/removeTrans/?name=dummy-trans&amp;xml=Y</pre>
+          <p>
+            <a name="POSTremoveTrans"></a> 
+          </p>
+        </div>
+        <div id="section_74" class="mt-page-section"><span id="POST_11"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/removeTrans/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_75" class="mt-page-section"><span id="Parameters_11"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be removed.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be removed. This parameter is optional when xml=Y is used.</td>
+                  <td>query, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_76" class="mt-page-section"><span id="Response_Body_11"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message/>
+      <id/>
+    </webresult></pre> </div>
+          <div id="section_77" class="mt-page-section"><span id="Status_Codes_11"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_78" class="mt-page-section"><span id=".2Fkettle.2FcleanupTrans"></span> 
+        <h2 class="editable">/kettle/cleanupTrans</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETcleanupTrans">GET</a>  </li>
+          <li> <a href="#POSTcleanupTrans">POST</a>  </li>
+        </ul>
+        <div id="section_79" class="mt-page-section"><span id="Overview_13"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Method is used for cleaning previously uploaded transformation by its name on Carte server. There are two modes for this method: 1) Clean the server sockets only or 2) Clean everything, including the transformation.</p>
+          <p>
+            <a name="GETcleanupTrans"></a> 
+          </p>
+        </div>
+        <div id="section_80" class="mt-page-section"><span id="GET_11"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/cleanupTrans/?name=dummy-trans2&amp;xml=Y</pre>
+          <p>
+            <a name="POSTcleanupTrans"></a> 
+          </p>
+        </div>
+        <div id="section_81" class="mt-page-section"><span id="POST_12"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/cleanupTrans/
+POST body
+name=dummy-trans&amp;xml=Y</pre>
+          <div id="section_82" class="mt-page-section"><span id="Parameters_12"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>Name of the transformation to be cleaned.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which sets the output format required. Use <code>Y</code> to receive XML response.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte transformation ID of the transformation to be cleaned.</td>
+                  <td>query, optional</td>
+                </tr>
+                <tr>
+                  <td>sockets</td>
+                  <td>Boolean flag which indicates if full clean up or sockets only is required. Use <code>Y</code> to clean just sockets.</td>
+                  <td>boolean, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_83" class="mt-page-section"><span id="Response_Body_12"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">text:</td>
+                  <td>HTML</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML containing operation result. When using xml=Y <code>result</code> field indicates whether operation was successful (<code>OK</code>) or not (<code>ERROR</code>).</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+    <result>OK</result>
+    <message>All server sockets ports for transformation [dummy-trans2] were deallocated. 
+Transformation [dummy-trans2] was cleaned up.</message>
+    <id/>
+  </webresult></pre> </div>
+          <div id="section_84" class="mt-page-section"><span id="Status_Codes_12"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div id="section_85" class="mt-page-section"><span id=".2Fkettle.2FsniffStep"></span> 
+        <h2 class="editable">/kettle/sniffStep</h2>
+        <p>The following operations are supported on this resource:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a href="#GETsniffStep">GET</a>  </li>
+          <li> <a href="#POSTsniffStep">POST</a>  </li>
+        </ul>
+        <div id="section_86" class="mt-page-section"><span id="Overview_14"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Sniffs metadata and data from the specified step of the specified transformation.</p>
+          <p>
+            <a name="GETsniffStep"></a> 
+          </p>
+        </div>
+        <div id="section_87" class="mt-page-section"><span id="GET_12"></span> 
+          <h3 class="editable">GET</h3>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET /kettle/sniffStep?trans=dummy-trans&amp;step=tf&amp;xml=Y&amp;lines=10</pre>
+          <p>
+            <a name="POSTsniffStep"></a> 
+          </p>
+        </div>
+        <div id="section_88" class="mt-page-section"><span id="POST_13"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Content-Type: <span class="filepath style-wrap">application/x-www-form-urlencoded</span>  should be set to use POST.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/sniffStep/
+POST body
+trans=dummy-trans&amp;step=Dummy (do nothing)&amp;xml=Y</pre>
+          <div id="section_89" class="mt-page-section"><span id="Parameters_13"></span> 
+            <h4 class="editable">Parameters</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>name</th>
+                  <th>description</th>
+                  <th>type</th>
+                </tr>
+                <tr>
+                  <td>trans</td>
+                  <td>Name of the transformation containing required step.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>stepName</td>
+                  <td>Name of the transformation step to collect data for.</td>
+                  <td>query</td>
+                </tr>
+                <tr>
+                  <td>copynr</td>
+                  <td>Copy number of the step to be used for collecting data. If not provided 0 is used.</td>
+                  <td>integer, optional</td>
+                </tr>
+                <tr>
+                  <td>type</td>
+                  <td>Type of the data to be collected (<code>input</code> or <code>output</code>). If not provided output data is collected.</td>
+                  <td>query, optional</td>
+                </tr>
+                <tr>
+                  <td>xml</td>
+                  <td>Boolean flag which defines output format <code>Y</code> forces XML output to be generated. HTML is returned otherwise.</td>
+                  <td>boolean, optional</td>
+                </tr>
+                <tr>
+                  <td>id</td>
+                  <td>Carte id of the transformation to be used for step lookup.</td>
+                  <td>query, optional</td>
+                </tr>
+                <tr>
+                  <td>lines</td>
+                  <td>Number of lines to collect and include into response. If not provided 0 lines will be collected.</td>
+                  <td>integer, optional</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_90" class="mt-page-section"><span id="Response_Body_13"></span> 
+            <h4 class="editable">Response Body</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <td align="right">element:</td>
+                  <td>(custom)</td>
+                </tr>
+                <tr>
+                  <td align="right">media types:</td>
+                  <td>text/xml, text/html</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Response XML or HTML response containing data and metadata of the step. If an error occurs during method invocation <code>result</code> field of the response will contain <code>ERROR</code> status.</p>
+            <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><step-sniff>
+      <row-meta>
+        <value-meta><type>String</type>
+          <storagetype>normal</storagetype>
+          <name>Field1</name>
+          <length>0</length>
+          <precision>-1</precision>
+          <origin>tf</origin>
+          <comments/>
+          <conversion_mask/>
+          <decimal_symbol>.</decimal_symbol>
+          <grouping_symbol>,</grouping_symbol>
+          <currency_symbol>$</currency_symbol>
+          <trim_type>none</trim_type>
+          <case_insensitive>N</case_insensitive>
+          <sort_descending>N</sort_descending>
+          <output_padding>N</output_padding>
+          <date_format_lenient>Y</date_format_lenient>
+          <date_format_locale>en_US</date_format_locale>
+          <date_format_timezone>America/Bahia</date_format_timezone>
+          <lenient_string_to_number>N</lenient_string_to_number>
+        </value-meta>
+      </row-meta>
+      <nr_rows>10</nr_rows>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data </value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+      <row-data><value-data>my-data</value-data>
+      </row-data>
+    </step-sniff></pre> </div>
+          <div id="section_91" class="mt-page-section"><span id="Status_Codes_13"></span> 
+            <h4 class="editable">Status Codes</h4>
+            <table class="pentaho-table">
+              <tbody>
+                <tr>
+                  <th>code</th>
+                  <th>description</th>
+                </tr>
+                <tr>
+                  <td>200</td>
+                  <td>Request was processed.</td>
+                </tr>
+                <tr>
+                  <td>500</td>
+                  <td>Internal server error occurs during request processing.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="section_92" class="mt-page-section"><span id=".2Fkettle.2FregisterTrans"></span> 
+        <h2 class="editable">/kettle/registerTrans</h2>
+        <div id="section_93" class="mt-page-section"><span id="Overview_15"></span> 
+          <h3 class="editable">Overview</h3>
+          <p>Uploads and executes transformation configuration XML file to the server.</p>
+        </div>
+        <div id="section_94" class="mt-page-section"><span id="POST_14"></span> 
+          <h3 class="editable">POST</h3>
+          <p>Uploads xml file containing transformation and transformation_execution_configuration (wrapped in transformation_configuration tag) to be executed and executes it. Method relies on the input parameter to determine if xml or html reply should
+            be produced. The transformation_configuration xml is transferred within request body. <code>transformation name of the executed transformation </code> will be returned in the Response object or <code>message</code> describing error occurred.
+            To determine if the call successful or not you should rely on <code>result</code> parameter in response.</p>
+          <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">POST /kettle/registerTrans/?xml=Y</pre>
+          <p>Request body should contain xml containing transformation_configuration (transformation and transformation_execution_configuration wrapped in transformation_configuration tag).&nbsp;</p>
+        </div>
+      </div>
+    </div>
+    <div id="section_95" class="mt-page-section"><span id="Parameters_14"></span> 
+      <h4 class="editable">Parameters</h4>
+      <table class="pentaho-table">
+        <tbody>
+          <tr>
+            <th>name</th>
+            <th>description</th>
+            <th>type</th>
+          </tr>
+          <tr>
+            <td>xml</td>
+            <td>Boolean flag set to either <code>Y</code> or <code>N</code> describing if xml or html reply should be produced.</td>
+            <td>boolean, optional</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_96" class="mt-page-section"><span id="Response_Body_14"></span> 
+      <h4 class="editable">Response Body</h4>
+      <table class="pentaho-table">
+        <tbody>
+          <tr>
+            <td align="right">element:</td>
+            <td>(custom)</td>
+          </tr>
+          <tr>
+            <td align="right">media types:</td>
+            <td>text/xml, text/html</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Response wraps transformation name that was executed or error stack trace if an error occurred. Response has <code>result</code> OK if there were no errors. Otherwise it returns ERROR.</p>
+      <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><webresult>
+      <result>OK</result>
+      <message>Transformation 'dummy-trans' was added to Carte with id eb4a92ff-6852-4307-9f74-3c74bd61f829</message>
+      <id>eb4a92ff-6852-4307-9f74-3c74bd61f829</id>
+    </webresult></pre> </div>
+    <div id="section_97" class="mt-page-section"><span id="Status_Codes_14"></span> 
+      <h4 class="editable">Status Codes</h4>
+      <table class="pentaho-table">
+        <tbody>
+          <tr>
+            <th>code</th>
+            <th>description</th>
+          </tr>
+          <tr>
+            <td>200</td>
+            <td>Request was processed and XML response is returned.</td>
+          </tr>
+          <tr>
+            <td>500</td>
+            <td>Internal server error occurs during request processing.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fkettle.2FaddTrans_(Deprecated)" rel="internal">/kettle/addTrans (Deprecated)</a> 
+        <ol>
+          <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+          <li>
+            <a href="#POST" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FtransImage" rel="internal">/kettle/transImage</a> 
+        <ol>
+          <li> <a href="#Overview_3" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_2" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FtransStatus" rel="internal">/kettle/transStatus</a> 
+        <ol>
+          <li> <a href="#Overview_4" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_2" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_3" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FprepareExec" rel="internal">/kettle/prepareExec</a> 
+        <ol>
+          <li> <a href="#Overview_5" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_3" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_4" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_4" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FstartExec" rel="internal">/kettle/startExec</a> 
+        <ol>
+          <li> <a href="#Overview_6" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_4" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_5" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_5" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_5" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_5" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FstartTrans" rel="internal">/kettle/startTrans</a> 
+        <ol>
+          <li> <a href="#Overview_7" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_5" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_6" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_6" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_6" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_6" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FrunTrans" rel="internal">/kettle/runTrans</a> 
+        <ol>
+          <li> <a href="#Overview_8" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_6" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_7" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_7" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_7" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_7" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FexecuteTrans" rel="internal">/kettle/executeTrans</a> 
+        <ol>
+          <li> <a href="#Overview_9" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_7" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_8" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_8" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_8" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_8" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FpauseTrans" rel="internal">/kettle/pauseTrans</a> 
+        <ol>
+          <li> <a href="#Overview_10" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_8" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_9" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_9" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_9" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_9" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FstopTrans" rel="internal">/kettle/stopTrans</a> 
+        <ol>
+          <li> <a href="#Overview_11" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_9" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_10" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_10" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_10" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_10" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FremoveTrans" rel="internal">/kettle/removeTrans</a> 
+        <ol>
+          <li> <a href="#Overview_12" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_10" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_11" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_11" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_11" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_11" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FcleanupTrans" rel="internal">/kettle/cleanupTrans</a> 
+        <ol>
+          <li> <a href="#Overview_13" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_11" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_12" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_12" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_12" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_12" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FsniffStep" rel="internal">/kettle/sniffStep</a> 
+        <ol>
+          <li> <a href="#Overview_14" rel="internal">Overview</a>  </li>
+          <li> <a href="#GET_12" rel="internal">GET</a>  </li>
+          <li>
+            <a href="#POST_13" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_13" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_13" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_13" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fkettle.2FregisterTrans" rel="internal">/kettle/registerTrans</a> 
+        <ol>
+          <li> <a href="#Overview_15" rel="internal">Overview</a>  </li>
+          <li>
+            <a href="#POST_14" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters_14" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_14" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_14" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

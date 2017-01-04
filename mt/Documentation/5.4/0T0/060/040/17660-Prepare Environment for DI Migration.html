@@ -1,0 +1,99 @@
+<content type="text/html" title="Prepare Environment for DI Migration">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to prepare your enviroment for the migration process.</p>
+        </div>
+      </div>
+      <p>After you have
+        <a title="Prepare DI Migration Plan" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0T0/060/030"> prepared your migrate plan</a>, prepare your environment. To prepare your environment, do these things.</p>
+      <div id="section_2" class="mt-page-section"><span id="Install_5.x.x_DI_Server_and_Licenses"></span> 
+        <h2 class="editable">Install 5.x.x DI Server and Licenses</h2>
+        <div class="topic task nested1" id="install_new_server">
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Complete these steps to install the 5.x.x DI Server and licenses.</p>
+              <div class="note note"><span class="notetitle">Note:</span>  If you are going to install the 5.x.x DI Server on the same machine as the 4.4.x one, consider keeping the 4.4.x version of DI Server running as you install the 5.x.x DI server to avoid port conflicts.
+                When you use the Wizard to install the 5.x.x DI Server, it senses what ports are being used used at the time of installation and, if the port is used, it assigns a different port for the newly installed DI Server. If the 5.x.x and 4.4.x
+                DI Servers run on different ports, they can both run at the same time. This is helpful during the Verify Migration step, which occurs later in these instructions, because you will need to run both systems at the same time to verify that
+                content has migrated from the 4.4.x system to the 5.x.x one.</div>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Install the 5.x.x version of the DI Server. See <a class="xref" shape="rect" title="Select Data Integration (DI) Installation Options" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0N0">Select DI Installation Options</a>  to determine the best installation option. </span> </li>
+              <li class="li step"><span class="ph cmd">Ensure that<a class="xref" shape="rect" title="Start and Stop the Data Integration Server" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0H0/070/010/000"> license keys have been installed and modify the startup scripts as needed</a> . To avoid problems with the Migration Tool and to avoid any of your changes being overwritten, the 5.x.x server should be in a &quot;pristine&quot; state; do not configure the system further, just modify the startup scripts and install the license keys.</span> </li>
+              <li class="li step"><span>Make sure that you have an environment variable set for <span class="filepath style-wrap">$</span> </span> <span class="filepath style-wrap">PENTAHO_INSTALLED_LICENSE_PATH</span> <span>. The variable should be set to the path where the licenses are installed. &nbsp;(This is usually your home directory or the directory where Pentaho was installed.)</span> </li>
+              <li class="li step"><span class="ph cmd">Start the DI Server and Spoon to make sure that the software has installed properly. Do not make any additional changes. If you have problems with starting the DI Server, be sure to fix them before proceeding further.</span> </li>
+            </ol>
+          </div>
+        </div>
+        <div class="topic task nested1" id="install_migration_tool">
+          <div id="section_3" class="mt-page-section"><span id="Download_and_Install_the_Migration_Tool"></span> 
+            <h2 class="editable">Download and Install the Migration Tool</h2>
+            <div class="body taskbody">
+              <div class="section context">
+                <p class="p">The Migration Tool automates the data migration process. The Export Data and Import Data sections provide details on how to use the Migration Tool to perform the migration process.</p>
+                <div class="note note"><span class="notetitle">Note:</span>  The installation program for the Migration Tool requires the
+                  <a class="xref" shape="rect" title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0D0/160/000">currently supported version of Oracle Java</a> . We recommend that you download and install the Migration Tool on the same computer where the 5.x.x version of the server is installed because Java will have already been installed on that
+                  computer during the installation process.</div>
+              </div>
+              <ol class="ol steps">
+                <li class="li step"><span class="ph cmd">Download the <span class="ph filepath">pentaho-platform-migrator-5.x.x-dist.zip</span>  file from the
+                  <a class="link-https" title="https://support.pentaho.com/home" rel="external nofollow" href="https://support.pentaho.com/home"
+                  target="_blank">Customer Support Portal</a>  on the computer where the 5.x.x version of the server has been installed.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">If you use Windows, open the <strong class="ph b">Command Prompt</strong>  window. If you use Linux, open the <strong class="ph b">Terminal</strong>  window.</span> </li>
+                <li class="li step"><span class="ph cmd">Install the Migration Tool by doing one of the following.</span> 
+                  <ol class="ol substeps" type="a">
+                    <li class="li substep"><span class="ph cmd">If you use Windows, enter this command.</span>  <pre class="pre codeblock">
+install.bat
+</pre> </li>
+                    <li class="li substep"><span class="ph cmd">If you use Linux, enter this command.</span>  <pre class="pre codeblock">
+./install.sh
+</pre> </li>
+                  </ol>
+                </li>
+                <li class="li step"><span class="ph cmd">Read the EULA that appears. <strong class="ph b">Select I accept the terms of this license agreement</strong>, then click <strong class="ph b">Next</strong> .</span> </li>
+                <li class="li step"><span class="ph cmd">Indicate where you want the file to be unpacked. It doesn't matter where you download the file. Click the <strong class="ph b">Next</strong>  button. </span> </li>
+                <li class="li step"><span class="ph cmd">The <strong class="ph b">Installation Progress</strong>  window appears. Progress bars indicate the status of the process. When the process is complete, click <strong class="ph b">Quit</strong>  to exit.</span> </li>
+                <li class="li step"><span class="ph cmd">If the 4.4.x version of the server is installed on another computer, you need to place a copy of the Migration Tool on it also. Because the technology used to package and unzip Migration Tool requires a newer version of Java than the one required by the 4.4.x version of the server, just copy the already unzipped file to that computer. The Migrator Tool however, works with the previous version of Java. </span> </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="topic task nested1" id="increase_memory">
+          <div id="section_4" class="mt-page-section"><span id="Increase_Memory_Allocated_to_the_4.4.x_Server"></span> 
+            <h2 class="editable">Increase Memory Allocated to the 4.4.x Server</h2>
+            <div class="body taskbody">
+              <div class="section context">The Migration Tool requires 2 gigabytes of RAM to run. Since the Migration Tool launches a mini-version of the server, the Migration Tool uses the same memory that you have allocated for the server. Since the 4.4.x version of the DI Server
+                had less memory allocated by default, you will need to check the memory settings for the server, then make adjustments if necessary.</div>
+              <ol class="ol steps">
+                <li class="li step"><span class="ph cmd">Review the instructions in the <a class="xref external" shape="rect" target="_blank" title="Change the Java VM Memory Limits" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/090">Changing the Java VM Memory Limits</a>  for your operating system and installation type. Then do these things.</span> 
+                  <ol class="ol substeps" type="a">
+                    <li class="li substep"><span class="ph cmd">Complete the steps for stopping the server.</span> </li>
+                    <li class="li substep"><span class="ph cmd">Ensure that the memory settings for the minimum and maximum Java heap size parameters (<span class="ph filepath">-Xms</span>  and <span class="ph filepath">-Xmx</span> ) are both set to at least <span class="ph filepath">2048m</span>                       or higher. <strong class="ph b">If the parameters are greater than <span class="ph filepath">2048</span>, leave as is, only make changes if the setting is less than <span class="ph filepath">2048</span> </strong> .</span>  <strong class="ph b">Windows Example</strong> :
+                      <pre class="pre codeblock">
+ export CATALINA_OPTS=&quot;-Xms2048m -Xmx2048m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot; 
+</pre> <strong class="ph b">Linux Example</strong> : <pre class="pre codeblock">
+ export JAVA OPTS=&quot;-Dpentaho.installed.licenses.file=/opt/pentaho/.installedLicenses.xml -Xms2048m Xmx2048m -XX-MaxPermSize=256m -Dsun.rmi.dyc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot; 
+</pre> </li>
+                  </ol>
+                </li>
+                <li class="li step"><span class="ph cmd">Restart the 4.4.x version of the server and verify that it starts correctly.</span> </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_5.x.x_DI_Server_and_Licenses" rel="internal">Install 5.x.x DI Server and Licenses</a>  </li>
+      <li> <a href="#Download_and_Install_the_Migration_Tool" rel="internal">Download and Install the Migration Tool</a>  </li>
+      <li> <a href="#Increase_Memory_Allocated_to_the_4.4.x_Server" rel="internal">Increase Memory Allocated to the 4.4.x Server</a>  </li>
+    </ol>
+  </body>
+</content>

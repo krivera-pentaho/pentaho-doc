@@ -1,0 +1,84 @@
+<content type="text/html" title="Changing the Pentaho Data Integration Home Directory Location (.kettle folder)">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The default Pentaho Data Integration (PDI) <code class="ph codeph">HOME</code> directory is the user's home directory (for example, in Windows <code class="ph codeph">C:\Documents and Settings\{user}\.kettle</code> or for all other *nix based
+          operating systems (<code class="ph codeph">$HOME/.kettle</code>). The directory may change depending on the user who is logged on. As a result, the configuration files that control the behavior of PDI jobs and transformations are different from
+          user to user. This also applies when running PDI from the Pentaho BI Platform.</p>
+        <p class="p">When you set the KETTLE_HOME variable, the PDI jobs and transformations can be run without being affected by the user who is logged on. KETTLE_HOME is used to change the location of the files normally in [user home].kettle.</p>
+        <div class="note note"><span class="notetitle">Note:</span>  The PDI home directory is independent of the PDI application directory.</div>
+        <p class="p">Below is a short description of each item in the HOME directory:</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="0e269848-1d00-43a5-b013-a7bffa5717d7__d83077e45" valign="top"><strong class="ph b">Item</strong> </th>
+                <th class="entry" id="0e269848-1d00-43a5-b013-a7bffa5717d7__d83077e49" valign="top"><strong class="ph b">Description</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top"><strong class="ph b">kettle.properties</strong> </td>
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top">Default properties file for variables</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top"><strong class="ph b">shared.xml</strong> </td>
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top">Default shared objects file</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top"><strong class="ph b">db.cache</strong> </td>
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top">The database cache for metadata</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top"><strong class="ph b">repositories.xml</strong> </td>
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top">The local repositories file</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top"><strong class="ph b">.spoonrc</strong> </td>
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top">User interface settings, last opened transformation/job</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top"><strong class="ph b">.languageChoice</strong> </td>
+                <td class="entry" headers="d83077e45 d83077e49 " valign="top">User language (delete to revert language)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">To change set the KETTLE_HOME variable...</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="10.080645161290324%"><strong class="ph b">Step</strong> </td>
+                <td class="entry" valign="top" width="89.91935483870968%"><strong class="ph b">Description</strong> </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="10.080645161290324%"><strong class="ph b">Step 1</strong> </td>
+                <td class="entry" valign="top" width="89.91935483870968%">Set the KETTLE_HOME variable according to your needs. This can be performed system wide by the operating system or just before the start of PDI using a shell script or batch (for example, use the SET command).
+                  <p class="p">The KETTLE_HOME variable can be set system wide on Windows systems using the environment variables settings (see below):</p>
+                  <p class="p">
+                    <img alt="System                                     Variables on Windows" class="image internal" src="http://help.pentaho.com/@api/deki/files/6475/SetSystemVariablesOnWindows.jpg?revision=1" />
+                  </p>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="10.080645161290324%"><strong class="ph b">Step 2</strong> </td>
+                <td class="entry" valign="top" width="89.91935483870968%">Point the KETTLE_HOME to the directory that contains the .kettle directory. The .kettle gets appended by PDI. For example, when you have stored the common files in <code class="ph codeph">C:\Pentaho\Kettle\common\.kettle</code> you need
+                  to set the KETTLE_HOME variable to <code class="ph codeph">C:\Pentaho\Kettle\common</code>).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">The method above can also be used for configuration management and deployment to switch between the test, development, and production environments when other variables like the database server of the connection is defined in <code class="ph codeph">kettle.properties</code>.</p>
+        <p class="p">For testing purposes set a variable in the <code class="ph codeph">kettle.properties</code> file of your defined .kettle home directory. Set the KETTLE_HOME directory accordingly by using the operating system SET command. Start Spoon and go to
+          <strong class="ph b">Edit</strong>  > <strong class="ph b">Show Environment Variables</strong> . You should see the variables defined in <code class="ph codeph">kettle.properties</code>.</p>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/0Y0/0N0/000/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/180/Other_Issues/000/000">Changing the Kettle Home Directory within the Pentaho BI Platform</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

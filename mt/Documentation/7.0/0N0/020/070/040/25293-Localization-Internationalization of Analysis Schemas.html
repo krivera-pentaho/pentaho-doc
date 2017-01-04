@@ -1,0 +1,70 @@
+<content type="text/html" title="Localization/Internationalization of Analysis Schemas">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>You can create internationalized message bundles for your analysis schemas and deploy them with the Pentaho Web application. This enables Pentaho Analyzer to access localized schemas.</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step"><span class="ph cmd">Edit your analysis schema and tokenize all values that you want to localize.</span>  Typically you would create variables for all caption and description values. <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema measuresCaption=&quot;%{foodmart.measures.caption}&quot;>
+    <Dimension name=&quot;Store&quot; caption=&quot;%{foodmart.dimension.store.caption}&quot; description=&quot;%{foodmart.dimension.store.description}&quot;>
+        <Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Stores&quot; allMemberCaption=&quot;%{foodmart.dimension.store.allmember.caption =All Stores}&quot; primaryKey=&quot;store_id&quot;  caption=&quot;%{foodmart.hierarchy.store.country.caption}&quot; description=&quot;%{foodmart.hierararchy.store.country.description}>
+            <Table name=&quot;store&quot;/>
+            <Level name=&quot;Store Country&quot; column=&quot;store_country&quot; uniqueMembers=&quot;true&quot; caption=&quot;%{foodmart.dimension.store.country.caption}&quot; description=&quot;%{foodmart.dimension.store.country.description}&quot;/></pre>          </li>
+        <li class="li step"><span class="ph cmd">Create localized <strong class="ph b">MondrianMessages.properties</strong>  files in the <span class="ph filepath">/WEB-INF/classes/com/pentaho/messages/</span>  directory inside of the Pentaho WAR, and define each token you
+          used in the analysis schema.</span> 
+          <p class="pentaho-note">JBoss users will have to delete the unpacked Pentaho WAR directory if it exists, then unpack the pentaho.war file with an archive utility, create the message bundles in the proper location, then repack it into a WAR again.</p>
+          <p class="p">If you need further assistance in creating localized message bundles, refer to
+            <a class="xref" title="Documentation/5.1/0R0/080/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/080/020/000">Pentaho Server and Thin Client Message Bundles</a> .</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">foodmart.measures.caption=Measures
+foodmart.dimension.store.country.caption=Store Country
+foodmart.dimension.store.name.property_type.column=store_type
+foodmart.dimension.store.country.member.caption=store_country
+foodmart.dimension.store.name.property_type.caption=Store Type
+foodmart.dimension.store.name.caption=Store Name
+foodmart.dimension.store.state.caption=Store State
+foodmart.dimension.store.name.property_manager.caption=Store Manager
+foodmart.dimension.store.name.property_storesqft.caption=Store Sq. Ft.
+foodmart.dimension.store.allmember.caption=All Stores
+foodmart.dimension.store.caption=Store
+foodmart.cube.sales.caption=Sales
+foodmart.dimension.store.city.caption=Store City
+foodmart.cube.sales.measure.unitsales=Unit Sales</pre> </li>
+        <li class="li step"><span class="ph cmd">Edit the <strong class="ph b">mondrian.properties</strong>  file in the <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/mondrian/</span>  directory and add this line (or modify it if it's already
+          there):</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mondrian.rolap.localePropFile=com.pentaho.messages.MondrianMessages</pre> </li>
+        <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+        <li class="li step"><span class="ph cmd">Restart the Pentaho Server.</span> </li>
+        <li class="li step"><span class="ph cmd">Login to the User Console with administration permissions, then click <span class="ph uicontrol">Manage Data Sources</span>, then the <span class="ph uicontrol">Add</span>  button. Choose <span class="ph uicontrol">Analysis</span>           from the menu. Browse to import your file.</span> 
+        </li>
+        <li class="li step"><span class="ph cmd">Edit your Analysis data source by checking the option next to <strong><span class="ph uicontrol">Manually enter data source parameters</span> </strong> .</span> 
+          <ol class="ol substeps" id="56b20c0d-c5ce-4cec-ae46-a60049601787__analysis_localization__substeps_edn_1jh_3l"
+          type="a">
+            <li class="li substep"><span class="ph cmd">If absent from the list of parameters, add one parameter called <strong><span class="ph uicontrol">DataSource</span>  </strong> whose value is the name of the JDBC data source to use.</span> 
+            </li>
+            <li class="li substep">Create a new parameter called <strong>Locale </strong> and enter the
+              <a title="Documentation/5.1/0P0/000/030" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/000/030">value for the language</a>  that you want to make available.</li>
+            <li class="li substep"><span class="ph cmd">Create a new parameter called <strong><span class="ph uicontrol">DynamicSchemaProcessor</span>  </strong> whose value is <span class="ph filepath">mondrian.i18n.LocalizingDynamicSchemaProcessor</span> . </span> 
+            </li>
+            <li class="li substep"><span class="ph cmd">Create a new parameter called <span class="ph uicontrol">UseContentChecksum</span>  whose value is <span class="ph filepath">true</span> . </span> 
+            </li>
+          </ol>
+        </li>
+        <li class="li step"><span class="ph cmd">In the User Console, go to <span class="ph uicontrol">Tools > Refresh > Mondrian Schema Cache</span> .</span> 
+        </li>
+      </ol>
+      <p>Your analysis schemas will now be localized to whatever language is currently selected in the Pentaho User Console, if a message bundle for that locale was copied to the proper directory as explained above.</p>
+      <ul class="pentaho-list-unordered">
+        <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/080/020/000">Pentaho Server and Thin Client Message Bundles</a> </strong> </li>
+        <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000/010" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/080/020/000/010">Pentaho Analyzer Localization</a> </strong> </li>
+        <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/170/050/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/170/050/010/000">Set a Default Font for PDF Exports</a> </strong> </li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

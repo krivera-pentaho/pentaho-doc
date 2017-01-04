@@ -1,0 +1,109 @@
+<content type="text/html" title="Assign Analyzer Chart Colors">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Sometimes visualizations are more clear if you assign specific chart colors to data objects. For instance, you might want to assign colors to sales volume in different regions: red for the Northern region and blue for the Southern region. You
+            can define colors like this using a member property in the Mondrian schema or using a text-based file inside the resources folder.</p>
+          The color property works differently in various situations.
+          <ul class="ul" id="bbcad557-0647-4bb3-92ad-1a030aa3dac9__color_property__ul_nvr_ynk_vj">
+            <li class="li"><strong class="ph b">If a series contains one level and one measure,</strong>  then the color depends on the level member.</li>
+            <li class="li"><strong class="ph b">If a series contains multiple levels and one measure,</strong>  then the color depends on the level member that is farthest to the right.</li>
+            <li class="li"><strong class="ph b">If a series contains zero or more levels, or multiple measures,</strong>  then the color depends on the measure member. If there are multiple measures, each measure has a unique color.</li>
+          </ul>
+          If a member has a color mapping defined in both the text-based .json file and in the Mondrian schema using the CHART_SERIES_COLOR property, the JSON file takes precedence over the CHART_SERIES_COLOR property.</div>
+      </div>
+      <div class="topic task nested1" id="bbcad557-0647-4bb3-92ad-1a030aa3dac9__file_definition">
+        <div id="section_1" class="mt-page-section"><span id="Assigning_Colors_Using_a_Text-based_File"></span> 
+          <h2 class="editable">Assigning Colors Using a Text-based File</h2>
+          <div class="body taskbody">
+            <div class="section context">You can create member-to-color mappings in a text-based .json file if you do not want to define colors in the database or do not want to change the data structure, . The file is located in <span class="ph filepath">system/common-ui/resources/chartseriescolor/</span> .
+              You must edit the<span class="ph filepath"> mdx.json</span>  file to define color information for OLAP models such as Mondrian. Analyzer then uses this information to define colors. Define the color information using a web API such as
+              <a
+              class="xref external" target="_blank" rel="external nofollow" href="http://json.parser.online.fr/">Json Parser Online</a>  to ensure you are using the correct JSON syntax.
+                <p class="p">When running a report, color mapping runs for all members in the report. If the ,json file has an invalid syntax, an error posts in the log file and no color information applies.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Using a JSON editor, open <code><span class="ph filepath">pentaho-server\pentaho-solutions\system\common-ui\resources\chartseriescolor\mdx.json</span> </code>
+                </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Edit the sample so that the elements and colors are defined appropriately. The format is Hierarchy Level > Member > Color. Specify color using hexadecimal or decimal values. </span>  In this example, the colors are set
+                for the regions, which are Central, Eastern, Southern, and Western. The colors are then set for the measures, which are Actual, Budget, and Variance. <pre class="pre codeblock">
+&quot;SampleData&quot; : {
+    &quot;[Region].[Region]&quot;: {
+        &quot;[Region].[Central]&quot;: &quot;#0000cc&quot;,
+        &quot;[Region].[Eastern]&quot;: &quot;#0d8ecf&quot;,
+        &quot;[Region].[Southern]&quot;: &quot;#b0de09&quot;,
+        &quot;[Region].[Western]&quot;: &quot;#fcd202&quot;
+    },
+     &quot;[Measures].[MeasuresLevel]&quot;: {
+         &quot;[Measures].[Actual]&quot;: &quot;#0000cc&quot;,
+         &quot;[Measures].[Budget]&quot;: &quot;#0d8ecf&quot;,
+         &quot;[Measures].[Variance]&quot;: &quot;#b0de09&quot;        
+      }
+    }
+}</pre> </li>
+              <li class="li step"><span class="ph cmd">Save and close the .json file.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="bbcad557-0647-4bb3-92ad-1a030aa3dac9__assigning_color_member_properties">
+        <div id="section_2" class="mt-page-section"><span id="Assigning_Colors_Using_a_Member_Property"></span> 
+          <h2 class="editable">Assigning Colors Using a Member Property</h2>
+          <div class="body taskbody">
+            <div class="section context">You can change the colors of the members in an Analyzer report by defining a member property in the Mondrian schema. There are two different methods for assigning colors to levels or assigning colors to measures. The database column that stores
+              color information is TERRITORY_COLOR. This column is mapped to the CHART_SERIES_COLOR.</div>
+          </div>
+          <div class="topic task nested2" id="bbcad557-0647-4bb3-92ad-1a030aa3dac9__color_for_levels">
+            <div id="section_3" class="mt-page-section"><span id="Assigning_Colors_to_Levels"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Assigning Colors to Levels</strong> 
+              </h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Find the level for which you want to specify colors. In this example, the level name is <span class="ph filepath">Territory</span>, coming from a column named TERRITORY.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Define the member property name as CHART_SERIES_COLOR, the mapping to the database column as TERRITORY_COLOR, and the data type for the color values as Integer.</span>  <pre class="pre codeblock">
+<Level name=&quot;Territory&quot; column=&quot;TERRITORY&quot; type=&quot;String&quot; uniqueMembers=&quot;true&quot; 
+levelType=&quot;Regular&quot; hideMemberIf=&quot;Never&quot;
+<Property name=&quot;CHART_SERIES_COLOR&quot; column=&quot;TERRITORY_COLOR&quot; type=Integer></Property>
+                        </pre> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="bbcad557-0647-4bb3-92ad-1a030aa3dac9__color_for_measures">
+            <div id="section_4" class="mt-page-section"><span id="Assigning_Colors_to_Measures"></span> 
+              <h3 class="editable">
+                <strong class="ph b">Assigning Colors to Measures</strong> 
+              </h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Find the measure for which you want to specify colors.</span> </li>
+                  <li class="li step"><span class="ph cmd">Define the CalculatedMemberProperty name as <code class="ph codeph">CHART_SERIES_COLOR</code>.</span> </li>
+                  <li class="li step"><span class="ph cmd">Assign the color value using either a hexidecimal or decimal value.</span>  <pre class="pre codeblock">
+Measure name=&quot;Quantity&quot; column=&quot;QUANTITYORDERED&quot; formatString=&quot;#,###&quot; aggregator=&quot;sum&quot;
+<CalculatedMemberProperty name=&quot;CHART_SERIES_COLOR&quot; value=&quot;13369344&quot;/>
+</Measure></pre> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Assigning_Colors_Using_a_Text-based_File" rel="internal">Assigning Colors Using a Text-based File</a>  </li>
+      <li>
+        <a href="#Assigning_Colors_Using_a_Member_Property" rel="internal">Assigning Colors Using a Member Property</a> 
+        <ol>
+          <li> <a href="#Assigning_Colors_to_Levels" rel="internal">Assigning Colors to Levels</a>  </li>
+          <li> <a href="#Assigning_Colors_to_Measures" rel="internal">Assigning Colors to Measures</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

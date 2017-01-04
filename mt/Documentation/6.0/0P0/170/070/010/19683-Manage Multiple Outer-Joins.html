@@ -1,0 +1,37 @@
+<content type="text/html" title="Manage Multiple Outer-Joins">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">When you have three or more tables that require outer joins, the <em class="ph i">order</em>  in which the tables are joined is critical. Consider the example below:</p>
+        <img alt="File:/48_outer_joins.png" class="image" src="File:48_outer_joins.png"
+        />
+        <p class="p">In the sample preview below, the entries, 1, 2 ,3, and 4, in Table4 are taken and outer-joined with the records in the two other tables. The three other tables contain fewer records. The relationships are defined but now the order of execution
+          critical. Relationship A is executed first, followed by B, then C.</p>
+        <img alt="File:/49_execution_of_joins.png" class="image" src="File:49_execution_of_joins.png" />
+        <p class="p">Below is the query that is generated:</p>
+        <img alt="File:/50_query_outer_joins.png" class="image" src="File:50_query_outer_joins.png" />
+        <p class="p">The nested join syntax that is generated forces the order of execution:</p>
+        <ul class="ul">
+          <li class="li">Join Table1 and Table2 (shown in red)</li>
+          <li class="li">Join Table3 and A = B (shown in blue)</li>
+          <li class="li">Join Table4 with B = Result</li>
+        </ul>
+        <p class="p">Other orders of execution are just as valid depending on the business context to which they are applied. Another order of execution will generate a different result. To allow business model designers to ensure that user selections are executed
+          in a specific way, a <strong class="ph b">Join Order Key</strong>  is added to the <strong class="ph b">Relationship Properties</strong>  dialog box.</p>
+        <img alt="File:/51_relationship_properties_dialog_box.png" class="image" src="File:51_relationship_properties_dialog_box.png"
+        />
+        <p class="p">The join order key is relevant only in instances in which outer joins are deployed in business models. To make the importance of the execution order apparent, this information is displayed in the graphical view of the model, as shown below.</p>
+        <div class="p">
+          <div class="note note"><span class="notetitle">Note:</span>  It is not mandatory to use uppercase letters, (A, B, C, as shown in the first image), to set the order in which tables are executed. Any alphanumeric characters (0-9, A-Z) can be used. The system will calculate
+            the ASCII values of each character; the values are then used to determine the order of execution. In the example, A, B, C, AA, AB, Pentaho Metadata Editor will execute the table relationships in the following order: A, AA, AB, B, C.</div>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="pentaho-list-unordered">
+          <li class="link ulchildlink"><strong><a title="Use the Delay Outer Join Conditions Property" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/170/070/010/000">Use the Delay Outer Join Conditions Property</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,268 @@
+<content type="text/html" title="Configuration">
+  <body>
+    <div class="wiki-toc noindex">
+      <ol>
+        <li>
+          <a href="#IT_Administrator_Tasks" rel="internal">IT Administrator Tasks</a> 
+          <ol>
+            <li> <a href="#Configure_the_Pentaho_Server_and_Security" rel="internal">Configure the Pentaho Server and Security</a>  </li>
+            <li> <a href="#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster" rel="internal">Set Up Pentaho to Connect to a Hadoop Cluster</a>  </li>
+          </ol>
+        </li>
+        <li>
+          <a href="#Pentaho_Administrator_Tasks" rel="internal">Pentaho&nbsp;Administrator Tasks</a> 
+          <ol>
+            <li> <a href="#Configure_Data_Connections" rel="internal">Configure Data Connections</a>  </li>
+            <li> <a href="#Manage_the_Pentaho_Server" rel="internal">Manage the Pentaho Server</a>  </li>
+            <li>
+              <a href="#Set_Up_the_Design_Tools_and_Utilities" rel="internal">Set Up the Design Tools and Utilities</a> 
+              <ol>
+                <li> <a href="#BA_Design_Tools" rel="internal">BA Design Tools</a>  </li>
+                <li> <a href="#PDI_Design_Tools_and_Utilities" rel="internal">PDI&nbsp;Design Tools and Utilities</a>  </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      var openlink = "<button class='wiki-toc-toggle mt-toggle mt-summary-toggle ui-button-icon mt-toggle-collapse'>Table of contents</button>";
+      $(".wiki-toc").prepend(openlink);
+      $(".wiki-toc-toggle").click(function() {
+        $(".wiki-toc ol").toggle();
+        $(".wiki-toc button").toggleClass("mt-toggle-collapse");
+        $(".wiki-toc button").toggleClass("mt-toggle-expand");
+      });
+      /*]]>*/
+    </script>
+    <p>This guide presents basic&nbsp;configuration tasks for the Pentaho&nbsp;Server, data connections,&nbsp;the&nbsp;Pentaho&nbsp;design tools, and Hadoop cluster connections&nbsp;so you can get started creating ETL solutions and&nbsp;data analytics.&nbsp;This
+      guide assumes you&nbsp;have
+      <a title="Installation" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0">installed</a> &nbsp;the&nbsp;Pentaho software.</p>
+    <div class="section" id="da80246d-e879-44b3-b0f6-18e49a1a6b8a__config_ba_introduction__tools">
+      <p class="p"><strong>Tools:&nbsp;</strong> These configuration tasks can be performed through the PUC (Pentaho&nbsp;User Console), the PDI&nbsp;(Pentaho&nbsp;Data Integration) client, or edits to shell scripts and property files.</p>
+    </div>
+    <div class="section" id="da80246d-e879-44b3-b0f6-18e49a1a6b8a__config_ba_introduction__credentials">
+      <p class="p"><strong>Login Credentials:</strong>  A Pentaho administrator user name and password is required to perform configuration tasks through the user console.</p>
+    </div>
+    <p>These tasks are for IT and&nbsp;Pentaho&nbsp;administrators as described in&nbsp;the following definitions:&nbsp;</p>
+    <ul>
+      <li>An&nbsp;<strong>IT administrator </strong> installs, configures, and&nbsp;upgrades the Pentaho Server. An&nbsp;IT administrator knows where the data is stored, how to connect to it, details about the computing environment, and how to use the command
+        line on Microsoft Windows or Linux.</li>
+      <li>A&nbsp;<strong>Pentaho administrator </strong> is responsible for creation&nbsp;and management&nbsp;of users&nbsp;and roles along with managing workstations so the ETL&nbsp;specialists and business analysts&nbsp;can create, publish, and share content.</li>
+    </ul>
+    <div id="section_1" class="mt-page-section"><span id="IT_Administrator_Tasks"></span> 
+      <h2 class="editable">IT Administrator Tasks</h2>
+      <p>As an IT administrator, you need to configure the Pentaho Server and define what security to use. If your team is working with Big Data, you will also need to set up a connection to a Hadoop cluster.</p>
+      <div id="section_2" class="mt-page-section"><span id="Configure_the_Pentaho_Server_and_Security"></span> 
+        <h3 class="editable">Configure the Pentaho Server and Security</h3>
+        <p>Basic server tasks include starting and stopping the Pentaho&nbsp;Server,&nbsp;increasing the server's memory limit, and specifying&nbsp;data connections. These IT administrator tasks prepare the system for more specific
+          <a title="Configuration"
+          rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#Pentaho_Administrator_Tasks">Pentaho administrator&nbsp;configuration tasks</a>, like defining connections and managing users and roles.</p>
+        <ul>
+          <li> <a title="Start and Stop the Pentaho Server for Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop the Pentaho Server</a>  </li>
+          <li> <a title="Increase the Pentaho Server Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_Pentaho_Server_Memory_Limit">Increase the Pentaho Server Memory Limit</a>  </li>
+          <li> <a title="Specify Data Connections for BA Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_BA_Design_Tools">Specify Data Connections for BA Design Tools</a>  </li>
+          <li> <a title="Specify Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server">Specify Data Connections for the Pentaho Server</a>  </li>
+        </ul>
+        <p>Specifying data connections for the Pentaho Server includes tasks for setting up shared connections so that your users can select the native database&nbsp;connection they need from a list.</p>
+        <p class="pentaho-note">The native database connections in the Pentaho Suite are based on&nbsp;JDBC (Java DataBase Connectivity).</p>
+        <p>The following articles show you how to set up various types of JDBC data connections for the Pentaho Server:</p>
+        <ul>
+          <li> <a title="Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_Native_(JDBC)_or_OCI_Data_Connections_for_the_Pentaho_Server">Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server</a>  </li>
+          <li> <a title="Set Up JNDI Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_JNDI_Connections_for_the_Pentaho_Server">Set Up JNDI Connections for the Pentaho Server</a>  </li>
+        </ul>
+        <p>You also need to&nbsp;establish a security plan for your Pentaho system.&nbsp;Pentaho supports two different security options: Pentaho Security&nbsp;and advanced security providers,&nbsp;such as LDAP, Single Sign-On, or Microsoft Active Directory.
+          The following task assists you in defining your security plan:</p>
+        <ul>
+          <li> <a title="Define Security for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Define_Security_for_the_Pentaho_Server">Define Security for the Pentaho Server</a>  </li>
+        </ul>
+        <p>For more information on setting up security for your Pentaho system, particularly implementing advanced security options, refer to our
+          <a title="Setting Up User Security" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_User_Security">Security guide</a>  in the&nbsp;Administration section.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster"></span> 
+        <h3 class="editable">Set Up Pentaho to Connect to a Hadoop Cluster</h3>
+        <p>If you are an IT Administrator for a team working with Big Data, you will need to configure Pentaho to connect to a Hadoop&nbsp;cluster.</p>
+        <p>Pentaho can connect to&nbsp;Cloudera Distribution for Hadoop (CDH),&nbsp;Hortonworks Data Platform (HDP),&nbsp;Amazon Elastic MapReduce (EMR), or&nbsp;MapR.&nbsp;Pentaho also supports many related services such as HDFS, HBase, Oozie, Zookeeper,
+          and Spark.&nbsp;You can connect to clusters and services from these Pentaho components:&nbsp;Spoon, the Pentaho Server, Analyzer, Pentaho Interactive Reporting, Pentaho Report Designer (PRD), and Pentaho Metadata Editor (PME).</p>
+        <p>The Pentaho&nbsp;Server can be configured to connect to a Hadoop cluster through an adaptive big-data layer referred to as a <em>shim</em> .&nbsp;You must modify shim properties and configuration files before you can connect to a Hadoop cluster.&nbsp;Pentaho
+          regularly develops and releases shims, even in between releases, so that customers can easily keep abreast of the latest technological developments.&nbsp;To see which shims are supported for this version of Pentaho, see the
+          <a title="Components Reference"
+          rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000#Big_Data_Sources">Component Reference</a> .</p>
+        <p class="pentaho-note">If the Hadoop Distribution that you want to use is not listed, visit
+          <a class="external" title="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version"
+          target="_blank">Configuring Pentaho for your Hadoop Distro and Version</a> . A previous version of our software might support older Hadoop Distributions.&nbsp;</p>
+        <p>To learn how to configure a&nbsp;shim for a specific&nbsp;distribution, click one of the following links:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a title="Configure Pentaho to Connect to an Unsecure Cloudera Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_Cloudera_Cluster">Cloudera (CDH)</a>  </li>
+          <li> <a title="Set up Pentaho to Connect to a Hortonworks Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_Hortonworks_Cluster">Hortonworks (HDP)</a>  </li>
+          <li> <a title="Set up Pentaho to Connect to an Amazon EMR Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_an_Amazon_EMR_Cluster">Amazon EMR</a>  </li>
+          <li> <a title="Set up Pentaho to Connect to a MapR Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_MapR_Cluster">MapR</a>  </li>
+        </ul>
+      </div>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Pentaho_Administrator_Tasks"></span> 
+      <h2 class="editable">Pentaho&nbsp;Administrator Tasks</h2>
+      <p>As a Pentaho administrator, you need to configure data connections, manage the Pentaho Server, and set up the BA (Business Analytics)&nbsp;or PDI&nbsp;(Pentaho Data Integration)&nbsp;design tools.</p>
+      <div id="section_5" class="mt-page-section"><span id="Configure_Data_Connections"></span> 
+        <h3 class="editable">Configure Data Connections</h3>
+        <p>Data connection tasks include establishing&nbsp;data connections for the Pentaho Server and the Pentaho Repository, as well as steps on how to manage the permissions for users accessing those data&nbsp;connections.</p>
+        <ul>
+          <li> <a title="Define Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Define_Data_Connections_for_the_Pentaho_Server">Define Data Connections for the Pentaho Server</a>  </li>
+          <li> <a title="Work with Repositories" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040">Create a Connection to the Pentaho Repository</a>  </li>
+          <li> <a title="Assign Permissions to Use or Manage Database Connections" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Assign_Permissions_to_Use_or_Manage_Database_Connections">Assign Permissions to Use or Manage Database Connections</a>  </li>
+        </ul>
+        <p>Data connections are
+          <a title="Specify Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server">specified and set up</a> &nbsp;by your IT administrator.</p>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Manage_the_Pentaho_Server"></span> 
+        <h3 class="editable">Manage the Pentaho Server</h3>
+        <p>The&nbsp;<span class="mt-font-size-16" style="font-weight:normal;">&#8203;&#8203;&#8203;</span> Pentaho<span class="mt-font-size-16" style="font-weight:normal;"> Administrator&nbsp;is responsible for creating and managing users and workstations in the organization so the </span> ETL
+          <span
+          class="mt-font-size-16" style="font-weight:normal;">&nbsp;specialists and business analysts&nbsp;can create, publish, and share content.&nbsp;Depending on the size and needs of your organization, their duties can include updating licenses, managing users and roles, creating and modifying data&nbsp;sources,
+            and scheduling reports.</span> 
+        </p>
+        <ul>
+          <li> <a title="Managing Pentaho Licenses" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_Pentaho_Licenses">Manage Pentaho Licenses</a>  </li>
+          <li> <a title="Manage Schedules" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Manage_Schedules">Manage Schedules</a>  </li>
+          <li> <a title="Set Up Emails for Scheduled Reports" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Emails_for_Scheduled_Reports">Set Up Emails for Scheduled Reports</a>  </li>
+        </ul>
+        <p>If you are using basic Pentaho&nbsp;Security, the Pentaho Administrator may be tasked with&nbsp;creating&nbsp;and managing&nbsp;users and roles, including assigning permissions to allow&nbsp;users to access the content they need.</p>
+        <ul>
+          <li> <a title="Manage Users and Roles in PUC" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Manage_Users_and_Roles_in_PUC">Manage Users and Roles in PUC</a>  </li>
+          <li> <a title="Manage Users and Roles in the PDI Client" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Manage_Users_and_Roles_in_the_PDI_Client">Manage Users and Roles in the PDI&nbsp;Client</a>  </li>
+        </ul>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Set_Up_the_Design_Tools_and_Utilities"></span> 
+        <h3 class="editable">Set Up the Design Tools and Utilities</h3>
+        <div class="body conbody">
+          <div class="section" id="6edb25f0-5ff9-4a8f-a3e1-ee3c952928e7__concept_config_ba_design_toolss__intro">
+            <p>Before using design tools and utilities, you need to perform configuration tasks for each workstation running these tools.&nbsp;Depending on how these tools and utilities were
+              <a title="Installation" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0">installed</a>, they might be located on different machines other than the Pentaho Server.</p>
+            <div id="section_8" class="mt-page-section"><span id="BA_Design_Tools"></span> 
+              <h4 class="editable">BA Design Tools</h4>
+              <p>The following table describes the&nbsp;BA design tools and their uses:</p>
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="6edb25f0-5ff9-4a8f-a3e1-ee3c952928e7__concept_config_ba_design_toolss__table_pdl_gxl_1k" rules="all" summary="">
+                  <thead align="left" class="thead">
+                    <tr class="row">
+                      <th class="entry" id="6edb25f0-5ff9-4a8f-a3e1-ee3c952928e7__d4844e44" style="width:407px;" valign="top" width="50%">Design Tool</th>
+                      <th class="entry" id="6edb25f0-5ff9-4a8f-a3e1-ee3c952928e7__d4844e47" style="width:831px;" valign="top" width="50%">What It Does</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" headers="d4844e44 " style="width:407px;" valign="top" width="50%">
+                        <a class="xref" title="Documentation/5.1/0N0/010/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/010/000">Aggregation Designer</a> 
+                      </td>
+                      <td class="entry" headers="d4844e47 " style="width:831px;" valign="top" width="50%">Optimizes the multidimensional Mondrian data model.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d4844e44 " style="width:407px;" valign="top" width="50%">
+                        <a class="xref" title="Documentation/5.1/0N0/110/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/110/000">Metadata Editor</a> 
+                      </td>
+                      <td class="entry" headers="d4844e47 " style="width:831px;" valign="top" width="50%">Creates relational data models and refines the models created with the Data Access Wizard.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d4844e44 " style="width:407px;" valign="top" width="50%">
+                        <a class="xref" title="Documentation/5.1/0L0/130/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/130/000">Report Designer</a> 
+                      </td>
+                      <td class="entry" headers="d4844e47 " style="width:831px;" valign="top" width="50%">
+                        <p>Interactive Reporting is a web-based design interface which is used to create both simple and on-demand operational reports without depending on IT or report developers.</p>
+                      </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d4844e44 " style="width:407px;" valign="top" width="50%">
+                        <a class="xref" title="Documentation/5.1/0N0/020/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/020/000">Schema Workbench</a> 
+                      </td>
+                      <td class="entry" headers="d4844e47 " style="width:831px;" valign="top" width="50%">Creates multidimensional Mondrian data models and refines the models created with the Data Access Wizard.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="related-links">
+          <p>As a Pentaho administrator, you will need to know how to
+            <a title="Start and Stop BA Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_BA_Design_Tools">start and stop the BA design tools</a> . Your IT administrator
+            <a title="Specify Data Connections for BA Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_BA_Design_Tools">specifies the data connections for these tools</a> .</p>
+          <div id="section_9" class="mt-page-section"><span id="PDI_Design_Tools_and_Utilities"></span> 
+            <h4 class="editable">PDI&nbsp;Design Tools and Utilities</h4>
+            <div class="body conbody">
+              <div class="section" id="4836ccab-84f3-40bf-9abc-b6c4831a44e5__concept_configure_di_tools__intro">
+                <p>
+                  <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/Pentaho_Data_Integration">PDI Client (Spoon)</a> &nbsp;allows users to design and manage complex ETL workloads with a graphical user interface.</p>
+                <p>Kitchen, Pan, and Carte are command line&nbsp;tools for executing jobs and transformations modeled in Spoon.&nbsp;</p>
+                <div class="body conbody">
+                  <ul class="ul" id="7f209c34-19b4-4c64-a6a1-9fbdcad54f4b__kitchen_pan_carte__ul_pwj_wps_hl">
+                    <li class="li">
+                      <a title="Use the Pan and Kitchen Command Line Tools to Work with Transformations and Jobs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/070">Use Pan and Kitchen</a>  Command Line Tools&nbsp;to work with Transformations and Jobs</li>
+                    <li class="li">Use Carte Clusters to:
+                      <ul>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Execute_Transformations_and_Jobs_on_a_Carte_Cluster">Run Transformations and Jobs on a Carte Cluster</a> 
+                        </li>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Scheduled_Jobs_to_Run_on_a_Remote_Carte_Server">Scheduled Jobs to Run on a Remote Carte Server</a> 
+                        </li>
+                        <li class="li">
+                          <a title="Using Carte Clusters" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Stop_Carte_from_the_Command_Line_Interface_or_URL">Stop&nbsp;Carte from the Command Line Interface or URL</a> 
+                        </li>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Run_Transformations_and_Jobs_from_the_Repository_on_the_Carte_Server">Run Transformations and Jobs from the Repository on the Carte Server</a> 
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <div class="p">
+                  <div class="tablenoborder">&nbsp;</div>
+                </div>
+              </div>
+            </div>
+            <div class="related-links">
+              <p>You will need to know how to perform the following tasks for the PDI design tools and utilities:&nbsp;</p>
+              <ul class="ullinks">
+                <li class="link ulchildlink">
+                  <a title="Start and Stop PDI Design Tools and Utilities" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_PDI_Design_Tools_and_Utilities">Start and Stop PDI Design Tools and Utilities</a> 
+                </li>
+                <li class="link ulchildlink">
+                  <a title="Increase the Spoon Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_PDI_Client_Memory_Limit">Increase the Spoon Memory Limit</a> 
+                </li>
+                <li class="link ulchildlink">
+                  <a title="Manage Licenses for Workstations" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_Pentaho_Licenses">Manage&nbsp;Licenses for Workstations&nbsp;using PDI Client</a> 
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#IT_Administrator_Tasks" rel="internal">IT Administrator Tasks</a> 
+        <ol>
+          <li> <a href="#Configure_the_Pentaho_Server_and_Security" rel="internal">Configure the Pentaho Server and Security</a>  </li>
+          <li> <a href="#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster" rel="internal">Set Up Pentaho to Connect to a Hadoop Cluster</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Pentaho_Administrator_Tasks" rel="internal">Pentaho&nbsp;Administrator Tasks</a> 
+        <ol>
+          <li> <a href="#Configure_Data_Connections" rel="internal">Configure Data Connections</a>  </li>
+          <li> <a href="#Manage_the_Pentaho_Server" rel="internal">Manage the Pentaho Server</a>  </li>
+          <li>
+            <a href="#Set_Up_the_Design_Tools_and_Utilities" rel="internal">Set Up the Design Tools and Utilities</a> 
+            <ol>
+              <li> <a href="#BA_Design_Tools" rel="internal">BA Design Tools</a>  </li>
+              <li> <a href="#PDI_Design_Tools_and_Utilities" rel="internal">PDI&nbsp;Design Tools and Utilities</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

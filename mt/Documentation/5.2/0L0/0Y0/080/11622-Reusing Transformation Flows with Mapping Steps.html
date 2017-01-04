@@ -1,0 +1,90 @@
+<content type="text/html" title="Reusing Transformation Flows with Mapping Steps">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to reuse repeated steps.</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p class="p">When you want to reuse a specific sequence of steps, you can turn the repetitive part into a <em class="ph i">mapping</em> . A mapping is a standard transformation except that you can define mapping input and output steps as placeholders.</p>
+        <ul
+        class="ul">
+          <li class="li">Mapping Input Specification &mdash; the placeholder used for input from the parent transformation</li>
+          <li class="li">Mapping Output Specification &mdash; the placeholder from which the parent transformation reads data</li>
+          </ul>
+          <div class="p">
+            <div class="note note"><span class="notetitle">Note:</span>  Pentaho Data Integration samples that demonstrate the use of mapping steps are located at <code class="ph codeph">...samples\mapping\Mapping</code>.</div>
+          </div>
+          <p class="p">Below is the reference for the <strong class="ph b">Mapping (sub-transformation)</strong>  step:</p>
+          <div class="tablenoborder">
+            <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+              <thead align="left" class="thead">
+                <tr class="row">
+                  <th class="entry" id="a701d304-9a51-400e-ba08-f4f93a110e98__d85791e54" valign="top">Option</th>
+                  <th class="entry" id="a701d304-9a51-400e-ba08-f4f93a110e98__d85791e57" valign="top">Description</th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top"><strong class="ph b">Step name</strong> </td>
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top">Optionally, you can change the name of this step to fit your needs.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top"><strong class="ph b">Mapping transformation</strong> </td>
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top">Specify the name of the mapping transformation file to execute at runtime. You can specify either a filename (XML/.ktr) or a transformation from the repository. The <strong class="ph b">Edit</strong>  button opens the specified transformation
+                    under a separate step in the Spoon Designer.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top"><strong class="ph b">Parameters</strong> </td>
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top">Options under the <strong class="ph b">Parameters</strong>  tab allow you to define or pass PDI variables down to the mapping. This provides you with a high degree of customization.
+                    <div class="note note"><span class="notetitle">Note:</span>  It is possible to include variable expressions in the string values for the variable names.</div>
+                    <div class="note note"><span class="notetitle">Note:</span>  <strong class="ph b">Important!</strong>  Only those variables/values that are specified are passed down to the sub-transformation.</div>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top"><strong class="ph b">Input Tabs</strong> </td>
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top">Each of the Input tabs (may be missing) correspond to one <strong class="ph b">Mapping Input Specification</strong>  step in the mapping or sub-transformation. This means you can have multiple Input tabs in a single Mapping step. To add
+                    an Input tab, click <strong class="ph b">Add Input</strong> .
+                    <ul class="ul">
+                      <li class="li"><strong class="ph b">Input source step name</strong> &mdash; The name of the step in the parent transformation (not the mapping) from which to read</li>
+                      <li class="li"><strong class="ph b">Mapping target step name</strong>  &mdash; The name of the step in the mapping (sub-transformation) to send the rows of data from the input source step</li>
+                      <li class="li"><strong class="ph b">Is this the main data path?</strong>  &mdash; Enable if you only have one input mapping ; you can leave the <strong class="ph b">Mapping source step name</strong>  and <strong class="ph b">Output target step name</strong>                         fields blank</li>
+                      <li class="li"><strong class="ph b">Ask these values to be renamed back on output?</strong>  &mdash; Fields get renamed before they are transferred to the mapping transformation
+                        <div class="note note"><span class="notetitle">Note:</span>  Enabling this option renames the values back to their original names once they move to the Mapping output step. This option makes your sub-transformations more transparent and reusable.</div>
+                      </li>
+                      <li class="li"><strong class="ph b">Step mapping description</strong>  &mdash; Add a description of the mapping step</li>
+                      <li class="li"><strong class="ph b">Source - mapping transformation mapping </strong>  Enter the required field name changes</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top"><strong class="ph b">Output Tabs</strong> </td>
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top">Each of the Output tabs (may be missing) correspond to one <strong class="ph b">Mapping Output Specification</strong>  step in the mapping or sub-transformation. This means you can have multiple Output tabs in a single Mapping step. To
+                    add an Output tab, click <strong class="ph b">Add Output</strong> .
+                    <ul class="ul">
+                      <li class="li"><strong class="ph b">Mapping source step</strong>  &mdash; the name of the step in the mapping transformation (sub-transformation) where that will be read</li>
+                      <li class="li"><strong class="ph b">Output target step name</strong>  &mdash; the name of the step in the current transformation (parent) to send the data from the mapping transformation step to.</li>
+                      <li class="li"><strong class="ph b">Is this the main data path?</strong>  &mdash; Enable if you only have one output mapping and you can leave the <strong class="ph b">Mapping source step</strong>  and <strong class="ph b">Output target step name</strong>                         fields above blank.</li>
+                      <li class="li"><strong class="ph b">Step mapping description</strong>  &mdash; Add a description to the output step mapping</li>
+                      <li class="li"><strong class="ph b">Mapping transformation - target step field mapping</strong>  &mdash; Enter the required field name changes</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top"><strong class="ph b">Add input / Add output</strong> </td>
+                  <td class="entry" headers="d85791e54 d85791e57 " valign="top">Add an input or output mapping for the specified sub-transformation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

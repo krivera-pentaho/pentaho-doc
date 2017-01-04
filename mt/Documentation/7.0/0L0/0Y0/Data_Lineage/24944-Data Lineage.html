@@ -1,0 +1,134 @@
+<content type="text/html" title="Data Lineage">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Pentaho&nbsp;offers you the ability to visualize the end-to-end flow of your data across PDI transformations and jobs, providing you with valuable insights to help you maintain meaningful data.</p>
+      </div>
+    </div>
+    <p>Pentaho&nbsp;offers you the ability to visualize the end-to-end flow of your data across PDI transformations and jobs, providing you with valuable insights to help you maintain meaningful data. This ability to track your data from source systems to
+      target applications allows you take advantage of third-party tools, such as Meta Integration Technology (MITI) and yEd, to track and view specific data.</p>
+    <p>Once lineage tracking is enabled, PDI will generate a <code>.graphml</code> file every time you run a transformation. You can then open this file using a third-party tool, such as yEd, to view a tree diagram of the data. By parsing through and teasing
+      out the different parts of the graph, you can gain an end-to-end view into a specific element of data from origin to target. This ability can aid you in both data lineage and impact analysis:</p>
+    <ul class="pentaho-list-unordered">
+      <li><em>Data lineage</em>  provides the ability to discover the origins of an element of data and describes the sequence of jobs and transformations which have occurred up to the point of the request for the lineage information.</li>
+      <li><em>Impact analysis</em>  is the reverse flow of information which can be used to trace the use and consumption of a data item, typically for the purpose of managing change or assessing and auditing access.</li>
+    </ul>
+    <div id="section_2" class="mt-page-section"><span id="Sample_Use_Cases"></span> 
+      <h2 class="editable">Sample Use Cases</h2>
+      <p>Data lineage and impact analysis can be applicable in several ways.</p>
+      <p><strong><em>As an ETL Developer:</em> </strong> </p>
+      <ul class="pentaho-list-unordered">
+        <li>There are changes in my source system, such as fields which are added, deleted and renamed. What parts of my ETL processes need to adapt? (<em>Impact Analysis</em> )</li>
+        <li>I need additional information in my target system, such as for reports. What sources are can provide this additional information? (<em>Data Lineage</em> )</li>
+      </ul>
+      <p><strong><em>As a Data Steward:</em> </strong> </p>
+      <ul class="pentaho-list-unordered">
+        <li>There is a need for auditability and transparency to determine where data is coming from. A global, company-wide, metadata repository needs data lineage information from different systems and applications, i.e. very fine-grained metadata.</li>
+        <li>What elements (fields, tables, etc.) in my ETL processes are never used? How many times is a specific element used in some or all of my ETL processes?</li>
+      </ul>
+      <p><strong><em>As a Report/Business User:</em> </strong> </p>
+      <ul class="pentaho-list-unordered">
+        <li>Is my data accurate?</li>
+        <li>I want to find reports which include specific information from a source, such as a field. This process is &quot;data discovery.&quot; For example, are there any data sources which include sales and gender? Are there any reports which include sales
+          and zip codes?</li>
+      </ul>
+      <p><strong><em>As a Troubleshooting Operator:</em> </strong> </p>
+      <ul class="pentaho-list-unordered">
+        <li>The numbers in the report are wrong (or supposed to be wrong). What processes (transformations, jobs) are involved to help me determine where these numbers are coming from?</li>
+        <li>A job or transformation did not finish successfully. What target tables and fields are affected which are used in the reports?</li>
+      </ul>
+      <p><strong><em>As an Administrator:</em> </strong> </p>
+      <ul class="pentaho-list-unordered">
+        <li>For documentation and auditing purposes, I want to have a report on external sources and target fields, tables, and databases of my ETL processes. I need the data for a specific date and version.</li>
+        <li>To ensure compliance, I want to validate naming conventions of artifacts (fields, tables, etc.)</li>
+        <li>For integration into third-party data lineage tools, I want a flexible way of exporting the collected data lineage information.</li>
+      </ul>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Architecture"></span> 
+      <h2 class="editable">Architecture</h2>
+      <p>Pentaho's data lineage capabilities allow us to take advantage of tools from Metadata Integration Technology (MITI). If you use a lot of different systems and applications, you can track and visualize specific data across these systems using Pentaho'
+        lineage capabilities and third party tools such as MITI and yEd.</p>
+      <p>&nbsp;
+        <img alt="LineagePPTGraphCropped.png" class="internal default" style="width: 327px; height: 248px;" width="327px" height="248px" src="http://help.pentaho.com/@api/deki/files/11119/LineagePPTGraphCropped.png?size=bestfit&amp;width=327&amp;height=248&amp;revision=1"
+        />
+      </p>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Setup"></span> 
+      <h2 class="editable">Setup</h2>
+      <p>Modify <strong>&hellip;\system\karaf\etc\pentaho.metaverse.cfg</strong>  (Client &amp; Pentaho Server when needed):</p>
+      <ul class="pentaho-list-unordered">
+        <li>You need to enable lineage explicitly by setting <strong>lineage.execution.runtime = on</strong> </li>
+        <li>Modify the default folder for lineage GraphML files accordingly: <strong>lineage.execution.output.folder=./pentaho-lineage-output</strong> </li>
+        <li>Set <strong>lineage.execution.generation.strategy=latest</strong>  (by default)</li>
+      </ul>
+      <p>After the execution of a job or transformation, the GraphML files are generated in the defined folder.</p>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="API"></span> 
+      <h2 class="editable">API</h2>
+      <p>It is also possible to access the GraphML information via a Pentaho&nbsp;Server API. There are REST endpoints available to retrieve the lineage related artifacts.</p>
+      <p>Below are some example curl commands which exercise the REST endpoints available on the Pentaho Server. These calls use basic authentication. For more information on the various ways to authenticate with the Pentaho Server, see the &quot;
+        <a class="external-link"
+        href="http://help.pentaho.com/Documentation/6.0/0R0/070/010/00A" rel="nofollow" title="http://help.pentaho.com/Documentation/6.0/0R0/070/010/00A">Authenticate with the Server Before Making Service Calls</a> &quot; topic on the Pentaho Documentation site.</p>
+      <p>
+        <font color="#333333">For more detailed information about the REST endpoints available, you can got to the Pentaho Wiki to view the
+          <a title="metaverse-enunciate.zip" rel="internal" href="http://help.pentaho.com/@api/deki/files/11120/metaverse-enunciate.zip" class="iconitext-16 ext-zip ">attached Enunciate file</a> .</font>
+      </p>
+      <p><strong>Get all lineage related artifacts</strong> </p>
+      <div class="preformatted panel" style="border-width: 1px;">
+        <div class="preformattedContent panelContent">
+          <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl --header &quot;Authorization: Basic YWRtaW46cGFzc3dvcmQ=&quot; http://localhost:8080/pentaho/osgi/cxf/lineage/api/download/all</pre>
+        </div>
+      </div>
+      <p><strong>Get all lineage from a given date forward</strong> </p>
+      <div class="preformatted panel" style="border-width: 1px;">
+        <div class="preformattedContent panelContent">
+          <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl --header &quot;Authorization: Basic YWRtaW46cGFzc3dvcmQ=&quot; http://localhost:8080/pentaho/osgi/cxf/lineage/api/download/all/20150706</pre>
+        </div>
+      </div>
+      <p><strong>Get all lineage between 2 dates</strong> </p>
+      <div class="preformatted panel" style="border-width: 1px;">
+        <div class="preformattedContent panelContent">
+          <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl --header &quot;Authorization: Basic YWRtaW46cGFzc3dvcmQ=&quot; http://localhost:8080/pentaho/osgi/cxf/lineage/api/download/all/20150101/20150706</pre>
+        </div>
+      </div>
+      <p><strong>Get all of the lineage artifacts for a specific file in the DI repo</strong> </p>
+      <div class="preformatted panel" style="border-width: 1px;">
+        <div class="preformattedContent panelContent">
+          <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl --request POST --header &quot;Content-Type: application/json&quot; --header &quot;Authorization: Basic YWRtaW46cGFzc3dvcmQ=&quot; --data '{&quot;path&quot;: &quot;/LOCAL DI REPO/home/admin/dataGrid-dummy&quot;}' http://localhost:8080/pentaho/osgi/cxf/lineage/api/download/file</pre>
+        </div>
+      </div>
+      <p><strong>Get all lineage related artifacts for a specific file in the DI repo between 2 dates</strong> </p>
+      <div class="preformatted panel" style="border-width: 1px;">
+        <div class="preformattedContent panelContent">
+          <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl --request POST --header &quot;Content-Type: application/json&quot; --header &quot;Authorization: Basic YWRtaW46cGFzc3dvcmQ=&quot; --data '{&quot;path&quot;: &quot;/LOCAL DI REPO/home/admin/dataGrid-dummy&quot;}' http://localhost:8080/pentaho/osgi/cxf/lineage/api/download/file/20150701/20150707</pre>
+        </div>
+      </div>
+      <p><strong>Invalid date request</strong> </p>
+      <div class="preformatted panel" style="border-width: 1px;">
+        <div class="preformattedContent panelContent">
+          <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl --header &quot;Authorization: Basic YWRtaW46cGFzc3dvcmQ=&quot; http://localhost:8080/pentaho/osgi/cxf/lineage/api/download/all/20159999</pre>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Sample_Use_Cases" rel="internal">Sample Use Cases</a>  </li>
+      <li> <a href="#Architecture" rel="internal">Architecture</a>  </li>
+      <li> <a href="#Setup" rel="internal">Setup</a>  </li>
+      <li> <a href="#API" rel="internal">API</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,27 @@
+<content type="text/html" title="LDAP Authenticates User IDs That Do Not Match Case">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Some LDAP implementations are case-insensitive for user names, most notably Microsoft Active Directory. You might run into an issue where a user name typed into the login screen does not exactly match the letter case of that user's ID in the
+            directory, but the server will authenticate it anyway and may give the user improper access to parts of the BA Server. For example, if <span class="ph uicontrol">Bill</span>  is the valid user ID, and someone types in <span class="ph uicontrol">bILL</span>             at the User Console login screen, the incorrectly typed one will authenticate, but it may have improper access to parts of the BA Server.</p>
+          <p class="p">Follow these instructions to force case-sensitivity and fix this potential security risk. </p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Stop the BA Server.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Edit the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/applicationContext-spring-security-ldap.xml</span>  file.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Find the <strong class="ph b">daoAuthenticationProvider</strong>  bean, and below the last <strong class="ph b"></constructor-arg></strong>  therein, and add the <strong class="ph b"><property></strong>  definition shown in the example:</span>             <pre class="pre codeblock"><property name=&quot;userDetailsContextMapper&quot;>
+    <ref local=&quot;ldapContextMapper&quot; />
+</property></pre> </li>
+          <li class="li step"> <span class="ph cmd">After the <strong class="ph b"></bean></strong>  tag for <strong class="ph b">daoAuthenticationProvider</strong>, add the following bean definition, changing the <strong class="ph b">ldapUsernameAttribute</strong>  from <strong class="ph b">samAccountName</strong>  to the value that matches your environment:</span>             <pre class="pre codeblock"><bean id=&quot;ldapContextMapper&quot; class=&quot;org.pentaho.platform.engine.security.UseridAttributeLdapContextMapper&quot;>
+    <property name=&quot;ldapUsernameAttribute&quot; value=&quot;samAccountName&quot; />
+</bean></pre> </li>
+          <li class="li step"> <span class="ph cmd">Start the BA Server.</span>  </li>
+        </ol>
+        <div class="section result">The BA Server will now force case sensitivity in LDAP user names.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

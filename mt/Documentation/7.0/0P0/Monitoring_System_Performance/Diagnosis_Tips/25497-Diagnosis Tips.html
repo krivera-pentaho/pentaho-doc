@@ -1,0 +1,65 @@
+<content type="text/html" title="Diagnosis Tips">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p class="p">To help you maintain the health of your Pentaho system, we provide tips&nbsp;to help you diagnose processing errors and monitor the Pentaho Server performance.</p>
+        </div>
+      </div>
+      <p class="p">To help you maintain the health of your Pentaho system, we provide tips&nbsp;to help you diagnose processing errors and monitor the Pentaho&nbsp;Server performance.</p>
+      <div class="topic task nested1" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_disable_server_timeouts">
+        <div id="section_2" class="mt-page-section"><span id="Disable_Server_and_Session-Related_Timeouts_to_Debug"></span> 
+          <h2 class="editable">Disable Server and Session-Related Timeouts to Debug</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Follow the instructions below to disable server and session timeouts associated with the User Console.</p>
+              <p class="pentaho-note">These instructions are applicable when you are in a <em class="ph i">test</em>  environment. Once you go live, we recommend&nbsp;you set your timeouts to five or ten minutes so that sensitive Pentaho Server-related data can be protected.
+                The time must be expressed in minutes.</p>
+            </div>
+            <ol class="ol steps" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_disable_server_timeouts__steps_jks_xwc_4k">
+              <li class="li step">
+                <p><span class="ph cmd">Open the&nbsp;<code>server.xml</code>&nbsp;file&nbsp;located under <code class="ph codeph">pentaho-server/tomcat/conf</code>. </span> </p>
+              </li>
+              <li class="li step"><span class="ph cmd">Find the <code>connectionTimeout=&quot;20000&quot;</code>&nbsp;parameter and change its value to zero (&quot;<code>0</code>&quot;). If this value is set to a negative number it will never timeout.</span> </li>
+              <li class="li step"><span class="ph cmd">Open the <code>web.xml</code> file, located under <code class="ph codeph">pentaho-server/tomcat/webapps/pentaho/WEB-INF/web.xml</code>. </span> </li>
+              <li class="li step"><span class="ph cmd">Find the <code>session-timeout</code>&nbsp;parameter and change its value to negative one (&quot;<code>-1</code>&quot;).</span> </li>
+              <li class="li step"><span class="ph cmd">Save the file and refresh the user console.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="5db6aab6-4a34-43f1-8632-d3d02f587062__task_log_rotation">
+        <div class="body taskbody">
+          <div class="section result">
+            <div id="section_3" class="mt-page-section"><span id="Define_Result_Row_Limit_and_Timeout"></span> 
+              <h2 class="editable">Define Result Row Limit and Timeout</h2>
+              <p>When a query in the User Console returns an unusually large number of rows, this may impact server performance. To limit the number of rows returned by a query and to set up a timeout, you must create two custom properties, <strong class="ph b">max_rows</strong>                 and <strong class="ph b">timeout</strong>, in the Metadata Editor.</p>
+              <p>The values you define for the row number limit (max-rows) and timeout properties are passed to the JDBC driver.</p>
+              <p>To define max rows and timeout:</p>
+              <ol class="ol steps">
+                <li class="li step"><span class="ph cmd">In the Metadata Editor, expand the <strong class="ph b">Business Model</strong>  node and select <strong class="ph b">Orders</strong> .</span> </li>
+                <li class="li step"><span class="ph cmd">Right-click Orders and choose <strong class="ph b">Edit</strong> .</span>  The <strong class="ph b">Business Model Properties</strong>  page displays a list of properties that were previously defined.</li>
+                <li class="li step">In the <strong>Business Model Properties</strong>  page, click the <strong>Add </strong> icon. The <strong>Add New Property page </strong> dialog box appears.</li>
+                <li class="li step">Enable <strong>Add a custom property</strong> .</li>
+                <li class="li step"><span class="ph cmd">In the <strong class="ph b">ID</strong>  text box, type <strong class="ph b">max_rows</strong> . <strong>IMPORTANT</strong> </span> : The ID is case-sensitive and must be typed exactly as shown.</li>
+                <li class="li step"><span class="ph cmd">Click the down-arrow in the <strong class="ph b">Type</strong>  field and choose, <strong class="ph b">Numeric</strong> .</span>  The <strong class="ph b">Business Model Properties</strong>  page appears. The <strong class="ph b">max_rows</strong>                   property is listed under <strong class="ph b">Custom</strong>  in the navigation tree.</li>
+                <li class="li step"><span class="ph cmd">In the right pane, under <strong class="ph b">Custom</strong>, enter a value for your <strong class="ph b">max_rows</strong>  property. For example, if you enter &quot;3000&quot; as your value, the number of rows allowed to display in a query result is constrained to 3,000.</span> </li>
+                <li class="li step"><span class="ph cmd">Repeat steps 3 through 6 to for the <strong class="ph b">timeout</strong>  custom property.</span> </li>
+                <li class="li step"><span class="ph cmd">In the right pane, under <strong class="ph b">Custom</strong>, enter a value for your <strong class="ph b">timeout</strong>  property. The timeout property requires a numeric value defined in number of seconds. For example, if you enter, 3600, the limit for query results is one minute. </span> </li>
+                <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  in the Business Model Properties page to save your newly created properties.</span> </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Disable_Server_and_Session-Related_Timeouts_to_Debug" rel="internal">Disable Server and Session-Related Timeouts to Debug</a>  </li>
+      <li> <a href="#Define_Result_Row_Limit_and_Timeout" rel="internal">Define Result Row Limit and Timeout</a>  </li>
+    </ol>
+  </body>
+</content>

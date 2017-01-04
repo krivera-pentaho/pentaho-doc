@@ -1,0 +1,34 @@
+<content type="text/html" title="How to Change the Administrator Role">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">The default administrator role in the BA Server is <strong class="ph b">Admin</strong> . If you need to give this privilege level to a different role name, follow these instructions.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  Role names are case sensitive, so take special care when typing in the new role name.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/pentaho.xml</span>  file with a text editor.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Find the <strong class="ph b"><acl-voter></strong>  element, and replace its <strong class="ph b"><admin-role></strong>  property with the new administrator role (NewAdmin in the examples in this procedure).</span>  <pre class="pre codeblock"><admin-role>NewAdmin</admin-role></pre>            </li>
+          <li class="li step"> <span class="ph cmd">Find the <strong class="ph b"><acl-publisher></strong>  element, and appropriately replace all instances of <strong class="ph b">Admin</strong>  in the properties inside of the <strong class="ph b"><default-acls></strong>  and <strong class="ph b"><overrides></strong>  elements.</span>             <pre class="pre codeblock"><acl-entry role=&quot;NewAdmin&quot; acl=&quot;ADMIN_ALL&quot; /></pre> </li>
+          <li class="li step"> <span class="ph cmd">Save the file, then open <span class="ph filepath">applicationContext-spring-security.xml</span> </span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Find the <strong class="ph b">filterInvocationInterceptor</strong>  bean, and modify its <strong class="ph b">objectDefinitionSource</strong>  property accordingly.</span>  You may need to consult the Spring Security documentation
+            to complete this step. The appropriate documentation is at
+            <a class="xref external" target="_blank" title="http://static.springsource.org/spring-security/site/reference.html" rel="external nofollow" href="http://static.springsource.org/spring-security/site/reference.html">http://static.springsource.org/spring-security/site/reference.html</a>  <pre class="pre codeblock"><property name=&quot;objectDefinitionSource&quot;>
+    <value>
+        <![CDATA[
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        ...
+        \A/admin.*\Z=NewAdmin
+        ...
+        ]]>
+    </value>
+</property></pre> </li>
+        </ol>
+        <div class="section result">You have successfully changed the administrator role.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

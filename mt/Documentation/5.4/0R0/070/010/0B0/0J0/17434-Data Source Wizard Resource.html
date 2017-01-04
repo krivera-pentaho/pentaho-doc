@@ -1,0 +1,252 @@
+<content type="text/html" title="Data Source Wizard Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>This service allows for listing, download, and removal of DSW data sources in the BA Platform.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Overview_2"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>This service allows for listing, download, and removal of DSW data sources in the BA Platform.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__data-access_api_datasource_dsw_domain.html">/data-access/api/datasource/dsw/domain</a>  </li>
+              <li> <a href="#path__data-access_api_datasource_dsw_domain_-dswId%20-.html">/data-access/api/datasource/dsw/domain/{dswId }</a>  </li>
+            </ul>
+            <a name="path__data-access_api_datasource_dsw_domain.html"></a> 
+            <div id="section_3" class="mt-page-section"><span id=".2Fdata-access.2Fapi.2Fdatasource.2Fdsw.2Fdomain"></span> 
+              <h1 class="editable">/data-access/api/datasource/dsw/domain</h1>
+              <p>
+                <a name="GET"></a> 
+              </p>
+              <div id="section_4" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Get the DSW datasource IDs.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/plugin/data-access/api/datasource/dsw/domain</p>
+                <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0B0/DataSourceWizardResource/0C0" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/070/010/0B0/0J0/0C0">List</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>JaxbList
+                    <string> of DSW datasource IDs</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;Item&quot;: [
+{
+&quot;@type&quot;: &quot;xs:string&quot;,
+&quot;$&quot;: &quot;jmeter-dsw-pentaho-test.xmi&quot;
+}
+]
+}</pre>
+                  <p>
+                    <a name="path__data-access_api_datasource_dsw_domain_-dswId%20-.html"></a> 
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div id="section_6" class="mt-page-section"><span id=".2Fdata-access.2Fapi.2Fdatasource.2Fdsw.2Fdomain.2F.7BdswId_.7D"></span> 
+              <h1 class="editable">/data-access/api/datasource/dsw/domain/{dswId }</h1>
+              <a name="GET"></a> 
+              <div id="section_7" class="mt-page-section"><span id="GET_2"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Export the DSW data source for the given DSW ID. The response will be zipped if there is more than one file. The response will contain an XMI and/or a mondrian cube definition file.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/plugin/data-access/api/datasource/dsw/domain/jmeter-dsw-pentaho-test.xmi</p>
+                <div id="section_8" class="mt-page-section"><span id="Parameters"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>dswId</td>
+                        <td>The id of the DSW datasource to export</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_9" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Response object containing the encrypted DSW data source files.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">An encrypted .XMI file or a .zip with encoded .XMI files</pre> </div>
+                <div id="section_10"
+                class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>DSW datasource export succeeded.</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not authorized to export DSW datasource.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Failure to export DSW datasource.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="DELETE"></a> 
+                </div>
+              </div>
+              <div id="section_11" class="mt-page-section"><span id="DELETE"></span> 
+                <h2 class="editable">DELETE</h2>
+                <p>Remove the DSW data source for a given DSW ID.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> DELETE pentaho/plugin/data-access/api/datasource/dsw/domain/jmeter-dsw-pentaho-test.xmi/remove</p>
+                <div id="section_12" class="mt-page-section"><span id="Parameters_2"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>dswId</td>
+                        <td>The id of the DSW datasource to remove</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_13" class="mt-page-section"><span id="Response_Body_3"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A 200 response code representing the successful removal of the DSW datasource.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This response does not contain data.</pre> </div>
+                <div id="section_14" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>DSW datasource removed successfully.</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not authorized to remove DSW datasource.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> 
+              <br /> Generated by
+              <a class="external" rel="external nofollow" href="http://enunciate.codehaus.org" target="_blank">Enunciate</a> .</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fdata-access.2Fapi.2Fdatasource.2Fdsw.2Fdomain" rel="internal">/data-access/api/datasource/dsw/domain</a> 
+        <ol>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fdata-access.2Fapi.2Fdatasource.2Fdsw.2Fdomain.2F.7BdswId_.7D" rel="internal">/data-access/api/datasource/dsw/domain/{dswId }</a> 
+        <ol>
+          <li>
+            <a href="#GET_2" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#DELETE" rel="internal">DELETE</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

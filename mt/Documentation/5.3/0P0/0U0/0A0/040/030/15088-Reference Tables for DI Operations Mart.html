@@ -1,0 +1,832 @@
+<content type="text/html" title="Reference Tables for DI Operations Mart">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <p>DI Operations Mart consists of several tables, which are referenced in this section.</p>
+      <div id="section_2" class="mt-page-section"><span id="Logging_Tables_Status_for_the_Data_Integration_Operations_Mart"></span> 
+        <h2 class="editable">Logging Tables Status for the Data Integration Operations Mart</h2>
+        <div id="section_3" class="mt-page-section"><span id="Transformation_Log_Tables"></span> 
+          <h3 class="editable">
+            <strong>Transformation Log Tables</strong> 
+          </h3>
+          <p>The transformation tables have a <strong>status</strong>  column, these are descriptions of the values that can be found in that column.</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Status Display</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">start </span> </td>
+                <td>Indicates the transformation was started and remains in this status until the transformation ends when no logging interval is set.</td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">end </span> </td>
+                <td><span>Transformation ended successfully.</span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">stop </span> </td>
+                <td><span>Indicates the user stopped the transformation.</span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">error</span> </td>
+                <td>Indicates an error occurred when attempting to run the transformation.</td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">running </span> </td>
+                <td>A transformation is only in this status directly after starting and does not appear without a logging interval.</td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">paused </span> </td>
+                <td><span>Indicates the transformation was paused by the user and does not appear without a logging interval. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Jobs_Log_Tables"></span> 
+          <h3 class="editable">
+            <strong>Jobs Log Tables</strong> 
+          </h3>
+          <p>The job log tables have a <strong>status</strong>  column, these are descriptions of the values that can be found in that column.</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Status Display</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">start </span> </td>
+                <td><span>Indicates the job was started and keeps in this status until the job ends, and when no logging interval is set. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">end </span> </td>
+                <td><span>Job ended successfully.</span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">stop </span> </td>
+                <td><span>Indicates the user stopped the job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">error </span> </td>
+                <td><span>Indicates an error occurred when attempting to run the job.</span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">running </span> </td>
+                <td><span>A job is only in this status directly after starting and does not appear without a logging interval. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">paused </span> </td>
+                <td><span>Indicates the job was paused by the user, and does not appear without a logging interval. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Logging_Dimensions_and_Metrics_for_the_Data_Integration_Operation_Mart"></span> 
+        <h2 class="editable">Logging Dimensions and Metrics for the Data Integration Operation Mart</h2>
+        <p>These tables are references that identify the various dimensions and metrics that can be used to create new ETL log charts and reports.</p>
+        <div id="section_6" class="mt-page-section"><span id="Fact_Table"></span> 
+          <h3 class="editable">
+            <strong>Fact Table</strong> 
+          </h3>
+          <p>(fact_execution)</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">execution_date_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the date when the transformation/job was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_time_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the time-of-day when the transformation/job was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">batch_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to batch information for the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to execution information about the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the executor (transformation or job). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">parent_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the parent transformation/job). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">root_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the root transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_timestamp </span> </td>
+                <td><span>The date and time when the transformation/job was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">duration </span> </td>
+                <td><span>The length of time (in seconds) between when the transformation was logged (<span class="filepath style-wrap">LOGDATE</span> ) and the maximum dependency date (<span class="filepath style-wrap">DEPDATE</span> ) </span> 
+                </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_input </span> </td>
+                <td><span>The number of lines read from disk or the network by the specified step. Can be input from files, databases, etc. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_output </span> </td>
+                <td><span>The number of rows output during the execution of the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_read </span> </td>
+                <td><span>The number of rows read in from the input stream of the the specified step. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_written </span> </td>
+                <td><span>The number of rows written during the execution of the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_rejected </span> </td>
+                <td><span>The number of rows rejected during the execution of the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">errors </span> </td>
+                <td><span>The number of errors that occurred during the execution of the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">failed </span> </td>
+                <td><span>Indicates if the job or transformation has failed. 0 means the job or transformation completed successfully. 1 indicates the job or transformation failed.</span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Batch_Dimension"></span> 
+          <h3 class="editable">
+            <strong>Batch Dimension</strong> 
+          </h3>
+          <p>(dim_batch)</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">batch_tk </span> </td>
+                <td><span>A technical key (TK) for linking facts to batch information. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">batch_id </span> </td>
+                <td><span>The ID number for the batch. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">logchannel_id </span> </td>
+                <td><span>A string representing the identifier for the logging channel used by the batch. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">parent_logchannel_id </span> </td>
+                <td><span>A string representing the identifier for the parent logging channel used by the batch. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Date_Dimension"></span> 
+          <h3 class="editable">
+            <strong>Date Dimension</strong> 
+          </h3>
+          <p>(dim_date)</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">date_tk </span> </td>
+                <td><span>A technical key (TK) for linking facts to date information. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">date_field </span> </td>
+                <td><span>A Date object representing a particular day (year, month, day). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">ymd </span> </td>
+                <td><span>A string representing the date value in year-month-day format. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">ym </span> </td>
+                <td><span>A string representing the date value in year-month format. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">year </span> </td>
+                <td><span>An integer representing the year value. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">quarter </span> </td>
+                <td><span>An integer representing the number of the quarter (1-4) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">quarter_code </span> </td>
+                <td><span>A 2-character string representing the quarter (Q1-Q4) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">month </span> </td>
+                <td><span>An integer representing the number of the month (1-12) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">month_desc </span> </td>
+                <td><span>A string representing the month (&ldquo;January&rdquo;..&rdquo;December&rdquo;) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">month_code </span> </td>
+                <td><span>A string representing the shortened month code (&ldquo;JAN&rdquo;..&rdquo;DEC&rdquo;) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">day </span> </td>
+                <td><span>An integer representing the day of the month (1-31) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">day_of_year </span> </td>
+                <td><span>An integer representing the day of the year (1-366) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">day_of_week </span> </td>
+                <td><span>An integer representing the day of the week (1-7) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">day_of_week_desc </span> </td>
+                <td><span>A string representing the day of the week (&ldquo;Sunday&rdquo;..&rdquo;Saturday&rdquo;) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">day_of_week_code </span> </td>
+                <td><span>A string representing the shortened day-of-week code (&ldquo;SUN&rdquo;..&rdquo;SAT&rdquo;) to which this date belongs. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">week </span> </td>
+                <td><span>An integer representing the week of the year (1-53) to which this date belongs. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Execution_Dimension"></span> 
+          <h3 class="editable">
+            <strong>Execution Dimension</strong> 
+          </h3>
+          <p>(dim_execution)</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">execution_tk </span> </td>
+                <td><span>A technical key (TK) for linking facts to execution information. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_id </span> </td>
+                <td><span>A unique string identifier for the execution. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">server_name </span> </td>
+                <td><span>The name of the server associated with the execution. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">server_host </span> </td>
+                <td><span>The name of the server associated with the execution. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executing_user </span> </td>
+                <td><span>The name of the user who initiated the execution. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_status </span> </td>
+                <td><span>The status of the execution (start, stop, end, error). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">client </span> </td>
+                <td><span>The name of the client that triggered the execution.</span> </td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong><span><span>Executor Dimension </span> </span> </strong>  This table contains information about an executor that is a job or transformation (dim_executor).</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">executor_tk </span> </td>
+                <td><span>A technical key (TK) for linking facts to executor information </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">version </span> </td>
+                <td><span>An integer corresponding to the version of the executor </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">date_from </span> </td>
+                <td><span>A date representing the minimum date for which the executor is valid </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">date_to </span> </td>
+                <td><span>A date representing the maximum date for which the executor is valid </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_id </span> </td>
+                <td><span>A string identifier for the executor </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_source </span> </td>
+                <td><span>The source location (either file- or repository-relative) for the executor </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">* executor_environment </span> </td>
+                <td><span>File server, repository name, related to the executor_source. *<em>Reserved for future use.</em> </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_type </span> </td>
+                <td><span>The executor type (&ldquo;job&rdquo; or &ldquo;transformation&rdquo;) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_name </span> </td>
+                <td><span>The name of the executor (transformation name, e.g.) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_desc </span> </td>
+                <td><span>A string description of the executor (job description, e.g.) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_revision </span> </td>
+                <td><span>A string representing the revision of the executor (&ldquo;1.3&rdquo;, e.g.) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_version_label </span> </td>
+                <td><span>A string representing a description of the revision (i.e. change comments) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">exec_enabled_table_logging </span> </td>
+                <td><span>Whether table logging is enabled for this executor. Values are &ldquo;Y&rdquo; if enabled, &ldquo;N&rdquo; otherwise. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">exec_enabled_detailed_logging </span> </td>
+                <td><span>Whether detailed (step or job entry) logging is enabled for this executor. Values are &ldquo;Y&rdquo; if enabled, &ldquo;N&rdquo; otherwise. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">exec_enabled_perf_logging </span> </td>
+                <td><span>Whether performance logging is enabled for this executor. Values are &ldquo;Y&rdquo; if enabled, &ldquo;N&rdquo; otherwise. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">exec_enabled_history_logging </span> </td>
+                <td><span>Whether historical logging is enabled for this executor. Values are &ldquo;Y&rdquo; if enabled, &ldquo;N&rdquo; otherwise. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">last_updated_date </span> </td>
+                <td><span>The date the executor was last updated </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">last_updated_user </span> </td>
+                <td><span>The name of the user who last updated the executor </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Log_Table_Dimension"></span> 
+          <h3 class="editable">
+            <strong>Log Table Dimension</strong> 
+          </h3>
+          <p>This is a &ldquo;junk dimension&rdquo; containing log table information (dim_log_table).</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">log_table_tk </span> </td>
+                <td><span>A technical key (TK) for linking.</span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">object_type </span> </td>
+                <td><span>The type of PDI object being logged (&ldquo;job&rdquo;, &ldquo;transformation&rdquo;, &ldquo;step&rdquo;, e.g.) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">table_connection_name </span> </td>
+                <td><span>The name of the database connection corresponding to the location of the transformation/job logging table </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">table_name </span> </td>
+                <td><span>The name of the table containing the transformation/job logging information </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">schema_name </span> </td>
+                <td><span>The name of the database schema corresponding to the location of the transformation/job logging table </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_entry_table_conn_name </span> </td>
+                <td><span>The name of the database connection corresponding to the location of the step/entry logging table </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_entry_table_name </span> </td>
+                <td><span>The name of the table containing the step/entry logging information </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_entry_schema_name </span> </td>
+                <td><span>The name of the database schema corresponding to the location of the step/entry logging table </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">perf_table_conn_name </span> </td>
+                <td><span>The name of the database connection corresponding to the location of the performance logging table </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">perf_table_name </span> </td>
+                <td><span>The name of the table containing the performance logging information </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">perf_schema_name </span> </td>
+                <td><span>The name of the database schema corresponding to the location of the performance logging table </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Time-Of-Day-Dimension"></span> 
+          <h3 class="editable">
+            <strong>Time-Of-Day-Dimension</strong> 
+          </h3>
+          <p>This dimension contains entries for every second of a day from midnight to midnight (dim_time).</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">time_tk </span> </td>
+                <td><span>A technical key (TK) for linking facts to time-of-day information </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">hms </span> </td>
+                <td><span>A string representing the time of day as hours-minutes-seconds (&quot;00:01:35&quot;, e.g.) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">hm </span> </td>
+                <td><span>A string representing the time of day as hours-minutes (&quot;23:59&quot;, e.g.) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">ampm </span> </td>
+                <td><span>A string representing whether the time-of-day is AM or PM. Values are &ldquo;am&rdquo; or &ldquo;pm&rdquo;. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">hour </span> </td>
+                <td><span>The integer number corresponding to the hour of the day (0-23) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">hour12 </span> </td>
+                <td><span>The integer number corresponding to the hour of the day with respect to AM/PM (0-11) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">minute </span> </td>
+                <td><span>The integer number corresponding to the minute of the hour (0-59) </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">second </span> </td>
+                <td><span>The integer number corresponding to the second of the minute (0-59) </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Step_Fact_Table"></span> 
+          <h3 class="editable"><strong><span>
+            <span>Step Fact Table </span> </span> </strong> 
+          </h3>
+          <p>This fact table contains facts about individual step executions (fact_step_execution).</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">execution_date_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the date when the step was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_time_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the time-of-day when the step was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">batch_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to batch information for the step. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the executor (transformation). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">parent_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the parent transformation. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">root_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the root transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_timestamp </span> </td>
+                <td><span>The date and time when the step was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the step. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_copy </span> </td>
+                <td><span>The step copy number. This is zero if there is only one copy of the step, or (0 to N-1) if N copies of the step are executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_input </span> </td>
+                <td><span>The number of lines read from disk or the network by the step. Can be input from files, databases, etc. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_output </span> </td>
+                <td><span>The number of lines written to disk or the network by the step. Can be output to files, databases, etc. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_read </span> </td>
+                <td><span>The number of rows read in from the input stream of the step. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_written </span> </td>
+                <td><span>The number of rows written to the output stream of the step. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_rejected </span> </td>
+                <td><span>The number of rows rejected during the execution of the step. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">errors </span> </td>
+                <td><span>The number of errors that occurred during the execution of the step. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_13" class="mt-page-section"><span id="Step_Dimension"></span> 
+          <h3 class="editable"><strong><span>
+            <span>Step Dimension </span> </span> </strong> 
+          </h3>
+          <p>This dimension contains information about individual steps and job entries (dim_step) .</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">step_tk </span> </td>
+                <td><span>A technical key (TK) for linking facts to step/entry information </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_id </span> </td>
+                <td><span>The string name of the step/entry </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">* original_step_name </span> </td>
+                <td><span>The name of the step/entry template used to create this step/entry (&ldquo;Table Input&rdquo;, e.g.). *<em>Reserved for future use.</em> </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_14" class="mt-page-section"><span id="Job_Entry_Fact_Table"></span> 
+          <h3 class="editable"><strong><span>
+            <span>Job Entry Fact Table </span> </span> </strong> 
+          </h3>
+          <p>This fact table contains facts about individual job entry executions (fact_jobentry_execution).</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">execution_date_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the date when the job entry was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_time_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the time-of-day when the job entry was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">batch_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to batch information for the job entry. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the executor (transformation or job). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">parent_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the parent transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">root_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the root transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the job entry. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_timestamp </span> </td>
+                <td><span>The date and time when the job entry was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_input </span> </td>
+                <td><span>The number of lines read from disk or the network by the job entry. Can be input from files, databases, etc. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_output </span> </td>
+                <td><span>The number of lines written to disk or the network by the job entry. Can be output to files, databases, etc. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_read </span> </td>
+                <td><span>The number of rows read in from the input stream of the job entry. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_written </span> </td>
+                <td><span>The number of rows written to the output stream of the job entry. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_rejected </span> </td>
+                <td><span>The number of rows rejected during the execution of the job entry. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">errors </span> </td>
+                <td><span>The number of errors that occurred during the execution of the job entry. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">result </span> </td>
+                <td><span>Whether the job entry finished successfully or not. Values are &ldquo;Y&rdquo; (successful) or &ldquo;N&rdquo; (otherwise). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">nr_result_rows </span> </td>
+                <td><span>The number of result rows after execution. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">nr_result_files </span> </td>
+                <td><span>The number of result files after execution. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_15" class="mt-page-section"><span id="Execution_Performance_Fact_Table"></span> 
+          <h3 class="editable"><strong><span>
+            <span>Execution Performance Fact Table </span> </span> </strong> 
+          </h3>
+          <p>This fact table contains facts about the performance of steps in transformation executions (fact_perf_execution).</p>
+          <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th>Field Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="filepath style-wrap">execution_date_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the date when the transformation was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_time_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to the time-of-day when the transformation was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">batch_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to batch information for the transformation. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the executor (transformation). </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">parent_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the parent transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">root_executor_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the root transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_tk </span> </td>
+                <td><span>A technical key (TK) linking the fact to information about the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">seq_nr </span> </td>
+                <td><span>The sequence number. This is an identifier differentiating performance snapshots for a single execution. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">step_copy </span> </td>
+                <td><span>The step copy number. This is zero if there is only one copy of the step, or (0 to N-1) if N copies of the step are executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">execution_timestamp </span> </td>
+                <td><span>The date and time when the transformation was executed. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_input </span> </td>
+                <td><span>The number of rows read from input (file, database, network, ...) during the interval </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_output </span> </td>
+                <td><span>The number of rows written to output (file, database, network, ...) during the interval </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_read </span> </td>
+                <td><span>The number of rows read from previous steps during the interval. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_written </span> </td>
+                <td><span>The number of rows written to following steps during the interval. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">rows_rejected </span> </td>
+                <td><span>The number of rows rejected by the steps error handling during the interval. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">errors </span> </td>
+                <td><span>The number of errors that occurred during the execution of the transformation/job. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">input_buffer_rows </span> </td>
+                <td><span>The size of the step&rsquo;s input buffer in rows at the time of the snapshot. </span> </td>
+              </tr>
+              <tr>
+                <td><span class="filepath style-wrap">output_buffer_rows </span> </td>
+                <td><span>The size of the output buffer in rows at the time of the snapshot. </span> </td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Logging_Tables_Status_for_the_Data_Integration_Operations_Mart" rel="internal">Logging Tables Status for the Data Integration Operations Mart</a> 
+        <ol>
+          <li> <a href="#Transformation_Log_Tables" rel="internal">Transformation Log Tables</a>  </li>
+          <li> <a href="#Jobs_Log_Tables" rel="internal">Jobs Log Tables</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Logging_Dimensions_and_Metrics_for_the_Data_Integration_Operation_Mart" rel="internal">Logging Dimensions and Metrics for the Data Integration Operation Mart</a> 
+        <ol>
+          <li> <a href="#Fact_Table" rel="internal">Fact Table</a>  </li>
+          <li> <a href="#Batch_Dimension" rel="internal">Batch Dimension</a>  </li>
+          <li> <a href="#Date_Dimension" rel="internal">Date Dimension</a>  </li>
+          <li> <a href="#Execution_Dimension" rel="internal">Execution Dimension</a>  </li>
+          <li> <a href="#Log_Table_Dimension" rel="internal">Log Table Dimension</a>  </li>
+          <li> <a href="#Time-Of-Day-Dimension" rel="internal">Time-Of-Day-Dimension</a>  </li>
+          <li> <a href="#Step_Fact_Table" rel="internal">Step Fact Table </a>  </li>
+          <li> <a href="#Step_Dimension" rel="internal">Step Dimension </a>  </li>
+          <li> <a href="#Job_Entry_Fact_Table" rel="internal">Job Entry Fact Table </a>  </li>
+          <li> <a href="#Execution_Performance_Fact_Table" rel="internal">Execution Performance Fact Table </a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

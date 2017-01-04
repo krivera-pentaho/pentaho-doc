@@ -1,0 +1,70 @@
+<content type="text/html" title="Create ETL Logging Charts">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Open a new report from within Pentaho Report Designer.</span> </li>
+          <li class="li step"><span class="ph cmd">Create two parameters: <span class="ph filepath">Start Date</span>  and <span class="ph filepath">End Date</span>, both with a <span class="ph uicontrol">Value Type</span>  of Date and a <span class="ph uicontrol">Prompt Display Type</span>             of <span class="ph filepath">Date Picker</span> .</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">From within Pentaho Report Designer, Go to <span class="ph uicontrol">Data </span> > <span class="ph uicontrol">Add Parameter</span> .</span>  This brings up the <span class="ph uicontrol">Add Parameter</span>  dialog box.</li>
+              <li class="li substep"><span class="ph cmd">For the <span class="ph uicontrol">Name</span>  field, enter <span class="ph filepath">Start Date</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Set the <span class="ph uicontrol">Value Type</span>  to <span class="ph uicontrol">Date</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Set the <span class="ph uicontrol">Display Type</span>  to <span class="ph uicontrol">Date Picker</span> .</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Repeat steps 2a. through 2d, but name this second parameter<span class="ph filepath"> End Date</span> .</span> 
+              </li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">Create a new metadata data set. In the Metadata Data Source editor, under <span class="ph uicontrol">XMI file</span>, point to the metadata file in the solutions folder under the BA Server at <span class="ph filepath">biserver-ee/pentaho-solutions/PDI Operations Mart Sample Reports/metadata.xmi</span> .</span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Go to <span class="ph uicontrol">Data</span>  > <span class="ph uicontrol">Add Datasource</span>  > <span class="ph uicontrol">Metadata</span> . </span>  This brings up the Metadata Data Source editor dialog box.</li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">Set the <span class="ph uicontrol">Domain Id / BI-Server Solution Name:</span>  to <span class="ph filepath">PDI Operations Mart Sample Reports/metadata.xmi</span> </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a new query named <span class="ph filepath">Top 10 Slowest Transformations</span>, then open the Metadata Query Editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Add these fields to the <span class="ph uicontrol">Selected Columns</span>  list.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Dim executor > Executor name</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Minimum Throughput</code></li>
+            </ul>
+          </li>
+          <li class="li step" value="7"><span class="ph cmd">Add these conditions to the query:.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Dim executor > Executor type = 'transformation'</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Minimum Throughput > 0</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Execution Timestamp >= {Start Date}</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Execution Timestamp <= {End Date}</code></li>
+            </ul>
+          </li>
+          <li class="li step" value="8"><span class="ph cmd">Add the following order to the query: <code class="ph codeph">Fact execution > Minimum Throughput (Ascending - ASC)</code></span> </li>
+          <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">OK</span>  twice to exit the Query Editor and the Metadata Data Source Editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a new Open Formula. Name it <span class="ph filepath">rc</span>  and set the value to: <code class="ph codeph"> &amp;amp; (ROWCOUNT([LC_Dim_executor_executor_name])+1) &amp;amp; &quot;: &quot; &amp;amp; [LC_Dim_executor_executor_name]</code>.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a new chart by dragging the chart icon on the left to the <span class="ph uicontrol">Report Header</span>  section of the report. Set the size.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Double-click the chart to bring up the <span class="ph uicontrol">Edit Chart </span> dialog box. Select <span class="ph uicontrol">XY Line Chart</span>  as the chart type.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Select <span class="ph uicontrol">CategorySet Collector</span>  as the collector type under <span class="ph uicontrol">Primary Datasource</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Set the <span class="ph uicontrol">category-column</span>  value to the <span class="ph uicontrol">rc</span>  function, and the <span class="ph uicontrol">value-columns</span>  value to the <span class="ph uicontrol">Minimum Throughput</span>             field.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Under <span class="ph uicontrol">Bar Chart properties</span>, set these options. </span> 
+            <ul class="ul choices">
+              <li class="li choice"><span class="ph uicontrol">x-axis-label-rotation</span>  to <code class="ph codeph">45</code></li>
+              <li class="li choice"><span class="ph uicontrol">show-legend</span>  to <code class="ph codeph">False</code></li>
+              <li class="li choice"><span class="ph uicontrol">tooltip-formula</span>  to <code class="ph codeph"> =[&quot;chart::category-key&quot;] </code></li>
+            </ul>
+          </li>
+          <li class="li step" value="16"><span class="ph cmd">Preview the report, selecting various parameter values to verify the chart is being displayed correctly.</span> </li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

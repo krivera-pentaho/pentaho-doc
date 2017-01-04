@@ -1,0 +1,60 @@
+<content type="text/html" title="Increase Security Log Levels in the BA Server">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">The security logging facilities of the BA Server are set to ERROR by default, which is not always verbose enough for troubleshooting and testing. The below procedure explains how to increase the level of detail in the BA Server logs that deal
+            with security-related messages.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Stop the BA Server.</span>  <pre class="pre codeblock">sh /usr/local/pentaho/server/biserver-ee/stop-pentaho.sh</pre> </li>
+          <li class="li step"> <span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes/log4j.xml</span>  file with a text editor.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Use XML comments (
+<!-- -->) to disable all of the <strong class="ph b">Threshold</strong>  parameters in all of the <strong class="ph b">appender</strong>  elements.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Change the priority value in the <strong class="ph b"><root></strong>  section to one of: <strong class="ph b">WARN</strong>, <strong class="ph b">ERROR</strong>, <strong class="ph b">FATAL</strong>, or <strong class="ph b">DEBUG</strong>, depending on which level you prefer.</span>             <pre class="pre codeblock"><root>
+  <priority value=&quot;DEBUG&quot; />
+  <appender-ref ref=&quot;PENTAHOCONSOLE&quot;/>
+  <appender-ref ref=&quot;PENTAHOFILE&quot;/>
+</root></pre> </li>
+          <li class="li step"> <span class="ph cmd">Add the following loggers directly above the root element:</span>  <pre class="pre codeblock">
+<!-- all Spring Security classes will be set to DEBUG -->
+<category name=&quot;org.springframework.security&quot;>
+  <priority value=&quot;DEBUG&quot; />
+</category>
+
+<!-- all Pentaho security-related classes will be set to DEBUG -->
+<category name=&quot;org.pentaho.platform.engine.security&quot;>
+  <priority value=&quot;DEBUG&quot; />
+</category>
+<category name=&quot;org.pentaho.platform.plugin.services.security&quot;>
+  <priority value=&quot;DEBUG&quot; />
+</category></pre> </li>
+          <li class="li step"> <span class="ph cmd">Save and close the file, then edit the Spring Security configuration file that corresponds with your security back end in the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/</span>  directory.</span> 
+            <p class="p">The file will be one of:</p>
+            <ul class="ul">
+              <li class="li">applicationContext-spring-security-memory.xml</li>
+              <li class="li">applicationContext-spring-security-jdbc.xml</li>
+              <li class="li">applicationContext-spring-security-ldap.xml</li>
+            </ul>
+          </li>
+          <li class="li step"> <span class="ph cmd">Find the <strong class="ph b">daoAuthenticationProvider</strong>  bean definition, and add the following property anywhere inside of it (before the </bean> tag):</span>  <pre class="pre codeblock"><property name=&quot;hideUserNotFoundExceptions&quot; value=&quot;false&quot; /></pre>            </li>
+          <li class="li step"> <span class="ph cmd">Save the file and close the text editor.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Start the BA Server.</span>  <pre class="pre codeblock">sh /usr/local/pentaho/server/biserver-ee/start-pentaho.sh</pre> </li>
+        </ol>
+        <div class="section result">
+          <p class="p">BA Server security logging is now globally set to DEBUG, which is sufficiently verbose for debugging security configuration problems. All BA Server messages will be collected in the <span class="ph filepath">/pentaho/server/biserver-ee/logs/pentaho.log</span>             file.</p>
+          <p class="p">When you are finished configuring and testing the BA Server, you should adjust the log levels down to a less detailed level, such as ERROR, to prevent pentaho.log from growing too large.</p>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/150/050/000/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/150/050/000/000">Enable Extra LDAP Security Logging</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

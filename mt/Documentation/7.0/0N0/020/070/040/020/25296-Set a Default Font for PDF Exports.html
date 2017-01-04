@@ -1,0 +1,26 @@
+<content type="text/html" title="Set a Default Font for PDF Exports">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">Before following this procedure, stop the Pentaho Server and the User Console.</div>
+        <div class="section context">
+          <p class="p">When displaying data in Analyzer, your reports will use the default browser fonts. However, the PDF export function may not have the same fonts available to it when creating a PDF from your Analyzer report, resulting in output that doesn't look
+            the same way in PDF format as it does in the browser. The default font for PDFs is Helvetica, but you can specify any TrueType font or collection to replace it. Follow the instructions below to specify a different font for PDF exports.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  If you have localized your schema in a language that uses a multi-byte character set (most Asian languages fit into this category), this process is required to make PDF output appear without errors.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Edit the <strong class="ph b">analyzer.properties</strong>  file in the <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/analyzer/</span>  directory.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Uncomment the <strong class="ph b">renderer.pdf.font.path</strong>  line.</span>  <pre class="pre codeblock">
+renderer.pdf.font.path=C:/WINDOWS/Fonts/MSGOTHIC.TTC,1</pre> </li>
+          <li class="li step"><span class="ph cmd">Replace the value of this line with the TrueType font or collection that you want to use as the default.</span>  If you are specifying a collection, you must enter a '<strong class="ph b">,1</strong> ' after the font name,
+            as shown in the above example. This does not apply to individual fonts (TTF files). <pre class="pre codeblock">
+renderer.pdf.font.path=/usr/share/fonts/truetype/freefont/FreeSans.ttf</pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, and start the Pentaho Server.</span> </li>
+        </ol>
+        <div class="section result">Your PDF exports from Analyzer should have the font you specified.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

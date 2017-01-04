@@ -1,0 +1,671 @@
+<content type="text/html" title="Configure Repository">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Presents the steps to configure the DI Repository.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the DI installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/1589/grDiArchiveInstallConfigureRepository.png?revision=1" />
+          </p>
+          <p class="p">Before you configure the DI Repository, complete the tasks in
+            <a class="xref" title="Documentation/5.1/0F0/0O0/030" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/030">Initialize Repository</a> .</p>
+          <p class="p">Tasks performed during this step include configuring Audit, Quartz, and Hibernate properties. Tasks are grouped by the DI Repository database you have.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="596188a6-8aaf-459b-bf1f-d67e400411fc__prepare_postgres_repository_overview">
+        <div id="section_2" class="mt-page-section"><span id="Configure_PostgreSQL_DI_Repository_Database"></span> 
+          <h2 class="editable">Configure PostgreSQL DI Repository Database</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">These instructions explain how to configure Quartz, Hibernate, Jackrabbit, and Pentaho Security for use with the PostgreSQL database. By default, the files edited in this section are configured for a PostgreSQL database that runs on port
+                5432. The default password is also in these files. If you have a different port, different password, or if had the system configured using a different database and now you want to change it back to PostgreSQL, complete all of the instructions
+                in these steps.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__configure_postgres_quartz">
+            <div id="section_3" class="mt-page-section"><span id="Configure_Quartz_on_PostgreSQL_DI_Repository_Database"></span> 
+              <h3 class="editable">Configure Quartz on PostgreSQL DI Repository Database</h3>
+              <div class="body taskbody">
+                <div class="section context">When you use Pentaho to schedule an event, such as a report to be run every Sunday at 1:00 a.m. EST, event information is stored in the Quartz JobStore. During the installation process, you must indicate where the JobStore is located.
+                  To do this, modify the <span class="ph filepath">quartz.properties</span>  file.</div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">pentaho/server/data-integration-server/pentaho-solutions/system/quartz/quartz.properties</span>  file in the text editor of your choice.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Make sure that in the <code class="ph codeph">#_replace_jobstore_properties</code> section of the file, the <code class="ph codeph">org.quartz.jobStore.driverDelegateClass</code> is set to <code class="ph codeph">org.quartz.impl.jdbcjobstore.PostgreSQLDelegate</code>. </span> </li>
+                  <li class="li step"><span class="ph cmd">In the <code class="ph codeph"># Configure Datasources</code> section of the file, set the <code class="ph codeph">org.quartz.dataSource.myDS.jndiURL</code> equal to <code class="ph codeph">Quartz</code>. </span>                     <pre class="pre codeblock">
+org.quartz.dataSource.myDS.jndiURL = Quartz</pre> </li>
+                  <li class="li step"><span class="ph cmd">Save the file and close the text editor.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__hibernate_settings_postgres">
+            <div id="section_4" class="mt-page-section"><span id="Configure_Hibernate_Settings_for_PostgreSQL_DI_Repository_Database"></span> 
+              <h3 class="editable">Configure Hibernate Settings for PostgreSQL DI Repository Database</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Modify the hibernate settings file to specify where Pentaho will find the DI Repository&rsquo;s hibernate configuration file. The hibernate configuration file specifies driver and connection information, as well as dialects and how to
+                    handle connection closes and timeouts.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Open <span class="ph filepath">pentaho/server/data-integration-server/pentaho-solutions/system/hibernate/hibernate-settings.xml</span>  in a text editor. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Verify that the location of the PostgreSQL hibernate configuration file appears. Make changes if necessary.</span>  <pre class="pre codeblock">
+<config-file>system/hibernate/postgresql.hibernate.cfg.xml</config-file></pre> </li>
+                  <li class="li step"><span class="ph cmd">Save the file if you had to make changes, then close it. Otherwise, just close it.</span> </li>
+                  <li class="li step"><span class="ph cmd">Open <code class="ph codeph">pentaho/server/data-integration-server/pentaho-solutions/system/hibernate/postgresql.hibernate.cfg.xml</code> in a text editor.</span> </li>
+                  <li class="li step"><span class="ph cmd">Make sure that the password and port number match the ones you specified in your configuration. Make changes as necessary, then save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__jackrabbit_postgresql">
+            <div id="section_5" class="mt-page-section"><span id="Modify_Jackrabbit_DI_Repository_Information_for_PostgreSQL"></span> 
+              <h3 class="editable">Modify Jackrabbit DI Repository Information for PostgreSQL</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Indicate which database houses the DI Repository as well as the port, url, username, and password. All of the information needed to configure the repository for the PostgreSQL, MySQL, and Oracle DI Repository databases appear. By default,
+                    the PostgreSQL sections are not commented out, but the MySQL and Oracle sections are. To modify this file so that it works for your DI Repository, you will need to make sure that the sections that refer to your DI Repository database
+                    are not commented out, and the sections refer to other DI Repository databases are commented out.</p>
+                  <p class="p">When code is commented out, it appears between the <code class="ph codeph">
+<!--</code> and <code class="ph codeph"> --></code> tags. The information in between the tags is commented out, and is therefore not executed by the software.
+                    In this example, the code <code class="ph codeph"><! <FileSystem class=&rdquo;org.apache.jackrabbit.core.fs.db.OracleFileSystem&rdquo;></code> is commented out.</p> <pre class="pre codeblock">
+
+<!-- 
+<FileSystem class=&rdquo;org.apache.jackrabbit.core.fs.db.OracleFileSystem&rdquo;>
+--></pre>
+                  <p class="p">To make sure that the Jackrabbit repository is set so that PostgreSQL is the default database, do this.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">pentaho/server/data-integration-server/pentaho-solutions/system/jackrabbit/repository.xml</span>  file.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">In the Repository part of the code, make sure that the PostgreSQL lines of code are not commented out, but the Oracle and MySQL lines are. The code should look like this.</span>  <pre class="pre codeblock">
+
+<!--
+  <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+    <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+    ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_repos_&quot;/>
+  </FileSystem>
+  <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+    ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_repos_&quot;/>
+    <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+  </FileSystem>
+-->
+  <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+    <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+    <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+    <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+    <param name=&quot;password&quot; value=&quot;password&quot;/>
+    <param name=&quot;schema&quot; value=&quot;postgresql&quot;/>
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_repos_&quot;/>
+  </FileSystem></pre> <strong class="ph b">Note:</strong>  If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.</li>
+                  <li class="li step"><span class="ph cmd">In the DataStore section of the code, verify that the PostgreSQL lines of code are not commented out, but the Oracle and MySQL lines are. The code should look like this.</span>  <pre class="pre codeblock">
+
+<!--
+  <DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+   ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;ds_repos_&quot;/>
+  </DataStore>
+  <DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+   ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;ds_repos_&quot;/>
+  </DataStore>
+  -->
+  <DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+    <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+    <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+    <param name=&quot;password&quot; value=&quot;password&quot;/>
+    <param name=&quot;databaseType&quot; value=&quot;postgresql&quot;/>
+    <param name=&quot;minRecordLength&quot; value=&quot;1024&quot;/>
+    <param name=&quot;maxConnections&quot; value=&quot;3&quot;/>
+    <param name=&quot;copyWhenReading&quot; value=&quot;true&quot;/>
+    <param name=&quot;tablePrefix&quot; value=&quot;&quot;/>
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;ds_repos_&quot;/>
+  </DataStore></pre> <strong class="ph b">Note:</strong>  If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.</li>
+                  <li class="li step"><span class="ph cmd">In the Workspaces section of the code, make sure that the PostgreSQL lines of code are not commented out, but the Oracle and MySQL lines are. This code should look like this.</span>  <pre class="pre codeblock">
+
+<!--
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ws_&quot;/>
+    </FileSystem>
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ws_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jcr_user&quot;/>
+    </FileSystem>
+-->
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;postgresql&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ws_&quot;/>
+    </FileSystem></pre> <strong class="ph b">Note:</strong>  If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.</li>
+                  <li class="li step"><span class="ph cmd">In the Persistence Manager section of the code, verify that the PostgreSQL lines of code are not commented out, but the Oracle and MySQL lines are. The code should look like this.</span>  <pre class="pre codeblock">
+
+<!--
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+    </PersistenceManager>
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.OraclePersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+    </PersistenceManager>
+   -->
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.PostgreSQLPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;postgresql&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+    </PersistenceManager></pre> <strong class="ph b">Note:</strong>  If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.</li>
+                  <li class="li step"><span class="ph cmd">In the Versioning section of the code, verify that the PostgreSQL lines of code are not commented out, but the MySQL and Oracle lines are. The code should look like this.</span>  <pre class="pre codeblock">
+
+<!--
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ver_&quot;/>
+    </FileSystem>
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ver_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+    </FileSystem>
+    -->
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;postgresql&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ver_&quot;/>
+    </FileSystem></pre> <strong class="ph b">Note:</strong>  If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.</li>
+                  <li class="li step"><span class="ph cmd">In the Persistence Manager section of the code that is near the end of the file, verify that PostgreSQL lines of code are not commented out, but the MySQL and Oracle lines are. The codes should look like this.</span>                     <pre class="pre codeblock">
+
+<!--
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;pm_ver_&quot;/>
+    </PersistenceManager>
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.OraclePersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;pm_ver_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+    </PersistenceManager>
+    -->
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.PostgreSQLPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;postgresql&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;pm_ver_&quot;/>
+    </PersistenceManager></pre>
+                    <p class="p"><strong class="ph b">Note:</strong>  If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.</p>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Close and save the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="596188a6-8aaf-459b-bf1f-d67e400411fc__prepare_mysql_overview">
+        <div id="section_6" class="mt-page-section"><span id="Configure_MySQL_DI_Repository_Database"></span> 
+          <h2 class="editable">Configure MySQL DI Repository Database</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">These instructions explain how to configure Quartz, Hibernate, Jackrabbit, and Pentaho Security for a MySQL database.</p>
+              <p class="pentaho-note">By default, the examples in this section are for a MySQL database that runs on port 3306. The default password is also in these examples. If you have a different port, different password complete all of the instructions in these steps.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__configure_mysql_quartz">
+            <div id="section_7" class="mt-page-section"><span id="Set_Up_Quartz_on_MySQL_DI_Repository_Database"></span> 
+              <h3 class="editable">Set Up Quartz on MySQL DI Repository Database</h3>
+              <p>Event information, such as scheduled reports, is stored in the Quartz JobStore. During the installation process, you must indicate where the <strong>JobStore</strong>  is located. You do this by modifying the <span class="filepath style-wrap"><span class="ph filepath">quartz.properties</span> </span> 
+                file.</p>
+              <ol class="pentaho-list-ordered" id="3f2d2327-25c4-4078-b046-05a702be7817__d93e400__d93e419">
+                <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">pentaho/server/biserver-ee/pentaho-solutions/system/quartz/quartz.properties</span>  file in any text editor.</span> 
+                </li>
+                <li class="li step">
+                  <p><span class="ph cmd">Locate the <span class="filepath style-wrap">#_replace_jobstore_properties</span>  section and set the <span class="filepath style-wrap">org.quartz.jobStore.driverDelegateClass</span>  as shown here. </span> 
+                  </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.StdJDBCDelegate</pre> </li>
+                <li class="li step"><span class="ph cmd">Save the file and close the text editor.</span> </li>
+              </ol>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__hibernate_settings_mysql">
+            <div id="section_8" class="mt-page-section"><span id="Set_Hibernate_Settings_for_MySQL"></span> 
+              <h3 class="editable">Set Hibernate Settings for MySQL</h3>
+              <p>Modify the hibernate settings file to specify where Pentaho should find the DI Repository&rsquo;s hibernate-settings config file. The hibernate-settings config file specifies driver and connection information, as well as dialects and how
+                to handle connection closes and timeouts. The files in this section are located in the <span class="filepath style-wrap">pentaho/server/data-integration/pentaho-solutions/system/hibernate</span>  directory.</p>
+              <ol class="pentaho-list-ordered">
+                <li class="li step">
+                  <p><span class="ph cmd">Open the <span class="ph filepath">hibernate-settings.xml</span>  file in a text editor. Find the <span class="filepath style-wrap"><config-file></span>  tags and change <span class="filepath style-wrap">postgresql.hibernate.cfg.xml</span>                     to <span class="filepath style-wrap">mysql5.hibernate.cfg.xml</span>  as shown.</span> 
+                    <br /><strong>From:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><config-file>system/hibernate/postgresql.hibernate.cfg.xml</config-file></pre> <strong>To:</strong>                   <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><config-file>system/hibernate/mysql5.hibernate.cfg.xml</config-file></pre> </li>
+                <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap">mysql5.hibernate.cfg.xml</span>  file in a text editor.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Make sure that the password and port number match the ones you specified in your configuration. Make changes if necessary, then save and close the file.</span> </li>
+              </ol>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__replace_audit_mysql">
+            <div id="section_9" class="mt-page-section"><span id="Replace_Default_Version_of_Audit_Log_File_with_MySQL_Version"></span> 
+              <h3 class="editable">Replace Default Version of Audit Log File with MySQL Version</h3>
+              <p class="p">Since you are using MySQL to host the DI Repository, you need to replace the <span class="filepath style-wrap"><span class="ph filepath">audit_sql.xml</span>  </span> file with one that is configured for MySQL.</p>
+              <ol class="pentaho-list-ordered">
+                <li class="p">Locate the&nbsp;<span class="filepath style-wrap"><span class="ph filepath">pentaho-solutions/system/dialects/mysql5/audit_sql.xml</span> </span>  file.</li>
+                <li class="p">Copy it into the<span class="filepath style-wrap"> <span class="ph filepath">pentaho-solutions/system</span> </span>  directory.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__jackrabbit_mysql">
+            <div id="section_10" class="mt-page-section"><span id="Modify_Jackrabbit_Repository_Information_for_MySQL"></span> 
+              <h3 class="editable">Modify Jackrabbit Repository Information for MySQL</h3>
+              <p>There are parts of code that you will need to alter in order to change the default jackrabbit repository to MySQL.</p>
+              <ol class="pentaho-list-ordered">
+                <li>Navigate to the <span class="filepath style-wrap">pentaho/server/data-integration-server/pentaho-solutions/system/jackrabbit</span>  and open the <span class="filepath style-wrap">repository.xml </span> file with any text editor.</li>
+                <li>Following the table below, locate and change the code so that the MySQL lines are <strong>not </strong> commented out, but the PostgreSQL and Oracle lines <strong>are </strong> commented out.</li>
+              </ol>
+              <p class="pentaho-note">If you changed your password when you initialized the database during the
+                <a title="Prepare Environment" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/020">Prepare Environment</a>  step, or if your database is on a different port, edit the url and password parameters in each section accordingly.</p>
+              <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+              title="Pentaho Table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 160px;">Item:</th>
+                    <th scope="col" style="width: 475px;">Code Section:</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 174px;"><strong>Repository</strong> </td>
+                    <td style="width: 500px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+     <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+     <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/jackrabbit&quot;/>
+&hellip;
+</FileSystem></pre> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 174px;"><strong>DataStore</strong> </td>
+                    <td style="width: 500px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/jackrabbit&quot;/>
+&hellip;
+</DataStore></pre> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 174px;"><strong>Workspaces</strong> </td>
+                    <td style="width: 500px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/jackrabbit&quot;/>
+&hellip;
+</FileSystem></pre> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 174px;">
+                      <p><strong>PersistenceManage</strong> r</p>
+                      <p>(1st part)</p>
+                    </td>
+                    <td style="width: 500px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/jackrabbit&quot;/>
+&hellip;
+</PersistenceManager></pre> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 174px;">
+                      <div class="mt-clear" style="page-break-after: always;"><span style="display: none;">&nbsp;</span> </div> <strong>Versioning</strong> </td>
+                    <td style="width: 500px;">
+                      <div class="mt-clear" style="page-break-after: always;"><span style="display: none;">&nbsp;</span> </div> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/jackrabbit&quot;/>
+&hellip;
+</FileSystem></pre> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 174px;">
+                      <p><strong>PersistenceManager</strong> </p>
+                      <p>(2nd part)</p>
+                    </td>
+                    <td style="width: 500px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/jackrabbit&quot;/>
+      &hellip;
+</PersistenceManager></pre> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="596188a6-8aaf-459b-bf1f-d67e400411fc__prepare_oracle_overview">
+        <div id="section_11" class="mt-page-section"><span id="Prepare_Oracle_DI_Repository_Database"></span> 
+          <h2 class="editable">Prepare Oracle DI Repository Database</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">These instructions explain how to configure Quartz, Hibernate, Jackrabbit, and Pentaho Security. By default, the examples in this section are for a Oracle database that runs on port 1521. The default password is also in these examples. If
+                you have a different port, different password complete all of the instructions in these steps.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__configure_oracle_quartz">
+            <div id="section_12" class="mt-page-section"><span id="Configure_Quartz_on_Oracle_DI_Repository_Database"></span> 
+              <h3 class="editable">Configure Quartz on Oracle DI Repository Database</h3>
+              <div class="body taskbody">
+                <div class="section context">When you use Pentaho to schedule an event, such as a report to be run every Sunday at 1:00 a.m. EST, event information is stored in the Quartz JobStore. During the installation process, you must indicate where the JobStore is located.
+                  To do this, modify the <span class="ph filepath">quartz.properties</span>  file.</div>
+                <ol class="ol steps" id="596188a6-8aaf-459b-bf1f-d67e400411fc__configure_oracle_quartz__steps_bhw_4fj_sj">
+                  <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">pentaho/server/data-integration-server/pentaho-solutions/system/quartz/quartz.properties</span>  file in the text editor of your choice.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">In the <code class="ph codeph">#_replace_jobstore_properties</code> section of the file, set the <code class="ph codeph">org.quartz.jobStore.driverDelegateClass</code> equal to <code class="ph codeph">org.quartz.impl.jdbcjobstore.oracle.OracleDelegate</code>. </span>                     <pre class="pre codeblock">
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.oracle.OracleDelegate</pre> </li>
+                  <li class="li step"><span class="ph cmd">In the <code class="ph codeph"># Configure Datasources</code> section of the file, set the <code class="ph codeph">org.quartz.dataSource.myDS.jndiURL</code> equal to <code class="ph codeph">Quartz</code>. </span>                     <pre class="pre codeblock">
+org.quartz.dataSource.myDS.jndiURL = Quartz</pre> </li>
+                  <li class="li step"><span class="ph cmd">Save the file and close the text editor.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__hibernate_settings_oracle">
+            <div id="section_13" class="mt-page-section"><span id="Configure_Hibernate_Settings_for_Oracle"></span> 
+              <h3 class="editable">Configure Hibernate Settings for Oracle</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Modify the hibernate settings file to specify where Pentaho will find the DI Repository&rsquo;s hibernate configuration file. The hibernate configuration file specifies driver and connection information, as well as dialects and how to
+                    handle connection closes and timeouts.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Open <span class="ph filepath">pentaho/server/data-integration-server/pentaho-solutions/system/hibernate/hibernate-settings.xml</span>  in a text editor. By default, the location of the PostgreSQL database configuration
+                    file is specified. </span>  <pre class="pre codeblock">
+<config-file>system/hibernate/postgresql.hibernate.cfg.xml</config-file></pre> </li>
+                  <li class="li step"><span class="ph cmd">Change the default to this to point to the Oracle configuration file.</span>  <pre class="pre codeblock">
+<config-file>system/hibernate/oracle10g.hibernate.cfg.xml</config-file></pre> </li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                  <li class="li step"><span class="ph cmd">Open <code class="ph codeph">pentaho/server/data-integration-server/system/hibernate/oracle10g.hibernate.cfg.xml</code> in a text editor.</span> </li>
+                  <li class="li step"><span class="ph cmd">Make sure that the password and port number match the ones you specified in your configuration. Make changes as necessary, then save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__replace_audit_oracle">
+            <div id="section_14" class="mt-page-section"><span id="Replace_Default_Version_of_Audit_Log_File_with_Oracle_Version"></span> 
+              <h3 class="editable">Replace Default Version of Audit Log File with Oracle Version</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">The default audit_sql.xml file that is in the pentaho-solutions/system directory is configured for the PostgreSQL database. Since you are using Oracle to host the DI Repository, you need to replace the <span class="ph filepath">audit_sql.xml</span>                     file with one that is configured for Oracle. To do this, copy the <span class="ph filepath">pentaho-solutions/system/dialects/oracle10g/audit_sql.xml</span>  file to the <span class="ph filepath">pentaho-solutions/system</span>  directory.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="596188a6-8aaf-459b-bf1f-d67e400411fc__jackrabbit_oracle">
+            <div id="section_15" class="mt-page-section"><span id="Modify_Jackrabbit_Repository_Information_for_Oracle"></span> 
+              <h3 class="editable">Modify Jackrabbit Repository Information for Oracle</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">You must indicate which database is used as the DI Repository as well as the port, url, username, and password. All of the information needed to configure the repository for the PostgreSQL, MySQL, and Oracle DI Repository databases appear.
+                    By default, the PostgreSQL sections are not commented out, but the MySQL and Oracle sections are. To modify this file so that it works for your DI Repository, you will need to make sure that the sections that refer to your DI Repository
+                    Database are not commented out, and the sections refer to other DI Repository databases are commented out.</p>
+                  <p class="p">When code is commented out, it appears between the <code class="ph codeph">
+<!--</code> and <code class="ph codeph"> --></code> tags. The information in between the tags is commented out, and is therefore not executed by the software.
+                    In this example, the code <code class="ph codeph"><! <FileSystem class=&rdquo;org.apache.jackrabbit.core.fs.db.OracleFileSystem&rdquo;></code> is commented out.</p> <pre class="pre codeblock">
+
+<!-- 
+<FileSystem class=&rdquo;org.apache.jackrabbit.core.fs.db.OracleFileSystem&rdquo;>
+--></pre>
+                  <p class="p">To modify the Jackrabbit repository so that Oracle is the default database, do this.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">pentaho/server/data-integration-server/pentaho-solutions/system/jackrabbit/repository.xml</span>  file.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">In the Repository part of the code, change the code so that the Oracle lines of code are not commented out, but the PostgreSQL and MySQL lines are, like this.</span>  <pre class="pre codeblock">
+
+<!-- 
+<FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+    <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+    <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+   ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_repos_&quot;/>
+  </FileSystem>
+--> 
+<FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+    <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+    <param name=&quot;password&quot; value=&quot;password&quot;/>
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_repos_&quot;/>
+    <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+  </FileSystem>
+
+<!-- 
+  <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+    <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+    <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+    ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_repos_&quot;/>
+  </FileSystem>
+--></pre> <strong class="ph b">Note:</strong> If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly. Also note that
+                    the <span class="ph filepath"><param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/></span>  parameter indicates that the database is named <span class="ph filepath">orcl</span> . Modify the parameter if
+                    your database has a different name.</li>
+                  <li class="li step"><span class="ph cmd">Change <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/> to <param name=&quot;tablespace&quot; value=&quot;di_pentaho_tablespace&quot;>. Then change <param name=&quot;user&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;user&quot; value=&quot;di_jcr_user&quot;/>.</span> </li>
+                  <li class="li step"><span class="ph cmd">In the DataStore section of the code, change the code so that the Oracle lines of code are not commented out, but the PostgreSQL and MySQL lines are, like this.</span>  <pre class="pre codeblock">
+
+<!--
+<DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+    ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;ds_repos_&quot;/>
+  </DataStore>
+  --> 
+ <DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+    <param name=&quot;driver&quot; value=&quot;oracle.jdbc.driver.OracleDriver&quot;/>
+    <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+    <param name=&quot;password&quot; value=&quot;password&quot;/>
+    <param name=&quot;databaseType&quot; value=&quot;oracle&quot;/>
+    <param name=&quot;minRecordLength&quot; value=&quot;1024&quot;/>
+    <param name=&quot;maxConnections&quot; value=&quot;3&quot;/>
+    <param name=&quot;copyWhenReading&quot; value=&quot;true&quot;/>
+    <param name=&quot;tablePrefix&quot; value=&quot;&quot;/>
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;ds_repos_&quot;/>
+  </DataStore>
+
+ <!--
+ <DataStore class=&quot;org.apache.jackrabbit.core.data.db.DbDataStore&quot;>
+    <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+    ...
+    <param name=&quot;schemaObjectPrefix&quot; value=&quot;ds_repos_&quot;/>
+  </DataStore></pre> <strong class="ph b">Note:</strong> If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly. Also
+                    note that the <span class="ph filepath"><param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/></span>  parameter indicates that the database is named <span class="ph filepath">orcl</span> . Modify the parameter
+                    if your database has a different name.</li>
+                  <li class="li step"><span class="ph cmd">Change <param name=&quot;user&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;user&quot; value=&quot;di_jcr_user&quot;/>.</span> </li>
+                  <li class="li step"><span class="ph cmd">In the Workspaces section of the code, change the code so that the Oracle lines of code are not commented out, but the PostgreSQL and MySQL lines are, like this.</span>  <pre class="pre codeblock">
+
+<!--
+<FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ws_&quot;/>
+    </FileSystem>
+-->
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ws_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jcr_user&quot;/>
+    </FileSystem>
+
+<!--
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ws_&quot;/>
+    </FileSystem>
+--></pre> <strong class="ph b">Note:</strong> If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly. Also note that
+                    the <span class="ph filepath"><param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/></span>  parameter indicates that the database is named <span class="ph filepath">orcl</span> . Modify the parameter if
+                    your database has a different name.</li>
+                  <li class="li step"><span class="ph cmd">Change <param name=&quot;tablespace&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;tablespace&quot; value=&quot;di_pentaho_tablespace&quot;>. Then change <param name=&quot;user&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;user&quot; value=&quot;di_jcr_user&quot;/>.</span> </li>
+                  <li class="li step"><span class="ph cmd">In the Persistence Manager section of the code, change the code so that the Oracle lines of code are not commented out, but the PostgreSQL and MySQL lines are, like this.</span>  <pre class="pre codeblock">
+
+<!--
+<PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+    </PersistenceManager>
+ -->
+    <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.OraclePersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+      <param name=&quot;driver&quot; value=&quot;oracle.jdbc.driver.OracleDriver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;oracle&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+    </PersistenceManager>
+ 
+ <!--
+   <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.PostgreSQLPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;${wsp.name}_pm_ws_&quot;/>
+    </PersistenceManager>
+ --></pre> <strong class="ph b">Note:</strong> If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly. Also note that
+                    the <span class="ph filepath"><param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/></span>  parameter indicates that the database is named <span class="ph filepath">orcl</span> . Modify the parameter if
+                    your database has a different name.</li>
+                  <li class="li step"><span class="ph cmd">Change <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/> to <param name=&quot;tablespace&quot; value=&quot;di_pentaho_tablespace&quot;> Then change <param name=&quot;user&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;user&quot; value=&quot;di_jcr_user&quot;/>.</span> </li>
+                  <li class="li step"><span class="ph cmd">In the Versioning section of the code, change the code so that the Oracle lines of code are not commented out, but the PostgreSQL and MySQL lines are, like his.</span>  <pre class="pre codeblock">
+
+<!--
+<FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ver_&quot;/>
+    </FileSystem>
+-->
+    <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.OracleFileSystem&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ver_&quot;/>
+      <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+    </FileSystem>
+
+ <!--
+   <FileSystem class=&quot;org.apache.jackrabbit.core.fs.db.DbFileSystem&quot;>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;fs_ver_&quot;/>
+    </FileSystem>    
+--></pre> <strong class="ph b">Note:</strong> If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly. Also note that
+                    the <span class="ph filepath"><param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/></span>  parameter indicates that the database is named <span class="ph filepath">orcl</span> . Modify the parameter if
+                    your database has a different name.</li>
+                  <li class="li step"><span class="ph cmd">Change <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/> to <param name=&quot;tablespace&quot; value=&quot;di_pentaho_tablespace&quot;>. Then change <param name=&quot;user&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;user&quot; value=&quot;di_jcr_user&quot;/>.</span> </li>
+                  <li class="li step"><span class="ph cmd">In the Persistence Manager section of the code that is near the end of the file, change the code so that the Oracle lines of code are not commented out, but the PostgreSQL and MySQL lines are, like this.</span> 
+                    <pre
+                    class="pre codeblock">
+
+                      <!--
+<PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.MySqlPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/di_jackrabbit&quot;/>
+      ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;pm_ver_&quot;/>
+    </PersistenceManager>
+-->
+                      <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.OraclePersistenceManager&quot;>
+                        <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/>
+                        <param name=&quot;driver&quot; value=&quot;oracle.jdbc.driver.OracleDriver&quot;/>
+                        <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+                        <param name=&quot;password&quot; value=&quot;password&quot;/>
+                        <param name=&quot;schema&quot; value=&quot;oracle&quot;/>
+                        <param name=&quot;schemaObjectPrefix&quot; value=&quot;pm_ver_&quot;/>
+                        <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/>
+                      </PersistenceManager>
+
+                      <!--
+   <PersistenceManager class=&quot;org.apache.jackrabbit.core.persistence.bundle.PostgreSQLPersistenceManager&quot;>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://localhost:5432/di_jackrabbit&quot;/>
+     ...
+      <param name=&quot;schemaObjectPrefix&quot; value=&quot;pm_ver_&quot;/>
+    </PersistenceManager>
+-->
+                      </pre> <strong class="ph b">Note:</strong> If you changed your password when you initialized the database during the Prepare Environment step, or if your database is on a different port, edit the url and password parameters accordingly.
+                      Also note that the <span class="ph filepath"><param name=&quot;url&quot; value=&quot;jdbc:oracle:thin:@localhost:1521:orcl&quot;/></span>  parameter indicates that the database is named <span class="ph filepath">orcl</span> . Modify
+                      the parameter if your database has a different name.</li>
+                  <li class="li step"><span class="ph cmd">Change <param name=&quot;tablespace&quot; value=&quot;jackrabbit&quot;/> to <param name=&quot;tablespace&quot; value=&quot;di_pentaho_tablespace&quot;>. Then change <param name=&quot;user&quot; value=&quot;jcr_user&quot;/> to <param name=&quot;user&quot; value=&quot;di_jcr_user&quot;/>.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Configure_PostgreSQL_DI_Repository_Database" rel="internal">Configure PostgreSQL DI Repository Database</a> 
+        <ol>
+          <li> <a href="#Configure_Quartz_on_PostgreSQL_DI_Repository_Database" rel="internal">Configure Quartz on PostgreSQL DI Repository Database</a>  </li>
+          <li> <a href="#Configure_Hibernate_Settings_for_PostgreSQL_DI_Repository_Database" rel="internal">Configure Hibernate Settings for PostgreSQL DI Repository Database</a>  </li>
+          <li> <a href="#Modify_Jackrabbit_DI_Repository_Information_for_PostgreSQL" rel="internal">Modify Jackrabbit DI Repository Information for PostgreSQL</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Configure_MySQL_DI_Repository_Database" rel="internal">Configure MySQL DI Repository Database</a> 
+        <ol>
+          <li> <a href="#Set_Up_Quartz_on_MySQL_DI_Repository_Database" rel="internal">Set Up Quartz on MySQL DI Repository Database</a>  </li>
+          <li> <a href="#Set_Hibernate_Settings_for_MySQL" rel="internal">Set Hibernate Settings for MySQL</a>  </li>
+          <li> <a href="#Replace_Default_Version_of_Audit_Log_File_with_MySQL_Version" rel="internal">Replace Default Version of Audit Log File with MySQL Version</a>  </li>
+          <li> <a href="#Modify_Jackrabbit_Repository_Information_for_MySQL" rel="internal">Modify Jackrabbit Repository Information for MySQL</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Prepare_Oracle_DI_Repository_Database" rel="internal">Prepare Oracle DI Repository Database</a> 
+        <ol>
+          <li> <a href="#Configure_Quartz_on_Oracle_DI_Repository_Database" rel="internal">Configure Quartz on Oracle DI Repository Database</a>  </li>
+          <li> <a href="#Configure_Hibernate_Settings_for_Oracle" rel="internal">Configure Hibernate Settings for Oracle</a>  </li>
+          <li> <a href="#Replace_Default_Version_of_Audit_Log_File_with_Oracle_Version" rel="internal">Replace Default Version of Audit Log File with Oracle Version</a>  </li>
+          <li> <a href="#Modify_Jackrabbit_Repository_Information_for_Oracle" rel="internal">Modify Jackrabbit Repository Information for Oracle</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,115 @@
+<content type="text/html" title="Implementing a Job Entry">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryInterface.html"><code class="ph codeph">org.pentaho.di.job.entry.JobEntryInterface</code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryBase.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryBase.html"><code class="ph codeph">org.pentaho.di.job.entry.JobEntryBase </code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><code class="ph codeph">JobEntryInterface</code> is the main Java interface that a plugin implements. &nbsp;</p>
+        <p class="p"><strong class="ph b">Keep Track of Job Entry Settings</strong> </p>
+        <p class="p">The implementing class keeps track of job entry settings using private fields with corresponding <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The dialog class implementing <code class="ph codeph">JobEntryDialogInterface</code>          uses these methods to copy the user supplied configuration in and out of the dialog box.</p>
+        <p class="p"><code class="ph codeph">public Object clone()</code></p>
+        <p class="p">This method is called when a job entry is duplicated in Spoon. It returns a deep copy of the job entry object. It is essential that the implementing class creates proper deep copies if the job entry configuration is stored in modifiable objects,
+          such as lists or custom helper objects.</p>
+        <p class="p"><strong class="ph b">Serialize Job Entry Settings</strong> </p>
+        <p class="p">The plugin serializes its settings to both XML and a PDI repository.</p>
+        <p class="p"><code class="ph codeph">public String getXML()</code></p>
+        <p class="p">This method is called by PDI whenever a job entry serializes its settings to XML. It is called when saving a job in Spoon. The method returns an XML string containing the serialized settings. The string contains a series of XML tags, one tag per
+          setting. The helper class,
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/xml/XMLHandler.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/xml/XMLHandler.html"><code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code></a>, constructs the XML string.</p>
+        <p class="p"><code class="ph codeph">public void loadXML()</code>&nbsp;</p>
+        <p class="p">This method is called by PDI whenever a job entry reads its settings from XML. The XML node containing the job entry settings is passed in as an argument. Again, the helper class, <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code>,
+          is used to read the settings from the XML node.</p>
+        <p class="p"><code class="ph codeph">public void saveRep()</code></p>
+        <p class="p">This method is called by PDI whenever a job entry saves its settings to a PDI repository. The repository object passed in as the first argument provides a convenient set of methods for serializing job entry settings. When calling repository serialization
+          methods, job id and job entry id are required. The job id is passed in to <code class="ph codeph">saveRep()</code> as an argument, and the job entry id can be obtained by a call to <code class="ph codeph">getObjectId()</code> inherited from
+          the base class.</p>
+        <p class="p"><code class="ph codeph">public void loadRep()</code></p>
+        <p class="p">This method is called by PDI whenever a job entry reads its configuration from a PDI repository. The job entry id given in the arguments is used as the identifier when using the repositories serialization methods. When developing plugins, make
+          sure the serialization code is in synch with the settings available from the job entry dialog. When testing a plugin in Spoon, PDI internally saves and loads a copy of the job before it is executed.&nbsp;</p>
+        <p class="p"><strong class="ph b">Provide the Name of the Dialog Class</strong> </p>
+        <p class="p">PDI needs to know which class takes care of the settings dialog box for the job entry. The interface method <code class="ph codeph">getDialogClassName()</code> returns the name of the class implementing the <code class="ph codeph">JobEntryDialogInterface</code>.&nbsp;</p>
+        <p class="p"><strong class="ph b">Provide Information About Possible Outcomes</strong> </p>
+        <p class="p">A job entry may support up to three types of outgoing hops: True, False, and Unconditional. Sometimes it does not make sense to support all three. For instance, if the job entry performs a task that does not produce a boolean outcome, like the
+          dummy job entry, it may make sense to suppress the True and False outgoing hops. There are other job entries, which carry an inherent boolean outcome, such as the File Exists job entry. It may make sense in such cases to suppress the unconditional
+          outgoing hop.</p>
+        <p class="p">The job entry plugin class must implement two methods to indicate to PDI which outgoing hops it supports.</p>
+        <p class="p"><code class="ph codeph">public boolean evaluates()</code></p>
+        <p class="p">This method returns <code class="ph codeph">true</code> if the job entry supports the True and False outgoing hops. If the job entry does not support distinct outcomes, it returns <code class="ph codeph">false</code>.</p>
+        <p class="p"><code class="ph codeph">public boolean isUnconditional()</code></p>
+        <p class="p">This method returns <code class="ph codeph">true</code> if the job entry supports the unconditional outgoing hop. If the job entry does not support the unconditional hop, it returns <code class="ph codeph">false</code>.</p>
+        <p class="p"><strong class="ph b">Execute the Job Entry Task</strong> </p>
+        <p class="p">The class implementing <code class="ph codeph">JobEntryInterface</code> executes the actual job entry task.&nbsp;</p>
+        <p class="p"><code class="ph codeph">public Result execute()</code></p>
+        <p class="p">The <code class="ph codeph">execute()</code> method is called by PDI when it is time for the job entry to execute its logic. The arguments are a result object, which is passed in from the previously executed job entry, and an integer number indicating
+          the distance of the job entry from the start entry of the job.</p>
+        <p class="p">The job entry should execute its configured task and report back on the outcome. A job entry does that by calling specified methods on the passed in result object.&nbsp;</p>
+        <p class="p"><code class="ph codeph">prev_result.setNrErrors()</code></p>
+        <p class="p">The job entry indicates whether it has encountered any errors during execution. If there are errors, <code class="ph codeph">setNrErrors</code> calls with the number of errors encountered. Typically, this is 1. If there are no errors, <code class="ph codeph">setNrErrors</code>          is called with an argument of zero (0).</p>
+        <p class="p"><code class="ph codeph">prev_result.setResult()</code></p>
+        <p class="p">The job entry must indicate the outcome of the task. This value determines which output hops follow next. If a job entry does not support evaluation, it need not call <code class="ph codeph">prev_result.setResult()</code>.</p>
+        <p class="p">Finally, the passed in <code class="ph codeph">prev_result</code> object is returned.</p>
+        <p class="p"><strong class="ph b">Interface with the PDI plugin system</strong> </p>
+        <p class="p">The class implementing <code class="ph codeph">JobEntryInterface</code> must be annotated with the
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/core/annotations/JobEntry.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/core/annotations/JobEntry.html"><code class="ph codeph">JobEntry</code></a>  Java annotation. Supply the following annotation attributes:</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="64bd880e-169e-4ecd-ad1f-489d9c53192c__implementing_a_job_entry__table_bw2_g4h_2k" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="64bd880e-169e-4ecd-ad1f-489d9c53192c__d19149e314" valign="top" width="25%"><strong class="ph b">Attribute</strong> </th>
+                <th class="entry" id="64bd880e-169e-4ecd-ad1f-489d9c53192c__d19149e320" valign="top" width="75%"><strong class="ph b">Description</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d19149e314 " valign="top" width="25%"><code class="ph codeph">id </code></td>
+                <td class="entry" headers="d19149e320 " valign="top" width="75%">A globally unique ID for the job entry</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d19149e314 " valign="top" width="25%"><code class="ph codeph">image</code></td>
+                <td class="entry" headers="d19149e320 " valign="top" width="75%">The resource location for the png icon image of the job entry</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d19149e314 " valign="top" width="25%"><code class="ph codeph">name</code></td>
+                <td class="entry" headers="d19149e320 " valign="top" width="75%">A short label for the job entry</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d19149e314 " valign="top" width="25%"><code class="ph codeph">description</code></td>
+                <td class="entry" headers="d19149e320 " valign="top" width="75%">A longer description for the job entry</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d19149e314 " valign="top" width="25%"><code class="ph codeph">categoryDescription</code></td>
+                <td class="entry" headers="d19149e320 " valign="top" width="75%">The category the entry should appear under in the PDI job entry tree. For example General, Utility, File Management, etc.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d19149e314 " valign="top" width="25%"><code class="ph codeph">i18nPackageName</code></td>
+                <td class="entry" headers="d19149e320 " valign="top" width="75%">If the <code class="ph codeph">i18nPackageName</code> attribute is supplied in the annotation attributes, the values of name, description, and categoryDescription are interpreted as <code class="ph codeph">i18n</code> keys relative to
+                  the message bundle contained in given package. The keys may be supplied in the extended form&nbsp; <code class="ph codeph">i18n:<packagename></code> key to specify a package that is different from the package given in the <code class="ph codeph">i18nPackageName</code>                  attribute.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">Please refer to the
+          <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0R0/0V0/010/010/040" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/0V0/010/010/040">Sample Job Entry Plugin</a>  for a complete implementation example. &nbsp;</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

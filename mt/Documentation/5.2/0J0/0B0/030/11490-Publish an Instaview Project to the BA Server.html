@@ -1,0 +1,191 @@
+<content type="text/html" title="Publish an Instaview Project to the BA Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to publish an Instaview project.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="pentaho-caution">This feature is experimental in Pentaho version 5.1 and is disabled by default.</p>
+          <p class="p">After you have created and saved your Instaview project, you can publish it to a BA Server as a data source that you can share with your colleagues.&nbsp; Even if they do not have PDI installed, your colleagues will see the Instaview project
+            as a data source that they can use in BA design tools such as Analyzer and Pentaho Interactive Reporting. You can also choose to publish one or more views, which are analyzer reports, along with your Instaview project.&nbsp; You can schedule
+            an automatic reprocessing of your data so the data source and views are refreshed at regular intervals.</p>
+          <div class="topic task nested1" id="42c9bd71-dd22-4761-b404-18d9706c74a2__setup">
+            <div id="section_2" class="mt-page-section"><span id="Enable_the_Publish_Feature_in_Instaview_on_your_System"></span> 
+              <h2 class="editable">Enable the Publish Feature in Instaview on your System</h2>
+              <p>The publish feature in Instaview is currently shipped as disabled. To enable this feature on your system, you will make several configuration changes.</p>
+              <p><strong>Step One: Rename the plugin.xml_ File</strong> </p>
+              <ol>
+                <li>Navigate to the <span class="filepath style-wrap"><span style="font-family:courier new,courier,monospace;">biserver-ee/pentaho-solutions/system/instaview-svc</span> </span>  file.</li>
+                <li>Rename the '<span style="font-family:courier new,courier,monospace;">plugin.xml_</span> ' file to '<span style="font-family:courier new,courier,monospace;">plugin.xml'</span>  by removing the trailing underscore in the file name.</li>
+              </ol>
+              <p><strong>Step Two: Enable the AgileBI Data Source</strong> </p>
+              <p>To enable the AgileBI data source, you must edit the <span style="font-family:courier new,courier,monospace;">settings.xml</span>  file.</p>
+              <ol>
+                <li>Navigate to the <span style="font-family:courier new,courier,monospace;">biserver-ee/pentaho-solutions/system/data-access</span>  file.</li>
+                <li>Edit the<span style="font-family:courier new,courier,monospace;"> settings.xml </span> file. At the end of the Agile Mart Data Source section of the file, add the following line: <span style="font-family:courier new,courier,monospace;"><enable-agile-mart-datasource>true</enable-agile-mart-datasource></span> </li>
+                <li>Save your changes and restart the BA Server.</li>
+              </ol>
+              <p><strong>Step Three: Enable the Publish Feature in Instaview</strong> </p>
+              <p>To enable the publish feature in Instaview you must edit the <span style="font-family:courier new,courier,monospace;">settings.xml</span> .</p>
+              <ol>
+                <li>Navigate to<span style="font-family:courier new,courier,monospace;"> the data-integration/plugins/spoon/agile-bi/platform/pentaho-solutions/system/instaview/settings.xml </span> file.</li>
+                <li>Edit the <span style="font-family:courier new,courier,monospace;">settings.xml </span> file. At the end of the file, add the following line:&nbsp; <span style="font-family:courier new,courier,monospace;"><enable_gui_publish>true</enable_gui_publish></span> </li>
+                <li>Save your changes and restart Instaview.</li>
+              </ol>
+              <p>The publish feature for Instaview is now enabled on your system.</p>
+            </div>
+            <div id="section_3" class="mt-page-section"><span id="Set_Up_and_Publish_an_Instaview_Project_to_a_BA_Server"></span> 
+              <h2 class="editable">Set Up and Publish an Instaview Project to a BA Server</h2>
+              <p class="p">Configure and save your Instaview project, then click the&nbsp;<strong>Publish</strong> &nbsp;button in the&nbsp;<strong>Instaview</strong> &nbsp;window.&nbsp; Three panels appear: <strong>BA Server</strong>, <strong>Analysis Report</strong>,
+                and <strong>Data Refresh</strong> .</p>
+              <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+                <tbody>
+                  <tr>
+                    <td style="width: 165px;"><strong>Panel</strong> </td>
+                    <td style="width: 509px;"><strong>Description</strong> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 165px;">BA Server</td>
+                    <td style="width: 509px;">Contains connection credentials</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 165px;">Analysis Report</td>
+                    <td style="width: 509px;">Indicates whether you want to publish an Analyzer report, as well as report publishing details.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 165px;">Data Refresh</td>
+                    <td style="width: 509px;">Schedules the republishing of the Instaview project and Analyzer reports.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="body taskbody">
+                <p><strong>Step One: Connect to Server</strong> </p>
+                <p>Select the connection information for the BA Server you want to publish to from the Server Name text box in the BA Server panel, then click Save.&nbsp; If the name of the connection that you need does not appear, add one by doing these
+                  things.</p>
+                <ol>
+                  <li>Click the <strong>+</strong>  button.</li>
+                  <li>Enter the BA Server's <strong>Name </strong> and<strong> URL</strong> .</li>
+                  <li>Enter the connection credentials by specifying the user name and password you need to connect to the BA Server.&nbsp; Make sure that the user you choose is assigned to a role that has<strong> Read Content, Create Content, Schedule Content, Execute Transformations and Jobs, Manage Data Sources</strong>,
+                    and <strong>Publish Conten</strong> t permissions assigned.</li>
+                  <li>Click the <strong>Test </strong> button to make sure that the connection credentials are valid.&nbsp; Keep in mind that a test can fail if the connection credentials are valid, but the BA Server has stopped or if the BA Server's staging
+                    area has not been configured properly.</li>
+                  <li>A message appears indicating whether the connection was made successfully.&nbsp; Note the message, click the <strong>OK </strong> button, then make any necessary adjustments.</li>
+                  <li>Click the <strong>Done </strong> button.</li>
+                  <li>The connection appears as highlighted in the <strong>Server Name </strong> list.&nbsp; Click the Save button to select the connection.&nbsp; &nbsp;</li>
+                  <li>The <strong>BA Server </strong> panel collapses and the name of the connection you just selected appears.</li>
+                </ol>
+                <p class="p">A new Instaview project data source that has the name of Instaview project you just published appears in the <span class="ph uicontrol">Manage Data Source</span>  window in the <span class="ph uicontrol">Pentaho User Console</span> . You
+                  can then use it as you would
+                  <a class="xref" title="Documentation/5.1/060/010/030/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/030/000">any other data source</a> . If you also published analyzer views, they appear in a folder in the <span class="ph uicontrol">Browse Files</span>  page in the <span class="ph uicontrol">Pentaho User Console</span> .</p>
+                <p class="p"><strong>Step Two: Publish the Report</strong> 
+                  <br /> If you don&rsquo;t want to publish the Analyzer report along with the Instaview project, skip this step.&nbsp; If you do want to publish the Analyzer report, do these things.</p>
+                <ol>
+                  <li class="p">Click the <strong>Enable </strong> button in the<strong> Analysis Report</strong>  panel.&nbsp; A list of folders on the BA Server appears. &nbsp;</li>
+                  <li class="p">Indicate that you want to publish the Analyzer report by clicking the button next to the<strong> Upload Analysis report when publishing</strong>  field so that it is <strong>On</strong> .</li>
+                  <li class="p">Select the location you want to publish to by clicking the folders until you find the one you want, then click <strong>Save</strong>, then go to the next step.
+                    <div class="note note"><span class="notetitle">Note:</span>  If you have permission to publish or write to a folder, the <strong>Save </strong> button is enabled.&nbsp; If not, both the <strong>Save </strong> button and the <strong>+</strong>  button next to
+                      the folder name are disabled.</div>
+                  </li>
+                  <li class="p">If you want to create a new folder instead of choosing an existing one navigate to the location where you want to create the folder then click the &ldquo;+&rdquo; button to add a folder.&nbsp; Enter the name of the new folder in the
+                    <strong>New Folder</strong>  window, then click the <strong>OK</strong>  button.&nbsp; The new folder appears in the folder tree structure.&nbsp; Click <strong>Save </strong> to save the location.</li>
+                </ol>
+                <p class="p"><strong>Step Three: Schedule a Data Refresh</strong> 
+                  <br /> You can schedule a refresh for the data source created when publishing an Instaview project. This feature allows you to create a data source for business users and keep that data current when used in reports run on the BA server.</p>
+                <p class="p">When scheduling a data refresh, you may want to consider your BA server environment and your users' needs. It is recommended that you schedule the refresh when less system resources are in use, such as on a Sunday at 2:00 AM. Also, you
+                  may want to consider when your users require the most current data set.</p>
+                <p class="p">If you schedule a weekly refresh of the data, you can specify the days of the week to run the refresh, as well as a start and end dates.</p>
+                <ol>
+                  <li class="p">In the <strong>Data Refresh Schedule</strong>  panel, click <strong>Edit </strong> to expand a list of scheduling options in the panel.</li>
+                  <li class="p">In the<strong> Repeat </strong> drop-down menu, select how often you want to refresh the data.
+                    <ul>
+                      <li class="p" style="margin-left: 20px;"><strong>Never</strong> : The data will not be scheduled to refresh. The PDI transformation will run once on the BA server, using the same data set as defined in Instaview.</li>
+                      <li class="p" style="margin-left: 20px;"><strong>Weekly</strong> : The data will be scheduled to refresh weekly and will appear in the list in the Schedules window of the User Console. When you select 'Weekly', more customization options appear.</li>
+                    </ul>
+                  </li>
+                  <li class="p">If you selected 'Weekly', then in the <strong>Run every week</strong>  on section, choose the days of the week for refreshing the data.</li>
+                  <li class="p">Choose a start date and start time using the date and time fields provided. You can click the calendar icon to open the date picker. These fields default to the current date and time.</li>
+                  <li class="p">In the <strong>Repeat until</strong>  section, select the <strong>No end date </strong> option to schedule the data to refresh indefinitely, or select<strong> End by </strong> and enter a date in the field provided. You can click the calendar
+                    icon to open the date picker. The End by date field defaults to the current date.</li>
+                  <li class="p">Click <strong>Save</strong> . The Data Refresh Schedule panel collapses. The data refresh information now appears in the panel.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested1" id="42c9bd71-dd22-4761-b404-18d9706c74a2__editconnection">
+            <div id="section_4" class="mt-page-section"><span id="Edit_the_BA_Server_Connection"></span> 
+              <h2 class="editable">Edit the BA Server Connection</h2>
+              <div class="body taskbody">
+                <div class="section context">
+                  <div class="note note"><span class="notetitle">Note:</span>  If you edit the connection information, all Instaview projects that share the same connection will also use the edited connection information the next time they are published.</div>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Open an existing Instaview project, then click <strong><span class="ph uicontrol">Publish</span>  </strong> in the <span class="ph uicontrol">Instaview</span>  window. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">BA Server</span>  panel, select the server connection information that you want to edit from the <span class="ph uicontrol">Server Name</span>  list.&nbsp; </span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Click the <strong class="ph b">Edit</strong>  button. (The <strong class="ph b">Edit</strong>  button looks like a pencil.) The <span class="ph uicontrol">BA Server</span>  panel expands to show the current connection
+                    information.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Change the information as needed. Note that if you edit the <span class="ph uicontrol">name</span>, and other Instaview projects are also configured to use this connection, you must manually reset the connection
+                    in each of those projects.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Click the <strong><span class="ph uicontrol">Test</span>  </strong> button to make sure that the connection credentials are correct.&nbsp; Keep in mind that a test can fail if the connection credentials are valid,
+                    but the BA Server is down or if you do not have permission to publish data sources to the BA Server. The test can also fail if the BA Server's staging database has not been configured.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">A message appears indicating whether the connection was made successfully.&nbsp; Note the message, click the <span class="ph uicontrol">OK</span>  button, then make any necessary adjustments.&nbsp; </span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Click the <strong><span class="ph uicontrol">Done</span>  </strong> button.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">The connection appears as highlighted in the <span class="ph uicontrol">Server Name</span>  list.&nbsp; Click the <strong><span class="ph uicontrol">Save</span>  </strong> button to select the server.&nbsp; &nbsp;</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">The <span class="ph uicontrol">BA Server</span>  panel collapses and the name of the server you just selected appears.</span> 
+                  </li>
+                </ol>
+                <div class="section result">
+                  <p class="p">Updated server connection information is saved. The next time you publish the Instaview project, or any other Instaview project that uses a connection with the same name, the updated connection information is used.</p>
+                  <p class="p">&nbsp;</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested1" id="42c9bd71-dd22-4761-b404-18d9706c74a2__removeconnection">
+            <div id="section_5" class="mt-page-section"><span id="Remove_the_BA_Server_Connection"></span> 
+              <h2 class="editable">Remove the BA Server Connection</h2>
+              <div class="body taskbody">
+                <div class="section context">
+                  <div class="note warning"><span class="warningtitle">Warning:</span>  Use care when you remove the connection information, as it might affect other Instaview projects.</div>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Open an existing Instaview project, then click the <strong><span class="ph uicontrol">Publish</span>  </strong> button in the <span class="ph uicontrol">Instaview</span>  window. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">BA Server</span>  panel, select the server connection information that you want to remove from the <span class="ph uicontrol">Server Name</span>  list.&nbsp; </span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Click the <strong class="ph b">Remove</strong>  (&quot;<strong>X</strong> &quot;) button.</span> </li>
+                  <li class="li substep"><span class="ph cmd">The <strong class="ph b">Delete Server Connection</strong>  message appears. Click <strong class="ph b">Yes</strong> . The server information is permanently deleted.</span> </li>
+                </ol>
+                <div class="section result">
+                  <p class="p">The server connection information is permanently deleted. The next time you publish the Instaview project, or any other Instaview project that uses the deleted connection, you will not be able to publish it until you have manually reset
+                    the connection.</p>
+                  <p class="p">&nbsp;</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Enable_the_Publish_Feature_in_Instaview_on_your_System" rel="internal">Enable the Publish Feature in Instaview on your System</a>  </li>
+      <li> <a href="#Set_Up_and_Publish_an_Instaview_Project_to_a_BA_Server" rel="internal">Set Up and Publish an Instaview Project to a BA Server</a>  </li>
+      <li> <a href="#Edit_the_BA_Server_Connection" rel="internal">Edit the BA Server Connection</a>  </li>
+      <li> <a href="#Remove_the_BA_Server_Connection" rel="internal">Remove the BA Server Connection</a>  </li>
+    </ol>
+  </body>
+</content>

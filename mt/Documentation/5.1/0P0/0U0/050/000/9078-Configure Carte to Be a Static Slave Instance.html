@@ -1,0 +1,28 @@
+<content type="text/html" title="Configure Carte to Be a Static Slave Instance">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Follow the directions below to set up static Carte slave servers.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  If you already have Carte installed on the target machines, you can skip the initial installation steps.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Retrieve a <strong class="ph b">pdi-ee-client</strong>  archive package from the Pentaho Customer Support Portal.</span>  </li>
+          <li class="li step"> <span class="ph cmd">On each machine that will act as a Carte server (slave), create a <span class="ph filepath">/pentaho/design-tools/</span>  directory.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Unpack the archive to the <span class="ph filepath">/pentaho/design-tools/</span>  directory on each machine.</span>  Two directories will be created: <strong class="ph b">data-integration</strong>  and <strong class="ph b">license-installer</strong> .
+            </li>
+          <li class="li step"> <span class="ph cmd">Use the license utility to install the PDI Enterprise Edition license, if applicable.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Copy over any required JDBC drivers and PDI plugins from your development instances of PDI to the Carte instances.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Run the Carte script with an IP address, hostname, or domain name of this server, and the port number you want it to be available on.</span>  <pre class="pre codeblock">./carte.sh 127.0.0.1 8081</pre> </li>
+          <li class="li step"> <span class="ph cmd">If you will be executing content stored in a DI Repository, copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the same location
+            on your Carte slave.</span>  Without this file, the Carte slave will be unable to connect to the DI Repository to retrieve content. </li>
+          <li class="li step"> <span class="ph cmd">Ensure that the Carte service is running as intended, accessible from your primary PDI development machines, and that it can run your jobs and transformations.</span>  </li>
+          <li class="li step"> <span class="ph cmd">To start this slave server every time the operating system boots, create a startup or init script to run Carte at boot time with the same options you tested with.</span>  </li>
+        </ol>
+        <div class="section result">You now have one or more Carte slave servers that you can delegate job and transformation work to in the Repository Explorer.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

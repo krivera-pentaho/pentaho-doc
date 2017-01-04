@@ -1,0 +1,220 @@
+<content type="text/html" title="Data Integration Issues">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+  </head>
+  <body>
+    <div class="body">
+      <p class="p">Follow the suggestions in these topics&nbsp;to help resolve common issues associated with Pentaho Data Integration:</p>
+      <ul>
+        <li class="p">Troubleshooting Transformation Steps and Job Entries</li>
+        <li class="p">Troubleshooting Database Connections</li>
+        <li class="p">Jobs Scheduled on Pentaho Server Cannot Execute Transformation on Remote Carte Server</li>
+        <li class="p">Troubleshoot&nbsp;Pentaho Data Service Issues</li>
+        <li class="p">Kitchen and Pan&nbsp;Cannot Read Files&nbsp;from a ZIP&nbsp;Export</li>
+        <li class="p">Using ODBC</li>
+      </ul>
+      <div class="body">
+        <p>See Pentaho&nbsp;
+          <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+      </div>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="Troubleshooting_Transformation_Steps_and_Job_Entries"></span> 
+      <h2 class="editable">Troubleshooting Transformation&nbsp;Steps and Job Entries</h2>
+      <p>If you have issues with transformation steps or job entries, check to see if these conditions&nbsp;apply to your situation.</p>
+      <div id="section_2" class="mt-page-section"><span id="'Missing_Plugins'_Error_When_a_Transformation_or_Job_is_Opened"></span> 
+        <h3 class="editable">'Missing Plugins' Error When a Transformation or Job is Opened</h3>
+        <p>If you try to open a transformation or job that&nbsp;contains a step or entry not installed in your copy of the PDI client, the following error message appears:</p>
+        <p><span class="filepath style-wrap"><img alt="Missing Plugin Error Dialog Box" class="internal default" src="http://help.pentaho.com/@api/deki/files/12117/ssPDIMissingPlugins.png?revision=1" />&nbsp;&nbsp;</span> </p>
+        <p>To resolve this issue, either add the step or entry in the PDI client&nbsp;or find it in the marketplace and install&nbsp;it. See the
+          <a title="Use the PDI Marketplace to Install a Plugin" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0A0">Install a Plugin with the Marketplace</a>  article for details.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Cannot_Execute_or_Modify_a_Transformation_or_Job"></span> 
+        <h3 class="editable">Cannot Execute or Modify a Transformation or Job</h3>
+        <p>If you cannot do any of the standard&nbsp;transformation or job&nbsp;tasks (such as run, preview, debug, replay, verify, schedule, copy, export, or save), you do not have the Execute permission.</p>
+        <p>Have an administrative user check to see if your role has been
+          <a title="Use Pentaho Security on the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Manage_Users_and_Roles_in_the_PDI_Client">granted the Execute permission</a> .</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Step_is_Already_on_Canvas_Error"></span> 
+        <h3 class="editable">Step is Already on Canvas Error</h3>
+        <p>If a step is hidden on the canvas in the PDI client, you may receive a &quot;Step is Already on Canvas&quot; error message when trying to work with its transformation.</p>
+        <p>Regardless of whether a step is hidden or displayed in the canvas,&nbsp;it is&nbsp;listed in the <strong>Steps </strong> folder under your transformation in the <strong>View </strong> tab of the&nbsp;<strong>Data Integration</strong>  perspective.
+          To redisplay&nbsp;the hidden step on the canvas, drag it from the <strong>Steps </strong> folder in the <strong>View</strong>  tab to the canvas.</p>
+      </div>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Troubleshooting_Database_Connections"></span> 
+      <h2 class="editable">Troubleshooting Database Connections</h2>
+      <p>If you have issues with database connection in PDI, check to see if any the following&nbsp;conditions&nbsp;apply to your situation:</p>
+      <div id="section_6" class="mt-page-section"><span id="Database_Locks_when_Reading_and_Updating_from_a_Single_Table"></span> 
+        <h3 class="editable">Database Locks when Reading and Updating from a Single Table</h3>
+        <p class="p">If&nbsp;you&nbsp;create,&nbsp;read,&nbsp;and&nbsp;update&nbsp;steps&nbsp;to&nbsp;or&nbsp;from&nbsp;a&nbsp;single&nbsp;table&nbsp;within&nbsp;a&nbsp;transformation,&nbsp;you&nbsp;will&nbsp;may&nbsp;experience&nbsp;database&nbsp;locking&nbsp;or&nbsp;slowed&nbsp;processing&nbsp;speeds.&nbsp;Reading&nbsp;and
+          updating rows on a table within a single transformation&nbsp;can cause the database to stop updating.</p>
+        <p class="p">For example, if you have a step which reads from a row within a table (a <strong>Table Input</strong> &nbsp;step)&nbsp;and you need to update the transformation with the <strong>Update</strong> &nbsp;step,&nbsp;this could cause locking issues, especially
+          with MS SQL databases.&nbsp;Reading and updating rows in the same transformation in the same table should be avoided.</p>
+        <p class="p">A general solution compatible with all databases is to duplicate the table to be read/updated, and&nbsp;then create separate read/update steps. Arrange the steps to be executed sequentially within the transformation, each on a different, yet identical,
+          version of the same table.&nbsp;Adjusting database row locking parameters or mechanisms will also resolve this issue.</p>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Force_PDI_to_Use_DATE_instead_of_TIMESTAMP_in_Parameterized_SQL_Queries"></span> 
+        <h3 class="editable">Force PDI to Use DATE instead of TIMESTAMP in Parameterized&nbsp;SQL Queries</h3>
+        <p class="p">If your query optimizer is incorrectly using the predicate TIMESTAMP, it is because the JDBC driver/database converts the data type from a TIMESTAMP to a DATE. In certain circumstances, this casting prevents the query optimizer of the database
+          from using&nbsp;the correct index.&nbsp;For example, Oracle might state that&nbsp;it cannot use the index, and generates the following&nbsp;error message:</p>
+        <div class="p">
+          <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">The predicate DATE used at line ID 1 of the execution plan contains an implicit
+   data type conversion on indexed column DATE. This implicit data type conversion prevents
+   the optimizer from selecting indices on table A.</pre>
+        </div>
+        <p>To resolve this issue, use a <code class="ph codeph">Select Values</code> step and set <code class="ph codeph">Precision</code> to <code>1</code> and <code class="ph codeph">Value</code> to <code>DATE</code>. These changes&nbsp;force&nbsp;the
+          parameter to be set as a DATE instead of a TIMESTAMP.</p>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="PDI_Does_Not_Recognize_Changes_Made_to_a_Table"></span> 
+        <h3 class="editable">PDI Does Not Recognize Changes Made to a Table</h3>
+        <p class="p">If you edit the table layout outside of the PDI&nbsp;client, PDI is not aware of&nbsp;any&nbsp;field changes, deletions, or additions.</p>
+        <p class="p">Clearing the cache addresses this issue. The cache needs to be cleared&nbsp;of database-related meta information (field names and their types in each used database table). PDI has this cache to increase processing speed. Perform the following
+          steps to clear this information in the cache from within the PDI client:</p>
+        <ol>
+          <li class="p">Select the connection.</li>
+          <li class="p">Select <strong>Tools > Database > Clear Cache</strong>  or <strong>Database connections > Clear complete DB cache</strong> .</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_9" class="mt-page-section"><span id="Jobs_Scheduled_on_Pentaho_Server_Cannot_Execute_Transformation_on_Remote_Carte_Server"></span> 
+      <h2 class="editable">Jobs Scheduled on Pentaho Server Cannot Execute Transformation on Remote Carte Server</h2>
+      <p class="p">You may see an error similar to the following message&nbsp;when trying to schedule a job to run on a remote Carte server:</p>
+      <div class="p">
+        <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">ERROR 11-05 09:33:06,031 - !UserRoleListDelegate.ERROR_0001_UNABLE_TO_INITIALIZE_USER_ROLE_LIST_WEBSVC!
+                com.sun.xml.ws.client.ClientTransportException: The server sent HTTP status code 401: Unauthorized</pre>
+      </div>
+      <p class="p">You need to make the following configuration changes to remotely execute scheduled jobs:</p>
+      <div class="section context">
+        <p class="pentaho-note">This process is also required for using the Pentaho&nbsp;Server as a load balancer in a dynamic Carte cluster.</p>
+      </div>
+      <ol class="ol steps">
+        <li class="li step"><span class="ph cmd">Stop the Pentaho and Carte servers.</span> </li>
+        <li class="li step"><span class="ph cmd">Copy the <code>repositories.xml</code>&nbsp;file from the <span class="ph filepath">.kettle</span>  folder on your workstation to the same location on your Carte slave.</span>  Without this file, the Carte slave will be unable
+          to connect to the&nbsp;Pentaho Repository to retrieve PDI content.</li>
+        <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/pentaho-server/tomcat/webapps/pentaho/WEB-INF/web.xml</span>  file in a text editor.</span> 
+        </li>
+        <li class="li step"><span class="ph cmd">Find the&nbsp;<code>Proxy Trusting Filter</code>&nbsp;section, and add your Carte server's IP address to the <code>param-value</code>&nbsp;element. The following code block is a sample of the&nbsp;<code>Proxy Trusting Filter</code>&nbsp;section:</span>           <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <filter-class>org.pentaho.platform.web.http.filters.ProxyTrustingFilter</filter-class>
+    <init-param>
+      <param-name>TrustedIpAddrs</param-name>
+      <param-value>127.0.0.1,192.168.0.1</param-value>
+      <description>Comma separated list of IP addresses of a trusted hosts.</description>
+    </init-param>
+    <init-param>
+      <param-name>NewSessionPerRequest</param-name>
+      <param-value>true</param-value>
+      <description>true to never re-use an existing IPentahoSession in the HTTP session; needs to be true to work around code put in for BISERVER-2639</description>
+    </init-param>
+</filter></pre> </li>
+        <li class="li step"><span class="ph cmd">Uncomment the proxy trusting filter-mappings between the <code>
+<!-- begin trust --></code> and <code>
+<!-- end trust --></code> markers, as shown in the following sample code block:</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- begin trust --> 
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/authorizationPolicy</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/roleBindingDao</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/userRoleListService</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/unifiedRepository</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/userRoleService</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/Scheduler</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/repositorySync</url-pattern>
+  </filter-mapping>
+
+  <!-- end trust --></pre> </li>
+        <li class="li step"><span class="ph cmd">Save and close the file, then edit the <code>carte.sh</code> or <code>Carte.bat</code>&nbsp;startup script on the machine that runs your Carte server.</span> </li>
+        <li class="li step"><span class="ph cmd">Add <code>-Dpentaho.repository.client.attemptTrust=true</code> to the java line&nbsp;at the bottom of the file, as shown in the following sample line of code:</span>  <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">java $OPT -Dpentaho.repository.client.attemptTrust=true org.pentaho.di.www.Carte &quot;${1+$@}&quot;</pre>          </li>
+        <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+        <li class="li step"><span class="ph cmd">Start your Carte and Pentaho&nbsp;servers.</span> </li>
+      </ol>
+      <p class="li step">You can now schedule a job to run on a remote Carte instance.</p>
+    </div>
+    <div id="section_10" class="mt-page-section"><span id="Troubleshoot_Pentaho_Data_Service_Issues"></span> 
+      <h2 class="editable">Troubleshoot Pentaho Data Service Issues</h2>
+      <p>You can list the services running on the Pentaho Server or Carte Server using the <code>listService</code> command, as shown in the following&nbsp;example URL:</p>
+      <ul>
+        <li> <a class="external" href="http://localhost:8080/pentaho/kettle/listServices" rel="freeklink" title="http://localhost:8080/pentaho/kettle/listServices">http://localhost:8080/pentaho/kettle/listServices</a> . </li>
+      </ul>
+      <p>If the data service appears in the list, the Pentaho&nbsp;Server is set up correctly.&nbsp;Check your network and client setup.</p>
+      <p>If it does&nbsp;not appear in the list, try the following tasks:</p>
+      <ul>
+        <li>If you stored the transformation in the Pentaho&nbsp;Repository, check the status using this command:
+          <a class="external" href="http://localhost:8080/pentaho/kettle/status" rel="freeklink" title="http://localhost:8080/pentaho/kettle/status">http://localhost:8080/pentaho/kettle/status</a> .&nbsp; Make sure the repository name appears in the configuration details section.&nbsp;If the repository name is missing or an error appears, check the configuration of the <code>slave-server-config</code>          and accessibility of the <code>repositories.xml</code> file.&nbsp;&nbsp;</li>
+      </ul>
+      <ul>
+        <li>If you did not store the transformation in the&nbsp;Pentaho Repository, but instead stored it on the local file system, make sure the service name is listed and accessible from the user account that runs the Pentaho Server in <span class="filepath style-wrap"><users home>/.pentaho/metastore/pentaho/Kettle Data Service</span> .&nbsp;</li>
+      </ul>
+      <p>If the service name (the table to query)&nbsp;is still missing, reopen the service transformation and check the data service in the transformation settings.</p>
+    </div>
+    <div id="section_11" class="mt-page-section"><span id="Kitchen_and_Pan_Cannot_Read_Files_from_a_ZIP_Export"></span> 
+      <h2 class="editable"><span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">Kitchen and Pan&nbsp;Cannot Read Files&nbsp;</span> 
+        <span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">from a ZIP&nbsp;Export</span> 
+      </h2>
+      <p>If you are trying to read either transformations from Pan or&nbsp;jobs&nbsp;from Kitchen&nbsp;from a ZIP&nbsp;export&nbsp;but are getting errors, you may have a syntax error in your Pan or&nbsp;Kitchen command.</p>
+      <p class="p">ZIP files must be prefaced by an&nbsp;exclamation point (!)&nbsp;character. On Linux and other Unix-like operating systems, you must escape the exclamation point with a backslash (<span class="mt-font-courier-new">\!</span> ) as in the following
+        Kitchen example:</p>
+      <div class="example">
+        <p class="p"><strong class="ph b">Windows:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Kitchen.bat /file:&quot;zip:file:///C:/Pentaho/PDI Examples/Sandbox/linked_executable_job_and_transform.zip!Hourly_Stats_Job_Unix.kjb&quot;</pre>
+        <p class="p"><strong class="ph b">Linux:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./kitchen.sh -file:&quot;zip:file:////home/user/pentaho/pdi-ee/my_package/linked_executable_job_and_transform.zip\!Hourly_Stats_Job_Unix.kjb&quot;</pre>
+      </div>
+    </div>
+    <div id="section_12" class="mt-page-section"><span id="Using_ODBC"></span> 
+      <h2 class="editable">Using ODBC</h2>
+      <p>Although ODBC can be used to connect to a JDBC compliant database, Pentaho does not recommend using it and it is not supported.</p>
+      <p>For details, this article explains &quot;Why you should avoid ODBC.&quot;
+        <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/pages/viewpage.action?pageId=14850644">http://wiki.pentaho.com/pages/viewpage.action?pageId=14850644</a> .</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Troubleshooting_Transformation_Steps_and_Job_Entries" rel="internal">Troubleshooting Transformation&nbsp;Steps and Job Entries</a> 
+        <ol>
+          <li> <a href="#'Missing_Plugins'_Error_When_a_Transformation_or_Job_is_Opened" rel="internal">'Missing Plugins' Error When a Transformation or Job is Opened</a>  </li>
+          <li> <a href="#Cannot_Execute_or_Modify_a_Transformation_or_Job" rel="internal">Cannot Execute or Modify a Transformation or Job</a>  </li>
+          <li> <a href="#Step_is_Already_on_Canvas_Error" rel="internal">Step is Already on Canvas Error</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Troubleshooting_Database_Connections" rel="internal">Troubleshooting Database Connections</a> 
+        <ol>
+          <li> <a href="#Database_Locks_when_Reading_and_Updating_from_a_Single_Table" rel="internal">Database Locks when Reading and Updating from a Single Table</a>  </li>
+          <li> <a href="#Force_PDI_to_Use_DATE_instead_of_TIMESTAMP_in_Parameterized_SQL_Queries" rel="internal">Force PDI to Use DATE instead of TIMESTAMP in Parameterized&nbsp;SQL Queries</a>  </li>
+          <li> <a href="#PDI_Does_Not_Recognize_Changes_Made_to_a_Table" rel="internal">PDI Does Not Recognize Changes Made to a Table</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Jobs_Scheduled_on_Pentaho_Server_Cannot_Execute_Transformation_on_Remote_Carte_Server" rel="internal">Jobs Scheduled on Pentaho Server Cannot Execute Transformation on Remote Carte Server</a>  </li>
+      <li> <a href="#Troubleshoot_Pentaho_Data_Service_Issues" rel="internal">Troubleshoot Pentaho Data Service Issues</a>  </li>
+      <li> <a href="#Kitchen_and_Pan_Cannot_Read_Files_from_a_ZIP_Export" rel="internal">Kitchen and Pan&nbsp;Cannot Read Files&nbsp;from a ZIP&nbsp;Export</a>  </li>
+      <li> <a href="#Using_ODBC" rel="internal">Using ODBC</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,291 @@
+<content type="text/html" title="Prepare Your Linux and Mac Environment for Installation">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div> </div>
+      <div id="section_1" class="mt-page-section"><span id="Create_the_Pentaho_User"></span> 
+        <h2 class="editable">Create the Pentaho User</h2>
+        <p>Create a pentaho user account that has administrative privileges. &nbsp;You will use this account to complete the rest of the installation instructions.&nbsp;</p>
+        <p class="pentaho-caution">Make sure your users can write to the directory where you install the Pentaho suite.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Create an administrative user on computer that will host the BA Server&nbsp;and name it <strong>pentaho</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Verify that you have the appropriate permissions to read, write, and execute commands in the pentaho user's home directory.</span> </li>
+        </ol>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Install_Java"></span> 
+        <h2 class="editable">Install Java</h2>
+        <p>Install a supported version of Java.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Check the <a class="xref" title="Review Supported Technologies" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0D0/160">Supported Technologies</a>  list to see which version of Java&nbsp;Pentaho&nbsp;supports.</span> </li>
+          <li class="li step">Download&nbsp;the supported version of the JRE or JDK <span class="ph cmd"><span class="ph cmd"><a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">from the Oracle site</a>  and install it.&nbsp;</span> </span> 
+          </li>
+        </ol> <span id="Install_the_Web_Application_Server"></span> <span id="Install_the_Web_Application_Server-18740"></span> 
+        <h2>Install the Web Application Server</h2>
+        <p class="p">The BA Server can be deployed on either the Tomcat or JBoss web application server. By default, BA Server software is configured for Tomcat. This means that if you choose to use Tomcat, you will need to make fewer configuration changes than you
+          would if you choose to use JBoss.</p>
+        <p class="p">You must install the web application server yourself. If you already have a Tomcat or JBoss web application server installed and you want to deploy the BA Server on it, please skip this step.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">To download and install the web application software, use the instructions in the documentation for the web application server of your choice. We recommend that you install the web application server in the <span class="ph filepath">pentaho\server\biserver-ee</span>             directory.</li>
+          <li class="li step">Verify the web application server is installed correctly by starting it and viewing the default page. If the web application server does not start, troubleshoot it using the web application server's documentation before you continue with the
+            BA Server installation process.</li>
+          <li class="li step">Stop the web application server.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Create_Linux_Directory_Structure"></span> 
+        <h2 class="editable">Create Linux Directory Structure</h2>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Log into the machine on which you will run the BA Server. Make sure that you are logged in as the <strong class="ph b">pentaho</strong>  user.</span> </li>
+          <li class="li step"><span class="ph cmd">Create this directory path from home directory (<span class="ph filepath">pentaho</span> ).</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><your home directory>/pentaho/server/biserver-ee
+<your home directory>/.pentaho</pre> </li>
+          <li class="li step"><span class="ph cmd">Verify that you have the appropriate permissions to read, write, and execute commands in the directories you created.</span> </li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Install_the_BA_Repository_Host_Database"></span> 
+        <h2 class="editable">Install the BA Repository Host Database</h2>
+        <p class="p">The BA Repository houses data needed for Pentaho tools to provide scheduling and security functions. &nbsp;The repository also stores&nbsp;metadata and models for reports that you create. &nbsp;You can choose to host the BA Repository on these
+          databases.</p>
+        <ul class="pentaho-list-unordered">
+          <li class="p">PostgreSQL</li>
+          <li class="p">MySQL</li>
+          <li class="p">Oracle</li>
+          <li class="p">MS SQL Server</li>
+        </ul>
+        <p class="p">To install the BA Repository's host database, do these things.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step">Check the&nbsp;
+            <a href="/Documentation/6.0/0D0/160" rel="internal" title="https://help.pentaho.com/Documentation/6.0/0D0/160">Supported Technologies</a> &nbsp;section&nbsp;to determine which versions of the&nbsp;databases Pentaho supports.</li>
+          <li class="li step">Download and install the database of your choice.&nbsp;</li>
+          <li class="li step">Verify that the BA Repository database is installed correctly.</li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Download_and_Unpack_Installation_Files"></span> 
+        <h2 class="editable">Download and Unpack Installation Files</h2>
+        <p>The Pentaho BA Server software, data files, and examples are stored in pre-packaged <span class="ph filepath">.war</span>  and <span class="ph filepath">.zip</span>  files. These files need to be manually placed into the correct directories.</p>
+        <div id="section_6" class="mt-page-section"><span id="Step_1:_Download_Files"></span> 
+          <h3 class="editable">Step 1:&nbsp;Download Files</h3>
+          <p>Download the following installation and plug-in files from the
+            <a title="https://help.pentaho.com/Documentation/5.3/Welcome_to_Pentaho_Documentation_5.3!/Get_Help_and_Support/001" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0B0/Get_Help_and_Support/001">Pentaho Customer Support Portal</a>  in the manual build folder.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th scope="col">Component</th>
+                <th scope="col">Zip File</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>BA Server Installation File</td>
+                <td><span class="ph filepath">biserver-manual-ee-<span class="ph filepath">6.0.0</span> -dist.zip</span> 
+                </td>
+              </tr>
+              <tr>
+                <td>Dashboard Designer Plugin</td>
+                <td><span class="ph filepath">pdd-plugin-ee-6.0.0-dist.zip</span> </td>
+              </tr>
+              <tr>
+                <td>Interactive Reporting Plugin</td>
+                <td><span class="ph filepath">pir-plugin-ee-6.0.0-dist.zip</span> </td>
+              </tr>
+              <tr>
+                <td>Mobile Plugin</td>
+                <td><span class="ph filepath">pentaho-mobile-plugin-6.0.0-dist.zip</span> </td>
+              </tr>
+              <tr>
+                <td>Pentaho Analyzer Plugin</td>
+                <td><span class="ph filepath">paz-plugin-ee-6.0.0-dist.zip</span> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Step_2:_Unpack_Files"></span> 
+          <h3 class="editable">Step 2:&nbsp;Unpack Files</h3>
+          <ol class="pentaho-list-ordered">
+            <li>Unzip the BA Server Installation file.</li>
+            <li>To unpack the file, run <span class="filepath style-wrap">install.sh</span> .&nbsp; The <strong>IZPak </strong> window appears.</li>
+          </ol>
+          <p class="pentaho-note">If you are unpacking the file in a non-graphical environment, open a <strong>Terminal </strong> or <strong>Command Prompt</strong>  and type <span class="filepath style-wrap">java -jar installer.jar -console</span>  and follow the instructions
+            presented in the window.</p>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Read the license agreement, select <strong>I accept the terms of this license agreement</strong>, and click <strong>Next</strong> .</li>
+            <li>In the <strong>Select the installation path</strong>  text box, enter the place where you want to create the pentaho directory, then click <strong>Next</strong> .</li>
+            <li>A message indicating that a target directory will be created appears.&nbsp; Click <strong>OK</strong> .</li>
+            <li>When the installation progress is complete, click <strong>Quit</strong> .</li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Step_3:_Put_Files_in_Directories"></span> 
+          <h3 class="editable">Step 3:&nbsp;Put Files in Directories</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Navigate to the pentaho&nbsp;directory where you unpacked the files, unzip the zip files and place their contents in the appropriate directories listed below.
+              <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 640px; table-layout: fixed;"
+              title="Pentaho Table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 218px;">File</th>
+                    <th scope="col" style="width: 398px;">Unzip the Contents of the File&nbsp;to This&nbsp;Directory</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 218px;">license-installer.zip</td>
+                    <td style="width: 398px;"><span class="ph filepath">pentaho/server</span> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 218px;">jdbc-distribution-utility.zip</td>
+                    <td style="width: 398px;"><span class="mt-font-courier-new">pentaho/server</span> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 218px;">pentaho-data.zip</td>
+                    <td style="width: 398px;"><span class="ph filepath">pentaho/server/biserver-ee</span> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 218px;">pentaho-solutions.zip</td>
+                    <td style="width: 398px;"><span class="ph filepath">pentaho/server/biserver-ee</span> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+            <li>Copy these files to the following directories.&#8203;
+              <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 637px; table-layout: fixed;" title="Pentaho Table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 227px;">File</th>
+                    <th scope="col" style="width: 387px;">Copy Files to This Directory</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 227px;">pentaho.war</td>
+                    <td style="width: 387px;">
+                      <ul class="ul">
+                        <li class="li"><strong class="ph b">Tomcat:</strong>  <span class="ph filepath">pentaho/server/biserver-ee/<your tomcat installation directory>/webapps</span> </li>
+                        <li class="li"><strong class="ph b">JBoss:</strong>  <span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/standalone/deployments</span> </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 227px;">pentaho-style.war</td>
+                    <td style="width: 387px;">
+                      <ul class="ul">
+                        <li class="li"><strong class="ph b">Tomcat:</strong>  <span class="ph filepath">pentaho/server/biserver-ee/<your tomcat installation directory>/webapps</span> </li>
+                        <li class="li"><strong class="ph b">JBoss:</strong>  <span class="ph filepath">pentaho/server/biserver-ee/<your jboss installation directory>/standalone/deployments</span> </li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 227px;">PentahoBIPlatform_OSS_Licenses.html</td>
+                    <td style="width: 387px;"><span class="ph filepath">pentaho/server/biserver-ee</span> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Step_4:_Unpack_and_Unzip_Plugin_Files"></span> 
+          <h3 class="editable">Step 4:&nbsp;&#8203;Unpack and Unzip Plugin Files</h3>
+          <p>Do the following for each of the plugin files.</p>
+          <ol class="pentaho-list-ordered">
+            <li>To unpack the file, run <span class="filepath style-wrap">install.sh</span> .&nbsp; The <strong>IZPak </strong> window appears.</li>
+          </ol>
+          <p class="pentaho-note">If you are unpacking the file in a non-graphical environment, open a <strong>Terminal </strong> or <strong>Command Prompt</strong>  and type <span class="filepath style-wrap">java -jar installer.jar -console</span>  and follow the instructions
+            presented in the window.</p>
+          <ol class="pentaho-list-ordered" start="2">
+            <li>Read the license agreement, select <strong>I accept the terms of this license agreement</strong>, and click <strong>Next</strong> .</li>
+            <li>In the <strong>Select the installation path</strong>  text box, enter the pentaho\server\biserver-ee\pentaho-solutions\system directory, then click <strong>Next</strong> .</li>
+            <li>A message appears.&nbsp; Click <strong>YES</strong> .</li>
+            <li>When the installation progress is complete, click <strong>Quit</strong> .</li>
+          </ol>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Step_5:_Verify_Directory_Structure"></span> 
+          <h3 class="editable">Step 5:&nbsp;Verify Directory Structure</h3>
+          <p class="li step">Verify that the files have been placed in the following places by comparing the following directory structure with yours.</p>
+          <p class="pentaho-note">If your web application server is not in the <span class="ph filepath">pentaho\server\biserver-ee</span>  directory, the <span class="ph filepath">pentaho.war</span>  and <span class="ph filepath">pentaho-style.war</span>  files should appear where
+            you've chosen to install your web application server.</p>
+          <p class="li step"><strong class="ph b">Tomcat File Locations:</strong> </p>
+          <ul class="pentaho-list-unordered">
+            <li class="li step">
+              <your home directory>/.pentaho</li>
+            <li class="li step">pentaho/server/license-installer</li>
+            <li class="li step">pentaho/server/license-installer/lib</li>
+            <li class="li step">pentaho/server/biserver-ee/
+              <your tomcat installation directory>/webapps/pentaho.war</li>
+            <li class="li step">pentaho/server/biserver-ee/
+              <your tomcat installation directory>/webapps/pentaho-style.war</li>
+            <li class="li step">pentaho/server/biserver-ee/data</li>
+            <li class="li step">pentaho/server/biserver-ee/pentaho-solutions</li>
+            <li class="li step">pentaho/server/biserver-ee/pentaho-solutions/system/analyzer</li>
+            <li class="li step">pentaho/server/biserver-ee/pentaho-solutions/system/dashboards</li>
+            <li class="li step">pentaho/server/biserver-ee/pentaho-solutions/system/pentaho-interactive-reporting</li>
+            <li class="li step">pentaho/server/biserver-ee/pentaho-solutions/system/pentaho-mobile-plugin</li>
+            <li class="li step">pentaho/server/biserver-ee/pentaho-solutions/system/default-content/samples.zip</li>
+          </ul>
+          <p class="li choice"><strong class="ph b">JBoss File Locations:</strong> </p>
+          <ul class="pentaho-list-unordered">
+            <li class="li choice">
+              <your home directory>/.pentaho</li>
+            <li class="li choice">pentaho/server/license-installer</li>
+            <li class="li choice">pentaho/server/license-installer/lib</li>
+            <li class="li choice">pentaho/server/biserver-ee/
+              <your jboss installation directory>/standalone/deployments/pentaho.war</li>
+            <li class="li choice">pentaho/server/biserver-ee/
+              <your jboss installation directory>/standalone/deployments/pentaho-style.war</li>
+            <li class="li choice">pentaho/server/biserver-ee/data</li>
+            <li class="li choice">pentaho/server/biserver-ee/pentaho-solutions</li>
+            <li class="li choice">pentaho/server/biserver-ee/pentaho-solutions/system/analyzer</li>
+            <li class="li choice">pentaho/server/biserver-ee/pentaho-solutions/system/dashboards</li>
+            <li class="li choice">pentaho/server/biserver-ee/pentaho-solutions/system/pentaho-interactive-reporting</li>
+            <li class="li choice">pentaho/server/biserver-ee/pentaho-solutions/system/pentaho-mobile-plugin</li>
+            <li class="li choice">pentaho/server/biserver-ee/pentaho-solutions/system/default-content/samples.zip</li>
+          </ul>
+        </div>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="Set_Environment_Variables"></span> 
+        <h2 class="editable">Set Environment Variables</h2>
+        <p class="p">Set the <span class="filepath style-wrap">PENTAHO_JAVA_HOME</span> &nbsp; and&nbsp;<span class="filepath style-wrap">PENTAHO_INSTALLED_LICENSE_PATH</span> &nbsp;environment&nbsp;variables.&nbsp;If you do not set these variables, Pentaho will not
+          start correctly.&nbsp;</p>
+        <p class="pentaho-note">If you are using a JRE, set the <span class="filepath style-wrap">JRE_HOME</span> &nbsp;home environment variable as well.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li step"><span class="ph cmd">Set the path of the <span class="ph filepath"><span class="filepath style-wrap">PENTAHO_JAVA_HOME</span>  </span> variable&nbsp;to the path of your Java&nbsp;installation, like this.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export PENTAHO_JAVA_HOME=/usr/lib/jvm/java-7-sun</pre>            </li>
+          <li class="li step"><span class="ph cmd">Set the path of the <span class="ph filepath">&nbsp;<span class="filepath style-wrap">PENTAHO_INSTALLED_LICENSE_PATH</span> </span> &nbsp;variable to the path of your installed licenses, like this.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export PENTAHO_INSTALLED_LICENSE_PATH=/home/pentaho/.pentaho/.installedLicenses.xml</pre>            </li>
+          <li class="li step"><span class="ph cmd">Log out and in again, then&nbsp;verify the variables have been properly set.</span> </li>
+        </ol>
+      </div>
+      <div id="section_12" class="mt-page-section"><span id="Next_Step"></span> 
+        <h2 class="editable">Next Step</h2>
+        <p>You've finished preparing your environment. &nbsp;Go to
+          <a title="Configure Your Repository Database" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0K0/040">Configure&nbsp;Your Repository Database</a>  to continue.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Create_the_Pentaho_User" rel="internal">Create the Pentaho User</a>  </li>
+      <li> <a href="#Install_Java" rel="internal">Install Java</a>  </li>
+      <li> <a href="#Install_the_Web_Application_Server" rel="internal">Install the Web Application Server</a>  </li>
+      <li> <a href="#Create_Linux_Directory_Structure" rel="internal">Create Linux Directory Structure</a>  </li>
+      <li> <a href="#Install_the_BA_Repository_Host_Database" rel="internal">Install the BA Repository Host Database</a>  </li>
+      <li>
+        <a href="#Download_and_Unpack_Installation_Files" rel="internal">Download and Unpack Installation Files</a> 
+        <ol>
+          <li> <a href="#Step_1:_Download_Files" rel="internal">Step 1:&nbsp;Download Files</a>  </li>
+          <li> <a href="#Step_2:_Unpack_Files" rel="internal">Step 2:&nbsp;Unpack Files</a>  </li>
+          <li> <a href="#Step_3:_Put_Files_in_Directories" rel="internal">Step 3:&nbsp;Put Files in Directories</a>  </li>
+          <li> <a href="#Step_4:_Unpack_and_Unzip_Plugin_Files" rel="internal">Step 4:&nbsp;&#8203;Unpack and Unzip Plugin Files</a>  </li>
+          <li> <a href="#Step_5:_Verify_Directory_Structure" rel="internal">Step 5:&nbsp;Verify Directory Structure</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Set_Environment_Variables" rel="internal">Set Environment Variables</a>  </li>
+      <li> <a href="#Next_Step" rel="internal">Next Step</a>  </li>
+    </ol>
+  </body>
+</content>

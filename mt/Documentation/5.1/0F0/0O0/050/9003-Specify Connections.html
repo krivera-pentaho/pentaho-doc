@@ -1,0 +1,133 @@
+<content type="text/html" title="Specify Connections">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to specify connections to the DI Repository.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the DI Server installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/1590/grDiArchiveInstallSpecifyConnections.png?revision=1" />
+          </p>
+          <p class="p">After your
+            <a class="xref" title="Documentation/5.1/0F0/0O0/040" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/040">repository has been configured</a>, you must configure the web application servers to connect to the DI Repository. In this step, JDBC and JNDI connections are made to the Hibernate, Jackrabbit, and Quartz databases. These databases were installed
+            on your DI Repository database during the Initialize Repository and Configure Repository sections of these instructions.</p>
+          <p class="p">By default, the DI Server software is configured to be deployed and run on the Tomcat server. As such, connections have already been specified and only the Tomcat context.xml file must be modified. Complete the following tasks.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="9f34974c-1260-429f-a1f5-bdfbfb0891b3__tomcat_connections">
+        <div id="section_2" class="mt-page-section"><span id="Perform_Tomcat-Specific_Connection_Tasks"></span> 
+          <h2 class="editable">Perform Tomcat-Specific Connection Tasks</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you plan to run the DI Server on Tomcat, you must modify JDBC Connection information.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="9f34974c-1260-429f-a1f5-bdfbfb0891b3__jdbc_drivers">
+            <div id="section_3" class="mt-page-section"><span id="Copy_Solution_Database_JDBC_Drivers"></span> 
+              <h3 class="editable">Copy Solution Database JDBC Drivers</h3>
+              <div class="body taskbody">
+                <div class="section prereq p">For the DI Server to connect to the DI Repository database of your choice, add the DI Repository's database JDBC driver library to the appropriate place in the web application server on which the DI Server will be deployed. The default
+                  web application server for the archive installation process is Tomcat.</div>
+                <p class="pentaho-note">If you are using Redshift, you will need to replace our PostgreSQL 9.x driver with the PostgreSQL 8.4 driver that is recommended by Redshift.</p>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Download a JDBC driver JAR from your database vendor or a third-party driver developer.</span> 
+                    <p class="p">Due to licensing restrictions, Pentaho does not distribute the necessary JDBC driver JARs.</p>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Copy the JDBC driver JAR you just downloaded to the <span class="ph filepath">/tomcat/lib/</span>  directory.</span> 
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="9f34974c-1260-429f-a1f5-bdfbfb0891b3__id_lk2_ndh_gl">
+            <div id="section_4" class="mt-page-section"><span id="Download_and_Install_H2_JDBC_Drivers"></span> 
+              <h3 class="editable">Download and Install H2 JDBC Drivers</h3>
+              <div class="body taskbody">
+                <div class="section prereq p">Install the H2 JDBC driver.</div>
+                <ol class="ol steps" id="9f34974c-1260-429f-a1f5-bdfbfb0891b3__id_lk2_ndh_gl__steps_il2_ndh_gl">
+                  <li class="li step"><span class="ph cmd">Download the version 1.2.131 of the H2 JDBC JAR from the <a class="xref external" target="_blank" rel="external nofollow" href="http://code.google.com/p/h2database/downloads/list">http://code.google.com/p/h2database/downloads/list</a> . </span> </li>
+                  <li class="li step"><span class="ph cmd">Copy the JDBC driver JAR you just downloaded to the <span class="ph filepath">tomcat/lib/</span>  directory.</span> 
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="9f34974c-1260-429f-a1f5-bdfbfb0891b3__manual_deployment_context_file">
+            <div id="section_5" class="mt-page-section"><span id="Modify_JDBC_Connection_Information_in_the_Tomcat_context.xml_File"></span> 
+              <h3 class="editable">Modify JDBC Connection Information in the Tomcat context.xml File</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Database connection and network information, such as the username, password, driver class information, IP address or domain name, and port numbers for your BA Repository database are stored in the <span class="ph filepath">context.xml</span>                     file. Modify this file to reflect the database connection and network information to reflect your operating environment. You also modify the values for the <span class="ph filepath">validationQuery</span>  parameters in this file if
+                    you have choosen to use an BA Repository database other than PostgreSQL.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Consult your database documentation to determine the JDBC class name and connection string for your BA Repository database.</span> </li>
+                  <li class="li step"><span class="ph cmd">Go to the&nbsp;<span class="ph filepath">biserver-ee\tomcat\webapps\pentaho\META-INF</span>  directory and open the <span class="ph filepath">context.xml</span>  file with any file editor.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">&nbsp;Follow the directions below for your database. Be sure to adjust the port numbers and passwords to reflect your environment, if necessary.</span> 
+                    <p><strong>For PostgreSQL:</strong> </p>
+                    <p><span class="ph cmd">Comment out the resource references that refer to databases other than PostgreSQL, such as MySQL and Oracle. Then, add the following code to the file if it does not already exist.</span> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Hibernate&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Audit&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/quartz&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;pentaho_user&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Quartz&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/pentaho_operations_mart&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:postgresql://localhost:5432/hibernate&quot; driverClassName=&quot;org.postgresql.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/PDI_Operations_Mart&quot;/></pre>
+                    <p><strong>For MySQL:</strong> </p>
+                    <p><span class="ph cmd">Comment out the resource references that refer to databases other than MySQL, such as PostgreSQL and Oracle. Then, add the following code to the file if it does not already exist.</span> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:mysql://localhost:3306/hibernate&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Hibernate&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:mysql://localhost:3306/hibernate&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Audit&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:mysql://localhost:3306/quartz&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot; password=&quot;password&quot; username=&quot;pentaho_user&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Quartz&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:mysql://localhost:3306/pentaho_operations_mart&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/pentaho_operations_mart&quot;/>
+<Resource validationQuery=&quot;select 1&quot; url=&quot;jdbc:mysql://localhost:3306/pentaho_operations_mart&quot; driverClassName=&quot;com.mysql.jdbc.Driver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/PDI_Operations_Mart&quot;/></pre>
+                    <p><strong>For Oracle:</strong> </p>
+                    <p><span class="ph cmd">Comment out the resource references that refer to databases other than Oracle, such as PostgreSQL and MySQL. Then, add the following code to the file if it does not already exist.</span> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Hibernate&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Audit&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;quartz&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/Quartz&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/pentaho_operations_mart&quot;/>
+<Resource validationQuery=&quot;select 1 from dual&quot; url=&quot;jdbc:oracle:thin:@localhost:1521/XE&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot; password=&quot;password&quot; username=&quot;hibuser&quot; maxWait=&quot;10000&quot; maxIdle=&quot;5&quot; maxActive=&quot;20&quot; factory=&quot;org.apache.commons.dbcp.BasicDataSourceFactory&quot; type=&quot;javax.sql.DataSource&quot; auth=&quot;Container&quot; name=&quot;jdbc/PDI_Operations_Mart&quot;/></pre>                    </li>
+                  <li class="li step"><span class="ph cmd">Modify the username, password, driver class information, IP address (or domain name), and port numbers so they reflect the correct values for your environment.</span> </li>
+                  <li class="li step"><span class="ph cmd">Make sure that the <span class="filepath style-wrap">validationQuery </span> variable for your database is set to this. </span> 
+                    <ul class="ul" id="ae5e6834-db7a-4d25-aff1-793c344bc4dd__manual_deployment_context_file__ul_jfk_12h_gl">
+                      <li class="li"><strong>PostgreSQL: </strong> <span class="filepath style-wrap">validationQuery=&quot;select 1&quot;</span> </li>
+                      <li class="li"><span class="filepath style-wrap"><strong>MySQL:</strong>  validationQuery=&quot;select 1&quot;</span> </li>
+                      <li class="li"><strong>Oracle:</strong>  <span class="filepath style-wrap">validationQuery=&quot;select 1 from dual&quot;</span> </li>
+                    </ul>
+                  </li>
+                  <li class="li step" value="6"><span class="ph cmd">Save the <span class="filepath style-wrap"><span class="ph filepath">context.xml </span> </span> file, then close it. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">To make sure that the changes that you made in the context.xml file take effect when Tomcat is started, navigate to the <span class="ph filepath">tomcat\conf\Catalina</span>  directory. If the <span class="ph filepath">pentaho.xml</span>                     file is in the present, delete it. It will be generated again when you start the BA Server, but will contain the changes that you just made in the <span class="ph filepath">context.xml</span>  file.</span> 
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Perform_Tomcat-Specific_Connection_Tasks" rel="internal">Perform Tomcat-Specific Connection Tasks</a> 
+        <ol>
+          <li> <a href="#Copy_Solution_Database_JDBC_Drivers" rel="internal">Copy Solution Database JDBC Drivers</a>  </li>
+          <li> <a href="#Download_and_Install_H2_JDBC_Drivers" rel="internal">Download and Install H2 JDBC Drivers</a>  </li>
+          <li> <a href="#Modify_JDBC_Connection_Information_in_the_Tomcat_context.xml_File" rel="internal">Modify JDBC Connection Information in the Tomcat context.xml File</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

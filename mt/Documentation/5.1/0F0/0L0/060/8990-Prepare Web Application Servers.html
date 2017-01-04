@@ -1,0 +1,310 @@
+<content type="text/html" title="Prepare Web Application Servers">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Indicates how to prepare the web app server.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the DI Manual installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/1583/grDiManualPrepareAppServer.png?revision=1" />
+          </p>
+          <p class="p">How you prepare to deploy the DI Server depends on the web application server you installed.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="335920c8-a8b8-4244-88ea-b1161479168f__tomcat">
+        <div id="section_2" class="mt-page-section"><span id="Prepare_Tomcat_Web_Application_Server"></span> 
+          <h2 class="editable">Prepare Tomcat Web Application Server</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">After you have completed the tasks in the
+                <a class="xref" title="Specify Connections" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0L0/050">Specify Connections</a>  step you must configure HTTP and HTTPS ports so that it uses the Data Integration port.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="335920c8-a8b8-4244-88ea-b1161479168f__changeport_tomcat">
+            <div id="section_3" class="mt-page-section"><span id="Configure_http_and_https_Ports_on_Tomcat"></span> 
+              <h3 class="editable">Configure http and https Ports on Tomcat</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Since the DI Server is configured to run on 9080 (http) and 9443 (https), you need to configure Tomcat for these ports as well.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">server.xml</span>  file, which is located in <span class="ph filepath">pentaho/server/data-integration-server/<your tomcat installation directory>/conf</span>                     directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Modify the <span class="ph filepath">Connector port</span>  settings for http and https to reflect the DI Server ports (9080 and 9443).</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="335920c8-a8b8-4244-88ea-b1161479168f__jboss">
+        <div id="section_4" class="mt-page-section"><span id="Prepare_JBoss_Web_Application_Server"></span> 
+          <h2 class="editable">Prepare JBoss Web Application Server</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you have installed the JBoss web application server, you must manually complete the following configuration tasks.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="335920c8-a8b8-4244-88ea-b1161479168f__StartupTimeout">
+            <div id="section_5" class="mt-page-section"><span id="Increase_the_Amount_of_Time_JBoss_Allows_for_DI_Server_Deployment"></span> 
+              <h3 class="editable">Increase the Amount of Time JBoss Allows for DI Server Deployment</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">By default, JBoss allows up to one minute for a web application to be deployed. If the web application is not deployed within that timeframe, an error occurs.</p>
+                  <p class="p">Because the DI Server deployment requires more than one minute, manually edit the <span class="ph filepath">standalone.xml</span>  file to increase the deployment time.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath"><your jboss installation directory>/standalone/configuration/standalone.xml</span>  file.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Find the <span class="ph filepath"> <deployment-scanner></span>  tag, add the <span class="ph filepath">deployment-timeout</span> </span>  attribute, then set the attribute equal to <span class="ph filepath">120</span> .
+                    Note that if you are installing the DI Server on a VM, you might want to increase the <span class="ph filepath">deployment-timeout</span>  attribute's value to give the DI Server more time to deploy. <span class="ph filepath"><deployment-scanner scan-interval=&quot;5000&quot; relative-to=&quot;jboss.server.base.dir&quot; path=&quot;deployments&quot; scan-enabled=&quot;true&quot; deployment-timeout=&quot;120&quot;/></span> </li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="335920c8-a8b8-4244-88ea-b1161479168f__Disable_RESTEasy_Scan">
+            <div id="section_6" class="mt-page-section"><span id="Disable_the_JBoss_RESTEasy_Scan"></span> 
+              <h3 class="editable">Disable the JBoss RESTEasy Scan</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">To load pentaho REST services correctly, the RESTEasy scan in JBoss must be disabled. These instructions explain how to do this.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the contents of the <span class="ph filepath"><your jboss installation directory>/standalone/deployments/pentaho-di.war</span>  file. Do not unzip
+                    the <span class="ph filepath">pentaho-di.war</span>  file, just view its contents.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">WEB-INF</span>  directory in the <span class="ph filepath">pentaho-di.war</span>  file and open the <span class="ph filepath">web.xml</span>  file in a text editor.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">At the end of the <context-param> tags, add this code.</span>  <pre class="pre codeblock">
+<context-param>
+             <param-name>resteasy.scan</param-name>
+             <param-value>false</param-value>
+        </context-param>
+        <context-param>
+             <param-name>resteasy.scan.resources</param-name>
+             <param-value>false</param-value>
+        </context-param>
+        <context-param>
+             <param-name>resteasy.scan.providers</param-name>
+             <param-value>false</param-value>
+</context-param></pre> </li>
+                  <li class="li step"><span class="ph cmd">In the <span class="ph filepath">web.xml</span>  file, change the DI Server URL. To learn how, read the
+                    <a class="xref" title="Documentation/5.1/0P0/0U0/090" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/0U0/090">Change the DI Server URL</a>  instructions.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">In the <span class="ph filepath">web.xml</span>  file, set the location of the Pentaho solutions directory. To learn how, read the &quot;Set Location of the Pentaho Solutions Directory&quot; instructions below.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+                  <li class="li step"><span class="ph cmd">The zip extraction utility that you used might show a prompt that asks whether you would like to update the file in the <span class="ph filepath">pentaho-di.war</span>  archive. If this happens, confirm that you would
+                    like to do this.</span> 
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="335920c8-a8b8-4244-88ea-b1161479168f__SetLocationPentahoSolutionsDirectory">
+            <div id="section_7" class="mt-page-section"><span id="Set_the_Location_of_the_Pentaho_Solutions_Directory"></span> 
+              <h3 class="editable">Set the Location of the Pentaho Solutions Directory</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">To deploy JBoss correctly, Pentaho recommends that you define the location of the Pentaho solutions directory in the <span class="ph filepath">web.xml</span>  file. These instructions explain how to do this.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">If you have not done so already, use a zip extraction utility such as 7-Zip, Winzip, or Archive to view the contents of the <span class="ph filepath"><your jboss installation directory>/standalone/deployments/pentaho-di.war</span>                     file. Do not unzip the <span class="ph filepath">pentaho-di.war</span>  file, just view its contents.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">WEB-INF</span>  directory in the <span class="ph filepath">pentaho-di.war</span>  file and open the <span class="ph filepath">web.xml</span>  file in a text editor.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Locate the following <context-param> tags. </span>  <pre class="pre codeblock">
+<context-param>
+       <param-name>solution-path</param-name>
+       <param-value></param-value>
+</context-param></pre> </li>
+                  <li class="li step"><span class="ph cmd">Define the param value of the solution-path to Pentaho-solutions. An example of the code is below.</span>  <pre class="pre codeblock">
+<context-param>
+       <param-name>solution-path</param-name>
+       <param-value>/home/pentaho/server/data-integration-server/pentaho-solutions</param-value>
+</context-param></pre> </li>
+                  <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="335920c8-a8b8-4244-88ea-b1161479168f__IncreaseMemoryDefault_windows">
+            <div id="section_8" class="mt-page-section"><span id="Increase_JBoss_Default_Memory_Settings"></span> 
+              <h3 class="editable">Increase JBoss Default Memory Settings</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Before you deploy the DI Server, modify the JBoss startup script to match the DI Server's memory resource requirements. If this step is not performed, the DI Server will not start.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the standalone configuration file. The file you open depends on your operating system.</span> 
+                    <ul class="ul">
+                      <li class="li"><strong class="ph b">Microsoft Windows:</strong>  <span class="ph filepath"><your jboss installation directory>/bin/standalone-conf.bat</span> </li>
+                      <li class="li"><strong class="ph b">Linux:</strong>  <span class="ph filepath"><your jboss installation directory>/bin/standalone.conf</span> </li>
+                    </ul>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Change the following code from <code class="ph codeph">-Xms1303m -Xmx1303m -XX:MaxPermSize=256m</code> to this:</span>  <pre class="pre codeblock">
+-Xms4096m -Xmx6144m -XX:MaxPermSize=256m</pre> </li>
+                  <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="335920c8-a8b8-4244-88ea-b1161479168f__changeport">
+            <div id="section_9" class="mt-page-section"><span id="Configure_http_and_https_Ports_on_JBoss"></span> 
+              <h3 class="editable">Configure http and https Ports on JBoss</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Since the DI Server is configured to run on 9080 (http) and 9443 (https), you need to configure JBoss for these ports as well.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">standalone.xml</span>  file, which is located in <span class="ph filepath">pentaho/server/data-integration-server/<your jboss installation directory>/standalone/configuration</span>                     directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Modify the <span class="ph filepath">http</span>  and <span class="ph filepath">https</span>  <span class="ph filepath">socket-binding</span>  parameters to reflect the DI Server ports.</span>  <pre class="pre codeblock">
+<socket-binding name=&quot;http&quot; port=&quot;9080&quot;/>
+<socket-binding name=&quot;https&quot; port=&quot;9443&quot;/></pre> </li>
+                  <li class="li step"><span class="ph cmd">Save the changes and close the file.</span> </li>
+                </ol>
+                <div id="section_10" class="mt-page-section"><span id="Add_JBoss_Logging"></span> 
+                  <h2 class="editable">Add JBoss Logging</h2>
+                  <p>You can add Pentaho application level logging to the JBoss logging subsystem. This is an optional step.</p>
+                </div>
+              </div>
+              <ol class="pentaho-list-ordered">
+                <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">pentaho-di.war</span>, go to the <span class="ph filepath">WEB-INF</span>  directory and open the <span class="ph filepath">jboss-deployment-structure.xml</span>  file.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Under the <span class="ph filepath"><deployment></span>  tag add this code. </span>  <pre class="pre codeblock">
+<exclusions>
+    <module name=&quot;org.apache.log4j&quot;/>
+</exclusions></pre> </li>
+                <li class="li step"><span class="ph cmd">Save and close the file, then exit from <span class="ph uicontrol">pentaho-di.war</span> .</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">standalone.xml</span>  file in the <span class="ph filepath"><your jboss directory>/standalone/configuration</span>  directory.</span> 
+                </li>
+                <li class="li step"><span class="ph cmd">Under the <span class="ph filepath"></extensions></span>  tag add this code.</span>  <pre class="pre codeblock">
+ <system-properties>
+      <property name=&quot;org.jboss.as.logging.per-deployment&quot; value=&quot;false&quot;/>
+  </system-properties></pre> </li>
+                <li class="li step"><span class="ph cmd">Find the <span class="ph filepath"><console-handler ...></span>  or <span class="ph filepath"><file-handler ...></span>  sections and add the following two handlers.</span>  <pre class="pre codeblock">
+<console-handler name=&quot;PENTAHOCONSOLE&quot;>
+<level name=&quot;ALL&quot;/>
+</console-handler>
+   <file-handler name=&quot;PENTAHOFILE&quot;>
+    <file relative-to=&quot;jboss.server.log.dir&quot; path=&quot;pentaho.log&quot;/>
+    <append value=&quot;false&quot;/>
+</file-handler></pre> </li>
+                <li class="li step"><span class="ph cmd">Under the file handlers section, there is a section containing <span class="ph filepath"><logger></span>  tags. Configure the <span class="ph filepath"><root-logger></span>  handler to use these handlers.</span> 
+                  <pre
+                  class="pre codeblock">
+                    <handler name=&quot;PENTAHOCONSOLE&quot;/>
+                    <handler name=&quot;PENTAHOFILE&quot;/>
+                    </pre>
+                </li>
+                <li class="li step"><span class="ph cmd">Add the following loggers above <span class="ph filepath"><root-logger></span> .</span>  <pre class="pre codeblock">
+<logger category=&quot;org.hybernate&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;net.sf.ehcache&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+   </logger>
+<logger category=&quot;org.quartz&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+</handlers>
+</logger>
+    <logger category=&quot;org.springframework&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;org.springframework.security&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;com.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.jfree.JCommon&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.apache.jackrabbit.core.security.authentication.AbstractLoginModule&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;RepositoryImportLog&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;INFO&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger></pre> </li>
+                <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Prepare_Tomcat_Web_Application_Server" rel="internal">Prepare Tomcat Web Application Server</a> 
+        <ol>
+          <li> <a href="#Configure_http_and_https_Ports_on_Tomcat" rel="internal">Configure http and https Ports on Tomcat</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Prepare_JBoss_Web_Application_Server" rel="internal">Prepare JBoss Web Application Server</a> 
+        <ol>
+          <li> <a href="#Increase_the_Amount_of_Time_JBoss_Allows_for_DI_Server_Deployment" rel="internal">Increase the Amount of Time JBoss Allows for DI Server Deployment</a>  </li>
+          <li> <a href="#Disable_the_JBoss_RESTEasy_Scan" rel="internal">Disable the JBoss RESTEasy Scan</a>  </li>
+          <li> <a href="#Set_the_Location_of_the_Pentaho_Solutions_Directory" rel="internal">Set the Location of the Pentaho Solutions Directory</a>  </li>
+          <li> <a href="#Increase_JBoss_Default_Memory_Settings" rel="internal">Increase JBoss Default Memory Settings</a>  </li>
+          <li> <a href="#Configure_http_and_https_Ports_on_JBoss" rel="internal">Configure http and https Ports on JBoss</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Add_JBoss_Logging" rel="internal">Add JBoss Logging</a>  </li>
+    </ol>
+  </body>
+</content>

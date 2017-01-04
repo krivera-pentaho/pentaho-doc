@@ -1,0 +1,65 @@
+<content type="text/html" title="General Issues">
+  <body>
+    <div>
+      <div class="body">
+        <p class="p">Follow the suggestions in these topics&nbsp;to help resolve common software issues associated with Pentaho suite:&nbsp;</p>
+        <ul>
+          <li class="p">
+            <a title="General Issues" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting/General_Issues#JDBC_Driver_Issues">JDBC Driver Issues</a> 
+          </li>
+          <li class="p">
+            <a title="General Issues" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting/General_Issues#Data_Conversion_Issues_With_MySQL_Driver_5.0.8">Data Conversion Issues with MySQL Driver 5.0.8</a> 
+          </li>
+          <li class="p">
+            <a title="General Issues" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting/General_Issues#Fixing_JTDS_varchar(MAX)_Limitations_in_MSSQL_2005">Fixing JTDA&nbsp;varchar(MAX) Limitations in MSSQL&nbsp;2005&nbsp;</a> 
+          </li>
+        </ul>
+        <p>See Pentaho&nbsp;
+          <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+      </div>
+      <div class="related-links">
+        <div id="section_1" class="mt-page-section"><span id="JDBC_Driver_Issues"></span> 
+          <h2 class="editable">JDBC Driver Issues</h2>
+          <p>Before you begin troubleshooting suspected JDBC driver issues, make sure that the
+            <a class="xref" title="Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_Native_(JDBC)_or_OCI_Data_Connections_for_the_Pentaho_Server">correct JDBC driver</a>  JARs are installed in the correct locations. You could install your drivers with our&nbsp;
+            <a title="Install Drivers with the JDBC Distribution Tool" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/010/001">JDBC&nbsp;Distribution Tool</a> &nbsp;to ensure they are placed&nbsp;in the correct locations.&nbsp;Also, make sure&nbsp;there are no conflicting driver versions installed. Confirm with your database or driver vendor if you suspect you have&nbsp;JDBC
+            driver compatibility issues.</p>
+          <div class="body conbody">
+            <p class="p">The Pentaho&nbsp;Server&nbsp;needs the appropriate driver to connect to the database that stores your data. You can download drivers from your database vendor's website. Check the
+              <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/010">&nbsp;JDBC Drivers Reference</a>  for a list of supported drivers and links to vendor websites.</p>
+            <div class="p">
+              <p>Perform the following steps to install the appropriate driver for your&nbsp;Pentaho Server:</p>
+              <ol class="pentaho-list-ordered" id="6e93e158-9c6a-4c50-b58b-01cd562a3540__troubleshooting_jdbc_java__ol_jyq_xkb_5m">
+                <li class="li">Stop the Pentaho Server.</li>
+                <li class="li">Copy your driver into this location: <code class="ph codeph"><pentaho-install-directory>/server/pentaho-server/tomcat/lib</code>.</li>
+                <li class="li">Start the Pentaho Server.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="related-links">
+            <div id="section_2" class="mt-page-section"><span id="Data_Conversion_Issues_With_MySQL_Driver_5.0.8"></span> 
+              <h2 class="editable">Data Conversion Issues With MySQL Driver 5.0.8</h2>
+              <p>The MySQL JDBC driver version 5.0.8 may cause data conversion errors in the Pentaho Server. For example, SQL statements that convert a numeric field to a string are returned as a string in version 5.0.7, but return&nbsp;as a byte array in
+                version 5.0.8.</p>
+              <p>To solve this problem, you must replace the <code>mysql-connector-java-5.0.8.jar</code>&nbsp;with the <code>mysql-connector-java-5.0.7.jar</code><span style="font-weight:600;">&nbsp;</span> in your client tool or application server's <code>lib</code>                folder.</p>
+            </div>
+            <div id="section_3" class="mt-page-section"><span id="Fixing_JTDS_varchar(MAX)_Limitations_in_MSSQL_2005"></span> 
+              <h2 class="editable">Fixing JTDS varchar(MAX) Limitations in MSSQL 2005</h2>
+              <p class="p">Creating a report that uses a column of type <code>varchar(MAX)</code> may result in a <code>net.sourceforge.jtds.jdbc.ClobImpl@83cf00</code>&nbsp;error when using the JTDS SQL Server driver. This is caused by inherent limitations in older
+                versions of the JTDS driver. Additionally, the SQL Server JDBC driver version 1.2.2828 also has issues accessing a <code>varchar(MAX)</code> column.</p>
+              <p class="p">The solution is to upgrade the MSSQL 2005 JDBC driver to version 1.0.809.102 or later. Download and install the
+                <a class="xref external" target="_blank" title="JDBC Driver" rel="external nofollow" href="http://msdn.microsoft.com/en-us/sqlserver/aa937724">http://msdn.microsoft.com/en-us/sqlserver/aa937724</a>  file from <code>microsoft.com</code>, then restart your MSSQL server.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#JDBC_Driver_Issues" rel="internal">JDBC Driver Issues</a>  </li>
+      <li> <a href="#Data_Conversion_Issues_With_MySQL_Driver_5.0.8" rel="internal">Data Conversion Issues With MySQL Driver 5.0.8</a>  </li>
+      <li> <a href="#Fixing_JTDS_varchar(MAX)_Limitations_in_MSSQL_2005" rel="internal">Fixing JTDS varchar(MAX) Limitations in MSSQL 2005</a>  </li>
+    </ol>
+  </body>
+</content>

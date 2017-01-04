@@ -1,0 +1,233 @@
+<content type="text/html" title="Create Database Sources">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="pentaho-overview-hidden">
+            <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+              <h2 class="editable">Overview</h2>
+              <p>Covers two options for creating these data sources: Reporting Only or Reporting and Analysis.</p>
+            </div>
+          </div>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">
+                <img alt="File:/grStepGetStartedCreateAdvanced.png" class="image internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_create_database_sources__image_yr3_kyb_qk" src="http://help.pentaho.com/@api/deki/files/1375/grStepGetStartedCreateAdvanced.png?revision=1"
+                />
+              </p>
+              <p class="p">When you create a Database Table data source, you are presented with two options: Reporting Only or Reporting and Analysis. The choice you make depends on the structure of the database tables you are accessing and the User Console tools
+                being used.</p>
+              <p class="p">Before you begin working with Database Table data sources, there are a few key terms that you should know.</p>
+              <div class="p">
+                <ul class="ul" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_create_database_sources__ul_tz5_cdy_xk">
+                  <li class="li"><span class="ph uicontrol">Fact table</span>  - records measurements or metrics for a specific event, and usually consists of numbers.</li>
+                  <li class="li"><span class="ph uicontrol">Star schema</span>  - has one or more fact tables that reference any number of dimension tables. Star schemas are good for simpler queries.</li>
+                  <li class="li"><span class="ph uicontrol">Snowflake schema</span>  - has centralized fact tables that are connected to multiple dimensions. Snowflake schemas are good for more complex queries.</li>
+                </ul>
+              </div>
+              <div class="p">
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_create_database_sources__table_yby_sd3_gk" rules="all" summary="">
+                    <caption><span class="tablecap">Table 1. Database Data Sources Decision Table</span> </caption>
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="23b4d035-546f-42d8-a784-c28fa45d412e__d27893e67" rowspan="2" valign="top" width="22.727272727272727%">Explore Considerations</th>
+                        <th align="center" class="entry" colspan="2" id="23b4d035-546f-42d8-a784-c28fa45d412e__d27893e70" valign="top">Choose Options</th>
+                      </tr>
+                      <tr class="row">
+                        <th align="center" class="entry" id="23b4d035-546f-42d8-a784-c28fa45d412e__d27893e76" valign="top" width="22.727272727272727%">
+                          <a title="https://help.pentaho.com/Documentation/5.1/0L0/0A0/060#Create_a_Database_Table_Data_Source_for_Reporting_Only" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0L0/0A0/060#Create_a_Database_Table_Data_Source_for_Reporting_Only">Reporting Only</a> 
+                        </th>
+                        <th align="center" class="entry" id="23b4d035-546f-42d8-a784-c28fa45d412e__d27893e81" valign="top" width="38.63636363636363%">
+                          <a title="https://help.pentaho.com/Documentation/5.1/0L0/0A0/060#Create_a_Database_Table_Data_Source_for_Reporting_and_Analysis" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0L0/0A0/060#Create_a_Database_Table_Data_Source_for_Reporting_and_Analysis">Reporting and Analysis</a> 
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d27893e67 d27893e76 " valign="top" width="22.727272727272727%"><strong class="ph b">Summary</strong> </td>
+                        <td class="entry" headers="d27893e70 d27893e81 " valign="top" width="38.63636363636363%">Choose the <span class="ph uicontrol">Reporting Only</span>  option if you are accessing data in a relational database that is operational or transactional in nature, or if you need to show detailed rows and then sort and filter
+                          the details.
+                          <p class="p">When you choose the <strong class="ph b">Reporting Only</strong>  option, a relational model is automatically generated and can be refined in the Data Source Model Editor or further extended using
+                            <a class="xref" title="Documentation/5.1/0N0/110/020"
+                            rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/110/020">Metadata Editor</a> .</p>
+                          <div class="note note"><span class="notetitle">Note:</span>  Relational models on large databases are sometimes slow and benefit from a powerful database.</div>
+                        </td>
+                        <td class="entry" headers="d27893e70 " valign="top" width="38.63636363636363%">
+                          <p class="p">Choose the <span class="ph uicontrol">Reporting and Analysis</span>  option if you are accessing a multidimensional database that contains tables arranged in a star schema (tables are separated into dimensions related to a single
+                            fact table, such as a data warehouse), or if you need summaries and details.</p>
+                          <p class="p">When you choose the <strong class="ph b">Reporting and Analysis</strong>  option, a multidimensional model is automatically generated and can be refined in the Data Source Model Editor or further extended using
+                            <a class="xref"
+                            title="Documentation/5.1/0N0/020/070" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/020/070">Schema Workbench</a> .</p>
+                          <p class="p">Additionally, you can create a Reporting and Analysis data source using a single table where the table acts as the single fact table and also contains dimensional data.</p>
+                        </td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d27893e67 d27893e76 " valign="top" width="22.727272727272727%"><strong class="ph b">Expertise</strong> </td>
+                        <td class="entry" headers="d27893e70 d27893e81 " valign="top" width="38.63636363636363%">Knowledge of relational database structures.</td>
+                        <td class="entry" headers="d27893e70 " valign="top" width="38.63636363636363%">Knowledge of multidimensional database structures.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d27893e67 d27893e76 " valign="top" width="22.727272727272727%"><strong class="ph b">Time </strong> </td>
+                        <td class="entry" headers="d27893e70 d27893e81 " valign="top" width="38.63636363636363%">Approximately 15 minutes.</td>
+                        <td class="entry" headers="d27893e70 " valign="top" width="38.63636363636363%">Approximately 30 minutes.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d27893e67 d27893e76 " valign="top" width="22.727272727272727%"><strong class="ph b">Recommendation</strong> </td>
+                        <td class="entry" headers="d27893e70 d27893e81 " valign="top" width="38.63636363636363%"><strong class="ph b">Select this if you want to use for Report Designer, Interactive Reports, and Metadata Editor.</strong> </td>
+                        <td class="entry" headers="d27893e70 " valign="top" width="38.63636363636363%"><strong class="ph b">Select this if you want to use for Report Designer, Analyzer (PUC), Dashboard Reports, Schema Workbench, and Aggregation Designer.</strong> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <p class="p">&nbsp;</p>
+            </div>
+          </div>
+          <div class="topic task nested1" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only">
+            <div id="section_2" class="mt-page-section"><span id="Create_a_Database_Table_Data_Source_for_Reporting_Only"></span> 
+              <h2 class="editable">Create a Database Table Data Source for Reporting Only
+                <a id="ReportingOnlyDataSource" name="ReportingOnlyDataSource"></a> 
+              </h2>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Your database must be up and running in order for you to complete the steps required in the Data Source Wizard.</p>
+                </div>
+                <ol class="ol steps" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only__steps_fv2_tb3_gk">
+                  <li class="li step"><span class="ph cmd">Login to the <span class="ph uicontrol">User Console</span>  as an administrator. Click <span class="ph uicontrol">Manage Data Sources</span> .</span>  The <span class="ph uicontrol">Data Sources</span>  window appears.</li>
+                  <li class="li step"><span class="ph cmd">Click the <span class="ph uicontrol">Add</span>  icon, then choose <span class="ph uicontrol">Data Source Wizard</span>  from the drop-down menu. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Enter a name that identifies your new data source in the <strong class="ph b">Data Source Name</strong>  field. </span>  The following characters are not allowed in <span class="ph uicontrol">Data Source Wizard </span> source
+                    names:
+                    <div class="p"> <pre class="pre codeblock">
+%/:[]*|\t\r\n
+</pre> </div> &nbsp;
+                    <div class="imagecenter">
+                      <img alt="File:/ssGetStartedDataSourceChoose.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only__image_ltp_qls_4k" src="http://help.pentaho.com/@api/deki/files/1376/ssGetStartedDataSourceChoose.png?revision=1"
+                      />
+                    </div>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Select <span class="ph uicontrol">Database Table(s)</span>  from the <span class="ph uicontrol">Source Type</span>  drop-down menu. Under <span class="ph uicontrol">Connection</span>, click to choose a database connection.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Click to select the <span class="ph uicontrol">Reporting Only</span>  radio button. Click <span class="ph uicontrol">Next</span> .</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Choose a schema from the <span class="ph uicontrol">Schema</span>  drop-down menu.</span>  A list of <span class="ph uicontrol">Available Tables</span>  appears.
+                    <p class="p">&nbsp;</p>
+                    <p class="p">&nbsp;</p>
+                    <div class="imagecenter">
+                      <img alt="File:/ssGetStartedReportingOnly.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only__image_js1_jhk_qk" src="http://help.pentaho.com/@api/deki/files/1377/ssGetStartedReportingOnly.png?revision=1"
+                      />
+                    </div>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Choose a table from <span class="ph uicontrol">Available Tables</span>  and click the right arrow (Add) to move the table into the <span class="ph uicontrol">Selected Tables</span>  field. </span>  If you add a table
+                    you decide not to use, highlight the table and click the left arrow (Remove) to remove it from the list of <span class="ph uicontrol">Selected Tables</span> . To choose multiple tables, press the CTRL key down as you make your selections.</li>
+                  <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Next</span> . </span>  The <span class="ph uicontrol">Define Joins</span>  window appears. While you can create a data source from a single table, the more common scenario is that you
+                    will choose multiple tables which must then be joined.
+                    <p class="p">&nbsp;</p>
+                    <p class="p">&nbsp;</p>
+                    <div class="imagecenter">
+                      <img alt="File:/ssGetStartedDataSourcesFactTable.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only__image_wwd_xrs_4k" src="http://help.pentaho.com/@api/deki/files/1378/ssGetStartedDataSourcesFactTable.png?revision=1"
+                      />
+                    </div> &nbsp;
+                    <p class="p">&nbsp;</p>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Choose the fact table from the <span class="ph uicontrol">Left Table</span>  drop-down menu, then choose a table to join to it from the <span class="ph uicontrol">Right Table</span>  drop-down menu. Click <span class="ph uicontrol">Create Join </span> to
+                    define the inner join between each table.</span> 
+                    <ol class="ol substeps" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only__substeps_ixc_tgs_4k" type="a">
+                      <li class="li substep"><span class="ph cmd">Create join conditions for each entry in the <span class="ph uicontrol">Left Table</span>  and <span class="ph uicontrol">Right Table</span>  drop-down menus. </span> 
+                      </li>
+                    </ol> The join relationship for each table is based on the field selected and is displayed in the lower portion of the dialog box. To delete a join, select the join and click <span class="ph uicontrol">Delete Join</span> .</li>
+                  <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Finish</span> .</span> 
+                    <p class="p">The <span class="ph uicontrol">Data Source Created</span>  window appears. You can choose to <span class="ph uicontrol">Keep default model</span>  or click <span class="ph uicontrol">Customize model now</span>  now to launch the Data
+                      Source Model Editor and refine the model. Click <span class="ph uicontrol">OK</span> .</p>
+                    <p class="p">&nbsp;</p> &nbsp;
+                    <div class="imagecenter">
+                      <img alt="File:/ssGettingStartedDataSourceCreated.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_reporting_only__image_s1b_qqy_4k" src="http://help.pentaho.com/@api/deki/files/1379/ssGettingStartedDataSourceCreated.png?revision=1"
+                      />
+                    </div>
+                  </li>
+                </ol>
+                <div class="section result">A relational model is generated for use in Interactive Reports and Dashboard reports, or the <span class="ph uicontrol">Data Source Model Editor</span>  appears.</div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested1" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis">
+            <div id="section_3" class="mt-page-section"><span id="Create_a_Database_Table_Data_Source_for_Reporting_and_Analysis"></span> 
+              <h2 class="editable">Create a Database Table Data Source for Reporting and Analysis
+                <a id="ReportingAnalysisDataSource" name="ReportingAnalysisDataSource"></a> 
+              </h2>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Your database must be up and running in order for you to complete the steps required in the Data Source Wizard.</p>
+                </div>
+                <ol class="ol steps" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis__steps_dm3_2pv_pk">
+                  <li class="li step"><span class="ph cmd">Login to the <span class="ph uicontrol">User Console</span>  as an administrator. Click <span class="ph uicontrol">Manage Data Sources</span> .</span>  The <span class="ph uicontrol">Data Sources</span>  window appears.</li>
+                  <li class="li step"><span class="ph cmd">Click the <span class="ph uicontrol">Add</span>  icon, then choose <span class="ph uicontrol">Data Source Wizard</span>  from the drop-down menu. </span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Enter a name that identifies your new data source in the <strong class="ph b">Data Source Name</strong>  field. </span>  The following characters are not allowed in <span class="ph uicontrol">Data Source Wizard </span> source
+                    names:
+                    <div class="p"> <pre class="pre codeblock">
+%/:[]*|\t\r\n
+</pre> </div> &nbsp;
+                    <div class="imagecenter">
+                      <img alt="File:/ssGetStartedDataSourceReportingAndAnalysis.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis__image_f34_v3c_qk" src="http://help.pentaho.com/@api/deki/files/1380/ssGetStartedDataSourceReportingAndAnalysis.png?revision=1"
+                      />
+                    </div>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Select <span class="ph uicontrol">Database Table(s)</span>  from the <span class="ph uicontrol">Source Type</span>  drop-down menu. Under <span class="ph uicontrol">Connection</span>, click to choose a database connection.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Click to select <span class="ph uicontrol">Reporting and Analysis</span> . Click <span class="ph uicontrol">Next</span> .</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Choose a schema from the <span class="ph uicontrol">Schema</span>  drop-down menu.</span>  A list of <span class="ph uicontrol">Available Tables</span>  appears.
+                    <p class="p">&nbsp;</p>
+                    <p class="p">&nbsp;</p>
+                    <div class="imagecenter">
+                      <img alt="File:/ssGetStartedRandAFactTable.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis__image_ivw_5z3_gl" src="http://help.pentaho.com/@api/deki/files/1381/ssGetStartedRandAFactTable.png?revision=1"
+                      />
+                    </div> &nbsp;
+                    <p class="p">&nbsp;</p>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Choose a table from <span class="ph uicontrol">Available Tables</span>  and click the right arrow (Add) to move the table into the <span class="ph uicontrol">Selected Tables</span>  field. </span>  If you add a table
+                    you decide not to use, highlight the table and click the left arrow (Remove) to remove it from the list of <span class="ph uicontrol">Selected Tables</span> . To choose multiple tables, press the CTRL key down as you make your selections.</li>
+                  <li class="li step"><span class="ph cmd">Choose a <span class="ph uicontrol">Fact Table</span>  from the drop-down list and click <span class="ph uicontrol">Next</span> . </span>  While you can create a data source from a single table, the more common scenario
+                    is that you will choose multiple tables which must then be joined.
+                    <p class="p">&nbsp;</p>
+                    <p class="p">&nbsp;</p>
+                    <div class="imagecenter">
+                      <img alt="File:/ssGetStartedDataSourceRandACreateJoin.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis__image_qnv_pz3_gl" src="http://help.pentaho.com/@api/deki/files/1382/ssGetStartedDataSourceRandACreateJoin.png?revision=1"
+                      />
+                    </div> &nbsp;
+                    <p class="p">&nbsp;</p>
+                  </li>
+                  <li class="li step"><span class="ph cmd">Choose the fact table from the <span class="ph uicontrol">Left Table</span>  drop-down menu, then choose a table to join to it from the <span class="ph uicontrol">Right Table</span>  drop-down menu. Click <span class="ph uicontrol">Create Join </span> to
+                    define the inner join between each table.</span> 
+                    <ol class="ol substeps" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis__substeps_nn3_2pv_pk" type="a">
+                      <li class="li substep"><span class="ph cmd">Create join conditions for each entry in the <span class="ph uicontrol">Left Table</span>  and <span class="ph uicontrol">Right Table</span>  drop-down menus. </span> 
+                      </li>
+                    </ol> The join relationship for each table is based on the field selected and is displayed in the lower portion of the dialog box. To delete a join, select the join and click <span class="ph uicontrol">Delete Join</span> .</li>
+                  <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Finish</span> .</span> 
+                    <p class="p">The <span class="ph uicontrol">Data Source Created</span>  window appears. You can choose to <span class="ph uicontrol">Keep default model</span>  or click <span class="ph uicontrol">Customize model now</span>  now to launch the Data
+                      Source Model Editor and refine the model. Click <span class="ph uicontrol">OK</span> .</p>
+                    <p class="p">&nbsp;</p> &nbsp;
+                    <div class="imagecenter">
+                      <img alt="File:/ssGettingStartedDataSourceCreated.png" class="image imagecenter internal" id="23b4d035-546f-42d8-a784-c28fa45d412e__task_database_reporting_analysis__image_xbl_svx_qk" src="http://help.pentaho.com/@api/deki/files/1379/ssGettingStartedDataSourceCreated.png?revision=1"
+                      />
+                    </div>
+                  </li>
+                </ol>
+                <div class="section result">A multidimensional model is generated for use in Analyzer, Interactive Reports, and Dashboard reports, or the <span class="ph uicontrol">Data Source Model Editor</span>  appears.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Create_a_Database_Table_Data_Source_for_Reporting_Only" rel="internal">Create a Database Table Data Source for Reporting Only</a>  </li>
+      <li> <a href="#Create_a_Database_Table_Data_Source_for_Reporting_and_Analysis" rel="internal">Create a Database Table Data Source for Reporting and Analysis</a>  </li>
+    </ol>
+  </body>
+</content>

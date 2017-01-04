@@ -1,0 +1,1527 @@
+<content type="text/html" title="ETL Metadata Injection">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>The ETL Metadata Injection step is capable of injecting step metadata into a template transformation.</p>
+      </div>
+    </div>
+    <p>The ETL Metadata Injection step inserts&nbsp;metadata into a template transformation. Instead of statically entering ETL metadata in a step dialog, you pass it at run-time. This step enables you to solve repetitive ETL workloads like loading of text
+      files, data migration, and so on.</p>
+    <p>The following steps support metadata injection:</p>
+    <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+      <tbody>
+        <tr>
+          <th class="pentaho-table-column-subheader" style="width: 126px; height: 17px;" title="Pentaho column sub-header">Step</th>
+          <th class="pentaho-table-column-subheader" style="width: 54px; height: 17px;" title="Pentaho column sub-header">Version Introduced</th>
+          <th class="pentaho-table-column-subheader" style="width: 252px; height: 17px;" title="Pentaho column sub-header">Fields Supporting Metadata Injection</th>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Concat+Fields" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Concat+Fields" target="_blank">Concat Fields</a> 
+          </td>
+          <td>5.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/CSV+File+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/CSV+File+Input" target="_blank">CSV File Input</a> 
+          </td>
+          <td>4.1</td>
+          <td>See
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/CSV+File+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/CSV+File+Input" target="_blank">CSV File Input</a>  for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Data+Grid" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Data+Grid" target="_blank">Data Grid</a> 
+          </td>
+          <td>5.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Fixed+File+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Fixed+File+Input" target="_blank">Fixed File Input</a> 
+          </td>
+          <td>4.1</td>
+          <td>See
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Fixed+File+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Fixed+File+Input" target="_blank">Fixed File Input</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Get+Data+From+XML" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Get+Data+From+XML" target="_blank">Get Data from XML</a> 
+          </td>
+          <td>5.0</td>
+          <td>See&nbsp;
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Get+Data+From+XML" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Get+Data+From+XML" target="_blank">Get Data from XML</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Google+Analytics" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Google+Analytics" target="_blank">Google Analytics</a> 
+          </td>
+          <td>6.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Group+By" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Group+By" target="_blank">Group By</a> 
+          </td>
+          <td>5.0</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/GZIP+CSV+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/GZIP+CSV+Input" target="_blank">GZIP CSV Input</a> 
+          </td>
+          <td>5.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/JSON+output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/JSON+output" target="_blank">JSON Output</a> 
+          </td>
+          <td>5.2</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Access+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Access+Input" target="_blank">Microsoft Access Input</a> 
+          </td>
+          <td>5.0</td>
+          <td>See&nbsp;
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Access+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Access+Input" target="_blank">Microsoft Access Input</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Excel+Input+Step" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Excel+Input+Step" target="_blank">Microsoft Excel Input</a> 
+          </td>
+          <td>4.1</td>
+          <td>See&nbsp;
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Excel+Input+Step" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Excel+Input+Step" target="_blank">Microsoft Excel Input</a>  for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Excel+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Excel+Output" target="_blank">Microsoft&nbsp;Excel Output</a> 
+          </td>
+          <td>5.1</td>
+          <td>All fields (as of 6.1)</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Microsoft+Excel+Writer" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Microsoft+Excel+Writer" target="_blank">Microsoft Excel Writer</a> 
+          </td>
+          <td>5.3</td>
+          <td>See&nbsp;
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Microsoft+Excel+Writer" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Microsoft+Excel+Writer" target="_blank">Microsoft Excel Writer</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Pentaho+Reporting+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Pentaho+Reporting+Output" target="_blank">Pentaho Reporting Output</a> 
+          </td>
+          <td>5.0</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/PostgreSQL+Bulk+Loader" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/PostgreSQL+Bulk+Loader" target="_blank">PostgreSQL Bulk Loader</a> 
+          </td>
+          <td>5.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Row+denormaliser" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Row+denormaliser" target="_blank">Row Denormaliser</a> 
+          </td>
+          <td>4.2</td>
+          <td>See
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Row+denormaliser" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Row+denormaliser" target="_blank">Row Denormaliser</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Row+Normaliser" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Row+Normaliser" target="_blank">Row Normaliser</a> 
+          </td>
+          <td>4.2</td>
+          <td>See
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Row+Normaliser" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Row+Normaliser" target="_blank">Row Normaliser</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/S3+CSV+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/S3+CSV+Input" target="_blank">S3 CSV Input</a> 
+          </td>
+          <td>6.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/S3+File+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/S3+File+Output" target="_blank">S3 File Output</a> 
+          </td>
+          <td>6.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Select+Values" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Select+Values" target="_blank">Select Values</a> 
+          </td>
+          <td>4.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Sort+rows" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Sort+rows" target="_blank">Sort Rows</a> 
+          </td>
+          <td>5.0</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Split+Fields" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Split+Fields" target="_blank">Split Field</a> 
+          </td>
+          <td>5.0</td>
+          <td>All fields (as of 6.1)</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Stream+Lookup" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Stream+Lookup" target="_blank">Stream Lookup</a> 
+          </td>
+          <td>6.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Table+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Table+Input" target="_blank">Table Input</a> 
+          </td>
+          <td>5.2</td>
+          <td>See&nbsp;
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Table+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Table+Input" target="_blank">Table Input</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Table+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Table+Output" target="_blank">Table Output</a> 
+          </td>
+          <td>5.1</td>
+          <td>See&nbsp;
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Table+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Table+Output" target="_blank">Table Output</a> &nbsp;for a list of supported fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Text+File+Input" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Text+File+Input" target="_blank">Text File Input</a> 
+          </td>
+          <td>5.0</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Text+File+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Text+File+Output" target="_blank">Text File Output</a> 
+          </td>
+          <td>5.2</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/User+Defined+Java+Expression" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/User+Defined+Java+Expression" target="_blank">User Defined Java Expression</a> 
+          </td>
+          <td>5.2</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/Value+Mapper" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Value+Mapper" target="_blank">Value Mapper</a> 
+          </td>
+          <td>6.1</td>
+          <td>All fields</td>
+        </tr>
+        <tr>
+          <td>
+            <a class="external" title="http://wiki.pentaho.com/display/EAI/XML+Output" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/XML+Output" target="_blank">XML Output</a> 
+          </td>
+          <td>6.1</td>
+          <td>All fields</td>
+        </tr>
+      </tbody>
+    </table>
+    <div id="section_2" class="mt-page-section"><span id="Options"></span> 
+      <h2 class="editable">Options</h2>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th class="pentaho-table-column-subheader" style="width: 162px; height: 17px;" title="Pentaho column sub-header">Option</th>
+            <th class="pentaho-table-column-subheader" style="width: 272px; height: 17px;" title="Pentaho column sub-header">Description</th>
+          </tr>
+          <tr>
+            <td><strong>Transformation template</strong> </td>
+            <td>In this section of the dialog, you can specify the transformation to use as a template. &nbsp;When you have specified a transformation, you can use the <strong>Validate and Refresh</strong>  button. &nbsp;The <strong>Edit</strong>  button will
+              open the specified template in a new tab in Spoon.</td>
+          </tr>
+          <tr>
+            <td><strong>Template step to read from (optional)</strong> </td>
+            <td>If you specify a step from the template here, then the output of the <strong>ETL Metadata Injection</strong>  step will be the output from the source step.</td>
+          </tr>
+          <tr>
+            <td><strong>Optional target file (KTR after injection)</strong> </td>
+            <td>For debugging or transformation generation, you can save the resulting transformation filename, after metadata injection, to a file. &nbsp;If you want, you can&nbsp;specify a file name, <span style="font-family: courier new,courier,monospace;">result.ktr</span>               for example.</td>
+          </tr>
+          <tr>
+            <td><strong>Don't execute resulting transformation</strong> </td>
+            <td>If you prefer to not execute the resulting transformation (after metadata injection), enable this option.</td>
+          </tr>
+          <tr>
+            <td><strong>Field mapping</strong> </td>
+            <td>You can select any row in the metadata tree table with your mouse, which pops up a source step and field selection dialog.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Data_Streaming"></span> 
+      <h2 class="editable">Data Streaming</h2>
+      <p>Since version 5.1, this step is capable of streaming data from one transformation into another.&nbsp;</p>
+      <p>To pass data from your template transformation (after injection, during execution) to your current transformation, specify <strong>Template step to read from</strong> . &nbsp;You can also specify the expected output fields easily design the steps
+        which come after the ETL Metadata Injection step.</p>
+      <p>To pass data from a source step into the template transformation (again, after injection) you can specify <strong>Streaming source step</strong>  and <strong>Streaming target step</strong>  in the template transformation.</p>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Example"></span> 
+      <h2 class="editable">Example</h2>
+      <p>Metadata injection inserts data from various sources into your transformation at runtime. This insertion reduces repetitive ETL tasks for various input and out files.</p>
+      <p>For example, you might have a simple transformation to load transaction data values from a supplier&rsquo;s spreadsheet, filter out specific values to examine, and output them to a text file. You can expand this simple repetitive &ldquo;template&rdquo;
+        transformation with metadata injection to load data values from multiple suppliers&rsquo; spreadsheets in various folders, filter out common specific transaction values to examine, and output all of it to a single source text file.</p>
+      <p>In this example, we show you how to use metadata injection through these steps:</p>
+      <ul class="pentaho-list-unordered">
+        <li> <a title="ETL Metadata Injection" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection#Step_1:_Create_Sample_Data">Step 1: Create Sample Data</a> &nbsp;&ndash; the folder structure and spreadsheet files used to show how data can be set up for metadata injection </li>
+        <li>
+          <a title="ETL Metadata Injection" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection#Step_2:_Develop_Your_Transactions">Step 2: Develop Your Transformations</a> &nbsp;&ndash; the transformations for the main process (the template transformation), metadata injection through the
+          <a title="ETL Metadata Injection" rel="internal" class="mt-self-link" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection">ETL Metadata Injection</a>  step, and dealing with multiple supplier files</li>
+        <li> <a title="ETL Metadata Injection" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection#Step_3:_Run_and_Examine_Results">Step 3: Run and Examine Results</a> &nbsp;&ndash; the single source output text file and logging </li>
+      </ul>
+      <p>This example assumes a basic understanding of
+        <a title="Working with Transformations" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030/030">working with&nbsp;transformations</a>  and steps.</p>
+      <div id="section_5" class="mt-page-section"><span id="Step_1:_Create_Sample_Data"></span> 
+        <h3 class="editable">Step 1: Create Sample Data</h3>
+        <p>Data files are frequently uploaded from various sources. For this step, we model a situation where two suppliers have uploaded spreadsheets into a <span style="font-family: courier new,courier,monospace;">data/in</span>  folder.</p>
+        <p>When using metadata injection, you usually want to focus on a subset of data values common to all your input files. For this example, we&nbsp;derive metadata&nbsp;for the following values:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Transaction date</li>
+          <li>Transaction invoice number</li>
+          <li>Net value of the transaction</li>
+          <li>Currency used in the transaction</li>
+        </ul>
+        <p>The metadata for these values and the output target text file are created and maintained in the <span style="font-family: courier new,courier,monospace;">metadata</span>  folder.</p>
+        <ol>
+          <li>Create a new folder named <span style="font-family: courier new,courier,monospace;">Pentaho_Metadata_Injection_Example</span>  on your computer, and then create the following folder structure inside it.</li>
+        </ol>
+        <p style="text-align: center;">
+          <img src="data:image/png;base64,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"
+          />
+        </p>
+        <ol start="2">
+          <li>Create a spreadsheet for supplier #1 in Microsoft Excel, and save it as <span style="font-family: courier new,courier,monospace;">data_format_a.xlsx</span>  in the <span style="font-family: courier new,courier,monospace;">data/in/supplier1</span>             folder.</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 188.19px;">Tx Date and Time</th>
+              <th scope="col" style="width: 89.19px;">Check</th>
+              <th scope="col" style="width: 70.19px;">Inv</th>
+              <th scope="col" style="width: 76.19px;">Price</th>
+              <th scope="col" style="width: 77.2px;">Net</th>
+              <th scope="col" style="width: 84.2px;">VAT</th>
+              <th scope="col" style="width: 81.2px;">Gross</th>
+              <th scope="col" style="width: 85.2px;">VATP</th>
+              <th scope="col" style="width: 62.19px;">Cur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 187.19px;">01/26/2016 07:24:00</td>
+              <td style="width: 88.19px;">12345</td>
+              <td style="width: 69.19px;">9406</td>
+              <td style="width: 75.19px;">1.13</td>
+              <td style="width: 76.2px;">62.69</td>
+              <td style="width: 83.2px;">11.91</td>
+              <td style="width: 80.2px;">74.6</td>
+              <td style="width: 84.2px;">19</td>
+              <td style="width: 61.19px;">EUR</td>
+            </tr>
+            <tr>
+              <td style="width: 187.19px;">01/26/2016 07:31:00</td>
+              <td style="width: 88.19px;">12346</td>
+              <td style="width: 69.19px;">9407</td>
+              <td style="width: 75.19px;">1.13</td>
+              <td style="width: 76.2px;">54.63</td>
+              <td style="width: 83.2px;">10.38</td>
+              <td style="width: 80.2px;">65.01</td>
+              <td style="width: 84.2px;">19</td>
+              <td style="width: 61.19px;">EUR</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol start="3">
+          <li>Create a spreadsheet for supplier #2 in Microsoft Excel, and save it as <span style="font-family: courier new,courier,monospace;">data_format_b.xlsx</span>  in the <span style="font-family: courier new,courier,monospace;">data/in/supplier2</span>             folder.</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1">
+          <tbody>
+            <tr>
+              <th scope="col" style="width: 188.19px;">TransferDataTime</th>
+              <th scope="col" style="width: 89.19px;">Check</th>
+              <th scope="col" style="width: 70.19px;">Inv</th>
+              <th scope="col" style="width: 76.19px;">Cur</th>
+              <th scope="col" style="width: 77.2px;">VAT</th>
+              <th scope="col" style="width: 84.2px;">Gross</th>
+              <th scope="col" style="width: 85.2px;">VATP</th>
+              <th scope="col" style="width: 84.5px;">Net</th>
+            </tr>
+            <tr>
+              <td style="width: 187.19px;">01/26/2016 07:23:00</td>
+              <td style="width: 88.19px;">800901</td>
+              <td style="width: 69.19px;">3711</td>
+              <td style="width: 75.19px;">EUR</td>
+              <td style="width: 76.2px;">8.95</td>
+              <td style="width: 83.2px;">56.06</td>
+              <td style="width: 84.2px;">19</td>
+              <td style="width: 83.5px;">47.11</td>
+            </tr>
+            <tr>
+              <td style="width: 187.19px;">01/26/2016 07:30:00</td>
+              <td style="width: 88.19px;">800927</td>
+              <td style="width: 69.19px;">3712</td>
+              <td style="width: 75.19px;">EUR</td>
+              <td style="width: 76.2px;">0.94</td>
+              <td style="width: 83.2px;">5.89</td>
+              <td style="width: 84.2px;">19</td>
+              <td style="width: 83.5px;">4.95</td>
+            </tr>
+            <tr>
+              <td style="width: 187.19px;">01/26/2016 07:32:00</td>
+              <td style="width: 88.19px;">800990</td>
+              <td style="width: 69.19px;">3713</td>
+              <td style="width: 75.19px;">EUR</td>
+              <td style="width: 76.2px;">15.38</td>
+              <td style="width: 83.2px;">96.36</td>
+              <td style="width: 84.2px;">19</td>
+              <td style="width: 83.5px;">80.98</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol start="4">
+          <li>Create two tabs in a spreadsheet of metadata fields for suppliers, and save it as <span style="font-family: courier new,courier,monospace;">metadata_suppliers.xlsx</span>  in the <span style="font-family: courier new,courier,monospace;">metadata</span>             folder.</li>
+        </ol>
+        <ul>
+          <li>The <span style="display: none;">&nbsp;</span> <strong>s<span class="rangySelectionBoundary" id="selectionBoundary_1457442179854_1412321383846803" style="line-height: 0; display: none;">&#65279;</span> upplier1</strong> <span class="rangySelectionBoundary"
+            id="selectionBoundary_1457442175172_9523954142369257" style="line-height: 0; display: none;">&#65279;</span>  tab.</li>
+        </ul>
+        <table border="1" cellpadding="1" cellspacing="1">
+          <thead>
+            <tr>
+              <th scope="col"><span style="font-size: 8px;">Name</span> </th>
+              <th scope="col"><span style="font-size: 8px;">Type</span> </th>
+              <th scope="col"><span style="font-size: 8px;">Length</span> </th>
+              <th scope="col"><span style="font-size: 8px;">Precision</span> </th>
+              <th scope="col"><span style="font-size: 8px;">Trim type</span> </th>
+              <th scope="col"><span style="font-size: 8px;">Repeat</span> </th>
+              <th class="rangySelectionBoundary" id="selectionBoundary_1457442353432_9579505529135397" scope="col" style="line-height: 0; display: none;"><span style="font-size: 8px;">&#65279;</span> </th>
+              <th class="rangySelectionBoundary" id="selectionBoundary_1457442354888_49027469491799946" scope="col" style="width: 1px; line-height: 0; display: none;"><span style="font-size: 8px;">&#65279;</span> </th>
+              <th scope="col" style="width: 90px;"><span style="font-size: 8px;">Format</span> </th>
+              <th scope="col" style="width: 65.2px;"><span style="font-size: 8px;">Currency</span> </th>
+              <th scope="col" style="width: 62.79px;"><span style="font-size: 8px;">Decimal</span> </th>
+              <th scope="col" style="width: 72.79px;"><span style="font-size: 8px;">Grouping</span> </th>
+              <th scope="col" style="width: 105.8px;"><span style="font-size: 8px;">Target field</span> </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span style="font-size: 8px;">Tx Date and Time</span> </td>
+              <td><span style="font-size: 8px;">Date</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td><span style="font-size: 8px;">yyyy/MM/dd HH:mm:ss</span> </td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;">&nbsp;</td>
+              <td style="width: 76.2px;">&nbsp;</td>
+              <td style="width: 99.79px;"><span style="font-size: 8px;">transaction_date</span> </td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">Check</span> </td>
+              <td><span style="font-size: 8px;">Integer</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;">&nbsp;</td>
+              <td style="width: 76.2px;">&nbsp;</td>
+              <td style="width: 99.79px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">Inv</span> </td>
+              <td><span style="font-size: 8px;">Integer</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;">&nbsp;</td>
+              <td style="width: 76.2px;">&nbsp;</td>
+              <td style="width: 99.79px;"><span style="font-size: 8px;">transaction_invoice</span> </td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">Price</span> </td>
+              <td><span style="font-size: 8px;">BigNumber</span> </td>
+              <td><span style="font-size: 8px;">8</span> </td>
+              <td><span style="font-size: 8px;">2</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;"><span style="font-size: 8px;">,</span> </td>
+              <td style="width: 76.2px;"><span style="font-size: 8px;">.</span> </td>
+              <td style="width: 99.79px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">Net</span> </td>
+              <td><span style="font-size: 8px;">BigNumber</span> </td>
+              <td><span style="font-size: 8px;">8</span> </td>
+              <td><span style="font-size: 8px;">2</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;"><span style="font-size: 8px;">,</span> </td>
+              <td style="width: 76.2px;"><span style="font-size: 8px;">.</span> </td>
+              <td style="width: 99.79px;"><span style="font-size: 8px;">transaction_net</span> </td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">VAT</span> </td>
+              <td><span style="font-size: 8px;">BigNumber</span> </td>
+              <td><span style="font-size: 8px;">8</span> </td>
+              <td><span style="font-size: 8px;">2</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;"><span style="font-size: 8px;">,</span> </td>
+              <td style="width: 76.2px;"><span style="font-size: 8px;">.</span> </td>
+              <td style="width: 99.79px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">Gross</span> </td>
+              <td><span style="font-size: 8px;">BigNumber</span> </td>
+              <td><span style="font-size: 8px;">8</span> </td>
+              <td><span style="font-size: 8px;">2</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;"><span style="font-size: 8px;">,</span> </td>
+              <td style="width: 76.2px;"><span style="font-size: 8px;">.</span> </td>
+              <td style="width: 99.79px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">VATP</span> </td>
+              <td><span style="font-size: 8px;">BigNumber</span> </td>
+              <td><span style="font-size: 8px;">2</span> </td>
+              <td><span style="font-size: 8px;">1</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;"><span style="font-size: 8px;">,</span> </td>
+              <td style="width: 76.2px;"><span style="font-size: 8px;">.</span> </td>
+              <td style="width: 99.79px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 8px;">Cur</span> </td>
+              <td><span style="font-size: 8px;">String</span> </td>
+              <td><span style="font-size: 8px;">3</span> </td>
+              <td><span style="font-size: 8px;">-1</span> </td>
+              <td><span style="font-size: 8px;">none</span> </td>
+              <td><span style="font-size: 8px;">N</span> </td>
+              <td>&nbsp;</td>
+              <td style="width: 75px;">&nbsp;</td>
+              <td style="width: 83px;">&nbsp;</td>
+              <td style="width: 76.2px;">&nbsp;</td>
+              <td style="width: 99.79px;"><span style="font-size: 8px;">transaction_cur</span> </td>
+            </tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>The <span style="display: none;">&nbsp;</span> <strong>supplie<span class="rangySelectionBoundary" id="selectionBoundary_1457442189395_8906213969168936" style="line-height: 0; display: none;">&#65279;</span> r2<span class="rangySelectionBoundary" id="selectionBoundary_1457442197677_9869904560632219" style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1457442197588_3674797571215" style="line-height: 0; display: none;">&#65279;</span> </strong> 
+            <span
+            class="rangySelectionBoundary" id="selectionBoundary_1457442192831_4324025915048656" style="line-height: 0; display: none;">&#65279;</span>  tab.</li>
+        </ul>
+        <table border="1" cellpadding="1" cellspacing="1">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 103.19px;"><span style="font-size: 8px;">Name</span> </th>
+              <th scope="col" style="width: 76.8px;"><span style="font-size: 8px;">Type</span> </th>
+              <th scope="col" style="width: 59.19px;"><span style="font-size: 8px;">Length</span> </th>
+              <th scope="col" style="width: 67.19px;"><span style="font-size: 8px;">Precision</span> </th>
+              <th scope="col" style="width: 70.19px;"><span style="font-size: 8px;">Trim type</span> </th>
+              <th scope="col" style="width: 63.19px;"><span style="font-size: 8px;">Repeat</span> </th>
+              <th scope="col" style="width: 59.2px;"><span style="font-size: 8px;">Format</span> </th>
+              <th scope="col" style="width: 68.2px;"><span style="font-size: 8px;">Currency</span> </th>
+              <th scope="col" style="width: 61.2px;"><span style="font-size: 8px;">Decimal</span> </th>
+              <th scope="col" style="width: 66.2px;"><span style="font-size: 8px;">Grouping</span> </th>
+              <th scope="col" style="width: 108.19px;"><span style="font-size: 8px;">Target field</span> </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">TransferDateTime</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Date</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;"><span style="font-size: 8px;">transaction_date</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">Check</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Number</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">Inv</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Number</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;"><span style="font-size: 8px;">transaction_invoice</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">Cur</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">String</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;"><span style="font-size: 8px;">transaction_cur</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">VAT</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Number</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">Gross</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Number</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">VATP</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Number</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 102.19px;"><span style="font-size: 8px;">Net</span> </td>
+              <td style="width: 75.8px;"><span style="font-size: 8px;">Number</span> </td>
+              <td style="width: 58.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 69.19px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 62.19px;"><span style="font-size: 8px;">N</span> </td>
+              <td style="width: 58.2px;">&nbsp;</td>
+              <td style="width: 67.2px;">&nbsp;</td>
+              <td style="width: 60.2px;">&nbsp;</td>
+              <td style="width: 65.2px;">&nbsp;</td>
+              <td style="width: 107.19px;"><span style="font-size: 8px;">transaction_net</span> </td>
+            </tr>
+          </tbody>
+        </table>
+        <ol start="5">
+          <li>Create a spreadsheet of metadata fields for targets, and save it as <span style="font-family: courier new,courier,monospace;">metadata_target.xlsx</span>  in the <span style="font-family: courier new,courier,monospace;">metadata</span>  folder.</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 106.19px;"><span style="font-size: 8px;">Name</span> </th>
+              <th scope="col" style="width: 77.19px;"><span style="font-size: 8px;">Type</span> </th>
+              <th scope="col" style="width: 79.8px;"><span style="font-size: 8px;">Format</span> </th>
+              <th scope="col" style="width: 61.19px;"><span style="font-size: 8px;">Length</span> </th>
+              <th scope="col" style="width: 66.19px;"><span style="font-size: 8px;">Precision</span> </th>
+              <th scope="col" style="width: 66.19px;"><span style="font-size: 8px;">Currency</span> </th>
+              <th scope="col" style="width: 70.2px;"><span style="font-size: 8px;">Decimal</span> </th>
+              <th scope="col" style="width: 64.2px;"><span style="font-size: 8px;">Group</span> </th>
+              <th scope="col" style="width: 79.2px;"><span style="font-size: 8px;">Trim type</span> </th>
+              <th scope="col" style="width: 56.2px;"><span style="font-size: 8px;">Null</span> </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">supplier</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">String</span> </td>
+              <td style="width: 79.8px;">&nbsp;</td>
+              <td style="width: 61.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">both</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">source_filename</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">String</span> </td>
+              <td style="width: 79.8px;">&nbsp;</td>
+              <td style="width: 61.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">source_row</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">Integer</span> </td>
+              <td style="width: 79.8px;"><span style="font-size: 8px;">#</span> </td>
+              <td style="width: 61.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">transaction_date</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">Date</span> </td>
+              <td style="width: 79.8px;"><span style="font-size: 8px;">yyyy-MM-dd</span> </td>
+              <td style="width: 61.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">transaction_invoice</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">BigNumber</span> </td>
+              <td style="width: 79.8px;"><span style="font-size: 8px;">#</span> </td>
+              <td style="width: 61.19px;"><span style="font-size: 8px;">-1</span> </td>
+              <td style="width: 66.19px;"><span style="font-size: 8px;">-1</span> </td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">transaction_net</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">BigNumber</span> </td>
+              <td style="width: 79.8px;"><span style="font-size: 8px;">#.##</span> </td>
+              <td style="width: 61.19px;"><span style="font-size: 8px;">-1</span> </td>
+              <td style="width: 66.19px;"><span style="font-size: 8px;">-1</span> </td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">none</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 106.19px;"><span style="font-size: 8px;">transaction_cur</span> </td>
+              <td style="width: 77.19px;"><span style="font-size: 8px;">String</span> </td>
+              <td style="width: 79.8px;">&nbsp;</td>
+              <td style="width: 61.19px;"><span style="font-size: 8px;">3</span> </td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 66.19px;">&nbsp;</td>
+              <td style="width: 70.2px;">&nbsp;</td>
+              <td style="width: 64.2px;">&nbsp;</td>
+              <td style="width: 79.2px;"><span style="font-size: 8px;">both</span> </td>
+              <td style="width: 56.2px;">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Step_2:_Develop_Your_Transactions"></span> 
+        <h3 class="editable">Step 2: Develop Your Transactions</h3>
+        <p>You need to develop a transformation for the main repetitive process, which is often known as the template transform. For this example, you need a transformation (<strong>process_supplier_file</strong> ) to process the transactions in each supplier&rsquo;s
+          file. Then, the metadata needs to be injected from a transformation (<strong>inject_supplier_metadata</strong> ) developed with the
+          <a title="ETL Metadata Injection" rel="internal" class="mt-self-link" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection">ETL Metadata Injection</a>  step. The ETL Metadata Injection step calls the template transformation. Since this example is for inserting data from multiple files, the metadata injection transformation needs to be called from another transformation
+          (<strong>process_all_suppliers</strong> ) per each supplier file.</p>
+        <p>All total, three transformations need to be developed:</p>
+        <ul class="pentaho-list-unordered">
+          <li> <a title="ETL Metadata Injection" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection#Template_Transformation">Template Transformation</a> &nbsp;&ndash; The main repetitive transformation for processing the data per each supplier&rsquo;s spreadsheet. </li>
+          <li> <a title="ETL Metadata Injection" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection#Metadata_Injection_Transformation">Metadata Injection Transformation</a> &nbsp;&ndash; The transformation defining the structure of the metadata and how it is injected into the main transformation. </li>
+          <li>
+            <a title="ETL Metadata Injection" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection#Transformation_for_All_Suppliers">Transformation for All Suppliers</a> &nbsp;&ndash; The transformation going through all the suppliers&rsquo; spreadsheets, calling the metadata injection transformation per each supplier, and logging the entire process (for possible troubleshooting,
+            if needed).</li>
+        </ul>
+        <div id="section_7" class="mt-page-section"><span id="Template_Transformation"></span> 
+          <h4 class="editable">Template Transformation</h4>
+          <p>With metadata injection, you develop your repetitive, template transformation as you would normally. The main difference is how the settings for each step pertains to the metadata injection, instead of data values of a single specific source.</p>
+          <ol>
+            <li>Open a new transformation and save it as <span style="font-family: courier new,courier,monospace;">process_supplier_file.ktr</span>  to the <span style="font-family: courier new,courier,monospace;">transformations</span>  folder.</li>
+            <li>Drag a <strong>Microsoft Excel Input</strong>  step onto the canvas.</li>
+            <li>Change <strong>Spread sheet type (engine)</strong>  to <span style="font-family: courier new,courier,monospace;">Excel 2007 XLSX (Apache POI)</span>, and fill out the following values in the <strong>Additional output fields</strong>  tab.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 377.19px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 183.19px;">Field</th>
+                <th scope="col" style="width: 183.19px;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 182.19px;">Full filename field</td>
+                <td style="width: 182.19px;">processed_filename</td>
+              </tr>
+              <tr>
+                <td style="width: 182.19px;">Sheet row nr field</td>
+                <td style="width: 182.19px;">source_row</td>
+              </tr>
+              <tr>
+                <td style="width: 182.19px;">Short filename field</td>
+                <td style="width: 182.19px;">source_filename</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="3">
+            <li>Drag a <strong>Select values</strong>  step onto the canvas and connect a hop from <strong>Microsoft Excel Input</strong>  to <strong>Select values</strong> .</li>
+            <li>Drag a <strong>Get Variables</strong>  step onto the canvas and connect a hop from <strong>Select values</strong>  to <strong>Get Variables</strong>, while selecting <strong>Main output of step</strong> . Also fill out the following values in
+              the <strong>Fields</strong>  table.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 256.19px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 110.19px;">Field</th>
+                <th scope="col" style="width: 135.19px;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 109.19px;">Name</td>
+                <td style="width: 134.19px;">supplier</td>
+              </tr>
+              <tr>
+                <td style="width: 109.19px;">Variable</td>
+                <td style="width: 134.19px;">${supplier}</td>
+              </tr>
+              <tr>
+                <td style="width: 109.19px;">Type</td>
+                <td style="width: 134.19px;">String</td>
+              </tr>
+              <tr>
+                <td style="width: 109.19px;">Trim type</td>
+                <td style="width: 134.19px;">none</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="5">
+            <li>Drag a <strong>Text file output</strong>  step onto the canvas and connect a hop from <strong>Get Variables</strong>  to <strong>Text file output</strong> . Also fill out the following values in the <strong>File</strong>  and <strong>Content</strong>               tabs.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 817.19px; table-layout: fixed;">
+            <tbody>
+              <tr>
+                <th scope="col" style="width: 308.19px;">Field</th>
+                <th scope="col" style="width: 498.19px;">Value</th>
+              </tr>
+              <tr>
+                <td style="width: 307.19px;">Filename (in <strong>File</strong>  tab)</td>
+                <td style="width: 497.19px;">${Internal.Entry.Current.Directory}/../data/out/processed_data</td>
+              </tr>
+              <tr>
+                <td style="width: 307.19px;">Include date in filename? (in <strong>File</strong>  tab)</td>
+                <td style="width: 497.19px;">enable</td>
+              </tr>
+              <tr>
+                <td style="width: 307.19px;">Add filenames to result (in <strong>File</strong>  tab)</td>
+                <td style="width: 497.19px;">disable</td>
+              </tr>
+              <tr>
+                <td style="width: 307.19px;">Append (in <strong>Content</strong>  tab)</td>
+                <td style="width: 497.19px;">enable</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="6">
+            <li>Save your <span style="font-family: courier new,courier,monospace;">process_supplier_file.ktr</span>  file.</li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Metadata_Injection_Transformation"></span> 
+          <h4 class="editable">Metadata Injection Transformation</h4>
+          <p>For this example, our metadata values are maintained in separate spreadsheet files. You need to create a transformation to extract in these values, prepare them for the injection, and then insert them into the template transformation through
+            the
+            <a title="ETL Metadata Injection" rel="internal" class="mt-self-link" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0K0/ETL_Metadata_Injection">ETL Metadata Injection</a>  step, as shown in the following figure:</p>
+          <p style="text-align: center;">
+            <img src="data:image/png;base64,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"
+            />
+          </p>
+          <p><strong>Extract the Metadata</strong> </p>
+          <p>For this example, you need to define the input files, access the metadata, and structure the output based on this metadata.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Open a new transformation and save it as <span style="font-family: courier new,courier,monospace;">inject_supplier_metadata.ktr</span>  to the <span style="font-family: courier new,courier,monospace;">transformations</span>  folder.</li>
+            <li>Drag a <strong>Get row from result</strong>  step to the canvas, and fill out the following values in the <strong>Fields</strong>  table.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 366.19px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 45.19px;">#</th>
+                <th scope="col" style="width: 124.19px;">Fieldname</th>
+                <th scope="col" style="width: 86.19px;">Type</th>
+                <th scope="col" style="width: 95.19px;">Length</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 44.19px;">1</td>
+                <td style="width: 123.19px;">supplier</td>
+                <td style="width: 85.19px;">String</td>
+                <td style="width: 94.19px;">500</td>
+              </tr>
+              <tr>
+                <td style="width: 44.19px;">2</td>
+                <td style="width: 123.19px;">folderName</td>
+                <td style="width: 85.19px;">String</td>
+                <td style="width: 94.19px;">500</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Drag a <strong>Microsoft Excel Input</strong>  step onto the canvas, name the step <strong>Metadata Suppliers</strong> .</li>
+            <li><strong>Browse</strong>  to <strong>Add</strong>  the <span style="font-family: courier new,courier,monospace;">${Internal.Entry.Current.Directory}/../metadata/metadata_suppliers.xlsx</span>  file in the <strong>Files</strong>  tab.</li>
+            <li>Change <strong>Spread sheet type (engine)</strong>  to <span style="font-family: courier new,courier,monospace;">Excel 2007 XLSX (Apache POI)</span>, and fill out the following values in the <strong>!Fields</strong>  tab table.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 728.2px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 53.19px;">#</th>
+                <th scope="col" style="width: 129.19px;">Name</th>
+                <th scope="col" style="width: 92.19px;">Type</th>
+                <th scope="col" style="width: 99.19px;">Length</th>
+                <th scope="col" style="width: 108.2px;">Precision</th>
+                <th scope="col" style="width: 118.2px;">Trim type</th>
+                <th scope="col" style="width: 98.2px;">Repeat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 52.19px;">1</td>
+                <td style="width: 128.19px;">Name</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">2</td>
+                <td style="width: 128.19px;">Type</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">3</td>
+                <td style="width: 128.19px;">Length</td>
+                <td style="width: 91.19px;">Integer</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">4</td>
+                <td style="width: 128.19px;">Precision</td>
+                <td style="width: 91.19px;">Integer</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">5</td>
+                <td style="width: 128.19px;">Trim type</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">6</td>
+                <td style="width: 128.19px;">Repeat</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">7</td>
+                <td style="width: 128.19px;">Format</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">8</td>
+                <td style="width: 128.19px;">Currency</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">9</td>
+                <td style="width: 128.19px;">Decimal</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">10</td>
+                <td style="width: 128.19px;">Grouping</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 52.19px;">11</td>
+                <td style="width: 128.19px;">Target field</td>
+                <td style="width: 91.19px;">String</td>
+                <td style="width: 98.19px;">-1</td>
+                <td style="width: 107.2px;">-1</td>
+                <td style="width: 117.2px;">none</td>
+                <td style="width: 97.2px;">N</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="6">
+            <li>In the <strong>Additional output fields</strong>  tab, set <strong>Sheetname</strong>  field to <span style="font-family: courier new,courier,monospace;">metadata_supplier</span> .</li>
+            <li>Drag another <strong>Microsoft Excel Input</strong>  step onto the canvas, name the step <strong>Metadata Target</strong> .</li>
+            <li>Add the <span style="font-family: courier new,courier,monospace;">${Internal.Entry.Current.Directory}/../metadata/metadata_target.xlsx</span>  file in the <strong>Files</strong>  tab.</li>
+            <li>Change <strong>Spread sheet type (engine)</strong>  to <span style="font-family: courier new,courier,monospace;">Excel 2007 XLSX (Apache POI)</span>, and fill out the following values in the <strong>!Fields </strong> tab table.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 710.2px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 54.19px;">#</th>
+                <th scope="col" style="width: 114.19px;">Name</th>
+                <th scope="col" style="width: 93.19px;">Type</th>
+                <th scope="col" style="width: 98.19px;">Length</th>
+                <th scope="col" style="width: 115.19px;">Precision</th>
+                <th scope="col" style="width: 117.2px;">Trim type</th>
+                <th scope="col" style="width: 94.2px;">Repeat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 53.19px;">1</td>
+                <td style="width: 113.19px;">Name</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">2</td>
+                <td style="width: 113.19px;">Type</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">3</td>
+                <td style="width: 113.19px;">Format</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">4</td>
+                <td style="width: 113.19px;">Length</td>
+                <td style="width: 92.19px;">Integer</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">5</td>
+                <td style="width: 113.19px;">Precision</td>
+                <td style="width: 92.19px;">Integer</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">6</td>
+                <td style="width: 113.19px;">Currency</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">7</td>
+                <td style="width: 113.19px;">Decimal</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">8</td>
+                <td style="width: 113.19px;">Group</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">9</td>
+                <td style="width: 113.19px;">Trim type</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 53.19px;">10</td>
+                <td style="width: 113.19px;">Null</td>
+                <td style="width: 92.19px;">String</td>
+                <td style="width: 97.19px;">-1</td>
+                <td style="width: 114.19px;">-1</td>
+                <td style="width: 116.2px;">none</td>
+                <td style="width: 93.2px;">N</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="10">
+            <li>In the <strong>Additional output fields</strong>  tab, set <strong>Sheetname</strong>  field to <span style="font-family: courier new,courier,monospace;">metadata_supplier</span> .</li>
+          </ol>
+          <p><strong>Prepare the Metadata</strong> </p>
+          <p>With the supplier files specified and the metadata accessed, you need to prepare this information to be injected into the main transformation.</p>
+          <ol>
+            <li>Drag a <strong>Join Rows</strong>  step to the canvas, and connect a hop from the <strong>Get rows from result</strong>  step and <strong>Join Rows</strong> . Also connect a hop from the <strong>Metadata Suppliers</strong>  step to <strong>Join Rows</strong> .</li>
+            <li>Set <strong>The condition</strong>  in <strong>Join Rows</strong>  to <span style="font-family: courier new,courier,monospace;">metadata_supplier = supplier</span> .</li>
+            <li>Drag an <strong>Add constants</strong>  step to the canvas, and connect a hop from <strong>Get rows from result</strong>  to <strong>Add constants</strong> . When the <strong>Warning</strong>  dialog appears, click <strong>Copy</strong> .</li>
+            <li>Fill out the <strong>Fields</strong>  table of <strong>Add constants</strong>  with the following values.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 584.2px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 45.19px;">#</th>
+                <th scope="col" style="width: 167.19px;">Name</th>
+                <th scope="col" style="width: 84.19px;">Type</th>
+                <th scope="col" style="width: 86.19px;">Value</th>
+                <th scope="col" style="width: 183.2px;">Set empty string?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 44.19px;">1</td>
+                <td style="width: 166.19px;">wildcard_include</td>
+                <td style="width: 83.19px;">String</td>
+                <td style="width: 85.19px;">.*</td>
+                <td style="width: 182.2px;">N</td>
+              </tr>
+              <tr>
+                <td style="width: 44.19px;">2</td>
+                <td style="width: 166.19px;">wildcard_exclude</td>
+                <td style="width: 83.19px;">String</td>
+                <td style="width: 85.19px;">&nbsp;</td>
+                <td style="width: 182.2px;">N</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="5">
+            <li>Drag a <strong>Get file names</strong>  step to the canvas, and connect a hop from <strong>Add constants</strong>  to <strong>Get file names</strong> . Also fill out the following values in the <strong>File</strong>  tab.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 451.19px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 274.19px;">Field</th>
+                <th scope="col" style="width: 166.19px;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 273.19px;">Filename is defined in a field?</td>
+                <td style="width: 165.19px;">enable</td>
+              </tr>
+              <tr>
+                <td style="width: 273.19px;">Get filename from field</td>
+                <td style="width: 165.19px;">folderName</td>
+              </tr>
+              <tr>
+                <td style="width: 273.19px;">Get wildcard from field (RegExp)</td>
+                <td style="width: 165.19px;">wildcard_include</td>
+              </tr>
+              <tr>
+                <td style="width: 273.19px;">Exclude wildcard field</td>
+                <td style="width: 165.19px;">wildcard_exclude</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Inject the Metadata</strong> </p>
+          <p>With the metadata prepared, you need to associate it with the main transformation for it to be inserted at runtime.</p>
+          <ol>
+            <li>Drag the <strong>ETL Metadata Injection</strong>  step to the canvas, and connect three hops:
+              <ul>
+                <li>From <strong>Join Rows</strong>  to <strong>ETL Metadata Injection</strong> </li>
+                <li>From <strong>Get File Names</strong>  to <strong>ETL Metadata Injection</strong> </li>
+                <li>From <strong>Metadata Target</strong>  to <strong>ETL Metadata Injection</strong> </li>
+              </ul>
+            </li>
+            <li>In the <strong>File</strong>  tab&nbsp;of the step properties, set <span style="font-family: courier new,courier,monospace;">${Internal.Entry.Current.Directory}/process_supplier_file.ktr</span>  to <strong>Use a file for the transformation template</strong> .</li>
+            <li>Click <strong>Validate and Refresh</strong> .</li>
+            <li>In the <strong>Inject Metadata</strong>  tab, set the <strong>Source step</strong>  and <strong>Source field</strong>  for the following fields.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 779.2px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 465.19px;">Target injection step, key</th>
+                <th scope="col" style="width: 155.2px;">Source step</th>
+                <th scope="col" style="width: 145.2px;">Source field</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > NAME</td>
+                <td><span class="rangySelectionBoundary" id="selectionBoundary_1457474049970_5672236103502833" style="line-height: 0; display: none;">&#65279;</span> Join Rows</td>
+                <td style="width: 154.2px;">Name</td>
+                <td style="width: 144.2px;">&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > LENGTH</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Length</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > PRECISION</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Precision</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > FORMAT</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Format</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > CURRENCY</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Currency</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > DECIMAL</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Decimal</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > GROUP</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Grouping</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > REPEAT</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Repeat</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FIELDS > TYPE</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Type</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Microsoft Excel Input > FILENAME_LINES > FILENAME</td>
+                <td style="width: 154.2px;">Get File Names</td>
+                <td style="width: 144.2px;">filename</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Select values > METAS > META_NAME</td>
+                <td style="width: 154.2px;">Join Rows</td>
+                <td style="width: 144.2px;">Name</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Select values > METAS > RENAME</td>
+                <td><span class="rangySelectionBoundary" id="selectionBoundary_1457475885022_6127661687314481" style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1457475884896_3124145692997985"
+                  style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1457475889443_5193367114147089" style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary"
+                  id="selectionBoundary_1457475889339_29108557637602167" style="line-height: 0; display: none;">&#65279;</span> Join Rows</td>
+                <td style="width: 154.2px;">Target field</td>
+                <td style="width: 144.2px;">&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_FIELDNAME</td>
+                <td><span class="rangySelectionBoundary" id="selectionBoundary_1457475923656_10505289653750477" style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1457475928294_44354889095983796"
+                  style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary" id="selectionBoundary_1457475928160_8585868499381809" style="line-height: 0; display: none;">&#65279;</span> Metadata Target</td>
+                <td style="width: 154.2px;">Name</td>
+                <td style="width: 144.2px;">&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_FORMAT</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Format</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_LENGTH</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Length</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_PRECISION</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Precision</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_CURRENCY</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Currency</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_DECIMAL</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Decimal</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_GROUP</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Group</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_NULL</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Null</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_TYPE</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Type</td>
+              </tr>
+              <tr>
+                <td style="width: 464.19px;">Text file output > OUTPUT_FIELDS > OUTPUT_TRIM</td>
+                <td style="width: 154.2px;">Metadata Target</td>
+                <td style="width: 144.2px;">Trim type</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="5">
+            <li>Save your <span style="font-family: courier new,courier,monospace;">inject_supplier_metadata.ktr</span>  file.</li>
+          </ol>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Transformation_for_All_Suppliers"></span> 
+          <h4 class="editable">Transformation for All Suppliers</h4>
+          <p>Since we have multiple input sources, we need a transformation to run through each source and inject the metadata. Each input source is specified through a variable in a <strong>Transformation Executor</strong>  step, which calls to the metadata
+            injection transformation.</p>
+          <ol>
+            <li>Open a new transformation and save it as <span style="font-family: courier new,courier,monospace;">process_all_suppliers.ktr</span>  to the <span style="font-family: courier new,courier,monospace;">transformations</span>  folder.</li>
+            <li>Drag a <strong>Get Subfolder names</strong>  step to the canvas, and add the <span style="font-family: courier new,courier,monospace;">${Internal.Entry.Current.Directory}/../data/in</span>  folder in the <strong>Folder</strong>  tab.</li>
+            <li>Drag a <strong>Select values</strong>  step to the canvas, and connect a hop from <strong>Get Subfolder names</strong>  to <strong>Select values</strong> .</li>
+            <li>Fill out the following values in the <strong>Fields</strong>  table of the <strong>Select &amp; Alter</strong>  tab.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 370.19px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 49.19px;">#</th>
+                <th scope="col" style="width: 172.19px;">Fieldname</th>
+                <th scope="col" style="width: 135.19px;">Rename to</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 48.19px;">1</td>
+                <td style="width: 171.19px;">folderName</td>
+                <td style="width: 134.19px;">&nbsp;</td>
+              </tr>
+              <tr>
+                <td style="width: 48.19px;">2</td>
+                <td style="width: 171.19px;">short_folderName</td>
+                <td style="width: 134.19px;">supplier</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="5">
+            <li>Drag a <strong>Text file output</strong>  step to the canvas.</li>
+            <li>Fill out the following values in the <strong>File</strong>  tab.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 642.2px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 231.19px;">Field</th>
+                <th scope="col" style="width: 400.2px;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 230.19px;">Filename</td>
+                <td style="width: 399.2px;">${Internal.Entry.Current.Directory}/../logging/log</td>
+              </tr>
+              <tr>
+                <td style="width: 230.19px;">Include date in filename?</td>
+                <td style="width: 399.2px;">enable</td>
+              </tr>
+              <tr>
+                <td style="width: 230.19px;">Include time in filename?</td>
+                <td style="width: 399.2px;">enable</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="7">
+            <li>Drag a <strong>Transformation Executor</strong>  step to the canvas, connect a hop from <strong>Select values</strong>  to <strong>Transformation Executor</strong>, then select <strong>Main output of step</strong>  in the context menu.</li>
+            <li>Also, connect a hop from <strong>Transformation Executor</strong>  to <strong>Text file output</strong>, then select <strong>This output will contain the execution results</strong>  in the context menu.</li>
+            <li>Fill out the following values in the <strong>Parameters</strong>  and <strong>Execution results</strong>  tabs.</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 833.19px; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 431.19px; text-align: center;">Field</th>
+                <th scope="col" style="width: 390.19px; text-align: center;">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 430.19px;"><span style="font-size: 12px;">File name</span> </td>
+                <td style="width: 389.19px;"><span style="font-size: 12px;">${Internal.Entry.Current.Directory}/inject_supplier_metadata.ktr</span> </td>
+              </tr>
+              <tr>
+                <td style="width: 430.19px;"><span style="font-size: 12px;">Variable / Parameter name (in Parameters tab)</span> </td>
+                <td style="width: 389.19px;"><span style="font-size: 12px;">supplier</span> </td>
+              </tr>
+              <tr>
+                <td style="width: 430.19px;"><span style="font-size: 12px;">Field to use (in Parameters tab)</span> </td>
+                <td style="width: 389.19px;"><span style="font-size: 12px;">supplier</span> </td>
+              </tr>
+              <tr>
+                <td style="width: 430.19px;"><span style="font-size: 12px;">The target step for the execution results (in the <strong>Execution Results</strong>  tab)</span> </td>
+                <td style="width: 389.19px;"><span style="font-size: 12px;">Text file output</span> </td>
+              </tr>
+            </tbody>
+          </table>
+          <ol start="10">
+            <li>Save your <span style="font-family: courier new,courier,monospace;">process_all_suppliers.ktr</span>  file.</li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Step_3:_Run_and_Examine_Results"></span> 
+        <h3 class="editable">Step 3: Run and Examine Results</h3>
+        <p>You run the entire process for all the supplier file by running the <strong>process_all_suppliers</strong>  transformation, which runs the <strong>inject_supplier_metadata</strong>  transformation for each supplier input file. The <strong>inject_supplier_metadata</strong>           transformation then runs the template <strong>process_supplier_file</strong>  transformation.</p>
+        <p>These transformations create a single source text output file in the <span style="font-family: courier new,courier,monospace;">data/out</span>  folder. The logs generated by the <strong>process_all_suppliers</strong>  transformation are in the logging
+          folder.</p>
+        <ol>
+          <li>Run the <strong>process_all_suppliers</strong>  transformation.</li>
+          <li>Examine the <span style="font-family: courier new,courier,monospace;">processed_data_{<em>today&rsquo;s date</em> }.txt</span>  file in the <span style="font-family: courier new,courier,monospace;">data/out</span>  folder and the <span style="font-family: courier new,courier,monospace;">log_{<em>timestamp</em> }.txt</span>             file in the <span style="font-family: courier new,courier,monospace;">logging</span>  folder.</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_11" class="mt-page-section"><span id="Reference_Links"></span> 
+      <h2 class="editable">Reference Links</h2>
+      <div id="section_12" class="mt-page-section"><span id="Articles"></span> 
+        <h3 class="editable">Articles</h3>
+        <ul class="pentaho-list-unordered">
+          <li> <a class="external" href="http://diethardsteiner.blogspot.com/2011/07/metadata-driven-etl-and-reporting.html" rel="freeklink" title="http://diethardsteiner.blogspot.com/2011/07/metadata-driven-etl-and-reporting.html">http://diethardsteiner.blogspot.com/...reporting.html</a>  </li>
+          <li> <a class="external" href="http://www.ibridge.be/?p=194" rel="freeklink" title="http://www.ibridge.be/?p=194">http://www.ibridge.be/?p=194</a>  </li>
+          <li> <a class="link-https" title="https://dankeeley.wordpress.com/2015/01/08/non-native-metadata-injection/" rel="external nofollow" href="https://dankeeley.wordpress.com/2015/01/08/non-native-metadata-injection/" target="_blank">Non Native metadata injection</a>  </li>
+        </ul>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="Videos"></span> 
+        <h3 class="editable">Videos</h3>
+        <p>
+          <div style="width: 640px; height: 360px; position: relative; padding-bottom: 0;">
+            <iframe src="http://www.youtube.com/embed/EjzgzOanq1o?vq=hd1080" frameborder="0" allowfullscreen="true" style="width: 100%; height: 100%; position: absolute"></iframe>
+          </div>
+        </p>
+        <p>
+          <div style="width: 640px; height: 360px; position: relative; padding-bottom: 0;">
+            <iframe src="http://www.youtube.com/embed/KWtOKFWUTqo?vq=hd1080" frameborder="0" allowfullscreen="true" style="width: 100%; height: 100%; position: absolute"></iframe>
+          </div>
+        </p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Options" rel="internal">Options</a>  </li>
+      <li> <a href="#Data_Streaming" rel="internal">Data Streaming</a>  </li>
+      <li>
+        <a href="#Example" rel="internal">Example</a> 
+        <ol>
+          <li> <a href="#Step_1:_Create_Sample_Data" rel="internal">Step 1: Create Sample Data</a>  </li>
+          <li>
+            <a href="#Step_2:_Develop_Your_Transactions" rel="internal">Step 2: Develop Your Transactions</a> 
+            <ol>
+              <li> <a href="#Template_Transformation" rel="internal">Template Transformation</a>  </li>
+              <li> <a href="#Metadata_Injection_Transformation" rel="internal">Metadata Injection Transformation</a>  </li>
+              <li> <a href="#Transformation_for_All_Suppliers" rel="internal">Transformation for All Suppliers</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Step_3:_Run_and_Examine_Results" rel="internal">Step 3: Run and Examine Results</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Reference_Links" rel="internal">Reference Links</a> 
+        <ol>
+          <li> <a href="#Articles" rel="internal">Articles</a>  </li>
+          <li> <a href="#Videos" rel="internal">Videos</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,154 @@
+<content type="text/html" title="Configuring Custom Analyzer Actions">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Analyzer can be configured with custom action links that call out to Javascript functions. These action links are available in a context menu by right-clicking on level members or measure cells. You can also define action links as annotations
+            in your Mondrian schemas.</p>
+        </div>
+      </div>
+      <p>Analyzer can be configured with custom action links that call out to JavaScript functions. These action links are available in a context menu by right-clicking on level members or measure cells.</p>
+      <p style="text-align: center;">
+        <img alt="AnaCustomOptionsMenu.png" style="width: 350px; height: 247px;" width="350px" height="247px" class="mt-disabled" rel="broken" />
+      </p>
+      <div id="section_2" class="mt-page-section"><span id="Define_Custom_Actions_in_Mondrian"></span> 
+        <h2 class="editable">Define Custom Actions in Mondrian</h2>
+        <p>Action links can be defined in your Mondrian schema as <strong>annotations</strong> . These can be defined under a <strong>Level </strong> or a <strong>Measure</strong> . There is no limit to the number of custom action links that you can define,
+          but they need to be named in ascending order, such as <span class="filepath style-wrap">AnalyzerCustomAction</span>, <span class="filepath style-wrap">AnalyzerCustomAction2</span>, <span class="filepath style-wrap">AnalyzerCustomAction3</span> .</p>
+        <p>The annotation value is just a link-label and JavaScript function, separated by a comma. Analyzer will automatically try to add custom action links on a <strong>Type </strong> level or a <strong>Sales </strong> measure whenever they are used in
+          a report.</p>
+        <p>Annotation defined on a <strong>Type </strong> level:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Dimension foreignKey=&quot;STATUS&quot; name=&quot;Order Status&quot;>
+     <Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Status Types&quot; primaryKey=&quot;STATUS&quot;>
+        <Level name=&quot;Type&quot; column=&quot;STATUS&quot; type=&quot;String&quot; uniqueMembers=&quot;true&quot; levelType=&quot;Regular&quot; hideMemberIf=&quot;Never&quot;>
+                <Annotations>
+                    <Annotation name=&quot;AnalyzerCustomAction&quot;>Custom action 3,customHandlerThree</Annotation>
+                    <Annotation name=&quot;AnalyzerCustomAction2&quot;>Custom action 4,customHandlerFour</Annotation>
+                </Annotations>
+        </Level>
+    </Hierarchy>
+</Dimension></pre>
+        <p>Annotation defined on a <strong>Sales </strong> measure:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Measure name=&quot;Sales&quot; column=&quot;TOTALPRICE&quot; formatString=&quot;#,###&quot; aggregator=&quot;sum&quot; description=&quot;Foo&quot;>
+    <Annotations>
+        <Annotation name=&quot;AnalyzerBusinessGroup&quot;>Measures</Annotation>
+        <Annotation name=&quot;AnalyzerCustomAction&quot;>Custom action 1,customHandlerOne</Annotation>
+        <Annotation name=&quot;AnalyzerCustomAction2&quot;>Custom action 2,customHandlerTwo</Annotation>    </Annotations>
+    <CalculatedMemberProperty name=&quot;CHART_SERIES_COLOR&quot; value=&quot;#0d8ecf&quot; />
+</Measure></pre> </div>
+      <div id="section_3" class="mt-page-section"><span id="Implement_a_Custom_Action_JavaScript_Function"></span> 
+        <h2 class="editable">Implement a Custom Action JavaScript Function</h2>
+        <p>In order to implement the JavaScript function, you need to create a new Pentaho plugin that injects your JavaScript functions into Analyzer.&nbsp; Here is an example of an <span class="filepath style-wrap">analyzer_extension_plugin.xml</span> :</p>
+        <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<plugin title=&quot;analyzer-extension&quot;>
+   <static-paths>
+        <static-path url=&quot;/analyzer-extension/resources&quot; localFolder=&quot;resources&quot;/>
+   </static-paths>
+   <external-resources>
+         <file context=&quot;analyzer&quot;>content/analyzer-extension/resources/analyzer_extension_plugin.js</file>
+   </external-resources>
+</plugin></pre>
+        <p>This basically tells the BA Server to inject the <span class="filepath style-wrap">analyzer_extension_plugin.js </span> file into Analyzer so that those functions are now available to Analyzer to call when a user clicks on a custom action link.</p>
+        <p>Here is an example <span class="filepath style-wrap">analyzer_extension_plugin.js</span> .</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.extension = cv.extension || {};
+/** 
+ * report - Analyzer report definition.
+ * formula - The level or measure that was clicked on.
+ * ctx - All levels that intersect on the clicked on level or cell.
+ * filter - Filters applied on the report. Only includes filters which includes members.
+ */
+ 
+cv.extension.customHandlerOne = function (report, formula, ctx, filter) {
+    var year = ctx['[Time].[Years]']; // Returns the member unique name
+    if (year) 
+        year = cv.util.parseMDXExpression(year); // Extract the name of the member
+    var url = window.CONTEXT_PATH + &quot;api/repos/:public:Steel%20Wheels:Country%20Performance%20(heat%20grid).xanalyzer/viewer?yearParameter=&quot; + year;
+    if (window.parent &amp;&amp; window.parent.parent &amp;&amp; window.parent.parent.mantle_openTab) {
+        window.parent.parent.mantle_openTab(&quot;Custom One&quot;, &quot;Custom One&quot;, url);
+    }
+    window.open(url);
+}
+cv.extension.customHandlerOne_validate = function (report, formula, ctx, filter) {
+    var territory = ctx['[Markets].[Territory]'];
+    if (territory == &quot;[Markets].[Japan]&quot;)
+        return false;
+    return true;
+}</pre>
+        <p>You must define your custom action JavaScript function under the<span class="filepath style-wrap"> cv.extension</span>  namespace.&nbsp; The name of the JavaScript function must exactly match the name you used in the <span class="filepath style-wrap">AnalyzerCustomAction </span> annotation.&nbsp;
+          The function takes four parameters:</p>
+        <ul class="pentaho-list-unordered">
+          <li><strong>report</strong> - This is the Analyzer report object.&nbsp; You normally will not use this, but if you want to access the report XML definition to inspect the state of the current report definition, you can access report.reportDoc.</li>
+          <li><strong>formula</strong> - This is either the level MDX unique name or the measure unique name, depending on what the user clicked on.</li>
+          <li><strong>ctx</strong> - This is a map of all the levels on the row or column zone and their corresponding MDX members.&nbsp; When clicking on a cell, this map will contain all row and column levels on the report.&nbsp; When clicking on a level
+            member, this map will only contain outer levels which are usually to the left or above the clicked-on level.</li>
+          <li><strong>filter</strong> - This is a level map-to-filter operator-to-member array of all report filters with the exception of numeric filters like <strong>Top10 </strong> or <strong>Greater than</strong> .&nbsp;</li>
+        </ul>
+        <p>The <strong>filter object </strong> is a map of levels to predicate objects. A predicate object is a map of predicate operators to operator arguments. A single level such as [Customer].[Name] may have more than one predicate operator, such as contains
+          &quot;John&quot; but does not contain &quot;Doe&quot;.</p>
+        <p>The possible operators are: <span class="filepath style-wrap">EQUALS</span>, <span class="filepath style-wrap">NOT_EQUAL</span>, <span class="filepath style-wrap">BEFORE</span>, <span class="filepath style-wrap">AFTER</span>, <span class="filepath style-wrap">BETWEEN</span>,
+          <span class="filepath style-wrap">CONTAIN</span>, and <span class="filepath style-wrap">NOT_CONTAIN</span> . For all operators with the exception of CONTAIN and NOT_CONTAIN, the operator arguments are MDX members such as [Time].[2014].
+          <span
+          class="filepath style-wrap">CONTAIN </span> and <span class="filepath style-wrap">NOT_CONTAIN</span>  have string literals as operator arguments. Numeric filters such as <strong>Top 10 Account by Sales</strong>  are not exposed in the filter object. &nbsp;</p>
+        <p>As an example, assuming the user clicks on this cell:</p>
+        <p style="text-align: center;">
+          <img alt="AnaCustomJSFunction.png" style="width: 350px; height: 197px;" width="350px" height="197px" class="mt-disabled" rel="broken" />
+        </p>
+        <p>Then the <strong>member</strong>, <strong>ctx</strong>, and <strong>filter </strong> arguments will look like:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">ctx: Object
+     [Markets].[Territory]: &quot;[Markets].[APAC]&quot;
+     [Measures].[MeasuresLevels]: &quot;[Measures].[Sales]&quot;
+     [Order Status].[Type]: &quot;[Order Status].[Shipped]&quot;
+     [Time].[Years]: &quot;[Time].[2003]&quot;
+     __proto__: Object
+filter: Object
+    {
+    '[Product].[Line]':
+    {EQUALS:['[Product].[Trucks and Buses]','[Product].[Trains]','[Product].[Planes]']}
+    ,
+    '[Time].[Years]':
+    {EQUALS: ['[Time].[2013]','[Time].[2014]']}
+    }
+formula: &quot;[Measures].[Sales]&quot;</pre>
+        <p>Here are a couple of helpful tips for implementing the JavaScript functions:</p>
+        <ul class="pentaho-list-unordered">
+          <li>You can use <span class="filepath style-wrap">cv.util.parseMDXExpression</span>  to extract the name of the member.&nbsp; For example, <span class="filepath style-wrap">[Year].[2003]</span> would return: 2003.</li>
+          <li>You can construct your own URL and then open the URL in a new PUC tab, assuming Analyzer is running within PUC with the function:&nbsp;<span class="filepath style-wrap"> window.parent.parent.mantle_openTab</span> .</li>
+        </ul>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Determine_When_to_Show_a_Custom_Action"></span> 
+        <h2 class="editable">Determine When to Show a Custom Action</h2>
+        <p>There is also another feature to validate whether a custom action link should be included in the context menu or not. You can implement a validation function which returns false to hide the link in the UI. If this validation function is not implemented,
+          then the link will always be shown. This validation function must be named by suffixing the custom action JavaScript function name with <span class="filepath style-wrap">_validate</span> .</p>
+        <p>In this example, the <strong>Custom action 1</strong>  menu item will not be included if the user right-clicks on a <strong>Measure </strong> cell where the current context includes <span class="filepath style-wrap">Territory: Japan</span> :</p>
+        <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.extension.customHandlerOne_validate = function (report, formula, ctx, filter) {
+var territory = ctx['[Markets].[Territory]'];
+if (territory == &quot;[Markets].[Japan]&quot;)
+return false;
+return true;
+}</pre>
+        <p style="text-align: center;">
+          <a class="mt-disabled" rel="broken">
+            <img alt="AnaCustomJSOption1GoneMenu.png" style="width: 350px; height: 154px;" width="350px" height="154px" class="mt-disabled" rel="broken" />
+          </a> 
+        </p>
+        <p>Notice how <strong>Custom action 1</strong>  was not included in the above menu.&nbsp;</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Define_Custom_Actions_in_Mondrian" rel="internal">Define Custom Actions in Mondrian</a>  </li>
+      <li> <a href="#Implement_a_Custom_Action_JavaScript_Function" rel="internal">Implement a Custom Action JavaScript Function</a>  </li>
+      <li> <a href="#Determine_When_to_Show_a_Custom_Action" rel="internal">Determine When to Show a Custom Action</a>  </li>
+    </ol>
+  </body>
+</content>

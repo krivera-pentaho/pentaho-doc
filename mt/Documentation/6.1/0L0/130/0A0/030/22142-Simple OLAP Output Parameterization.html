@@ -1,0 +1,40 @@
+<content type="text/html" title="Simple OLAP Output Parameterization">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">This procedure requires a <strong class="ph b">Pentaho Analysis</strong>  (Mondrian) data source type. Establish this data source and a query before continuing with the instructions below.</div>
+        <div class="section context">
+          <p class="p">You can add dynamic interactivity to a published report such that when a user executes or views it, he can specify how to constrain certain parts of the query data. This is called <strong class="ph b">parameterization</strong> . Follow the procedure
+            below to parameterize an OLAP-based report.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open the report you want to parameterize.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Right-click the <strong class="ph b">Parameters</strong>  item in the Data pane, then select <strong class="ph b">Add Parameter...</strong>  from the context menu.</span>  The <strong class="ph b">Add Parameter</strong>  dialogue
+            will appear. </li>
+          <li class="li step"> <span class="ph cmd">Select or change the options according to the definitions specified in <a class="xref" title="Documentation/5.1/0L0/130/0A0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/130/0A0/000">Simple SQL Output Parameterization</a> .</span>             </li>
+          <li class="li step"> <span class="ph cmd">Edit your MDX query and add parameter functions and a where statement, as in the example below.</span>  <pre class="pre codeblock">with 
+  set [TopSelection] as
+  'TopCount(FILTER([Customers].[All Customers].Children,[Measures].[Sales]>0), Parameter(&quot;TopCount&quot;, NUMERIC, 10, &quot;Number of Customers to show&quot;), [Measures].[Sales])'
+  Member [Customers].[All Customers].[Total] as 'Sum([TopSelection])'
+  Member [Customers].[All Customers].[Other Customers] as '[Customers].[All Customers] - [Customers].[Total]'
+select NON EMPTY {[Measures].[Sales],[Measures].[Quantity] } ON COLUMNS,
+  { [TopSelection], [Customers].[All Customers].[Other Customers]} ON ROWS
+from [SteelWheelsSales]
+where 
+(
+strToMember(Parameter(&quot;sLine&quot;, STRING, &quot;[Product].[All Products].[Classic Cars]&quot;)), 
+strToMember(Parameter(&quot;sMarket&quot;, STRING, &quot;[Markets].[All Markets].[Japan]&quot;)), 
+strToMember(Parameter(&quot;sYear&quot;, STRING, &quot;[Time].[All Years].[2003]&quot;))
+)</pre> </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">OK</strong>  to save the query.</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  Each parameter must have its own query or data table.</div>
+          </li>
+          <li class="li step"> <span class="ph cmd">Include the parameterized fields in your report by dragging them onto the canvas.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Publish or preview the report.</span>  </li>
+        </ol>
+        <div class="section result">When a user runs this report, he will be presented with an interactive field that specifies an adjustable constraint for the column or columns you specified.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

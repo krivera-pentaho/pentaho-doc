@@ -1,0 +1,106 @@
+<content type="text/html" title="Pan Options and Syntax">
+  <body>
+    <div>
+      <div class="body refbody">
+        <p>Pan runs transformations, either from a PDI repository (database or enterprise), or from a local file. The syntax for the batch file and shell script are shown below. All Pan options are the same for both.</p> <pre>
+<span class="ph synph"><span class="ph var">pan.sh</span>  <span class="ph delim">-</span>  <span class="keyword kwd">option</span>  <span class="ph delim">=</span>  <span class="keyword kwd">value</span>  <span class="keyword kwd">arg1</span>  <span class="keyword kwd">arg2</span>  </span> </pre>        <pre>
+<span class="ph synph"><span class="ph var">pan.bat</span>  <span class="ph delim">/</span>  <span class="keyword kwd">option</span>  <span class="ph delim">:</span>  <span class="keyword kwd">value</span>  <span class="keyword kwd">arg1</span>  <span class="keyword kwd">arg2</span>  </span> </pre>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="8032da14-53bb-4347-9db3-7c263bb83ee8__d89987e94" valign="bottom" width="NaN%">Switch</th>
+              <th align="left" class="stentry propvaluehd" id="8032da14-53bb-4347-9db3-7c263bb83ee8__d89987e97" valign="bottom" width="NaN%">Purpose</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">rep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Enterprise or database repository name, if you are using one</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">user</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Repository username</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">pass</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Repository password</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">trans</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The name of the transformation (as it appears in the repository) to launch</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">dir</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The repository directory that contains the transformation, including the leading slash</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">file</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">If you are calling a local KTR file, this is the filename, including the path if it is not in the local directory</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">level</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">logfile</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">A local filename to write log output to</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listdir</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Lists the directories in the specified repository</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listtrans</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Lists the transformations in the specified repository directory</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listrep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Lists the available repositories</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">exprep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Exports all repository objects to one XML file</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">norep</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Prevents Pan from logging into a repository. If you have set the KETTLE_REPOSITORY, KETTLE_USER, and KETTLE_PASSWORD environment variables, then this option will enable you to prevent Pan from logging into the specified repository, assuming
+                you would like to execute a local KTR file instead.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">safemode</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Runs in safe mode, which enables extra checking</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">version</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Shows the version, revision, and build date</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">param</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">Set a named parameter in a <strong class="ph b">name=value</strong>  format. For example: <strong class="ph b">-param:FOO=bar</strong> </td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">listparam</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">List information about the defined named parameters in the specified transformation.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">maxloglines</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The maximum number of log lines that are kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows (default)</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d89987e94" valign="top" width="NaN%">maxlogtimeout</td>
+              <td class="stentry propvalue" headers="d89987e97" valign="top" width="NaN%">The maximum age (in minutes) of a log line while being kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows indefinitely (default)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="example"> <pre class="pre codeblock">
+sh pan.sh -rep=initech_pdi_repo -user=pgibbons -pass=lumburghsux -trans=TPS_reports_2011</pre> </div>
+        <div class="example"> <pre class="pre codeblock">
+pan.bat /rep:initech_pdi_repo /user:pgibbons /pass:lumburghsux /trans:TPS_reports_2011</pre> </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/0Y0/0J0/010/000/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0L0/0Y0/050/010/000/000">Pan Status Codes</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

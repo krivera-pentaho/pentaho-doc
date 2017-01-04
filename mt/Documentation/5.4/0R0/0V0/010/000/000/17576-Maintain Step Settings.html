@@ -1,0 +1,126 @@
+<content type="text/html" title="Maintain Step Settings">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepMetaInterface</code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStepMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStepMeta.html"><code class="ph codeph">org.pentaho.di.trans.step.BaseStepMeta</code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">The <code class="ph codeph">StepMetaInterface</code> is the main Java interface that a plugin implements.</p>
+        <p class="p"><strong class="ph b">Keep Track Of the Step Settings</strong> </p>
+        <p class="p">The implementing class keeps track of step settings using private fields with corresponding <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The dialog class implementing <code class="ph codeph">StepDialogInterface</code>          uses these methods to copy the user supplied configuration in and out of the dialog.</p>
+        <p class="p">These interface methods are also used to maintain settings.</p>
+        <p class="p"><code class="ph codeph">void setDefault()</code></p>
+        <p class="p">This method is called every time a new step is created and allocates or sets the step configuration to sensible defaults. The values set here are used by Spoon when a new step is created. This is a good place to ensure that the step settings are
+          initialized to non-null values. Values that are <code class="ph codeph">null</code> can be cumbersome to deal with in serialization and dialog population, so most PDI step implementations stick to non-null values for all step settings.</p>
+        <p
+        class="p"><code class="ph codeph">public Object clone()</code></p>
+          <p class="p">This method is called when a step is duplicated in Spoon. It returns a deep copy of the step meta object. It is essential that the implementing class creates proper deep copies if the step configuration is stored in modifiable objects, such
+            as lists or custom helper objects.</p>
+          <p class="p">See <code class="ph codeph">org.pentaho.di.trans.steps.rowgenerator.RowGeneratorMeta.clone()</code> in the PDI source for an example of creating a deep copy.</p>
+          <p class="p"><strong class="ph b">Serialize Step Settings</strong> </p>
+          <p class="p">The plugin serializes its settings to both XML and a PDI repository. These interface methods provide this functionality.</p>
+          <p class="p"><code class="ph codeph">public String getXML()</code></p>
+          <p class="p">This method is called by PDI whenever a step serializes its settings to XML. It is called when saving a transformation in Spoon. The method returns an XML string containing the serialized step settings. The string contains a series of XML tags,
+            one tag per setting. The helper class, <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code>, constructs the XML string.</p>
+          <p class="p"><code class="ph codeph">public void loadXML()&nbsp;</code></p>
+          <p class="p">This method is called by PDI whenever a step reads its settings from XML. The XML node containing the step settings is passed in as an argument. Again, the helper class, <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code>, reads
+            the step settings from the XML node.</p>
+          <p class="p"><code class="ph codeph">public void saveRep()</code></p>
+          <p class="p">This method is called by PDI whenever a step saves its settings to a PDI repository. The repository object passed in as the first argument provides a set of methods for serializing step settings. The passed in transformation id and step id are
+            used by the step as identifiers when calling the repository serialization methods.</p>
+          <p class="p"><code class="ph codeph">public void readRep()</code></p>
+          <p class="p">This method is called by PDI whenever a step reads its configuration from a PDI repository. The step id given in the arguments is used as the identifier when using the repositories serialization methods.</p>
+          <p class="p">When developing plugins, make sure the serialization code is in synch with the settings available from the step dialog. When testing a step in Spoon, PDI internally saves and loads a copy of the transformation before executing it.&nbsp;</p>
+          <p class="p"><strong class="ph b">Provide Instances of Other Plugin Classes</strong> </p>
+          <p class="p">The <code class="ph codeph">StepMetaInterface</code> plugin class is the main class, tying in with the rest of PDI architecture. It is responsible for supplying instances of the other plugin classes implementing <code class="ph codeph">StepDialogInterface</code>,
+            <code class="ph codeph">StepInterface</code>, and <code class="ph codeph">StepDataInterface</code>. The following methods cover these responsibilities. Each method implementation constructs a new instance of the corresponding class, forwarding
+            the passed in arguments to the constructor.</p>
+          <ul class="ul">
+            <li class="li"><code class="ph codeph">public StepDialogInterface getDialog()</code></li>
+            <li class="li"><code class="ph codeph">public StepInterface getStep()</code></li>
+            <li class="li"><code class="ph codeph">public StepDataInterface getStepData()</code></li>
+          </ul>
+          <p class="p">Each of these methods returns a new instance of the plugin class implementing <code class="ph codeph">StepDialogInterface</code>, <code class="ph codeph">StepInterface</code>, and <code class="ph codeph">StepDataInterface</code>.</p>
+          <p class="p"><strong class="ph b">Report Step Changes to the Row Stream</strong> </p>
+          <p class="p">PDI needs to know how a step affects the row structure. A step may be adding or removing fields, as well as modifying the metadata of a field. The method implementing this aspect of a step plugin is <code class="ph codeph">getFields()</code>.</p>
+          <p class="p"><code class="ph codeph">public void getFields()</code></p>
+          <p class="p">Given a description of the input rows, the plugin modifies it to match the structure for its output fields. The implementation modifies the passed in <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html">RowMetaInterface</a> </code>            object to reflect changes to the row stream. A step adds fields to the row structure. This is done by creating <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMeta.html">ValueMeta</a> </code>            objects, such as the PDI default implementation of <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html">ValueMetaInterface</a> </code>,
+            and appending them to the <code class="ph codeph">RowMetaInterface</code> object. The
+            <a class="xref" title="Working With Fields" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/020/020">Working with Fields</a>  section goes into deeper detail about <code class="ph codeph">ValueMetaInterface</code>.&nbsp;</p>
+          <p class="p">This sample transformation uses two steps. The Demo step adds the field, <code class="ph codeph">demo_field</code>, to empty rows produced by the Generate Rows step.&nbsp;</p>
+          <p class="p">
+            <br /> <strong class="ph b">Validate Step Settings</strong> </p>
+          <p class="p">Spoon supports a Validate Transformation feature, which triggers a self-check of all steps.&nbsp; PDI invokes the <code class="ph codeph">check()</code> method of each step on the canvas, allowing each step to validate its settings.</p>
+          <p class="p"><code class="ph codeph">public void check()</code></p>
+          <p class="p">Each step has the opportunity to validate its settings and verify that the configuration given by the user is reasonable. In addition, a step checks if it is connected to preceding or following steps, if the nature of the step requires that
+            kind of connection. An input step may expect to not have a preceding step for example. The check method passes in a list of check remarks, to which the method appends its validation results. Spoon displays the list of remarks collected from
+            the steps, allowing you to take corrective action in case there are validation warnings or errors.</p>
+          <p class="p">
+            <a class="thumb" title="validateTransformation.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/5192/validateTransformation.png">
+              <img alt="validateTransformation.png" class="internal default" style="width: 550px; height: 313px;" width="550px" height="313px" src="http://help.pentaho.com/@api/deki/files/5192/validateTransformation.png?size=bestfit&amp;width=550&amp;height=313&amp;revision=1"
+              />
+            </a> 
+          </p> &nbsp;
+          <p class="p"><strong class="ph b">Interface with the PDI plugin system</strong> </p>
+          <p class="p">The class implementing <code class="ph codeph">StepMetaInterface</code> must be annotated with the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/annotations/Step.html"><code class="ph codeph">Step</code></a>  Java annotation. Supply the following annotation attributes:</p>
+          <div class="tablenoborder">
+            <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="8a4c1c88-db0d-49cc-bb2c-00bcbb9d3601__maintaining_step_settings__table_bw2_g4h_2k" rules="all" summary="">
+              <thead align="left" class="thead">
+                <tr class="row">
+                  <th class="entry" id="8a4c1c88-db0d-49cc-bb2c-00bcbb9d3601__d23798e345" valign="top" width="25%"><strong class="ph b">Attribute</strong> </th>
+                  <th class="entry" id="8a4c1c88-db0d-49cc-bb2c-00bcbb9d3601__d23798e351" valign="top" width="75%"><strong class="ph b">Description</strong> </th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">id </code></td>
+                  <td class="entry" headers="d23798e351 " valign="top" width="75%">A globally unique ID for the step</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">image</code></td>
+                  <td class="entry" headers="d23798e351 " valign="top" width="75%">The resource location for the png icon image of the step</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">name</code></td>
+                  <td class="entry" headers="d23798e351 " valign="top" width="75%">A short label for the step</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">description</code></td>
+                  <td class="entry" headers="d23798e351 " valign="top" width="75%">A longer description for the step</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">categoryDescription</code></td>
+                  <td class="entry" headers="d23798e351 " valign="top" width="75%">The category the step should appear under in the PDI step tree. For example Input, Output, Transform, etc.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">i18nPackageName</code></td>
+                  <td class="entry" headers="d23798e351 " valign="top" width="75%">If the <code class="ph codeph">i18nPackageName</code> attribute is supplied in the annotation attributes, the values of name, description, and categoryDescription are interpreted as <code class="ph codeph">i18n</code> keys relative to
+                    the message bundle contained in given package. The keys may be supplied in the extended form&nbsp; <code class="ph codeph">i18n:<packagename></code> key to specify a package that is different from the package given in the <code class="ph codeph">i18nPackageName</code>                    attribute.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="p">Please refer to the
+            <a class="xref" title="Sample Step Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/000/040">Sample Step Plugin</a>  for a complete implementation example. &nbsp;</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

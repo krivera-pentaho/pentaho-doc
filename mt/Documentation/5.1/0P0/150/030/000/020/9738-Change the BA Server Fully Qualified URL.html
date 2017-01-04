@@ -1,0 +1,28 @@
+<content type="text/html" title="Change the BA Server Fully Qualified URL">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>If you switch from HTTP to HTTPS, you must also change the BA Server's tokenized fully qualified URL value to accommodate for the new port number. Follow the directions below to change the fully qualified URL.</p>
+    <ol class="pentaho-list-ordered">
+      <li class="li step"><span class="ph cmd">Stop the BA Server if it is currently running.</span> </li>
+      <li class="li step">Navigate to the <span class="filepath style-wrap">server/biserver-ee/tomcat/webapps/pentaho/WEB-INF/</span>  directory.</li>
+      <li class="li step"><span class="ph cmd">Open the <strong class="ph b">web.xml</strong>  file with any text editor.</span> </li>
+      <li class="li step"><span class="ph cmd">Locate this element and modify the port number to match your SSL-enabled port number.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><context-param>
+    <param-name>fully-qualified-server-url</param-name>
+    <param-value>https://localhost:8080/pentaho/</param-value>
+</context-param></pre> </li>
+      <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+      <li class="li step"><span class="ph cmd">Start the BA Server and make sure that it is available through HTTPS on the specified port.</span> </li>
+    </ol>
+    <p>The BA Server is now configured to communicate on an SSL-aware port.</p>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

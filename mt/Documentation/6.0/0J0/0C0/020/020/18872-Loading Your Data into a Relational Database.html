@@ -1,0 +1,95 @@
+<content type="text/html" title="Loading Your Data into a Relational Database">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to load your data into an RDBMS.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">After completing
+            <a class="xref" title="Filter Records with Missing Postal Codes" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0J0/0C0/020/010">Filter Records with Missing Postal Codes</a>, you are ready to take all records exiting the <strong>Filter rows</strong>  step where the <strong>POSTALCODE </strong> was not null (the <strong class="ph b">true</strong>  condition), and load them
+            into a database table.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Under the <strong>Design </strong> tab, expand the contents of the <strong class="ph b">Output</strong>  node.</span> </li>
+          <li class="li step"><span class="ph cmd">Click and drag a <strong class="ph b">Table Output</strong>  step into your transformation. Create a hop between the <strong class="ph b">Filter Missing Zips</strong>  and <strong class="ph b">Table Output</strong>  steps. In the dialog that appears, select <strong class="ph b">Result is TRUE</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Double-click the <strong class="ph b">Table Output</strong>  step to open its edit properties dialog box. </span> </li>
+          <li class="li step"><span class="ph cmd">Rename your Table Output Step to <strong class="ph b">Write to Database</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">New</strong>  next to the <strong class="ph b">Connection</strong>  field. You must create a connection to the database.</span>  The
+            <a class="xref" title="Documentation/5.1/0P0/0U0/010/000#a26f2312-f251-4bdf-85a5-398290a8a230__specify_di_connections__image_ylr_qjv_dl"
+            rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/010/000#a26f2312-f251-4bdf-85a5-398290a8a230__specify_di_connections__image_ylr_qjv_dl"><strong class="ph b">Database Connection</strong> </a>  dialog box appears.</li>
+          <li class="li step"><span class="ph cmd">Provide the settings for connecting to the database.</span> 
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                <tbody class="tbody">
+                  <tr class="row">
+                    <th class="entry" valign="top">Field</th>
+                    <th class="entry" valign="top">Setting</th>
+                  </tr>
+                  <tr>
+                    <td class="entry" valign="top"><strong>Connection Name:&nbsp;</strong> </td>
+                    <td class="entry" valign="top">Sample Data</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top"><strong class="ph b">Connection Type:</strong> </td>
+                    <td class="entry" valign="top">Hypersonic</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top"><strong class="ph b">Host Name</strong> </td>
+                    <td class="entry" valign="top">localhost</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top"><strong class="ph b">Database Name</strong> </td>
+                    <td class="entry" valign="top">sampledata</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top"><strong class="ph b">Port Number</strong> </td>
+                    <td class="entry" valign="top">9001</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top"><strong class="ph b">User Name</strong> </td>
+                    <td class="entry" valign="top">pentaho_admin</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top"><strong class="ph b">Password</strong> </td>
+                    <td class="entry" valign="top">password (If&nbsp;&quot;password&quot;&nbsp;does not work, please check with your system administrator.)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Test</strong>  to make sure your entries are correct. A success message appears. Click <strong class="ph b">OK</strong> .</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  If you get an error when testing your connection, ensure that you have provided the correct settings information as described in the table and that the sample database is running. See
+              <a class="xref" title="Documentation/5.1/0H0/070/010/000"
+              rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/010/000">Starting the Data Integration Server</a>  for information about how to start the Data Integration Servers.</div>
+          </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>, to exit the <strong>Database Connections</strong>  window.</span> </li>
+          <li class="li step"><span class="ph cmd">Type <strong class="ph b">SALES_DATA</strong>  in the <strong class="ph b">Target Table</strong>  text field.</span> </li>
+          <li class="li step">Since this table does not exist in the target database, you will need use the software to generate the Data Definition Language (DDL) to create the table and execute it. DDLs are the SQL commands that define the different structures in a database
+            such as CREATE TABLE.
+            <ol start="1" style="list-style-type: lower-alpha;">
+              <li class="li step"><span class="ph cmd">In the <strong>Table Output </strong> window, enable the <strong class="ph b">Truncate Table</strong>  property.</span> </li>
+              <li class="li step"><span class="ph cmd">Click the <strong class="ph b">SQL</strong>  button at the bottom of the <span class="ph uicontrol">Table output</span>  dialog box to generate the DDL for creating your target table.</span> 
+              </li>
+              <li class="li step">The <strong><span class="ph uicontrol">Simple SQL editor</span> </strong>  window appears with the SQL statements needed to create the table.</li>
+              <li class="li step">Click <strong><span class="ph uicontrol">Execute</span>  </strong> to execute the SQL statement. &nbsp;</li>
+              <li class="li step">The <strong>Results of the SQL statements </strong> window&nbsp;appears. &nbsp;Examine the results, then click <strong>OK&nbsp;</strong> to close the <strong>Results of the SQL statements</strong>  window. &nbsp;</li>
+              <li class="li step">Click <strong>Close</strong> &nbsp;in the&nbsp;<strong><span class="ph uicontrol">Simple SQL editor</span> </strong> &nbsp;window to close it.</li>
+              <li class="li step">Click <strong class="ph b">OK</strong>  to close the <strong><span class="ph uicontrol">Table output</span>  </strong> window.</li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">Save your transformation.</span> </li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

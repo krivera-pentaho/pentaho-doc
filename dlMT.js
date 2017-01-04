@@ -4,46 +4,18 @@
 var http = require('http');
 var fs = require('fs');
 var pretty = require('pretty');
+var parser = require('xml2json');
+
 var main = function() {
-  buildHierarchy("home", "mt", [], function(pages) {
+  getSiteMap(function(pages) {
     saveHierarchy(pages, function() {
       console.log("all files saved");
     });
-  })
-}
-
-var queue = [];
-var maxRequests = 20;
-var queuedRequests = 0;
-var buildHierarchy = function(pageId, path, result, oncomplete) {
-  return getSubPageData(pageId, function(pages) {
-    for (var i = 0; i < pages.length; i++) {
-      var page = pages[i];
-      page.path = path;
-      result.push(page);
-    }
-
-    queue = queue.concat(pages);
-
-    console.log(result.length + " pages loaded");
-
-    if (queue.length > 0) {
-      for (var i = 0; i < maxRequests; i++) {
-        let data = queue.pop();
-        if (!data) {
-          break;
-        }
-        if (!buildHierarchy(data.pageId, path + "/" + data.pageId, result, oncomplete)) {
-          queue.push(data);
-        }
-      }
-    } else if (queuedRequests == 0 && oncomplete) {
-      oncomplete(result);
-    }
-  }, function(e) {
-    console.log(e);
   });
 }
+
+var maxRequests = 20;
+var queuedRequests = 0;
 
 var saveQueue = [];
 var saveQueueInit = false;
@@ -57,7 +29,7 @@ var saveHierarchy = function(pages, oncomplete) {
 
   while (saveQueue.length > 0) {
     var data = saveQueue.pop();
-    var requestSent = savePage(data.pageId, data.path, data.pageId + "-" + data.title,
+    var requestSent = savePage(data.id, "mt/" + data.path.$t, data.id + "-" + data.title,
       function() { // success
         var percent = parseInt(((pagesLength - saveQueue.length)/ pagesLength)*100); 
         console.log(percent + "% complete saving");
@@ -125,6 +97,33 @@ var savePage = function(pageId, path, filename, success, failure) {
         }
       });
     }, failure);
+}
+
+var getSiteMap = function(success, failure) {
+  return httpGet("help.pentaho.com", "/@api/deki/pages", 
+    function(data) {
+      var jsonStr = parser.toJson(data);
+      var json = JSON.parse(jsonStr);
+
+      var resultsArr = [];
+      flattenMap(json.pages.page, resultsArr);
+
+      success(resultsArr);
+    }, failure);
+}
+
+var flattenMap = function(page, result) {
+  result.push(page);
+  if (page.subpages.page) {
+    var subpagesObj = page.subpages.page;
+    if (subpagesObj.length > 0) {
+      for (var i = 0; i < subpagesObj.length; i++) {
+        flattenMap(subpagesObj[i], result);
+      }
+    } else {
+      flattenMap(subpagesObj, result);
+    }
+  }
 }
 
 var httpGet = function(hostname, path, success, failure) {

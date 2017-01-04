@@ -1,0 +1,63 @@
+<content type="text/html" title="Starting BA Server on Windows">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <div> </div>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+      </div>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Modify_Tomcat_Windows_Startup_Script"></span> 
+      <h2 class="editable">Modify Tomcat Windows Startup Script</h2>
+      <p class="p">The Tomcat startup script must be modified to include the CATALINA_OPTS variable. CATALINA_OPTS indicates the amount of memory to allocate. It also indicates where Pentaho licenses are installed.&nbsp;</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Make sure the Tomcat web application server is not running by starting the Windows <strong>Task Manager</strong>  and looking for <strong>Tomcat</strong>  in the <strong>Applications </strong> tab. If the server is running, stop it.</li>
+        <li class="li step">Use a text editor to open the <span class="ph filepath">startup.bat</span>  file, which is in the <span class="filepath style-wrap">pentaho/server/biserver-ee/tomcat/bin</span> &nbsp;directory.</li>
+        <li class="li step">Add this line before the CATALINA_HOME definition.&nbsp;</li>
+      </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SET DI_HOME=%~dp0pentaho-solutions\system\kettle</pre>
+      <ol class="pentaho-list-ordered" start="4">
+        <li class="li step">Add the java option pentaho.installed.licenses.file to <span class="filepath style-wrap">CATALINA_OPTS</span> . You need to modify setting of <span class="filepath style-wrap">CATALINA_OPTS</span>  variable by adding the java option. See the following
+          example.</li>
+      </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">set CATALINA_OPTS=-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH% -DDI_HOME=%DI_HOME%</pre>
+      <ol class="pentaho-list-ordered" start="5">
+        <li class="li step">Save and close the file.</li>
+      </ol>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Start_BA_Server"></span> 
+      <h2 class="editable">Start BA Server</h2>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Run the startup script for your web application server by launching one these files.
+          <ul class="pentaho-list-unordered" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__install_starting_servers__ul_jjb_vsr_zk">
+            <li class="li"><strong class="ph b">Windows Tomcat:</strong>  Launch the <span class="ph filepath">startup.bat</span>  file. The startup.bat file is in the Tomcat <span class="ph filepath">bin</span>  directory.</li>
+            <li class="li"><strong class="ph b">Windows JBoss:</strong>  Launch the <span class="ph filepath">standalone.bat</span>  file. The startup.bat file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+          </ul>
+        </li>
+        <li class="li step"><span class="ph cmd">Open a web browser and enter this URL: <span class="ph filepath"><a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a> </span> . The
+          <span class="ph uicontrol">User Console Log On</span>  window appears. Note that you will be prompted to install a license. Information on how to do that appears in the
+          <a class="xref" title="Documentation/5.1/0H0/060/010/020" rel="internal"
+          href="http://help.pentaho.com/Documentation/5.4/0H0/060/010/020">Set Up BA Server</a>  instructions. </span> 
+        </li>
+      </ol>
+      <p>After you install your licenses, there are a few things you will need to do to
+        <a title="https://help.pentaho.com/Documentation/6.0/0F0/0K0/080" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0K0/080">configure your new server</a> .&nbsp;&nbsp;</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Modify_Tomcat_Windows_Startup_Script" rel="internal">Modify Tomcat Windows Startup Script</a>  </li>
+      <li> <a href="#Start_BA_Server" rel="internal">Start BA Server</a>  </li>
+    </ol>
+  </body>
+</content>

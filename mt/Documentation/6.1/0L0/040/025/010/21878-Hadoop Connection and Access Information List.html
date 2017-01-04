@@ -1,0 +1,165 @@
+<content type="text/html" title="Hadoop Connection and Access Information List">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Identifies what information is needed to configure and connect to your cluster.</p>
+      </div>
+    </div>
+    <p><span style="color:#000000;">After<a title="Set Up Pentaho to Connect to a Hadoop Cluster (Draft)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030"> your Hadoop cluster has been configured</a>, users need some information and permissions to connect to the cluster and access its services.</span> </p>
+    <div id="section_2" class="mt-page-section"><span id="Pentaho"></span> 
+      <h2 class="editable">Pentaho</h2>
+      <p>You'll need read access to the following Pentaho directories:</p>
+      <ul class="pentaho-list-unordered">
+        <li><span style="color:#000000;">Pentaho Server, Spoon, PRD, and PME shim directories</span> </li>
+        <li><span style="color:#000000;">Pentaho Log Directories</span> </li>
+      </ul>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Hadoop_Cluster"></span> 
+      <h2 class="editable">Hadoop Cluster</h2>
+      <p>You'll need to know this information about your Hadoop Cluster.&nbsp; You can get these things from your Hadoop Administrator or the Hadoop Cluster Management tool.</p>
+      <ul class="pentaho-list-unordered">
+        <li>Installed Version</li>
+        <li>Hostname and IP Address for each cluster node, including Yarn servers</li>
+        <li>If your cluster is enabled for High Availability, you will also need the name of the nameservice, (DNS lookup table)</li>
+      </ul>
+      <p>If you are using MapR, you'll also need:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Version and Location of MapR Clients</li>
+        <li>Hostnames and IP addresses for the CLDB (Container Locator Database) nodes and port numbers.&nbsp; The default port is 7222.&nbsp; This is configured in the client.</li>
+      </ul>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Optional_Services"></span> 
+      <h2 class="editable">Optional Services</h2>
+      <p>If you are going to use the following services, you'll need this information.</p>
+      <ul class="pentaho-list-unordered">
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#hdfs">HDFS</a>  </li>
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#hbase">HBase</a>  </li>
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#hive_impala">Hive2 and Impala</a>  </li>
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#oozie">Oozie</a>  </li>
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#pig">Pig</a>  </li>
+        <li> <a title="Connection and Access Information" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#Pentaho_Mapreduce_(PMR)">Pentaho Mapreduce (PMR)</a>  </li>
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#spark">Spark</a>  </li>
+        <li> <a title="Big Data Information and Access Tear Sheet" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/040/025/010#zookeeper">Zookeeper</a>  </li>
+      </ul>
+      <div id="section_5" class="mt-page-section"><span id="HDFS"></span> 
+        <h3 class="editable">
+          <a id="hdfs" name="hdfs"></a> HDFS</h3>
+        <p>Your Hadoop Administrator should be able to provide this information:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Hostname/IP Address, Namenode Port and Namenode Web Console Port</li>
+          <li>Paths to directories that will be used</li>
+          <li>Owners for the various data sets in HDFS</li>
+          <li>If S3 is used, you'll need the access key and secret key</li>
+        </ul>
+        <p class="pentaho-note">You will also need permission to access to the directories you need.</p>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Hive2_and_Impala"></span> 
+        <h3 class="editable">
+          <a id="hive_impala" name="hive_impala"></a> Hive2 and Impala</h3>
+        <p>Check with your Hadoop Administrator or the Hadoop Cluster Management Console for:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Username (and password) the service will run under</li>
+          <li>Hostname, IP Address, and Port</li>
+          <li>JDBC URL (you must use the thrift interface)</li>
+        </ul>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="HBase"></span> 
+        <h3 class="editable">
+          <a id="hbase" name="hbase"></a> HBase</h3>
+        <p>See your Hadoop Administrator or the Hadoop Cluster Management Console to get information on:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Zookeeper connection hostname</li>
+          <li>Zookeeper connection port</li>
+        </ul>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Oozie"></span> 
+        <h3 class="editable">
+          <a id="oozie" name="oozie"></a> Oozie</h3>
+        <p>Check your Hadoop Administrator or the Hadoop Cluster Management Console to get the:</p>
+        <ul class="pentaho-list-unordered">
+          <li>URL to Oozie web interface</li>
+          <li>Jobtracker Hostname/IP and Port number (or Resource Manager Hostname/IP and Port number)</li>
+          <li>Namenode Hostname/IP and Port number</li>
+        </ul>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Pig"></span> 
+        <h3 class="editable">
+          <a id="pig" name="pig"></a> Pig</h3>
+        <p>Get this information from the PDI Developer.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Username used to access HDFS</li>
+          <li>Jobtracker Hostname/IP and Port number (or Resource Manager Hostname/IP and Port number)</li>
+          <li>Hostname/IP Address, Namenode Port and Namenode Web Console Port</li>
+        </ul>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Pentaho_Mapreduce_(PMR)"></span> 
+        <h3 class="editable">
+          <a id="pmr" name="pmr"></a> Pentaho Mapreduce (PMR)</h3>
+        <p>See your Hadoop Administrator or the Hadoop Cluster Management Console to get information on:</p>
+        <ul>
+          <li>Job History Server IP and Port</li>
+          <li>Jobtracker Hostname/IP and Port number (or Resource Manager Hostname/IP and Port number)</li>
+          <li>Hostname/IP Address, Namenode Port and Namenode Web Console Port</li>
+        </ul>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="Sqoop"></span> 
+        <h3 class="editable">
+          <a id="sqoop" name="sqoop"></a> Sqoop</h3>
+        <p>Get this information from the IT Administrator.</p>
+        <ul class="pentaho-list-unordered">
+          <li>JDBC Connection details for target or source databases</li>
+          <li>JDBC Drivers</li>
+          <li>Jobtracker Hostname/IP and Port number (or Resource Manager Hostname/IP and Port number)</li>
+          <li>Hostname/IP Address, Namenode Port and Namenode Web Console Port</li>
+          <li>Get this information from the PDI Developer or Database Administrator.</li>
+        </ul>
+        <ul class="pentaho-list-unordered">
+          <li>Username used to access HDFS</li>
+        </ul>
+      </div>
+      <div id="section_12" class="mt-page-section"><span id="Spark"></span> 
+        <h3 class="editable">
+          <a id="spark" name="spark"></a> Spark</h3>
+        <p>Get this information from the Hadoop Administrator.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Master URL</li>
+          <li>Spark Client Location</li>
+          <li>Jobtracker Hostname/IP and Port number (or Resource Manager Hostname/IP and Port number)</li>
+          <li>Hostname/IP Address, Namenode Port and Namenode Web Console Port</li>
+          <li>Job History Server IP and Port (?)</li>
+        </ul>
+      </div>
+      <div id="section_13" class="mt-page-section"><span id="Zookeeper"></span> 
+        <h3 class="editable">
+          <a id="zookeeper" name="zookeeper"></a> Zookeeper</h3>
+        <p>Get this information the Hadoop Cluster Management Console or the Hadoop Administrator:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Hostname or IP Address</li>
+          <li>Port</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Pentaho" rel="internal">Pentaho</a>  </li>
+      <li> <a href="#Hadoop_Cluster" rel="internal">Hadoop Cluster</a>  </li>
+      <li>
+        <a href="#Optional_Services" rel="internal">Optional Services</a> 
+        <ol>
+          <li> <a href="#HDFS" rel="internal">HDFS</a>  </li>
+          <li> <a href="#Hive2_and_Impala" rel="internal">Hive2 and Impala</a>  </li>
+          <li> <a href="#HBase" rel="internal">HBase</a>  </li>
+          <li> <a href="#Oozie" rel="internal">Oozie</a>  </li>
+          <li> <a href="#Pig" rel="internal">Pig</a>  </li>
+          <li> <a href="#Pentaho_Mapreduce_(PMR)" rel="internal">Pentaho Mapreduce (PMR)</a>  </li>
+          <li> <a href="#Sqoop" rel="internal">Sqoop</a>  </li>
+          <li> <a href="#Spark" rel="internal">Spark</a>  </li>
+          <li> <a href="#Zookeeper" rel="internal">Zookeeper</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

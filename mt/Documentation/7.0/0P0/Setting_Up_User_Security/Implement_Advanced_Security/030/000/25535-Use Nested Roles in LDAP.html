@@ -1,0 +1,65 @@
+<content type="text/html" title="Use Nested Roles in LDAP">
+  <head>
+    <style type="text/css">
+      /*<![CDATA[*/
+      /*]]>*/
+    </style>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">It is possible to nest user roles such that one role includes all of the users of another role. Doing this external to the core LDAP structure prevents recursive directory queries to find all parents of a given child role. Follow the directions
+            below to modify the&nbsp;Pentaho&nbsp;Server to support nested roles for LDAP and MSAD authentication types.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the Pentaho&nbsp;Server or service.</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sh /usr/local/pentaho/server/pentaho-server/stop-pentaho.sh</pre>            </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/</span> </span> <span class="ph cmd"><span class="ph filepath">pentaho-server</span> </span> <span class="ph cmd"><span class="ph filepath">/pentaho-solutions/system/applicationContext-spring-security-ldap.xml</span>             file with a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">In the <strong class="ph b">populator</strong>  bean definition, replace <strong class="ph b">DefaultLdapAuthoritiesPopulator</strong>  with <strong class="ph b">NestedLdapAuthoritiesPopulator</strong> </span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;populator&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.NestedLdapAuthoritiesPopulator&quot;></pre>            </li>
+          <li class="li step"><span class="ph cmd">Save the file, then edit <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/applicationContext-pentaho-security-ldap.xml</span> .</span>  This and the next step are only necessary if the roles
+            that serve as &quot;parents&quot; to nested roles cannot be returned by a traditional all authorities search.</li>
+          <li class="li step"><span class="ph cmd">Add an <strong class="ph b">extraRoles</strong>  bean to the list of transformers in the <strong class="ph b">ChainedTransformers</strong>  bean, and set properties for each parent role (represented by example_role below).</span>             <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;allAuthoritiesSearch&quot; class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.search.GenericLdapSearch&quot;>
+
+    <!-- omitted -->
+    <constructor-arg index=&quot;2&quot;>
+        <bean class=&quot;org.apache.commons.collections.functors.ChainedTransformer&quot;>
+            <constructor-arg index=&quot;0&quot;>
+                <list>
+                    <bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.transform.SearchResultToAttrValueList&quot;>
+
+                        <!-- omitted -->
+                    </bean>
+                    <bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.transform.ExtraRoles&quot;>
+                        <property name=&quot;extraRoles&quot;>
+                            <set>
+                                <value>example_role</value>
+                            </set>
+                        </property>
+                    </bean>
+                    <bean class=&quot;org.pentaho.platform.plugin.services.security.userrole.ldap.transform.StringToGrantedAuthority&quot;>
+
+                        <!-- omitted -->
+                    </bean>
+                </list>
+            </constructor-arg>
+        </bean>
+    </constructor-arg>
+</bean></pre> </li>
+          <li class="li step"><span class="ph cmd">Save the file, close your text editor, and start the Pentaho&nbsp;Server.</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sh /usr/local/pentaho/server/pentaho-server/start-pentaho.sh</pre>            </li>
+        </ol>
+        <div class="section result">The Pentaho Server can now efficiently handle nested roles with LDAP or Active Directory authentication.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

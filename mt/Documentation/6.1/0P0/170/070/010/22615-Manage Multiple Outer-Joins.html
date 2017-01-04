@@ -1,0 +1,66 @@
+<content type="text/html" title="Manage Multiple Outer-Joins">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">When you have three or more tables that require outer joins, the <em class="ph i">order</em>  in which the tables are joined is critical. Consider the example below:</p>
+        <p>
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/12103/48_outer_joins.png?revision=1" />
+        </p>
+        <p>In the sample preview below, the entries, 1, 2 ,3, and 4, in Table4 are taken and outer-joined with the records in the two other tables. The three other tables contain fewer records. The relationships are defined but now the order of execution
+          critical. Relationship A is executed first, followed by B, then C.
+          <img alt="" class="mt-disabled" style="" />
+        </p>
+        <p class="p">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/12104/49_execution_of_joins.png?revision=1" />
+        </p>
+        <p class="p">Below is the query that is generated:</p>
+        <p>
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/12106/50_query_outer_joins.png?revision=1" />
+        </p>
+        <p>The nested join syntax that is generated forces the order of execution:</p>
+        <ul class="ul">
+          <li class="li">Join Table1 and Table2 (shown in red)</li>
+          <li class="li">Join Table3 and A = B (shown in blue)</li>
+          <li class="li">Join Table4 with B = Result</li>
+        </ul>
+        <p class="p">Other orders of execution are just as valid depending on the business context to which they are applied. Another order of execution will generate a different result. To allow business model designers to ensure that user selections are executed
+          in a specific way, a <strong class="ph b">Join Order Key</strong>  is added to the <strong class="ph b">Relationship Properties</strong>  dialog box.</p>
+        <p>
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/12105/51_relationship_properties_dialog_box.png?revision=1" />
+        </p>
+        <p>The join order key is relevant only in instances in which outer joins are deployed in business models. To make the importance of the execution order apparent, this information is displayed in the graphical view of the model, as shown below.</p>
+        <div class="p">
+          <div class="note note"><span class="notetitle">Note:</span>  It is not mandatory to use uppercase letters, (A, B, C, as shown in the first image), to set the order in which tables are executed. Any alphanumeric characters (0-9, A-Z) can be used. The system will calculate
+            the ASCII values of each character; the values are then used to determine the order of execution. In the example, A, B, C, AA, AB, Pentaho Metadata Editor will execute the table relationships in the following order: A, AA, AB, B, C.</div>
+        </div>
+      </div>
+      <div class="related-links">
+        <div id="section_1" class="mt-page-section"><span id="Use_the_Delay_Outer_Join_Conditions_Property"></span> 
+          <h2 class="editable">
+            <span>Use the Delay Outer Join Conditions Property</span> 
+          </h2>
+          <div class="editIcon" style="visibility: hidden;">
+            <a title="Edit section" class="mt-disabled" rel="broken"> <span class="icon"><img alt="Edit section" class="sectionedit" src="https://a.mtstatic.com/skins/common/icons/icon-trans.gif?_=aa8a2d5189d40b1c1587a741180fe7f0700196c3:site_7183" /></span>   </a> 
+          </div>
+          <div class="related-links">
+            <div class="section context">
+              <p class="p">To force conditions that would ordinarily be processed in the JOIN condition to be processed in the WHERE clause, follow the directions below to create a&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;custom property.</p>
+            </div>
+            <ol class="pentaho-list-ordered">
+              <li class="li step"><span class="ph cmd">Right-click on a business model and select&nbsp;<strong class="ph b">Edit</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Add a property by clicking the green&nbsp;<strong class="ph b">+</strong> &nbsp;icon.</span> </li>
+              <li class="li step"><span class="ph cmd">Select&nbsp;<strong class="ph b">Add a Custom Property</strong> &nbsp;and set its ID to&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;and select&nbsp;<strong class="ph b">boolean</strong> &nbsp;for the&nbsp;<strong class="ph b">Type</strong>, then click&nbsp;<strong class="ph b">OK</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Select the newly-created&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;property, then click the checkbox for&nbsp;<strong class="ph b">delay_outer_join_conditions</strong> &nbsp;under the&nbsp;<strong class="ph b">Custom</strong> &nbsp;heading on the right side of the window, then click&nbsp;<strong class="ph b">OK</strong> .</span> </li>
+            </ol>
+            <p>Instead of the conditions being rolled into the JOIN clause, they will be allowed to roll down into the WHERE clause.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Use_the_Delay_Outer_Join_Conditions_Property" rel="internal">Use the Delay Outer Join Conditions Property</a>  </li>
+    </ol>
+  </body>
+</content>

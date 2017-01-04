@@ -1,0 +1,82 @@
+<content type="text/html" title="Create Step Plugins">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A transformation step implements a data processing task in an ETL data flow. It operates on a stream of data rows. Transformation steps are designed for input, processing, or output. Input steps fetch data rows from external data sources, such
+          as files or databases. Processing steps work with data rows, perform field calculations, and stream operations, such as joining or filtering. Output steps write the processed data back to storage, files, or databases.
+          <br />
+          <img alt="File:/types_of_steps.png" class="image internal" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__image_fct_mrh_nh" src="http://help.pentaho.com/@api/deki/files/3586/types_of_steps.png?revision=1" />
+        </p>
+        <p class="p">This section explains the architecture and programming concepts for creating your own PDI transformation step plugin. We recommended that you open and refer to the
+          <a class="xref" title="Sample Step Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/040">sample step plugin sources</a>  while following these instructions.</p>
+        <p class="p">A step plugin integrates with PDI by implementing four distinct Java interfaces. Each interface represents a set of responsibilities performed by a PDI step. Each of the interfaces has a base class that implements the bulk of the interface in
+          order to simplify plugin development.</p>
+        <p class="p">Unless noted otherwise, all step interfaces and corresponding base classes are part of the <code class="ph codeph">org.pentaho.di.trans.step</code> package.&nbsp;</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e54" valign="top" width="26.595744680851062%"><strong class="ph b">Java Interface</strong> </th>
+                <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e60" valign="top" width="52.12765957446809%"><strong class="ph b">Base Class</strong> </th>
+                <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e66" valign="top" width="21.27659574468085%"><strong class="ph b">Main Responsibilities</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepMetaInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">BaseStepMeta</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul">
+                    <li class="li">Maintain step settings</li>
+                    <li class="li">Validate step settings</li>
+                    <li class="li">Serialize step settings</li>
+                    <li class="li">Provide access to step classes</li>
+                    <li class="li">Perform row layout changes</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepDialogInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">org.pentaho.di.ui.trans.step.BaseStepDialog</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_jcv_5m2_4h">
+                    <li class="li">Step settings dialog</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">BaseStep</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_gyg_vm2_4h">
+                    <li class="li">Process rows</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d16384e54 " valign="top" width="26.595744680851062%"><code class="ph codeph">StepDataInterface</code></td>
+                <td class="entry" headers="d16384e60 " valign="top" width="52.12765957446809%"><code class="ph codeph">BaseStepData</code></td>
+                <td class="entry" headers="d16384e66 " valign="top" width="21.27659574468085%">
+                  <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_zfv_vm2_4h">
+                    <li class="li">Provide storage for row processing</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="pentaho-list-unordered">
+          <li class="link ulchildlink"><strong><a title="Maintaining Step Settings" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/000">Maintaining Step Settings</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Implementing the Step Settings Dialog Box" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/010">Implementing the Step Settings Dialog Box</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Processing Rows" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/020">Processing Rows</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Deploying Step Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/030">Deploying Step Plugins</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Sample Step Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/040">Sample Step Plugin</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Exploring More Steps" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0R0/0V0/010/000/050">Exploring More Steps</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

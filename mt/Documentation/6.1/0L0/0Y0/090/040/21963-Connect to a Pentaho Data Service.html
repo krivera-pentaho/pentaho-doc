@@ -1,0 +1,270 @@
+<content type="text/html" title="Connect to a Pentaho Data Service">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushSql.min.js"></script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Explains how to connect&nbsp;to and query&nbsp;the Pentaho Data Service from a&nbsp;Pentaho or non-Pentaho&nbsp;tool.</p>
+      </div>
+    </div>
+    <p>A Pentaho Data Service is a virtual table that contains the output of a PDI transformation step. &nbsp;You can connect to and query the&nbsp;Pentaho Data Service from any Pentaho tool, such as Report Designer, Spoon, and Analyzer. &nbsp;You can also
+      connect to and query it&nbsp;from a non-Pentaho tool, like RStudio or SQuirreL. &nbsp;To learn more about the Pentaho Data Service, see the
+      <a title="Turn Transformation Step Results into a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090">Turn Transformation Step Results Into a Pentaho Data Service</a>  and
+      <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020">Develop and Optimize a Pentaho Data Service</a>  articles.</p>
+    <p class="pentaho-note">To connect and query the Pentaho Data Service, you need to have permission to run the transformation and to access the Pentaho Server it is published on.</p>
+    <div id="section_2" class="mt-page-section"><span id="Connect_to_the_Pentaho_Data_Service_from_a_Pentaho_Tool"></span> 
+      <h2 class="editable">
+        <a id="ConnectfromPentaho" name="ConnectfromPentaho"> <span style="color: rgb(0, 0, 0);">Connect to the Pentaho Data Service&nbsp;from a Pentaho Tool</span>  </a> 
+      </h2>
+      <p>Connecting to the data service from another Pentaho tool is simple. &nbsp;Just connect to it as you would any other source.&nbsp; If you need instructions on how to do that, check out
+        <a class="external" target="_blank" title="http://www.help.pentaho.com"
+        rel="external nofollow" href="http://www.help.pentaho.com">Pentaho Help</a> .&nbsp; The following table provides values for the typical parameters that you'll need to connect.</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table" width="629">
+        <tbody>
+          <tr>
+            <th style="width: 232px;">Required Parameters</th>
+            <th style="width: 421px;">Value To Select</th>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Connection Name</td>
+            <td style="width: 421px;">Name that you specify.</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Connection Type</td>
+            <td style="width: 421px;">Pentaho Data Services</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Access</td>
+            <td style="width: 421px;">Native (JDBC)</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Hostname</td>
+            <td style="width: 421px;">Hostname of the DI Server or IP Address.&nbsp; By default, this is <span class="filepath style-wrap">localhost</span>  if you are running the Pentaho Server locally.</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Port Number</td>
+            <td style="width: 421px;">Port number of the Pentaho Server the data service will run on.&nbsp; By default this is <span class="filepath style-wrap">8080</span> .</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Username</td>
+            <td style="width: 421px;">Name of a user who has permission to run the data service.</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Password</td>
+            <td style="width: 421px;">Password for a user who has permission to run the data service.</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">webappname</td>
+            <td style="width: 421px;">
+              <p>The name of the web application. For the DI Server, the <span style="font-family: courier new,courier,monospace;">webappname</span>  is typically <span style="font-family: courier new,courier,monospace;">pentaho-di</span> .&nbsp; It is a parameter
+                in the <strong>Options</strong>  sections of the Kettle database connection dialog.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>You can also set the following optional parameters.</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th style="width: 156px;">Optional Parameters</th>
+            <th style="width: 351px;">Description</th>
+          </tr>
+          <tr>
+            <td style="width: 156px;"><span class="filepath style-wrap">proxyhostname</span> </td>
+            <td style="width: 351px;">Proxy server for HTTP connection(s).</td>
+          </tr>
+          <tr>
+            <td style="width: 156px;"><span class="filepath style-wrap">proxyport</span> </td>
+            <td style="width: 351px;">Proxy server port.</td>
+          </tr>
+          <tr>
+            <td style="width: 156px;"><span class="filepath style-wrap">nonproxyhosts</span> </td>
+            <td style="width: 351px;">Hosts that do not use the proxy server.&nbsp; If you have more than one host name separate them with commas.</td>
+          </tr>
+          <tr>
+            <td style="width: 156px;"><span class="filepath style-wrap">debugtrans</span> </td>
+            <td style="width: 351px;">Optional name of the file that the generated transformation is stored in.&nbsp; This transformation is generated so that you can debug it.&nbsp; Here is an example: <span class="filepath style-wrap">/tmp/debug.ktr</span> .&nbsp; You can simply
+              specify the name of the transformation or a path plus the name of the transformation.</td>
+          </tr>
+          <tr>
+            <td style="width: 156px;"><span class="filepath style-wrap">PARAMETER_[optionname]=value</span> </td>
+            <td style="width: 351px;">Sets the value for a parameter that you specified in the transformation. <span class="filepath style-wrap">[optionname]</span>  is the name of the parameter that you specified, and [value] is the value that you assign to it. &nbsp;<span class="filepath style-wrap">PARAMETER_ </span> is
+              placed before the option name. For example, if the name of the parameter is &ldquo;model&rdquo;, here is how you would set the parameter: &nbsp; <span class="filepath style-wrap">PARAMETER_model=E6530</span> .</td>
+          </tr>
+          <tr>
+            <td style="width: 156px;"><span class="filepath style-wrap">secure</span> </td>
+            <td style="width: 351px;">Set this parameter to <span class="filepath style-wrap">TRUE </span> if you want to use the <em>HTTPS </em> secure protocol connect to the data service.&nbsp; If you omit this parameter or set it to <span class="filepath style-wrap">FALSE</span>,
+              the standard <em>HTTP </em> unsecure protocol is used instead.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Connect_to_the_Pentaho_Data_Service_from_a_Non-Pentaho_Tool"></span> 
+      <h2 class="editable">
+        <a id="ConnectNonPentaho" name="ConnectNonPentaho"> <span style="color: rgb(0, 0, 0);">Connect to the Pentaho&nbsp;Data Service&nbsp;from a Non-Pentaho Tool</span>  </a> 
+      </h2>
+      <p>To connect to and run a Pentaho Data Service from a non-Pentaho tool, like SQuirreL or Beaker, you need to install the service driver files, then create a connection to the data service from your tool.</p>
+      <div id="section_4" class="mt-page-section"><span id="Download_and_Install_the_Pentaho_Data_Service_JDBC_Driver"></span> 
+        <h3 class="editable">
+          <a id="DownloadInstallJDBC" name="DownloadInstallJDBC"> <span style="color: rgb(0, 0, 0);">Download and Install the Pentaho Data Service JDBC Driver</span>  </a> 
+        </h3>
+        <p>Before you can connect to and run a Pentaho Data Service from a non-Pentaho tool like SQuirreL or Beaker, you need to download the PDI Data Service driver and install it. The driver is bundled with PDI.&nbsp; If you want someone who doesn&rsquo;t
+          have PDI to connect to your data service, you will need to download the driver and give it to them so that they can install it.</p>
+        <div id="section_5" class="mt-page-section"><span id="Use_Spoon_to_Download_the_Pentaho_Data_Service_JDBC_Driver"></span> 
+          <h4 class="editable">
+            <a id="SpoonDownload" name="SpoonDownload"> <span style="color: rgb(0, 0, 0);">Use Spoon to Download the Pentaho Data Service JDBC&nbsp;Driver</span>  </a> 
+          </h4>
+          <p>To download the Pentaho Data Service JDBC Driver from Spoon, do complete the following instructions.&nbsp; If you'd prefer to download the files manually instead, see
+            <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040#ManualDownload">Manually Download the Pentaho Data Service JDBC Driver</a> .&nbsp;</p>
+          <ol>
+            <li>Do one of the following:</li>
+          </ol>
+          <ul>
+            <li>Right-click the step, then select <strong>Data Service > Driver Details...</strong> .</li>
+            <li>In the transformation's <strong>View </strong> tab, select the data service from the <strong>Data Services </strong> folder, then right-click any data service and select <strong>Driver Details...</strong> .</li>
+            <li>In the <strong>Data Services</strong>  window, click <strong>Driver Details...</strong> . &nbsp;<span id="cke_bm_233E" style="display: none;">&nbsp;</span> </li>
+          </ul>
+          <ol start="2">
+            <li>In the <strong>Driver Details</strong>  window click <strong>Get Driver...</strong> .</li>
+            <li>In the <strong>Save As</strong>  window, indicate where you want to save the <span class="filepath style-wrap">Pentaho-Data-Service-Driver.zip</span>  file, then click <strong>Save</strong> .</li>
+            <li>Click <strong>Close </strong> to exit the window.</li>
+            <li>Follow the instructions to
+              <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040#Install Driver">Install the Pentaho Data Services JDBC Driver</a> .</li>
+          </ol>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Manually_Download_the_Pentaho_Data_Service_JDBC_Driver"></span> 
+          <h4 class="editable">
+            <a name="ManualDownload"> <span style="color: rgb(0, 0, 0);">Manually Download the Pentaho Data Service JDBC Driver</span>  </a> 
+          </h4>
+          <p>To manually download the Pentaho Data Service JDBC&nbsp;Driver complete the following instructions.&nbsp; To use spoon to downoad the Pentaho Data Service JDBC Driver instead, see
+            <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040#SpoonDownload">Use Spoon to Download the Pentaho Data Service JDBC Drive</a> r.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Go to the <span class="filepath style-wrap"><pentaho installation directory>/design-tools/data-integration/Data Service JDBC Driver</span>  directory and download the zipped file in it.&nbsp;</li>
+            <li>Follow the instructions to
+              <a title="Connect to a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040#Install Driver">Install the Pentaho Data Service JDBC Driver</a> .</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Install_the_Pentaho_Data_Service_JDBC_Driver"></span> 
+          <h4 class="editable">
+            <a id="Install Driver" name="Install Driver"> <span style="color: rgb(0, 0, 0);">Install the Pentaho Data Service JDBC Driver</span>  </a> 
+          </h4>
+          <p>To install the Pentaho Data Service JDBC Driver, complete these steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Extract the driver files that you downloaded in the Download the Pentaho Data Service JDBC&nbsp;Driver instructions and paste them into the JDBC directory in your application. &nbsp;For example, if you want to access the data service from
+              RStudio, paste the driver files in the same directory as the other JDBC drivers. &nbsp;If you aren&rsquo;t sure where this is, check the documentation for that application.</li>
+            <li>Start and stop the application.</li>
+            <li>In the application, make a connection to the data service, using the instructions in Connect to the Pentaho Data Service from a Non-Pentaho Tool.</li>
+          </ol>
+        </div>
+        <div id="section_8" class="mt-page-section"><span id="Create_a_Connection_from_a_Non-Pentaho_Tool"></span> 
+          <h4 class="editable">
+            <a id="CreateConnection" name="CreateConnection"> <span style="color: rgb(0, 0, 0);">Create a Connection from a Non-Pentaho Tool</span>  </a> 
+          </h4>
+          <p>Once the driver is installed, you will need to create the connection to the Pentaho Data Service. &nbsp;For many tools you'll do this by specifying a connection object. &nbsp;Review the connection details and optional options in Connect to the
+            Pentaho Data Service from a Pentaho Tool.</p>
+          <p>You'll probably also need the JDBC Driver class from the following table.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <th style="width: 304px;">Parameter</th>
+                <th style="width: 444px;">Value</th>
+              </tr>
+              <tr>
+                <td style="width: 304px;">JDBC Driver Class</td>
+                <td style="width: 444px;"><span class="filepath style-wrap">org.pentaho.di.trans.dataservice.jdbc.ThinDriver</span> </td>
+              </tr>
+            </tbody>
+          </table>
+          <div id="section_9" class="mt-page-section"><span id="Example_of_JDBC_Connection_String"></span> 
+            <h5 class="editable">Example of JDBC Connection String</h5>
+            <p>The JDBC connection string uses this format:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">jdbc:pdi://<Pentaho Server Hostname:Port>/kettle?option=value&amp;option=value</pre>
+            <p>Here is an example of a connection string. &nbsp;The <span class="filepath style-wrap">webappname </span> is required if the data service is running on the Pentaho Server. &nbsp;&nbsp;</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">jdbc:pdi://localhost:8080/kettle?webappname=pentaho-di</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="section_10" class="mt-page-section"><span id="Monitor_a_Pentaho_Data_Service"></span> 
+      <h2 class="editable">
+        <a name="MonitorDS"> <span style="color: rgb(0, 0, 0);">Monitor a Pentaho Data Service</span>  </a> 
+      </h2>
+      <p>To monitor a data service, type one of the following commands into your browser. &nbsp;Replace the <span class="filepath style-wrap"><Pentaho Server Host:Port></span>  of the Pentaho Server with the host name or IP address and the port of the Pentaho
+        Server you are running the data service on.&nbsp; You will need to have access to the Pentaho Server and be authenticated to run the following commands.</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th style="width: 320px;">List Names of Data Services on the Pentaho Server</th>
+            <th style="width: 305px;">List Status of Data Services on the Pentaho Server</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 320px;">
+              <p><span class="filepath style-wrap">http://<Pentaho Server Host:Port>/pentaho-di/kettle/listServices</span> </p>
+            </td>
+            <td style="width: 305px;">
+              <p><span class="filepath style-wrap">http://<Pentaho Server Host:Port>/pentaho-di/kettle/status</span> </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_11" class="mt-page-section"><span id="Query_a_Pentaho_Data_Service"></span> 
+      <h2 class="editable">
+        <a id="QueryPentahoDataService" name="QueryPentahoDataService"> <span style="color: rgb(0, 0, 0);">Query a&nbsp;Pentaho Data Service</span>  </a> 
+      </h2>
+      <p>You can use SQL to query a data service. You can also add a conditional to the query if the data service transformation uses a parameter. This means that the ETL Developer who created or modified the data service transformation, must have already
+        added the parameter. See
+        <a title="Develop and Optimize a Pentaho Data Service" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/020">Develop and Optimize&nbsp;a Pentaho Data Service</a>  for more details. You can then assign a value to the parameter in your query.&nbsp;</p>
+      <p>To find the name of the table to query, you can connect to the data service, then use explorer to find the name of the table. &nbsp;The name of table is usually the same as the name of the data service.</p>
+      <ul>
+        <li>There are SQL limitations for queries. &nbsp;See the
+          <a title="Documentation/6.1/0L0/0Y0/090/040" rel="internal" class="mt-self-link" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/090/040">Pentaho Data Source SQL Reference and Other Development Considerations</a>  article for more details.</li>
+        <li>Although you can use any Pentaho-supported input source, data services can only be queried with SQL. &nbsp;</li>
+      </ul>
+      <p>Here is an example of a SQL query that include a parameter. The example queries the <span class="filepath style-wrap">employeeList </span> data service for records, and when the data service transformation is executed, any use of the parameter
+        <span
+        class="filepath style-wrap">employeeRegion&nbsp;</span> in it will be substituted with the value <span class="filepath style-wrap">USA EAST</span> . This parameter could be in any transformation step that allows variable or parameter substitution.</p>
+      <p>You can also assign a value to the parameter in the <strong>Connection Properties</strong>  window.</p>
+      <p>Here is the syntax:</p> <pre class="brush: sql; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SELECT * FROM <data service name> WHERE PARAMETER('<parameter_name>') = '<parameter_value>'</pre>
+      <p>Here is an example.</p> <pre class="brush: sql; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">view sourceprint
+   SELECT * FROM employeeList WHERE PARAMETER('employeeRegion')='USA EAST'</pre> </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Connect_to_the_Pentaho_Data_Service_from_a_Pentaho_Tool" rel="internal">Connect to the Pentaho Data Service&nbsp;from a Pentaho Tool</a>  </li>
+      <li>
+        <a href="#Connect_to_the_Pentaho_Data_Service_from_a_Non-Pentaho_Tool" rel="internal">Connect to the Pentaho&nbsp;Data Service&nbsp;from a Non-Pentaho Tool</a> 
+        <ol>
+          <li>
+            <a href="#Download_and_Install_the_Pentaho_Data_Service_JDBC_Driver" rel="internal">Download and Install the Pentaho Data Service JDBC Driver</a> 
+            <ol>
+              <li> <a href="#Use_Spoon_to_Download_the_Pentaho_Data_Service_JDBC_Driver" rel="internal">Use Spoon to Download the Pentaho Data Service JDBC&nbsp;Driver</a>  </li>
+              <li> <a href="#Manually_Download_the_Pentaho_Data_Service_JDBC_Driver" rel="internal">Manually Download the Pentaho Data Service JDBC Driver</a>  </li>
+              <li> <a href="#Install_the_Pentaho_Data_Service_JDBC_Driver" rel="internal">Install the Pentaho Data Service JDBC Driver</a>  </li>
+              <li>
+                <a href="#Create_a_Connection_from_a_Non-Pentaho_Tool" rel="internal">Create a Connection from a Non-Pentaho Tool</a> 
+                <ol>
+                  <li> <a href="#Example_of_JDBC_Connection_String" rel="internal">Example of JDBC Connection String</a>  </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Monitor_a_Pentaho_Data_Service" rel="internal">Monitor a Pentaho Data Service</a>  </li>
+      <li> <a href="#Query_a_Pentaho_Data_Service" rel="internal">Query a&nbsp;Pentaho Data Service</a>  </li>
+    </ol>
+  </body>
+</content>

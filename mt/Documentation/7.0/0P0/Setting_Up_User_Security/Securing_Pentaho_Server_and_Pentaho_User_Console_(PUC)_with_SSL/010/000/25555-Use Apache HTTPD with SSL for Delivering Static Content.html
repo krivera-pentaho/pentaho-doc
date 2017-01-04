@@ -1,0 +1,96 @@
+<content type="text/html" title="Use Apache HTTPD with SSL for Delivering Static Content">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">You can use the Apache httpd Web server to handle delivery of static content and facilitation of socket connections, neither of which is done efficiently through Tomcat alone, especially under heavy traffic or when accepting connections from
+            the Internet.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Install Apache 2.2.x -- with SSL support -- through your operating system's preferred installation method. For most people, this will be through a package manager. It's also perfectly valid to download and install the reference implementation from <a class="xref external" target="_blank" rel="external nofollow" href="http://www.apache.org">http://www.apache.org</a> .</span>             It is possible to use Apache 1.3, but you will have to modify the instructions on your own from this point onward.</li>
+          <li class="li step"><span class="ph cmd">If it has started as a consequence of installing, stop the Apache server or service.</span> </li>
+          <li class="li step"><span class="ph cmd">Retrieve or create your SSL keys.</span>  If you do not know how to generate self-signed certificates, refer to the OpenSSL documentation. Most production environments have SSL certificates issued by a certificate authority
+            such as Thawte or Verisign.</li>
+          <li class="li step"><span class="ph cmd">Check to see if you already have the Tomcat Connector installed on your system. You can generally accomplish this by searching your filesystem for <strong class="ph b">mod_jk</strong>, though you can also search your <strong class="ph b">http.conf</strong>  file for <strong class="ph b">mod_jk</strong> . If it is present, then you only need to be concerned with the Apache httpd configuration details and can skip this step. If it is not there, then the Tomcat Connector module needs to be installed. If you are using Linux or BSD, use your package manager or the Ports system to install <strong class="ph b">mod_jk</strong> . For all other platforms, visit the <a class="xref external" target="_blank" title="Tomcat Connector download page" rel="external nofollow" href="http://www.apache.org/dist/tomcat/tomcat-connectors/jk/binaries/">http://www.apache.org/dist/tomcat/tomcat-connectors/jk/binaries/</a>, then click on the directory for your operating system. The module will be either an <strong class="ph b">.so</strong>  (for Linux, BSD, OS X, and Solaris) or <strong class="ph b">.dll</strong>  (for Windows) file. Save it to your Apache modules directory, which is generally <span class="ph filepath">C:\Program Files\Apache Group\Apache2\modules\</span>             on Windows, and <span class="ph filepath">/usr/lib/apache2/modules/</span>  on Unix-like operating systems, though this can vary depending on your Apache configuration.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Edit your <strong class="ph b">httpd.conf</strong>  file with a text editor and add the following text to the end of the file, modifying the paths and filenames as instructed in the comments:</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  Some operating systems use modular httpd configuration files and have unique methods of including each separate piece into one central file. Ensure that you are not accidentally interfering with an auto-generated
+              mod_jk configuration before you continue. In many cases, some of the configuration example below will have to be cut out (such as the <strong class="ph b">LoadModule</strong>  statement). In some cases (such as with Ubuntu Linux), httpd.conf
+              may be completely empty, in which case you should still be able to add the below lines to it. Replace <strong class="ph b">example.com</strong>  with your hostname or domain name.</div> <pre class="pre codeblock">
+# Load mod_jk module
+# Update this path to match your mod_jk location; Windows users should change the .so to .dll
+LoadModule    jk_module  /usr/lib/apache/modules/mod_jk.so
+# Where to find workers.properties
+# Update this path to match your conf directory location
+JkWorkersFile /etc/httpd/conf/workers.properties
+# Should mod_jk send SSL information to Tomcat (default is On)
+JkExtractSSL On
+# What is the indicator for SSL (default is HTTPS)
+JkHTTPSIndicator HTTPS
+# What is the indicator for SSL session (default is SSL_SESSION_ID)
+JkSESSIONIndicator SSL_SESSION_ID
+# What is the indicator for client SSL cipher suit (default is SSL_CIPHER)
+JkCIPHERIndicator SSL_CIPHER
+# What is the indicator for the client SSL certificated (default is SSL_CLIENT_CERT)
+JkCERTSIndicator SSL_CLIENT_CERT
+# Where to put jk shared memory
+# Update this path to match your local state directory or logs directory
+JkShmFile     /var/log/httpd/mod_jk.shm
+# Where to put jk logs
+# Update this path to match your logs directory location (put mod_jk.log next to access_log)
+JkLogFile     /var/log/httpd/mod_jk.log
+# Set the jk log level [debug/error/info]
+JkLogLevel    info
+# Select the timestamp log format
+JkLogStampFormat &quot;[%a %b %d %H:%M:%S %Y] &quot;
+# Send everything for context /examples to worker named worker1 (ajp13)
+# JkOptions indicates to send SSK KEY SIZE
+JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
+# JkRequestLogFormat
+JkRequestLogFormat &quot;%w %V %T&quot;
+# Mount your applications
+JkMount /pentaho/* tomcat_pentaho
+# Add shared memory.
+# This directive is present with 1.2.10 and
+# later versions of mod_jk, and is needed for
+# for load balancing to work properly
+JkShmFile logs/jk.shm
+<VirtualHost example.com
+ServerName example.com
+JkMount /pentaho default
+JkMount /pentaho/* default
+JkMount /sw-style default
+JkMount /sw-style/* default
+JkMount /pentaho-style default
+JkMount /pentaho-style/* default
+</VirtualHost></pre> </li>
+          <li class="li step"><span class="ph cmd">In your Apache configuration, ensure that SSL is enabled by uncommenting or adding and modifying the following lines:</span>  <pre class="pre codeblock">
+LoadModule ssl_module modules/mod_ssl.so
+Include conf/extra/httpd-ssl.conf</pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then edit <span class="ph filepath">/conf/extra/httpd-ssl.conf</span>  and properly define the locations for your SSL certificate and key:</span>  <pre class="pre codeblock">
+SSLCertificateFile &quot;conf/ssl/mycert.cert&quot;
+SSLCertificateKeyFile &quot;conf/ssl/mycert.key&quot;</pre> </li>
+          <li class="li step"><span class="ph cmd">Ensure that your SSL engine options contain these entries:</span>  <pre class="pre codeblock">
+SSLOptions +StdEnvVars +ExportCertData</pre> </li>
+          <li class="li step"><span class="ph cmd">Add these lines to the end of the <strong class="ph b">VirtualHost</strong>  section:</span>  <pre class="pre codeblock">
+JkMount /pentaho default
+JkMount /pentaho/* default
+JkMount /sw-style default
+JkMount /sw-style/* default
+JkMount /pentaho-style default
+JkMount /pentaho-style/* default</pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then create a <strong class="ph b">workers.properties</strong>  file in your Apache conf directory. If it already exists, merge it with the example configuration in the next step.</span> </li>
+          <li
+          class="li step"><span class="ph cmd">Copy the following text into the new <strong class="ph b">workers.properties</strong>  file, changing the location of Tomcat and Java, and the port numbers and IP addresses to match your configuration:</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  Remove the <strong class="ph b">workers.tomcat_home</strong>  setting if you are using JBoss.</div> <pre class="pre codeblock">
+workers.tomcat_home=/home/pentaho/pentaho/server/pentaho-server/tomcat/
+workers.java_home=/home/pentaho/pentaho/java/
+worker.list=tomcat_pentaho
+worker.tomcat_pentaho.type=ajp13</pre> </li>
+        </ol>
+        <div class="section result">Apache httpd is now configured to securely and efficiently handle static content for Tomcat. You should now start Tomcat and httpd, then navigate to your domain name or hostname and verify that you can access the Pentaho Web application.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

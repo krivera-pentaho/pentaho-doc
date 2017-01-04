@@ -1,0 +1,43 @@
+<content type="text/html" title="Building Jobs Dynamically">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">To enable your application to respond quickly to changing conditions, you can build jobs dynamically. The example class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingJobs</code>, shows you how. It generates a job definition
+            and saves it to a .<span class="ph filepath">kjb</span>  file. </p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Create and configure a job definition object.</span>  A job definition is represented by a
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html"><code class="ph codeph">JobMeta</code></a>  object. Create this object using the default constructor. The job definition includes the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#setName%28java.lang.String%29">name</a>, the
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#addParameterDefinition%28java.lang.String,%20java.lang.String,%20java.lang.String%29">declared parameters</a>, and the required
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#addDatabase%28org.pentaho.di.core.database.DatabaseMeta%29">database connections</a> .&nbsp; </li>
+          <li class="li step"> <span class="ph cmd">Populate the <code class="ph codeph">JobMeta</code> object with job entries.</span>  The control flow of a job is defined by job entries that are connected by hops.
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">Create the job entry by instantiating its class directly and configure it using its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The job entries reside in sub-packages of <code class="ph codeph">org.pentaho.di.job.entries</code>. For example, use the <span class="ph uicontrol">File Exists</span>                 job entry, create an instance of
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entries/fileexists/JobEntryFileExists.html"><code class="ph codeph">org.pentaho.di.job.entries.fileexists.JobEntryFileExists</code></a>, and use
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entries/fileexists/JobEntryFileExists.html#setFilename%28java.lang.String%29"><code class="ph codeph">setFilename()</code></a>  to configure it. </span>  The <span class="ph uicontrol">Start</span>  job entry is implemented by
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entries/special/JobEntrySpecial.html"><code class="ph codeph">org.pentaho.di.job.entries.special.JobEntrySpecial</code>.</a> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Create an instance of <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entry/JobEntryCopy.html"><code class="ph codeph">org.pentaho.di.job.entry.JobEntryCopy</code></a>  by passing the job entry created in the previous step to the constructor. An instance of <code class="ph codeph">JobEntryCopy</code> encapsulates the properties of a job entry, as well as controls the placement of the job entry on the Spoon canvas and connections to hops. Once created, call <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entry/JobEntryCopy.html#setDrawn%28boolean%29"><code class="ph codeph">setDrawn(true)</code></a>  and <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entry/JobEntryCopy.html#setLocation%28int,%20int%29"><code class="ph codeph">setLocation(x,y)</code></a>  to make sure the job entry appears correctly on the Spoon canvas. Finally, add the job entry to the job by calling <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#addJobEntry%28org.pentaho.di.job.entry.JobEntryCopy%29"><code class="ph codeph">addJobEntry()</code></a>  on the job definition object. </span>                 It is possible to&nbsp; place the same job entry in several places on the canvas by creating multiple instances of <code class="ph codeph">JobEntryCopy</code> and passing in the same job entry instance.&nbsp; </li>
+              <li class="li substep">
+              <span class="ph cmd">Once job entries have been added to the job definition, they need to be connected by hops. To create a hop, create an instance of <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobHopMeta.html"><code class="ph codeph">org.pentaho.di.job.JobHopMeta</code></a>, passing in the From and To job entries as arguments to the constructor. Configure the hop consistently. Configure it as a green or red hop by calling <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobHopMeta.html#setConditional%28%29"><code class="ph codeph">setConditional()</code></a>  and <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobHopMeta.html#setEvaluation%28boolean%29"><code class="ph codeph">setEvaluation(true/false)</code></a> . If it is an unconditional hop, call <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobHopMeta.html#setUnconditional%28%29"><code class="ph codeph">setUnconditional()</code></a> . Add the hop to the job definition by calling <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#addJobHop%28org.pentaho.di.job.JobHopMeta%29"><code class="ph codeph">addJobHop()</code></a> . </span>                 </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="section result">
+          <p class="p">After all job entries have been added and connected by hops, the job definition object can be serialized to a .<span class="ph filepath">kjb</span>  file by calling
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/JobMeta.html#getXML%28%29"><code class="ph codeph">getXML()</code></a>, and opened in Spoon for inspection. The sample class <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingJobs</code> generates this job.
+            <img class="image" id="c273df29-b884-4cef-b8a8-7f09f58dbcf2__building_jobs_on_the_fly__image_tnm_1rq_mh"
+            />
+            <br />
+            <img id="c273df29-b884-4cef-b8a8-7f09f58dbcf2__building_jobs_on_the_fly__image_rg2_hrq_mh" alt="File:/generated_job.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/2775/generated_job.png?revision=1" />
+            <br />
+          </p>
+          .</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

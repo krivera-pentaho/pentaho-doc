@@ -1,0 +1,112 @@
+<content type="text/html" title="Increase the DI Server Memory Limit">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to increase memory limits.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">We recommend that you increase PDI's memory limit so the DI Server and Data Integration Design Tool (Spoon) can perform memory-intensive tasks, like sort or group large datasets or run complex transformations and jobs. You will need to increase
+            the memory limit for both the DI Server and Spoon. If you choose to not increase the memory limit, PDI uses the default memory settings in the PDI startup scripts.</p>
+          <p class="p">The way that you increase the memory settings for the DI Server depends on <em class="ph i">how you installed</em>  PDI and <em class="ph i">what operating system </em> you are running it on.</p>
+          <ul class="ul">
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0H0/070/010/010#cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_windows" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/010#cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_windows">Increase DI Server Memory Limit if You Used the Wizard to Install PDI on Windows</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0H0/070/010/010#cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_linux" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/010#cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_linux">Increase DI Server Memory Limit if You Used the Wizard to Install PDI on Linux</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0H0/070/010/010#cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_manual" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/010#cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_manual">Increase DI Server Memory Limit if Used a Custom Installation Method to Install PDI on Windows or Linux</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_windows">
+        <div id="section_2" class="mt-page-section"><span id="Increase_DI_Server_Memory_Limit_for_Wizard_Installations_on_Windows"></span> 
+          <h2 class="editable">Increase DI Server Memory Limit for Wizard Installations on Windows</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used the Installation Wizard to install the DI Server on a Windows machine, you can increase the DI Server's memory limits by editing the Java memory settings for Tomcat. (Tomcat, which is installed with the installation wizard, is
+                the web application server that the DI Server runs on.) If you didn't use the Wizard or you are not running PDI on a Windows machine, check out the
+                <a class="xref" href="#">other ways to increase memory</a> .</p>
+            </div>
+            <ol class="ol steps" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_windows__steps_kjt_bss_qm">
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/070/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/000">Stop the Pentaho DI Server</a>  if it is running.</span> </li>
+              <li class="li step"><span class="ph cmd">Type <span class="ph filepath">services.msc</span>  into the <strong class="ph b">Windows Search Box</strong> .</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Find the Pentaho Server name (<strong class="ph b">Data Integration Server</strong> ) and open it so you can find the <strong class="ph b">service name</strong> . The <strong class="ph b">service name</strong>  should appear at the top of the first tab (<strong class="ph b">General</strong> ). It will be <strong class="ph b">pentahoDataIntegrationServer</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Go into the bin file (<span class="ph filepath">C:\Program Files\pentaho\server\data-integration-server\tomcat\bin\</span> ) and rename the <strong class="ph b">tomcat6w.exe</strong>  file to match the <strong class="ph b">service name</strong>                 (<strong class="ph b">pentahoDataIntegrationServerw.exe</strong> ). This will ensure that the server starts with the software.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">After you have renamed the file, open it by double-clicking on it. This will not open the file, it will allow you to edit it. You may need to right-click and select <span class="ph uicontrol">Run as Administrator</span> .
+                This depends on your user permission settings.</span>  The <strong class="ph b">Properties Window</strong>  will open.</li>
+              <li class="li step"><span class="ph cmd">Select the <strong class="ph b">Java</strong>  tab.</span> </li>
+              <li class="li step"><span class="ph cmd">Set the memory setting to a minimum of <strong class="ph b">4096 M</strong>  and a maximum of <strong class="ph b">6144 M</strong>, depending on your computer's memory capabilities.</span> </li>
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/070/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/000">Start the Tomcat server or service</a> .</span>  <strong class="ph b">Note:</strong>                 Make sure to also
+                <a class="xref" title="Documentation/5.1/0H0/070/020/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/020/010">increase the Spoon memory limit</a> .</li>
+            </ol>
+            <div class="section result">Your Tomcat server now has increased minimum and maximum memory limits. You can adjust the <span class="ph filepath">JvmMx</span>  parameter, which is a parameter that specifies the maximum limit, to a higher number if you prefer. However,
+              if the Java virtual machine refuses to start with increased limits, then you will have to add more RAM to your system, stop some memory-intensive services, or reduce the maximum memory limit to a lower number. This problem occurs when there
+              is not enough contiguous memory available to assign to the JVM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_linux">
+        <div id="section_3" class="mt-page-section"><span id="Increase_DI_Server_Memory_Limit_for_Wizard_Installations_on_Linux"></span> 
+          <h2 class="editable">Increase DI Server Memory Limit for Wizard Installations on Linux</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used the Wizard to install PDI on your Linux machine, you can increase memory limits by editing a variable in one of the Pentaho-supplied scripts. If you didn't use the Wizard or you are not running PDI on a Linux machine, see the
+                <a class="xref" href="#">other ways to increase memory</a> .</p>
+            </div>
+            <ol class="ol steps" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_wizard_linux__steps_nv4_trs_qm">
+              <li class="li step"><span class="ph cmd">Go to <span class="ph filepath">/pentaho/server/data-integration-server/tomcat/bin/ directory</span>  and run the <span class="ph filepath">./shutdown.sh</span>  command to stop the appropriate server.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Change the directory to <strong class="ph b">data-integration-server/scripts</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">Edit the <strong class="ph b">ctl.sh</strong>  file.</span> </li>
+              <li class="li step"><span class="ph cmd">Locate the line under <strong class="ph b">start tomcat</strong>, which looks like this: <code class="ph codeph">export JAVA OPTS=&quot;-Dpentaho.installed.licenses.file=/opt/pentaho/.installedLicenses.xml -Xms128m Xmx768m -XX-MaxPermSize=256m -Dsun.rmi.dyc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</code></span> </li>
+              <li class="li step"><span class="ph cmd">Set the memory to a minimum of <strong class="ph b">4096 M</strong>  and a maximum of <strong class="ph b">6144 M</strong>, depending on your computer's memory capabilities.</span> </li>
+              <li class="li step"><span class="ph cmd">Start the Tomcat server or service.</span>  <strong class="ph b">Note:</strong>  Make sure to also
+                <a class="xref" title="Documentation/5.1/0H0/070/020/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/020/010">increase the Spoon memory limit</a> .</li>
+            </ol>
+            <div class="section result">Your Tomcat server now has increased minimum and maximum memory limits. You can adjust the <span class="ph filepath">JvmMx</span>  parameter to specify a higher maximum limit if you prefer. However, if the Java virtual machine refuses to start
+              with increased limits, then you will have to add more RAM to your system, stop some memory-intensive services, or reduce the maximum memory limit to a lower number. This problem occurs when there is not enough contiguous memory available
+              to assign to the JVM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="cddf0ed7-f332-4e45-9e89-acdfe9132ca9__performance_memory_pdi_manual">
+        <div id="section_4" class="mt-page-section"><span id="Increase_DI_Server_Memory_Limit_for_Custom_Installations_on_Windows_or_Linux"></span> 
+          <h2 class="editable">Increase DI Server Memory Limit for Custom Installations on Windows or Linux</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used a custom method to install PDI on your Windows or Linux machines, you can increase memory limits by editing a text file. If you used the Wizard to install PDI, then check out the other the
+                <a class="xref" href="#">other ways to increase memory</a> .</p>
+              <ul class="ul">
+                <li class="li">
+                  <a class="xref" title="https://help.pentaho.com/Documentation/6.0/0F0/0O0/040" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0O0/040">Install with Your Own&nbsp;Pentaho Repository: Modify Tomcat Startup Script</a> 
+                </li>
+                <li class="li">
+                  <a title="https://help.pentaho.com/Documentation/6.0/0F0/0L0/040" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0L0/040">DI Server Manual Installation: Modify Tomcat and JBoss Startup Scripts</a> 
+                </li>
+              </ul>
+              <div class="note note"><span class="notetitle">Note:</span>  Make sure to also
+                <a class="xref" title="Documentation/5.1/0H0/070/020/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/020/010">increase the Spoon memory limit</a> .</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Increase_DI_Server_Memory_Limit_for_Wizard_Installations_on_Windows" rel="internal">Increase DI Server Memory Limit for Wizard Installations on Windows</a>  </li>
+      <li> <a href="#Increase_DI_Server_Memory_Limit_for_Wizard_Installations_on_Linux" rel="internal">Increase DI Server Memory Limit for Wizard Installations on Linux</a>  </li>
+      <li> <a href="#Increase_DI_Server_Memory_Limit_for_Custom_Installations_on_Windows_or_Linux" rel="internal">Increase DI Server Memory Limit for Custom Installations on Windows or Linux</a>  </li>
+    </ol>
+  </body>
+</content>

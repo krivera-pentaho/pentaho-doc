@@ -1,0 +1,120 @@
+<content type="text/html" title="Set Up Multiple Authentication Providers">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <script type="text/javascript">
+        /*<![CDATA[*/ < script >
+          (function(i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function() {
+              (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+              m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+          })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-69496435-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+      /*]]>*/</script>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Spring security is a cascading security implementation that moves down through a list of security providers, if the first provider fails to authenticate.</p>
+        </div>
+      </div>
+      <p>If you are using multiple <span class="filepath style-wrap">AuthenticationProviders </span> at the same time, you will need to add each one to the <span class="filepath style-wrap">applicationContext.spring.security.xml</span>  file as shown in these
+        steps. Spring security is a cascading security implementation that moves down through a list of security providers, if the first provider fails to authenticate. We recommend that you make a <strong>backup </strong> of this file before altering
+        it.</p>
+      <ol class="pentaho-list-ordered">
+        <li>Stop the BA Server and the solution repository.</li>
+        <li>Navigate to the <span class="filepath style-wrap">/pentaho-solutions/system</span>  directory and open the <span class="filepath style-wrap">applicationContext-&shy;spring-security.xml </span> file with any text editor.</li>
+        <li>Locate the <span class="filepath style-wrap">authenthicationManager </span> bean tags. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;authenticationManager&quot; class=&quot;org.springframework.security.providers.ProviderManager&quot;>
+    <property name=&quot;providers&quot;>
+      <list>
+...
+      </list>
+</bean></pre> </li>
+        <li>First, add <span class="filepath style-wrap">AuthenticationProvider </span> information for <span class="filepath style-wrap">jackrabbit</span>  below the <span class="filepath style-wrap">list</span>  tag. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean class=&quot;org.springframework.security.providers.AuthenticationProvider&quot;>
+    <pen:attributes>
+    <pen:attr key=&quot;providerName&quot; value=&quot;jackrabbit&quot;/>
+    </pen:attributes>
+</pen:bean></pre> </li>
+        <li>Then, add <span class="filepath style-wrap">providerName </span> information right beneath the <span class="filepath style-wrap">jackrabbit </span> information. LDAP is used in this example. You can add as many providers as needed. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean class=&quot;org.springframework.security.providers.AuthenticationProvider&quot;>
+    <pen:attributes>
+    <pen:attr key=&quot;providerName&quot; value=&quot;ldap&quot;/>
+    </pen:attributes>
+</pen:bean></pre> </li>
+        <li>After you are finished adding <span class="filepath style-wrap">AuthenticationProvider </span> information, save and close the file.</li>
+        <li>Restart the BA server and solution repository.</li>
+      </ol>
+      <p>Here is a more complete example of the&nbsp;<span class="filepath style-wrap">authenticationManager </span> portion of the <span class="filepath style-wrap">applicationContext-&shy;spring-security.xml</span>  file.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- ======================== AUTHENTICATION ======================= -->
+ <bean id=&quot;authenticationManager&quot; class=&quot;org.springframework.security.providers.ProviderManager&quot;>
+    <property name=&quot;providers&quot;>
+      <list>
+        <pen:bean class=&quot;org.springframework.security.providers.AuthenticationProvider&quot;>
+          <pen:attributes>
+            <pen:attr key=&quot;providerName&quot; value=&quot;jackrabbit&quot;/>
+          </pen:attributes>
+        </pen:bean>
+        <pen:bean class=&quot;org.springframework.security.providers.AuthenticationProvider&quot;>
+          <pen:attributes>
+            <pen:attr key=&quot;providerName&quot; value=&quot;webservice&quot;/>
+          </pen:attributes>
+        </pen:bean>
+        <ref local=&quot;anonymousAuthenticationProvider&quot; />
+      </list>
+    </property>
+  </bean></pre>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <caption>Authentication Provider Examples</caption>
+        <thead>
+          <tr>
+            <th scope="col" style="width: 100px;">&nbsp;Provider Name</th>
+            <th scope="col" style="width: 175px;">Short Description</th>
+            <th scope="col" style="width: 309px;">Application Context for AuthenticationProvider</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 158px;">jackrabbit</td>
+            <td style="width: 232px;">Default Pentaho security.</td>
+            <td style="width: 274px;"><span class="filepath style-wrap">applicationContext-spring-security-jackrabbit.xml</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 158px;">ldap</td>
+            <td style="width: 232px;">LDAP security</td>
+            <td style="width: 274px;"><span class="filepath style-wrap">applicationContext-spring-security-ldap.xml</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 158px;">jdbc</td>
+            <td style="width: 232px;">JDBC security allows you to use your own security tables</td>
+            <td style="width: 274px;"><span class="filepath style-wrap">applicationContext-spring-security-jdbc.xml</span> </td>
+          </tr>
+          <tr>
+            <td style="width: 158px;">memory</td>
+            <td style="width: 232px;">In Memory authentication</td>
+            <td style="width: 274px;"><span class="filepath style-wrap">applicationContext-spring-security-memory.xml</span> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

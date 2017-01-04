@@ -1,0 +1,31 @@
+<content type="text/html" title="Dynamic Query Scripting">
+  <head>
+    <style type="text/css">
+      /*<![CDATA[*/
+      /* Hide the empty TOC */
+      
+      #mt-toc-container {
+        display: none !important;
+      }
+      /*]]>*/
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">For all JDBC, OLAP, and Metadata data sources, you can create a dynamic query through a Groovy or JavaScript script.</p>
+        <p class="p">There are two scripting extensions in Report Designer: <strong class="ph b">global</strong>, and <strong class="ph b">per-query</strong> . The global script can be used to define shared functions or global variables that are available to all query
+          scripts. With a global script, you can dynamically change the data source configuration via the <strong class="ph b">init()function</strong> .</p>
+        <p class="p">Per-query scripts enable you to customize a query string, calculate the &quot;additional fields&quot; information for query-caching, and post-process the returned table model.</p>
+        <p class="p">There is a template for the two scripting languages supported by default (JavaScript and Groovy). The template contains some guidance and instructions, as well as empty declarations for the functions you're able to call. You can safely delete
+          any function you don't need; if deleted, Report Designer ignores them. You can load scripts from external sources as well, but you must ensure that they are available to the report at runtime.</p>
+        <div class="cautiontitle">CAUTION:</div>
+        <div class="note caution">An external script that is local to Report Designer will probably not be local to the Pentaho Server, since most production BI environments separate the server from the design tools. So if you publish a report to the server, you must either change
+          the path to the external script so that it will work on the server, or find a way to include it in the correct relative path on the Pentaho Server.</div>
+        <div class="note note"><span class="notetitle">Note:</span>  The scripting backend uses the JSR-223 (javax.script) scripting system. By default, Pentaho only ships with JavaScript and Groovy support. However, there are many more JSR-223 enabled languages that are not
+          included but will work in Report Designer. To add support for other languages, you must add the appropriate JAR to both the Pentaho Server and the Pentaho Report Designer classpaths. <strong class="ph b">Despite this capability, Pentaho's support and services contracts do not cover any extra scripting language JARs.</strong> </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

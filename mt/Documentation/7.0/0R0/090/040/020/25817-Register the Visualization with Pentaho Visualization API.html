@@ -1,0 +1,91 @@
+<content type="text/html" title="Register the Visualization with Pentaho Visualization API">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">After defining the visualization, register the visualization with Pentaho's Visualization API. The Visualization API is only accessible from within Pentaho Analyzer.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Register the visualization with the Visualization API. Include the following JavaScript at the beginning of the <span class="ph filepath">example.js</span>  file: </span>  <pre class="pre codeblock">
+// Utilize the required API for verifying that the VizController has been loaded before registration
+pen.require([&quot;common-ui/vizapi/VizController&quot;], function(){ 
+// Register the visualization metadata with the Visualization API
+  pentaho.visualizations.push({ 
+    id: 'pentaho_sample_KPI',      // unique identifier 
+    type: 'kpi',                   // generic type id 
+    source: 'Example',             // id of the source library 
+    name: 'Example KPI',           // visible name, this will come from a properties 
+                                   // file eventually 
+    'class': 'pentaho.sample.KPI', // type of the Javascript object to instantiate 
+    args: {                        // arguments to provide to the Javascript object 
+                                   // this allows a single class to act as multiple visualizations
+    aggregate: 'AVG'
+    }, 
+    propMap: [], 
+    dataReqs: [                    // dataReqs describes the data requirements of 
+                                   // this visualization 
+      { 
+        name: 'Default', 
+        reqs : 
+          [ 
+            { 
+              id: 'rows',               // ID of the data element 
+              dataType: 'string',       // data type - 'string', 'number', 'date', 
+                                        // 'boolean', 'any' or a comma separated list 
+              dataStructure: 'column',  // 'column' or 'row' - only 'column' supported
+                                        // so far 
+              caption: 'Level',         // visible name 
+              required: true,           // true or false 
+              allowMultiple: false, 
+              ui: { 
+                group: 'data' 
+              } 
+            }, 
+            {
+              id: 'measures', 
+              dataType: 'number', 
+              dataStructure: 'column', 
+              caption: 'Measure', 
+              required: true, 
+              allowMultiple: false, 
+              ui: { 
+                group: &quot;data&quot; 
+              } 
+            }, 
+            { 
+              id: 'aggregate', 
+              dataType: 'string', 
+              values: ['MIN', 'MAX', 'AVG'], 
+              ui: { 
+                labels: ['Minimum', 'Maximum', 'Average'], 
+                group: 'options', 
+                type: 'combo',  // combo, checkbox, slider, textbox, gem, 
+                                // gemBar, and button are valid ui types
+                caption: 'Aggregation' 
+              }
+            }
+          ]
+      }
+        ],
+        menuOrdinal: 10001,
+        menuSeparator: true,
+        maxValues: [1000, 2000, 3000]
+  });
+</pre> </li>
+          <li class="li step"> <span class="ph cmd">To enclose the required API call, you must define <code class="ph codeph">});</code> at the end of the <span class="ph filepath">example.js</span> </span> 
+          </li>
+        </ol>
+        <div class="section postreq">
+          <p class="p">All defined values are essential to registering the visualization with Pentaho's Visualization API. </p>
+          <p class="p">The <code class="ph codeph">datareqs</code> subcomponent is especially critical because it defines the data requirements for the visualization, which are used by Pentaho Analyzer to determine which fields are displayed in the field list.</p>
+          <p class="p">Use <code class="ph codeph">menuOrdinal</code> to specify the location of the visualization in Analyzer&rsquo;s chart drop-down menu. The default chart types such as Bar chart start at <code class="ph codeph">menuOrdinal</code> 100 and then
+            increment by 100. If you want your visualization to appear last, use a value greater than 10000. </p>
+          <p class="p"><code class="ph codeph">menuSeparator</code> can be set to true to insert a menu separator before the visualization in the menu.</p>
+          <p class="p">Use <code class="ph codeph">maxValues</code> to increase the available list of maximum plot values. This setting appears in Chart Options > Other > Domain Limit. If your visualization supports a very large number of values, then you would increase
+            the value so the data table provided in the draw method includes more rows or columns. </p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

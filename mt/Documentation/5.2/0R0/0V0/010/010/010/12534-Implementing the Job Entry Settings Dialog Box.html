@@ -1,0 +1,56 @@
+<content type="text/html" title="Implementing the Job Entry Settings Dialog Box">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/job/entry/JobEntryDialogInterface.html"><code class="ph codeph">org.pentaho.di.job.entry.JobEntryDialogInterface</code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/ui/job/entry/JobEntryDialog.html"><code class="ph codeph">org.pentaho.di.ui.job.entry.JobEntryDialog</code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><code class="ph codeph">JobEntryDialogInterface</code> is the Java interface that implements the settings dialog of a job entry plugin.</p>
+        <p class="p"><strong class="ph b">Maintain the Dialog for Job Entry Settings</strong> </p>
+        <p class="p">The <code class="ph codeph">dialog</code> class is responsible for constructing and opening the settings dialog for the job entry. When you open the job entry settings in Spoon, the system instantiates the <code class="ph codeph">dialog</code>          class passing in the <code class="ph codeph">JobEntryInterface</code> object and calling the <code class="ph codeph">open()</code> method on the dialog.
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://www.eclipse.org/swt/">SWT</a>  is the native windowing environment of Spoon and the framework used for implementing job entry dialogs.&nbsp;</p>
+        <p class="p"><code class="ph codeph">public JobEntryInterface open()</code></p>
+        <div class="p">This method returns only after the dialog has been confirmed or cancelled. The method must conform to these rules.
+          <ul class="ul">
+            <li class="li">If the dialog is confirmed
+              <ul class="ul">
+                <li class="li">The <code class="ph codeph">JobEntryInterface</code> object must be updated to reflect the new settings</li>
+                <li class="li">If you changed any settings, the Changed flag of the <code class="ph codeph">JobEntryInterface</code> object must be set to <code class="ph codeph">true</code></li>
+                <li class="li"><code class="ph codeph">open()</code> returns the <code class="ph codeph">JobEntryInterface</code> object</li>
+              </ul>
+            </li>
+            <li class="li">If the dialog is cancelled
+              <ul class="ul">
+                <li class="li">The <code class="ph codeph">JobEntryInterface</code> object must not be changed</li>
+                <li class="li">The Changed flag of the<code class="ph codeph">JobEntryInterface</code> object must be set to the value it had at the time the dialog opened</li>
+                <li class="li"><code class="ph codeph">open()</code> must return <code class="ph codeph">null</code></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <p class="p">The <code class="ph codeph">JobEntryInterface</code> object has an internal Changed flag that is accessible using <code class="ph codeph">hasChanged()</code> and <code class="ph codeph">setChanged()</code>. Spoon decides whether the job has unsaved
+          changes based on the Changed flag, so it is important for the dialog to set the flag appropriately.&nbsp;</p>
+        <p class="p">Additionally, the job entry dialog must make sure that the job entry name is not set to be empty. The dialog may be confirmed only after a non-empty name is set.</p>
+        <p class="p">The
+          <a class="xref" title="Sample Job Entry Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/0V0/010/010/040">sample Job Entry plugin project</a>  has an implementation of the <code class="ph codeph">dialog</code> class that is consistent with these rules and is a good basis for creating your own dialogs.&nbsp;</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,136 @@
+<content type="text/html" title="Troubleshoot Deployment, Startup, Migration, and Upgrade Problems">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to resolve common upgrade, deployment, and startup problems.</p>
+        </div>
+      </div>
+      <div class="body conbody">
+        <p>If you have upgrade or deployment problems, or if PDI does not start, check out the following troubleshooting articles for possible solutions.</p>
+        <div id="section_2" class="mt-page-section"><span id="Tomcat_Logs_Report_Memory_Leaks"></span> 
+          <h2 class="editable">Tomcat Logs Report Memory Leaks</h2>
+          <p class="p">When shutting down Tomcat, you may see some SEVERE-level warnings in the log file similar to these:</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearReferencesJdbcSEVERE: The web application [/pentaho] registered the JBDC driver [mondrian.olap4j.MondrianOlap4jDriver] but failed to unregister it when the web application was stopped. To prevent a memory leak, the JDBC Driver has been forcibly unregistered.Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearReferencesThreadsSEVERE: The web application [/pentaho] appears to have started a thread named [HSQLDB Timer @49cf9f] but has failed to stop it. This is very likely to create a memory leak.Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearReferencesThreadsSEVERE: The web application [/pentaho] appears to have started a thread named [MySQL Statement Cancellation Timer] but has failed to stop it. This is very likely to create a memory leak.Dec 17, 2010 10:18:19 AM org.apache.catalina.loader.WebappClassLoader clearThreadLocalMapSEVERE: The web application [/pentaho] created a ThreadLocal with key of type [java.lang.InheritableThreadLocal] (value [java.lang.InheritableThreadLocal@a1320e]) and a value of type [org.pentaho.platform.engine.security.session.TrustedSystemStartupSession] (value [org.pentaho.platform.engine.security.session.TrustedSystemStartupSession@111089b]) but failed to remove it when the web application was stopped. This is very likely to create a memory leak.</pre>
+          <p class="p">These warnings are nothing to be concerned about when shutting down the Tomcat server, since they report problems with processes that are immanently being killed. However, they can have significance if you are only restarting or&nbsp;redeploying&nbsp;the&nbsp;Pentaho&nbsp;BA
+            Server or DI Server Web applications. To avoid any memory leak problems in redeployment, you should restart Tomcat instead of&nbsp;redeploying&nbsp;or restarting the Web application with a live server.</p>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Library_Conflicts"></span> 
+          <h2 class="editable">Library Conflicts</h2>
+          <div class="body conbody">
+            <p class="p">The BA Server relies on many third-party libraries that provide everything from database connectivity to specific Java classes that add necessary features to the BA Server. If you have incompatible versions of any of these third-party libraries
+              in your application server's global lib directory, they can cause a variety of problems related to starting and running the BA Server. You will have to discover and individually canonicalize these files according to your needs.</p>
+            <p class="p">Some known-problematic JARs are:</p>
+            <ul class="ul">
+              <li class="li">commons-collections-3.2.jar (from Pentaho)</li>
+              <li class="li">commons-collections.jar (from JBoss in&nbsp;<span class="ph filepath">/jboss/server/default/lib/</span> )</li>
+              <li class="li">jettison-1.01.jar (from Pentaho)</li>
+              <li class="li">jettison.jar (from JBoss in&nbsp;<span class="ph filepath">/jboss/default/deploy/jbossws.sar</span> )</li>
+            </ul>
+          </div>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="context.xml_Changes_Do_Not_Take_Effect_After_Deploying_a_WAR"></span> 
+          <h2 class="editable">
+            <span>context.xml Changes Do Not Take Effect After Deploying a WAR</span> 
+          </h2>
+          <p class="p">With a manual installation, if you deploy a WAR with a custom&nbsp;<strong class="ph b">context.xml</strong>, the context.xml file may not be overwritten.</p>
+          <p class="p">The location and naming convention for this file are:&nbsp;<strong class="ph b">$CATALINA_HOME/conf/Catalina/<host>/<war name>.xml</strong> . Typically this will be something like:&nbsp;<strong class="ph b">/tomcat/conf/Catalina/localhost/pentaho.xml</strong> .
+            If this file exists, you will have to delete it prior to deploying the&nbsp;<span class="ph filepath">pentaho.war</span> &nbsp;if you have made any changes to&nbsp;<span class="ph filepath">context.xml</span> .</p>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="vfs-provider.xml_Duplicates"></span> 
+          <h2 class="editable">
+            <span>vfs-provider.xml Duplicates</span> 
+          </h2>
+          <div class="body conbody">
+            <p class="p">The above-referenced configuration file may be present in a number of&nbsp;JARs&nbsp;in other applications that you've deployed to your Java application server. Having multiple instances of this file will cause&nbsp;classpath&nbsp;exceptions.
+              You must merge the multiple files into one canonical edition in order to solve the problem.</p>
+            <div id="section_6" class="mt-page-section"><span id="javax.jcr.RepositoryException:_no_search_manager_configured_for_this_workspace"></span> 
+              <h2 class="editable">
+                <span>javax.jcr.RepositoryException: no search manager configured for this workspace</span> 
+              </h2>
+              <div class="body conbody">
+                <p class="p">If you see this error in your&nbsp;PDI&nbsp;server log, then there was an error in the upgrade process from&nbsp;PDI&nbsp;5.4.0 to 6.0. Specifically, the&nbsp;<strong class="ph b">SearchIndex</strong> &nbsp;XML nodes were not properly modified.
+                  To fix this, refer to the&nbsp;<em class="ph i">Upgrading a Data Integration Server</em> &nbsp;piece and closely follow the instructions for modifying repository configuration files.</p>
+              </div>
+            </div>
+            <div id="section_7" class="mt-page-section"><span id="JBoss_Fails_to_Start_When_the_Pentaho_HSQLDB_Sample_Database_Is_Running"></span> 
+              <h2 class="editable">
+                <span>JBoss Fails to Start When the Pentaho HSQLDB Sample Database Is Running</span> 
+              </h2>
+            </div>
+          </div>
+          <div class="body conbody">
+            <div class="note note"><span class="notetitle">Note:</span> &nbsp;This problem can also manifest as the&nbsp;Pentaho&nbsp;sample database refusing to start when the BA Server is deployed to&nbsp;JBoss.</div>
+            <p class="p">The&nbsp;Pentaho-supplied&nbsp;HSQLDB&nbsp;sample database operates on the default&nbsp;HSQLDB&nbsp;port of 9001.&nbsp;JBoss&nbsp;has its own&nbsp;HSQLDB&nbsp;instance running on the same port; therefore, the port collision will prevent the&nbsp;JBoss&nbsp;version
+              from starting, and cause the startup process to halt. You can change the&nbsp;Pentaho&nbsp;sample database port by editing the&nbsp;<strong class="ph b">start_hypersonic</strong> &nbsp;script and adding the&nbsp;<strong class="ph b">-port 9002</strong> &nbsp;switch
+              to the last line:</p> <pre class="pre codeblock">
+&quot;$_PENTAHO_JAVA&quot; -cp $THE_CLASSPATH org.hsqldb.Server -port 9002 -database.0 $DIR_REL/hsqldb/sampledata -dbname.0 sampledata -database.1 $DIR_REL/hsqldb/hibernate -dbname.1 hibernate -database.2 $DIR_REL/hsqldb/quartz -dbname.2 quartz
+</pre>
+            <div id="section_8" class="mt-page-section"><span id="JBoss_Fails_to_Start_After_Manually_Unpacking_pentaho.war"></span> 
+              <h2 class="editable">
+                <span>JBoss Fails to Start After Manually Unpacking pentaho.war</span> 
+              </h2>
+              <p class="p">If you unpack the pentaho.war file by hand, you must name the resultant directory&nbsp;<strong class="ph b">pentaho.war</strong> &nbsp;as well.</p>
+              <p class="p">If you unpack it to any other directory name, including &quot;pentaho&quot; without the .war extension,&nbsp;JBoss&nbsp;will fail to deploy the WAR without any meaningful warnings.</p>
+            </div>
+            <div id="section_9" class="mt-page-section"><span id="Out_of_Memory_Errors_on_a_VM"></span> 
+              <h2 class="editable">Out of Memory Errors on a VM</h2>
+              <p class="p">If you are installing the DI Server on a VM, and you are trying to deploy on&nbsp;JBoss but, but the&nbsp;DI&nbsp;Server does not start, increase the amount of time that JBoss allows for server deployment.</p>
+              <p class="p">If you are installing the DI Server on a VM and you are deploying the server on JBoss, you might get out of memory errors. If&nbsp;this happens, the DI Server will not start.&nbsp;&nbsp;To allot more time for&nbsp;JBoss to deploy DI Server,&nbsp;increase
+                the deployment-timeout variable that is in the JBoss standalone.xml file.&nbsp; By default, the value is 120 seconds, but&nbsp;you might want to increase it to 240 seconds&nbsp;or longer.</p>
+            </div>
+            <div id="section_10" class="mt-page-section"><span id="Cannot_Start_DI_Server.2C_BA_Server.2C_Spoon.2C_Report_Designer_or_Metadata_Editor_after_Setting_MapR_as_Active_Hadoop_Configuration"></span> 
+              <h2 class="editable">Cannot Start DI Server, BA Server, Spoon, Report Designer or Metadata Editor after Setting MapR as Active Hadoop Configuration</h2>
+              <p>If you set MapR to be your active Hadoop configuration, but you cannot start the DI Server, BA Server, Spoon, Report Designer, or&nbsp;the Metadata&nbsp;Editor,&nbsp;make sure that you have&nbsp;completed properly configured&nbsp;MapR.&nbsp;&nbsp;&nbsp;As
+                you review the instructions for&nbsp;configuring MapR,&nbsp;make sure that you have&nbsp;copied the required jar files to&nbsp;the pentaho-big-data-plugin\hadoop-configurations\mapr3x&nbsp;directories for each component listed.&nbsp; For
+                information on how to configure MapR,&nbsp;see these references.</p>
+              <ul class="pentaho-list-unordered">
+                <li> <a class="external" id="lnk956357" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims" target="_blank">http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims</a>  </li>
+                <li> <a class="external" id="lnk596467" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims#AdditionalConfigurationforMapRShims-SetActiveMapRLinux" target="_blank">http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims#AdditionalConfigurationforMapRShims-SetActiveMapRLinux</a>  </li>
+              </ul>
+            </div>
+            <div id="section_11" class="mt-page-section"><span id="DI_Server_Does_Not_Start_When_Installed_on_Virtual_Machine"></span> 
+              <h2 class="editable">DI Server Does Not Start When Installed on Virtual Machine</h2>
+              <p class="p">If the DI Server does not start when it is installed on a Virtual Machine, and if the DI Server was deployed on the JBoss Web Application Server, increase the amount of time JBoss allows for application deployment.&nbsp; Increase the deployment
+                time to 240 seconds or longer.&nbsp; For information on how to do this, see
+                <a title="Prepare Web Application Servers" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0K0/060">Increase the Amount of Time JBoss Allows for DI Server Deployment</a> .</p>
+            </div>
+            <div id="section_12" class="mt-page-section"><span id="Not_All_Content_is_Migrated_with_the_Migration_Utility"></span> 
+              <h2 class="editable">Not All Content is Migrated with the Migration Utility</h2>
+              <p>When you use the Migration Utility, if content, such as transformations, partitions, clusters and slave servers contain special characters, such as a colon for the port number (e.g.&nbsp;<span class="filepath style-wrap">localhost:8080</span> ),
+                the content might not be migrated.&nbsp; To avoid this issue, set the <span class="filepath style-wrap">KETTLE_COMPATIBILITY_PUR_OLD_NAMING_MODE</span>  variable to <span class="filepath style-wrap">Y</span> . When the <span class="filepath style-wrap">KETTLE_COMPATIBILITY_PUR_OLD_NAMING_MODE</span>                 variable is set to <span class="filepath style-wrap">Y</span>, it causes the migrator tool to preserve special character formatting. For information on how to make changes to Kettle Variables, see the
+                <a title="Documentation/6.0/0L0/0Y0/030/050/020/000/010/010"
+                rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/0Y0/030/050/020/000/010/010">Set Kettle Variables</a>  section of Pentaho Help documentation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Tomcat_Logs_Report_Memory_Leaks" rel="internal">Tomcat Logs Report Memory Leaks</a>  </li>
+      <li> <a href="#Library_Conflicts" rel="internal">Library Conflicts</a>  </li>
+      <li> <a href="#context.xml_Changes_Do_Not_Take_Effect_After_Deploying_a_WAR" rel="internal">context.xml Changes Do Not Take Effect After Deploying a WAR</a>  </li>
+      <li> <a href="#vfs-provider.xml_Duplicates" rel="internal">vfs-provider.xml Duplicates</a>  </li>
+      <li> <a href="#javax.jcr.RepositoryException:_no_search_manager_configured_for_this_workspace" rel="internal">javax.jcr.RepositoryException: no search manager configured for this workspace</a>  </li>
+      <li> <a href="#JBoss_Fails_to_Start_When_the_Pentaho_HSQLDB_Sample_Database_Is_Running" rel="internal">JBoss Fails to Start When the Pentaho HSQLDB Sample Database Is Running</a>  </li>
+      <li> <a href="#JBoss_Fails_to_Start_After_Manually_Unpacking_pentaho.war" rel="internal">JBoss Fails to Start After Manually Unpacking pentaho.war</a>  </li>
+      <li> <a href="#Out_of_Memory_Errors_on_a_VM" rel="internal">Out of Memory Errors on a VM</a>  </li>
+      <li> <a href="#Cannot_Start_DI_Server.2C_BA_Server.2C_Spoon.2C_Report_Designer_or_Metadata_Editor_after_Setting_MapR_as_Active_Hadoop_Configuration" rel="internal">Cannot Start DI Server, BA Server, Spoon, Report Designer or Metadata Editor after Setting MapR as Active Hadoop Configuration</a>  </li>
+      <li> <a href="#DI_Server_Does_Not_Start_When_Installed_on_Virtual_Machine" rel="internal">DI Server Does Not Start When Installed on Virtual Machine</a>  </li>
+      <li> <a href="#Not_All_Content_is_Migrated_with_the_Migration_Utility" rel="internal">Not All Content is Migrated with the Migration Utility</a>  </li>
+    </ol>
+  </body>
+</content>

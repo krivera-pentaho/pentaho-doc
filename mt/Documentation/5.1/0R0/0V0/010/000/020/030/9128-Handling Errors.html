@@ -1,0 +1,26 @@
+<content type="text/html" title="Handling Errors">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Transformation steps may encounter errors at many levels. They may encounter unexpected data, or problems with the execution environment. Depending on the nature of the error, the step may decide to stop the transformation by throwing an exception,
+          or support the PDI Error Handling feature, which allows you to divert bad rows to an error handling step.</p>
+        <p class="p"> <strong class="ph b">Throwing a KettleException: Calling a Hard Stop</strong>  </p>
+        <p class="p">If a step encounters an error during row processing, it may log an error and stop the transformation. This is done by calling <code class="ph codeph">setErrors(1)</code>, <code class="ph codeph">stopAll()</code>, <code class="ph codeph">setOutputDone()</code>,
+          and returning <code class="ph codeph">false</code> from <code class="ph codeph">processRow()</code>. Alternatively, the step can throw a
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/exception/KettleException.html"><code class="ph codeph">KettleException</code></a>, which also causes the transformation to stop.&nbsp;</p>
+        <p class="p">It is sensible to stop the transformation when there is a problem with the environment or configuration of a step. For example, when a database connection cannot be made, a required file is not present, or an expected field is not in the row stream.
+          These are errors that affect the execution of the transformation as a whole. If on the other hand the error is related to row data, the step should implement support for the PDI Error Handling feature.&nbsp;</p>
+        <p class="p"> <strong class="ph b">Implementing Per-Row Error Handling</strong>  </p>
+        <p class="p">You may want to divert bad rows to a specific error handling step. This capability is referred to as the Error Handling feature. A step supporting this feature overrides the <code class="ph codeph">BaseStep</code> implementation of
+          <a class="xref external"
+          target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/step/StepMetaInterface.html#supportsErrorHandling%28%29"><code class="ph codeph">supportsErrorHandling()</code></a>  to return <code class="ph codeph">true</code>. This enables you to specify a target step for bad rows in the Spoon UI. During runtime, the step checks if you configured a target step
+          for error rows by calling <code class="ph codeph">getStepMeta().isDoingErrorHandling()</code>. If error rows are diverted, the step passes the offending input row to
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/trans/step/BaseStep.html#putError%28org.pentaho.di.core.row.RowMetaInterface,%20java.lang.Object%5B%5D,%20long,%20java.lang.String,%20java.lang.String,%20java.lang.String%29"><code class="ph codeph">putError()</code></a>  and provides additional information about the errors encountered. It does not throw a
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/exception/KettleException.html"><code class="ph codeph">KettleException</code></a> . If you do not configure a step to generate error rows and send them to another step for processing, the step falls back to calling a hard stop.&nbsp;</p>
+        <p class="p">Most core PDI steps support row-level error handling. The
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://source.pentaho.org/svnkettleroot/Kettle/tags/4.3.0-stable/src/org/pentaho/di/trans/steps/numberrange/">Number Range</a>  step is a good example. If error handling is enabled, it diverts the row into the error stream. If it is not, the step stops the transformation.&nbsp;</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

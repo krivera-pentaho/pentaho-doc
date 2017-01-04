@@ -1,0 +1,63 @@
+<content type="text/html" title="Sample Database Plugin">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The sample database plugin project is designed to show an implementation of a database plugin that you can use as a basis to develop your own database plugins.</p>
+        <p class="p">The sample database plugin registers the CSV JDBC driver from
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://csvjdbc.sourceforge.net/">http://csvjdbc.sourceforge.net/</a>  as a database in PDI. This enables reading from CSV files in a directory using basic SQL.</p>
+        <p class="p">The included sample transformation in <span class="ph filepath">demo_transform/demo_database.ktr</span>  uses the database plugin to read a basic CSV file through JDBC.</p>
+        <p class="p">Follow these steps in order to build and deploy the sample plugin.</p>
+        <div class="p">
+          <ol class="ol" id="42da6623-a42e-4b5d-bf74-06a8c1a1163a__sample_database_plugin__ol_mnp_zpq_ck">
+            <li class="li">Obtain the Sample Plugin Source
+              <p class="p">The database plugin source is available in the
+                <a class="xref" title="Documentation/5.1/0V0/000#dbb3eedb-0bfa-48e2-81e0-25dec222c467__PDI_extend_embed_getting_started__getting_sample_code" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0V0/000#dbb3eedb-0bfa-48e2-81e0-25dec222c467__PDI_extend_embed_getting_started__getting_sample_code">download package</a> . Download the package and unzip it. The database plugin resides in the <span class="ph filepath">kettle-sdk-database-plugin</span>  folder.</p>
+            </li>
+            <li class="li">Configure the Build
+              <p class="p">Open <span class="ph filepath">kettle-sdk-database-plugin/build/build.properties</span>  and set the <code class="ph codeph">kettle-dir</code> property to the base directory of your PDI installation.</p>
+            </li>
+            <li class="li">Build and Deploy
+              <p class="p">You may choose to build and deploy the plugin from the command line, or work with the Eclipse IDE instead. Both options are described below. </p>
+              <div class="p">
+                <ul class="ul" id="42da6623-a42e-4b5d-bf74-06a8c1a1163a__sample_database_plugin__ul_plt_hqq_ck">
+                  <li class="li">
+                    <p class="p">Build and Deploy From the Command Line </p>
+                    <p class="p">The plugin is built using
+                      <a class="xref external" target="_blank" rel="external nofollow" href="http://ant.apache.org/">Apache Ant</a> . Build and deploy the plugin from the command line by invoking the install target from the build directory.&nbsp;</p> <pre class="pre codeblock">kettle-sdk-database-plugin $ cd build
+build $ ant install</pre>
+                    <p class="p">The install target compiles the source, creates a <span class="ph filepath">jar</span>  file, creates a plugin folder, and copies the plugin folder into the <span class="ph filepath">plugins/databases</span>  directory of your PDI installation.
+                      It also copies <span class="ph filepath">csvjdbc.jar</span>  to PDI's <span class="ph filepath">lib/</span>  directory, which provides the JDBC driver the plugin depends on. </p>
+                  </li>
+                  <li class="li">
+                    <p class="p">Build and Deploy From Eclipse </p>
+                    <p class="p">Import the plugin sources into Eclipse:</p>
+                    <ol class="ol" type="a" id="42da6623-a42e-4b5d-bf74-06a8c1a1163a__sample_database_plugin__ol_h4p_zpq_ck">
+                      <li class="li">From the menu, select <span class="ph uicontrol">File</span>  > <span class="ph uicontrol"> Import</span>  > <span class="ph uicontrol">Existing Projects Into Worksapace</span> .</li>
+                      <li class="li">Browse to the <span class="ph filepath">kettle-sdk-database-plugin</span>  folder and choose the project to be imported.&nbsp;</li>
+                    </ol>
+                    <div class="p">To build and install the plugin, follow these steps:
+                      <ol class="ol" type="a">
+                        <li class="li">Open the Ant view in Eclipse by selecting <span class="ph uicontrol">Window</span>  > <span class="ph uicontrol">Show View</span>  from the main menu and select <span class="ph uicontrol">Ant</span> .
+                          <p class="p">You may have to select <span class="ph uicontrol">Other</span>  > <span class="ph uicontrol">Ant</span>  if you have not used the Ant view before. </p>
+                        </li>
+                        <li class="li">Drag the file <span class="ph filepath">build/build.xml</span>  from your project into the Ant view, and execute the install target by double-clicking it. </li>
+                        <li class="li">After the plugin has been deployed, restart Spoon.</li>
+                      </ol>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="li">You can test the new plugin using the transformation from the database plugin <span class="ph filepath">demo_transform</span>  folder.
+              <br />
+              <img id="42da6623-a42e-4b5d-bf74-06a8c1a1163a__sample_database_plugin__image_hjn_vf3_nh" alt="File:/screenshot_datbase_plugin_trans.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/1623/screenshot_datbase_plugin_trans.png?revision=1"
+              />
+              <br />
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

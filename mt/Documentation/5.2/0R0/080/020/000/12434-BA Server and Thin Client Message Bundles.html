@@ -1,0 +1,54 @@
+<content type="text/html" title="BA Server and Thin Client Message Bundles">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="note note"><span class="notetitle">Note:</span>  Stop the Pentaho application server before editing anything inside of the Pentaho WAR file.</div>
+        <p class="p">You can localize the Pentaho User Console, Pentaho Analyzer, and Dashboard Designer by creating locale- and language-specific message bundles within the Pentaho Web application. Message bundles are dynamically adjusted according to browser locale,
+          so you can create localized message bundles for every language you want to support, and let each individual user's system language settings determine which one is loaded.</p>
+        <p class="p"><span style="font-size:11px;">Localization <a class="xref external" shape="rect" target="_blank" rel="external nofollow" href="http://community.pentaho.com/marketplace/language-packs/">language packs</a>  have been created through a community initiative that uses an installer built by Webdetails, a Pentaho company. The language packs apply to both EE and CE, and are maintained by community members. The packs are not officially supported by Pentaho.</span> </p>
+        <p class="p">For brevity's sake, only the default Pentaho User Console files will be explained in detail. The file naming convention is identical among all message bundles in Pentaho Business Analytics. The following files are located in the <span class="ph filepath">/mantle/messages/</span>           directory:</p>
+        <ul class="ul">
+          <li class="li"><strong class="ph b">mantleMessages.properties</strong> : The default message bundle for the Pentaho User Console. In its initial condition, it is a copy of <strong class="ph b">mantleMessages_en.properties</strong> . If you want to change the
+            default language and dialect, copy your preferred message bundle file over this one.</li>
+          <li class="li"><strong class="ph b">mantleMessages_en.properties</strong> : The English-language version of the standard message bundle. This is an identical copy of <strong class="ph b">mantleMessages.properties</strong> .</li>
+          <li class="li"><strong class="ph b">mantleMessages_fr.properties</strong> : The French-language version of the standard message bundle.</li>
+          <li class="li"><strong class="ph b">mantleMessages_de.properties</strong> : The German-language version of the standard message bundle.</li>
+          <li class="li"><strong class="ph b">mantleMessages_supported_languages.properties</strong> : Contains a list of localized message bundles and the native language names they correspond to; this relieves the BA Server of the burden of having to discover them
+            on its own. A supported_languages.properties file should be created for every message bundle that you intend to localize.</li>
+        </ul>
+        <div style="margin-bottom: 0;"><strong>Example of mantleMessages_supported_languages.properties</strong> </div> <pre class="pre codeblock">
+en=English
+de=Deutsch
+fr=Fran&ccedil;ais</pre>
+        <p class="p">New files are created in the following format: <strong class="ph b">mantleMessages_xx_YY.properties</strong>  where <strong class="ph b">xx</strong>  represents a lowercase two-letter language code, and <strong class="ph b">YY</strong>  represents
+          a two-letter locale code, where applicable. So, for instance, U.S. and British English could have two separate message bundles if you wanted to draw a distinction between the two dialects:</p>
+        <ul class="ul">
+          <li class="li">mantleMessages_en_US.properties</li>
+          <li class="li">mantleMessages_en_GB.properties</li>
+        </ul>
+        <p class="p">The language and country codes must be in standard ISO format. You can look up both sets of codes on these pages:</p>
+        <ul class="ul">
+          <li class="li">
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes</a> 
+          </li>
+          <li class="li">
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm">http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm</a> 
+          </li>
+        </ul>
+        <p class="p">You can edit the default message bundle directly if you need to make surgical changes to the content inside of it. If you plan to translate it into another language, it makes more sense to copy the file and change the name appropriately, then
+          translate it line by line. Be sure to update supported_languages.properties with the new country and dialect code and the native language name that it corresponds to.</p>
+        <div class="note note"><span class="notetitle">Note:</span>  All message bundles must be UTF-8 encoded.</div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/000/000">Pentaho User Console and Dashboard Designer Message Bundles</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000/010" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/000/010">Pentaho Analyzer Localization</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000/020" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/000/020">Pentaho Interactive Reporting Localization</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000/030" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/000/030">Geographic Service (pentaho-geo) Localization</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0R0/080/020/000/040" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/000/040">Report Viewer Localization</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

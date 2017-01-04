@@ -1,0 +1,289 @@
+<content type="text/html" title="Define Native (JDBC) Data Connections for the BA Server">
+  <body>
+    <div>
+      <p>Once you have
+        <a class="xref" title="Documentation/5.1/0H0/060/010/030" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/030">chosen to use the Native (JDBC) access protocol</a>, there are configuration and maintenance tasks that you need to perform.</p>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__add_driver_for_ba">
+        <div id="section_1" class="mt-page-section"><span id="Add_Drivers"></span> 
+          <h2 class="editable">Add Drivers</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The BA Server needs the appropriate driver to connect to the database that stores your data. Your database administrator, Chief Intelligence Officer, or IT manager should be able to provide the appropriate driver. If not, you can download
+                drivers from your database vendor's website. The
+                <a class="xref" title="Documentation/5.1/0D0/160/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0D0/160/000">Supported Technologies</a>  section contains a list of drivers.</p>
+              <p class="p">Once you have the correct driver, copy it to this directory for the BA Server: <span class="ph filepath">/pentaho/server/biserver-ee/tomcat/lib/</span> .</p>
+              <p class="p">There should be only one driver for your database in this directory. Ensure that there are no other versions of the same vendor's driver in this directory. If there are, back up the old driver files and remove them to avoid version conflicts.
+                This is a concern when you are adding a driver for the same database type as your Pentaho BA repository. If you have any concerns about how to proceed, contact
+                <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0B0/000">Pentaho support</a> .</p>
+              <p class="p"><strong class="ph b">Driver for Microsoft SQL Server</strong> </p>
+              <p class="p">If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+                <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0B0/000">Pentaho support</a>  to ensure that you are adding the correct driver.</p>
+              <p class="p">For Microsoft Windows, most JDBC drivers support Type 2 integrated authentication through the <span class="ph filepath">integratedSecurity</span>  connection string property. To use integrated authentication, copy the <span class="ph filepath">sqljdbc_auth.dll</span>                 file to all machines and directories to which you copied the JDBC driver. You can find this file in this location: <span class="filepath style-wrap"><installation directory>\sqljdbc_<version>\<language>\auth\</span> </p>
+              <div class="p">
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="1dcd1ca0-f592-4732-938d-12cab14beb53__add_driver_for_ba__table_zvv_by2_wk" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e135" valign="top">If running:</th>
+                        <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e138" valign="top">Use the sqljdbc_auth.dll file here:</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d5948e135 d5948e138 " valign="top">32-bit Java Virtual Machine (JVM) even if the operating system is version x64</td>
+                        <td class="entry" headers="d5948e135 d5948e138 " valign="top">x86 folder</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e135 d5948e138 " valign="top">64-bit JVM on a x64 processor</td>
+                        <td class="entry" headers="d5948e135 d5948e138 " valign="top">x64 folder</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e135 d5948e138 " valign="top">64-bit JVM on an Itanium processor</td>
+                        <td class="entry" headers="d5948e135 d5948e138 " valign="top">IA64 folder</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__adding_a_jdbc_connection">
+        <div id="section_2" class="mt-page-section"><span id="Specify_Native_(JDBC)_Connection_Information"></span> 
+          <h2 class="editable">Specify Native (JDBC) Connection Information</h2>
+          <div class="body taskbody">
+            <ol class="ol steps" id="1dcd1ca0-f592-4732-938d-12cab14beb53__adding_a_jdbc_connection__steps_vcv_4lh_3j">
+              <li class="li step"><span class="ph cmd"><a class="xref" title="Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/000">Start the web application and BA Servers</a>, <a class="xref" title="Documentation/5.1/0H0/060/010/010" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/010">log into the User Console</a>, then click on <span class="ph uicontrol">File </span> >
+                <span class="ph uicontrol">Manage </span> > <span class="ph uicontrol">Data Source</span> . </span>  The <span class="ph uicontrol">Data Sources</span>  dialog box appears.</li>
+              <li class="li step"><span class="ph cmd">Click the <strong>Settings</strong>  icon and select<strong> New Connection </strong> from the menu.&nbsp;</span>  The <strong class="ph b">Database Connection</strong>  dialog box appears with <span class="ph uicontrol">General</span>                 highlighted in the left navigation pane. Click to highlight <strong>Native (JDBC)</strong>  in the Access field.
+                <p class="p">&nbsp;</p>
+                <div class="imagecenter">
+                  <img alt="File:/ssbaPdiDialogConnect.png" class="image imagecenter internal" src="http://help.pentaho.com/@api/deki/files/1247/ssbaPdiDialogConnect.png?revision=1" />
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">Connection Name</span>  field, enter a name that uniquely describes this connection. The name can have spaces, but it cannot have special characters, such as #, $, %, and alike.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">Database Type</span>  list, select the database you want to, for example, MySQL, Oracle, and so on. </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">In the <span class="ph uicontrol">Access</span>  list, select <strong class="ph b">Native (JDBC)</strong> . The access protocol that appear depend on the database type you selected. </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Under <span class="ph uicontrol">Settings</span>  </span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Host Name</span>  field, enter the name of the server that hosts the database to which you are connecting. Alternatively, you can specify the host by IP address.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Database Name</span>  field, enter the name of the database to which you are connecting.</span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Port Number</span>  field, enter the TCP/IP port number if it is different from the default. </span> 
+                  </li>
+                  <li class="li substep"><span class="ph cmd">Enter the <span class="ph uicontrol">User Name</span>  and <span class="ph uicontrol">Password</span>  required to access the database. </span> 
+                  </li>
+                </ol>
+              </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Test</span> . </span>  A success message appears if the connection is established.</li>
+              <li class="li step"><span class="ph cmd">To save the connection, click <strong class="ph b">OK</strong>  twice. </span>  This connection name appears in the list of available data sources in the <span class="ph uicontrol">Data Sources</span>  dialog box.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection">
+        <div id="section_3" class="mt-page-section"><span id="Edit_Existing_Connections"></span> 
+          <h2 class="editable">Edit Existing Connections</h2>
+          <div class="body taskbody">
+            <div class="section context">Once a connection has been established, you can open the <span class="ph uicontrol">Database Connection</span>  dialog box to further refine and change aspects of the connection.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">In the User Console, click on <span class="ph uicontrol">File </span> > <span class="ph uicontrol">Manage </span> > <span class="ph uicontrol">Data Source</span> . </span>  The <span class="ph uicontrol">Data Sources</span>                 dialog box appears.</li>
+              <li class="li step"><span class="ph cmd">Highlight the name of the data source you want to edit and click <span class="ph uicontrol">Edit</span>  (the pencil icon on the right). </span>  The <strong class="ph b">Database Connection</strong>  dialog box appears
+                with <span class="ph uicontrol">General</span>  highlighted in the left navigation pane.
+                <p class="p">To further refine your connection, or to enable and disable connection options, select items in the left navigation pane.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_specifying_jdbc_advanced_connections">
+        <div id="section_4" class="mt-page-section"><span id="Specify_Advanced_SQL_Preferences"></span> 
+          <h2 class="editable">Specify Advanced SQL Preferences</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Setting SQL preferences enables you to standardize how Pentaho software generates SQL and uses a default schema. Preferences for database table and column names are honored, regardless of how they are entered.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Open the <a class="xref" title="Documentation/5.1/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection">Database Connection</a>  dialog box. </span> </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Advanced</span>  on the left. The SQL preferences appear. </span> 
+                <p class="p">&nbsp;</p>
+                <div class="imagecenter">
+                  <img alt="File:/ssbaPdiDialogConnectAdvanced.png" class="image imagecenter internal" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_specifying_jdbc_advanced_connections__image_rlr_3zp_sm" src="http://help.pentaho.com/@api/deki/files/1248/ssbaPdiDialogConnectAdvanced.png?revision=1"
+                  />
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">Check the appropriate boxes and enter the SQL statements as described in this table. </span> 
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_specifying_jdbc_advanced_connections__table_jvk_vmf_hj" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e486" valign="top" width="28.901734104046245%"><strong class="ph b">Feature</strong> </th>
+                        <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e490" valign="top" width="71.09826589595376%"><strong class="ph b">Description</strong> </th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d5948e486 " valign="top" width="28.901734104046245%"><strong class="ph b">Quote all in database</strong> </td>
+                        <td class="entry" headers="d5948e490 " valign="top" width="71.09826589595376%">Enables case-sensitive table names
+                          <p class="p">For example MySQL is case-sensitive on Linux, but not case-sensitive on Microsoft Windows. If you quote the identifiers, the databases uses a case-sensitive table name.</p>
+                        </td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e486 " valign="top" width="28.901734104046245%"><strong class="ph b">Force all to lower-case</strong> </td>
+                        <td class="entry" headers="d5948e490 " valign="top" width="71.09826589595376%">Enables the system to change the case of all database to lower-case</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e486 " valign="top" width="28.901734104046245%"><strong class="ph b">Force all to upper-case</strong> </td>
+                        <td class="entry" headers="d5948e490 " valign="top" width="71.09826589595376%">Enables the system to change the case of all identifiers to upper-case</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e486 " valign="top" width="28.901734104046245%"><strong class="ph b">SQL statements ...</strong> </td>
+                        <td class="entry" headers="d5948e490 " valign="top" width="71.09826589595376%">Enter the SQL statement used to initialize this connection.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Test</span> . </span>  A success message appears if the connection is established.</li>
+              <li class="li step"><span class="ph cmd">To save the options, click <strong class="ph b">OK</strong>  twice.</span> </li>
+            </ol>
+          </div>
+          <div class="topic task nested2" id="1dcd1ca0-f592-4732-938d-12cab14beb53__quoting">
+            <div id="section_5" class="mt-page-section"><span id="Quoting"></span> 
+              <h3 class="editable">Quoting</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Pentaho uses a database-specific quoting system that allows you to use any name or character that complies with the supported databases' naming conventions.</p>
+                  <p class="p">Pentaho User Console contains a list of reserved words for most of the supported databases. To ensure that quoting behaves correctly, Pentaho maintains a separation between the schema, or user/owner of a table, and the table name itself.
+                    Doing otherwise makes it impossible to correctly quote table or field names that contain one or more periods (.).</p>
+                  <p class="p">To avoid quoting-related errors, a rule stops the Pentaho software from performing quoting activity when there is a start or end quote in the table or schema name. This allows you to specify the quoting mechanism yourself.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_setting_jdbc_options">
+        <div id="section_6" class="mt-page-section"><span id="Set_Options"></span> 
+          <h2 class="editable">Set Options</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The driver for your specific database may have options for handling different aspects of its operation. To prepare for setting these options, refer to the driver documentation and look for the names of parameters and values you can set.
+                Then, add them to the <span class="ph uicontrol">Database Connections</span>  dialog box.</p>
+            </div>
+            <ol class="ol steps" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_setting_jdbc_options__steps_sdv_4lh_3j">
+              <li class="li step"><span class="ph cmd">Open the <a class="xref" title="Documentation/5.1/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection">Database Connection</a>  dialog box. </span> </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Options</span>  on the left. The Parameter table appears. </span> 
+                <p class="p">&nbsp;</p>
+                <div class="imagecenter">
+                  <img alt="File:/ssbaPdiDialogConnectOptions.png" class="image imagecenter internal" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_setting_jdbc_options__image_iqw_bxy_1k" src="http://help.pentaho.com/@api/deki/files/1249/ssbaPdiDialogConnectOptions.png?revision=1"
+                  />
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">In the next available row in the <span class="ph uicontrol">Parameters</span>  table, enter a valid parameter name and its corresponding value.</span>  For JDBC database-specific configuration help, click <span class="ph uicontrol">Help</span> .
+                A new browser window opens and displays additional information about configuring the JDBC connection for the database type that is currently selected in the <span class="ph uicontrol">General</span>  pane.</li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Test</span> . </span>  A success message appears if the connection is established.</li>
+              <li class="li step"><span class="ph cmd">To save the options, click <strong class="ph b">OK</strong>  twice.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_defining_jdbc_connection_pooling">
+        <div id="section_7" class="mt-page-section"><span id="Define_Connection_Pooling"></span> 
+          <h2 class="editable">Define Connection Pooling</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Instead of having a connection open for each individual report or set of reports in a dashboard, you can set up a connection pool and define options that are available for your driver. For example, you might start by specifying a pool of
+                ten or fifteen connections, and as you run reports, the unused connections drop off.</p>
+              <p class="p">Pooling helps control database access, especially if you have dashboards that contain many reports and require a large number of connections. Pooling can also be implemented when your database licensing restricts the number of active concurrent
+                connections.</p>
+            </div>
+            <ol class="ol steps" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_defining_jdbc_connection_pooling__steps_zdv_4lh_3j">
+              <li class="li step"><span class="ph cmd">Open the <a class="xref" title="Documentation/5.1/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/030/000#1dcd1ca0-f592-4732-938d-12cab14beb53__task_edit_existing_connection">Database Connection</a>  dialog box. </span> </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Pooling</span>  on the left. Options appear for your JDBC driver. Enter the appropriate options. </span> 
+                <p class="p">&nbsp;</p>
+                <div class="imagecenter">
+                  <img alt="File:/ssbaPdiDialogConnssectPooling.png" class="image imagecenter internal" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_defining_jdbc_connection_pooling__image_oxk_dxy_1k" src="http://help.pentaho.com/@api/deki/files/1250/ssbaPdiDialogConnssectPooling.png?revision=1"
+                  />
+                </div> &nbsp;
+                <p class="p">This table shows an example of pooling options that might be available in a typical JDBC driver. Check your driver documentation for details.</p>
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_defining_jdbc_connection_pooling__table_fkn_mqf_hj" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e745" valign="top" width="33.33333333333333%"><strong class="ph b">Feature</strong> </th>
+                        <th class="entry" id="1dcd1ca0-f592-4732-938d-12cab14beb53__d5948e751" valign="top" width="66.66666666666666%"><strong class="ph b">Description</strong> </th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d5948e745 " valign="top" width="33.33333333333333%"><strong class="ph b">Enable Connection Pooling</strong> </td>
+                        <td class="entry" headers="d5948e751 " valign="top" width="66.66666666666666%">Enables connection pooling.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e745 " valign="top" width="33.33333333333333%"><strong class="ph b">Pool Size</strong> </td>
+                        <td class="entry" headers="d5948e751 " valign="top" width="66.66666666666666%">Sets the <span class="ph uicontrol">Initial</span>  size of the connection pool; and the <span class="ph uicontrol">Maximum</span>  number of connections in the connection pool.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d5948e745 " valign="top" width="33.33333333333333%"><strong class="ph b">Parameters:</strong> </td>
+                        <td class="entry" headers="d5948e751 " valign="top" width="66.66666666666666%">Click on any parameter to get a short description of that parameter.
+                          <p class="p">The most commonly used parameter is <strong class="ph b">validationQuery</strong> . The parameter is slightly different depending on the RDBMS that is being connected to.</p>
+                          <div class="p">
+                            <ul class="ul" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_defining_jdbc_connection_pooling__ul_pcc_qhc_gm">
+                              <li class="li">For Oracle and PostgreSQL, use &quot;Select 1 from dual&quot;</li>
+                              <li class="li">For MS SQL Server and MySQL, use &quot;Select 1&quot;</li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Test</span> . </span>  A success message appears if the connection is established.</li>
+              <li class="li step"><span class="ph cmd">To save the options, click <strong class="ph b">OK</strong>  twice.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_deleting_connections">
+        <div id="section_8" class="mt-page-section"><span id="Delete_Connections"></span> 
+          <h2 class="editable">Delete Connections</h2>
+          <div class="body taskbody">
+            <div class="section context">If you no longer need a connection, you can open the <span class="ph uicontrol">Database Connection</span>  dialog box and delete the connection.
+              <div class="cautiontitle">CAUTION:</div>
+              <div class="note caution">Deleting a connection affects all reports, charts, dashboards, and other content that are associated with the connection.</div>
+            </div>
+            <ol class="ol steps" id="1dcd1ca0-f592-4732-938d-12cab14beb53__task_deleting_connections__steps_pcp_zrn_3j">
+              <li class="li step"><span class="ph cmd">In the User Console click on <span class="ph uicontrol">File </span> > <span class="ph uicontrol">Manage </span> > <span class="ph uicontrol">Data Source</span> . </span>  The <span class="ph uicontrol">Data Sources</span>                 dialog box appears.</li>
+              <li class="li step"><span class="ph cmd">Highlight the name of the data source you want to delete and click <span class="ph uicontrol">Remove</span>  (the x icon in the red box on the right). </span>  The data source no longer appears in the list of data sources.
+                <p class="p">&nbsp;</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Add_Drivers" rel="internal">Add Drivers</a>  </li>
+      <li> <a href="#Specify_Native_(JDBC)_Connection_Information" rel="internal">Specify Native (JDBC) Connection Information</a>  </li>
+      <li> <a href="#Edit_Existing_Connections" rel="internal">Edit Existing Connections</a>  </li>
+      <li>
+        <a href="#Specify_Advanced_SQL_Preferences" rel="internal">Specify Advanced SQL Preferences</a> 
+        <ol>
+          <li> <a href="#Quoting" rel="internal">Quoting</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Set_Options" rel="internal">Set Options</a>  </li>
+      <li> <a href="#Define_Connection_Pooling" rel="internal">Define Connection Pooling</a>  </li>
+      <li> <a href="#Delete_Connections" rel="internal">Delete Connections</a>  </li>
+    </ol>
+  </body>
+</content>

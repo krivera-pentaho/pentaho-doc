@@ -1,0 +1,39 @@
+<content type="text/html" title="Building Transformations Dynamically">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">To enable your application to respond quickly to changing conditions, you can build transformations dynamically. The example class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingTransformations</code>, shows you how.
+            It generates a transformation definition and saves it to a .<span class="ph filepath">ktr</span>  file.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span> </li>
+          <li class="li step"><span class="ph cmd">Create and configure a transformation definition object.</span>  A transformation definition is represented by a
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"
+            rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object. Create this object using the default constructor. The transformation definition includes the name, the declared parameters, and the required database connections.&nbsp;</li>
+          <li class="li step"><span class="ph cmd">Populate the <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object with steps.</span>             The data flow of a transformation is defined by steps that are connected by hops.
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">Create the step by instantiating its class directly and configure it using its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. Transformation steps reside in sub-packages of <code class="ph codeph">org.pentaho.di.trans.steps</code>. For example, to use the <span class="ph uicontrol">Get File Names</span>                 step , create an instance of
+                <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/steps/getfilenames/GetFileNamesMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/steps/getfilenames/GetFileNamesMeta.html"><code class="ph codeph">org.pentaho.di.trans.steps.getfilenames.GetFileNamesMeta</code></a>  and use its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods to configure it. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Obtain the step id string. Each PDI step has an id that can be retrieved from the PDI <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/plugins/PluginRegistry.html">plugin registry</a> . A simple way to retrieve the step id is to call <code class="ph codeph">PluginRegistry.getInstance().getPluginId(StepPluginType.class, theStepMetaObject)</code>.&nbsp; </span> </li>
+              <li class="li substep"><span class="ph cmd">Create an instance of <code class="ph codeph">org.pentaho.di.trans.step.StepMeta</code>, passing the step id string, the name, and the configured step object to the constructor. An instance of <code class="ph codeph">StepMeta</code> encapsulates the step properties, as well as controls the placement of the step on the Spoon canvas and connections to hops. Once the <code class="ph codeph">StepMeta</code> object has been created, call <span class="ph filepath">setDrawn(true)</span>                 and <code class="ph codeph">setLocation(x,y)</code> to make sure the step appears correctly on the Spoon canvas. Finally, add the step to the transformation, by calling <code class="ph codeph">addStep()</code> on the transformation definition
+                object. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Once steps have been added to the transformation definition, they need to be connected by hops. To create a hop, create an instance of <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransHopMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransHopMeta.html"><code class="ph codeph">org.pentaho.di.trans.TransHopMeta</code></a>, passing in the From and To steps as arguments to the constructor. Add the hop to the transformation definition by calling <code class="ph codeph">addTransHop()</code>. </span> </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="section result">After all steps have been added and connected by hops, the transformation definition object can be serialized to a .<span class="ph filepath">ktr</span>  file by calling <code class="ph codeph">getXML()</code> and opening it in Spoon for inspection.
+          The sample class <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingTransformations</code> generates this transformation.
+          <br />
+          <img class="image" id="48efda9b-8f56-4528-bfb8-dd70bb16cb06__building_transforms_on_the_fly__image_w4p_24q_mh" />
+          <br />
+          <br />
+          <img alt="File:/generated_trans.png" class="image internal" id="48efda9b-8f56-4528-bfb8-dd70bb16cb06__building_transforms_on_the_fly__image_gr3_j4q_mh" src="http://help.pentaho.com/@api/deki/files/3601/generated_trans.png?revision=1" />
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

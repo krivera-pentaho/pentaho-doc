@@ -1,0 +1,494 @@
+<content type="text/html" title="Use Kerberos Authentication to Provide Spoon Users Access to MongoDB">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">If you use Kerberos to authenticate access to your installation of MongoDB, with a little extra configuration, you can also use Kerberos to authenticate Spoon users who attempt the access MongoDB through a step in a transformation. When a user
+            attempts to run a transformation that contains a step that connects to a MongoDB cluster to perform a function, the credentials in the step are matched against the credentials in the Kerberos administrative database on MongoDB.&nbsp; If the
+            credentials match, the Kerberos Key Distribution Center (KDC) grants an authorization ticket and access is granted. If not, the user is not authentication and the step does not run.</p>
+          <p class="p">To set up Kerberos authentication to provide Spoon users with access to MongoDB you will need to perform several sets of tasks.</p>
+          <ul class="ul" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_hadoop__ul_lht_pzb_2m">
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__prerequisites" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__prerequisites">Complete MongoDB and Client Prerequisites</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_userID" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_userID">Add Users To Kerberos Database</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_boot_time" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_boot_time">Set Up Kerberos Administrative Server and KDC to Start When the Server Starts</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client">Configure Spoon Client Side Nodes</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_launch_pdi" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_launch_pdi">Test Authentication from within Spoon</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__prerequisites">
+        <div id="section_1" class="mt-page-section"><span id="Complete_MongoDB_and_Client_Prerequisites"></span> 
+          <h2 class="editable">Complete MongoDB and Client Prerequisites</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Make sure that you have completed the following tasks before you move to the next section.</p>
+              <div class="p">
+                <ul class="ul" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__prerequisites__ul_kgy_tyx_zl">
+                  <li class="li"> Make sure that you have installed and configured an <em class="ph i">Enterprise</em>  version MongoDB according to the instructions in the MongoDB installation guide
+                    <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/installation/">http://docs.mongodb.org/manual/installation/</a> .</li>
+                  <li class="li">Configure MongoDB to use Kerberos.&nbsp; Instructions for how to do that appear here:&nbsp;
+                    <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/tutorial/control-access-to-mongodb-with-kerberos-authentication/">http://docs.mongodb.org/manual/tutorial/control-access-to-mongodb-with-kerberos-authentication/</a> . </li>
+                  <li class="li">Install the current version of Spoon on each client machine.</li>
+                  <li class="li"> Make sure each client machine can use a hostname to access MongoDB. You should also test to ensure that IP addresses resolve to hostnames using both forward and reverse lookups. </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_userID">
+        <div id="section_2" class="mt-page-section"><span id="Add_Users_to_Kerberos_Database"></span> 
+          <h2 class="editable">Add Users to Kerberos Database</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Add the user account credential to the Kerberos database for each Spoon user that should have access to MongoDB. You only need to do this once for each user.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"> <span class="ph cmd">Log in as root (or a privileged user), to the server that hosts the Kerberos database.</span>  </li>
+              <li class="li step"> <span class="ph cmd">Add user identification to the Kerberos database by completing these steps. </span> 
+                <ol type="a" class="ol substeps" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_userID__substeps_ohd_tlx_2m">
+                  <li class="li substep"> <span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  window.</span> 
+                  </li>
+                  <li class="li substep"> <span class="ph cmd">Add the account username to the Kerberos database, like this. The username should match the one used to create the user in MongoDB.&nbsp; See the create users part of <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/tutorial/control-access-to-mongodb-with-kerberos-authentication/">http://docs.mongodb.org/manual/tutorial/control-access-to-mongodb-with-kerberos-authentication/</a>  for more details. If successful, a message appears indicating that the user has been created.</span>                     <pre class="pre codeblock">root@kdc1:~# kadmin.local -q &quot;addprinc <username>&quot;
+...
+Principal &quot;<user name>@DEV.LOCAL&quot; created.</pre> </li>
+                  <li class="li substep"> <span class="ph cmd">Repeat for each user you want to add to the database.</span>  </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_server_boot_time">
+        <div id="section_3" class="mt-page-section"><span id="Set_Up_Kerberos_Administrative_Server_and_KDC_to_Start_When_Server_Starts"></span> 
+          <h2 class="editable">Set Up Kerberos Administrative Server and KDC to Start When Server Starts </h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">It is a good practice to start the Kerberos Administrative Server and the KDC when the server boots. One way to do this is to set them up to run as a service. This is an optional, but recommended step.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"> <span class="ph cmd">If you have not done so already, log into the server that contains the Kerberos Administrative Server and the KDC.</span>  </li>
+              <li class="li step"> <span class="ph cmd">Set the Kerberos Administrative Server to run as a service when the system starts. By default, the name of the Kerberos Administrative Server is <span class="ph filepath">kadmin</span> . If you do not know how to do this,
+                check the documentation for your operating system.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Set the KDC to run as a service when the system starts. By default, the name of the KDC is <span class="ph filepath">krb5kdc</span> . </span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client">
+        <div id="section_4" class="mt-page-section"><span id="Configure_Spoon_Client-Side_Nodes"></span> 
+          <h2 class="editable">Configure Spoon Client-Side Nodes</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <div class="p">After you have added users to the database and configured the Kerberos admin and KDC to start when the server starts, you are ready to configure each client-side node from which a user might access MongoDB. Client-side nodes should each
+                have a copy of Spoon already installed. Client-side configuration differs based on your operating system.
+                <ul class="ul" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client__ul_fh2_hmc_zl">
+                  <li class="li">
+                    <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux">Configure Linux Client Nodes</a> 
+                  </li>
+                  <li class="li">
+                    <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_window" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_window">Configure Windows Client Nodes</a> 
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux">
+            <div id="section_5" class="mt-page-section"><span id="Configure_Linux_and_Mac_Client_Nodes"></span> 
+              <h3 class="editable">Configure Linux and Mac Client Nodes</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <div class="p">To configure Linux client nodes, complete these tasks.
+                    <ul class="ul" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux__ul_lmf_lmc_zl">
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_JCE" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_JCE">Install JCE on Linux and Mac Clients</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_client" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_client">Download and Install Kerberos on Linux and Mac Clients</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_specify_location_mac" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_specify_location_mac">Specify the Location of the Kerberos Configuration File on Mac Clients that Run Spoon</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_Specify_location_on_Mac_spoon" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_Specify_location_on_Mac_spoon">Specify the Location of the Kerberos Configuration File on Mac Clients that Run PRD</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" href="#">Synchronize Clock on Linux and Mac Clients</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberosticket" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberosticket">Obtain Kerberos Ticket on Linux and Mac Clients</a> 
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_JCE">
+                <div id="section_6" class="mt-page-section"><span id="Install_JCE_on_Linux_and_Mac_Clients"></span> 
+                  <h4 class="editable">Install JCE on Linux and Mac Clients</h4>
+                  <div class="body taskbody">
+                    <div class="section context">This step is optional. The KDC configuration includes an AES-256 encryption setting. If you want to use this encryption strength, you will need to install the Java Cryptographic Extension (JCE) files.</div>
+                    <ol class="ol steps">
+                      <li class="li step"><span class="ph cmd">Download the Java Cryptographic Extension (JCE) for the <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0D0/160/010" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0D0/160/010">currently supported version of Java</a>  from the <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html">Oracle site</a> . </span> </li>
+                      <li class="li step"><span class="ph cmd">Read the installation instructions that are included with the download.</span> </li>
+                      <li class="li step"><span class="ph cmd">Copy the JCE jars to the <span class="ph filepath">java/lib/security</span>  directory where PDI is installed on the Linux client machine. </span> 
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_client">
+                <div id="section_7" class="mt-page-section"><span id="Download_and_Install_Kerberos_Client_on_Linux_and_Mac_Clients"></span> 
+                  <h4 class="editable">Download and Install Kerberos Client on Linux and Mac Clients</h4>
+                  <div class="body taskbody">
+                    <div class="section context">Download and install a Kerberos client. Check your operating system's documentation for further details on how to do this. </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file">
+                <div id="section_8" class="mt-page-section"><span id="Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Linux_and_Mac_Clients"></span> 
+                  <h4 class="editable">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux and Mac Clients</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">Modify the Kerberos configuration file to reflect your Realm, KDC, and Admin Server. </p>
+                    </div>
+                    <ol class="ol steps">
+                      <li class="li step"> <span class="ph cmd">Open the <span class="ph filepath">krb5.conf</span>  file. By default this file is located in <span class="ph filepath">/etc/krb5.conf</span>, but it might appear somewhere else on your system.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">Add your Realm, KDC, and Admin Server information. The information in-between the carats <strong class="ph b">< ></strong>  indicates where you should modify the code to match your specific environment.</span>                         <pre class="pre codeblock">[libdefaults]
+       default_realm = <correct default realm name>
+	clockskew = 300
+	v4_instance_resolve = false
+	v4_name_convert = {
+		host = {
+			rcmd = host
+			ftp = ftp
+		}
+		plain = {
+			something = something-else
+		}
+	}
+	
+[realms]
+	<correct default realm name>= {
+		kdc=<KDC IP Address, or resolvable Hostname>
+		admin_server=< Admin Server IP Address, or resolvable Hostname>
+	}
+	MY.REALM = {
+		kdc = MY.COMPUTER 
+	}
+	OTHER.REALM = {
+		v4_instance_convert = {
+			kerberos = kerberos
+			computer = computer.some.other.domain
+		}
+	}
+[domain_realm]
+	.my.domain = MY.REALM </pre> </li>
+                      <li class="li step"> <span class="ph cmd">Save and close the configuration file.</span>  </li>
+                      <li class="li step"> <span class="ph cmd">Restart the computer.</span>  </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_specify_location_mac">
+                <div id="section_9" class="mt-page-section"><span id="Specify_the_Location_of_the_Kerberos_Configuration_File_on_Mac_Clients_That_Run_Spoon"></span> 
+                  <h4 class="editable">Specify the Location of the Kerberos Configuration File on Mac Clients That Run Spoon</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">If you are configuring Spoon to use Kerberos to authenticate MongoDB on a Mac client, you might need to manually specify where the Kerberos configuration file can be found.&nbsp; Do this if the version of the JRE that the Spoon uses
+                        is earlier than Java 1.70_40, because the JRE attempts to find the Kerberos Configuration file in a different location than the default.</p>
+                    </div>
+                    <ol class="ol steps">
+                      <li class="li step"> <span class="ph cmd">Use <strong class="ph b">Finder</strong>  to navigate to <span class="ph filepath">design-tools/data-integration/launcher/launcher.properties</span>  file. &nbsp; </span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">In the <span class="ph filepath">launcher.properties</span>  file, add a java parameter that indicates the realm and the KDC that you specified in the
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file"
+                        rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server</a>  step. &nbsp; Make sure to set both of these properties.</span>  <pre class="pre codeblock">-Djava.security.krb5.realm=<Kerberos Realm>
+-Djava.secrutiy.krb5.kdc=&amp;lt;Kerberos KDC></pre> </li>
+                      <li class="li step"> <span class="ph cmd">If you need to set additional configuration properties for your Kerberos installation, see Locating the krb5.conf Configuration File section located in <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/KerberosReq.html">http://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/KerberosReq.html</a>  for details.</span>                         </li>
+                      <li class="li step"> <span class="ph cmd">Close and save the <span class="ph filepath">launcher.properties</span>  file.</span> 
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_Specify_location_on_Mac_spoon">
+                <div id="section_10" class="mt-page-section"><span id="Specify_the_Location_of_the_Kerberos_Configuration_File_on_Mac_Clients_that_Run_PRD"></span> 
+                  <h4 class="editable">Specify the Location of the Kerberos Configuration File on Mac Clients that Run PRD</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">If you are configuring the PRD to use Kerberos to authenticate MongoDB on a Mac, you will need to manually specify where the Kerberos Configuration file can be found.&nbsp; You must do this if the version of the JRE that the PRD
+                        uses is earlier than Java 1.7.0_40, because it attempts to find the Kerberos Configuration file in a different location than the default. </p>
+                    </div>
+                    <ol class="ol steps">
+                      <li class="li step"> <span class="ph cmd">Use <strong class="ph b">Finder</strong>  to navigate to the <span class="ph filepath">Pentaho Report Designer.app</span>  file which is in the <span class="ph filepath">design-tools</span>  directory. &nbsp; Right
+                        click and select<strong class="ph b"> Show Package Contents</strong> .</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">Navigate to the <strong class="ph b">Contents > Java</strong> .</span>  </li>
+                      <li class="li step"> <span class="ph cmd">Open <span class="ph filepath">launcher.properties</span> . Do not use the <span class="ph filepath">launcher.properties</span>  file that is in the root of the <span class="ph filepath">app</span>  directory.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">In the <span class="ph filepath">launcher.properties</span>  file, add a java parameter that indicates the realm and the KDC that you specified in the
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file"
+                        rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server</a>  step. &nbsp; Make sure to set both of these properties.</span>  <pre class="pre codeblock">-Djava.security.krb5.realm=<Kerberos Realm>
+-Djava.secrutiy.krb5.kdc=&amp;lt;Kerberos KDC></pre> </li>
+                      <li class="li step"> <span class="ph cmd">If you need to set additional configuration properties for your Kerberos installation, see Locating the krb5.conf Configuration File section located in <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/KerberosReq.html">http://docs.oracle.com/javase/7/docs/technotes/guides/security/jgss/tutorials/KerberosReq.html</a>  for details.</span>                         </li>
+                      <li class="li step"> <span class="ph cmd">Close and save the <span class="ph filepath">launcher.properties</span>  file.</span> 
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__id_xcx_xjw_dm">
+                <div id="section_11" class="mt-page-section"><span id="Synchronize_Clock_on_Linux_Client"></span> 
+                  <h4 class="editable">Synchronize Clock on Linux Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">Synchronize the clock on the Linux client with the clock on MongoDB host. This is important because if the clocks are too far apart, then when authentication is attempted, Kerberos will not consider the tickets that are granted to
+                        be valid and the user will not be authenticated. The times on the Linux client clock and the MongoDB host clock must not be greater than the range you entered for the <span class="ph filepath">clockskew</span>  variable in
+                        <span
+                        class="ph filepath">krb5.conf</span>  file when you completed the steps in the
+                          <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file" rel="internal"
+                          href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux Client</a>  task. </p>
+                      <p class="p">Consult your operating system's documentation for information on how to properly set your clock. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_linux_kerberosticket">
+                <div id="section_12" class="mt-page-section"><span id="Obtain_Kerberos_Ticket_on_Linux_Client"></span> 
+                  <h4 class="editable">Obtain Kerberos Ticket on Linux Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">To obtain a Kerberos ticket, complete these steps.</p>
+                    </div>
+                    <ol class="ol steps">
+                      <li class="li step"> <span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  window and type <span class="ph filepath">kinit</span>  at the prompt.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">When prompted for a password, enter it.</span>  </li>
+                      <li class="li step"> <span class="ph cmd">The prompt appears again. To ensure that the Kerberos ticket was granted, type <span class="ph filepath">klist</span>  at the prompt.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">Authentication information appears.</span>  </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_window">
+            <div id="section_13" class="mt-page-section"><span id="Configure_Windows_Client_Nodes"></span> 
+              <h3 class="editable">Configure Windows Client Nodes</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <div class="p">To configure Windows client nodes, complete these tasks.
+                    <ul class="ul" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_window__ul_m1v_vmc_zl">
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_JCE" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_JCE">Install JCE on Windows Client</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_client" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_client">Download and Install Kerberos on Windows Client</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_config_file" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_clock" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_clock">Synchronize Clock on Windows Client</a> 
+                      </li>
+                      <li class="li">
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberosticket" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberosticket">Obtain Kerberos Ticket on Windows Client</a> 
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_JCE">
+                <div id="section_14" class="mt-page-section"><span id="Install_JCE_on_Windows_Client"></span> 
+                  <h4 class="editable">Install JCE on Windows Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">This step is optional. The KDC configuration includes an AES-256 encryption setting. If you want to use this encryption strength, you will need to install the Java Cryptographic Extension (JCE) files.</div>
+                    <ol class="ol steps" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_JCE__steps_ag2_rlw_dm">
+                      <li class="li step"><span class="ph cmd">Download the Java Cryptographic Extension (JCE) for the <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0D0/160/010" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0D0/160/010">currently supported version of Java</a>  from the <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html">Oracle site</a> . </span> </li>
+                      <li class="li step"><span class="ph cmd">Read the installation instructions that are included with the download.</span> </li>
+                      <li class="li step"><span class="ph cmd">Copy the JCE jars to the <span class="ph filepath">java\lib\security</span>  directory where PDI is installed. </span> 
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_client">
+                <div id="section_15" class="mt-page-section"><span id="Download_and_Install_Kerberos_Client_on_Windows_Client"></span> 
+                  <h4 class="editable">Download and Install Kerberos Client on Windows Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">Download and install a Kerberos client. We recommend that you use the Heimdal implementation of Kerberos, which can be found here:
+                        <a class="xref link-https" target="_blank" rel="external nofollow" href="https://www.secure-endpoints.com/heimdal/">https://www.secure-endpoints.com/heimdal/</a> .</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_config_file">
+                <div id="section_16" class="mt-page-section"><span id="Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Windows_Client"></span> 
+                  <h4 class="editable">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">You will need to modify the Kerberos configuration file to reflect the appropriate realm, KDC, and Admin Server.</div>
+                    <ol class="ol steps">
+                      <li class="li step"> <span class="ph cmd">Open the krb5.conf file. By default this file is located in <span class="ph filepath">c:\Program Data\Kerberos</span> . This location might be different on your system.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">Add the appropriate realm, KDC, and Admin Server information. An example of where to add the data appears below.</span>  <pre class="pre codeblock">[libdefaults]
+       default_realm = <correct default realm name>
+	clockskew = 300
+	v4_instance_resolve = false
+	v4_name_convert = {
+		host = {
+			rcmd = host
+			ftp = ftp
+		}
+		plain = {
+			something = something-else
+		}
+	}
+	
+[realms]
+	<correct default realm name>= {
+		kdc=<KDC IP Address, or resolvable Hostname>
+		admin_server=< Admin Server IP Address, or resolvable Hostname>
+	}
+	MY.REALM = {
+		kdc = MY.COMPUTER 
+	}
+	OTHER.REALM = {
+		v4_instance_convert = {
+			kerberos = kerberos
+			computer = computer.some.other.domain
+		}
+	}
+[domain_realm]
+	.my.domain = MY.REALM </pre> </li>
+                      <li class="li step"> <span class="ph cmd">Save and close the configuration file. </span>  </li>
+                      <li class="li step"> <span class="ph cmd">Make a copy of the configuration file and place it in the <span class="ph filepath">c:\Windows</span>  directory. Rename the file <span class="ph filepath">krb5.ini</span> .</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">Restart the computer.</span>  </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_clock">
+                <div id="section_17" class="mt-page-section"><span id="Synchronize_Clock_on_Windows_Client"></span> 
+                  <h4 class="editable">Synchronize Clock on Windows Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">Synchronize the clock on the Windows client with the clock on the MongoDB host. This is important because if the clocks are too far apart, then when authentication is attempted, Kerberos will not consider the tickets that are granted
+                        to be valid and the user will not be authenticated. The times on the Windows client clock and the MongoDB host's clock must not be greater than the range you entered for the <span class="ph filepath">clockskew</span>  variable in
+                        <span class="ph filepath">krb5.conf</span>  file when you completed the steps in the
+                        <a class="xref" title="Documentation/5.1/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_config_file"
+                        rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/0W0/030/050#b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows Client</a>  task. </p>
+                      <p class="p">Consult your operating system's documentation for information on how to properly set your clock. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="topic task nested3" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberosticket">
+                <div id="section_18" class="mt-page-section"><span id="Obtain_Kerberos_Ticket_on_Windows_Client"></span> 
+                  <h4 class="editable">Obtain Kerberos Ticket on Windows Client</h4>
+                  <div class="body taskbody">
+                    <div class="section context">
+                      <p class="p">To obtain a Kerberos ticket, complete these steps.</p>
+                    </div>
+                    <ol class="ol steps" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_configure_client_windows_kerberosticket__steps_y33_ngg_1m">
+                      <li class="li step"> <span class="ph cmd">Open a <span class="ph uicontrol">Command Prompt</span>  window and type <span class="ph filepath">kinit</span>  at the prompt.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">When prompted for a password, enter it.</span>  </li>
+                      <li class="li step"> <span class="ph cmd">The prompt appears again. To ensure that the Kerberos ticket was granted, type <span class="ph filepath">klist</span>  at the prompt.</span> 
+                      </li>
+                      <li class="li step"> <span class="ph cmd">Authentication information appears.</span>  </li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_launch_pdi">
+        <div id="section_19" class="mt-page-section"><span id="Test_Authentication_from_Within_Spoon"></span> 
+          <h2 class="editable">Test Authentication from Within Spoon</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To test the authentication from within Spoon, create a transformation that contains a MongoDB Input that connects to MongoDB. For these instructions to work properly, you should have permission to read a database and the corresponding collections
+                on the instance of MongoDB you want to connect to.</p>
+            </div>
+            <ol class="ol steps" id="b9e0b741-6eab-4624-a1d2-1566bbf1b7bd__task_kerberos_launch_pdi__steps_h4j_b2g_1m">
+              <li class="li step"> <span class="ph cmd">Start Spoon.</span>  </li>
+              <li class="li step"> <span class="ph cmd">Create a new transformation. </span>  </li>
+              <li class="li step"> <span class="ph cmd">Drag the <span class="ph uicontrol">MongoDB Input</span>  step to the canvas and open the step.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Enter the host name of the MongoDB instance and port for MongoDB. </span>  </li>
+              <li class="li step"> <span class="ph cmd">In the <span class="ph uicontrol">username</span>  field, indicate the Kerberos principal, using this format:&nbsp; <span class="ph filepath"><primary>/<instance>@KERBEROS_REALM</span> . (Be sure to include the forward
+                slash. Also note that the Kerberos Realm is case sensitive.)&nbsp; Check with your administrator if you do not know your Kerberos principal.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Leave the <span class="ph uicontrol">password</span>  field blank.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Click the <span class="ph uicontrol">Authenticate using Kerberos</span>  checkbox.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Click the <span class="ph uicontrol">Input</span>  options tab, then enter the name of a database on MongoDB to which you have read permissions.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Click the <span class="ph uicontrol">Get Collections</span>  button.&nbsp; You should be able to see the databases you have read accesss to, as well as the collections in the drop down lists.</span> 
+              </li>
+              <li class="li step"> <span class="ph cmd">Click the <span class="ph uicontrol">Preview</span>  button.&nbsp; If you see data, then you know that Kerberos is working properly.</span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Complete_MongoDB_and_Client_Prerequisites" rel="internal">Complete MongoDB and Client Prerequisites</a>  </li>
+      <li> <a href="#Add_Users_to_Kerberos_Database" rel="internal">Add Users to Kerberos Database</a>  </li>
+      <li> <a href="#Set_Up_Kerberos_Administrative_Server_and_KDC_to_Start_When_Server_Starts" rel="internal">Set Up Kerberos Administrative Server and KDC to Start When Server Starts </a>  </li>
+      <li>
+        <a href="#Configure_Spoon_Client-Side_Nodes" rel="internal">Configure Spoon Client-Side Nodes</a> 
+        <ol>
+          <li>
+            <a href="#Configure_Linux_and_Mac_Client_Nodes" rel="internal">Configure Linux and Mac Client Nodes</a> 
+            <ol>
+              <li> <a href="#Install_JCE_on_Linux_and_Mac_Clients" rel="internal">Install JCE on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Download_and_Install_Kerberos_Client_on_Linux_and_Mac_Clients" rel="internal">Download and Install Kerberos Client on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Linux_and_Mac_Clients" rel="internal">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Specify_the_Location_of_the_Kerberos_Configuration_File_on_Mac_Clients_That_Run_Spoon" rel="internal">Specify the Location of the Kerberos Configuration File on Mac Clients That Run Spoon</a>  </li>
+              <li> <a href="#Specify_the_Location_of_the_Kerberos_Configuration_File_on_Mac_Clients_that_Run_PRD" rel="internal">Specify the Location of the Kerberos Configuration File on Mac Clients that Run PRD</a>  </li>
+              <li> <a href="#Synchronize_Clock_on_Linux_Client" rel="internal">Synchronize Clock on Linux Client</a>  </li>
+              <li> <a href="#Obtain_Kerberos_Ticket_on_Linux_Client" rel="internal">Obtain Kerberos Ticket on Linux Client</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Configure_Windows_Client_Nodes" rel="internal">Configure Windows Client Nodes</a> 
+            <ol>
+              <li> <a href="#Install_JCE_on_Windows_Client" rel="internal">Install JCE on Windows Client</a>  </li>
+              <li> <a href="#Download_and_Install_Kerberos_Client_on_Windows_Client" rel="internal">Download and Install Kerberos Client on Windows Client</a>  </li>
+              <li> <a href="#Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Windows_Client" rel="internal">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows Client</a>  </li>
+              <li> <a href="#Synchronize_Clock_on_Windows_Client" rel="internal">Synchronize Clock on Windows Client</a>  </li>
+              <li> <a href="#Obtain_Kerberos_Ticket_on_Windows_Client" rel="internal">Obtain Kerberos Ticket on Windows Client</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Test_Authentication_from_Within_Spoon" rel="internal">Test Authentication from Within Spoon</a>  </li>
+    </ol>
+  </body>
+</content>

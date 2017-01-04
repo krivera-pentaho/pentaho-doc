@@ -1,0 +1,99 @@
+<content type="text/html" title="Troubleshooting MonetDB for Instaview">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Instaview loads ETL models, dimensional schema, and data in a MonetDB-based database. When a new Instaview project is created or an existing one is opened, the MonetDB server is started. Most issues that can occur relate to the way that Pentaho
+          controls MonetDB. </p>
+        <p class="p"><strong class="ph b">Connection Errors</strong> </p>
+        <p class="p">Connection errors sometimes occur if there are MonetDB port conflicts. This sometimes occurs if you have installed Instaview in the past using one method, then reinstalled it using a different method. Check the share.xml file and modify the MonetDB
+          port number in the Agile BI section so that it is not 50000, but another number such as 50006. Exit from Instaview and Spoon and try to start them both again.</p>
+        <p class="p"><strong class="ph b">General Errors</strong> </p>
+        <p class="p">The Monetdb server is started when a new Instaview project is created or an existing one is opened. The server is shutdown when the project is closed. Pentaho provides scripts to start and stop the server. These scripts are located in the
+          <span
+          class="ph filepath">data-integration/plugins/spoon/agile-bi/platform/pentaho-solutions/system/instaview/scripts</span>  directory.</p>
+        <p class="p">For testing or debugging, these scripts can be run with no arguments passed in. However, defaults are used for parameters that are not passed in. Each operating system has different defaults, the configuration definitions in the previous examples
+          drive the values passed in to these scripts when executed from within PDI/Instaview. When running the scripts, take care to pass in the correct values, otherwise the database may not start up properly. Open the script in a text editor before
+          calling it to determine what parameters you might need. Here are some example paramaters. None of the parameters are required, but are key if you stray from the default configurations. </p>
+        <p class="p"><strong class="ph b">For Windows</strong> </p>
+        <div class="p"> <pre class="pre codeblock">startMonetDb.bat DB_NAME MONETDB_INSTALL_DIR</pre>
+          <div class="tablenoborder">
+            <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__trouble_shooting_monetdb_instaview_config__table_uys_mzg_d3">
+              <thead class="thead" align="left">
+                <tr class="row">
+                  <th class="entry" valign="top" width="50%" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e61">Parameter</th>
+                  <th class="entry" valign="top" width="50%" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e64">Default Value</th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" valign="top" width="50%" headers="d102905e61 "> <code class="ph codeph">DB_NAME </code></td>
+                  <td class="entry" valign="top" width="50%" headers="d102905e64 "> <code class="ph codeph">pentaho-instaview </code></td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top" width="50%" headers="d102905e61 "> <code class="ph codeph">MONETDB_INSTALL_PATH </code></td>
+                  <td class="entry" valign="top" width="50%" headers="d102905e64 "> <code class="ph codeph">MONETDB_INSTALL_DIR</code> environment variable </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="p"><strong class="ph b">For Mac or Linux</strong> </p>
+        <div class="p"> <pre class="pre codeblock">./startMonetDb.sh DB_NAME DB_FARM_LOCATION MONETDB_CMD MONETDBD_CMD MONETDB_PORT PASSPHRASE
+   </pre>
+          <div class="tablenoborder">
+            <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__trouble_shooting_monetdb_instaview_config__table_lvb_zzg_d3">
+              <thead class="thead" align="left">
+                <tr class="row">
+                  <th class="entry" valign="top" width="25%" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e127">Parameter</th>
+                  <th class="entry" valign="top" width="25%" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e130">Mac Default Value</th>
+                  <th class="entry" valign="top" width="25%" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e133">Linux Default Value</th>
+                  <th class="entry" valign="top" width="25%" id="146b6d19-8c25-40a8-90cb-477fd4e205d8__d102905e136">Comment</th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" valign="top" width="25%" headers="d102905e127 "> DB_NAME </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e130 "> pentaho-instaview </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e133 ">&nbsp;</td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e136 ">&nbsp;</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top" width="25%" headers="d102905e127 "> DB_FARM_LOCATION </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e130 ">$HOME/.kettle/instaview/dbfarm </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e133 ">$HOME/.kettle/instaview/dbfarm </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e136 ">&nbsp;</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top" width="25%" headers="d102905e127 "> MONETDB_CMD </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e130 "> /usr/local/monetdb/bin/monetdb </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e133 "> /usr/bin/monetdb </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e136 ">&nbsp;</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top" width="25%" headers="d102905e127 "> MONETDBD_CMD </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e130 ">/usr/local/monetdb/bin/monetdbd </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e133 "> /usr/bin/monetdbd </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e136 ">&nbsp;</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top" width="25%" headers="d102905e127 "> MONETDB_PORT </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e130 "> 50000 </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e133 "> 50000 </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e136 ">To avoid port conflicts, this port number is sometimes changed to 50006.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top" width="25%" headers="d102905e127 "> PASSPHRASE </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e130 "> monetdb </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e133 "> monetdb </td>
+                  <td class="entry" valign="top" width="25%" headers="d102905e136 ">Required for remote control of Monetdb </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p class="p">Also, check the AgileBI shared connection in PDI that Instaview creates and uses to talk to Monetdb. You can open this connection in PDI and test or explore it. This connection is used by the templates. If you open the <span class="ph filepath">.ktr</span>           file used by Instaview you can run it that way as long as Monetdb is running. </p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

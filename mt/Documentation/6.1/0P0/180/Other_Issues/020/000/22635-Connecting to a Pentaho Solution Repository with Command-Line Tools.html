@@ -1,0 +1,68 @@
+<content type="text/html" title="Connecting to a Pentaho Solution Repository with Command-Line Tools">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">
+          <p class="p">To export repository objects into XML format using command-line tools instead of exporting repository configurations from within Spoon, use named parameters and command-line options when calling Kitchen or Pan from a command-line prompt.</p>
+          <p class="p">The following is an example command-line entry to execute an export job using Kitchen:</p> <pre class="pre codeblock">
+    call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb
+    &quot;/param:rep_name=PDI2000&quot; &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot;
+    &quot;/param:rep_folder=/public/dev&quot;
+    &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   </pre> </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="simpletable properties" summary="">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="314fc193-cc3b-4214-acb8-1db359bc7a9d__d87356e32" valign="bottom" width="NaN%">Parameter</th>
+              <th align="left" class="stentry propvaluehd" id="314fc193-cc3b-4214-acb8-1db359bc7a9d__d87356e35" valign="bottom" width="NaN%">Description</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_folder</code></td>
+              <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Folder</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_name</code></td>
+              <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Name</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_password</code></td>
+              <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Password</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">rep_user</code></td>
+              <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Repository Username</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d87356e32" valign="top" width="NaN%"><code class="ph codeph">target_filename</code></td>
+              <td class="stentry propvalue" headers="d87356e35" valign="top" width="NaN%">Target Filename</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section">
+          <div class="note note"><span class="notetitle">Note:</span>  It is also possible to use obfuscated passwords with Encr a command line tool for encrypting strings for storage or use by PDI.</div> The following is an example command-line entry to execute a complete command-line
+          call for the export in addition to checking for errors: <pre class="pre codeblock">
+   @echo off
+   ECHO This an example of a batch file calling the repository_export.kjb
+   
+   cd C:\Pentaho\pdi-ee-<filepath>--check--</filepath>{{contentVars.PDIvernum3}}>\data-integration
+   
+   call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb &quot;/param:rep_name=PDI2000&quot;
+   &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot; &quot;/param:rep_folder=/public/dev&quot;
+   &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   
+   if errorlevel 1 goto error
+   echo Export finished successfull.
+   goto finished
+   
+   :error
+   echo ERROR: An error occured during repository export.
+   :finished
+   REM Allow the user to read the message when testing, so having a pause
+   pause
+   </pre> </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

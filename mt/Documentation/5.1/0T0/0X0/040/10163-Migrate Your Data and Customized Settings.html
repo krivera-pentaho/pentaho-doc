@@ -1,0 +1,171 @@
+<content type="text/html" title="Migrate Your Data and Customized Settings">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="pentaho-overview-hidden">
+            <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+              <h2 class="editable">Overview</h2>
+              <p>Provides instructions on how to migrate your customized data.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="149534ae-ec70-42e9-9ba3-e1b93b76327b__manual_migration">
+        <p>Because our system is highly configurable, many customizations can be made. &nbsp;If you've customized files in version 5.0.x of the system, you will need to migrate those customizations over to version 5.1 of the system. &nbsp;</p>
+        <div id="section_2"
+        class="mt-page-section"><span id="Migrate_Your_Content"></span> 
+          <h2 class="editable">Migrate Your Content</h2>
+          <p>To migrate your content, such as KTRs and KJBs, connect version 5.1 of the DI Server to version 5.0 of the DI Repository. &nbsp;For details, read the
+            <a title="Create a Connection to the DI Repository" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/0U0/020">Create a Connection to the DI Repository</a>  article.</p>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Strip_Timestamps_from_default-content_Directory_Filenames"></span> 
+          <h2 class="editable">Strip Timestamps from default-content Directory Filenames</h2>
+          <p>Remove&nbsp;timestamps&nbsp;from default-content directory filenames so the samples, audit, and operations-mart import properly when the server starts.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>Go to the&nbsp;<span class="filepath style-wrap">pentaho-solutions/system/default-content&nbsp;</span> directory in version 5.1 of the server.</li>
+            <li>Rename each file so that the basic name is the same, but the timestamp is removed.
+              <p>For example, if the filename is&nbsp;<span class="filepath style-wrap">pentaho-operations-mart-etl-5.1.zip.20140707</span>, remove the timestamp so that the file is renamed&nbsp;<span class="filepath style-wrap">pentaho-operations-mart-etl-5.1.zip</span> .</p>
+            </li>
+          </ol>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Adjust_Custom_Hybrid_LDAP.2FJDBC_Settings"></span> 
+          <h2 class="editable">Adjust Custom Hybrid LDAP/JDBC Settings</h2>
+          <div class="topic task nested2" id="149534ae-ec70-42e9-9ba3-e1b93b76327b__jdbc">
+            <p>If you use the Hybrid LDAP/JDBC security configuration option, read the
+              <a title="Create LDAP/JDBC Hybrid Configuration for the DI Server" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/0W0/003">Create LDAP/JDBC Hybrid Configuration for the DI Server</a>  article to learn about the changes and make the necessary adjustments on your system.</p>
+            <div id="section_5" class="mt-page-section"><span id="Copy_JDBC_Drivers"></span> 
+              <h2 class="editable">Copy JDBC Drivers</h2>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">For your existing data source connections to work, copy your JDBC driver JARs for all of your data sources from version 5.0 of the system to 5.1.&nbsp; Driver locations appear in the following table. &nbsp;If you have deployed the DI
+                    Server on JBoss, follow the instructions in the
+                    <a title="Use Manual DI Server Installation" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0L0">Use DI Manual Installation</a> &nbsp;for details.</p>
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                    <tbody>
+                      <tr class="row">
+                        <th class="entry" style="width: 142px;" valign="top" width="30%">Design Tool</th>
+                        <th class="entry">Location&nbsp;</th>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d105137e427 " style="width: 142px;" valign="top" width="33.33333333333333%">DI Server</td>
+                        <td class="entry" headers="d105137e436 " style="width: 534px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">pentaho/server/data-integration-server/tomcat/lib/</span> </td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d105137e427 " style="width: 142px;" valign="top" width="33.33333333333333%">Spoon</td>
+                        <td class="entry" headers="d105137e436 " style="width: 534px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">pentaho/design-tools/data-integration/lib/</span> </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="149534ae-ec70-42e9-9ba3-e1b93b76327b__memory">
+            <p>Make sure there are no other versions of the same vendor's JDBC driver installed.&nbsp; Supported drivers are listed in the
+              <a title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0D0/160/010">JDBC Drivers Reference. </a> 
+            </p>
+            <div id="section_6" class="mt-page-section"><span id="Adjust_Memory_Settings"></span> 
+              <h2 class="editable">Adjust Memory Settings</h2>
+              <div class="body taskbody">
+                <div class="section context">
+                  <div class="body taskbody">
+                    <div class="section context">If your memory settings for your 5.0 version of the server is greater than the default, you will need to adjust it again in 5.1.&nbsp; For information on how to adjust memory settings, see the&nbsp;
+                      <a class="xref external" target="_blank"
+                      title="Documentation/5.1/0P0/100/090/040" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/100/090/040">Changing the Java VM Memory Limits</a> &nbsp;section.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="149534ae-ec70-42e9-9ba3-e1b93b76327b__configuration">
+            <div id="section_7" class="mt-page-section"><span id="Merge_Custom_Configuration_Settings"></span> 
+              <h2 class="editable">Merge Custom Configuration Settings</h2>
+              <p>The configuration files in the following table have been upgraded since 5.0.&nbsp; If you've modified settings in them for 5.0, you will need to find the file in 5.1, then manually modify the settings again.</p>
+              <table border="1" cellpadding="0"
+              cellspacing="0" class="pentaho-table" frame="border" rules="all" style="width: 605px;" summary="" title="Pentaho Table">
+                <tbody>
+                  <tr class="row">
+                    <th class="entry" style="width: 217px;" valign="top" width="33.33333333333333%">Directory</th>
+                    <th class="entry" style="width: 364px;" valign="top" width="33.33333333333333%">Files</th>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d105137e427 " style="width: 217px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">common-ui</span> </td>
+                    <td class="entry" headers="d105137e436 " style="width: 364px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">plugin.xml</span> </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d105137e427 " style="width: 217px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">cgg</span> </td>
+                    <td class="entry" headers="d105137e436 " style="width: 364px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">plugin.xml</span> </td>
+                  </tr>
+                  <tr>
+                    <td class="entry" headers="d105137e427 " style="width: 217px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">admin-plugin</span> </td>
+                    <td class="entry" headers="d105137e436 " style="width: 364px;" valign="top" width="33.33333333333333%"><span class="filepath style-wrap">plugin.xml</span> </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="body taskbody">
+                <p class="li step">Here is how you migrate these files.</p>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Back up copies of the new configuration files.</span> </li>
+                  <li class="li step"><span style="line-height: 1.5;">Add your customizations to the new configuration file.&nbsp; If necessary, use the File Diff tool of your choice to compare the old and new versions file to help you find the changes.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="149534ae-ec70-42e9-9ba3-e1b93b76327b__others">
+            <div id="section_8" class="mt-page-section"><span id="Copy_Configuration_Settings"></span> 
+              <h2 class="editable">Copy Configuration Settings</h2>
+              <p>There are configuration files that have not been upgraded for 5.0, but are typically modified by&nbsp;Pentaho&nbsp;customers. &nbsp;If you have modified these files, copy them from 5.0 to 5.1. The
+                <a title="Commonly Customized DI Configuration Files"
+                rel="internal" href="http://help.pentaho.com/Documentation/5.1/0T0/0X0/060/030">Commonly Customized DI Configuration Files </a> has a complete list of these files.</p>
+            </div>
+            <div id="section_9" class="mt-page-section"><span id="Migrate_Other_Customizations"></span> 
+              <h2 class="editable">Migrate Other Customizations</h2>
+              <div class="body taskbody">
+                <div class="section context">There are other customizations that you might have made to the old system that will need to be migrated to the new one.&nbsp; You might also need to test the customizations to ensure it works properly with the new version of DI.
+                  <div class="p">
+                    <ul class="ul" id="149534ae-ec70-42e9-9ba3-e1b93b76327b__others__ul_n3z_h5f_1l">
+                      <li class="li">Custom scheduler and user settings</li>
+                      <li class="li">Community plugins you or others have written</li>
+                      <li class="li">Web applications integrated with DI</li>
+                    </ul>
+                  </div>
+                  <div class="p">
+                    <div id="section_10" class="mt-page-section"><span id="Migrate_repository.xml_file"></span> 
+                      <h2 class="editable">Migrate repository.xml file</h2>
+                      <p>
+                        <font size="2">Migrate the 5.0 version of the repository.xml file to version 5.1 of the system.&nbsp;</font>
+                      </p>
+                      <ol class="pentaho-list-ordered">
+                        <li>
+                          <font size="2">Copy the<span class="filepath style-wrap">&nbsp;respository.xml</span> &nbsp;file in&nbsp;<span class="filepath style-wrap">system/jackrabbit&nbsp;</span> for version 5.0 of the server to version 5.1 of the server.</font>
+                        </li>
+                        <li>
+                          <font size="2">Delete the&lrm;<span class="filepath style-wrap">&nbsp;system/jackrabbit/repository&nbsp;</span> directory from version 5.1 of the server.</font>
+                        </li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Migrate_Your_Content" rel="internal">Migrate Your Content</a>  </li>
+      <li> <a href="#Strip_Timestamps_from_default-content_Directory_Filenames" rel="internal">Strip Timestamps from default-content Directory Filenames</a>  </li>
+      <li> <a href="#Adjust_Custom_Hybrid_LDAP.2FJDBC_Settings" rel="internal">Adjust Custom Hybrid LDAP/JDBC Settings</a>  </li>
+      <li> <a href="#Copy_JDBC_Drivers" rel="internal">Copy JDBC Drivers</a>  </li>
+      <li> <a href="#Adjust_Memory_Settings" rel="internal">Adjust Memory Settings</a>  </li>
+      <li> <a href="#Merge_Custom_Configuration_Settings" rel="internal">Merge Custom Configuration Settings</a>  </li>
+      <li> <a href="#Copy_Configuration_Settings" rel="internal">Copy Configuration Settings</a>  </li>
+      <li> <a href="#Migrate_Other_Customizations" rel="internal">Migrate Other Customizations</a>  </li>
+      <li> <a href="#Migrate_repository.xml_file" rel="internal">Migrate repository.xml file</a>  </li>
+    </ol>
+  </body>
+</content>

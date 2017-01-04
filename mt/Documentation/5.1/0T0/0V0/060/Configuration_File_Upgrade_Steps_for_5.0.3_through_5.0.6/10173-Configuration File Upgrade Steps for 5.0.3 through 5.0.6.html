@@ -1,0 +1,118 @@
+<content type="text/html" title="Configuration File Upgrade Steps for 5.0.3 through 5.0.6">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="How_to_Get_Ready_for_Upgrade_from_5.0.x_to_5.1"></span> 
+        <h2 class="editable">How to Get Ready for Upgrade from 5.0.x to 5.1</h2>
+        <p>A couple of the 5.0 patches between 5.0.3 and 5.0.6 contain some configuration files that have changed. As you work through the patch process, follow these instructions to update your configuration files so that you can successfully move from
+          5.0.6 to Pentaho 5.1.</p>
+        <p>If you have <strong>customized any of these files</strong>, you will have to manually merge them in order to successfully complete the upgrade.</p>
+        <p>Some items of note:</p>
+        <ul class="pentaho-list-unordered">
+          <li>There were no configuration file changes between 5.0.4 and 5.0.5.</li>
+          <li>The web.xml file stayed the same from 5.0.3 all the way through 5.0.7.</li>
+        </ul>
+        <p>Once you are all up-to-date through 5.0.6, you will be ready to proceed with the full upgrade to Pentaho 5.1.</p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Upgrade_from_5.0.3_to_5.0.4"></span> 
+        <h2 class="editable">Upgrade from 5.0.3 to 5.0.4</h2>
+        <p>There is one configuration file that was updated between 5.0.3 to 5.0.4 that will need to be updated.</p>
+        <ol class="pentaho-list-ordered">
+          <li class="template:tag-insert">Navigate to the <span class="filepath style-wrap">.../pentaho-solutions/system</span>  folder and open the <span class="filepath style-wrap">applicationContext-pentaho-security-ldap.xml</span>  file with a text editor.</li>
+          <li class="template:tag-insert">Replace the old <span class="filepath style-wrap">ldapUserDetailsService </span> bean with the new bean as shown.
+            <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><ref bean=&quot;ldapUserDetailsService&quot;/></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pen:bean class=org.springframework.security.userdetails.UserDetailsService&quot;/></pre>            </li>
+          <li>Save and close the file.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Upgrade_from_5.0.4_or_5.0.5_to_5.0.6"></span> 
+        <h2 class="editable">Upgrade from 5.0.4 or 5.0.5 to 5.0.6</h2>
+        <p>There are three files to update here:</p>
+        <ul class="pentaho-list-unordered">
+          <li>pentaho-spring-beans.xml</li>
+          <li>GettingStartedDB-spring.xml</li>
+          <li>applicationContext-pentaho-security-superuser.xml</li>
+        </ul>
+        <p>The <span class="filepath style-wrap">sqlmetadataqueryexec.properties </span> file is a new file for this version and does not need any changes.</p>
+        <div id="section_4" class="mt-page-section"><span id="pentaho-spring-beans.xml"></span> 
+          <h3 class="editable">pentaho-spring-beans.xml</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="template:tag-insert">Navigate to the <span class="filepath style-wrap">.../pentaho-solutions/system</span>  folder and open the <span class="filepath style-wrap">pentaho-spring-beans.xml</span>  file with a text editor.</li>
+            <li class="template:tag-insert">Add this new bean just before the <span class="filepath style-wrap"></beans></span>  tag. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean class=&quot;org.pentaho.platform.config.SolutionPropertiesFileConfiguration&quot;>
+        <constructor-arg value=&quot;sqlmetadataqueryexec&quot;/>
+        <constructor-arg value=&quot;sqlmetadataqueryexec.properties&quot;/>
+        <pen:publish as-type=&quot;INTERFACES&quot;/>
+</bean></pre> </li>
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="GettingStartedDB-spring.xml"></span> 
+          <h3 class="editable">GettingStartedDB-spring.xml</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="template:tag-insert">In the <span class="filepath style-wrap">.../pentaho-solutions/system</span>  folder, find and open the <span class="filepath style-wrap">GettingStartedDB-spring.xml</span>  file with a text editor.</li>
+            <li class="template:tag-insert">Replace the old <span class="filepath style-wrap">org.h2.tools.Server </span> bean with the new bean as shown.
+              <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;org.h2.tools.Server&quot;
+     class=&quot;org.h2.tools.Server&quot;
+     scope=&quot;singleton&quot;
+     factory-method=&quot;createTcpServer&quot;
+     init-method=&quot;start&quot;
+     destroy-method=&quot;stop&quot;>
+     <constructor-arg value=&quot;-tcp,-baseDir,#[base.dir],-tcpAllowOthers,true,-tcpPort,#[tcp.port]&quot; />
+</bean></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;org.h2.tools.Server&quot;
+    class=&quot;org.h2.tools.Server&quot;
+    scope=&quot;singleton&quot;
+    factory-method=&quot;createTcpServer&quot;
+    init-method=&quot;start&quot;
+    destroy-method=&quot;stop&quot;>
+    <constructor-arg value=&quot;-tcp,-baseDir,#[base.dir],-tcpAllowOthers,-tcpPort,#[tcp.port]&quot; />
+</bean></pre> </li>
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="applicationContext-pentaho-security-superuser.xml"></span> 
+          <h3 class="editable">applicationContext-pentaho-security-superuser.xml</h3>
+          <ol class="pentaho-list-ordered">
+            <li class="template:tag-insert">In the <span class="filepath style-wrap">.../pentaho-solutions/system</span>  folder, find and open the applicationContext-pentaho-security-superuser.xml file with a text editor.</li>
+            <li class="template:tag-insert">Replace the old superUserRoleListService bean with the new bean as shown.
+              <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;superUserRoleListService&quot; class=&quot;org.pentaho.platform.security.userroledao.superuser.SuperUserRoleListService&quot;>
+    <constructor-arg value=&quot;SystemAdmin&quot;/>
+    <constructor-arg ref=&quot;singleTenantAdminAuthorityName&quot; /></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;superUserRoleListService&quot; class=&quot;org.pentaho.platform.security.userroledao.superuser.SuperUserRoleListService&quot;>
+    <constructor-arg ref=&quot;singleTenantAdminAuthorityName&quot; />
+    <constructor-arg ref=&quot;singleTenantAdminUserName&quot; />
+    <constructor-arg ref=&quot;singleTenantSystemAuthorities&quot; />
+</bean></pre> </li>
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Next_Steps"></span> 
+          <h3 class="editable">Next Steps</h3>
+          <p>After you have finished with this section, you are ready to continue the 5.1
+            <a title="BA Upgrade Introduction" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0T0/0V0/000">BA upgrade process</a> .</p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#How_to_Get_Ready_for_Upgrade_from_5.0.x_to_5.1" rel="internal">How to Get Ready for Upgrade from 5.0.x to 5.1</a>  </li>
+      <li> <a href="#Upgrade_from_5.0.3_to_5.0.4" rel="internal">Upgrade from 5.0.3 to 5.0.4</a>  </li>
+      <li>
+        <a href="#Upgrade_from_5.0.4_or_5.0.5_to_5.0.6" rel="internal">Upgrade from 5.0.4 or 5.0.5 to 5.0.6</a> 
+        <ol>
+          <li> <a href="#pentaho-spring-beans.xml" rel="internal">pentaho-spring-beans.xml</a>  </li>
+          <li> <a href="#GettingStartedDB-spring.xml" rel="internal">GettingStartedDB-spring.xml</a>  </li>
+          <li> <a href="#applicationContext-pentaho-security-superuser.xml" rel="internal">applicationContext-pentaho-security-superuser.xml</a>  </li>
+          <li> <a href="#Next_Steps" rel="internal">Next Steps</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

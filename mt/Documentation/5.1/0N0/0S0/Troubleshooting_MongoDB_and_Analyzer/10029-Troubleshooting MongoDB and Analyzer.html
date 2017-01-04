@@ -1,0 +1,70 @@
+<content type="text/html" title="Troubleshooting MongoDB and Analyzer">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Improve_Performance_for_High_Cardinality_Attributes"></span> 
+        <h2 class="editable">Improve Performance for High Cardinality Attributes</h2>
+        <p>Large MongoDB collections often have one or more attributes with <em>high cardinality</em>, in other words, they have many distinct values.&nbsp; For example, a collection of customer transactions could have tens or hundreds of thousands of unique
+          customer identifiers.&nbsp;</p>
+        <p>Analyzer for MongoDB optimizes the aggregation pipeline queries it uses when retrieving dimensional metadata to better handle these high cardinality attributes.&nbsp; Where possible, it does this by pushing down applicable query constraints into
+          the <strong>$match</strong>  operator of the pipeline.&nbsp; This allows Analyzer for MongoDB to load a smaller subset of the total values of the attribute</p>
+        <p>As an example, consider a report which displays all customers who have purchased &quot;Carlson Chocolate Milk&quot; at stores in Tacoma:</p>
+        <p style="text-align: center;">
+          <img alt="AnaMongoHighCardAttScreen.png" class="internal default" src="http://help.pentaho.com/@api/deki/files/1876/AnaMongoHighCardAttScreen.png?revision=1" />
+        </p>
+        <p>Rather than retrieving the metadata for all customers, Analyzer for MongoDB will load just those customers who actually have transactions in Tacoma for Chocolate Milk.&nbsp; Additionally, Analyzer for MongoDB will load the required metadata for
+          <span class="filepath style-wrap">[Store City]</span>  and <span class="filepath style-wrap">[Product Name]</span>  in the same pipeline query.&nbsp; This has the advantage of producing more efficient MongoDB queries, but just as importantly reduces
+          the total overhead of data processing within Analyzer for MongoDB.</p>
+        <p>This feature is also important for large cross-joins, even when the individual cross-joined attributes have lower cardinality.&nbsp; If several attributes are cross-joined on a report, Analyzer for MongoDB needs to determine which of the permutations
+          of attribute values have associated data.&nbsp; By querying for all requested attributes in a single pipeline query, with constraints in place, Analyzer for MongoDB is able to reduce the amount of processing required for evaluation.</p>
+        <p>The properties which control this feature are enabled by default and, as a general rule, should be
+          <a title="Build Logical Models" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0N0/0S0/030">left on</a> . They are contained in the configuration file at<span class="filepath style-wrap"> .../biserver-ee/pentaho-solutions/system/osgi/bundles/mondrian.cfg</span> .</p>
+        <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mondrian.native.crossjoin.enable=true
+mondrian.native.nonempty.enable=true</pre> </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Troubleshoot_Data_Limit_Errors"></span> 
+        <h2 class="editable">Troubleshoot Data Limit Errors</h2>
+        <p>If you have an abnormally large number of attributes in your Analyzer report, you may run into an error message alerting you to this.</p>
+        <p style="text-align: center;">
+          <img alt="MongoAnaErrorMsg.jpg" class="internal default" src="http://help.pentaho.com/@api/deki/files/1904/MongoAnaErrorMsg.jpg?revision=1" />
+        </p>
+        <p>There are a couple of things that you can try to work around this issue.</p>
+        <ul>
+          <li>If you are using an &quot;Excludes&quot; or &quot;Doesn't Contain&quot; filter, try changing the filter to an &quot;Includes&quot; or &quot;Contains&quot; filter.</li>
+          <li>Try turning off one or more of the following: subtotals, grand totals, or empty cells.</li>
+        </ul>
+        <p>After you try one of these tips, refresh the report to see if it is able to run.</p>
+        <div class="topic task nested2" id="f4d7dc00-0078-41cf-8485-1fbb23f812f4__task_i1p_btp_gn">
+          <div id="section_3" class="mt-page-section"><span id="Clear_the_Cache_for_Analyzer_on_MongoDB"></span> 
+            <h2 class="editable">
+              <strong class="ph b">Clear the Cache for Analyzer on MongoDB</strong> 
+            </h2>
+            <ol class="pentaho-list-ordered">
+              <li class="li step"><span class="ph cmd">Login to the BA Server as an administrator.</span> </li>
+              <li class="li step"><span class="ph cmd">Click <strong class="ph b">Tools</strong>  in the tool bar.</span> </li>
+              <li class="li step"><span class="ph cmd">Select <strong class="ph b">Refresh </strong>, then select <strong class="ph b">Mondrian Schema Cache</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">An info box pops up when the cache is cleared successfully. Click <strong class="ph b">OK</strong> .</span> </li>
+              <li>The cache is now cleared.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Improve_Performance_for_High_Cardinality_Attributes" rel="internal">Improve Performance for High Cardinality Attributes</a>  </li>
+      <li> <a href="#Troubleshoot_Data_Limit_Errors" rel="internal">Troubleshoot Data Limit Errors</a>  </li>
+      <li> <a href="#Clear_the_Cache_for_Analyzer_on_MongoDB" rel="internal">Clear the Cache for Analyzer on MongoDB</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,32 @@
+<content type="text/html" title="Turn Off Audit Logging">
+  <body>
+    <div class="body taskbody">
+      <div class="section context">
+        <p class="p">While audit logging can be useful for monitoring Pentaho Server activity and performance, the act of collecting the necessary audit data can introduce significant memory overhead with the solution database. Your Pentaho Server must be stopped
+          before performing this procedure.&nbsp;Follow the instructions below to disable audit logging in the Pentaho Server.</p>
+        <p class="pentaho-note">Performing this task will disable all audit functions in the Pentaho Server's administration interface.</p>
+      </div>
+      <ol class="ol steps">
+        <li class="li step">
+          <p><span class="ph cmd">Open the <span class="ph filepath">/pentaho-solutions/system/pentahoObjects-spring.xml</span>  file with a text editor.</span> 
+          </p>
+        </li>
+        <li class="li step"><span class="ph cmd">Locate the following line:</span>  <pre class="pre codeblock">
+<bean id=&quot;IAuditEntry&quot; class=&quot;org.pentaho.platform.engine.services.audit.AuditSQLEntry&quot; scope=&quot;singleton&quot; /></pre> </li>
+        <li class="li step"><span class="ph cmd">Replace that line with the following&nbsp;one:</span>  <pre class="pre codeblock">
+<bean id=&quot;IAuditEntry&quot; class=&quot;org.pentaho.platform.engine.core.audit.NullAuditEntry&quot; scope=&quot;singleton&quot; /></pre> </li>
+        <li class="li step"><span class="ph cmd">Save and close the file</span> </li>
+        <li class="li step"><span class="ph cmd">Using a database management tool or command line interface, connect to the Pentaho Hibernate&nbsp;database.</span> </li>
+        <li class="li step"><span class="ph cmd">Truncate (but do not drop) the following tables:</span> 
+          <ul class="ul" style="list-style-type: disc;">
+            <li class="li">PRO_AUDIT</li>
+            <li class="li">PRO_AUDIT_TRANSFORM_TRACKER</li>
+          </ul>
+        </li>
+        <li class="li step"><span class="ph cmd">Exit your database utility and restart the Pentaho Server.</span> </li>
+      </ol>
+      <div class="section postreq">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,162 @@
+<content type="text/html" title="Work with Aggregation Tables">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p class="p">In traditional OLAP systems, pre-aggregating data is often done as a way to improve performance when the fact table contains a huge number of rows such as a million or more rows. An aggregate table is essentially a pre-computed summary of the data
+        in the fact table. Analyzer for MongoDB supports this technique by allowing collections containing grouped and summarized data to be defined as aggregate collections within the schema.</p>
+      <div class="topic concept nested1" id="9065a53b-e7d3-46f9-87b4-fa5c0720f851__concept_example_agg_collection">
+        <div id="section_1" class="mt-page-section"><span id="Example_of_a_Simple_Aggregate_Collection"></span> 
+          <h2 class="editable">Example of a Simple Aggregate Collection</h2>
+          <div class="body conbody">
+            <p class="p">Consider the <code class="ph codeph">Foodmart</code> collection, which includes a fairly large number of attributes and three unsummarized measure values.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;_id&quot; : ObjectId(&quot;527ab2396a65f6f4b153cee5&quot;),
+&quot;product_subcategory&quot; : &quot;Nuts&quot;,
+&quot;product_category&quot; : &quot;Specialty&quot;,
+&quot;product_department&quot; : &quot;Produce&quot;,
+&quot;product_family&quot; : &quot;Food&quot;,
+&quot;product_id&quot; : 195,
+&quot;product_class_id&quot; : 1,
+&quot;the_year&quot; : 1997,
+&quot;the_month&quot; : &quot;June&quot;,
+&quot;the_day&quot; : &quot;Sunday&quot;,
+&quot;quarter&quot; : &quot;Q2&quot;,
+&quot;country&quot; : &quot;USA&quot;,
+&quot;state_province&quot; : &quot;WA&quot;,
+&quot;city&quot; : &quot;Sedro Woolley&quot;,
+&quot;marital_status&quot; : &quot;S&quot;,
+&quot;gender&quot; : &quot;M&quot;,
+&quot;marital_status&quot; : &quot;S&quot;,
+&quot;store_sales&quot; : 1.77,
+&quot;store_cost&quot; : 0.5664,
+&quot;unit_sales&quot; : 1
+}</pre> </div>
+            <p class="p">Perhaps analysts frequently want to see <code class="ph codeph">Unit Sales</code> values broken down by month. &nbsp;In order to improve performance of these queries, generate a collection which groups by <code class="ph codeph">month_of_year</code>,
+              <code class="ph codeph">quarter</code>, and <code class="ph codeph">the_year</code>, with the summarized <code class="ph codeph">unit_sales</code> values.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{ &quot;unit_sales&quot; : 21628, &quot;fact_count&quot; : 7034, &quot;month_of_year&quot; : 1, &quot;quarter&quot; : &quot;Q1&quot;, &quot;the_year&quot; : 1997 }
+{ &quot;unit_sales&quot; : 20957, &quot;fact_count&quot; : 6844, &quot;month_of_year&quot; : 2, &quot;quarter&quot; : &quot;Q1&quot;, &quot;the_year&quot; : 1997 }
+{ &quot;unit_sales&quot; : 23706, &quot;fact_count&quot; : 7710, &quot;month_of_year&quot; : 3, &quot;quarter&quot; : &quot;Q1&quot;, &quot;the_year&quot; : 1997 }
+{ &quot;unit_sales&quot; : 20179, &quot;fact_count&quot; : 6590, &quot;month_of_year&quot; : 4, &quot;quarter&quot; : &quot;Q2&quot;, &quot;the_year&quot; : 1997 }
+&hellip;</pre> </div>
+            <p class="p">This aggregate collection can then be used in place of the full fact table wherever possible. &nbsp;Note that this collection includes a special <code class="ph codeph">fact_count</code> value, which is simply the count of all fact table rows
+              that were rolled up for that slice of the data. &nbsp;This value can be used to compute things like averages when using the aggregate collection. With MongoDB versions 2.5.2 and above, creating an aggregate collection like the one above
+              can be done in a single aggregate pipeline query using the <code class="ph codeph">$out</code> operator.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[{$project : { month_of_year:1, quarter:1, the_year:1, unit_sales:1, fact_count : 1}}, 
+{ $group : 
+     { _id : { month_of_year : &quot;$month_of_year&quot;, &quot;quarter&quot;: &quot;$quarter&quot;, &quot;the_year&quot;: &quot;$the_year&quot; },
+            unit_sales : {$sum : &quot;$unit_sales&quot;}, fact_count: {$sum : &quot;$fact_count&quot;} } }, 
+{$project : { _id : 0, &quot;month_of_year&quot; : &quot;$_id.month_of_year&quot;, &quot;quarter&quot; : &quot;$_id.quarter&quot;, 
+           &quot;the_year&quot; : &quot;$_id.the_year&quot;, &quot;unit_sales&quot; : &quot;$unit_sales&quot; , &quot;fact_count&quot; : &quot;$fact_count&quot; }},
+{$out : &lsquo;agg_time_unit_sales&rsquo;}]</pre> </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9065a53b-e7d3-46f9-87b4-fa5c0720f851__concept_include_agg_schema">
+        <div id="section_2" class="mt-page-section"><span id="Include_an_Aggregate_Collection_in_the_Physical_Schema"></span> 
+          <h2 class="editable">Include an Aggregate Collection in the Physical Schema</h2>
+          <div class="body conbody">
+            <p class="p">As described in the Physical Schema section, any MongoDB collection used within the model needs to be defined as a table, with all attributes specified as <code class="ph codeph">CalculatedColumnDefs</code>. &nbsp;So the aggregate collection
+              above would need to be included in the Physical Schema as a <code class="ph codeph"><Table></code> element.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Table name='agg_time_unit_sales'>
+      <ColumnDefs>
+        <CalculatedColumnDef name='the_year' type=&quot;String&quot; >
+          <ExpressionView >
+            <SQL dialect='generic'>
+              $the_year
+            </SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name='quarter' type=&quot;String&quot; >
+          <ExpressionView >
+            <SQL dialect='generic'>
+              $quarter
+            </SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name=&rsquo;month_of_year' type=&quot;String&quot; >
+          <ExpressionView >
+            <SQL dialect='generic'>
+              $month_of_year
+            </SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+        <CalculatedColumnDef name=&rsquo;unit_sales' type=&quot;String&quot; >
+          <ExpressionView >
+            <SQL dialect='generic'>
+              $unit_sales
+            </SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+           <CalculatedColumnDef name=&rsquo;fact_count' type=&quot;String&quot; >
+          <ExpressionView >
+            <SQL dialect='generic'>
+              $fact_count
+            </SQL>
+          </ExpressionView>
+        </CalculatedColumnDef>
+           </ColumnDefs>
+           </Table></pre> </div>
+          </div>
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Add_an_Aggregate_Measure_Group"></span> 
+        <h2 class="editable">Add an Aggregate Measure Group</h2>
+        <p class="p">Once the aggregate table has been defined in the Physical Schema, it can then be added to your cube as a new measure group. &nbsp;A <code class="ph codeph"><MeasureGroup></code> defined with <code class="ph codeph">type=&rsquo;aggregate&rsquo;</code>          indicates that the measures and dimensions contained within that group can be resolved by way of the collection.</p>
+        <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><MeasureGroup table='agg_time_unit_sales' type='aggregate'>
+        <Measures>
+          <MeasureRef name='Fact Count' aggColumn='fact_count'/>
+          <MeasureRef name='Unit Sales' aggColumn='unit_sales'/>
+        </Measures>
+        <DimensionLinks>
+          <CopyLink dimension='Time' attribute='Month'>
+            <Column aggColumn='the_year' table='sales'  name='the_year'/>
+            <Column aggColumn='quarter' table='sales' name='quarter'/>
+            <Column aggColumn='month_of_year' table='sales'  name='month_of_year'/>
+          </CopyLink>
+        </DimensionLinks>
+      </MeasureGroup></pre> </div>
+        <p class="p">If your cube defines multiple aggregate measure groups, Analyzer for MongoDB will select the optimal one by determining which one contains all of the necessary attributes and measures. &nbsp;In cases where more than one collection meets this criteria,
+          the collection with the fewest documents will be selected.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Add_Distinct_Count_Feature"></span> 
+        <h2 class="editable">Add Distinct Count Feature</h2>
+        <p>There is an important exception for distinct-count measures: they cannot in be rolled up over arbitrary dimensions. To see why, consider the case of a supermarket chain which has two stores in the same city. Suppose that Store A has 1000 visits
+          from 800 distinct customers in the month of July, while Store B has 1500 visits from 900 distinct customers. Clearly the two stores had a total of 2500 customer visits between them, but how many distinct customers? We can say that there were
+          at least 900, and maybe as many as 1700, but assuming that some customers visit both stores, and the real total will be somewhere in between. &quot;Distinct customers&quot; is an example of a distinct-count measure, and cannot be deduced by
+          rolling up subtotals. You have to go back to the raw data in the fact table.</p>
+        <p>There is a special case where it is acceptable to roll up distinct count measures. Suppose that we know that in July, this city's stores (Store A and B combined) have visits from 600 distinct female customers and 700 distinct male customers. Can
+          we say that the number of distinct customers in July is 1300? Yes we can, because we know that the sets of male and female customers cannot possibly overlap. In technical terms, gender is functionally dependent on customer id.</p>
+        <p>The rule for rolling up distinct measures can be stated as follows:</p>
+        <p>&quot; A distinct count measure over key k can be computed by rolling up more granular subtotals only if the attributes which are being rolled up are functionally dependent on k.&quot;</p>
+        <p>Even with this special case, it is difficult to create enough aggregate tables to satisfy every possible query. When evaluating a distinct-count measure, Mondrian can only use an aggregate table if it has the same logical/level granularity as
+          the cell being requested, or can be rolled up to that granularity only by dropping functionally dependent attributes. If there is no aggregate table of the desired granularity, Mondrian goes instead against the fact table.</p>
+        <p>This has implications for aggregate design. If your application makes extensive use of distinct-count measures, you will need to create an aggregate table for each granularity where it is used. That could be a lot of aggregate tables!</p>
+        <p>That said, Mondrian will rollup measures in an aggregate table that contains one or more distinct-count measures if none of the distinct-count measures are requested. In that respect an aggregate table containing distinct-count measures are just
+          like any other aggregate table as long as the distinct-count measures are not needed. And once in memory, distinct-count measures are cached like other measures, and can be used for future queries.</p>
+        <p>When building an aggregate table that will contain a distinct-count measure, the measure must be rolled up to a logical dimension level, which is to say that the aggregate table must be a collapsed dimension aggregate. If it is rolled up only
+          to the dimension's foreign key, there is no guarantee that the foreign key is at the same granularity as the lowest logical level, which is what is used by MDX requests. So for an aggregate table that only rolls the distinct-count measure to
+          the foreign key granularity, a request of that distinct-count measure may result in further rollup and, therefore, an error.</p>
+        <p>The general rule when building aggregate tables involving distinct-count measures is that there can be NO foreign keys remaining in the aggregate table - for each base table foreign key, it must either be dropped, a lost dimension aggregate, or
+          it must be replaces with levels, a collapsed dimension aggregate. In fact, this rule, though not required, is useful to follow when creating any aggregate table; there is no value in maintaining foreign keys in aggregate tables. They should
+          be replaced by collapsing to levels unless the larger memory used by such aggregate tables is too much for one's database system.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Example_of_a_Simple_Aggregate_Collection" rel="internal">Example of a Simple Aggregate Collection</a>  </li>
+      <li> <a href="#Include_an_Aggregate_Collection_in_the_Physical_Schema" rel="internal">Include an Aggregate Collection in the Physical Schema</a>  </li>
+      <li> <a href="#Add_an_Aggregate_Measure_Group" rel="internal">Add an Aggregate Measure Group</a>  </li>
+      <li> <a href="#Add_Distinct_Count_Feature" rel="internal">Add Distinct Count Feature</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,188 @@
+<content type="text/html" title="Working with the Streamlined Data Refinery">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p class="p">Create a single data refinery by streamlining all of your data sources through a central processing hub.</p>
+        </div>
+      </div>
+      <p>The
+        <a class="external" title="http://www.pentaho.com/streamlined-data-refinery" rel="external nofollow" href="http://www.pentaho.com/streamlined-data-refinery" target="_blank">Streamlined Data Refinery</a>  (SDR)&nbsp; is a simplified ad hoc ETL refinery composed of a series of Pentaho Data Integration (PDI) jobs that take raw data, augment and blend it through the request form, and then publish it for report designers
+        to use in Analyzer.</p>
+      <p>The <strong>Movie Ratings-SDR Sample </strong> form described here is a
+        <a class="link-https" title="https://pentaho.box.com/SDRSample" rel="external nofollow" href="https://pentaho.box.com/SDRSample" target="_blank">sample</a>  developed by Pentaho, based on CTools, and is provided for example purposes to help you get familiar with the structure.</p>
+      <div id="section_2" class="mt-page-section"><span id="SDR_Sample_Structure_and_Components"></span> 
+        <h2 class="editable">SDR Sample Structure and Components</h2>
+        <p>The components that make up the data refinery are PDI for parameter entry and an app for refining the data. This app calls to the Data Integration (DI) Server for the main job: refining data through Spoon using the new Build Model job entry, then
+          publishing the data source back to the Business Analytics (BA) Server through the Publish Model job entry. Once it is published, the refined data is available for use in creating Analyzer reports.</p>
+        <p style="text-align: center;">
+          <img alt="SDR Workflow" src="http://help.pentaho.com/@api/deki/files/9167/ssSDR.PNG?revision=1" class="default internal" />
+        </p>
+        <div id="section_3" class="mt-page-section"><span id="App_Builder.2C_Community_Dashboard_Editor.2C_and_CTools"></span> 
+          <h3 class="editable">App Builder, Community Dashboard Editor, and CTools</h3>
+          <p>
+            <a title="App Builder and Community Dashboard Editor" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/150/020">App Builder</a>  is an application builder for people who may not have Java knowledge, but who may have plenty of interesting ideas for new plugins. All that is required to use App Builder is knowledge of CTools and PDI.</p>
+          <p>
+            <a class="external" title="http://www.webdetails.pt/knowledge/tutorialcde.html" rel="external nofollow" href="http://www.webdetails.pt/knowledge/tutorialcde.html" target="_blank">Community Dashboard Editor</a>  (CDE), when integrated with the Pentaho User Console (PUC), simplifies the process of creating, refining, and previewing Pentaho dashboards. You can use CDE to design dashboards, either from scratch or using
+            a template. The layout panel allows you to style your dashboard and add elements such as text or images.</p>
+        </div>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Installing_and_Configuring_the_SDR_Sample"></span> 
+        <h2 class="editable">Installing and Configuring the SDR Sample</h2>
+        <p>This section walks you through each part of the process of installing the SDR sample to use. If you are evaluating Pentaho 5.2 software, we recommend using the graphical installation method&nbsp; for a quick set-up. If you already have Pentaho
+          5.2 installed, you can skip right to the section for downloading and installing the sample.</p>
+        <p>The sample that we are using here was developed by Pentaho, based on CTools, and is provided for example and testing purposes only.</p>
+        <div id="section_5" class="mt-page-section"><span id="Install_Pentaho_Software"></span> 
+          <h4 class="editable">Install Pentaho Software</h4>
+          <ol class="pentaho-list-ordered">
+            <li>
+              <a title="Install Pentaho Software" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0">Install </a> the latest version of Pentaho software.
+              <ol>
+                <li>Evaluation method using Postgres: choose default for installation, and then enter <strong>password </strong> for the Postgres password information.</li>
+              </ol>
+            </li>
+            <li>Log in to PUC, and verify that it is working properly.</li>
+            <li>Log out of PUC, then stop the BA Server.
+              <ol>
+                <li><strong>Windows:&nbsp; </strong> Go to <strong>Start </strong> > <strong>Programs </strong> ><strong> Pentaho Enterprise Edition</strong>  > <strong>Server Management</strong> . Double-click on the <strong>Stop BA Server</strong>  icon; this
+                  runs the script automatically. You might want to make a shortcut to Server Management on your desktop.</li>
+                <li><strong>Mac OS</strong> : In the command line, type <span class="filepath style-wrap">cd INSTALL_DIR/</span> &nbsp; then run this script to stop the BA Server. <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">- shutdown baserver - ./ctlscript.sh stop baserver</pre>                  </li>
+              </ol>
+            </li>
+          </ol>
+          <p>If you are using Vertica, you will need to
+            <a title="https://help.pentaho.com/Documentation/5.2/0R0/150/Advanced_Settings_for_Using_the_SDR#Vertica_Only:_Install_Vertica_JDBC_Driver" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/150/010#Vertica_Only:_Install_Vertica_JDBC_Driver">
+            install the Vertica JDBC</a>  driver at this point.</p>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Download_and_Install_the_Sample"></span> 
+          <h4 class="editable">Download and Install the Sample</h4>
+          <p>These steps will get the sample installed and running.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Download the
+              <a class="link-https" title="https://pentaho.box.com/SDRSample" rel="external nofollow" href="https://pentaho.box.com/SDRSample" target="_blank">sample SDR.zip</a>  and save it to your desktop.</li>
+            <li>Extract the contents of the <span class="filepath style-wrap">SDR.zip </span> file to this directory: <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system.</span>  It should create an SDR folder in the directory.</li>
+            <li>If you are using the default evaluation method, start the BA Server and log into PUC.</li>
+            <li>&nbsp;Go to <strong>Tools </strong> at the top of PUC and verify that <strong>Movie Ratings-SDR Sample</strong>  appears in the dropdown menu.</li>
+          </ol>
+          <p style="text-align: center;">
+            <a title="Tool_SDR_sample.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2824/Tool_SDR_sample.png">
+              <img alt="Tool_SDR_sample.png" class="undefined internal" style="width: 160px; height: 47px;" width="160px" height="47px" src="http://help.pentaho.com/@api/deki/files/2824/Tool_SDR_sample.png?size=bestfit&amp;width=160&amp;height=47&amp;revision=1"
+              />
+            </a> 
+          </p>
+          <p>If you are evaluating Pentaho and used the default installation instructions, you are ready to get started experimenting with the sample form. If you are doing anything else, follow the instructions in the
+            <a title="Advanced Settings for Using the SDR"
+            rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/150/010">Advanced Settings</a>  section before continuing with the sample form.</p>
+        </div>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="How_to_Use_the_Movie_Ratings-SDR_Sample_Form"></span> 
+        <h2 class="editable"><span>How to Use the Movie Ratings-SDR Sample</span> 
+          <span> Form </span> 
+        </h2>
+        <p>The <strong>Movie Ratings-SDR Sample</strong>  form is easy to use. All you will need to do is choose which filters that you want to apply, along with member profile information, a date range, and a name for your new data source. Then you can get
+          started using your refined data in Analyzer, or work to create more data sets using the form.</p>
+        <p class="pentaho-note">We recommend that you make sure to do at least some selecting of data for optimum results.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Log in to <strong>PUC </strong> using a login with administrator permissions.</li>
+          <li>Open the <strong>Movie Ratings-SDR Sample</strong>  form.
+            <p style="text-align: center;">
+              <a title="BeginSDRForm.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2829/BeginSDRForm.png">
+                <img alt="BeginSDRForm.png" class="default internal" style="width: 550px; height: 369px;" width="550px" height="369px" src="http://help.pentaho.com/@api/deki/files/2829/BeginSDRForm.png?size=bestfit&amp;width=550&amp;height=369&amp;revision=3"
+                />
+              </a> 
+            </p>
+            <p>The <strong>All Requests Processed</strong>  field contains a list of up to ten instances of dataset activity. You can click an item in the list to work with that dataset, or create a new one.</p>
+            <p style="text-align: center;">
+              <a title="AllRequestsProcessed.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2825/AllRequestsProcessed.png">
+                <img alt="AllRequestsProcessed.png" class="undefined internal" style="width: 350px; height: 173px;" width="350px" height="173px" src="http://help.pentaho.com/@api/deki/files/2825/AllRequestsProcessed.png?size=bestfit&amp;width=350&amp;height=173&amp;revision=1"
+                />
+              </a> 
+            </p>
+          </li>
+          <li>Click to select the filters that you want to use from the <strong>Movie Review Filter </strong> panel.</li>
+          <li>Click to select profile items in the <strong>Member Profile </strong> panel to narrow down your data to specific points.
+            <p style="text-align: center;">
+              <a title="FilterProfileSelected.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2826/FilterProfileSelected.png">
+                <img alt="FilterProfileSelected.png" class="default internal" style="width: 550px; height: 327px;" width="550px" height="327px" src="http://help.pentaho.com/@api/deki/files/2826/FilterProfileSelected.png?size=bestfit&amp;width=550&amp;height=327&amp;revision=5"
+                />
+              </a> 
+            </p>
+          </li>
+          <li>Enter the <strong>Start Date</strong>  for the data set, or use the date picker to choose the start date.</li>
+          <li>Enter the <strong>End Date</strong>  for the data set, or use the date picker to choose the end date.</li>
+          <li>Enter a data source name in the field.</li>
+          <li>Click the <strong>Let's do this</strong>  button to run the dataset.
+            <p style="text-align: center;">
+              <a title="LetsDoThis.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2827/LetsDoThis.png">
+                <img alt="LetsDoThis.png" class="undefined internal" style="width: 550px; height: 366px;" width="550px" height="366px" src="http://help.pentaho.com/@api/deki/files/2827/LetsDoThis.png?size=bestfit&amp;width=550&amp;height=366&amp;revision=1"
+                />
+              </a> 
+            </p>
+          </li>
+          <li>Depending on whether you keep the check box selected,
+            <a title="Create a New Analyzer Report" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0L0/120/030/000">Analyzer </a> launches with your dataset parameters in place. Or you can click <strong>Go to Analyzer</strong>  when you are ready to begin creating reports.</li>
+        </ol>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Learn_More_about_Our_Tools"></span> 
+        <h2 class="editable">Learn More about Our Tools</h2>
+        <p>Here are a few ways to find out more about the Streamlined Data Refinery and other Pentaho products.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Training
+            <ul class="pentaho-list-unordered">
+              <li> <a class="link-https" title="https://training.pentaho.com/instructor-led-training/ctools-fundamentals" rel="external nofollow" href="https://training.pentaho.com/instructor-led-training/ctools-fundamentals" target="_blank">CTools Fundamentals (CT1000)</a>  </li>
+              <li> <a class="link-https" title="https://training.pentaho.com/instructor-led-training/pentaho-data-integration-di1000" rel="external nofollow" href="https://training.pentaho.com/instructor-led-training/pentaho-data-integration-di1000" target="_blank">Pentaho Data Integration Fundamentals (DI1000)</a>  </li>
+              <li>
+                <a class="link-https" title="https://training.pentaho.com/instructor-led-training/pentaho-big-data-integration-di1100" rel="external nofollow" href="https://training.pentaho.com/instructor-led-training/pentaho-big-data-integration-di1100"
+                target="_blank">Pentaho Big Data Integration (DI1100)</a> 
+              </li>
+            </ul>
+          </li>
+          <li>Tutorials
+            <ul>
+              <li> <a class="external" title="http://www.webdetails.pt/knowledge.html" rel="external nofollow" href="http://www.webdetails.pt/knowledge.html" target="_blank">CTools Tutorials</a>  </li>
+              <li> <a title="https://help.pentaho.com/Documentation/5.2/0J0/0C0" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0J0/0C0">Getting Started with DI</a>  </li>
+              <li> <a title="https://help.pentaho.com/Documentation/5.2/0L0/0Y0" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0L0/0Y0">Create DI Solutions</a>  </li>
+              <li> <a title="https://help.pentaho.com/Documentation/5.2/0L0/040" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0L0/040">Work with Big Data</a>  </li>
+            </ul>
+          </li>
+          <li>Services
+            <ul>
+              <li> <a class="external" title="http://www.pentaho.com/services" rel="external nofollow" href="http://www.pentaho.com/services" target="_blank">Pentaho Services to Ensure Success</a>  </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#SDR_Sample_Structure_and_Components" rel="internal">SDR Sample Structure and Components</a> 
+        <ol>
+          <li> <a href="#App_Builder.2C_Community_Dashboard_Editor.2C_and_CTools" rel="internal">App Builder, Community Dashboard Editor, and CTools</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Installing_and_Configuring_the_SDR_Sample" rel="internal">Installing and Configuring the SDR Sample</a> 
+        <ol>
+          <li> <a href="#Install_Pentaho_Software" rel="internal">Install Pentaho Software</a>  </li>
+          <li> <a href="#Download_and_Install_the_Sample" rel="internal">Download and Install the Sample</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#How_to_Use_the_Movie_Ratings-SDR_Sample_Form" rel="internal">How to Use the Movie Ratings-SDR Sample Form </a>  </li>
+      <li> <a href="#Learn_More_about_Our_Tools" rel="internal">Learn More about Our Tools</a>  </li>
+    </ol>
+  </body>
+</content>

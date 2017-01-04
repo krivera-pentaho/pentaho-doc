@@ -1,0 +1,127 @@
+<content type="text/html" title="Publish Model (job entry)">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>The Publish Model job entry allows you to publish the data source created with the
+            <a title="Build Model (job entry)" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0A0">Build </a> 
+            <a title="Build Model (job entry)" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0A0">Model </a> job entry available for use on the BA Server.</p>
+        </div>
+      </div>
+      <p>The Publish Model job entry allows you to publish the data source created with the
+        <a title="Build Model (job entry)" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0A0">Build Model</a>  job entry available for use on the BA Server. Before publishing the model, you will have the option of sharing the data model with everyone, or a specific user or role.</p>
+      <p class="pentaho-note">You must have an existing BA Server and
+        <a class="external-link" href="/Documentation/5.4/0H0/060/010/040/000" rel="nofollow">permissions</a>  to Publish Content and Manage Data Sources in the BA Server in order to use this job entry.</p>
+      <p>This job entry
+        <font color="#000000">requires that the Build Model</font> entry comes before it in Spoon, as shown here in this example.</p>
+      <p style="text-align: center;">
+        <a class="thumb" title="SDRBasicWorkflow.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/4932/SDRBasicWorkflow.png">
+          <img alt="SDRBasicWorkflow.png" class="internal default" style="width: 604px; height: 56px;" width="604px" height="56px" src="http://help.pentaho.com/@api/deki/files/4932/SDRBasicWorkflow.png?size=bestfit&amp;width=604&amp;height=56&amp;revision=1"
+          />
+        </a> 
+      </p>
+      <p>After publishing, the Data Source Wizard data source created in the BA Server will be named the same as the model in the Build Model job entry. Once it is published, you won't be able to use the Data Source Wizard to edit the connection information
+        for the model, because the editing source in the Data Source Model Editor is disabled.</p>
+      <div id="section_2" class="mt-page-section"><span id="Using_the_Publish_Model_Job_Entry"></span> 
+        <h2 class="editable">Using the Publish Model Job Entry</h2>
+        <p>This section describes how to set up the Publish Model job entry.</p>
+        <p>
+          <img alt="PublishModelIcon.png" class="internal default" style="width: 165px; height: 47px;" width="165px" height="47px" src="http://help.pentaho.com/@api/deki/files/4801/PublishModelIcon.png?size=bestfit&amp;width=165&amp;height=47&amp;revision=1"
+          />
+        </p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the<strong> Publish Model</strong>  entry from the <strong>Design </strong> pane in PDI.</li>
+          <li>Drag and drop the <strong>Publish Model</strong>  icon onto the transformation canvas.</li>
+          <li>Double-click the <strong>Publish Model</strong>  icon to open the dialog box.</li>
+          <li>Fill out the information in the dialog box:
+            <ol>
+              <li><strong>Entry Name - </strong> type a name for your entry in this field.</li>
+              <li><strong>Replace Existing Published Model</strong>  - select if you want to replace an already-existing model. &nbsp;</li>
+              <li>Enter the <strong>URL </strong> for the BA Server.</li>
+              <li>Enter the<strong> User Name </strong> and <strong>Password </strong> for the BA Server.</li>
+              <li>Click the <strong>Test Connection </strong> button.</li>
+            </ol>
+          </li>
+          <li>Choose who to <strong>Grant Access To</strong> : <strong>Everyone</strong>, <strong>User</strong>, or <strong>Role</strong> .
+            <ol>
+              <li>If needed, you can enter a specific user or role name.</li>
+            </ol>
+          </li>
+          <li>Click <strong>OK </strong> to continue or <strong>Cancel </strong> to close the dialog box</li>
+        </ol>
+        <p>This is an example of the Publish Model dialog box, along with a table that has more details about each field.</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="PublishModel.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/4800/PublishModel.png">
+            <img alt="PublishModel.png" class="internal default" style="width: 380px; height: 601px;" width="380px" height="601px" src="http://help.pentaho.com/@api/deki/files/4800/PublishModel.png?size=bestfit&amp;width=380&amp;height=601&amp;revision=2"
+            />
+          </a> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 150px;">Options</th>
+              <th scope="col" style="width: 475px;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 172px;">Entry Name</td>
+              <td style="width: 502px;">Use this field to name the Publish Model entry.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Replace Existing Published Model</td>
+              <td style="width: 502px;">Select this to overwrite an existing Data Source Wizard data source and database connection. If disabled, and you attempt to publish a model with the same name, the Publish Data Source job entry will fail.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">URL</td>
+              <td style="width: 502px;">Enter the URL to the BA Server.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">User Name</td>
+              <td style="width: 502px;">Type the user name for the BA Server.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Password</td>
+              <td style="width: 502px;">Enter the password.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Test Connection</td>
+              <td style="width: 502px;">Click to test the connection to the BA Server. This button also checks user permissions
+                <br class="atl-forced-newline" /> to Publish Content and Manage Data Sources.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Grant Access To</td>
+              <td style="width: 502px;">Grant access to the data model to everyone, specific user(s), or specific role(s).
+                <br class="atl-forced-newline" /> The permission granted is <strong>Read Only.</strong>  If access is granted to Everyone, the User/Role Name field is disabled.
+                <br class="atl-forced-newline" /> <strong>Note:</strong>  If you are using variables to populate this field, the variable can contain one of three values: everyone, user, or role. These values MUST be lower-case.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">User/Role Name</td>
+              <td style="width: 502px;">Enter the name of the User or Role that you want to grant access to.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Help</td>
+              <td style="width: 502px;">Provides a link to the <strong>Help </strong> documentation.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">OK</td>
+              <td style="width: 502px;">Click <strong>OK </strong> to save.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Cancel</td>
+              <td style="width: 502px;">Click <strong>Cancel </strong> to close the window.</td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Using_the_Publish_Model_Job_Entry" rel="internal">Using the Publish Model Job Entry</a>  </li>
+    </ol>
+  </body>
+</content>

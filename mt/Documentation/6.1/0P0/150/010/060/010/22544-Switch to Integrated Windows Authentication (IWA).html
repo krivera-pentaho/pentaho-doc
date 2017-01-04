@@ -1,0 +1,101 @@
+<content type="text/html" title="Switch to Integrated Windows Authentication (IWA)">
+  <body>
+    <script type="text/javascript">
+      /*<![CDATA[*/ < script >
+        (function(i, s, o, g, r, a, m) {
+          i['GoogleAnalyticsObject'] = r;
+          i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+          }, i[r].l = 1 * new Date();
+          a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+          a.async = 1;
+          a.src = g;
+          m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+      ga('create', 'UA-69496435-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    /*]]>*/</script>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">
+          <p class="p">You must download this
+            <a class="xref link-https" target="_blank" rel="external nofollow" href="https://pentaho.box.com/shared/static/3f9mu4mujokgpgdartms.zip">patch JAR</a>  before you switch to Integrated Windows Authentication.</p>
+          <p class="p">This procedure requires Microsoft Windows Server 2008 R2, IIS 7.5, and Internet Explorer. If you are using different versions of any of this software, you may adjust the instructions to fit your needs.</p>
+          <p class="p">Additionally, you will need to ensure that the following components of IIS are installed before continuing:</p>
+          <ul class="ul">
+            <li class="li">Windows Authentication</li>
+            <li class="li">ISAPI Extensions</li>
+            <li class="li">ISAPI Filters</li>
+            <li class="li">JK 1.2 Connector (isapi_redirect.dll)</li>
+          </ul>
+        </div>
+        <div class="section context">
+          <p class="p">Follow these instructions to switch to Integrated Windows Authentication in the BA Server.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the BA Server, DI Server, and User Console processes.</span> </li>
+          <li class="li step"><span class="ph cmd">Copy the downloaded patch JAR to the <span class="ph filepath">/WEB-INF/lib/</span>  directory inside of the deployed Pentaho WAR.</span>  For most deployments, this will be <span class="ph filepath">/pentaho/server/biserver-ee/tomcat/webapps/pentaho/WEB-INF/lib/</span> </li>
+          <li class="li step"><span class="ph cmd">In your IIS configuration, disable anonymous authentication and enable Windows authentication for the site you are serving.</span> </li>
+          <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">/WEB-INF/web.xml</span>  file inside of the deployed Pentaho WAR, and change the value of <strong class="ph b">fully-qualified-server-url</strong>  to the URL served by IIS, then save and
+            close the file.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">/tomcat/conf/server.xml</span>  file and set <strong class="ph b">tomcatAuthentication</strong>  to <strong class="ph b">false</strong>  in the <strong class="ph b">Connector</strong>  element
+            for the connector with the <strong class="ph b">AJP</strong>  protocol.</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  If this is not already defined, then add it; the example below can be directly pasted into the file.</div> <pre class="pre codeblock">
+tomcatAuthentication=&quot;false&quot;</pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then edit <span class="ph filepath">/pentaho-solutions/system/applicationContext-spring-security.xml</span> . Comment out this code block</span>  <pre class="pre codeblock">
+<![CDATA[CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON PATTERN_TYPE_APACHE_ANT 
+/**=securityContextHolderAwareRequestFilter,httpSessionContextIntegrationFilter,
+httpSessionReuseDetectionFilter,logoutFilter,preAuthenticatedProcessingFilter,
+authenticationProcessingFilter,basicProcessingFilter,requestParameterProcessingFilter,
+anonymousProcessingFilter,pentahoSecurityStartupFilter,exceptionTranslationFilter,
+filterInvocationInterceptor]]>
+</pre> </li>
+          <li class="li step"><span class="ph cmd">Copy and paste this code block immediately after the block you just commented out</span>  <pre class="pre codeblock">
+<![CDATA[CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON PATTERN_TYPE_APACHE_ANT 
+/**=httpSessionContextIntegrationFilter,httpSessionReuseDetectionFilter,
+logoutFilter,preAuthenticatedProcessingFilter,authenticationProcessingFilter,
+basicProcessingFilter,requestParameterProcessingFilter,anonymousProcessingFilter,
+securityContextHolderAwareRequestFilter,pentahoSecurityStartupFilter,
+exceptionTranslationFilter,filterInvocationInterceptor]]></pre> </li>
+          <li class="li step"><span class="ph cmd">Find the <strong class="ph b">authenticationManager</strong>  providers list and add this line to the beginning of it:</span>  <pre class="pre codeblock">
+<ref bean=&quot;preAuthAuthenticationProvider&quot; /></pre> </li>
+          <li class="li step"><span class="ph cmd">Replace the <strong class="ph b">authenticationProcessingFilterEntryPoint</strong>  bean definition with the following:</span>  <pre class="pre codeblock">
+<bean id=&quot;preAuthenticatedProcessingFilterEntryPoint&quot;
+    class=&quot;org.springframework.security.ui.preauth.
+      PreAuthenticatedProcessingFilterEntryPoint&quot; /></pre> </li>
+          <li class="li step"><span class="ph cmd">Find the <strong class="ph b">exceptionTranslationFilter</strong>  bean and replace its <strong class="ph b">authenticationEntryPoint</strong>  ref with:</span>  <pre class="pre codeblock">
+<ref local=&quot;preAuthenticatedProcessingFilterEntryPoint&quot; /></pre> </li>
+          <li class="li step"><span class="ph cmd">Ensure that you have configured Active Directory integration properly. Refer to your Active Directory documentation and <a class="xref" title="Documentation/5.1/0P0/150/010/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010/020">Manual MSAD Configuration</a>  for more information.</span> </li>
+          <li class="li step"><span class="ph cmd">Save and close the server.xml file.</span> </li>
+          <li class="li step"><span class="ph cmd">Configure Internet Explorer such that your IIS server is in the <strong class="ph b">local intranet</strong>  security zone.</span> </li>
+          <li class="li step"><span class="ph cmd">Start the BA Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Access the BA Server through Internet Explorer and ensure that it automatically logs in with the local user account.</span> </li>
+        </ol>
+        <div class="section result">Your system should now be configured to sign into the BA Server using local user account credentials.</div>
+      </div>
+      <div class="related-links">
+        <div class="relinfo"><strong>Related information</strong> 
+          <div>
+            <a class="link external" target="_blank" rel="external nofollow" href="http://learn.iis.net/page.aspx/29/installing-iis-7-on-windows-server-2008-or-windows-server-2008-r2/">http://learn.iis.net/page.aspx/29/installing-iis-7-on-windows-server-2008-or-windows-server-2008-r2/</a> 
+          </div>
+          <div>
+            <a class="link external" target="_blank" rel="external nofollow" href="http://www.iisadmin.co.uk/?p=72">http://www.iisadmin.co.uk/?p=72</a> 
+          </div>
+          <div>
+            <a class="link external" target="_blank" rel="external nofollow" href="http://drumcoder.co.uk/blog/2010/may/05/iis-proxying-tomcat/">http://drumcoder.co.uk/blog/2010/may/05/iis-proxying-tomcat/</a> 
+          </div>
+          <div>
+            <a class="link external" target="_blank" rel="external nofollow" href="http://codesnip.net/iis7-integrated-windows-authentication-win-2008">http://codesnip.net/iis7-integrated-windows-authentication-win-2008</a> 
+          </div>
+          <div>
+            <a class="link external" target="_blank" rel="external nofollow" href="http://tomcat.apache.org/tomcat-6.0-doc/config/ajp.html">http://tomcat.apache.org/tomcat-6.0-doc/config/ajp.html</a> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

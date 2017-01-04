@@ -1,0 +1,142 @@
+<content type="text/html" title="Running a Job">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Explains how to run a job.</p>
+      </div>
+    </div>
+    <div class="body">
+      <p class="p"><span style="font-family: open sans;">When you are ready to run your job, you can:</span> </p>
+      <div class="body taskbody">
+        <div class="body taskbody">
+          <ul class="pentaho-list-unordered">
+            <li><span style="font-family: open sans;">Click the <strong>Run </strong> icon on the toolbar.</span> </li>
+            <li><span style="font-family: open sans;">Select <strong>Run </strong> from the <strong>Action </strong> menu.</span> </li>
+            <li><span style="font-family: open sans;">Press <strong>F9</strong> .</span> </li>
+          </ul>
+          <p><span style="font-family: open sans;">When you do any of these actions, the <strong>Run Options</strong>  window appears.</span> </p>
+          <p style="text-align: center;">
+            <img alt="Run Options Window for Jobs" class="internal default" style="width: 653px; height: 671px;" width="653px" height="671px" src="http://help.pentaho.com/@api/deki/files/11073/ssPDIDBoxJobRunOptions.PNG?size=bestfit&amp;width=653&amp;height=671&amp;revision=1"
+            />
+          </p>
+          <p>In the <strong>Run Options</strong>  window, you can specify whether to run the job locally or on a remote server.&nbsp; You can also specify logging and other options, or experiment by passing temporary values for defined parameters and variables
+            during each iterative run.</p>
+          <p><strong>Always show dialog on run</strong>  is set by default. You can deselect this option if you want to use the same run options every time you execute your job. After you have selected to not <strong>Always show dialog on run</strong>, you
+            can access it again through the dropdown menu next to the <strong>Run</strong>  icon in the toolbar, through the <strong>Action</strong>  main menu, or by pressing <strong>F8</strong> .</p>
+          <div id="section_2" class="mt-page-section"><span id="Environment_Type"></span> 
+            <h2 class="editable">Environment Type</h2>
+            <p>Some ETL activities are lightweight, such as loading in a small text file to write out to a database or filtering a few rows to trim down your results. For these types of lightweight ETL activities, you can simply run your job locally in Spoon.
+              Other ETL activities are more demanding, containing many steps calling other steps or a network of job modules. For these activities, you can set up a separate Pentaho Server dedicated for running jobs.</p>
+            <p>Choose an <strong>Environment Type</strong>  based on your execution scenario:</p>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="pentaho-table-column-subheader" style="width: 144px; height: 17px;" title="Pentaho column sub-header">Environment Type</th>
+                  <th class="pentaho-table-column-subheader" style="width: 479px; height: 17px;" title="Pentaho column sub-header">Description</th>
+                </tr>
+                <tr>
+                  <td><strong>Local</strong> </td>
+                  <td><span style="font-family: open sans;">Runs on your local machine.</span> </td>
+                </tr>
+                <tr>
+                  <td><strong>Server</strong> </td>
+                  <td><span style="font-family: open sans;">Runs a Pentaho Server. A Carte server environment must be set up for this option to be available. </span> 
+                    <a title="Documentation/6.1/0L0/0Y0/060" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060"><span style="font-family: open sans;"> <span style="color: rgb(0, 0, 255);">Use Carte Clusters to Run Transformations and Jobs</span> </span>  </a> <span style="font-family: open sans;"> describes how to set up this environment. </span> 
+                    <ul class="pentaho-list-unordered">
+                      <li><strong><strong>Server</strong>  </strong> &ndash; Choose the Pentaho Server to run your transformation. The list shows the available Carte server environments.</li>
+                      <li><strong><strong>Send resources to this server</strong> </strong>  &ndash; Send your transformation to the specified server before running it if you want the transformation to run locally on the server. Any related resources, such as
+                        other referenced files, are also included in the information sent to the server.</li>
+                      <li>Expand remote job &ndash;&nbsp;Expand jobs and transformations called by your job on the specified server. You can monitor these related jobs and transformations once they are expended on the slave server.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_3" class="mt-page-section"><span id="Options"></span> 
+            <h2 class="editable">Options</h2>
+            <p>Errors, warnings, and other information generated as the job runs are stored in logs.&nbsp; You can specify how much information is in a log and whether the log is cleared each time through the <strong>Options</strong>  section of this window.&nbsp;
+              You can also enable safe mode and specify whether PDI should gather performance metrics.
+              <a title="Performance Monitoring and Logging" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/060"><span style="font-family:open sans;"> <span style="color:rgb(0, 0, 255);">Logging and Monitoring Operations</span> </span>  </a> <span style="font-family:open sans;"> describes the logging methods available in PDI.</span> </p>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="pentaho-table-column-subheader" style="width: 144px; height: 17px;" title="Pentaho column sub-header">Option</th>
+                  <th class="pentaho-table-column-subheader" style="width: 479px; height: 17px;" title="Pentaho column sub-header">Description</th>
+                </tr>
+                <tr>
+                  <td><strong>Clear log before running</strong> </td>
+                  <td>Indicates whether to clear all your logs before you run your job. If your log is large, you might need to clear it before the next execution to conserve space.</td>
+                </tr>
+                <tr>
+                  <td><strong>Log level</strong> </td>
+                  <td><span style="font-family:open sans;">Specifies how much logging is needed. You can log from <strong>Nothing</strong>  all the way to <strong>Rowlevel</strong> .</span> 
+                    <ul class="pentaho-list-unordered">
+                      <li><strong>Nothing</strong>  &ndash; No logging occurs</li>
+                      <li><strong>Error</strong>  &ndash; Only errors are logged</li>
+                      <li><strong>Minimal</strong>  &ndash; Only use minimal logging</li>
+                      <li><strong>Basic</strong>  &ndash; This is the default level</li>
+                      <li><strong>Detailed</strong>  &ndash; Give detailed logging output</li>
+                      <li><strong>Debug</strong>  &ndash; For debugging purposes, very detailed output</li>
+                      <li><strong>Rowlevel</strong>  &ndash; Logging at a row level, which generates a lot of log data</li>
+                    </ul>
+                    <p><span style="font-family:open sans;"><strong>Debug</strong>  and <strong>Rowlevel</strong>  logging levels contain information you may consider too sensitive to be shown. Please consider the sensitivity of your data when selecting these logging levels.</span> </p>
+                    <p><span style="font-family:open sans;"><a title="Performance Monitoring and Logging" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Monitoring_System_Performance/Diagnosis_Tips">Performance Monitoring and Logging</a>  describes how best to use these logging methods.</span> </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Enable safe mode</strong> </td>
+                  <td>Checks every row passed through your job and ensure all layouts are identical. If a row does not have the same layout as the first row, an error is generated and reported.</td>
+                </tr>
+                <tr>
+                  <td><strong>Start job at</strong> </td>
+                  <td>Specifies an alternative starting&nbsp;entry for your job. All the current entries in your job are listed as options in the dropdown menu.</td>
+                </tr>
+                <tr>
+                  <td><strong>Gather performance metrics</strong> </td>
+                  <td>Monitors the performance of your job execution through these metrics.&nbsp;
+                    <a title="Using Performance Graphs" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/060/000/000">Using Performance Graphs </a> shows how to visually analyze these metrics.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="section_4" class="mt-page-section"><span id="Parameters_and_Variables"></span> 
+            <h2 class="editable">Parameters and Variables</h2>
+            <p>You can temporarily modify parameters and variables for each execution of your job to experimentally determine their best values. The values you enter into these tables are only used when you run the job from the <strong>Run Options</strong>               window.&nbsp; The values you originally defined for these parameters and variables are not permanently changed by the values you specify in these tables.</p>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="pentaho-table-column-subheader" style="width: 144px; height: 17px;" title="Pentaho column sub-header">Value Type</th>
+                  <th class="pentaho-table-column-subheader" style="width: 479px; height: 17px;" title="Pentaho column sub-header">Description</th>
+                </tr>
+                <tr>
+                  <td><strong><a title="Documentation/6.1/0L0/0Y0/030/050/010" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050/010">Parameters</a> </strong> </td>
+                  <td>Set parameter values related to your job during runtime. A parameter is a local variable. The parameters you define while creating your job are shown in the table under the <strong>Parameters </strong> tab.
+                    <ul class="pentaho-list-unordered">
+                      <li><strong><a title="Arguments" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050/000">Arguments</a> </strong>  - Set argument values passed to your job through Arguments dialog.</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><strong><a title="Variables" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050/020">Variables</a> </strong> </p>
+                  </td>
+                  <td>Set values for user-defined and environment variables related to your job during runtime.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Environment_Type" rel="internal">Environment Type</a>  </li>
+      <li> <a href="#Options" rel="internal">Options</a>  </li>
+      <li> <a href="#Parameters_and_Variables" rel="internal">Parameters and Variables</a>  </li>
+    </ol>
+  </body>
+</content>

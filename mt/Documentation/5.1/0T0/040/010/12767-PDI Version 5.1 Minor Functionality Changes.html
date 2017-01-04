@@ -1,0 +1,101 @@
+<content type="text/html" title="PDI Version 5.1 Minor Functionality Changes">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Lists minor functionality changes for PDI version 5.1. &nbsp;Backward compatibility provisions and related Jira&nbsp;cases are listed.</p>
+        </div>
+      </div>
+      <p>The following table describes minor functionality changes for PDI version 5.1. &nbsp;Provisions to preserve backward compatibility and related&nbsp;Jira&nbsp;cases are also listed.&nbsp;</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table"
+      style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <td class="pentaho-table-column-subheader" style="width: 500px;" title="Pentaho column sub-header">Description</td>
+            <td class="pentaho-table-column-subheader" style="width: 176px;" title="Pentaho column sub-header">Related Jira Cases</td>
+          </tr>
+          <tr>
+            <td style="width: 500px;">In 5.0, the&nbsp;<strong>Checks if files exist</strong>,&nbsp;<strong>Check if a folder is empty</strong>, and&nbsp;<strong>Evaluate rows number&nbsp;in a table</strong> &nbsp;job entries fail&nbsp;when they are scheduled to run because the
+              number of errors were set internally. &nbsp;In 5.1, the error flag is no longer set, but if you need it to be, set <strong>KETTLE_COMPATIBILITY_SET_ERROR_ON_SPECIFIC_JOB_ENTRIES</strong> &nbsp;to <strong>Y</strong> . &nbsp;</td>
+            <td style="width: 176px;">
+              <ul>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-10270" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-10270" target="_blank">PDI-10270</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-10644" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-10644" target="_blank">PDI-10644</a>  </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 500px;">In 5.0, the strict checking of numbers was enabled by default when numbers were converted from a string. &nbsp;While this was not enforced for integer parsing in 5.0, but is enforced for integer parsing in 5.1. &nbsp;To be backward compatible,&nbsp;set
+              <strong>KETTLE_LENIENT_STRING_TO_NUMBER_CONVERSION</strong> &nbsp;to <strong>Y</strong> .&nbsp;</td>
+            <td style="width: 176px;">
+              <ul>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-10560" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-10560" target="_blank">PDI-10560</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-6186" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-6186" target="_blank">PDI-6186</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-8974" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-8974" target="_blank">PDI-8974</a>  </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 500px;">
+              <p>When using the aggregate functions <strong>MIN </strong> and <strong>SUM </strong> in the <strong>Group by</strong>, <strong>Memory Group by</strong>  or <strong>Row Denormaliser</strong> &nbsp;steps, the behavior of including <strong>NULL </strong> values
+                into the aggregate has&nbsp;changed. To support backward compatibility, there are two new variables.</p>
+              <ul>
+                <li>Set&nbsp;<strong>KETTLE_AGGREGATION_MIN_NULL_IS_VALUED&nbsp;</strong> to <strong>Y</strong>  to set the minimum to <strong>NULL </strong> if NULL is within an aggregate. Otherwise by default <strong>NULL </strong> is ignored by the <strong>MIN </strong> aggregate
+                  and <strong>MIN </strong> is set to the minimum value that is not NULL.</li>
+                <li>Set <strong>KETTLE_AGGREGATION_ALL_NULLS_ARE_ZERO</strong> &nbsp;to Y to return 0 when all values within an aggregate are NULL. Otherwise by default NULL is returned when all values are NULL.</li>
+              </ul>
+            </td>
+            <td style="width: 176px;">
+              <ul>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-6960" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-6960" target="_blank">PDI-6960</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-9662" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-9662" target="_blank">PDI-9662</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-10250" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-10250" target="_blank">PDI-10250</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-11530" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-11530" target="_blank">PDI-11530</a>  </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 500px;">
+              <p>In 5.0, the time zone for the DATE data type was ignored. &nbsp;This has been addressed in 5.1. But, if you want the time zone for the DATE data type to continue to be ignored, set <strong>KETTLE_COMPATIBILITY_DB_IGNORE_TIMEZONE</strong> &nbsp;to
+                <strong>Y.</strong> </p>
+            </td>
+            <td style="width: 176px;">
+              <ul>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-10749" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-10749" target="_blank">PDI-10749</a>  </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 500px;">
+              <p>The default conversion format for Timestamps&nbsp;is&nbsp;<strong>yyyy/MM/dd&nbsp;HH:mm:ss.SSSSSSSSS</strong> . &nbsp;Modify the value of the&nbsp;<strong>KETTLE_DEFAULT_TIMESTAMP_FORMAT</strong>  variable if you need to change the default
+                conversion format.</p>
+            </td>
+            <td style="width: 176px;">
+              <ul>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-11439" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-11439" target="_blank">PDI-11439</a>  </li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 500px;">
+              <p>New Database Connections set the option <strong>Preserve case of reserved words</strong> &nbsp;to <strong>True </strong> by default. By setting this option by default, reserved words are no longer changed to upper or lower case. &nbsp;&nbsp;</p>
+            </td>
+            <td style="width: 176px;">
+              <ul>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-12123" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-12123" target="_blank">PDI-12123</a>  </li>
+                <li> <a class="external" title="http://jira.pentaho.com/browse/PDI-7893" rel="external nofollow" href="http://jira.pentaho.com/browse/PDI-7893" target="_blank">PDI-7893</a>  </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

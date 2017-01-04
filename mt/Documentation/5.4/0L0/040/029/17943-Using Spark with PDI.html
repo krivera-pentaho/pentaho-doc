@@ -1,0 +1,70 @@
+<content type="text/html" title="Using Spark with PDI">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <p>These instruction&nbsp;explain&nbsp;how to use the <strong>Spark Submit</strong>  job entry to run the Word Count sample on a text file that you supply.&nbsp;</p>
+      <div id="section_2" class="mt-page-section"><span id="Install_the_Spark_Client"></span> 
+        <h2 class="editable">Install the Spark Client</h2>
+        <p>Before you start, you must install and configure the Spark client according to the instructions in the Spark Submit job entry, which can be found here:
+          <a class="external" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Spark+Submit"
+          target="_blank"><span><span>http://wiki.pentaho.com/display/EAI/Spark+Submit</span> </span> 
+          </a> <span><span><span>.</span> </span> 
+          </span> 
+        </p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Modify_the_Spark_Sample"></span> 
+        <h2 class="editable">Modify the Spark Sample</h2>
+        <p>The following example demonstrates how to use PDI to submit a Spark job.</p>
+        <div id="section_4" class="mt-page-section"><span id="Open_and_Rename_the_Job"></span> 
+          <h3 class="editable">Open and Rename the Job</h3>
+          <p class="pentaho-note">To copy files in these instructions,&nbsp;use either the <strong>Hadoop Copy Files</strong>  job step or Hadoop command line tools.&nbsp; For an example of how to do this using PDI, check out our tutorial at
+            <a class="external" rel="external nofollow"
+            href="http://wiki.pentaho.com/display/BAD/Loading+Data+into+HDFS" target="_blank">http://wiki.pentaho.com/display/BAD/Loading+Data+into+HDFS</a> .</p>
+          <ol class="pentaho-list-ordered">
+            <li>Copy a text file that contains words that you&rsquo;d like to count to the HDFS on your cluster.&nbsp; &nbsp;</li>
+            <li>Start Spoon.</li>
+            <li>Open the <span class="filepath style-wrap">Spark Submit.kjb</span>  job, which is in <span class="filepath style-wrap"><pentaho-home>/design-tools/data-integration/samples/jobs</span> .</li>
+            <li>Select <strong>File > Save As</strong>, then save the file as <span class="filepath style-wrap">Spark Submit Sample.kjb</span> .</li>
+          </ol>
+          <p>
+            <img alt="spoonide.png" class="internal default" style="width: 550px; height: 344px;" width="550px" height="344px" src="http://help.pentaho.com/@api/deki/files/4861/spoonide.png?size=bestfit&amp;width=550&amp;height=344&amp;revision=1" />
+          </p>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Submit_the_Spark_Job"></span> 
+          <h3 class="editable">Submit the Spark Job</h3>
+          <p>To submit the spark job, complete the following steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Open the <strong>Spark PI</strong>  job entry.&nbsp; Spark PI is the name given to the&nbsp;<strong>Spark Submit </strong> entry in the sample.</li>
+            <li>In the <strong>Job Setup </strong> tab, indicate the path to the spark-submit utility in the <strong>Spark Submit Utility </strong> field.&nbsp; It is located in where you installed the Spark client.</li>
+            <li>Indicate the path to your spark examples jar (either the local version or the one on the cluster in the HDFS) in the <strong>Application Jar </strong> field.&nbsp; The Word Count example is in this jar.</li>
+            <li>In the <strong>Class Name </strong> field, add the following:&nbsp;<span class="filepath style-wrap">org.apache.spark.examples.JavaWordCount.</span> </li>
+            <li>We recommend that you set the <strong>Master URL </strong> to <strong>yarn-client</strong> . &nbsp;To read more about other execution modes,&nbsp;see&nbsp;
+              <a class="link-https" target="_blank" rel="external nofollow" href="https://spark.apache.org/docs/1.2.1/submitting-applications.html">https://spark.apache.org/docs/1.2.1/submitting-applications.html</a> .&nbsp;</li>
+            <li>In the <strong>Arguments </strong> field, indicate the path to the file you want to run Word Count on.&nbsp;</li>
+            <li>Click the <strong>OK </strong> button.&nbsp;</li>
+            <li>Save the job.</li>
+            <li>Run the job.&nbsp; As the program runs, you will see the results of the word count program in the <strong>Execution </strong> pane.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_the_Spark_Client" rel="internal">Install the Spark Client</a>  </li>
+      <li>
+        <a href="#Modify_the_Spark_Sample" rel="internal">Modify the Spark Sample</a> 
+        <ol>
+          <li> <a href="#Open_and_Rename_the_Job" rel="internal">Open and Rename the Job</a>  </li>
+          <li> <a href="#Submit_the_Spark_Job" rel="internal">Submit the Spark Job</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

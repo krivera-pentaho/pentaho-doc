@@ -1,0 +1,3046 @@
+<content type="text/html" title="UnmanagedComponent">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div id="main">
+      <div id="section_1" class="mt-page-section"><span id="cdf.components.UnmanagedComponent"></span> 
+        <h2 class="editable"><span class="ancestors"><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf">cdf</a> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components">.components</a> .</span> 
+          <span>UnmanagedComponent</span> 
+        </h2>
+        <p>The <code>UnmanagedComponent</code> is an advanced version of the
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent"><code>BaseComponent</code></a>  which allows control over the core CDF lifecycle for implementing components.</p>
+        <p>It should be used as the base class for all components which desire to implement an asynchronous lifecycle, as CDF cannot otherwise ensure that the
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  callback is correctly handled.</p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="CDF_Async_Developer's_Guide"></span> 
+        <h2 class="editable">CDF Async Developer's Guide</h2>
+        <p>CDF now supports proper, asynchronous, AJAX calls for all its querying. The following is a guide to converting old components and dashboards to the new async style, and developing new ones based on asynchronous querying.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Rationale"></span> 
+        <h2 class="editable">Rationale</h2>
+        <p>The first step to understanding the changes in the async patch is understanding the CDF component lifecycle. When a component is updated, the basic update lifecycle looks like this:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> update -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a> </code></pre>
+        <p>Usually, though, there will be a call to a data source, with a subsequent call to
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>, and only then is the component rendered:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> update -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#beginQuery"><code>query</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  -> redraw -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a> </code></pre>
+        <p>This is a more typical lifecycle, and one that has some important limitations. First,
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  and
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  are entirely the responsibility of CDF itself, rather than the component. Because CDF has no control over the contents of the update method, it has no way of ensuring that, should the component execute an asynchronous
+          query,
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  only runs after redraw. In this case, you are likely to see this instead:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> update -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#beginQuery"><code>query</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  -> redraw</code></pre>
+        <p>This breaks the contract for
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  running after the component is done updating. The solution here is that the component itself must take control of
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>, while keeping the burden of implementing the lifecycle in CDF rather than passing it to the component developer. On a related topic,
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  has become a de facto standard part of the lifecycle, yet its implementation was left to the component implementers, which leads to a fairly large amount of boilerplate code.</p>
+        <p>Our objective here was to retool the base component to deal with both of these issues, thus allowing queries to be performed asynchronously while reducing the developer effort involved in creating a component.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Component_Execution_Order_and_Priority"></span> 
+        <h2 class="editable">Component Execution Order and Priority</h2>
+        <p>There are no major changes in the way components behave. There is, however an important caveat: since all components that have been converted will be executed simultaneously, we can no longer rely on the order of execution.</p>
+        <p>There's now an additional property named
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#priority"><code>priority</code></a> . This is the
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#priority"><code>priority</code></a>  of component execution, defaulting to 5. The lower the number, the higher
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#priority"><code>priority</code></a>  the component has. Components with the same
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#priority"><code>priority</code></a>  with be executed simultaneously. This property is useful in places where we need to give higher
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#priority"><code>priority</code></a>  to filters or other components that need to be executed before other components.</p>
+        <p>This way there's no longer the need to use dummy parameters and postChange tricks to do, for instance, cascade prompts.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Backward_Compatibility_and_Changes"></span> 
+        <h2 class="editable">Backward Compatibility and Changes</h2>
+        <p>Maintaining backwards compatibility requires some care. If components have no
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#priority"><code>priority</code></a>, we give them a sequential value, trying to emulate the old behavior. It's recommended that proper priorities are set in order to take advantage of the new improvements.</p>
+        <p>If using Community Dashboard Editor (CDE), note that if you edit a dashboard and save it, <em>all components will have a default priority of 5</em> . This may break the old behavior. If you need to change a dashboard, make sure you tweak the priorities,
+          if needed.</p>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Developing_Components"></span> 
+        <h2 class="editable">Developing Components</h2>
+        <p>Components desiring to use asynchronous queries should inherit from the new <code>UnmanagedComponent</code>, instead of
+          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent"><code>BaseComponent</code></a> . The <code>UnmanagedComponent</code> base class provides pre-composed methods which implement the core lifecycle for a variety of different scenarios:</p>
+        <ul>
+          <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#synchronous"><code>synchronous</code></a> : implements a synchronous lifecycle identical to the core CDF lifecycle. </li>
+          <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerQuery"><code>triggerQuery</code></a> : implements a simple interface to a lifecycle built around Query objects. </li>
+          <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerAjax"><code>triggerAjax</code></a> : implements a simple interface to a lifecycle built around AJAX calls. </li>
+        </ul>
+        <p>Since all these lifecycle methods expect a callback which handles the actual component rendering, it's a conventional style to have that callback as a method of the component, called <code>redraw</code>. It's also considered standard practice
+          to use
+          <a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind" target="_blank">Function#bind</a>  or
+          <a class=" external" rel="external nofollow" href="http://underscorejs.org/#bind" target="_blank">_.bind</a>  to ensure that, inside the <code>redraw</code> callback, <code>this</code> points to the component itself.</p>
+        <div id="section_7" class="mt-page-section"><span id="Use_synchronous_If_Your_Component_Does_Not_Use_External_Data"></span> 
+          <h3 class="editable">Use
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#synchronous"><code>synchronous</code></a>  If Your Component Does Not Use External Data</h3>
+          <p>Components that do not use any external data at all can continue subclassing
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent"><code>BaseComponent</code></a>  without any change of functionality. However, for the sake of consistency (or because you want querying to be optional), you can use subclass <code>UnmanagedComponent</code> and use the
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#synchronous"><code>synchronous</code></a>  lifecycle method to emulate
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent"><code>BaseComponent</code></a> 's behavior:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">update: function() {
+ this.synchronous(this.redraw);
+}</pre>
+          <p>If you want to pass parameters to <code>redraw</code>, you can pass them as an array to
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#synchronous"><code>synchronous</code></a> :</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">update: function() {
+ // Will call this.redraw(1, 2, 3)
+ this.synchronous(this.redraw, [1, 2, 3]);
+}</pre> </div>
+        <div id="section_8" class="mt-page-section"><span id="Use_triggerQuery_When_You_Want_YourComponent_To_Use_CDA.2FQuery_Objects"></span> 
+          <h3 class="editable">Use
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerQuery"><code>triggerQuery</code></a>  When You Want YourComponent To Use CDA/Query Objects</h3>
+          <p>If you're using a CDA data source, you probably want to use
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerQuery"><code>triggerQuery</code></a>  to handle the component lifecycle for you.
+            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerQuery"><code>triggerQuery</code></a>  expects at a minimum a query definition and a <code>redraw</code> callback to process the query results. The query definition is an object of the form:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+ dataAccessId: 'myQuery',
+ file: '/path/to/my/datasourceDefinition.cda'
+}</pre>
+          <p>Typically, if you are using CDE, these properties will be added to one of either <code>this.queryDefinition</code>, <code>this.chartDefinition</code> or <code>this.trafficDefinition</code> so you can just use this pattern:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">update: function() {
+ var redraw = _.bind(this.redraw, this);
+ this.triggerQuery(this.queryDefinition, redraw);
+}</pre> </div>
+        <div id="section_9" class="mt-page-section"><span id="Alternating_Between_Static_And_Query-Based_Data"></span> 
+          <h3 class="editable">Alternating Between Static And Query-Based Data</h3>
+          <p>As the lifecycle methods are completely self-contained, you can switch between them at will, deciding on an appropriate lifecycle at runtime. A common pattern (used for example in <code>SelectComponent</code> and the <code>CccComponent</code>            family) is exposing a <code>valuesArray</code> property, and using static data if <code>valuesArray</code> is provided, or a query if it is not. Using <code>UnmanagedComponent</code>, this convention would look like this:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">update: function() {
+ var redraw = _.bind(this.redraw, this);
+ if(this.valuesArray &amp;&amp; this.valuesArray.length > 0) {
+ this.synchronous(redraw, this.valuesArray);
+ } else {
+ this.triggerQuery(this.queryDefinition, redraw);
+ }
+}</pre>
+          <p> <strong>AMD Module</strong>  </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([&quot;cdf/components/UnmanagedComponent&quot;], function(UnmanagedComponent) { /* code goes here */ });</pre>
+          <p class="h3">Extends</p>
+          <ul>
+            <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a>  </li>
+          </ul>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Constructor"></span> 
+          <h3 class="editable">Constructor</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#.UnmanagedComponent"> new UnmanagedComponent(properties) </a> 
+                </td>
+                <td>
+                  <p>Advanced version of the
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent"><code>BaseComponent</code></a>  which allows control over the core CDF lifecycle.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Members"></span> 
+          <h3 class="editable">Members</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#elapsedSinceSplit"> elapsedSinceSplit </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Number of milliseconds since the timer split.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#elapsedSinceStart"> elapsedSinceStart </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Number of milliseconds since the timer start.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#htmlObject"> htmlObject </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>HTML element identifier where the component is rendered.</p>
+                </td>
+              </tr>
+              <tr class="protected deprecated inherited">
+                <td>
+                  <a href="#initInstance"> initInstance </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>The Dashboard instance to which the component belongs.</p>
+                </td>
+              </tr>
+              <tr class="public ">
+                <td>
+                  <a href="#isManaged"> isManaged </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </code>
+                </td>
+                <td>
+                  <p>Flag that defines if the component is managed or not.</p>
+                </td>
+              </tr>
+              <tr class="public ">
+                <td>
+                  <a href="#isRunning"> isRunning </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </code>
+                </td>
+                <td>
+                  <p>Flag that defines if the component is running or not.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#logColor"> logColor </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Color to use while logging messages.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#name"> name </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Name of the component.</p>
+                </td>
+              </tr>
+              <tr class="public inherited">
+                <td>
+                  <a href="#postChange"> postChange </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </code>
+                </td>
+                <td>
+                  <p>Function to be executed after the components parameter value changes.</p>
+                </td>
+              </tr>
+              <tr class="public inherited">
+                <td>
+                  <a href="#preChange"> preChange </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </code>
+                </td>
+                <td>
+                  <p>Function to be executed before the components parameter value changes.</p>
+                </td>
+              </tr>
+              <tr class="public ">
+                <td>
+                  <a href="#priority"> priority </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </code>
+                </td>
+                <td>
+                  <p>Priority of a component in the cdf execution cycle.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#timerSplit"> timerSplit </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Start date for the timer split.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#timerStart"> timerStart </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Start date for the timer start.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#type"> type </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Type of the component.</p>
+                </td>
+              </tr>
+              <tr class="protected inherited">
+                <td>
+                  <a href="#visible"> visible </a>  : <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Visibility flag.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Methods"></span> 
+          <h3 class="editable">Methods</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#_setQuery"> _setQuery(queryDef, queryOptions) </a>  : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.queries.BaseQuery">cdf.queries.BaseQuery</a> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Creates and sets the component's current query given its definition, and optionally, query options.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#beginAjax"> beginAjax(ajaxParameters, callback) </a> 
+                </td>
+                <td>
+                  <p>The beginAjax lifecycle handler implements the beginning phase of a lifecycle based on generic AJAX calls.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#beginExec"> beginExec() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Begins execution of the component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#beginQuery"> beginQuery(queryDef, callback, queryOptions) </a> 
+                </td>
+                <td>
+                  <p>The beginQuery lifecycle handler implements the beginning phase of a lifecycle around Query objects.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#block"> block() </a> 
+                </td>
+                <td>
+                  <p>Trigger UI blocking while the component is updating.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#callCounter"> callCounter() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </td>
+                <td>
+                  <p>Increment the call counter, so we can keep track of the order in which requests were made.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#clear"> clear() </a> 
+                </td>
+                <td>
+                  <p>Clears the component HTML element.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#clone"> clone(parameterRemap, componentRemap, htmlRemap) </a>  : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </td>
+                <td>
+                  <p>Clones a component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#copyEvents"> copyEvents(target, events) </a> 
+                </td>
+                <td>
+                  <p>General copy events methods.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#drawTooltip"> drawTooltip() </a> 
+                </td>
+                <td>
+                  <p>Draws a tooltip, if one is defined in the component options.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#endExec"> endExec() </a> 
+                </td>
+                <td>
+                  <p>Ends a successful execution of the component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#error"> error(msg, cause) </a> 
+                </td>
+                <td>
+                  <p>Triggers an error event on the component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#errorNotification"> errorNotification(err, ph) </a> 
+                </td>
+                <td>
+                  <p>Creates an error notification
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.dashboard.Popups"><code>popup</code></a> .</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#execute"> execute(callback) </a> 
+                </td>
+                <td>
+                  <p>Generic execute method that handles
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  and
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  lifecycle tasks.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#failExec"> failExec(arg) </a> 
+                </td>
+                <td>
+                  <p>Fails execution of the component, given an error object or the arguments of a
+                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  error callback.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#focus"> focus() </a> 
+                </td>
+                <td>
+                  <p>Focus the first placeholder DOM element on the component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#getAddIn"> getAddIn(slot, addIn) </a>  : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.AddIn">cdf.AddIn</a> </code> </td>
+                <td>
+                  <p>Gets an add-in for this component.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#getAddInOptions"> getAddInOptions(slot, addIn) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                <td>
+                  <p>Gets an add-in option.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#getErrorHandler"> getErrorHandler() </a>  : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#failExec">cdf.components.UnmanagedComponent#failExec</a> </code> </td>
+                <td>
+                  <p>Gets an error handler suitable for use as a
+                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  error callback or a try/catch handler.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#getSuccessHandler"> getSuccessHandler(counter, success, always, canceled) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code>                  </td>
+                <td>
+                  <p>Builds a generic response handler which runs the success callback.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#getValuesArray"> getValuesArray() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Gets the values array property.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#hasAddIn"> hasAddIn(slot, addIn) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Returns <code>true</code> if the add-in with the provided subtype and name exists.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#isSilent"> isSilent() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Returns <code>true</code> if the component's lifecycle is marked as silent.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#parseArray"> parseArray(jData, includeHeader) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Builds an array with the data received from the server in another format.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#parseArrayCda"> parseArrayCda(jData, includeHeader) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <p>Builds an array with the data received.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#placeholder"> placeholder(selector) </a>  : <code><a class=" external" rel="external nofollow" href="http://api.jquery.com/Types/#jQuery" target="_blank">jQuery</a> </code> </td>
+                <td>
+                  <p>Getter for the component's DOM element.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#postExec"> postExec() </a> 
+                </td>
+                <td>
+                  <p>Handles calling <code>postExecution</code> when it exists.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#postFetchData"> postFetchData(data) </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                <td>
+                  <p>Handles calling <code>postFetch</code>, when it exists, and triggering the
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%2522cdf:postFetch%2522"><code>postFetch</code></a>  event.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#preExec"> preExec() </a>  : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                <td>
+                  <p>Handles calling <code>preExecution</code> when it exists.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#setAddInOptions"> setAddInOptions(slot, addIn, options) </a> 
+                </td>
+                <td>
+                  <p>Sets the options for an add-in.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#showTooltip"> showTooltip() </a> 
+                </td>
+                <td>
+                  <p>Shows a tooltip attached to the component, if one is defined in the <code>_tooltip</code> option.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#synchronous"> synchronous(callback, arg) </a> 
+                </td>
+                <td>
+                  <p>The synchronous lifecycle handler closely resembles the core CDF lifecycle.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#triggerAjax"> triggerAjax(url, params, callback, ajaxParameters) </a> 
+                </td>
+                <td>
+                  <p>The triggerAjax lifecycle handler builds a lifecycle around generic AJAX calls.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#triggerQuery"> triggerQuery(queryDef, callback, queryOptions) </a> 
+                </td>
+                <td>
+                  <p>The triggerQuery lifecycle handler builds a lifecycle around Query objects.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#unblock"> unblock() </a> 
+                </td>
+                <td>
+                  <p>Trigger UI unblock when the component finishes updating.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_13" class="mt-page-section"><span id="Events"></span> 
+          <h3 class="editable">Events</h3>
+          <table class="api-ref-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href="#event:%22cdf:error%22"> cdf:error </a> 
+                </td>
+                <td>
+                  <p>Event triggered on error.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#event:%22cdf:postExecution%22"> cdf:postExecution </a> 
+                </td>
+                <td>
+                  <p>Event triggered after execution.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#event:%22cdf:postFetch%22"> cdf:postFetch(data) </a> 
+                </td>
+                <td>
+                  <p>Event triggered after fetching data.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#event:%22cdf:preExecution%22"> cdf:preExecution </a> 
+                </td>
+                <td>
+                  <p>Event triggered before execution.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#event:%22cdf:render%22"> cdf:render </a> 
+                </td>
+                <td>
+                  <p>Event triggered after the <code>render</code> callback executes.</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <a href="#event:all"> all </a> 
+                </td>
+                <td>
+                  <p>Event triggered by any other event.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="h3">Constructor Details</p>
+          <table id=".UnmanagedComponent">
+            <thead>
+              <tr>
+                <th><strong>new UnmanagedComponent</strong> (properties) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The constructor of an unmanaged component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L21">components/UnmanagedComponent.js, line 21</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> properties : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>An object with the properties to extend the UnmanagedComponent instance.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="h3">Members Details</p>
+          <table id="elapsedSinceSplit">
+            <thead>
+              <tr>
+                <th>elapsedSinceSplit: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Number of milliseconds since the timer split.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L98">components/BaseComponent.js, line 98</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#elapsedSinceSplit">cdf.components.BaseComponent#elapsedSinceSplit</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> -1</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="elapsedSinceStart">
+            <thead>
+              <tr>
+                <th>elapsedSinceStart: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Number of milliseconds since the timer start.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L108">components/BaseComponent.js, line 108</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#elapsedSinceStart">cdf.components.BaseComponent#elapsedSinceStart</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> -1</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="htmlObject">
+            <thead>
+              <tr>
+                <th>htmlObject: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The HTML element identifier, unique in the HTML page, where the component is rendered.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L46">components/BaseComponent.js, line 46</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#htmlObject">cdf.components.BaseComponent#htmlObject</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="initInstance">
+            <thead>
+              <tr>
+                <th>initInstance: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The Dashboard instance to which the component belongs.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L120">components/BaseComponent.js, line 120</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#initInstance">cdf.components.BaseComponent#initInstance</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="isManaged">
+            <thead>
+              <tr>
+                <th>isManaged: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code></code>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Flag that defines if the component is managed or not.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L198">components/UnmanagedComponent.js, line 198</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> false</p>
+                  <p><strong>Overrides: </strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#isManaged">cdf.components.BaseComponent#isManaged</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="isRunning">
+            <thead>
+              <tr>
+                <th>isRunning: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code></code>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Flag that defines if the component is running or not.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L207">components/UnmanagedComponent.js, line 207</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> false</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="logColor">
+            <thead>
+              <tr>
+                <th>logColor: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Color to use while logging messages.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L118">components/BaseComponent.js, line 118</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#logColor">cdf.components.BaseComponent#logColor</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> undefined</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="name">
+            <thead>
+              <tr>
+                <th>name: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The name of the component. Its name needs to be unique in the dashboard to which they belong.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L30">components/BaseComponent.js, line 30</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#name">cdf.components.BaseComponent#name</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="postChange">
+            <thead>
+              <tr>
+                <th>postChange: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code></code>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Function to be executed after the components parameter value changes.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L140">components/BaseComponent.js, line 140</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#postChange">cdf.components.BaseComponent#postChange</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="preChange">
+            <thead>
+              <tr>
+                <th>preChange: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code></code>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Function to be executed before the components parameter value changes.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L131">components/BaseComponent.js, line 131</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#preChange">cdf.components.BaseComponent#preChange</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="priority">
+            <thead>
+              <tr>
+                <th>priority: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code></code>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Priority of a component in the cdf execution cycle.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L209">components/UnmanagedComponent.js, line 209</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> 5</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="timerSplit">
+            <thead>
+              <tr>
+                <th>timerSplit: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Start date for the timer split.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L88">components/BaseComponent.js, line 88</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#timerSplit">cdf.components.BaseComponent#timerSplit</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> 0</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="timerStart">
+            <thead>
+              <tr>
+                <th>timerStart: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Start date for the timer start.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L78">components/BaseComponent.js, line 78</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#timerStart">cdf.components.BaseComponent#timerStart</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> 0</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="type">
+            <thead>
+              <tr>
+                <th>type: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The type of the component, usually the class name of the component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L38">components/BaseComponent.js, line 38</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#type">cdf.components.BaseComponent#type</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="visible">
+            <thead>
+              <tr>
+                <th>visible: <code> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code></code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Visibility flag.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L56">components/BaseComponent.js, line 56</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#visible">cdf.components.BaseComponent#visible</a> 
+                  </p>
+                  <p><strong>Default Value: </strong> true</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="h3">Methods Details</p>
+          <table id="_setQuery">
+            <thead>
+              <tr>
+                <th><strong>_setQuery</strong> (queryDef, queryOptions) : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.queries.BaseQuery">cdf.queries.BaseQuery</a> </code>
+                  <div>
+                    <div class="badge badge-orange">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Protected</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Creates and sets the component's current query given its definition, and optionally, query options.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L593">components/UnmanagedComponent.js, line 593</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> queryDef : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The query definition <code>object</code>.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> queryOptions : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Query options <code>object</code>.</p>
+                          <table class="inner-table">
+                            <caption>Parameters:</caption>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Default Value</th>
+                                <th>Summary</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> ajax : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>
+                                  <div>
+                                    <div class="badge badge-gray">
+                                      <div class="stripe">&nbsp;</div>
+                                      <div class="name">Optional</div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>Options passed to
+                                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a> . The
+                                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  options <code>data</code>, <code>url</code>, <code>error</code> and <code>success</code> are reserved.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td> pageSize : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code>
+                                  <div>
+                                    <div class="badge badge-gray">
+                                      <div class="stripe">&nbsp;</div>
+                                      <div class="name">Optional</div>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>The page size of paginated results.</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.queries.BaseQuery">cdf.queries.BaseQuery</a> </code> </td>
+                        <td>
+                          <p>The query <code>object</code>.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="beginAjax">
+            <thead>
+              <tr>
+                <th><strong>beginAjax</strong> (ajaxParameters, callback) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The beginAjax lifecycle handler implements the beginning phase of a lifecycle based on generic AJAX calls. It implements the lifecycle:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#block"><code>block</code></a>  (optional) -> <a href="Documentation/6.1/0R0/cdf.queries.BaseQuery#fetchData"><code>fetchData</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  -> <code>callback</code></code></pre>                  Ending the execution is the responsibility of the specified callback, by calling
+                  <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#endExec"><code>endExec</code></a>, resulting in: <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExec</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#unblock"><code>unblock</code></a>  (optional) or <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#failExec"><code>failExec</code></a> </code></pre>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L564">components/UnmanagedComponent.js, line 564</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> ajaxParameters : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Parameters for
+                            <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>, including, at a minimum, the <code>url</code> option.
+                            <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#beginAjax"><code>beginAjax</code></a>  will take control over the <code>success</code> and <code>error</code> callbacks and default <code>async</code> to <code>true</code>.</p>
+                          <table class="inner-table">
+                            <caption>Parameters:</caption>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Default Value</th>
+                                <th>Summary</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> url : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>URL to call.</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> callback : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Render callback, called with the response data.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="beginExec">
+            <thead>
+              <tr>
+                <th><strong>beginExec</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Begins execution of the component. This method handles calling
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  and blocking the UI, if necessary.</p>
+                  <p>A component that actually begins execution, by returning <code>true</code> from this method, should later complete the lifecycle by calling either
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#endExec"><code>endExec</code></a>  or
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#failExec"><code>failExec</code></a> .</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L340">components/UnmanagedComponent.js, line 340</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>false</code> if component execution should be canceled, <code>true</code> otherwise.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="beginQuery">
+            <thead>
+              <tr>
+                <th><strong>beginQuery</strong> (queryDef, callback, queryOptions) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The beginQuery lifecycle handler implements the beginning phase of a lifecycle around Query objects. It implements the lifecycle:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#block"><code>block</code></a>  (optional) -> <a href="Documentation/6.1/0R0/cdf.queries.BaseQuery#fetchData"><code>fetchData</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  -> callback</code></pre>
+                  <p>Ending the execution, is the responsibility of the specified callback by calling
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#endExec"><code>endExec</code></a>, resulting in:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#unblock"><code>unblock</code></a>  (optional) or <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#failExec"><code>failExec</code></a> </code></pre>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L489">components/UnmanagedComponent.js, line 489</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> queryDef : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The query definition object.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> callback : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Callback to run after query has ran.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> queryOptions : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>User options for the query.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="block">
+            <thead>
+              <tr>
+                <th><strong>block</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Trigger UI blocking while the component is updating. Default implementation uses the global CDF blockUI, but implementers are encouraged to override with per-component blocking where appropriate (or no blocking at all in components that
+                    support it).</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L742">components/UnmanagedComponent.js, line 742</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="callCounter">
+            <thead>
+              <tr>
+                <th><strong>callCounter</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Increment the call counter, so we can keep track of the order in which requests were made.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L616">components/UnmanagedComponent.js, line 616</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code> </td>
+                        <td>
+                          <p>The incremented counter.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="clear">
+            <thead>
+              <tr>
+                <th><strong>clear</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Clears the component HTML element.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L204">components/BaseComponent.js, line 204</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#clear">cdf.components.BaseComponent#clear</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="clone">
+            <thead>
+              <tr>
+                <th><strong>clone</strong> (parameterRemap, componentRemap, htmlRemap) : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Clones a component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L235">components/BaseComponent.js, line 235</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#clone">cdf.components.BaseComponent#clone</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> parameterRemap : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Map containing parameter remapping.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> componentRemap : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Map containing component remapping.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> htmlRemap : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Map containing DOM element remapping.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </td>
+                        <td>
+                          <p>The cloned component.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="copyEvents">
+            <thead>
+              <tr>
+                <th><strong>copyEvents</strong> (target, events) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>General copy events methods. Given a target component and an event list, adds the component as a listener for all events in the list.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L216">components/BaseComponent.js, line 216</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#copyEvents">cdf.components.BaseComponent#copyEvents</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> target : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent">cdf.components.BaseComponent</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The target component object.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> events : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://backbonejs.org/#Events" target="_blank">Backbone.Events</a> ></code>                          </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>
+                            <a class=" external" rel="external nofollow" href="http://backbonejs.org/#Events" target="_blank">Backbone.Events</a>  list to copy.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="drawTooltip">
+            <thead>
+              <tr>
+                <th><strong>drawTooltip</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Draws a tooltip, if one is defined in the component options.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L306">components/UnmanagedComponent.js, line 306</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="endExec">
+            <thead>
+              <tr>
+                <th><strong>endExec</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Ends a successful execution of the component. This method handles drawing and showing the component's tooltip, if any, calling
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExec</code></a>  and unblocking the UI, if necessary.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L375">components/UnmanagedComponent.js, line 375</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="error">
+            <thead>
+              <tr>
+                <th><strong>error</strong> (msg, cause) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Triggers an error event on the component. Takes as arguments the error message and optionally, a <code>cause</code> object. It also calls
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#errorNotification"><code>errorNotification</code></a>  showing the notification to the user.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L700">components/UnmanagedComponent.js, line 700</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> msg : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Error message.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> cause : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> null </td>
+                        <td>
+                          <p>Cause for the error.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Fires:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf#.event:cdf">cdf.event:cdf</a>  ,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%22cdf:error%22">cdf.components.UnmanagedComponent#event:cdf:error</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="errorNotification">
+            <thead>
+              <tr>
+                <th><strong>errorNotification</strong> (err, ph) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Creates an error notification
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.dashboard.Popups"><code>popup</code></a>  with the given messages and error.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L726">components/UnmanagedComponent.js, line 726</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> err : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>A CDF error object containing <code>msg</code> and <code>error</code> properties.</p>
+                          <table class="inner-table">
+                            <caption>Parameters:</caption>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Default Value</th>
+                                <th>Summary</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> msg : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>Error message.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td> error : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>Cause for the error.</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> ph : <code><a class=" external" rel="external nofollow" href="http://api.jquery.com/Types/#jQuery" target="_blank">jQuery</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>DOM element where to display the error notification.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p> <strong>See also:&nbsp;</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.dashboard.Dashboard#errorNotification"><code>errorNotification</code></a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="execute">
+            <thead>
+              <tr>
+                <th><strong>execute</strong> (callback) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Generic execute method that handles
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  and
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  lifecycle tasks.</p>
+                  <p>The specified <code>callback</code> function handles the component's core execution. If execution is not canceled by the
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  handler, it is called synchronously, from within a call to this method. If it throws an error, it is like if
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#failExec"><code>failExec</code></a>  had been called with that error. This function is called with this component as the <code>this</code> context.</p>
+                  <p>This method is sugar for the following common pattern:</p> <pre class="prettyprint source"><code> if(this.beginExec()) { try { callback.call(this); } catch(ex) { this.failExec(ex); } }</code></pre>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L416">components/UnmanagedComponent.js, line 416</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> callback : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The function to execute. This function receives two arguments:</p>
+                          <ol>
+                            <li>resolve - call this function to signal that core execution has ended.</li>
+                            <li>reject - called, optionally with a cause value (an <code>Error</code> object), to signal that an error occurred during core execution.</li>
+                          </ol>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="failExec">
+            <thead>
+              <tr>
+                <th><strong>failExec</strong> (arg) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Fails execution of the component, given an error object or the arguments of a
+                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  error callback. This method handles parsing, signaling and logging of the error and unblocking the UI, if necessary.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L357">components/UnmanagedComponent.js, line 357</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> arg : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>An error object or the arguments of a
+                            <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  error callback.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="focus">
+            <thead>
+              <tr>
+                <th><strong>focus</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Focus the first placeholder DOM element on the component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L180">components/BaseComponent.js, line 180</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#focus">cdf.components.BaseComponent#focus</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="getAddIn">
+            <thead>
+              <tr>
+                <th><strong>getAddIn</strong> (slot, addIn) : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.AddIn">cdf.AddIn</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Gets an add-in for this component.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L295">components/BaseComponent.js, line 295</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#getAddIn">cdf.components.BaseComponent#getAddIn</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> slot : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Add-in subtype.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> addIn : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Add-in name.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.AddIn">cdf.AddIn</a> </code> </td>
+                        <td>
+                          <p>Add-in registered with the specified name and subtype.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="getAddInOptions">
+            <thead>
+              <tr>
+                <th><strong>getAddInOptions</strong> (slot, addIn) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Gets an add-in option.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L505">components/BaseComponent.js, line 505</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#getAddInOptions">cdf.components.BaseComponent#getAddInOptions</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> slot : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The add-in subtype.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> addIn : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The add-in name.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td>
+                          <p>The options associated with the specified add-in.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="getErrorHandler">
+            <thead>
+              <tr>
+                <th><strong>getErrorHandler</strong> () : <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#failExec">cdf.components.UnmanagedComponent#failExec</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Gets an error handler suitable for use as a
+                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  error callback or a try/catch handler.</p>
+                  <p>This method returns a <code>this</code> free version of the
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#failExec"><code>failExec</code></a>  method.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L684">components/UnmanagedComponent.js, line 684</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#failExec">cdf.components.UnmanagedComponent#failExec</a> </code> </td>
+                        <td>
+                          <p>Error handler.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="getSuccessHandler">
+            <thead>
+              <tr>
+                <th><strong>getSuccessHandler</strong> (counter, success, always, canceled) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code>                  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Builds a generic response handler which runs the success callback when being called in response to the most recent AJAX request that was triggered for this component (as determined by comparing counter and this.runCounter), and always
+                    calls the always callback. If the counter is not provided, it will be generated automatically.</p>
+                  <p>Accepts the following calling conventions:</p>
+                  <ul>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#getSuccessHandler"><code>getSuccessHandler</code></a> (counter, success, always) </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#getSuccessHandler"><code>getSuccessHandler</code></a> (counter, success) </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#getSuccessHandler"><code>getSuccessHandler</code></a> (success, always) </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#getSuccessHandler"><code>getSuccessHandler</code></a> (success) </li>
+                  </ul>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L641">components/UnmanagedComponent.js, line 641</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> counter : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#callCounter"><code>callCounter</code></a> 
+                        </td>
+                        <td>
+                          <p>Identifier for the ajax call being made.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> success : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Success callback.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> always : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Callback that is run independently of call status.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> canceled : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Callback that is run when the call has been superseeded by a more recent one. It receives the raw received data.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td>
+                          <p>Success handler function.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="getValuesArray">
+            <thead>
+              <tr>
+                <th><strong>getValuesArray</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Gets the values array property, if one is defined. Otherwise, issues a call to the server to get data.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L329">components/BaseComponent.js, line 329</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#getValuesArray">cdf.components.BaseComponent#getValuesArray</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>                          </td>
+                        <td>
+                          <p>An array with values from the values array property or the data retrieved from the server.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="hasAddIn">
+            <thead>
+              <tr>
+                <th><strong>hasAddIn</strong> (slot, addIn) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Returns <code>true</code> if the add-in with the provided subtype and name exists.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L312">components/BaseComponent.js, line 312</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#hasAddIn">cdf.components.BaseComponent#hasAddIn</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> slot : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Add-in subtype.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> addIn : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Add-in name.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>true</code> if the add-in exists, <code>false</code> otherwise.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="isSilent">
+            <thead>
+              <tr>
+                <th><strong>isSilent</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Returns <code>true</code> if the component's lifecycle is marked as silent. This means that any step in the lifecycle of the component will not try to block the UI.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L769">components/UnmanagedComponent.js, line 769</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>true</code> if the component should not trigger an UI block when updating.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="parseArray">
+            <thead>
+              <tr>
+                <th><strong>parseArray</strong> (jData, includeHeader) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Builds an array with the data received from the server in another format.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L403">components/BaseComponent.js, line 403</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#parseArray">cdf.components.BaseComponent#parseArray</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> jData : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Data object (Xaction or CDA) resulting from a call to the server.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> includeHeader : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>A boolean indicating whether the resulting array should include the headers.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>                          </td>
+                        <td> /p </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="parseArrayCda">
+            <thead>
+              <tr>
+                <th><strong>parseArrayCda</strong> (jData, includeHeader) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                  <div>
+                    <div class="badge badge-red">
+                      <div class="stripe">&nbsp;</div>
+                      <div class="name">Deprecated</div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Builds an array with the data received from the server in CDA format.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L446">components/BaseComponent.js, line 446</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#parseArrayCda">cdf.components.BaseComponent#parseArrayCda</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> jData : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Data object (CDA format) resulting from a call to the server.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> includeHeader : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>A boolean indicating whether the resulting array should include the headers.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>                          </td>
+                        <td>
+                          <p>The built data array in the CDA format.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="placeholder">
+            <thead>
+              <tr>
+                <th><strong>placeholder</strong> (selector) : <code><a class=" external" rel="external nofollow" href="http://api.jquery.com/Types/#jQuery" target="_blank">jQuery</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Getter for the component's DOM element. Returns the jQuery <code>object</code> that represents it.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L171">components/BaseComponent.js, line 171</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#placeholder">cdf.components.BaseComponent#placeholder</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> selector : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Optional <code>string</code> to append to the jQuery selector.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://api.jquery.com/Types/#jQuery" target="_blank">jQuery</a> </code> </td>
+                        <td>
+                          <p>The matched DOM element or a new element if no match is found.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="postExec">
+            <thead>
+              <tr>
+                <th><strong>postExec</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Handles calling <code>postExecution</code> when it exists.</p>
+                  <p>All components extending UnmanagedComponent should either use one of the three lifecycles declared in this class (
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#synchronous"><code>synchronous</code></a>,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerQuery"><code>triggerQuery</code></a>  or
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerAjax"><code>triggerAjax</code></a> ), or explicitly call this method immediately before yielding control back to CDF.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L270">components/UnmanagedComponent.js, line 270</a> 
+                  </p>
+                  <p><strong>Fires:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf#.event:cdf">cdf.event:cdf</a>  ,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%22cdf:postExecution%22">cdf.components.UnmanagedComponent#event:cdf:postExecution</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="postFetchData">
+            <thead>
+              <tr>
+                <th><strong>postFetchData</strong> (data) : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Handles calling <code>postFetch</code>, when it exists, and triggering the
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%2522cdf:postFetch%2522"><code>postFetch</code></a>  event.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L289">components/UnmanagedComponent.js, line 289</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> data : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The fetched data.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Fires:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf#.event:cdf">cdf.event:cdf</a>  ,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%22cdf:postFetch%22">cdf.components.UnmanagedComponent#event:cdf:postFetch</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td>
+                          <p>The resulting data.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="preExec">
+            <thead>
+              <tr>
+                <th><strong>preExec</strong> () : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Handles calling <code>preExecution</code> when it exists.</p>
+                  <p>All components extending UnmanagedComponent should either use one of the three lifecycles declared in this class (
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#synchronous"><code>synchronous</code></a>,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerQuery"><code>triggerQuery</code></a>  or
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerAjax"><code>triggerAjax</code></a> ), or explicitly call this method at the very earliest opportunity. If <code>preExecution</code> returns a falsy value, component execution should be canceled as immediately as possible.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L235">components/UnmanagedComponent.js, line 235</a> 
+                  </p>
+                  <p><strong>Fires:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf#.event:cdf">cdf.event:cdf</a>  ,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%22cdf:preExecution%22">cdf.components.UnmanagedComponent#event:cdf:preExecution</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Returns:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank">Boolean</a> </code> </td>
+                        <td>
+                          <p><code>false</code> if component execution should be canceled, <code>true</code> otherwise.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="setAddInOptions">
+            <thead>
+              <tr>
+                <th><strong>setAddInOptions</strong> (slot, addIn, options) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Sets the options for an add-in.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/BaseComponent.js#L486">components/BaseComponent.js, line 486</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#setAddInOptions">cdf.components.BaseComponent#setAddInOptions</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> slot : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The add-in subtype.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> addIn : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The add-in name.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> options : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>An object with the options to use.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="showTooltip">
+            <thead>
+              <tr>
+                <th><strong>showTooltip</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Shows a tooltip attached to the component, if one is defined in the <code>_tooltip</code> option.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L316">components/UnmanagedComponent.js, line 316</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="synchronous">
+            <thead>
+              <tr>
+                <th><strong>synchronous</strong> (callback, arg) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The synchronous lifecycle handler closely resembles the core CDF lifecycle, and is provided as an alternative for components that desire the option to alternate between a synchronous and asynchronous style lifecycles depending on external
+                    configuration (e.g., if it can take values from either a static array or a query). It takes the component drawing method as a callback.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L437">components/UnmanagedComponent.js, line 437</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> callback : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Component drawing method.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> arg : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" target="_blank">Array</a> .<<a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> ></code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> [] </td>
+                        <td>
+                          <p>Argument for the callback.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="triggerAjax">
+            <thead>
+              <tr>
+                <th><strong>triggerAjax</strong> (url, params, callback, ajaxParameters) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The triggerAjax lifecycle handler builds a lifecycle around generic AJAX calls. It implements the lifecycle:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#block"><code>block</code></a>  (optional) -> <a href="Documentation/6.1/0R0/cdf.queries.BaseQuery#fetchData"><code>fetchData</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  -> render -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#unblock"><code>unblock</code></a>  (optional)</code></pre>
+                  <p>After the call to the <code>render</code> callback, the event
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%2522cdf:render%2522"><code>cdf:render</code></a>  is fired, and then the execution ends.</p> triggerAjax can be used with either of the following call conventions:
+                  <ul>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerAjax"><code>triggerAjax</code></a> (url, params, callback); </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerAjax"><code>triggerAjax</code></a> ({url: url, data: params, ...}, callback); </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#triggerAjax"><code>triggerAjax</code></a> ({url: url, data: params, ...}, callback, ajaxParameters); </li>
+                  </ul>
+                  <p>In the second case, you can add any other
+                    <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  parameters you desire to the object, but <code>callback</code> will take control over the success and error callbacks. If passed, the supplied <code>ajaxParameters</code> will be passed to the default Ajax call.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L530">components/UnmanagedComponent.js, line 530</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> url : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> | <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>                          </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>URL to call.</p>
+                          <table class="inner-table">
+                            <caption>Parameters:</caption>
+                            <thead>
+                              <tr>
+                                <th>Name</th>
+                                <th>Default Value</th>
+                                <th>Summary</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> url : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" target="_blank">String</a> </code> </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>URL to call.</p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td> params : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                                <td> &nbsp;</td>
+                                <td>
+                                  <p>Parameters for the call.</p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> params : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Parameters for the call.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> callback : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Render callback, called with the response data.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> ajaxParameters : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code>
+                          <div>
+                            <div class="badge badge-gray">
+                              <div class="stripe">&nbsp;</div>
+                              <div class="name">Optional</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td> {} </td>
+                        <td>
+                          <p>Parameters specific to the Ajax call definition.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p><strong>Fires:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf#.event:cdf">cdf.event:cdf</a>  ,
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#event:%22cdf:render%22">cdf.components.UnmanagedComponent#event:cdf:render</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="triggerQuery">
+            <thead>
+              <tr>
+                <th><strong>triggerQuery</strong> (queryDef, callback, queryOptions) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The triggerQuery lifecycle handler builds a lifecycle around Query objects. Execution ends immediately after the call to the specified callback.</p>
+                  <p>It takes a query definition object which is passed directly into the Query constructor, and the component rendering callback, and implements the lifecycle:</p> <pre><code><a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#preExec"><code>preExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#block"><code>block</code></a>  (optional) -> <a href="Documentation/6.1/0R0/cdf.queries.BaseQuery#fetchData"><code>fetchData</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postFetchData"><code>postFetch</code></a>  -> callback -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#postExec"><code>postExecution</code></a>  -> <a href="Documentation/6.1/0R0/cdf.components.UnmanagedComponent#unblock"><code>unblock</code></a>  (optional)</code></pre>
+                  <p>This method detects concurrent updates to the component and ensures that only the redraw of the most recent update is performed. <code>endExec</code> is called after the <code>callback</code> execution.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L469">components/UnmanagedComponent.js, line 469</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> queryDef : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The query definition object.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> callback : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>Callback to run after query has ran. It receives the fetched data as an argument.</p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td> queryOptions : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>User options for the query.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="unblock">
+            <thead>
+              <tr>
+                <th><strong>unblock</strong> () </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Trigger UI unblock when the component finishes updating. Functionality is defined as undoing whatever was done in the block method. Should also be overridden in components that override
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#block"><code>block</code></a> .</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/UnmanagedComponent.js#L755">components/UnmanagedComponent.js, line 755</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="h3">Events Details</p>
+          <table id="event:%22cdf:error%22">
+            <thead>
+              <tr>
+                <th><strong>cdf:error</strong>  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Event triggered when an error occurs.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/_doc/events.jsdoc#L46">components/_doc/events.jsdoc, line 46</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="event:%22cdf:postExecution%22">
+            <thead>
+              <tr>
+                <th><strong>cdf:postExecution</strong>  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Event triggered after a component finishes executing.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/_doc/events.jsdoc#L38">components/_doc/events.jsdoc, line 38</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="event:%22cdf:postFetch%22">
+            <thead>
+              <tr>
+                <th><strong>cdf:postFetch</strong> (data) </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Event triggered after an <code>UnmanagedComponent</code> fetches data.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/_doc/events.jsdoc#L54">components/_doc/events.jsdoc, line 54</a> 
+                  </p>
+                  <table class="inner-table">
+                    <caption>Parameters:</caption>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Default Value</th>
+                        <th>Summary</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td> data : <code><a class=" external" rel="external nofollow" href="http://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank">Object</a> </code> </td>
+                        <td> &nbsp;</td>
+                        <td>
+                          <p>The data returned from the
+                            <a class=" external" rel="external nofollow" href="http://api.jquery.com/jquery.ajax/" target="_blank">jQuery.ajax</a>  call.</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="event:%22cdf:preExecution%22">
+            <thead>
+              <tr>
+                <th><strong>cdf:preExecution</strong>  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Event triggered before a component starts executing.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/_doc/events.jsdoc#L30">components/_doc/events.jsdoc, line 30</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="event:%22cdf:render%22">
+            <thead>
+              <tr>
+                <th><strong>cdf:render</strong>  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>Event triggered after the <code>render</code> callback executes and before
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.UnmanagedComponent#endExec"><code>endExec</code></a>  executes.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/_doc/events.jsdoc#L64">components/_doc/events.jsdoc, line 64</a> 
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <table id="event:all">
+            <thead>
+              <tr>
+                <th><strong>all</strong>  </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p>The
+                    <a class=" external" rel="external nofollow" href="http://backbonejs.org/#Events-catalog" target="_blank"><code>all</code></a>  event is a special event which will trigger the bound callbacks when any event occurs. This event is mainly used for logging purposes.</p>
+                  <p><strong>Source: </strong> 
+                    <a target="_blank" class=" link-https" rel="external nofollow" href="https://github.com/webdetails/cdf/blob/6.1/core-js/src/main/javascript/cdf/components/_doc/events.jsdoc#L19">components/_doc/events.jsdoc, line 19</a> 
+                  </p>
+                  <p><strong>Inherited From:</strong> 
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/cdf.components.BaseComponent#event:all">cdf.components.BaseComponent#event:all</a> 
+                  </p>
+                  <p> <strong>See also:&nbsp;</strong>  Backbone Events
+                    <a class=" external" rel="external nofollow" href="http://backbonejs.org/#Events-catalog" target="_blank">catalog</a> . </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#cdf.components.UnmanagedComponent" rel="internal">cdf.components.UnmanagedComponent</a>  </li>
+      <li> <a href="#CDF_Async_Developer's_Guide" rel="internal">CDF Async Developer's Guide</a>  </li>
+      <li> <a href="#Rationale" rel="internal">Rationale</a>  </li>
+      <li> <a href="#Component_Execution_Order_and_Priority" rel="internal">Component Execution Order and Priority</a>  </li>
+      <li> <a href="#Backward_Compatibility_and_Changes" rel="internal">Backward Compatibility and Changes</a>  </li>
+      <li>
+        <a href="#Developing_Components" rel="internal">Developing Components</a> 
+        <ol>
+          <li> <a href="#Use_synchronous_If_Your_Component_Does_Not_Use_External_Data" rel="internal">Use synchronous If Your Component Does Not Use External Data</a>  </li>
+          <li> <a href="#Use_triggerQuery_When_You_Want_YourComponent_To_Use_CDA.2FQuery_Objects" rel="internal">Use triggerQuery When You Want YourComponent To Use CDA/Query Objects</a>  </li>
+          <li> <a href="#Alternating_Between_Static_And_Query-Based_Data" rel="internal">Alternating Between Static And Query-Based Data</a>  </li>
+          <li> <a href="#Constructor" rel="internal">Constructor</a>  </li>
+          <li> <a href="#Members" rel="internal">Members</a>  </li>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+          <li> <a href="#Events" rel="internal">Events</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

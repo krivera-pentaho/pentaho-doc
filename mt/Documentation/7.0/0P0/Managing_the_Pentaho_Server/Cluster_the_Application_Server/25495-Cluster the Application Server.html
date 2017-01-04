@@ -1,0 +1,250 @@
+<content type="text/html" title="Cluster the Application Server">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>The process for clustering a server includes the requirements needed, how to initialize and configure the repository, configure a jackrabbit journal and quartz, and how to test the cluster.</p>
+        </div>
+      </div>
+      <p class="p">A Pentaho node is made up of a Tomcat Web App server&nbsp;and the&nbsp;Pentaho&nbsp;Server. Multiple nodes that are joined make up a cluster. You can create a cluster using any version of Pentaho Suite 6.x or later.</p>
+      <p class="p">The following topics explain how to cluster the application server:</p>
+      <ul>
+        <li> <a title="Cluster the Application Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Cluster_the_Application_Server#Step_1:_Address_Prerequisites_for_Clustering">Step 1: Address Prerequisites for Clustering</a>  </li>
+        <li> <a title="Cluster the Application Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Cluster_the_Application_Server#Step_2:_Initialize_and_Configure_Repository">Step 2: Initialize and Configure Repository</a>  </li>
+        <li> <a title="Cluster the Application Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Cluster_the_Application_Server#Step_3:_Configure_Jackrabbit_Journal">Step 3: Configure Jackrabbit Journal</a>  </li>
+        <li> <a title="Cluster the Application Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Cluster_the_Application_Server#Step_4:_Configure_Quartz">Step 4: Configure Quartz</a>  </li>
+        <li> <a title="Cluster the Application Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Cluster_the_Application_Server#Step_5:_Start_and_Test_the_Cluster">Step 5: Start and Test the Cluster</a>  </li>
+      </ul>
+      <div id="section_2" class="mt-page-section"><span id="Step_1:_Address_Prerequisites_for_Clustering"></span> 
+        <h2 class="editable">Step 1: Address&nbsp;Prerequisites for Clustering</h2>
+        <p class="p">Before you begin the process of clustering your servers, a few tasks need to be preformed and some specific requirements must be met to successfully implement a Pentaho deployment on a Tomcat or JBoss cluster. The following table describes these
+          tasks and requirements:</p>
+        <table border="border" class="pentaho-table" title="Pentaho Table">
+          <thead align="left" class="thead">
+            <tr class="row">
+              <th class="entry">Requirement</th>
+              <th class="entry">Description</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr>
+              <td class="entry">Make sure that all of your application nodes are set up with identical configurations and BA deployments.</td>
+              <td class="entry">Your application nodes all need the same configurations and BA deployments installed already in order for clustering to work.</td>
+            </tr>
+            <tr>
+              <td class="entry">Establish a load balancer.</td>
+              <td class="entry">This will make sure that computing resources are spread evenly among the nodes.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">Each node and the load balancer must be time-synchronized via NTP.</td>
+              <td class="entry">All machines that make up the cluster have to have the same system time. If they do not, execution times of objects will be effected.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">You must run only one node per machine (or NIC).</td>
+              <td class="entry">It is possible to run multiple application servers on each node with a modified configuration, but this scenario does not offer any benefit for load balancing (performance) or hardware failover (redundancy), and therefore is not covered
+                in this guide. Refer to your application server's clustering documentation for more information.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">You must use either
+                <a title="https://help.pentaho.com/Documentation/6.0/0D0/160/000#Application_Servers" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000#Application_Servers">Tomcat 7.0.x/8.0.x or JBoss EAP&nbsp;6.4.x</a> .</td>
+              <td class="entry">You may be able to use this guide as a basic blueprint for configuring other application servers or versions of Tomcat and JBoss for a clustered environment, but Pentaho support will not be able to assist you if you run into any problems
+                with the Pentaho Server.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">You must have permission to install software and modify service configurations.</td>
+              <td class="entry">If you do not have permissions, you must have access to someone at your company who does have the correct permission levels - typically root access.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">Only the Pentaho Server will be deployed to the cluster.</td>
+              <td class="entry">It is possible to modify the configuration to deploy other WARs or EARs. However, for ease of testing and support, Pentaho only supports deployment of the pentaho and pentaho-style WARs to the cluster.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">You must use a single repository location.</td>
+              <td class="entry">Most people use a database-based solution &nbsp;repository. Keep in mind that you are not clustering the database server in this procedure, only the application server.&nbsp;</td>
+            </tr>
+            <tr class="row">
+              <td class="entry">You must have sticky sessions enabled.</td>
+              <td class="entry">This will tie your session to a single node.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Step_2:_Initialize_and_Configure_Repository"></span> 
+        <h2 class="editable">Step 2:&nbsp;Initialize and Configure Repository</h2>
+        <p>After you have determined that your systems meet all of the requirements listed in the checklist, you need to first initialize and then configure the repository for clustering. Finally, you need to verify your clustering setup, before you move
+          on to setting up the jackrabbit journal:</p>
+        <ol class="pentaho-list-ordered">
+          <li>Initialize <span class="ph cmd">your database using the steps in the appropriate article for your system.</span> 
+            <a title="Configure Your Repository Database" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0/0P0/030"> Configure Your&nbsp;Repository</a>  has sections for PostgreSQL, MySQL, MS SQL Server, and Oracle databases.</li>
+          <li><span class="ph cmd">After you have initialized your database, you will need to configure the data connections to the Pentaho Repository. <a title="Specify Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server">Specify Data Connections</a> </span>             walks you through the steps for JDBC and JNDI connections for PostgreSQL, MySQL, and Oracle.</li>
+          <li><span class="ph cmd">The next step is to configure your repository using the appropriate tasks in the <a title="Configure Your Repository Database for Manual Installation" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0/0P0/030">Configure Your Repository</a>  article.</span> </li>
+          <li>After you have initialized and configured your repository, you should clean up these files by following these steps.
+            <ul class="pentaho-list-unordered">
+              <li class="li">
+                <p>Locate the <code class="ph codeph">...pentaho-server/tomcat</code> directory and remove all files and folders from the <code class="ph codeph">temp</code> folder.</p>
+              </li>
+              <li class="li">
+                <p>Locate the <code class="ph codeph">...pentaho-server/tomcat</code> directory and remove all files and folders from the <code class="ph codeph">work</code> folder.</p>
+              </li>
+              <li class="li">
+                <p>Locate the <code class="ph codeph">...pentaho-server/pentaho-solutions/system/jackrabbit/repository</code> directory and remove all files and folders from the final <code class="ph codeph">repository</code> folder.</p>
+              </li>
+              <li class="li">
+                <p>Locate the <code class="ph codeph">...pentaho-server/pentaho-solutions/system/jackrabbit/repository</code> directory and remove all files and folders from the <code class="ph codeph">workspaces</code> folder.</p>
+              </li>
+            </ul>
+          </li>
+        </ol>
+        <p>You now have a configured repository and are ready to move to the next step for clustering.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Step_3:_Configure_Jackrabbit_Journal"></span> 
+        <h2 class="editable">Step 3: Configure Jackrabbit Journal</h2>
+        <p>These following steps show&nbsp;how to set up the Jackrabbit journal for your cluster (make sure that each node has a unique ID):</p>
+        <ol class="pentaho-list-ordered">
+          <li><span><span class="ph cmd">Locate the <span class="filepath style-wrap">repository.xml</span>  file in the<span class="filepath style-wrap"> .../pentaho-server/pentaho-solutions/system/jackrabbit</span>  directory and open it with any text editor.</span> 
+            </span> 
+          </li>
+          <li><span><span class="ph cmd"><span class="ph cmd">Scroll to the bottom of the file and replace the section that begins with <span class="filepath style-wrap">
+<!-- Run with a cluster journal --></span>  with the correct code for your type of database
+            repository.</span> 
+            </span> 
+            </span> 
+          </li>
+          <li><span class="ph cmd">Save and close the file.</span> </li>
+        </ol>
+        <p><strong>For PostgreSQL only:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+Run with a cluster journal
+-->
+<Cluster id=&quot;Unique_ID&quot;>
+    <Journal class=&quot;org.apache.jackrabbit.core.journal.DatabaseJournal&quot;>
+      <param name=&quot;revision&quot; value=&quot;${rep.home}/revision.log&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:postgresql://HOSTNAME:PORT/jackrabbit&quot;/>
+      <param name=&quot;driver&quot; value=&quot;org.postgresql.Driver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;databaseType&quot; value=&quot;postgresql&quot;/>
+      <param name=&quot;janitorEnabled&quot; value=&quot;true&quot;/>
+      <param name=&quot;janitorSleep&quot; value=&quot;86400&quot;/>
+      <param name=&quot;janitorFirstRunHourOfDay&quot; value=&quot;3&quot;/>
+    </Journal>
+</Cluster></pre>
+        <p><strong>For MySQL only:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+Run with a cluster journal
+-->
+<Cluster id=&quot;Unique_ID&quot;>
+    <Journal class=&quot;org.apache.jackrabbit.core.journal.DatabaseJournal&quot;>
+      <param name=&quot;revision&quot; value=&quot;${rep.home}/revision.log&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:mysql://HOSTNAME:PORT/jackrabbit&quot;/>
+      <param name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;mysql&quot;/>
+      <param name=&quot;databaseType&quot; value=&quot;mysql&quot;/>
+      <param name=&quot;janitorEnabled&quot; value=&quot;true&quot;/>
+      <param name=&quot;janitorSleep&quot; value=&quot;86400&quot;/>
+      <param name=&quot;janitorFirstRunHourOfDay&quot; value=&quot;3&quot;/>
+    </Journal>
+</Cluster></pre>
+        <p><strong>&nbsp;For Oracle only:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+Run with a cluster journal
+-->  
+<Cluster id=&quot;Unique_ID&quot;>
+    <Journal class=&quot;org.apache.jackrabbit.core.journal.OracleDatabaseJournal&quot;>
+        <param name=&quot;revision&quot; value=&quot;${rep.home}/revision.log&quot; />
+        <param name=&quot;url&quot; value=&quot;jdbc:oracle:thin://localhost:1521/di_jackrabbit&quot;/>
+        <param name=&quot;driver&quot; value=&quot;oracle.jdbc.OracleDriver&quot;/>
+        <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+        <param name=&quot;password&quot; value=&quot;password&quot;/>
+        <param name=&quot;schema&quot; value=&quot;oracle&quot;/>
+        <param name=&quot;janitorEnabled&quot; value=&quot;true&quot;/>
+        <param name=&quot;janitorSleep&quot; value=&quot;86400&quot;/>
+        <param name=&quot;janitorFirstRunHourOfDay&quot; value=&quot;3&quot;/> 
+     </Journal>
+</Cluster>&quot;</pre>
+        <p><strong>For MS SQL Server only:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+Run with a cluster journal
+-->
+<Cluster id=&quot;Unique_ID&quot;>
+    <Journal class=&quot;org.apache.jackrabbit.core.journal.MSSqlDatabaseJournal&quot;>
+      <param name=&quot;revision&quot; value=&quot;${rep.home}/revision.log&quot;/>
+      <param name=&quot;url&quot; value=&quot;jdbc:sqlserver://localhost:1433;databaseName=jackrabbit&quot;/>
+      <param name=&quot;driver&quot; value=&quot;com.microsoft.sqlserver.jdbc.SQLServerDriver&quot;/>
+      <param name=&quot;user&quot; value=&quot;jcr_user&quot;/>
+      <param name=&quot;password&quot; value=&quot;password&quot;/>
+      <param name=&quot;schema&quot; value=&quot;mssql&quot;/>
+      <param name=&quot;janitorEnabled&quot; value=&quot;true&quot;/>
+      <param name=&quot;janitorSleep&quot; value=&quot;86400&quot;/>
+      <param name=&quot;janitorFirstRunHourOfDay&quot; value=&quot;3&quot;/>
+    </Journal>
+</Cluster></pre>
+        <p>Jackrabbit journaling is now set up for your cluster. The
+          <a class="external" title="http://wiki.apache.org/jackrabbit/Clustering" rel="external nofollow" href="http://wiki.apache.org/jackrabbit/Clustering" target="_blank">Jackrabbit Wiki</a>  has additional information about journaling. Next, you need to cluster the quartz tables to avoid duplicate scheduling on each node.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Step_4:_Configure_Quartz"></span> 
+        <h2 class="editable">Step 4:&nbsp;Configure Quartz</h2>
+        <p>You now need to make a few edits&nbsp;in the <code>quartz.properties</code> file to configure Quartz to work with your cluster.</p>
+        <p><code class="ph codeph">org.quartz.scheduler.instanceId = AUTO</code></p>
+        <ol class="pentaho-list-ordered">
+          <li><span class="ph cmd">Locate the <code class="ph codeph">quartz.properties</code> file in the <code class="ph codeph">.../pentaho-server/pentaho-solutions/system/quartz</code> directory and open it with any text editor. </span> </li>
+          <li><span class="ph cmd">Find the <code class="ph codeph">org.quartz.scheduler.instanceId = INSTANCE_ID</code> line and change <code class="ph codeph">INSTANCE_ID</code> to <code class="ph codeph">AUTO</code>.</span> </li>
+          <li> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.scheduler.instanceId = AUTO</pre> </li>
+          <li><span class="ph cmd">Find the <code class="ph codeph">#_replace_jobstore_properties</code> section and change the default value of <code class="ph codeph"><span>org.quartz.jobStore.is<span class="resultofText">Cluster</span> ed</span> 
+            </code>
+            to <code class="ph codeph">true</code> as shown.</span> 
+          </li>
+          <li> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">#_replace_jobstore_properties
+org.quartz.jobStore.misfireThreshold = 60000
+org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+org.quartz.jobStore.useProperties = false
+org.quartz.jobStore.dataSource = myDS
+org.quartz.jobStore.tablePrefix = QRTZ5_
+org.quartz.jobStore.isClustered = true</pre> </li>
+          <li class="li step">
+            <p><span class="ph cmd">Add this line just after the <code class="ph codeph"><span>org.quartz.jobStore.is<span class="resultofText">Cluster</span> ed = true</span> 
+              </code> line.</span> 
+            </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">org.quartz.jobStore.clusterCheckinInterval = 20000</pre> </li>
+        </ol>
+        <p>Quartz is now configured for your cluster. The
+          <a class="external" title="http://quartz-scheduler.org/documentation/quartz-2.x/configuration/ConfigJDBCJobStoreClustering" rel="external nofollow" href="http://quartz-scheduler.org/documentation/quartz-2.x/configuration/ConfigJDBCJobStoreClustering"
+          target="_blank">Quartz Configuration Reference</a>  has additional information about clustering with Quartz.</p>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Step_5:_Start_and_Test_the_Cluster"></span> 
+        <h2 class="editable">Step 5: Start and Test the Cluster</h2>
+        <p>Start the cluster and verify that it is working properly with the following steps:</p>
+        <ol class="pentaho-list-ordered">
+          <li><span class="ph cmd">Start the solution database.</span> </li>
+          <li><span class="ph cmd"><span class="ph cmd">Start the application server on each node.</span> </span> 
+          </li>
+          <li><span class="ph cmd">Make sure that the load balancer is able to ping each node.</span> </li>
+          <li><span class="ph cmd">Repeat for each node that you have set up.</span> </li>
+          <li><span class="ph cmd">Test the cluster by accessing the </span> Pentaho<span class="ph cmd"> Server through the load balancer's IP address, hostname, or domain name. Begin whatever test procedure you have designed for this scenario.</span> </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Step_1:_Address_Prerequisites_for_Clustering" rel="internal">Step 1: Address&nbsp;Prerequisites for Clustering</a>  </li>
+      <li> <a href="#Step_2:_Initialize_and_Configure_Repository" rel="internal">Step 2:&nbsp;Initialize and Configure Repository</a>  </li>
+      <li> <a href="#Step_3:_Configure_Jackrabbit_Journal" rel="internal">Step 3: Configure Jackrabbit Journal</a>  </li>
+      <li> <a href="#Step_4:_Configure_Quartz" rel="internal">Step 4:&nbsp;Configure Quartz</a>  </li>
+      <li> <a href="#Step_5:_Start_and_Test_the_Cluster" rel="internal">Step 5: Start and Test the Cluster</a>  </li>
+    </ol>
+  </body>
+</content>

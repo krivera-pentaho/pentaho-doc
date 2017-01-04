@@ -1,0 +1,79 @@
+<content type="text/html" title="Process Rows">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepInterface </code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStep.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStep.html"><code class="ph codeph">org.pentaho.di.trans.step.BaseStep</code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p">The class implementing <code class="ph codeph">StepInterface</code> is responsible for the actual row processing when the transformation runs.&nbsp;</p>
+        <p class="p">The implementing class can rely on the base class and has only three important methods it implements itself. The three methods implement the step life cycle during transformation execution: initialization, row processing, and clean-up.&nbsp;</p>
+        <br />
+        <img alt="File:/step_plugin_lifecycle.png" class="image internal" id="05afbac3-6f37-40b6-93e9-d82dc7496cd3__processing_rows__image_jpd_lxh_nh" src="http://help.pentaho.com/@api/deki/files/9193/step_plugin_lifecycle.png?revision=1" />
+        <p class="p">During initialization PDI calls the <code class="ph codeph">init()</code> method of the step once. After all steps have initialized, PDI calls <code class="ph codeph">processRow()</code> repeatedly until the step signals that it is done processing
+          all rows. After the step is finished processing rows, PDI calls <code class="ph codeph">dispose()</code>.&nbsp;</p>
+        <p class="p">The method signatures have a
+          <a class="xref external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html"
+          target="_blank"><code class="ph codeph">StepMetaInterface</code> </a> object and a
+          <a class="xref external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDataInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDataInterface.html"
+          target="_blank"><code class="ph codeph">StepDataInterface</code></a>  object. Both objects can be safely cast down to the specific implementation classes of the step.&nbsp;</p>
+        <p class="p">Aside from the methods it needs to implement, there is one additional and very important rule: the class must not declare any fields. All variables must be kept as part of the class implementing <code class="ph codeph">StepDataInterface</code>.
+          In practice this is not a problem, since the object implementing <code class="ph codeph">StepDataInterface</code> is passed in to all relevant methods, and its fields are used instead of local ones. The reason for this rule is the need to decouple
+          step variables from instances of <code class="ph codeph">StepInterface</code>. This enables PDI to implement different threading models to execute a transformation.</p>
+        <p class="p"><strong class="ph b">Step Initialization</strong> </p>
+        <p class="p">The <code class="ph codeph">init()</code> method is called when a transformation is preparing to start execution.&nbsp;</p>
+        <p class="p"><code class="ph codeph">public boolean init()</code></p>
+        <p class="p">Every step is given the opportunity to do one-time initialization tasks, such as opening files or establishing database connections. For any steps derived from <code class="ph codeph">BaseStep</code>, it is mandatory that <code class="ph codeph">super.init()</code>          is called to ensure correct behavior. The method returns <code class="ph codeph">true</code> in case the step initialized correctly, it returns <code class="ph codeph">false</code> if there is an initialization error. PDI will abort the execution
+          of a transformation in case any step returns <code class="ph codeph">false</code> upon initialization.</p>
+        <p class="p"><strong class="ph b">Row Processing</strong> </p>
+        <p class="p">Once the transformation starts, it enters a tight loop, calling <code class="ph codeph">processRow()</code> on each step until the method returns <code class="ph codeph">false</code>. In most cases, each step reads a single row from the input
+          stream, alters the row structure and fields, and passes the row on to the next step. Some steps, such as input, grouping, and sorting steps, read rows in batches, or can hold on to the read rows to perform other processing before passing them
+          on to the next step.</p>
+        <p class="p"><code class="ph codeph">public boolean processRow()</code></p>
+        <p class="p">A PDI step queries for incoming input rows by calling <code class="ph codeph">getRow()</code>, which is a blocking call that returns a row object or <code class="ph codeph">null</code> in case there is no more input. If there is an input row,
+          the step does the necessary row processing and calls <code class="ph codeph">putRow()</code> to pass the row on to the next step. If there are no more rows, the step calls <code class="ph codeph">setOutputDone()</code> and returns <code class="ph codeph">false</code>.</p>
+        <p class="p">The method must conform to these rules.</p>
+        <ul class="ul" id="05afbac3-6f37-40b6-93e9-d82dc7496cd3__processing_rows__ul_npd_lxh_nh">
+          <li class="li">If the step is done processing all rows, the method calls <code class="ph codeph">setOutputDone()</code> and returns <code class="ph codeph">false</code>.</li>
+          <li class="li">If the step is not done processing all rows, the method returns <code class="ph codeph">true</code>. PDI calls <code class="ph codeph">processRow()</code> again in this case.</li>
+        </ul>
+        <p class="p">The
+          <a class="xref" title="Sample Step Plugin" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/040">sample step plugin project</a>  shows an&nbsp;implementation of <code class="ph codeph">processRow()</code> that is commonly used in data processing steps.</p>
+        <p class="p">In contrast to that, input steps do not usually expect any incoming rows from previous steps. They are designed to execute <code class="ph codeph">processRow(</code>) exactly once, fetching data from the outside world, and putting them into the
+          row stream by calling <code class="ph codeph">putRow()</code> repeatedly until done. Examining existing PDI steps is a good guide for designing your <code class="ph codeph">processRow()</code> method.&nbsp;</p>
+        <p class="p">The row structure object is used during the first invocation of <code class="ph codeph">processRow()</code> to determine the indexes of fields on which the step operates. The <code class="ph codeph">BaseStep</code> class already provides a convenient
+          First flag to help implement special processing on the first invocation of <code class="ph codeph">processRow()</code>. Since the row structure is equal for all input rows, steps cache field index information in variables on their <code class="ph codeph">StepDataInterface</code>          object.</p>
+        <p class="p"><strong class="ph b">Step Clean-Up</strong> </p>
+        <p class="p">Once the transformation is complete, PDI calls <code class="ph codeph">dispose()</code> on all steps.&nbsp;</p>
+        <p class="p"><code class="ph codeph">Public void dispose()</code></p>
+        <p class="p">Steps are required to deallocate resources allocated during <code class="ph codeph">init()</code> or subsequent row processing. Your implementation should clear all fields of the <code class="ph codeph">StepDataInterface</code> object, and ensure
+          that all open files or connections are properly closed. For any steps derived from <code class="ph codeph">BaseStep,</code> it is mandatory that <code class="ph codeph">super.dispose()</code> is called to ensure correct deallocation.</p>
+      </div>
+      <div class="related-links">
+        <ul class="pentaho-list-unordered">
+          <li class="link ulchildlink"><strong><a title="Storing the Processing State" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/020/000">Storing the Processing State</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Working with Rows" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/020/010">Working with Rows</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Working With Fields" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/020/020">Working With Fields</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Handling Errors" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/020/030">Handling Errors</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Understanding Row Counters" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/020/040">Understanding Row Counters</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Logging in Transformation Steps" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/0V0/010/Create_Step_Plugins/020/050">Logging in Transformation Steps</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,646 @@
+<content type="text/html" title="Repository Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Retrieves the repository files through various methods. Allows you to execute repository content.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Overview_2"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>The RepositoryResource service retrieves the repository files through various methods. &nbsp;Allows you to execute repository content.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__repos_-contextId-_-resourceId%20-.html">/repos/{contextId}/{resourceId }</a>  </li>
+              <li> <a href="#path__repos_-pathId%20-_default.html">/repos/{pathId }/default</a>  </li>
+            </ul>
+            <a name="path__repos_-contextId-_-resourceId%20-.html"></a> 
+            <div id="section_3" class="mt-page-section"><span id=".2Frepos.2F.7BcontextId.7D.2F.7BresourceId_.7D"></span> 
+              <h1 class="editable">/repos/{contextId}/{resourceId }</h1>
+              <a name="POST"></a> 
+              <div id="section_4" class="mt-page-section"><span id="POST"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Gets a resource identified by the compound key contextId and resourceId. This request may include additional parameters used to render the resource.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/repos/xanalyzer/service/ajax/lookupXmiId
+                  <br /> <strong>POST data:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">catalog=t&amp;cube=t&amp;time=1389817320072</pre>
+                <div id="section_5" class="mt-page-section"><span id="Parameters"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>contextId</td>
+                        <td>Identifies the context in which the resource should be retrieved. This value may be a repository file ID, repository file extension or plugin ID</td>
+                        <td>path</td>
+                      </tr>
+                      <tr>
+                        <td>resourceId</td>
+                        <td>Identifies a resource to be retrieved. This value may be a static file residing in a publicly visible plugin folder, repository file ID or content generator ID</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_6" class="mt-page-section"><span id="Request_Body"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/x-www-form-urlencoded</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>Any arguments needed to render the resource</p>
+                </div>
+                <div id="section_7" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object with the appropriate status code, header, and body. In many cases this will trigger a streaming operation after it it is returned to the caller..</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This response does not contain data.</pre> </div>
+                <div id="section_8" class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully get the resource.</td>
+                      </tr>
+                      <tr>
+                        <td>404</td>
+                        <td>Failed to find the resource.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="GET"></a> 
+                </div>
+              </div>
+              <div id="section_9" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Gets a resource identified by the compound key contextId and resourceId. This request may include additional parameters used to render the resource.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/repos/admin-plugin/resources/authenticationProviderModule/authenticationProviderAdmin.html</p>
+                <div id="section_10" class="mt-page-section"><span id="Parameters_2"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>contextId</td>
+                        <td>Identifies the context in which the resource should be retrieved. This value may be a repository file ID, repository file extension or plugin ID.</td>
+                        <td>path</td>
+                      </tr>
+                      <tr>
+                        <td>resourceId</td>
+                        <td>Identifies a resource to be retrieved. This value may be a static file residing in a publicly visible plugin folder, repository file ID or content generator ID.</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_11" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object with the appropriate status code, header, and body.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><!DOCTYPE html>
+<html xmlns:pho=&quot;http:/www.pentaho.com&quot;>
+<head>
+<title>Report Parameter UI</title>
+<link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;authenticationProviderAdmin.css&quot; />
+<link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../../common-ui/resources/web/dojo/dijit/themes/pentaho/pentaho.css&quot; />
+<script type=&quot;text/javascript&quot; src=&quot;../../../../webcontext.js&quot;></script>
+<script type=&quot;text/javascript&quot;>
+require([&quot;authenticationProviderAdmin&quot;]);
+</script>
+</head>
+<body class=&quot;soria&quot; style=&quot;border: none&quot;>
+
+<!--  tree dialog -->
+<div id=&quot;ldapTreeDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot;  data-dojo-props='title:&quot;LDAP Browser&quot;' class=&quot;dialog&quot;>
+<div id=&quot;ldapTreeDialogContent&quot; class=&quot;dialog-content ldap-tree-padding&quot;>
+<div id=&quot;ldapTree&quot; data-dojo-props=&quot;autoExpand:true&quot;></div>
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_ldapTreeDialogOk&quot; class=&quot;pentaho-button ok-button first&quot;> </button>
+<button id=&quot;btn_ldapTreeDialogCancel&quot; class=&quot;pentaho-button cancel-button last&quot;> </button>
+</div>
+</div>
+</div>
+
+<!-- override dialog -->
+<div id=&quot;ldapDirtyDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot; class=&quot;dialog&quot;>
+<div class=&quot;dialog-content pentaho-padding-sm&quot;>
+<p class=&quot;message&quot;>You have unsaved changes. Do you want to continue?</p>
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_ldapDirtyDialogNo&quot; class=&quot;pentaho-button no-button first&quot;> </button>
+<button id=&quot;btn_ldapDirtyDialogYes&quot; class=&quot;pentaho-button yes-button last&quot;> </button>
+</div>
+</div>
+</div>
+
+<!-- test dialog -->
+<div id=&quot;ldapTestMsgDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot; class=&quot;dialog&quot;>
+<div class=&quot;dialog-content pentaho-padding-sm&quot;>
+<p class=&quot;message&quot;> </p>
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_hideTest&quot; class=&quot;pentaho-button close-button last&quot;> </button>
+</div>
+</div>
+</div>
+
+<!-- edit server connection -->
+<div id=&quot;editServerDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot; data-dojo-props='title:&quot;Edit External Authentication Server Connection&quot;' class=&quot;dialog&quot;>
+<div class=&quot;dialog-content pentaho-padding-sm&quot;>
+<p class=&quot;message&quot;>Changing server conneciton will remove all current authentication and premissions settings. Do you want to continue?</p>
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_editServerDialogYesClick&quot; class=&quot;pentaho-button ok-button first&quot;> </button>
+<button id=&quot;btn_editServerDialogNoClick&quot; class=&quot;pentaho-button cancel-button last&quot;> </button>
+</div>
+</div>
+</div>
+
+<!-- edit authentication method -->
+<div id=&quot;authenticationChangeDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot; class=&quot;dialog&quot; >
+<div class=&quot;dialog-content pentaho-padding-sm&quot;>
+<p class=&quot;message&quot;>Changing the authentication method will remove all current authentication and premissions settings. Do you want to continue?</p>
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_processAuthenticationMethodChange&quot; class=&quot;pentaho-button yes-change-button first&quot;> </button>
+<button id=&quot;btn_authenticationChangeNoClick&quot; class=&quot;pentaho-button no-button last&quot;> </button>
+</div>
+</div>
+</div>
+
+<!-- populator dialog -->
+<div id=&quot;ldapPopTestDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot; class=&quot;dialog&quot;>
+<div class=&quot;dialog-content pentaho-padding-sm&quot;>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapPopulatorGroupRoleAttributeLabel&quot;>Group Role Attribute:</div>
+<div class=&quot;ldapPopulatorGroupRoleAttributeValue value&quot;></div>
+</div>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapPopulatorGroupRoleSearchBaseLabel&quot;>Group Search Base:</div>
+<div class=&quot;ldapPopulatorGroupRoleSearchBaseValue value&quot;></div>
+</div>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapPopulatorGroupSearchFilterLabel&quot;>Group Search Filter:</div>
+<div class=&quot;ldapPopulatorGroupSearchFilterValue value&quot;></div>
+</div>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapPopulatorRolePrefixLabel&quot;>Role Prefix:</div>
+<div class=&quot;ldapPopulatorRolePrefixValue value&quot;></div>
+</div>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapUserLabel&quot;>User Name:</div>
+</div>
+<input id=&quot;ldapPopTestUserName&quot; type=&quot;text&quot; />
+<br />
+<div class=&quot;groupOption&quot;>
+<label class=&quot;ldapUserDomainLabel&quot;>User DN:</label>
+</div>
+<input id=&quot;ldapPopTestUserDn&quot; type=&quot;text&quot;/>
+<br />
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_testPopulator&quot; class=&quot;pentaho-button ok-button first&quot;> </button>
+<button id=&quot;btn_hideLdapPropsTest&quot; class=&quot;pentaho-button cancel-button last&quot;> </button>
+</div>
+</div>
+</div>
+
+<!-- user test dialog -->
+<div id=&quot;ldapUserTestDialog&quot; data-dojo-type=&quot;dijit.Dialog&quot; class=&quot;dialog&quot;>
+<div class=&quot;dialog-content pentaho-padding-sm&quot;>
+<p class=&quot;message&quot;>With the search base and search filter configuration search for a user name that exists in your LDAP server.</p>
+<br/>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapUserTestLabel&quot;>Search For User:</div>
+</div>
+<input class=&quot;ldapUserTestUserName&quot; type=&quot;text&quot; />
+<br />
+</div>
+<div class=&quot;dialog-buttons&quot;>
+<div class=&quot;container&quot;>
+<button id=&quot;btn_testLdapUserSearch&quot; class=&quot;pentaho-button ok-button first&quot;> </button>
+<button id=&quot;btn_hideLdapUserTestDialog&quot; class=&quot;pentaho-button cancel-button last&quot;> </button>
+</div>
+</div>
+</div>
+<div style=&quot;padding: 0px;&quot;>
+<div class=&quot;pentaho-fieldgroup-major titleLabel&quot;>Authentication</div>
+<br/>
+
+<!-- CONNECTION PARAMS -->
+<div id=&quot;authenticationSelector&quot;>
+<div class=&quot;authenticationMethodLabel authMethod&quot;>Authentication Method</div>
+<div class=&quot;authText authenticationMethodDescriptionLabel&quot;>
+Select where user and their log in credentials will be managed:
+</div>
+<div class=&quot;groupOption&quot;>
+<input checked=&quot;checked&quot; name=&quot;securityProvider&quot; type=&quot;radio&quot; value=&quot;jackrabbit&quot; />
+<div class=&quot;pentahoSecurityLabel authValue&quot;>Local - Use basic Pentaho authentication</div>
+</div>
+<div class=&quot;groupOption&quot;>
+<input name=&quot;securityProvider&quot; type=&quot;radio&quot; value=&quot;ldap&quot; />
+<div class=&quot;ldapSecurityLabel authValue&quot;>External - Use LDAP / Active Directory server</div>
+</div>
+</div>
+<br />
+<br />
+<div id=&quot;ldapConnection&quot; style=&quot;display: none&quot;>
+<div class=&quot;ldapConnectionTitleLabel authMethod&quot;>LDAP Server Connection</div>
+
+<!-- to edit config -->
+<div id=&quot;ldapConnectionEdit&quot; style=&quot;display:block&quot;>
+<div class=&quot;authText ldapServerUrlLabel&quot;>Server URL:</div>
+<input class=&quot;ldapServerUrlInput authValue adminField&quot; type=&quot;text&quot; />
+<div class=&quot;authText ldapUserLabel&quot;>User Name:</div>
+<input class=&quot;ldapUserInput authValue adminField&quot; type=&quot;text&quot; />
+<div class=&quot;authText ldapPasswordLabel&quot;>Password:</div>
+<input class=&quot;ldapPasswordInput authValue adminField&quot; type=&quot;password&quot; />
+<br/><br/>
+<div class=&quot;authText ldapTestConnectionLabel&quot;>Test connection to complete LDAP setup</div>
+<br/>
+<div class=&quot;securityConfigButton&quot;>
+<button id=&quot;testServerConnectionButton&quot; class=&quot;pentaho-button testServerConnectionButton&quot; >
+</button>
+</div>
+</div>
+
+<!-- edited config -->
+<div id=&quot;ldapConnectionEditor&quot; style=&quot;display:none&quot;>
+<div class=&quot;authText ldapServerUrlLabel&quot; >Server URL:</div>
+<div class=&quot;groupOption&quot;>
+<div class=&quot;ldapServerUrlValue authValue&quot;></div>
+<div class=&quot;pentaho-editbutton&quot; id=&quot;btn_editConnection&quot; title=&quot;Edit connection&quot;></div>
+</div>
+</div>
+<br />
+<div>
+<div id=&quot;ldapSettingsGroup&quot; style=&quot;display: none&quot;>
+
+<!-- Ldap administration configuration -->
+<div id=&quot;ldapAdministration&quot;>
+<div class=&quot;ldapAdministrationTitleLabel authMethod&quot;>Pentaho System Administrator</div>
+<div class=&quot;ldapAdministratiorUserLabel authText&quot;>Select user from LDAP server:</div>
+<div class=&quot;groupOption&quot;>
+<input class=&quot;ldapAdministratorUserInput adminField&quot; type=&quot;text&quot;  />
+<button class=&quot;adminButton&quot; id=&quot;btn_ldapAdministratorUserInput&quot;> </button>
+</div>
+<div class=&quot;ldapAdministrationRoleLabel authText&quot;>Select role from LDAP server:</div>
+<div class=&quot;groupOption&quot;>
+<input class=&quot;ldapAdministratorRoleInput adminField&quot; type=&quot;text&quot;  />
+<button class=&quot;adminButton&quot; id=&quot;btn_ldapAdministratorRoleInput&quot; > </button>
+</div>
+</div>
+<br/><br/>
+
+<!-- ldap configuration -->
+<div class=&quot;ldapConfigurationTitle authMethod&quot;>LDAP Configuration</div>
+<div class=&quot;authText&quot; id=&quot;customLdapProviderLabel&quot; >Other</div>
+<div class=&quot;groupOption&quot;>
+<select id=&quot;ldapTypeSelector&quot;>
+<option class=&quot;ldapTypeSelectorApacheOption&quot; selected=&quot;selected&quot; value=&quot;ldapApacheConfiguration&quot;>Apache DS</option>
+<option class=&quot;ldapTypeSelectorCustomOption&quot; value=&quot;ldapCustomConfiguration&quot;>Custom</option>
+</select>
+</div>
+
+<!-- ldap apache configuration -->
+<div id=&quot;ldapApacheConfiguration&quot; class=&quot;ldapApacheConfiguration configuration&quot; style=&quot;display: none;&quot;>
+
+<!-- User Base -->
+<div class=&quot;ldapUserBaseLabel authText&quot;>User Base:</div>
+<div class=&quot;groupOption&quot;>
+<input class=&quot;ldapUserSearchBaseInput adminField&quot; type=&quot;text&quot; />
+<button class=&quot;adminButton&quot; id=&quot;btn_ldapUserSearchBaseInput&quot;> </button>
+</div>
+
+<!-- Group Base -->
+<div class=&quot;ldapGroupBaseLabel authText&quot;>Group Base:</div>
+<div class=&quot;groupOption&quot;>
+<input class=&quot;ldapGroupBaseInput adminField&quot; type=&quot;text&quot; />
+<button class=&quot;adminButton&quot; id=&quot;btn_ldapGroupBaseInput&quot; > </button>
+</div>
+<div style=&quot;display: none&quot;>
+
+<!-- This stuff is hidden but populated for save functions -->
+<input class=&quot;ldapUserSearchFilterInput&quot; />
+<input class=&quot;ldapRoleBaseInput&quot; />
+<input class=&quot;ldapRoleSearchBaseInput&quot; />
+<input class=&quot;ldapRoleSearchFilterInput&quot; />
+<input class=&quot;ldapPopulatorGroupRoleAttributeInput&quot; />
+<input class=&quot;ldapPopulatorGroupSearchFilterInput&quot; />
+<input class=&quot;ldapPopulatorGroupRoleSearchBaseInput&quot; />
+<input class=&quot;ldapPopulatorRolePrefixInput&quot; />
+<input class=&quot;ldapPopulatorSubtreeInput&quot; name=&quot;ldapPopulatorSubtreeInput&quot; type=&quot;radio&quot; value=&quot;false&quot; />
+<input class=&quot;ldapPopulatorUpperCaseInput&quot; name=&quot;ldapPopulatorUpperCaseInput&quot; type=&quot;radio&quot; value=&quot;false&quot; />
+</div>
+</div>
+<div id=&quot;ldapMicrosoftConfiguration&quot; class=&quot;microsoftConfigPanel configuration&quot; style=&quot;display: none;&quot;>
+<div class=&quot;ldapUserBaseLabel authText&quot;>User Base:</div>
+<div class=&quot;groupOption&quot;>
+<input class=&quot;ldapUserSearchBaseInput adminField&quot; type=&quot;text&quot;  />
+<button class=&quot;adminButton&quot; id=&quot;btn_ldapUserSearchBaseInput2&quot; > </button>
+</div>
+<div class=&quot;ldapGroupBaseLabel authText&quot;>Group Base:</div>
+<div class=&quot;groupOption&quot;>
+<input class=&quot;ldapGroupBaseInput adminField&quot; type=&quot;text&quot;  />
+<button class=&quot;adminButton&quot; id=&quot;btn_ldapGroupBaseInput2&quot;> </button>
+</div>
+<div style=&quot;display: none&quot;>
+
+<!-- This stuff is hidden but populated for test and save functions -->
+<input class=&quot;ldapUserSearchFilterInput&quot; />
+<input class=&quot;ldapRoleBaseInput&quot; />
+<input class=&quot;ldapRoleSearchBaseInput&quot; />
+<input class=&quot;ldapRoleSearchFilterInput&quot; />
+<input class=&quot;ldapPopulatorGroupRoleAttributeInput&quot; />
+<input class=&quot;ldapPopulatorGroupSearchFilterInput&quot; />
+<input class=&quot;ldapPopulatorGroupRoleSearchBaseInput&quot; />
+<input class=&quot;ldapPopulatorRolePrefixInput&quot; />
+<input class=&quot;ldapPopulatorSubtreeInput&quot; name=&quot;ldapPopulatorSubtreeInput&quot; type=&quot;radio&quot; value=&quot;false&quot; />
+<input class=&quot;ldapPopulatorUpperCaseInput&quot; name=&quot;ldapPopulatorUpperCaseInput&quot; type=&quot;radio&quot; value=&quot;false&quot; />
+</div>
+</div>
+
+<!-- ldap custom configuration -->
+<div id=&quot;ldapCustomConfiguration&quot; class=&quot;ldapCustomConfiguration configuration&quot; style=&quot;display: none;&quot;>
+
+<!-- user search configuration -->
+<br/>
+<span class=&quot;ldapCustomUserSearchTitle authMethod&quot;>User Search</span> 
+<br/>
+<div>
+<div class=&quot;ldapUserSearchBaseLabel authText&quot;>Search Base:</div>
+<input class=&quot;ldapUserSearchBaseInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapUserSearchFilderLabel authText&quot;>Search Filter:</div>
+<input class=&quot;ldapUserSearchFilterInput adminField&quot; type=&quot;text&quot;  />
+<br/> <br/>
+<div class=&quot;securityConfigButton&quot;>
+<button class=&quot;pentaho-button test-button&quot; id=&quot;btn_showLdapUserTestDialog&quot;> </button>
+</div>
+</div>
+<br/> <br/>
+
+<!-- roles configuration -->
+<span class=&quot;ldapRolesTitle authMethod&quot;>Roles</span> 
+<br/>
+<div>
+<div class=&quot;ldapRoleBaseLabel authText&quot;>Role Attribute:</div>
+<input class=&quot;ldapRoleBaseInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapRoleSearchFilterLabel authText&quot;>Role Search Filter:</div>
+<input class=&quot;ldapRoleSearchFilterInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapRoleSearchBaseLabel authText&quot;>Role Search Base:</div>
+<input class=&quot;ldapRoleSearchBaseInput adminField&quot; type=&quot;text&quot;  />
+<br/> <br/>
+<div class=&quot;securityConfigButton&quot;>
+<button class=&quot;pentaho-button test-button&quot; id=&quot;btn_testAuthoritiesSearch&quot;> </button>
+</div>
+</div>
+<br/> <br/>
+<span class=&quot;ldapPopulatorTitle authMethod&quot;>Populator</span> 
+<br/>
+<div>
+<div class=&quot;ldapPopulatorGroupRoleAttributeLabel authText&quot;>Group Role Attribute:</div>
+<input class=&quot;ldapPopulatorGroupRoleAttributeInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapPopulatorGroupRoleSearchBaseLabel authText&quot;>Group Search Base:</div>
+<input class=&quot;ldapPopulatorGroupRoleSearchBaseInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapPopulatorGroupSearchFilterLabel authText&quot;>Group Search Filter:</div>
+<input class=&quot;ldapPopulatorGroupSearchFilterInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapPopulatorRolePrefixLabel authText&quot;>Role Prefix:</div>
+<input  class=&quot;ldapPopulatorRolePrefixInput adminField&quot; type=&quot;text&quot;  />
+<div class=&quot;ldapPopulatorUpperCaseLabel authText&quot;>Convert To Upper Case:</div>
+<div class=&quot;ldapPopulatorUpperCaseDescription groupOption&quot;>
+<input name=&quot;ldapPopulatorUpperCaseInput&quot; class=&quot;ldapPopulatorUpperCaseInput&quot; type=&quot;radio&quot; value=&quot;true&quot; />
+<label class=&quot;yes-button&quot;>Yes</label>
+<input name=&quot;ldapPopulatorUpperCaseInput&quot; class=&quot;ldapPopulatorUpperCaseInput&quot; type=&quot;radio&quot; checked=&quot;checked&quot; value=&quot;false&quot; />
+<label class=&quot;no-button&quot;>No</label>
+</div>
+<div class=&quot;ldapPopulatorSubtreeLabel authText&quot;>Subtree:</div>
+<div class=&quot;ldapPopulatorSubtreeDescription groupOption&quot;>
+<input name=&quot;ldapPopulatorSubtreeInput&quot; class=&quot;ldapPopulatorSubtreeInput&quot; type=&quot;radio&quot; value=&quot;true&quot; />
+<label class=&quot;yes-button&quot;>Yes</label>
+<input name=&quot;ldapPopulatorSubtreeInput&quot; class=&quot;ldapPopulatorSubtreeInput&quot; type=&quot;radio&quot; checked=&quot;checked&quot; value=&quot;false&quot; />
+<label class=&quot;no-button&quot;>No</label>
+</div>
+<br/>
+<div class=&quot;securityConfigButton&quot;>
+<button class=&quot;pentaho-button test-button&quot; id=&quot;btn_showPopulatorTestDialog&quot;> </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer>
+<br/><br/>
+<div id=&quot;buttonDivSave&quot; class=&quot;securityConfigButton&quot; style=&quot;display: none;&quot;>
+<button id=&quot;saveConfigButton&quot; class=&quot;pentaho-button&quot; >Save</button>
+</div>
+</footer>
+</body>
+</html></pre> </div>
+                <div id="section_12" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully get the resource.</td>
+                      </tr>
+                      <tr>
+                        <td>404</td>
+                        <td>Failed to find the resource.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__repos_-pathId%20-_default.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_13" class="mt-page-section"><span id=".2Frepos.2F.7BpathId_.7D.2Fdefault"></span> 
+              <h1 class="editable">/repos/{pathId }/default</h1>
+              <a name="GET"></a> 
+              <div id="section_14" class="mt-page-section"><span id="GET_2"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Takes a pathId to a file and generates a URI that represents the URL to call to generate content from that file.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/repos/public:steel%20wheels:Invoice%20(report).prpt/default</p>
+                <div id="section_15" class="mt-page-section"><span id="Parameters_3"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>pathId</td>
+                        <td>(no documentation provided)</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_16" class="mt-page-section"><span id="Response_Body_3"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>URI that represents a forwarding URL to execute to generate content from the file {pathId}.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This response does not contain data.</pre> </div>
+                <div id="section_17" class="mt-page-section"><span id="Status_Codes_3"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>303</td>
+                        <td>Successfully get the resource.</td>
+                      </tr>
+                      <tr>
+                        <td>404</td>
+                        <td>Failed to find the resource.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> 
+              <br /> Generated by
+              <a class="external" rel="external nofollow" href="http://enunciate.codehaus.org" target="_blank">Enunciate</a> .</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Frepos.2F.7BcontextId.7D.2F.7BresourceId_.7D" rel="internal">/repos/{contextId}/{resourceId }</a> 
+        <ol>
+          <li>
+            <a href="#POST" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Frepos.2F.7BpathId_.7D.2Fdefault" rel="internal">/repos/{pathId }/default</a> 
+        <ol>
+          <li>
+            <a href="#GET_2" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

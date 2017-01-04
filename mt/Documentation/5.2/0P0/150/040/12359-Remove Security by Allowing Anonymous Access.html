@@ -1,0 +1,119 @@
+<content type="text/html" title="Remove Security by Allowing Anonymous Access">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>You can bypass the built-in security on the BA Server by giving all permissions to anonymous users. An &quot;anonymousUser&quot; is any user, either existing or newly created, that you specify as an all-permissions, no-login user, and to whom you
+      grant the <strong class="ph b">Anonymous</strong>  role.</p>
+    <p class="pentaho-caution">The procedure below will grant full BA Server access to the <span class="ph uicontrol">Anonymous</span>  role and never require a login.</p>
+    <p>All of the files that you will be working with are located in the&nbsp;<span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system</span>  directory. Before you begin, stop the BA Server.</p>
+    <div id="section_1" class="mt-page-section"><span id="applicationContext-spring-security.xml"></span> 
+      <h3 class="editable">
+        <strong>applicationContext-spring-security.xml</strong> 
+      </h3>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Open the <span class="ph filepath">applicationContext-spring-security.xml</span>  file with any text editor.</li>
+        <li class="li step"><span class="ph cmd">&nbsp;Make sure that a default <strong>anonymous </strong> role is defined.</span>  Match your bean definition and property value to the example below. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;anonymousProcessingFilter&quot; class=&quot;org.springframework.security.providers.anonymous.AnonymousProcessingFilter&quot;>
+
+<!-- omitted -->
+    <property name=&quot;userAttribute&quot; value=&quot;anonymousUser,Anonymous&quot; />
+</bean></pre> </li>
+      </ol>
+      <p class="pentaho-note">These next steps allow Pentaho client tools to publish to the BA Server without having to supply a user name and password.</p>
+      <ol class="pentaho-list-ordered" start="3">
+        <li class="p li step">Find these two beans in the same file from the previous step.
+          <ul class="pentaho-list-unordered">
+            <li class="li"><span class="ph filepath">filterInvocationInterceptor</span> </li>
+            <li class="li"><span class="ph filepath">filterInvocationInterceptorForWS</span> </li>
+          </ul>
+        </li>
+        <li class="p li step">Locate the <span class="ph filepath">objectDefinitionSource</span>  properties inside the beans and match the contents to this code example.</li>
+      </ol>
+      <p class="pentaho-note">Make sure that there is a carriage return between COMPARISON and \A/ as shown below.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;filterInvocationInterceptor&quot; class=&quot;org.springframework.security.intercept.web.FilterSecurityInterceptor&quot;>
+    <property name=&quot;authenticationManager&quot;>
+        <ref local=&quot;authenticationManager&quot; />
+    </property>
+    <property name=&quot;accessDecisionManager&quot;>
+        <ref local=&quot;httpRequestAccessDecisionManager&quot; />
+    </property>
+    <property name=&quot;objectDefinitionSource&quot;>
+        <value>
+            <![CDATA[ CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+\A/.*\Z=Anonymous,Authenticated ]]> </value>
+    </property>
+</bean></pre>
+      <ol class="pentaho-list-ordered" start="3">
+        <li>Save and close the<span class="filepath style-wrap"> applicationContext-spring-security.xml</span>  file.</li>
+      </ol>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="pentaho.xml"></span> 
+      <h3 class="editable"><strong>
+        <span class="ph cmd">pentaho.xml</span> </strong> 
+      </h3>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Open the <span class="filepath style-wrap">pentaho.xml</span>  file with the text editor.</li>
+        <li class="li step"><span class="ph cmd">Find the <strong class="ph b">anonymous-authentication</strong>  lines of the <strong class="ph b">pentaho-system</strong>  section, and define the anonymous user and role.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><pentaho-system>
+
+<!-- omitted -->
+    <anonymous-authentication>
+        <anonymous-user>anonymousUser</anonymous-user>
+        <anonymous-role>Anonymous</anonymous-role>
+    </anonymous-authentication>
+ <!-- omitted -->
+</pentaho-system></pre> </li>
+        <li class="li step"><span class="ph cmd">Save and close the <span class="filepath style-wrap">pentaho.xml</span>  file. </span> 
+        </li>
+      </ol>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="repository.spring.properties"></span> 
+      <h3 class="editable">
+        <strong class="ph b">repository.spring.properties</strong> 
+      </h3>
+      <ol class="pentaho-list-ordered">
+        <li>Open the <span class="filepath style-wrap">repository-spring.properties.xml</span>  with the text editor.</li>
+        <li><span class="ph cmd">Find the <strong class="ph b">singleTenantAdminAuthorityName</strong>  and replace the value with <strong>Anonymous</strong> .</span> </li>
+        <li>Find the <strong class="ph b">singleTenantAdminUserName</strong>  and replace the value with the name <strong><your anonymous user></strong> .</li>
+        <li>Save the file and close the text editor.</li>
+      </ol>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="pentahoObjects.spring.xml"></span> 
+      <h3 class="editable"><span class="ph cmd">
+        <strong class="ph b">pentahoObjects.spring.xml</strong> </span> 
+      </h3>
+      <ol class="pentaho-list-ordered">
+        <li class="li substep"><span class="ph cmd">Find all references to the <strong class="ph b">bean id=&quot;Mondrian-UserRoleMapper&quot;</strong>  and make sure that the only one that is uncommented (active) is this one:</span> </li>
+      </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;Mondrian-UserRoleMapper&quot; 
+        name=&quot;Mondrian-SampleUserSession-UserRoleMapper&quot; 
+        class=&quot;org.pentaho.platform.plugin.action.mondrian.mapper.
+                            MondrianUserSessionUserRoleListMapper&quot; 
+        scope=&quot;singleton&quot;>
+    <property name=&quot;sessionProperty&quot; value=&quot;MondrianUserRoles&quot; />
+</bean></pre>
+      <p class="li substep"><span class="ph cmd">If you have made any changes to <strong class="ph b">pentahoObjects.spring.xml</strong>, save and close the file.</span> </p>
+      <p>&nbsp;You have now effectively worked around the security features of the BA Server. If you are using the relational metadata database model, refer to
+        <a class="xref" title="Documentation/5.3/0N0/110/060/040" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/110/060/040">Remove Security from Metadata Domain Repository </a>  for the next few steps.</p>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Related_links:"></span> 
+      <h3 class="editable">Related links:</h3>
+      <ul class="pentaho-list-unordered">
+        <li><strong><a title="Documentation/5.2/0P0/150/040/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/150/040/000">Remove Security from Data Source Management</a> </strong> </li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#applicationContext-spring-security.xml" rel="internal">applicationContext-spring-security.xml</a>  </li>
+      <li> <a href="#pentaho.xml" rel="internal">pentaho.xml</a>  </li>
+      <li> <a href="#repository.spring.properties" rel="internal">repository.spring.properties</a>  </li>
+      <li> <a href="#pentahoObjects.spring.xml" rel="internal">pentahoObjects.spring.xml</a>  </li>
+      <li> <a href="#Related_links:" rel="internal">Related links:</a>  </li>
+    </ol>
+  </body>
+</content>

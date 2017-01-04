@@ -1,0 +1,114 @@
+<content type="text/html" title="Working with Version History">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Retaining a version history enables you to show what is different from one version to another, or to restore a previous version if you want to revert back to a specific point in time. By default, each time you save in DI, a version of your file
+          is committed to the repository. Versions of a file can be tracked through the Repository Explorer in Spoon. These versions are listed in a tab of the explorer.</p>
+        <p class="p">To access this version history tab:</p>
+        <ol>
+          <li class="p">
+            <p>In the Spoon menubar, go to&nbsp;<strong>Tools</strong> &nbsp;>&nbsp;<strong>Repository</strong> &nbsp;>&nbsp;<strong>Explore</strong> .&nbsp;The&nbsp;Repository Explorer&nbsp;window opens to the <strong>Browse</strong>  tab.</p>
+          </li>
+          <li class="p">
+            <p>In the left navigation panel of the <strong>Browse</strong>  tab, locate and click on a folder to access the file containing your transformation or job.</p>
+          </li>
+          <li class="p">
+            <p>Select your file when it appears in the upper right panel. The&nbsp;versions of this file are shown under the <strong>Version History</strong>  tab in the lower right panel.</p>
+          </li>
+        </ol>
+        <p>
+          <img alt="Version History Tab within Repository Explorer" class="internal default" src="http://help.pentaho.com/@api/deki/files/12149/ssPDIRepository_ExplorerVersionHistoryTab.png?revision=1" />
+        </p>
+        <p>You can use this history to:</p>
+        <ul>
+          <li> <a title="Work with Version History" rel="internal" href="http://help.pentaho.com/Draft_Content/David_Vandenbelt_Draft/7.0_Release_-_Drafts/Thin_Repository/0L0_Build_Full-Featured_Solutions/Create_Pentaho_Data_Integration_Solutions/040/Work_with_Version_History#Open_a_Version_of_a_File">Open a Version of a File</a>  </li>
+          <li> <a title="Work with Version History" rel="internal" href="http://help.pentaho.com/Draft_Content/David_Vandenbelt_Draft/7.0_Release_-_Drafts/Thin_Repository/0L0_Build_Full-Featured_Solutions/Create_Pentaho_Data_Integration_Solutions/040/Work_with_Version_History#Restore_a_Version_of_a_File">Restore a Version of a File</a>  </li>
+        </ul>
+        <p>While saving a file, you are prompted to provide comments. These comments are also included in the <strong>Version History</strong>  tab.</p>
+        <p>This tab appears in the explorer when version history tracking is enabled. The tab is hidden with tracking is disabled. You can enable or disable tracking of version history and comments through a properties file. See
+          <a title="Work with Version History"
+          rel="internal" href="http://help.pentaho.com/Draft_Content/David_Vandenbelt_Draft/7.0_Release_-_Drafts/Thin_Repository/0L0_Build_Full-Featured_Solutions/Create_Pentaho_Data_Integration_Solutions/040/Work_with_Version_History#Enable_or_Disable_Tracking_of_Version_History_and_Comments">Enable or Disable Tracking of Version History and Comments</a>  for more details.</p>
+        <div id="section_1" class="mt-page-section"><span id="Open_a_Version_of_a_File"></span> 
+          <h2 class="editable">Open a Version of a File</h2>
+          <p>If you want to show differences between each version or you need to remember the details of previous changes, you can open it through the <strong>Version History</strong>  tab.</p>
+          <p>To open a version of a file:</p>
+          <ol>
+            <li>Right-click on a version under the <strong>Version History</strong>  tab in the <strong>Repository Explorer</strong> .</li>
+            <li>Choose <strong>Open</strong>  to access that version in Spoon. It opens as a separate file with the same name but the version number is added to the title on the Spoon canvas tab.&nbsp; If the current version of the file is already open in
+              Spoon, the latest version number is appended to its title.</li>
+          </ol>
+        </div>
+        <div id="section_2" class="mt-page-section"><span id="Restore_a_Version_of_a_File"></span> 
+          <h2 class="editable">Restore a Version of a File</h2>
+          <p>If you do not like a change you made to your file, you can choose to restore to a previous version based on your descriptive comments. You must have administrator privileges to restore a version of a file.</p>
+          <ol>
+            <li>Right-click on a version under the <strong>Version History</strong>  tab in the <strong>Repository Explorer</strong> .</li>
+            <li>Select&nbsp;<strong>Restore</strong> .</li>
+          </ol>
+          <p>
+            <img alt="Restoring a Previous Version in the Repository Explorer." class="internal default" src="http://help.pentaho.com/@api/deki/files/12150/ssPDIRestoring_a_Previous_Version.PNG?revision=1" />
+          </p>
+          <ol start="3">
+            <li>Follow the remaining prompts and click&nbsp;<strong>OK</strong> . The restored version becomes the latest version of your file. The next time you open the file, you will see the restored version as the most recent one along with all the previous
+              versions:</li>
+          </ol>
+          <p>
+            <img alt="Restoration of a Previous Version in the Repository Explorer" class="internal default" src="http://help.pentaho.com/@api/deki/files/12151/ssPDIResults_of_Restoring_a_Previous_Version.PNG?revision=1" />
+          </p>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Enable_or_Disable_Tracking_of_Version_History_and_Comments"></span> 
+          <h2 class="editable">Enable or Disable Tracking of Version History and Comments</h2>
+          <p>You can enable or disable tracking of version history or comments for all users by modifying the <span class="mt-font-courier-new">versioningEnabled</span>  and <span class="mt-font-courier-new">versionCommentsEnabled</span>  fields within the
+            <span class="mt-font-courier-new">server/pentaho-server/pentaho-solutions/system/repository.spring.properties</span>  text file:</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+          title="Pentaho Table">
+            <thead>
+              <tr>
+                <th scope="col">Action (All Users)</th>
+                <th scope="col">Status</th>
+                <th scope="col">Final Setting</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="1" rowspan="2">Version History Tracking</td>
+                <td>Off</td>
+                <td><span class="mt-font-courier-new">versioningEnabled=false</span> </td>
+              </tr>
+              <tr>
+                <td>On</td>
+                <td><span class="mt-font-courier-new">versioningEnabled=true</span> </td>
+              </tr>
+              <tr>
+                <td colspan="1" rowspan="2">Comment Tracking</td>
+                <td>Off</td>
+                <td><span class="mt-font-courier-new">versionCommentsEnabled=false</span> </td>
+              </tr>
+              <tr>
+                <td>On</td>
+                <td><span class="mt-font-courier-new">versionCommentsEnabled=true</span> </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>When you disable version history tracking, comments are automatically no longer tracked.</p>
+          <p>To enable or disable tracking:</p>
+          <ol>
+            <li>Exit Spoon.</li>
+            <li>Stop the Pentaho Server.</li>
+            <li>Open the <span class="mt-font-courier-new">server/pentaho-server/pentaho-solutions/system/repository.spring.properties</span>  file in a text editor.</li>
+            <li><span class="rangySelectionBoundary" id="selectionBoundary_1462561559511_31109026940637346" style="line-height:0;display:none;">&#65279;</span> Change the fields to enable or disable either version history or comment tracking.</li>
+            <li>Start the Pentaho&nbsp;Server.</li>
+            <li>Start Spoon.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Open_a_Version_of_a_File" rel="internal">Open a Version of a File</a>  </li>
+      <li> <a href="#Restore_a_Version_of_a_File" rel="internal">Restore a Version of a File</a>  </li>
+      <li> <a href="#Enable_or_Disable_Tracking_of_Version_History_and_Comments" rel="internal">Enable or Disable Tracking of Version History and Comments</a>  </li>
+    </ol>
+  </body>
+</content>

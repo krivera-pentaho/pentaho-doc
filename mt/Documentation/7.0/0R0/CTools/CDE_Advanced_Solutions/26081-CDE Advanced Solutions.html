@@ -1,0 +1,718 @@
+<content type="text/html" title="CDE Advanced Solutions">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushCss.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPython.min.js"></script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+      </div>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="CTools_and_RequireJS"></span> 
+      <h2 class="editable">CTools and RequireJS</h2>
+      <p>You can include
+        <a class="external" title="http://requirejs.org/" rel="external nofollow" href="http://requirejs.org/" target="_blank">RequireJS</a>  support when creating your Community Dashboard Editor (CDE) dashboards. RequireJS is a JavaScript file and module loader which may improve the speed and performance of your dashboards.</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Enable_RequireJS_Support"></span> 
+      <h2 class="editable">Enable RequireJS Support</h2>
+      <p>To include RequireJS, in the <strong>Settings </strong> dialog box, select the <strong>RequireJS Support</strong>  check box when you save a dashboard.</p>
+      <p class="pentaho-note"><em>In</em>  Pentaho 7.0, new CDE dashboards will default to&nbsp;RequireJS dashboards. Regardless of the default behavior for new dashboards, your previously created non-RequireJS dashboards will render the same as before, and you can continue editing
+        them without upgrading the dashboards to RequireJS support.</p>
+      <p>
+        <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11867/CDE_Settings_RequireJSSupport_checkbox.png?revision=1" />
+      </p>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Architectural_Considerations_for_including_RequireJS"></span> 
+      <h2 class="editable">Architectural Considerations for including RequireJS</h2>
+      <p>Including RequireJS in CTools required several architectural changes, such as using Asynchronous Module Definition (AMD) for JavaScript modules. Specifically, the following changes were made:</p>
+      <p><strong>The Dashboards singleton no longer exists.</strong> </p>
+      <p>Most of the methods called in <span class="filepath style-wrap">Dashboards </span> are available elsewhere. If you are running code in the component context (meaning that <em>this </em> refers to a component), like in <span class="filepath style-wrap">preExecution</span>,
+        <span class="filepath style-wrap">postExecution</span>  and <span class="filepath style-wrap">postFetch</span>, most methods will be available in the <span class="filepath style-wrap">this.dashboard</span> <em>.</em>  Some exceptions exist:</p>
+      <ul
+      class="pentaho-list-unordered">
+        <li>The <strong>logging</strong> <strong> methods were migrated</strong>  to a separate AMD module with ID <span class="filepath style-wrap">cdf/Logger</span>, so <span class="filepath style-wrap">Dashboards.log </span> has been replaced with <span class="filepath style-wrap">Logger.log</span> .</li>
+        <li>Some static methods were migrated to a separate AMD module with ID <span class="filepath style-wrap">cdf/dashboard/</span> <span class="filepath style-wrap">Utils</span>, such that
+          <ul>
+            <li><span class="filepath style-wrap">Dashboards.escapeHtml </span> is now<span class="filepath style-wrap"> Utils.escapeHtml.</span> </li>
+            <li><span class="filepath style-wrap">Dashboards.getQueryParameter</span>  is now <span class="filepath style-wrap">Utils.getQueryParameter.</span> </li>
+            <li><span class="filepath style-wrap">Dashboards.objectToPropertiesArray </span> is now<span class="filepath style-wrap"> Utils.objectToPropertiesArray.</span> </li>
+            <li><span class="filepath style-wrap">Dashboards.propertiesArrayToObject </span> is now<span class="filepath style-wrap"> Utils.propertiesArrayToObject.</span> </li>
+          </ul>
+        </li>
+        </ul>
+        <p><strong>Parameters and components no longer create objects in the global scope.</strong> </p>
+        <p>Instead, components and parameters are internal to the dashboard. If you want to get to a component, you need to use the <span class="filepath style-wrap">getComponent</span>  method in the <span class="filepath style-wrap">dashboard</span>  object.
+          For parameters, always use the <span class="filepath style-wrap">getParameter </span> method.</p>
+        <p>When debugging during dashboard development, follow the same guideline. If you have a component called <em>foo, </em> then the object <span class="filepath style-wrap">render_foo</span>  is no longer accessible from the console. Instead, call
+          <span
+          class="filepath style-wrap">dashboard.getComponent</span>  (&quot;render_foo&quot;) to get to that component. When CDE renders, it creates a <span class="filepath style-wrap">dashboard </span> object in the global scope. It is recommended that you use the <span class="filepath style-wrap">dashboard </span> object
+            to access the dashboard internals you need. You can view further information on
+            <a class="external" href="http://redmine.webdetails.org/projects/cde/wiki/RequireJS" rel="freeklink" title="http://redmine.webdetails.org/projects/cde/wiki/RequireJS">http://redmine.webdetails.org/projec...wiki/RequireJS.</a> 
+        </p>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Create_a_Dashboard_using_RequireJS"></span> 
+      <h2 class="editable">Create a Dashboard using RequireJS</h2>
+      <p>In this walk-through tutorial, you will create a CTools dashboard using RequireJS. These instructions assume that you are familiar with the
+        <a title="Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview">main features in CDE</a>  and the basic steps of
+        <a title="Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide">creating a dashboard in CDE</a> . In addition, these instructions assume that you have
+        <a title="Documentation/7.0/0R0/CTools/Activate_CDE" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/Activate_CDE">activated the CDE plugin</a> .</p>
+      <p>The process is broken down into six basic steps.</p>
+      <ol>
+        <li> <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_One:_Set_Up_Folders_in_PUC_and_Create_the_Dashboard">Set up Folders in PUC and Create the Dashboard</a>  </li>
+        <li> <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Two:_Add_Layout">Add Layout</a>  </li>
+        <li> <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Three:_Add_External_Resources">Add External Resources</a>  </li>
+        <li> <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Four:_Add_Data_Sources">Add Data Sources</a>  </li>
+        <li> <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Five:_Add_Components">Add Components</a>  </li>
+        <li> <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Six:_Preview_the_Dashboard">Preview the Dashboard</a>  </li>
+      </ol>
+      <div id="section_6" class="mt-page-section"><span id="Step_One:_Set_Up_Folders_in_PUC_and_Create_the_Dashboard"></span> 
+        <h3 class="editable">Step One: Set Up Folders in PUC and Create the Dashboard</h3>
+        <ol>
+          <li>Log on to the Pentaho User Console (PUC) and navigate to the <strong>Browse Files </strong> perspective.</li>
+          <li>In the&nbsp;<strong>Folders</strong>  pane, click on&nbsp;the&nbsp;<strong>Public</strong> &nbsp;folder and then, in the <strong>Folder Actions</strong>  pane, click<strong> New Folder</strong> . Create a solutions folder called <strong>'demoDashboard'</strong> .</li>
+          <li>Expand the <strong>Public </strong> folder and click on the newly created <strong>demoDashboard</strong>  folder. In the <strong>Folder Actions</strong>  pane, click<strong> New Folder</strong>  and create a subfolder titled <strong>&lsquo;files</strong> &rsquo;
+            which will contain the JavaScript and Cascading Style Sheets (CSS) files used in this dashboard.</li>
+          <li> <a title="Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide">Open CDE</a>  and create a new dashboard titled <strong>'demoDashboard'</strong>, and save it in the<strong>&nbsp;public>demoDashboard</strong>  folder you just created. </li>
+          <li>From the CDE menu bar, click <strong>Settings</strong>, and then select the <strong>RequireJS Support</strong>  check box to convert the dashboard to a RequireJS dashboard.</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11867/CDE_Settings_RequireJSSupport_checkbox.png?revision=1" />
+        </p>
+        <ol start="6">
+          <li>Click <strong>Ok</strong> . A message box appears warning you about possible issues with your custom JavaScript code in your dashboard. Click <strong>Ok</strong>  to proceed. The dashboard is now saved as a RequireJS dashboard.</li>
+        </ol>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Step_Two:_Add_Layout"></span> 
+        <h3 class="editable">Step Two: Add Layout</h3>
+        <ol>
+          <li>From the Layout Structure menu bar, click the <strong>Add Bootstrap Panel</strong>  button.</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11863/BootStrapButton.png?revision=1" />
+        </p>
+        <ol start="2">
+          <li>Configure your bootstrap panel to match the settings in the image below. Be sure to add and rename all displayed rows and columns.</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="LayoutStructure-BootstrapElements.PNG" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11942/LayoutStructure-BootstrapElements.PNG?revision=1" />
+        </p>
+        <ol start="3">
+          <li>In the <strong>Properties</strong>  pane, all&nbsp;columns by default set&nbsp;the <strong>Extra Small Devices </strong> property to&nbsp;'<strong>12</strong> ' spans.&nbsp;Change the <strong>Value</strong> &nbsp;for the following columns:
+            <ul>
+              <li>Set <strong>tableObj </strong> and <strong>chartObj </strong> <span class="rangySelectionBoundary" id="selectionBoundary_1458846973888_22364635844807457" style="line-height: 0; display: none;">&#65279;</span> <span class="rangySelectionBoundary"
+                id="selectionBoundary_1458846973888_1293015962219527" style="line-height: 0; display: none;">&#65279;</span>  to '<strong>6</strong> ' spans.</li>
+            </ul>
+          </li>
+        </ol>
+        <p style="margin-left: 40px;">See
+          <a title="Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview">CDE Dashboard Overview</a>  for more information on Bootstrap in CDE.</p>
+        <p style="margin-left: 80px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11937/Figure39_BootstrapPropPanel.png?revision=1" />
+        </p>
+        <p>4. Center the title and subtitle in the <strong>Properties </strong> pane. For both <strong>titleColumnObj</strong>  and <strong>subTitleColumnObj</strong>, locate the <strong>Text Align</strong> &nbsp;property and click in the <strong>Value </strong> column.
+          On the keyboard, press the down arrow to display a drop-down menu and select <strong>Center</strong> .</p>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11866/CDE_CreateDash_Step2-Point4.PNG?revision=1" />
+        </p>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Step_Three:_Add_External_Resources"></span> 
+        <h3 class="editable">Step Three: Add External Resources</h3>
+        <ol start="1">
+          <li>In the CDE Layout perspective, on the Layout Structure toolbar, click the <strong>Add Resource</strong>  icon.&nbsp;</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11941/LayoutStructureMenubar_AddResource.png?revision=3" />
+        </p>
+        <ol start="2">
+          <li>In the <strong>Add Resource</strong>  dialog box, enter the following data:
+            <ul>
+              <li>For <strong>Resource Type</strong>, select <strong>Javascript</strong> .</li>
+              <li>For <strong>Resource Source</strong>, select <strong>External File</strong> . Click <strong>Ok</strong> .</li>
+            </ul>
+          </li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11862/AddResourceDB.png?revision=1" />
+        </p>
+        <ol start="3">
+          <li>In the Properties pane, click in the <strong>Value </strong> column to the right of the <strong>Name </strong> property and enter <strong>'addins'</strong> . Press Tab or Enter.</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11861/AddResource_PropertiesPanel_Addins.png?revision=1" />
+        </p>
+        <ol start="4">
+          <li>Click the caret ('<strong>^</strong> ') button to the right of the <strong>Resource file</strong>  property and navigate to <strong>public>demoDashboard</strong> ><strong>files. </strong> Click <strong>Ok</strong> .</li>
+          <li>In the Create File dialog box, enter '<strong>addins</strong> ' and click <strong>Ok</strong> . You have now created the <span class="filepath style-wrap">addins.js</span>  file, which will contain the JavaScript code to execute within the dashboard
+            components. Note that the name you give to the JS file is how the file itself will be referenced within the dashboard.</li>
+          <li>To enter content in the <span class="filepath style-wrap">addins.js</span>  file, select the <strong>addins </strong> resource in the Layout Structure pane. Locate the <strong>Resource file</strong>  property and click the ellipse ('<strong>...</strong> ')
+            button to open the Edit window. Enter the following content for this file:</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">define([
+  &quot;cdf/AddIn&quot;,
+  &quot;cdf/Dashboard.Clean&quot;,
+  &quot;cdf/Logger&quot;,
+  &quot;cdf/lib/jquery&quot;
+], function(AddIn, Dashboard, Logger, $) {
+  Dashboard.registerGlobalAddIn(&quot;Table&quot;, &quot;colType&quot;, new AddIn({
+    name: &quot;customArrow&quot;,
+    label: &quot;customArrow&quot;,
+    defaults: {},
+    implementation: function(tgt, st, opt) {
+      if(typeof st.value !== &quot;number&quot;) {
+        Logger.warn(&quot;customArrow add-in invalid value: &quot; + st.value);
+        return;
+      }
+      var trend = st.value > 0 ? &quot;up&quot; : &quot;down&quot;;
+      $(tgt).empty()
+            .append($('<ul><span class=&quot;glyphicon glyphicon-arrow-'
+              + trend +'&quot;></span> &amp;nbsp<span>'+ st.value +'%'+'</span> </ul>'));
+    }
+  }));
+});</pre>
+        <ul>
+          <li style="margin-left: 0.5in;">Lines 2 to 5 specify the dependencies needed for the add-in, which are then registered for use in the function.</li>
+          <li style="margin-left: 0.5in;">Line 7 registers the add-in, which is then available to the table component.</li>
+        </ul>
+        <ol start="7">
+          <li>Press the&nbsp;<strong>Save</strong> &nbsp;button and then press&nbsp;the <strong>Close</strong> &nbsp;button.</li>
+          <li>Following steps 2 through 5, add a second JavaScript external resource named '<strong>title</strong> ' and save a new file named&nbsp;<span class="filepath style-wrap">title.js</span> &nbsp;in the <strong>public>demoDashboard>files </strong> folder.
+            The dashboard will have a title and a subtitle&nbsp;which are provided by the text components created in
+            <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Five:_Add_Components">Step Five</a> . These components will fetch the displayed value from an object returned by the AMD module defined in&nbsp;the <span class="filepath style-wrap">title.js</span>  file.</li>
+          <li>To enter content in the <span class="filepath style-wrap">title.js</span>  file, in the Layout Structure pane select the <strong>title </strong> resource and then select the <strong>Resource file</strong>  property. Click the ellipse ('<strong>...</strong> ')
+            button to open the Edit window. Enter the following content for this file:</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">define(function() {
+  return {
+    option1: 'CDE Dashboard',
+    option2: 'Using a Table with a custom add-in and a CCC Bar Chart',
+  };
+});</pre>
+        <p style="margin-left:.5in;">In this file, an AMD module is defined which returns an object with two properties. This object will be accessible to the text components, using the same name as the one used for the&nbsp;<strong>Name</strong> &nbsp;property of the JavaScript external
+          resource,&nbsp;and its properties will be used as the title and subtitle.</p>
+        <ol start="10">
+          <li>Press the&nbsp;<strong>Save</strong> &nbsp;button and then press&nbsp;the <strong>Close</strong> &nbsp;button.</li>
+        </ol>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Step_Four:_Add_Data_Sources"></span> 
+        <h3 class="editable">Step Four: Add Data Sources</h3>
+        <p>In this example, you will use scripted queries as the data source.</p>
+        <ol>
+          <li>In the Data Source perspective, from the <strong>Data Source</strong>  list, click <strong>SCRIPTING Queries</strong>, and then click <strong>scriptable over scripting </strong> twice.</li>
+          <li>In the Datasources panel, in the <strong>Name </strong> column, enter <strong>'chartQuery'</strong>  for the first data source, and <strong>'tableQuery'</strong>  for the second.</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11872/Datasources_Group_Queries.png?revision=1" />
+        </p>
+        <ol start="3">
+          <li>Add the following script to the <strong>Query </strong> property for the <strong>chartQuery</strong>  data source:</li>
+        </ol> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+String[] columnNames = new String[]{
+  &quot;Country&quot;, &quot;Population growth per City [%]&quot;
+};
+Class[] columnTypes = new Class[]{
+  String.class, Float.class
+};
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{
+  new String(&quot;Tokyo&quot;), new Float(&quot;60&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Nice&quot;), new Float(&quot;20&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;London&quot;), new Float(&quot;-10&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Munich&quot;), new Float(&quot;30&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Porto&quot;), new Float(&quot;10&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Brasilia&quot;), new Float(&quot;10&quot;)
+});
+return model;</pre>
+        <ol start="4">
+          <li>Add the following script to the <strong>Query </strong> property for the <strong>tableQuery</strong>  data&nbsp;source:</li>
+        </ol> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">import org.pentaho.reporting.engine.classic.core.util.TypedTableModel;
+String[] columnNames = new String[]{
+  &quot;Country&quot;, &quot;City&quot;, &quot;Population growth per City&quot;
+};
+Class[] columnTypes = new Class[]{
+  String.class, String.class, Float.class
+};
+TypedTableModel model = new TypedTableModel(columnNames, columnTypes);
+model.addRow(new Object[]{
+  new String(&quot;Japan&quot;), new String(&quot;Tokyo&quot;), new Float(&quot;60&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;France&quot;), new String(&quot;Nice&quot;), new Float(&quot;20&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;UK&quot;), new String(&quot;London&quot;), new Float(&quot;-10&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Germany&quot;), new String(&quot;Munich&quot;), new Float(&quot;30&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Portugal&quot;), new String(&quot;Porto&quot;), new Float(&quot;10&quot;)
+});
+model.addRow(new Object[]{
+  new String(&quot;Brazil&quot;), new String(&quot;Brasilia&quot;), new Float(&quot;10&quot;)
+});
+return model;</pre> </div>
+      <div id="section_10" class="mt-page-section"><span id="Step_Five:_Add_Components"></span> 
+        <h3 class="editable">Step Five: Add Components</h3>
+        <ol start="1">
+          <li>Switch to the Components perspective.</li>
+          <li>From the Components list, expand the appropriate Group section, and then add the following components to the dashboard with the specified <strong>Name</strong>  and <strong>HtmlObject</strong>  properties in the table below. (See
+            <a title="Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide"
+            rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide">Customize the Components Perspective</a>  for more detailed instruction.)</li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="240" style="table-layout: fixed;" title="Pentaho Table" width="991">
+          <tbody>
+            <tr>
+              <td style="width: 248px;"><strong>Group</strong> </td>
+              <td style="width: 263px;"><strong>Component</strong> </td>
+              <td style="width: 289px;"><strong>Name</strong> </td>
+              <td style="width: 267px;"><strong>HtmlObject </strong> </td>
+            </tr>
+            <tr>
+              <td style="width: 248px;">Others</td>
+              <td style="width: 263px;">Text Component</td>
+              <td style="width: 289px;">subTitleComponent</td>
+              <td style="width: 267px;">subTitleColumnObj</td>
+            </tr>
+            <tr>
+              <td style="width: 248px;">Others</td>
+              <td style="width: 263px;">Text Component</td>
+              <td style="width: 289px;">titleComponent</td>
+              <td style="width: 267px;">titleColumnObj</td>
+            </tr>
+            <tr>
+              <td style="width: 248px;">Others</td>
+              <td style="width: 263px;">table Component</td>
+              <td style="width: 289px;">tableComponent</td>
+              <td style="width: 267px;">tableObj</td>
+            </tr>
+            <tr>
+              <td style="width: 248px;">Charts</td>
+              <td style="width: 263px;">CCC Bar Chart</td>
+              <td style="width: 289px;">chartComponent</td>
+              <td style="width: 267px;">chartObj</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11927/Figure_43_Components.png?revision=1" />
+        </p>
+        <ol start="3">
+          <li>Set the width and height for the <strong>chartComponent</strong>  bar chart.
+            <ul>
+              <li>Click in the <strong>Value </strong> column for the <strong>Height</strong>  property and type <strong>'450'. </strong> Press <strong>Tab </strong> or <strong>Enter</strong> .</li>
+              <li>Click in the <strong>Value </strong> column for the <strong>Width </strong> property and type <strong>'400'. </strong> Press <strong>Tab </strong> or <strong>Enter</strong> .</li>
+            </ul>
+          </li>
+          <li>Set the <strong>titleComponent</strong>  text component by adding the following code to the <strong>Expression </strong> property:</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">function f() {
+  return &quot;<strong>&quot; + title.option1 + &quot;</strong> &quot;;
+}</pre>
+        <p style="margin-left: 40px;">This piece of code is returning the content of <strong>'option1</strong> ' defined in the <span class="filepath style-wrap">title.js</span>  file in
+          <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Three:_Add_External_Resources">Step Three.</a> 
+        </p>
+        <ol start="5">
+          <li>Set the <strong>subTitleComponent</strong>  text component by adding the following code to the <strong>Expression </strong> property. Note that this code is similar to the previous step, substituting '<strong>option2</strong> ' for&nbsp;'<strong>option1</strong> ':</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">function f() {
+  return title.option2;
+}</pre>
+        <ol start="6">
+          <li>In the <strong>tableComponent </strong> component, set the <strong>Column Types</strong>  property as follows:</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11951/TableComponent_ColumnTypes.png?revision=1" />
+        </p>
+        <p>Notice&nbsp;that the third line in&nbsp;the table&nbsp;is using&nbsp;the non-standard&nbsp;<strong>customArrow</strong>  add-in. It is now available because it was registered earlier using&nbsp;the <span class="filepath style-wrap">addins.js</span> &nbsp;JavaScript
+          external resource&nbsp;file.</p>
+        <ol start="7">
+          <li>Set the&nbsp;<strong>Datasource </strong> property for the <strong>tableComponent </strong> to use the <strong>tableQuery</strong>  data source created earlier in
+            <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Four:_Add_Data_Sources">Step Four</a> .</li>
+          <li>Set the <strong>Datasource</strong> &nbsp;property for the <strong>chartCoompnent </strong> to use the <strong>chartQuery </strong> data source created earlier in
+            <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Step_Four:_Add_Data_Sources">Step Four</a> .</li>
+        </ol>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="Step_Six:_Preview_the_Dashboard"></span> 
+        <h3 class="editable">Step Six: Preview the Dashboard</h3>
+        <ol class="pentaho-list-ordered">
+          <li>&nbsp; &nbsp; Save your dashboard and click the <strong>Preview your Dashboard</strong>  icon in the top-right corner. The Preview window displays.</li>
+          <li>&nbsp;&nbsp;&nbsp; Inspect your dashboard. Your finished dashboard should look similar to the image below.</li>
+        </ol>
+        <p style="margin-left: 0.5in;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11870/CreateDashboard-Preview.PNG?revision=1" />
+        </p>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>When finished, close the Preview window. <span class="rangySelectionBoundary" id="selectionBoundary_1465832180178_0308575424512465" style="line-height: 0; display: none;">&#65279;</span> </li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_12" class="mt-page-section"><span id="Embedding_Dashboards_Built_with_RequireJS"></span> 
+      <h2 class="editable">Embedding Dashboards Built with RequireJS</h2>
+      <p>You can embed a RequireJS dashboard as a sub-dashboard in an application without saving it as a widget. This direct method of embedding sub-dashboards into a main dashboard avoids possible conflicts from mismatching libraries which can occur when
+        using widgets. With RequireJS, you no longer need to use widgets to embed sub-dashboards into an application.</p>
+      <p>In this tutorial, you will learn how to embed the dashboard within Pentaho server or embed the dashboard using a server other than Pentaho. These instructions assume that you are familiar with the
+        <a title="Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview"
+        rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview">main features in CDE</a>  and the basic steps of
+        <a title="Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide">creating a dashboard in CDE</a> . In addition, these instructions assume that you have
+        <a title="Documentation/7.0/0R0/CTools/Activate_CDE" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/Activate_CDE">activated the CDE plugin</a> .</p>
+      <div id="section_13" class="mt-page-section"><span id="Embedding_within_Pentaho_Server"></span> 
+        <h3 class="editable">Embedding within Pentaho Server</h3>
+        <p>This walk-through tutorial assumes you have completed the steps in the
+          <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Create_a_Dashboard_using_RequireJS">Create a Dashboard Using RequireJS</a>  section. In this tutorial, you will embed the dashboard created in that tutorial into an HTML page hosted within the Pentaho server.</p>
+        <ol>
+          <li>On your Desktop, create a&nbsp;folder named '<strong>E</strong> <strong>mbed</strong> ' to hold the three files we will create and upload to the Pentaho server in this tutorial:</li>
+        </ol>
+        <ul>
+          <li><span class="filepath style-wrap">main.html</span> </li>
+          <li><span class="filepath style-wrap">includeDashboards.js</span> </li>
+          <li><span class="filepath style-wrap">styles.css</span> </li>
+        </ul>
+        <ol start="2">
+          <li>Use a text&nbsp;editor to create a new HTML file and save it as '<span class="filepath style-wrap">main.html</span> ' in the <strong>Embed</strong> &nbsp;folder you just created. Copy the following HTML code to the file:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf-8&quot;/>
+    <title>Embedding CDE Dashboards with RequireJS</title>
+    <link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../../repo/files/:public:Embed:styles.css&quot;/>
+   <script type=&quot;text/javascript&quot; src=&quot;../../../plugin/pentaho-cdf-dd/api/renderer/cde-embed.js&quot;></script>
+  </head>
+  <body>
+    <div class=&quot;headerContainer&quot;>
+      <header class=&quot;header&quot;>
+        <a class=&quot;logo&quot; href=&quot;http://www.pentaho.com/&quot;>
+          <img src=&quot;http://www.pentaho.com/sites/all/themes/pentaho_resp/_media/logo-pentaho-new.svg&quot; alt=&quot;Pentaho Logo&quot;>
+        </a> 
+        <div class=&quot;titleHTML&quot;>
+          <strong>Embedding CDE Dashboards with RequireJS</strong> 
+        </div>
+      </header>
+    </div>
+    <div class=&quot;dashboardContainer&quot;>
+      <div id=&quot;content1&quot;></div>
+      <div id=&quot;content2&quot;></div>
+      <script src=&quot;../../repo/files/:public:Embed:includeDashboards.js&quot;></script>
+    </div>
+  </body>
+</html></pre>
+        <ul>
+          <li style="margin-left: 35.45pt;">Line 7&nbsp;loads the <span class="filepath style-wrap">cde-embed.js</span> &nbsp;resource, which contains all the RequireJS configurations to embed CDE dashboards into the HTML page.</li>
+          <li style="margin-left: 35.45pt;">Line 20&nbsp;creates a div which contains two other divs, identified as &lsquo;<strong>content1</strong> &rsquo; and &lsquo;<strong>content2</strong> &rsquo;, in which two instances of the required dashboard class will be rendered.</li>
+          <li style="margin-left: 35.45pt;">Line 23&nbsp;loads the <span class="filepath style-wrap">includeDashboards.js</span>  file, which uses RequireJS to load the <strong>demoDashboard</strong>  CDE dashboard as a&nbsp;JavaScript class. This file creates both instances and associates
+            each one to its respective div and executes its render function.</li>
+        </ul>
+        <ol>
+          <li value="3">Create the <span class="filepath style-wrap">includeDashboards.js</span>  file and save it in the <strong>Embed</strong>  folder. Copy the following JS code to the file:</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([
+  &quot;dash!/public/demoDashboard/demoDashboard.wcdf&quot;
+], function(SampleDash) {
+  // Create two instances of the same dashboard that use distinct DOM elements
+  (new SampleDash(&quot;content1&quot;)).render();
+  (new SampleDash(&quot;content2&quot;)).render();
+});</pre>
+        <ul>
+          <li style="margin-left: 35.45pt;">The CDE dashboard is obtained via the CDE endpoint, <strong>'/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard</strong> '. The path field in the query string must contain the path to the CDE dashboard. Below is an example.</li>
+        </ul> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([
+  &quot;/pentaho/plugin/pentaho-cdf-dd/api/renderer/getDashboard?path=/public/demoDashboard/demoDashboard.wcdf&quot;
+], function(SampleDash) { /* code */ });</pre>
+        <ul>
+          <li style="margin-left: 35.45pt;">This endpoint returns a RequireJS module which contains a class for a specific dashboard which is used to create new dashboard instances. You can also embed a dashboard using the simpler&nbsp;<strong>dash! </strong> RequireJS&nbsp;loader plugin,
+            such as in the <strong>includeDashboards.js</strong> &nbsp;source code. Below is an example.</li>
+        </ul> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([
+  &quot;dash!/public/demoDashboard/demoDashboard.wcdf&quot;
+], function(SampleDash) { /* code */ });</pre>
+        <ol>
+          <li value="4">Create the<span class="filepath style-wrap">&nbsp;styles.css </span> file in the <strong>Embed</strong> &nbsp;folder. Copy the following CSS code to the file:</li>
+        </ol> <pre class="brush: css; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">body {
+  padding: 10px;
+}
+img {
+  width: 300px;
+  padding-bottom: 10px;
+}</pre>
+        <ol>
+          <li value="5">Zip the <strong>Embed</strong> &nbsp;folder, and then use PUC to upload the compressed folder to the Pentaho server&rsquo;s <strong>Public</strong>  folder.</li>
+          <li value="6">Finally, review your work. From the <strong>Public>Embed </strong> folder, open the <span class="filepath style-wrap">main.html&#8203;</span>  file.&nbsp;The embedded dashboard should look similar to the image below.</li>
+        </ol>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11877/EmbeddedCharts.png?revision=1" />
+        </p>
+      </div>
+      <div id="section_14" class="mt-page-section"><span id="Embedding_in_a_Server_Other_Than_Pentaho"></span> 
+        <h3 class="editable">Embedding in a Server Other Than Pentaho</h3>
+        <p>In this walk-through tutorial, you will embed the dashboard you created in the
+          <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Create_a_Dashboard_using_RequireJS">C <span class="rangySelectionBoundary" id="selectionBoundary_1462288736589_17344857724997698" style="line-height: 0; display: none;">&#65279;</span> reate a Dashboard Using RequireJS </a>  tutorial into an HTML page running on a server other than
+          Pentaho.</p>
+        <ol>
+          <li>If you have have not done so already, save the<strong> Embed</strong>  folder from the
+            <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Embedding_within_Pentaho">previous tutorial</a>  to your Desktop.</li>
+          <li>Enable Cross Origin Resource Sharing (CORS) in both Community Dashboard Framework (CDF) and CDE. While we need CDE&nbsp;to embed the dashboard, we will access it from a different server other than Pentaho. Therefore, CORS&nbsp;must be enabled
+            in both CDF and CDE.
+            <ol>
+              <li>Open the <span class="filepath style-wrap">settings.xml </span> file for both CDF and CDE.
+                <ul>
+                  <li>For CDF, this file is located in <span class="filepath style-wrap">server/pentaho-server/pentaho-solutions/system/pentaho-cdf/settings.xml</span> .</li>
+                  <li>For CDE, this file is located in <span class="filepath style-wrap">server/pentaho-server/pentaho-solutions/system/pentaho-cdf-dd/settings.xml</span> .</li>
+                </ul>
+              </li>
+              <li>Add the following setting to the XML files and save them:</li>
+            </ol>
+          </li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><settings>
+  ...
+  <allow-cross-domain-resources>true</allow-cross-domain-resources>
+</settings></pre>
+        <p style="margin-left: 40px;">3. Restart the Pentaho server.</p>
+        <ol start="3">
+          <li>Open the <span class="filepath style-wrap">main.html</span>  file from the previous tutorial and make the following replacements:
+            <ol class="pentaho-list-ordered">
+              <li>Replace lines 6 and 7 with the&nbsp;<em>three </em> lines of code below.</li>
+            </ol>
+          </li>
+        </ol>
+        <p style="margin-left: 40px;">This example assumes the Pentaho server is running locally on host&nbsp;<strong>localhost</strong> &nbsp;port <strong>8080</strong> .</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;styles.css&quot;/>
+<link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css&quot;/>
+<script type=&quot;text/javascript&quot; src=&quot;http://localhost:8080/pentaho/plugin/pentaho-cdf-dd/api/renderer/cde-embed.js&quot;></script></pre>
+        <p style="margin-left: 40px;"><em><strong>Note:&nbsp;</strong> </em> Adding the Bootstrap link tag minimizes the risk that the arrow images will fail to load, which may result when using CORS&nbsp;and font-fetching in CSS files.&nbsp;Updating the HTML script tag&nbsp;allows
+          the <span class="filepath style-wrap">cde-embed.js</span>  resource to be loaded from the correct location.</p>
+        <ol class="pentaho-list-ordered" start="2">
+          <li style="margin-left: 40px;">Replace line 24 with the following line of code:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><script src=&quot;includeDashboards.js&quot;></script></pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>Since we are using <strong>Python 3</strong>  in this tutorial, open a shell or terminal and navigate to the <strong>Embed </strong> folder directory. Start a local HTTP server on <strong>localhost </strong> port <strong>2777 </strong> by issuing
+            the following Python command:</li>
+        </ol> <pre class="brush: python; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">python -m http.server 2777</pre>
+        <p>5.&nbsp; Access the dashboard via the URL <strong><a class="external" href="http://localhost:2777/main.html" rel="freeklink" title="http://localhost:2777/main.html">http://localhost:2777/main.html</a> </strong> . After you log on using your Pentaho&nbsp;credentials,
+          you should have access to the following content:</p>
+        <p style="margin-left: 40px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11877/EmbeddedCharts.png?revision=1" />
+        </p>
+      </div>
+    </div>
+    <div id="section_15" class="mt-page-section"><span id="Exporting_Charts"></span> 
+      <h2 class="editable">Exporting Charts</h2>
+      <p>In this tutorial, you will learn how to export charts. These instructions assume that you are familiar with the&nbsp;
+        <a title="Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview">main features in CDE</a> &nbsp;and the basic steps of&nbsp;
+        <a title="Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide">creating a dashboard in CDE</a> . In addition, these instructions assume that you have&nbsp;
+        <a title="Documentation/7.0/0R0/CTools/Activate_CDE" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/Activate_CDE">activated the CDE plugin</a> .</p>
+      <div id="section_16" class="mt-page-section"><span id="Exporting_Charts_with_CGG"></span> 
+        <h3 class="editable">Exporting Charts with CGG</h3>
+        <p>In this walk-through tutorial, you will export the bar chart with the Community Graphics Generator (CGG) using the <strong>demoDashboard</strong>  CDE dashboard created in the
+          <a href="/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Create_a_Dashboard_using_RequireJS"
+          rel="internal" title="CDE Advanced Solutions">Create a Dashboard Using RequireJS</a>  tutorial. To use CGG, open an existing CDE dashboard for editing, and select&nbsp;which charts in the dashboard you want to render as CGG charts.&nbsp;</p>
+        <ol>
+          <li>Open the <strong>demoDashboard</strong>  in CDE.
+            <ol start="1" style="list-style-type: decimal;">
+              <li>Log on to PUC and navigate to the <strong>Browse Files</strong>  perspective.</li>
+              <li>In the <strong>Folders </strong> pane, click to expand the <strong>Public</strong>  folder, and then click to highlight the <strong>demoDashboard</strong>  folder.
+                <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11885/EXP_PUC_BrowseFiles_DemoDashboard.png?revision=1"
+                />
+              </li>
+              <li>In the <strong>Files </strong> pane, click on <strong>demoDashboard</strong>  and then, in the <strong>File Actions</strong>  pane, click <strong>Edit</strong> . You are now in the <strong>Opened </strong> perspective with CDE in editing mode.
+                The '<strong>Editing:demoDashboard</strong> '&nbsp;tab is now active in CDE.</li>
+            </ol>
+          </li>
+          <li>In the <strong>Components </strong> perspective, press Shift+G. In the <strong>Choose what charts to render as CGG</strong>  popup, click to select the&nbsp;<strong>chartComponent </strong> check box<em>.</em>  This popup lists all the components
+            available to CGG, such as the Community Charting Components (CCC) chart components. When you save the dashboard, CGG generates a JavaScript file for each chart selected in the popup and saves it in your solutions directory.</li>
+        </ol>
+        <p style="margin-left: 20px;"><em><img alt="EXP_CGG_Popup.png" class="internal default" style="width: 533px; height: 203px;" width="533px" height="203px" src="http://help.pentaho.com/@api/deki/files/11881/EXP_CGG_Popup.png?size=bestfit&amp;width=533&amp;height=203&amp;revision=1" /></em> </p>
+        <ol>
+          <li value="3">Click the <strong>Url </strong> button to generate a URL link to CGG which will export the target chart image. Copy the export link by selecting the full URL text and pressing Ctrl+C on your keyboard. When finished, click <strong>Close</strong> .</li>
+        </ol>
+        <p style="margin-left: 20px;">
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11889/ExportChartswithCGG_URL.PNG?revision=1" />
+        </p>
+        <ol start="4">
+          <li>Before we can use the export URL, we need to save the dashboard so the CGG scripts are generated and saved in the proper repository. To save the dashboard, on the CDE menu bar, click <strong>Save</strong> .</li>
+          <li>View the generated CGG JavaScript&nbsp;files. In PUC, navigate to your <strong>demoDashboard </strong> folder. Note the following files:
+            <ul>
+              <li>The&nbsp;<strong>demoDashboard_chartComponent.js</strong>  contains the chart definitions.</li>
+              <li>The <strong>chartComponent.js</strong>  contains the same content as the above file. This file is saved for backwards compatibility with previous server versions.
+                <img alt="" class="internal default" style="width: 355px; height: 202px;" width="355px"
+                height="202px" src="http://help.pentaho.com/@api/deki/files/11884/EXP_demodashboard_files.png?size=bestfit&amp;width=355&amp;height=202&amp;revision=1" />
+              </li>
+            </ul>
+          </li>
+          <li>Open a browser window and paste the export URL (from <strong>Step 3</strong> ) into the browser's navigation bar. Press <strong>Enter</strong> . The chart image displays in the browser window.
+            <img alt="EXP_Chart_Two.png" class="internal default"
+            style="width: 514px; height: 572px;" width="514px" height="572px" src="http://help.pentaho.com/@api/deki/files/11883/EXP_Chart_Two.png?size=bestfit&amp;width=514&amp;height=572&amp;revision=1" />
+          </li>
+        </ol>
+        <p>By default, CGG exports images in the Portable Network Graphics format (<span class="filepath style-wrap">.png</span> ). If you want CGG to export the image in the Scalable Vector Graphics format&nbsp;(<span class="filepath style-wrap">.svg</span> ),
+          then change the 'outputType' in the URL query string to 'svg' as shown below.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/pentaho/plugin/cgg/api/services/draw?script=/public/demoDashboard/demoDashboard_chartComponent.js&amp;outputType=svg</pre>        </div>
+      <div id="section_17" class="mt-page-section"><span id="Exporting_Charts_from_a_Dashboard"></span> 
+        <h3 class="editable">Exporting Charts from a Dashboard</h3>
+        <p>In this walk-through tutorial, you will add an Export Chart button to export the bar chart from the <strong>demoDashboard</strong>  CDE dashboard created in the
+          <a href="/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Create_a_Dashboard_using_RequireJS"
+          rel="internal" title="CDE Advanced Solutions">Create a Dashboard Using RequireJS</a>  tutorial.</p>
+        <ol>
+          <li>Open the <strong>demoDashboard </strong> in CDE. (For detailed instructions, see <strong>Step 1</strong>  in
+            <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Exporting_Charts_with_CGG">Exporting Charts with CGG</a> .)</li>
+          <li>Customize the layout for the export button.
+            <ol start="1" style="list-style-type: decimal;">
+              <li>In the <strong>Layout </strong> perspective, locate the '<strong>mainContainerColumn</strong> ' column and add a row named '<strong>exportChartRow</strong> '.</li>
+              <li>Select the '<strong>exportChartRow</strong> ' and add a column named '<strong>exportChartObj</strong> '.</li>
+              <li>Select the '<strong>exportChartObj</strong> ' column and in the Properties pane, locate the '<strong>Text Align</strong> ' property and set its value to '<strong>Center</strong> '.
+                <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11880/EXP_CDE_Layout_expChartObj.png?revision=1"
+                />
+              </li>
+            </ol>
+          </li>
+          <li>Add and customize the export button.
+            <ol>
+              <li>In the <strong>Components </strong> perspective, in the left menu, expand the <strong>Others </strong> group and click on the <strong>Button Component</strong> .
+                <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11887/ExportCharts_ButtonComp.png?revision=1"
+                />
+              </li>
+              <li>In the <strong>Components </strong> pane, select the <strong>Button Component</strong>  you just added. In the <strong>Properties </strong> pane, set the following values:</li>
+            </ol>
+          </li>
+        </ol>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="192" style="table-layout: fixed; width: 453px;" title="Pentaho Table" width="1187">
+          <tbody>
+            <tr>
+              <td style="width: 186px;"><strong>Property</strong> </td>
+              <td style="width: 257px;"><strong>Value</strong> </td>
+            </tr>
+            <tr>
+              <td style="width: 186px;">Name</td>
+              <td style="width: 257px;">exportChart</td>
+            </tr>
+            <tr>
+              <td style="width: 186px;">Label</td>
+              <td style="width: 257px;">Export Chart</td>
+            </tr>
+            <tr>
+              <td style="width: 186px;">HtmlObject</td>
+              <td style="width: 257px;">exportChartObj</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol start="3" style="margin-left: 20px;">
+          <li>Copy the&nbsp;following code to the <strong>Expression</strong>  property:</li>
+        </ol> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">function f() {
+  this.dashboard
+      .getComponentByName('render_chartComponent')
+      .exportChart('png');
+}</pre>
+        <p class="pentaho-note" style="margin-left: 40px;">This code allows you to retrieve the <strong>chartComponent</strong>  component via the dashboard and execute its exportChart function by passing it the 'png' parameter which defines the export file type as a <span class="filepath style-wrap">.png</span>           file.</p>
+        <p style="margin-left: 40px;">When completed, the Properties pane should look similar to the image below. &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11878/EXP_CDE_Component_ButtonProperties.png?revision=1"
+          />
+        </p>
+        <ol start="4">
+          <li>In&nbsp;the <strong>Components </strong> perspective, press&nbsp;Shift+G to display the <strong>Choose what charts to render as CGG</strong>  popup.&nbsp; Make sure the <strong>chartComponent</strong>  check box is selected, then click <strong>Close</strong> .</li>
+        </ol>
+        <p style="margin-left: 20px;">&nbsp;
+          <img alt="" class="internal default" style="width: 533px; height: 203px;" width="533px" height="203px" src="http://help.pentaho.com/@api/deki/files/11881/EXP_CGG_Popup.png?size=bestfit&amp;width=533&amp;height=203&amp;revision=1" />
+        </p>
+        <ol start="5">
+          <li>After saving the dashboard, return to PUC,&nbsp;navigate to the&nbsp;<strong>Browse Files</strong> &nbsp;perspective&nbsp;and double-click the<strong> demoDashboard</strong>  file.&nbsp;The following chart displays:&nbsp;
+            <img alt="" class="internal default"
+            style="" src="http://help.pentaho.com/@api/deki/files/11888/ExportCharts_ChartPreview.PNG?revision=1" />
+          </li>
+          <li>Press the <strong>Export Chart</strong>  button to download the chart file as a <span class="filepath style-wrap">.png</span>  file. &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11883/EXP_Chart_Two.png?revision=1" />
+          </li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_18" class="mt-page-section"><span id="Building_Responsive_Dashboards"></span> 
+      <h2 class="editable">Building Responsive Dashboards</h2>
+      <p>CTools includes Bootstrap&rsquo;s responsive library, so you can develop dashboards which work across a range of different devices, such as laptops, tablets, and smart phones. In this walk-through tutorial, you will convert the <strong>demoDashboard </strong> you
+        created in the
+        <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Create_a_Dashboard_using_RequireJS">Create a Dashboard Using RequireJS</a>  or
+        <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Exporting_Charts">Exporting Charts</a>  tutorials to a responsive dashboard.</p>
+      <p>These instructions assume that you are familiar with the&nbsp;
+        <a title="Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview">main features in CDE</a> &nbsp;and the basic steps of&nbsp;
+        <a title="Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Quick_Start_Guide">creating a dashboard in CDE</a> . In addition, these instructions assume that you have&nbsp;
+        <a title="Documentation/7.0/0R0/CTools/Activate_CDE" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/Activate_CDE">activated the CDE plugin</a> .</p>
+      <ol>
+        <li>Open the <strong>demoDashboard </strong> in CDE. (For detailed instructions, see <strong>Step 1</strong>  in
+          <a title="CDE Cookbook" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Advanced_Solutions#Exporting_Charts_with_CGG">Exporting Charts with CGG</a> .)</li>
+        <li>In the Layout perspective, locate and expand the '<strong>chartTableRow</strong> ' row.
+          <ol>
+            <li>Select&nbsp;the '<strong>tableObj</strong> ' column&nbsp;and in the <strong>Properties</strong> &nbsp;pane, set&nbsp;the <strong>Medium&nbsp;Devices </strong> property to&nbsp;'<strong>6</strong> ' spans. Additionally, set&nbsp;the&nbsp;<strong>Extra Small Devices</strong> &nbsp;property
+              to '<strong>12</strong> ' spans.</li>
+            <li>Select&nbsp;the '<strong>chartObj</strong> ' column&nbsp;and in the <strong>Properties</strong> &nbsp;pane, set&nbsp;the <strong>Medium&nbsp;Devices </strong> property to&nbsp;'<strong>6</strong> ' spans. Additionally, set&nbsp;the&nbsp;<strong>Extra Small Devices</strong> &nbsp;property
+              to '<strong>12</strong> ' spans.</li>
+          </ol>
+        </li>
+      </ol>
+      <p style="margin-left: 0.5in;">
+        <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11945/Responsive_Bootstrap_Properties.png?revision=1" />
+      </p>
+      <p class="pentaho-note">The&nbsp;<strong>Small Devices </strong> property&nbsp;will inherit its value from the&nbsp;<strong>Extra Small Devices </strong> property, and the&nbsp;<strong>Large Devices</strong> &nbsp;property&nbsp;will inherit its value from the&nbsp;<strong>Medium Devices</strong>         property. For more information about how Bootstrap works in CDE, see the
+        <a title="Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/CTools/CDE_Dashboard_Overview">CDE Dashboard Overview</a> .</p>
+      <ol start="3">
+        <li>Save the <strong>demoDashboard</strong> .</li>
+        <li>In PUC,&nbsp;navigate to the&nbsp;<strong>Browse Files</strong> &nbsp;perspective and double-click the&nbsp;<strong>demoDashboard</strong> &nbsp;file. When rendered, the dashboard will look similar to the following:</li>
+      </ol>
+      <p style="margin-left: 40px;">
+        <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11888/ExportCharts_ChartPreview.PNG?revision=1" />
+      </p>
+      <ol start="5">
+        <li>To test the responsiveness of your dashboard, reduce the size of your browser window. The dashboard layout will respond accordingly:</li>
+      </ol>
+      <p style="margin-left: 0.5in;">
+        <img alt="" class="internal default" style="width: 253px; height: 350px;" width="253px" height="350px" src="http://help.pentaho.com/@api/deki/files/11946/Responsive_Dashboard.png?size=bestfit&amp;width=253&amp;height=350&amp;revision=1" />
+      </p>
+      <div>
+        <hr align="left" size="1" width="33%" />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#CTools_and_RequireJS" rel="internal">CTools and RequireJS</a>  </li>
+      <li> <a href="#Enable_RequireJS_Support" rel="internal">Enable RequireJS Support</a>  </li>
+      <li> <a href="#Architectural_Considerations_for_including_RequireJS" rel="internal">Architectural Considerations for including RequireJS</a>  </li>
+      <li>
+        <a href="#Create_a_Dashboard_using_RequireJS" rel="internal">Create a Dashboard using RequireJS</a> 
+        <ol>
+          <li> <a href="#Step_One:_Set_Up_Folders_in_PUC_and_Create_the_Dashboard" rel="internal">Step One: Set Up Folders in PUC and Create the Dashboard</a>  </li>
+          <li> <a href="#Step_Two:_Add_Layout" rel="internal">Step Two: Add Layout</a>  </li>
+          <li> <a href="#Step_Three:_Add_External_Resources" rel="internal">Step Three: Add External Resources</a>  </li>
+          <li> <a href="#Step_Four:_Add_Data_Sources" rel="internal">Step Four: Add Data Sources</a>  </li>
+          <li> <a href="#Step_Five:_Add_Components" rel="internal">Step Five: Add Components</a>  </li>
+          <li> <a href="#Step_Six:_Preview_the_Dashboard" rel="internal">Step Six: Preview the Dashboard</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Embedding_Dashboards_Built_with_RequireJS" rel="internal">Embedding Dashboards Built with RequireJS</a> 
+        <ol>
+          <li> <a href="#Embedding_within_Pentaho_Server" rel="internal">Embedding within Pentaho Server</a>  </li>
+          <li> <a href="#Embedding_in_a_Server_Other_Than_Pentaho" rel="internal">Embedding in a Server Other Than Pentaho</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Exporting_Charts" rel="internal">Exporting Charts</a> 
+        <ol>
+          <li> <a href="#Exporting_Charts_with_CGG" rel="internal">Exporting Charts with CGG</a>  </li>
+          <li> <a href="#Exporting_Charts_from_a_Dashboard" rel="internal">Exporting Charts from a Dashboard</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Building_Responsive_Dashboards" rel="internal">Building Responsive Dashboards</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,78 @@
+<content type="text/html" title="Execute Scheduled Jobs on a Remote Carte Server">
+  <body>
+    <div>
+      <div>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">Follow the instructions below if you need to schedule a job to run on a remote Carte server. Without making these configuration changes, you will be unable to remotely execute scheduled jobs.</p>
+            <div class="note note"><span class="notetitle">Note:</span>  This process is also required for using the DI Server as a load balancer in a dynamic Carte cluster.</div>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Stop the DI Server and remote Carte server.</span> </li>
+            <li class="li step"><span class="ph cmd">Copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the same location on your Carte slave.</span>  Without this file, the Carte
+              slave will be unable to connect to the&nbsp;Pentaho Repository to retrieve PDI content.</li>
+            <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/web.xml</span>  file with a text editor.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Find the <strong class="ph b">Proxy Trusting Filter</strong>  filter section, and add your Carte server's IP address to the <strong class="ph b">param-value</strong>  element.</span>  <pre class="pre codeblock">
+<filter>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <filter-class>org.pentaho.platform.web.http.filters.ProxyTrustingFilter</filter-class>
+    <init-param>
+      <param-name>TrustedIpAddrs</param-name>
+      <param-value>127.0.0.1,192.168.0.1</param-value>
+      <description>Comma separated list of IP addresses of a trusted hosts.</description>
+    </init-param>
+    <init-param>
+      <param-name>NewSessionPerRequest</param-name>
+      <param-value>true</param-value>
+      <description>true to never re-use an existing IPentahoSession in the HTTP session; needs to be true to work around code put in for BISERVER-2639</description>
+    </init-param>
+</filter></pre> </li>
+            <li class="li step"><span class="ph cmd">Uncomment the proxy trusting filter-mappings between the
+ <!-- begin trust --> and
+ <!-- end trust --> markers.</span>  <pre class="pre codeblock">
+
+  <!-- begin trust --> 
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/authorizationPolicy</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/roleBindingDao</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/userRoleListService</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/unifiedRepository</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/userRoleService</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/Scheduler</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/repositorySync</url-pattern>
+  </filter-mapping>
+
+  <!-- end trust --></pre> </li>
+            <li class="li step"><span class="ph cmd">Save and close the file, then edit the <strong class="ph b">carte.sh</strong>  or <strong class="ph b">Carte.bat</strong>  startup script on the machine that runs your Carte server.</span> </li>
+            <li class="li step"><span class="ph cmd">Add <strong class="ph b">-Dpentaho.repository.client.attemptTrust=true</strong>  to the <strong class="ph b">java</strong>  line at the bottom of the file.</span>  <pre class="pre codeblock">
+java $OPT -Dpentaho.repository.client.attemptTrust=true org.pentaho.di.www.Carte &quot;${1+$@}&quot;</pre> </li>
+            <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+            <li class="li step"><span class="ph cmd">Start your Carte and DI Server</span> </li>
+          </ol>
+          <div class="section result">You can now schedule a job to run on a remote Carte instance.</div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

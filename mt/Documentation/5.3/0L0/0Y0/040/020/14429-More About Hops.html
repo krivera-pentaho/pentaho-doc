@@ -1,0 +1,91 @@
+<content type="text/html" title="More About Hops">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A hop connects one transformation step or job entry with another. The direction of the data flow is indicated by an arrow. To create the hop, click the source step, then press the
+          <<strong class="ph b">SHIFT</strong> > key down and draw a line to the target step. Alternatively, you can draw hops by hovering over a step until the hover menu appears. Drag the hop painter icon from the source step to your target step.</p>
+        <p class="p">
+          <img alt="File:/pdi_hop_alternative.png" class="image internal" id="212c670e-3cb0-445d-9542-bb39db6f3409__concept_pdi_usr_hops__image_6fee5c6a-f018-458b-aa79-b099dc95043f" src="http://help.pentaho.com/@api/deki/files/3353/pdi_hop_alternative.png?revision=1"
+          />
+        </p>
+        <p class="p">Additional methods for creating hops include:</p>
+        <ul class="ul">
+          <li class="li">Click on the source step, hold down the middle mouse button, and drag the hop to the target step.</li>
+          <li class="li">Select two steps, then choose New Hop from the right-click menu.</li>
+          <li class="li">Use
+            <CTRL + left-click> to select two steps the right-click on the step and choose <strong class="ph b">New Hop</strong> .</li>
+        </ul>
+        <p class="p">To <strong class="ph b">split a hop</strong>, insert a new step into the hop between two steps by dragging the step over a hop. Confirm that you want to split the hop. This feature works with steps that have not yet been connected to another step
+          only.</p>
+        <p class="p"><strong class="ph b">Loops</strong>  are not allowed in transformations because Spoon depends heavily on the previous steps to determine the field values that are passed from one step to another. Allowing loops in transformations may result in
+          endless loops and other problems. Loops are allowed in jobs because Spoon executes job entries sequentially; however, make sure you do not create endless loops.</p>
+        <p class="p"><strong class="ph b">Mixing rows</strong>  that have a different layout is not allowed in a transformation; for example, if you have two table input steps that use a varying number of fields. Mixing row layouts causes steps to fail because fields
+          cannot be found where expected or the data type changes unexpectedly. The trap detector displays warnings at design time if a step is receiving mixed layouts.</p>
+        <p class="p">You can specify if data can either be <strong class="ph b">copied</strong>, <strong class="ph b">distributed</strong>, or <strong class="ph b">load balanced</strong>  between multiple hops leaving a step. Select the step, right-click and choose
+          <strong class="ph b">Data Movement</strong> .</p>
+        <p class="p">
+          <img alt="File:/pdi_copy_or_distribute.png" class="image internal" id="212c670e-3cb0-445d-9542-bb39db6f3409__concept_pdi_usr_hops__image_f7d01699-9e55-49ca-8fc0-275f669af7f0" src="http://help.pentaho.com/@api/deki/files/3352/pdi_copy_or_distribute.png?revision=1"
+          />
+        </p>
+        <p class="p">A hop can be enabled or disabled (for testing purposes for example). Right-click on the hop to display the options menu.</p>
+        <p class="p">
+          <img alt="File:/pdi_hop_disable.png" class="image internal" id="212c670e-3cb0-445d-9542-bb39db6f3409__concept_pdi_usr_hops__image_ac4d2762-3c56-495d-b298-3cefc5f7b901" src="http://help.pentaho.com/@api/deki/files/3354/pdi_hop_disable.png?revision=1"
+          />
+        </p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Job_Hops"></span> 
+            <h2 class="editable">Job Hops</h2>
+            <p class="p">Besides the execution order, a hop also specifies the condition on which the next job entry will be executed. You can specify the <strong class="ph b">Evaluation</strong>  mode by right clicking on the job hop. A job hop is just a flow of control.
+              Hops link to job entries and, based on the results of the previous job entry, determine what happens next.</p>
+            <p class="p">
+              <img alt="File:/pdi_hop_for_job.png" class="image internal" id="212c670e-3cb0-445d-9542-bb39db6f3409__concept_pdi_usr_hops__image_b104bbfd-9a03-428f-9a0d-13474dd1e15f" src="http://help.pentaho.com/@api/deki/files/3355/pdi_hop_for_job.png?revision=1"
+              />
+            </p>
+            <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+              <tbody>
+                <tr class="sthead">
+                  <th align="left" class="stentry" id="212c670e-3cb0-445d-9542-bb39db6f3409__d83672e111" style="width: 81px;" valign="bottom">
+                    <p>Option</p>
+                  </th>
+                  <th align="left" class="stentry" id="212c670e-3cb0-445d-9542-bb39db6f3409__d83672e114" style="width: 595px;" valign="bottom">
+                    <p>Description</p>
+                  </th>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" headers="d83672e111" style="width: 81px;" valign="top">
+                    <p><strong class="ph b">Unconditional</strong> </p>
+                  </td>
+                  <td class="stentry" headers="d83672e114" style="width: 595px;" valign="top">
+                    <p>Specifies that the next job entry will be executed regardless of the result of the originating job entry</p>
+                  </td>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" headers="d83672e111" style="width: 81px;" valign="top">
+                    <p><strong class="ph b">Follow when result is true</strong> </p>
+                  </td>
+                  <td class="stentry" headers="d83672e114" style="width: 595px;" valign="top">
+                    <p>Specifies that the next job entry will be executed only when the result of the originating job entry is true; this means a successful execution such as, file found, table found, without error, and so on</p>
+                  </td>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" headers="d83672e111" style="width: 81px;" valign="top">
+                    <p><strong class="ph b">Follow when result is false</strong> </p>
+                  </td>
+                  <td class="stentry" headers="d83672e114" style="width: 595px;" valign="top">
+                    <p>Specifies that the next job entry will only be executed when the result of the originating job entry was false, meaning unsuccessful execution, file not found, table not found, error(s) occurred, and so on</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Job_Hops" rel="internal">Job Hops</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,157 @@
+<content type="text/html" title="Install PDI Version 5.1">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="pentaho-overview-hidden">
+            <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+              <h2 class="editable">Overview</h2>
+              <p>Explains how to install PDI&nbsp;Version 5.1.</p>
+            </div>
+          </div>
+          <p>After you have
+            <a title="Create Upgrade Plan" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0T0/0X0/030">created an upgrade plan</a>,&nbsp;shut down PDI Version 5.0.x, then install PDI version 5.1.</p>
+          <p class="pentaho-note">Make sure that you review the
+            <a title="PDI Version 5.1 Minor Functionality Changes" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0T0/040/010">Minor Functionality Changes</a>  section before you proceed.</p>
+          <div id="section_2" class="mt-page-section"><span id="Shut_Down_PDI_5.0.x"></span> 
+            <h2 class="editable">Shut Down PDI 5.0.x</h2>
+            <p>Back up the DI Repository and stop all PDI components, as well as the web application server.</p>
+            <ol class="pentaho-list-ordered">
+              <li><span>Ensure no users are currently using the Spoon client application to connect to the DI Repository. </span> &nbsp;</li>
+              <li>Stop the DI Repository.</li>
+              <li>Stop the web application server.</li>
+              <li>Back up the DI Repository using the directions provided by your databases' vendor&nbsp;(PostgreSQL, MySQL, or Oracle). &nbsp;</li>
+              <li>Verify that the web application server has been stopped by doing one of the following.</li>
+            </ol>
+            <ul>
+              <li><strong class="ph b">If you are a Linux user</strong> &nbsp;run this command from a terminal window. &nbsp;</li>
+            </ul>
+            <p class="pentaho-note">If you have deployed the DI Server on JBoss, substitute <span class="filepath style-wrap">jboss </span> for <span class="filepath style-wrap">tomcat </span> in the following code.</p> <pre class="pre codeblock" style="font-size: 12px;">
+$>  ps -ef | grep tomcat</pre>
+            <ul class="pentaho-list-unordered">
+              <li class="p"><strong class="ph b">If you are a Windows user</strong> &nbsp;open the task manager and search for the&nbsp;<strong class="ph b">Tomcat6.exe</strong> &nbsp;or a JBoss process. If you are on Windows 7 or Windows 2008, you can access&nbsp;
+                <span
+                class="ph uicontrol">Services</span> &nbsp;and see if it shows as running or stopped. &nbsp;</li>
+            </ul>
+            <ol class="pentaho-list-ordered" start="6">
+              <li>If you installed the DI Server on Windows using the Installation Wizard, you need to stop the repository database, which runs as a Windows service.&nbsp; To do this, access the <strong>Windows Administrative Tools > Services Manager</strong>                 then stop the <strong>Pentaho Solution Repository</strong>  service.</li>
+            </ol>
+          </div>
+          <div id="section_3" class="mt-page-section"><span id="Install_Version_5.1_of_the_DI_Server"></span> 
+            <h2 class="editable">Install Version 5.1 of the DI Server</h2>
+            <p>Install version 5.1 of the BA Server using the Wizard, Install with Your Own Repository, or Manual method.&nbsp; Use the same method you used to install version 5.0.x of the software.&nbsp; You can assign ports during installation.&nbsp; Default
+              ports are listed in the following table.</p>
+            <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+              <tbody>
+                <tr class="strow">
+                  <td class="stentry" colspan="1" rowspan="1" valign="top"><strong>Component</strong> </td>
+                  <td class="stentry" colspan="1" rowspan="1" valign="top"><strong>Default Start Up Port</strong> </td>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" colspan="1" rowspan="1" valign="top"><strong><strong class="ph b">PostgreSQL</strong> </strong> 
+                  </td>
+                  <td class="stentry" colspan="1" rowspan="1" valign="top">5432</td>
+                </tr>
+                <tr>
+                  <td class="stentry" colspan="1" valign="top"><strong>MySQL</strong> </td>
+                  <td class="stentry" colspan="1" valign="top">3306</td>
+                </tr>
+                <tr>
+                  <td class="stentry" colspan="1" valign="top"><strong>Oracle</strong> </td>
+                  <td class="stentry" colspan="1" valign="top">1521</td>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" colspan="1" rowspan="1" valign="top"><strong class="ph b">DI Server</strong> </td>
+                  <td class="stentry" colspan="1" rowspan="1" valign="top">9080</td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="section_4" class="mt-page-section"><span id="Use_the_Wizard"></span> 
+              <h3 class="editable">Use the Wizard&nbsp;</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b28aa234-f369-44e2-91d8-d4f7424b24eb__stop_old_server">
+        <p>Use this method only if you used the Wizard to install 5.0.x of DI.</p>
+        <div class="body taskbody">
+          <ol class="pentaho-list-ordered">
+            <li class="li step">Back up your <span class="filepath style-wrap">/pentaho</span> &nbsp;directory.</li>
+            <li class="li step">Rename the <span class="filepath style-wrap">/pentaho</span> &nbsp;directory to&nbsp;<span class="filepath style-wrap">pentaho-old</span> .</li>
+            <li class="li step">Follow the instructions in the
+              <a title="Install All DI Components" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0J0">Install All DI Components&nbsp;guide</a> . &nbsp;</li>
+          </ol>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b28aa234-f369-44e2-91d8-d4f7424b24eb__start_database">
+        <div id="section_5" class="mt-page-section"><span id="Use_the_Install_with_Your_Own_Repository_Method"></span> 
+          <h3 class="editable">Use the Install with Your Own Repository Method&nbsp;</h3>
+          <div class="body taskbody">
+            <div class="section context">
+              <p>Use this method only if you used the Install with Your Own Repository method to install 5.0.x of DI.&nbsp; (This method is also known as the Archive installation method.)</p>
+              <div class="body taskbody">
+                <ol class="pentaho-list-ordered">
+                  <li class="li step">Back up your <span class="filepath style-wrap">/pentaho</span> &nbsp;directory.</li>
+                  <li class="li step">Rename the <span class="filepath style-wrap">/pentaho</span>  directory to&nbsp;<span class="filepath style-wrap">pentaho-old</span> .</li>
+                  <li class="li step">Follow the instructions in the
+                    <a title="Install DI Server with Your Own DI Repository" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0">Install DI Server with Your Own Repository</a>  guide.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b28aa234-f369-44e2-91d8-d4f7424b24eb__migration_tool">
+        <div id="section_6" class="mt-page-section"><span id="Use_the_Manual_Method"></span> 
+          <h3 class="editable">Use the Manual Method</h3>
+          <div class="body taskbody">
+            <div class="section context">
+              <p>Use this method only if you used the manual method to install version 5.0.x of DI.</p>
+              <div class="body taskbody">
+                <ol class="pentaho-list-ordered">
+                  <li class="li step">Back up your <span class="filepath style-wrap">/pentaho</span>  directory and <span class="filepath style-wrap">pentaho-di.war</span> .</li>
+                  <li class="li step">Rename the <span class="filepath style-wrap">/pentaho </span> directory to <span class="filepath style-wrap">pentaho-old</span> .</li>
+                  <li class="li step">Follow the instructions in the
+                    <a title="Use Manual DI Server Installation" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0L0">Use Manual DI Installation</a>  guide.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="b28aa234-f369-44e2-91d8-d4f7424b24eb__verify_migration">
+        <div id="section_7" class="mt-page-section"><span id="Install_Version_5.1_of_the_Client_Tools"></span> 
+          <h2 class="editable">Install Version 5.1 of the Client Tools</h2>
+          <p>To upgrade the Pentaho client tools on user workstations, download and run the Wizard installer or install the individual client tool packages.&nbsp; When you install you must:</p>
+          <ol class="pentaho-list-ordered">
+            <li>&nbsp;&nbsp;&nbsp; Rename or remove the old client tools.</li>
+            <li>&nbsp;&nbsp;&nbsp; Use the instructions in the
+              <a title="Install Only DI Tools" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0H0">Install Only DI Tools</a>  guide.</li>
+          </ol>
+          <p>The only Pentaho client tools that store user settings are Report Designer and Pentaho Data Integration (Spoon). When you upgrade these programs, the new instance detects the custom settings from the old instance and uses them automatically.&nbsp;
+            No settings or content files are stored in the<span class="filepath style-wrap"> /pentaho/design-tools/report-designer/ </span> or<span class="filepath style-wrap"> /pentaho/design-tools/data-integration/directories</span>  (or the subdirectories
+            for any other client tools).&nbsp; Custom user settings are stored in these directories.</p>
+          <ul class="pentaho-list-unordered">
+            <li>&nbsp;&nbsp;&nbsp;<strong> Report Designer:</strong> &nbsp; <span class="filepath style-wrap">$HOME/.pentaho</span> </li>
+            <li>&nbsp;&nbsp;<strong>&nbsp; Spoon: </strong> <span class="filepath style-wrap">$HOME/.kettle</span> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Shut_Down_PDI_5.0.x" rel="internal">Shut Down PDI 5.0.x</a>  </li>
+      <li>
+        <a href="#Install_Version_5.1_of_the_DI_Server" rel="internal">Install Version 5.1 of the DI Server</a> 
+        <ol>
+          <li> <a href="#Use_the_Wizard" rel="internal">Use the Wizard&nbsp;</a>  </li>
+          <li> <a href="#Use_the_Install_with_Your_Own_Repository_Method" rel="internal">Use the Install with Your Own Repository Method&nbsp;</a>  </li>
+          <li> <a href="#Use_the_Manual_Method" rel="internal">Use the Manual Method</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Install_Version_5.1_of_the_Client_Tools" rel="internal">Install Version 5.1 of the Client Tools</a>  </li>
+    </ol>
+  </body>
+</content>

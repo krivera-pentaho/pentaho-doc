@@ -1,0 +1,348 @@
+<content type="text/html" title="LDAP Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Resource allows reading and updating LDAP settings.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Overview_2"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>Resource allows reading and updating LDAP settings.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__ldap_config_getAttributeValues.html">/ldap/config/getAttributeValues</a>  </li>
+              <li> <a href="#path__ldap_config_setAttributeValues.html">/ldap/config/setAttributeValues</a>  </li>
+            </ul>
+            <a name="path__ldap_config_getAttributeValues.html"></a> 
+            <div id="section_3" class="mt-page-section"><span id=".2Fldap.2Fconfig.2FgetAttributeValues"></span> 
+              <h1 class="editable">/ldap/config/getAttributeValues</h1>
+              <a name="GET"></a> 
+              <div id="section_4" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Retrieve the LDAP attributes of the repository.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/ldap/config/getAttributeValues</p>
+                <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>An AttributeSet object containing LDAP attributes of the repository.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;attributes&quot;: [
+{
+&quot;key&quot;: &quot;allAuthoritiesSearch.searchBase&quot;,
+&quot;value&quot;: &quot;ou=roles&quot;
+},
+{
+&quot;key&quot;: &quot;allUsernamesSearch.searchBase&quot;,
+&quot;value&quot;: &quot;ou=users&quot;
+},
+{
+&quot;key&quot;: &quot;userSearch.searchFilter&quot;,
+&quot;value&quot;: &quot;(cn={0})&quot;
+},
+{
+&quot;key&quot;: &quot;securityProvider&quot;,
+&quot;value&quot;: &quot;jackrabbit&quot;
+},
+{
+&quot;key&quot;: &quot;populator.groupRoleAttribute&quot;,
+&quot;value&quot;: &quot;cn&quot;
+},
+{
+&quot;key&quot;: &quot;allUsernamesSearch.usernameAttribute&quot;,
+&quot;value&quot;: &quot;uid&quot;
+},
+{
+&quot;key&quot;: &quot;populator.groupSearchBase&quot;,
+&quot;value&quot;: &quot;ou=roles&quot;
+},
+{
+&quot;key&quot;: &quot;contextSource.providerUrl&quot;,
+&quot;value&quot;: &quot;ldap://localhost:10389/ou=system&quot;
+},
+{
+&quot;key&quot;: &quot;populator.searchSubtree&quot;,
+&quot;value&quot;: &quot;false&quot;
+},
+{
+&quot;key&quot;: &quot;allUsernamesSearch.searchFilter&quot;,
+&quot;value&quot;: &quot;objectClass=Person&quot;
+},
+{
+&quot;key&quot;: &quot;populator.convertToUpperCase&quot;,
+&quot;value&quot;: &quot;false&quot;
+},
+{
+&quot;key&quot;: &quot;populator.rolePrefix&quot;,
+&quot;value&quot;: &quot;&quot;
+},
+{
+&quot;key&quot;: &quot;contextSource.password&quot;,
+&quot;value&quot;: &quot;secret&quot;
+},
+{
+&quot;key&quot;: &quot;userSearch.searchBase&quot;,
+&quot;value&quot;: &quot;ou=users&quot;
+},
+{
+&quot;key&quot;: &quot;allAuthoritiesSearch.roleAttribute&quot;,
+&quot;value&quot;: &quot;cn&quot;
+},
+{
+&quot;key&quot;: &quot;adminUser&quot;,
+&quot;value&quot;: &quot;uid=admin,ou=users&quot;
+},
+{
+&quot;key&quot;: &quot;contextSource.userDn&quot;,
+&quot;value&quot;: &quot;uid=admin,ou=system&quot;
+},
+{
+&quot;key&quot;: &quot;allAuthoritiesSearch.searchFilter&quot;,
+&quot;value&quot;: &quot;(objectClass=organizationalRole)&quot;
+},
+{
+&quot;key&quot;: &quot;populator.groupSearchFilter&quot;,
+&quot;value&quot;: &quot;(roleOccupant={0})&quot;
+},
+{
+&quot;key&quot;: &quot;adminRole&quot;,
+&quot;value&quot;: &quot;cn=Administrator,ou=roles&quot;
+}
+]
+}</pre> </div>
+                <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the LDAP attributes of the repository.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Server Error.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__ldap_config_setAttributeValues.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_7" class="mt-page-section"><span id=".2Fldap.2Fconfig.2FsetAttributeValues"></span> 
+              <h1 class="editable">/ldap/config/setAttributeValues</h1>
+              <a name="PUT"></a> 
+              <div id="section_8" class="mt-page-section"><span id="PUT"></span> 
+                <h2 class="editable">PUT</h2>
+                <p>Writes LDAP attributes with new authentication parameters.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> PUT pentaho/api/ldap/config/setAttributeValues
+                  <br /> <strong>PUT data:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;attributes&quot;: [
+{
+&quot;key&quot;: &quot;allAuthoritiesSearch.searchBase&quot;,
+&quot;value&quot;: &quot;ou=roles&quot;
+},
+{
+&quot;key&quot;: &quot;allUsernamesSearch.searchBase&quot;,
+&quot;value&quot;: &quot;ou=users&quot;
+},
+{
+&quot;key&quot;: &quot;userSearch.searchFilter&quot;,
+&quot;value&quot;: &quot;(cn={0})&quot;
+},
+{
+&quot;key&quot;: &quot;securityProvider&quot;,
+&quot;value&quot;: &quot;jackrabbit&quot;
+},
+{
+&quot;key&quot;: &quot;populator.groupRoleAttribute&quot;,
+&quot;value&quot;: &quot;cn&quot;
+},
+{
+&quot;key&quot;: &quot;allUsernamesSearch.usernameAttribute&quot;,
+&quot;value&quot;: &quot;uid&quot;
+},
+{
+&quot;key&quot;: &quot;populator.groupSearchBase&quot;,
+&quot;value&quot;: &quot;ou=roles&quot;
+},
+{
+&quot;key&quot;: &quot;contextSource.providerUrl&quot;,
+&quot;value&quot;: &quot;ldap://localhost:10389/ou=system&quot;
+},
+{
+&quot;key&quot;: &quot;populator.searchSubtree&quot;,
+&quot;value&quot;: &quot;false&quot;
+},
+{
+&quot;key&quot;: &quot;allUsernamesSearch.searchFilter&quot;,
+&quot;value&quot;: &quot;objectClass=Person&quot;
+},
+{
+&quot;key&quot;: &quot;populator.convertToUpperCase&quot;,
+&quot;value&quot;: &quot;false&quot;
+},
+{
+&quot;key&quot;: &quot;populator.rolePrefix&quot;,
+&quot;value&quot;: &quot;&quot;
+},
+{
+&quot;key&quot;: &quot;contextSource.password&quot;,
+&quot;value&quot;: &quot;secret&quot;
+},
+{
+&quot;key&quot;: &quot;userSearch.searchBase&quot;,
+&quot;value&quot;: &quot;ou=users&quot;
+},
+{
+&quot;key&quot;: &quot;allAuthoritiesSearch.roleAttribute&quot;,
+&quot;value&quot;: &quot;cn&quot;
+},
+{
+&quot;key&quot;: &quot;adminUser&quot;,
+&quot;value&quot;: &quot;uid=admin,ou=users&quot;
+},
+{
+&quot;key&quot;: &quot;contextSource.userDn&quot;,
+&quot;value&quot;: &quot;uid=admin,ou=system&quot;
+},
+{
+&quot;key&quot;: &quot;allAuthoritiesSearch.searchFilter&quot;,
+&quot;value&quot;: &quot;(objectClass=organizationalRole)&quot;
+},
+{
+&quot;key&quot;: &quot;populator.groupSearchFilter&quot;,
+&quot;value&quot;: &quot;(roleOccupant={0})&quot;
+},
+{
+&quot;key&quot;: &quot;adminRole&quot;,
+&quot;value&quot;: &quot;cn=Administrator,ou=roles&quot;
+}
+]
+}</pre>
+                <div id="section_9" class="mt-page-section"><span id="Request_Body"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>An AttributeSet representing the new authentication parameters</p>
+                </div>
+                <div id="section_10" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object with the appropriate status code, header, and body.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This response does not contain data.</pre> </div>
+                <div id="section_11" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the LDAP attributes of the repository.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Server Error.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> 
+              <br /> Generated by
+              <a class="external" rel="external nofollow" href="http://enunciate.codehaus.org" target="_blank">Enunciate</a> .</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fldap.2Fconfig.2FgetAttributeValues" rel="internal">/ldap/config/getAttributeValues</a> 
+        <ol>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fldap.2Fconfig.2FsetAttributeValues" rel="internal">/ldap/config/setAttributeValues</a> 
+        <ol>
+          <li>
+            <a href="#PUT" rel="internal">PUT</a> 
+            <ol>
+              <li> <a href="#Request_Body" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

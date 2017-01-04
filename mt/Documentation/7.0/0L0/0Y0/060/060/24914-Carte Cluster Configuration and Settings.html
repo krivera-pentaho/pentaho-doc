@@ -1,0 +1,503 @@
+<content type="text/html" title="Carte Cluster Configuration and Settings">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <p class="p">If you want to speed the processing of your transformations, consider setting up a Carte cluster. A Carte cluster consists of two or more Carte slave servers and a Carte master server. When you run a transformation, the different parts of it are distributed
+      across Carte slave server nodes for processing, while the Carte master server node tracks the progress.</p>
+    <div id="section_1" class="mt-page-section"><span id="Carte_Cluster_Configuration"></span> 
+      <h2 class="editable">Carte Cluster Configuration</h2>
+      <p>There are two types of Carte clusters. &nbsp;&nbsp;Static Carte cluster&nbsp;has&nbsp;a fixed schema that specifies one master node and two or more slave nodes.&nbsp;In a static cluster, you specify the&nbsp;nodes in a cluster at design-time,&nbsp;<em>before&nbsp;</em> you
+        run the transformation or job.</p>
+      <div id="section_2" class="mt-page-section"><span id="Configure_a_Static_Carte_Cluster"></span> 
+        <h3 class="editable">Configure a Static Carte Cluster</h3>
+        <p class="p">Follow the directions below to set up static Carte slave servers.</p>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Copy over any required JDBC drivers and PDI plugins from your development instances of PDI to the Carte instances.</span> </li>
+          <li class="li step"><span class="ph cmd">Run the Carte script with an IP address, hostname, or domain name of this server, and the port number you want it to be available on.</span>  <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./carte.sh 127.0.0.1 8081</pre>            </li>
+          <li class="li step"><span class="ph cmd">If you will be executing content stored in a Pentaho Repository, copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the same location
+            on your Carte slave.</span>  Without this file, the Carte slave will be unable to connect to the Pentaho Repository to retrieve content.</li>
+          <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended, accessible from your primary PDI development machines, and that it can run your jobs and transformations.</span> </li>
+          <li class="li step"><span class="ph cmd">To start this slave server every time the operating system boots, create a startup or init script to run Carte at boot time with the same options you tested with.</span> </li>
+        </ol>
+        <div id="section_3" class="mt-page-section"><span id="Pentaho_Server_Considerations"></span> 
+          <h4 class="editable">Pentaho Server Considerations</h4>
+          <p class="p">Any action done through the Carte server embedded in the Pentaho Server is controlled through the <span class="ph filepath">/pentaho/server/pentaho-server/pentaho-solutions/system/kettle/slave-server-config.xml</span>  file.&nbsp;To make modifications
+            to <span class="mt-font-courier-new">slave-server-config.xml</span>, you must stop the Pentaho Server.</p>
+        </div>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Configure_a_Dynamic_Carte_Cluster"></span> 
+        <h3 class="editable">Configure a Dynamic Carte Cluster</h3>
+        <p class="p">This procedure is only necessary for <span class="ph b">dynamic cluster</span>  scenarios in which one Carte server will control multiple slave Carte instances.</p>
+        <p class="pentaho-note">The following instructions explain how to create <span class="filepath style-wrap">carte-master-config.xml</span>  and <span class="filepath style-wrap">carte-slave-config.xml</span>  files. You can rename these files if you want, but you must specify
+          the content in the files as per the instructions.</p>
+        <div id="section_5" class="mt-page-section"><span id="Configure_Carte_Master_Server"></span> 
+          <h4 class="editable">Configure Carte Master Server</h4>
+          <p class="p">Follow the process below to configure the Carte Master Server.</p>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd"><span class="ph cmd">Copy over any </span> <span class="ph cmd">required JDBC drivers from your development instances of PDI to the Carte instances.</span> </span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Create a <strong class="ph b">carte-master-config.xml</strong>  configuration file using the following example as a template:</span> </li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+
+<!-- on a master server, the slaveserver node contains information about this Carte instance -->
+    <slaveserver>
+        <name>Master</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>Y</master>
+    </slaveserver>
+</slave_config></pre>
+          <p class="pentaho-note">The <strong class="ph b"><name></strong>  of the Master server<strong> must be unique</strong>  among all Carte instances in the cluster.</p>
+          <ol class="ol steps" start="3">
+            <li class="li step"><span class="ph cmd">Run the Carte script with the carte-slave-config.xml parameter. Note that if</span>  you placed the <span class="filepath style-wrap">carte-master-config.xml</span>  file in a different directory than the Carte script, you
+              will need to add the path to the file to the command. <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./carte.sh carte-master-config.xml</pre> </li>
+          </ol>
+          <ol class="ol steps" start="4">
+            <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended.</span> </li>
+            <li class="li step"><span class="ph cmd">To start this master server every time the operating system boots, create a startup or init script to run Carte at boot time.</span> </li>
+          </ol>
+          <p>You now have a Carte master server to use in a dynamic cluster. Next, configure the Carte slave servers.</p>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Configure_Carte_Slave_Servers"></span> 
+          <h4 class="editable">Configure Carte Slave Servers</h4>
+          <p class="p">Follow the directions below to set up static Carte slave servers.</p>
+          <ol class="ol steps">
+            <li class="li step">Follow the process to configure the Carte master server (see above).</li>
+            <li class="li step">Make sure the Master server is running.</li>
+            <li class="li step">Copy over any required JDBC drivers from your development instances of PDI to the Carte instances.</li>
+            <li class="li step">In the <span class="ph filepath">/pentaho/design-tools/</span>  directory,create a <strong class="ph b">carte-slave-config.xml</strong>  configuration file using the following example as a template:</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+
+<!-- the masters node defines one or more load balancing Carte instances that will manage this slave -->
+    <masters>
+		<slaveserver>
+			<name>Master</name>
+			<hostname>yourhostname</hostname>
+			<port>9000</port>
+
+<!-- uncomment the next line if you want the DI Server to act as the load balancer -->
+
+<!--	    <webAppName>pentaho</webAppName> -->
+			<username>cluster</username>
+			<password>cluster</password>
+			<master>Y</master>
+		</slaveserver>
+	</masters>
+	<report_to_masters>Y</report_to_masters>
+
+<!-- the slaveserver node contains information about this Carte slave instance -->
+    <slaveserver>
+        <name>SlaveOne</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>N</master>
+    </slaveserver>
+</slave_config></pre>
+          <p class="pentaho-note">The slaveserver <strong class="ph b"><name></strong>  must be unique among all Carte instances in the cluster.</p>
+          <ol class="ol steps" start="5">
+            <li class="li step">If you want a slave server to use the same kettle properties as the master server, add the <span class="filepath style-wrap"><get_properties_from_master></span>  and <span class="filepath style-wrap"><override_existing_properties></span>  tags
+              between the <span class="filepath style-wrap"><slaveserver></span>  and <span class="filepath style-wrap"></slaveserver></span>  tags for the slave server. Put the name of the master server between the <span class="filepath style-wrap"><get_properties_from_master></span>               and <span class="filepath style-wrap"></get_properties_from_master></span>  tags. Here is an example.</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- the slaveserver node contains information about this Carte slave instance -->
+    <slaveserver>
+        <name>SlaveOne</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>N</master>
+        <get_properties_from_master>Master</get_properties_from_master>
+        <override_existing_properties>Y</override_existing_properties>
+    </slaveserver></pre>
+          <ol class="ol steps" start="6">
+            <li class="li step">Save and close the file.</li>
+            <li class="li step"><span style="line-height:1.5;">Run the Carte script with the <span class="filepath style-wrap">carte-slave-config.xml</span>  parameter. Note that i</span> f you placed the <span class="filepath style-wrap">carte-slave-config.xml</span>  file
+              in a different directory than the Carte script, you will need to add the path to the file to the command.</li>
+          </ol> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./carte.sh carte-slave-config.xml</pre>
+          <ol class="ol steps" start="8">
+            <li class="li step"><span class="ph cmd">If you will be executing content stored in a Pentaho Repository, copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the same
+              location on your Carte slave.</span>  Without this file, the Carte slave will be unable to connect to the Pentaho Repository to retrieve PDI content.</li>
+            <li class="li step">Stop, then start the master and slave servers.</li>
+            <li class="li step">Stop, then start the Pentaho Server.</li>
+            <li class="li step"><span class="ph cmd">Ensure that the Carte service is running as intended. If you want to start<span class="ph cmd"> this slave server every time the operating system boots, create a startup or init script to run Carte at boot time.</span> </span> 
+            </li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Tuning_Options"></span> 
+          <h4 class="editable">Tuning Options</h4>
+          <p class="p">The table below shows the three configurable settings for schedule and remote execution logging in the <span class="ph filepath">slave-server-config.xml</span>  file .</p>
+          <p class="pentaho-note">To make modifications to slave-server-config.xml, you must stop the Pentaho Server.</p>
+          <div class="note note">
+            <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" style="color: rgb(0, 0, 0); font-size: 16px; font-style: normal; line-height: inherit;" summary="" title="Pentaho Table">
+              <tbody>
+                <tr class="sthead prophead">
+                  <th align="left" class="stentry proptypehd" id="ba701cb2-d3dc-42a9-88c1-989c167ee848__d70139e30" valign="bottom" width="33.333333333333336%">Property</th>
+                  <th align="left" class="stentry propvaluehd" id="ba701cb2-d3dc-42a9-88c1-989c167ee848__d70139e33" style="width:225px;" valign="bottom" width="66.66666666666667%">Values</th>
+                  <th align="left" class="stentry propdeschd" id="ba701cb2-d3dc-42a9-88c1-989c167ee848__d70139e36" style="width:231px;" valign="bottom" width="NaN%">Description</th>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d70139e30" valign="top" width="33.333333333333336%">max_log_lines</td>
+                  <td class="stentry propvalue" headers="d70139e33" style="width:225px;" valign="top" width="66.66666666666667%">Any value of 0 (zero) or greater. 0 indicates that there is no limit.</td>
+                  <td class="stentry propdesc" headers="d70139e36" style="width:231px;" valign="top" width="NaN%">Truncates the execution log when it goes beyond this many lines.</td>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d70139e30" valign="top" width="33.333333333333336%">max_log_timeout_minutes</td>
+                  <td class="stentry propvalue" headers="d70139e33" style="width:225px;" valign="top" width="66.66666666666667%">Any value of 0 (zero) or greater. 0 indicates that there is no timeout.</td>
+                  <td class="stentry propdesc" headers="d70139e36" style="width:231px;" valign="top" width="NaN%">Removes lines from each log entry if it is older than this many minutes.</td>
+                </tr>
+                <tr class="strow property">
+                  <td class="stentry proptype" headers="d70139e30" valign="top" width="33.333333333333336%">object_timeout_minutes</td>
+                  <td class="stentry propvalue" headers="d70139e33" style="width:225px;" valign="top" width="66.66666666666667%">Any value of 0 (zero) or greater. 0 indicates that there is no timeout.</td>
+                  <td class="stentry propdesc" headers="d70139e36" style="width:231px;" valign="top" width="NaN%">Removes entries from the list if they are older than this many minutes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="example">
+            <p>The following code block is an example of the <span class="ph filepath">slave-server-config.xml</span>  file:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+  <max_log_lines>0</max_log_lines>
+  <max_log_timeout_minutes>0</max_log_timeout_minutes>
+  <object_timeout_minutes>0</object_timeout_minutes>
+</slave_config></pre>
+          </div>
+        </div>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Configuring_Carte_Servers_for_SSL"></span> 
+        <h3 class="editable">Configuring Carte Servers for SSL</h3>
+        <p>To configure Carte servers to use SSL, complete these steps.</p>
+        <p class="pentaho-note">Carte SSL uses the JKS format for keystores, which is the default format created by the keytool command-line utility. It is a best practice to locate the keystore file in a directory that has restricted access. Carte runs on a Jetty server. For
+          more information on how to use SSL certificates in the Jetty server, read
+          <a class="link-https" rel="external nofollow" href="https://wiki.eclipse.org/Jetty/Howto/Configure_SSL" target="_blank">https://wiki.eclipse.org/Jetty/Howto/Configure_SSL</a> .</p>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the Carte server if it is running.</span> </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap">carte-master-config.xml</span>  configuration file.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Add the <span class="filepath style-wrap">keyStore</span>, <span class="filepath style-wrap">keyStorePassword </span> and optionally, the <span class="filepath style-wrap">keyPassword </span> values between <span class="filepath style-wrap"><sslConfig> </sslConfig></span>             tags in the master server configuration section. If you do not include the <span class="filepath style-wrap">keyStore </span> and <span class="filepath style-wrap">keyStorePassword </span> values in the file, Carte will not start. Here is an
+            example of how to add the values. Adjust the values to match your environment. </span> 
+          </li>
+        </ol>
+        <p class="pentaho-note">You can use the encr tool, which is in the data-integration directory to generate obfuscated passwords. To use the tool, open a command prompt or shell tool and type <span class="filepath style-wrap">encr.bat -carte <password>. </span>  (Use
+          <span
+          class="filepath">encr.sh</span>  if you are using linux.) You can then paste the obfuscated value into the file instead of the clear-text password.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+
+<!-- on a master server, the slaveserver node contains information about this Carte instance -->
+    <slaveserver>
+        <name>Master</name>
+        <hostname>yourhostname</hostname>
+        <port>9001</port>
+        <username>cluster</username>
+        <password>cluster</password>
+        <master>Y</master>
+        <sslConfig/>
+            <keyStore>D:\KEY_STORE\Pentaho</keyStore>
+            <keyStorePassword>OBF:1x8g1toc1u301z0f1u2a1toi1x8e</keyStorePassword>
+            <keyPassword>OBF:1iun1i9a1lfk1w261w1c1lby1i6o1irz</keyPassword>
+        </sslConfig>
+    </slaveserver>
+</slave_config></pre>
+        <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+          <tbody>
+            <tr>
+              <td>Parameter</td>
+              <td>Description</td>
+              <td>Required</td>
+            </tr>
+            <tr>
+              <td><span class="filepath style-wrap">keyStore</span> </td>
+              <td>Path to the keystore file.</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td><span class="filepath style-wrap">keyStorePassword</span> </td>
+              <td>Password for the keystore.</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td><span class="filepath style-wrap">keyPassword</span> </td>
+              <td>Password for the key. <span>If the <span class="filepath style-wrap">keyStorePassword </span> and <span class="filepath style-wrap">keyPassword </span> are the same, omit the <span class="filepath style-wrap">keyPassword </span> parameter from
+                file.</span> 
+              </td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+        <ol class="ol steps" start="3">
+          <li class="li step"><span class="ph cmd">Save and close the <span class="filepath style-wrap">carte-master-config.xm</span> l file.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="filepath style-wrap">carte-slave-config.xml</span>  file for the slave servers and add the same values.</span> 
+          </li>
+          <li class="li step">When finished save and close the <span class="filepath style-wrap">carte-slave-config.xml</span>  file.</li>
+          <li class="li step">Start the Carte server. A message like the following appears in the console.</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">2015/02/17 11:23:54 - Carte - Using SSL mode.</pre>
+        <ol start="7">
+          <li class="li step">To access carte, type the following in a browser, substituting <span class="filepath style-wrap"><host></span>  and<span class="filepath style-wrap"> <port> </span> for valid values that are in your environment.</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">https://<host>:<port>/</pre> </div>
+      <div id="section_9" class="mt-page-section"><span id="Changing_Jetty_Server_Parameters"></span> 
+        <h3 class="editable">Changing Jetty Server Parameters</h3>
+        <p>Carte runs on a Jetty server. You do not need to do anything to configure the Jetty server for Carte to work. But if you want to make changes to the default connection parameters, complete the steps in one of the subsections that follow.</p>
+        <table
+        border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 624px; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width:198px;">Jetty Server Parameters</th>
+              <th style="width:402px;">Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width:198px;"><span class="filepath style-wrap">acceptors</span> </td>
+              <td style="width:402px;">The number of thread dedicated to accepting incoming connections. The number of acceptors should be below or equal to the number of CPUs.</td>
+            </tr>
+            <tr>
+              <td style="width:198px;"><span class="filepath style-wrap">acceptQueueSize</span> </td>
+              <td style="width:402px;">Number of connection requests that can be queued up before the operating system starts to send rejections.</td>
+            </tr>
+            <tr>
+              <td style="width:198px;">lowResourcesMaxIdleTime</td>
+              <td style="width:402px;">This allows the server to rapidly close idle connections in order to gracefully handle high load situations.</td>
+            </tr>
+          </tbody>
+          </table>
+          <p class="pentaho-note">If you want to learn more about these options, check out the Jetty documentation here:
+            <a class="external" title="http://wiki.eclipse.org/Jetty/Howto/Configure_Connectors#Configuration_Options" rel="external nofollow" href="http://wiki.eclipse.org/Jetty/Howto/Configure_Connectors#Configuration_Options"
+            target="_blank">http://wiki.eclipse.org/Jetty/Howto/Configure_Connectors#Configuration_Options</a> . For more information about a high load setup read this article:
+            <a class="link-https" title="https://wiki.eclipse.org/Jetty/Howto/High_Load" rel="external nofollow"
+            href="https://wiki.eclipse.org/Jetty/Howto/High_Load" target="_blank">https://wiki.eclipse.org/Jetty/Howto/High_Load</a> .</p>
+          <div id="section_10" class="mt-page-section"><span id="Setting_the_Jetty_Server_Parameters_in_the_carte-slave-config.xml_file"></span> 
+            <h4 class="editable">Setting the Jetty Server Parameters in the carte-slave-config.xml file</h4>
+            <p>To change the Jetty server parameters in the <span class="filepath style-wrap">carte-slave-config.xml</span>  file, complete these steps.</p>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">In the <span class="ph filepath">/pentaho/design-tools/</span>  directory, open the <strong class="ph b">carte-slave-config.xml</strong>  and add these lines between the
+                <slave_config> </slave_config> tags.</span> 
+              </li>
+            </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><slave_config>
+...
+
+    <!-- Carte uses an embedded jetty server. Include this next section only if you want to change the default jetty configuration options.-->
+    <jetty_options>
+        <acceptors>2</acceptors>
+        <acceptQueueSize>2</acceptQueueSize>
+        <lowResourcesMaxIdleTime>2</lowResourcesMaxIdleTime>
+    </jetty_options>
+</slave_config></pre>
+            <ol class="ol steps" start="2">
+              <li class="li step">Adjust the values for the parameters as necessary, then save and close the file.</li>
+            </ol>
+          </div>
+          <div id="section_11" class="mt-page-section"><span id="Setting_the_Jetty_Server_Parameters_in_the_kettle.properties_file"></span> 
+            <h4 class="editable">Setting the Jetty Server Parameters in the kettle.properties file</h4>
+            <p>To change the Jetty server parameters in the <span class="filepath style-wrap">kettle.properties</span>  file, configure the following parameters to the numeric value you want. See
+              <a title="Set Kettle Variables" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050/020/000/010/010">Set Kettle Variables</a>  <span style="line-height:1.5;"> if you need more infor</span> <span style="line-height:1.5;">mation on how to do this. </span> </p>
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 697px; table-layout: fixed;"
+            title="Pentaho Table">
+              <thead>
+                <tr>
+                  <th>Kettle Variable in <span class="filepath style-wrap">kettle.properties</span> </th>
+                  <th>Jetty Server Parameter</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="filepath style-wrap">KETTLE_CARTE_JETTY_ACCEPTORS</span> </td>
+                  <td><span class="filepath style-wrap">acceptors</span> </td>
+                </tr>
+                <tr>
+                  <td><span class="filepath style-wrap">KETTLE_CARTE_JETTY_ACCEPT_QUEUE_SIZE</span> </td>
+                  <td><span class="filepath style-wrap">acceptQueueSize</span> </td>
+                </tr>
+                <tr>
+                  <td><span class="filepath style-wrap">KETTLE_CARTE_JETTY_RES_MAX_IDLE_TIME</span> </td>
+                  <td>lowResourcesMaxIdleTime</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    <div id="section_12" class="mt-page-section"><span id="Initialize_Slave_Servers_in_Spoon"></span> 
+      <h2 class="editable">Initialize Slave Servers in Spoon</h2>
+      <div class="section context">
+        <p class="p">Follow the instructions below to configure PDI to work with Carte slave servers.</p>
+      </div>
+      <ol class="ol steps">
+        <li class="li step"><span class="ph cmd">Open a transformation.</span> </li>
+        <li class="li step"><span class="ph cmd">In the <strong class="ph b">Explorer View</strong>  in Spoon, select the <strong class="ph b">Slave </strong> tab. </span> </li>
+        <li class="li step"><span class="ph cmd">Select the <strong>New </strong> button.</span>  The <strong class="ph b">Slave Server</strong>  <strong>dialog </strong> window appears.</li>
+        <li class="li step"><span class="ph cmd">In the <strong>Slave Server dialog</strong>  window, enter the appropriate connection information for the Pentaho&nbsp;(or Carte) slave server. </span> 
+          <div class="tablenoborder">
+            <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+              <thead align="left" class="thead">
+                <tr class="row">
+                  <th class="entry" id="9ecb34d0-0509-4686-be4c-84170bb5ffde__d100188e75" valign="top">Option</th>
+                  <th class="entry" id="9ecb34d0-0509-4686-be4c-84170bb5ffde__d100188e78" valign="top">Description</th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">Server name </strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">The name of the slave server.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">Hostname or IP address</strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">The address of the device to be used as a slave.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">Port (empty is port 80)</strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">Defines the port you are for communicating with the remote server.&nbsp; If you leave the port blank, 80 is used.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">Web App Name (required for Pentaho Server)</strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">Leave this blank if you are setting up a Carte server.&nbsp; This field is used for connecting to the Pentaho server.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">User name</strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">Enter the user name for accessing the remote server.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">Password</strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">Enter the password for accessing the remote server.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top"><strong class="ph b">Is the master </strong> </td>
+                  <td class="entry" headers="d100188e75 d100188e78 " valign="top">Enables this server as the master server in any clustered executions of the transformation.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note note"><span class="notetitle">Note:</span>  When executing a transformation or job in a clustered environment, you should have one server set up as the master and all remaining servers in the cluster as slaves.</div>
+          <p class="p">Below are the proxy tab options:</p>
+          <div class="tablenoborder">
+            <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+              <thead align="left" class="thead">
+                <tr class="row">
+                  <th class="entry" id="9ecb34d0-0509-4686-be4c-84170bb5ffde__d100188e188" valign="top">Option</th>
+                  <th class="entry" id="9ecb34d0-0509-4686-be4c-84170bb5ffde__d100188e191" valign="top">Description</th>
+                </tr>
+              </thead>
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" headers="d100188e188 d100188e191 " valign="top">Proxy server hostname</td>
+                  <td class="entry" headers="d100188e188 d100188e191 " valign="top">Sets the host name for the proxy server you are using.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e188 d100188e191 " valign="top">The proxy server port</td>
+                  <td class="entry" headers="d100188e188 d100188e191 " valign="top">Sets the port number used for communicating with the proxy.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" headers="d100188e188 d100188e191 " valign="top">Ignore proxy for hosts: regexp&nbsp;&nbsp;&nbsp;&nbsp; | separated</td>
+                  <td class="entry" headers="d100188e188 d100188e191 " valign="top">Specify the server(s) for which the proxy should not be active. This option supports specifying multiple servers using regular expressions. You can also add multiple servers and expressions separated by the ' | ' character.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+        <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to exit the dialog box. Notice that a plus sign (+) appears next to <strong class="ph b">Slave Server</strong>  in the Explorer View.</span> </li>
+      </ol>
+    </div>
+    <div id="section_13" class="mt-page-section"><span id="Create_a_Cluster_Schema_in_Spoon"></span> 
+      <h2 class="editable">Create a Cluster Schema in Spoon</h2>
+      <p class="p">Clustering allows transformations and transformation steps to be executed in parallel on more than one Carte server. The clustering schema defines which slave servers you want to assign to the cluster and a variety of clustered execution options.</p>
+      <p class="p">Begin by selecting the <strong class="ph b">Kettle cluster schemas</strong>  node in the Spoon <strong class="ph b">Explorer View</strong> . Right-click and select <strong class="ph b">New</strong>  to open the <strong class="ph b">Clustering Schema</strong>         dialog box.</p>
+      <div class="tablenoborder">
+        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+          <thead align="left" class="thead">
+            <tr class="row">
+              <th class="entry" id="80628b2d-7661-41c2-8271-00f9496d4d62__d68734e42" valign="top">Option</th>
+              <th class="entry" id="80628b2d-7661-41c2-8271-00f9496d4d62__d68734e45" valign="top">Description</th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Schema name</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">The name of the clustering schema</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Port</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">Specify the port from which to start numbering ports for the slave servers. Each additional clustered step executing on a slave server will consume an additional port.
+                <div class="note note"><span class="notetitle">Note:</span>  To avoid networking problems, make sure no other networking protocols are in the same range .</div>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Sockets buffer size</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">The internal buffer size to use</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Sockets flush interval rows</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">The number of rows after which the internal buffer is sent completely over the network and emptied.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Sockets data compressed?</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">When enabled, all data is compressed using the Gzip compression algorithm to minimize network traffic</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Dynamic cluster</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">If checked, a master Carte server will perform failover&nbsp;operations, and you must define the master as a slave server in the field&nbsp;below. If unchecked, Spoon will act as the master server, and you must define the available Carte
+                slaves in the field below.</td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top"><strong class="ph b">Slave Servers</strong> </td>
+              <td class="entry" headers="d68734e42 d68734e45 " valign="top">A list of the servers to be used in the cluster. You must have one master server and any number of slave servers. To add servers to the cluster, click <strong class="ph b">Select slave servers</strong>  to select from the list of available
+                slave servers.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="section_14" class="mt-page-section"><span id="Execute_Transformations_in_a_Cluster"></span> 
+      <h2 class="editable">Execute Transformations in a Cluster</h2>
+      <p class="p"><strong class="ph b">To run a transformation on a cluster</strong>, access the&nbsp;<strong class="ph b">Run Options</strong> &nbsp;window and select <strong class="ph b">Clustered</strong> . You can access the <strong>Run Options</strong>  window
+        through the context menu next to the Run icon in the the toolbar or by pressing <strong>F8</strong> .</p>
+      <p class="p"><strong class="ph b">To run a clustered transformation via a job</strong>, access the <strong class="ph b">Transformation</strong>  job entry details screen and select the <strong class="ph b">Advanced</strong>  tab, then select <strong class="ph b">Run this transformation in a clustered mode?</strong> .</p>
+      <p class="p"><strong class="ph b">To assign a cluster to an individual transformation step</strong>, right-click on the step and select&nbsp;<strong class="ph b">Clusters</strong>  from the context menu. That option brings up the cluster schema list. Select a
+        schema, then click <strong class="ph b">OK</strong> .</p>
+      <p class="p">When running transformations in a clustered environment, you have option to <strong class="ph b">Show transformations</strong>, which displays the generated (converted) transformations that will be executed on the cluster</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Carte_Cluster_Configuration" rel="internal">Carte Cluster Configuration</a> 
+        <ol>
+          <li>
+            <a href="#Configure_a_Static_Carte_Cluster" rel="internal">Configure a Static Carte Cluster</a> 
+            <ol>
+              <li> <a href="#Pentaho_Server_Considerations" rel="internal">Pentaho Server Considerations</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Configure_a_Dynamic_Carte_Cluster" rel="internal">Configure a Dynamic Carte Cluster</a> 
+            <ol>
+              <li> <a href="#Configure_Carte_Master_Server" rel="internal">Configure Carte Master Server</a>  </li>
+              <li> <a href="#Configure_Carte_Slave_Servers" rel="internal">Configure Carte Slave Servers</a>  </li>
+              <li> <a href="#Tuning_Options" rel="internal">Tuning Options</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#Configuring_Carte_Servers_for_SSL" rel="internal">Configuring Carte Servers for SSL</a>  </li>
+          <li>
+            <a href="#Changing_Jetty_Server_Parameters" rel="internal">Changing Jetty Server Parameters</a> 
+            <ol>
+              <li> <a href="#Setting_the_Jetty_Server_Parameters_in_the_carte-slave-config.xml_file" rel="internal">Setting the Jetty Server Parameters in the carte-slave-config.xml file</a>  </li>
+              <li> <a href="#Setting_the_Jetty_Server_Parameters_in_the_kettle.properties_file" rel="internal">Setting the Jetty Server Parameters in the kettle.properties file</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Initialize_Slave_Servers_in_Spoon" rel="internal">Initialize Slave Servers in Spoon</a>  </li>
+      <li> <a href="#Create_a_Cluster_Schema_in_Spoon" rel="internal">Create a Cluster Schema in Spoon</a>  </li>
+      <li> <a href="#Execute_Transformations_in_a_Cluster" rel="internal">Execute Transformations in a Cluster</a>  </li>
+    </ol>
+  </body>
+</content>

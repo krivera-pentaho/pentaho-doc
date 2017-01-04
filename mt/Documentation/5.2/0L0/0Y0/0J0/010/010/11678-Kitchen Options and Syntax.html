@@ -1,0 +1,106 @@
+<content type="text/html" title="Kitchen Options and Syntax">
+  <body>
+    <div>
+      <div class="body refbody">
+        <p>Kitchen runs jobs, either from a PDI repository (database or enterprise), or from a local file. The syntax for the batch file and shell script are shown below. All Kitchen options are the same for both.</p> <pre>
+<span class="ph synph"><span class="ph var">kitchen.sh</span>  <span class="ph delim">-</span>  <span class="keyword kwd">option</span>  <span class="ph delim">=</span>  <span class="keyword kwd">value</span>  <span class="keyword kwd">arg1</span>  <span class="keyword kwd">arg2</span>  </span> </pre>        <pre>
+<span class="ph synph"><span class="ph var">kitchen.bat</span>  <span class="ph delim">/</span>  <span class="keyword kwd">option</span>  <span class="ph delim">:</span>  <span class="keyword kwd">value</span>  <span class="keyword kwd">arg1</span>  <span class="keyword kwd">arg2</span>  </span> </pre>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="7e4ebb7d-9d24-4137-b177-5b16a58f55fb__d88631e98" valign="top">Switch</th>
+                <th class="entry" id="7e4ebb7d-9d24-4137-b177-5b16a58f55fb__d88631e101" valign="top">Purpose</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">rep</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Enterprise or database repository name, if you are using one</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">user</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Repository username</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">pass</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Repository password</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">job</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">The name of the job (as it appears in the repository) to launch</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">dir</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">The repository directory that contains the job, including the leading slash</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">file</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">If you are calling a local KJB file, this is the filename, including the path if it is not in the local directory</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">level</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">The logging level (Basic, Detailed, Debug, Rowlevel, Error, Nothing)</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">logfile</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">A local filename to write log output to</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">listdir</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Lists the directories in the specified repository</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">listjob</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Lists the jobs in the specified repository directory</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">listrep</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Lists the available repositories</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">export</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Exports all linked resources of the specified job. The argument is the name of a ZIP file.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">norep</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Prevents Kitchen from logging into a repository. If you have set the KETTLE_REPOSITORY, KETTLE_USER, and KETTLE_PASSWORD environment variables, then this option will enable you to prevent Kitchen from logging into the specified repository,
+                  assuming you would like to execute a local KTR file instead.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">version</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Shows the version, revision, and build date</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">param</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">Set a named parameter in a <strong class="ph b">name=value</strong>  format. For example: <strong class="ph b">-param:FOO=bar</strong> </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">listparam</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">List information about the defined named parameters in the specified job.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">maxloglines</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">The maximum number of log lines that are kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows (default)</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">maxlogtimeout</td>
+                <td class="entry" headers="d88631e98 d88631e101 " valign="top">The maximum age (in minutes) of a log line while being kept internally by PDI. Set to <strong class="ph b">0</strong>  to keep all rows indefinitely (default)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="example"> <pre class="pre codeblock">
+sh kitchen.sh -rep=initech_pdi_repo -user=pgibbons -pass=lumburghsux -job=TPS_reports_2011</pre> </div>
+        <div class="example"> <pre class="pre codeblock">
+kitchen.bat /rep:initech_pdi_repo /user:pgibbons /pass:lumburghsux /job:TPS_reports_2011</pre> </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/0Y0/0J0/010/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0L0/0Y0/0J0/010/010/000">Kitchen Status Codes</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,29 @@
+<content type="text/html" title="Running Transformations">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">If you want to run a PDI transformation from Java code in a stand-alone application, take a look at this sample class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningTransformations</code>. It sets the parameters and executes
+            the transformation in <span class="ph filepath">etl/parametrized_transformation.ktr</span> . The transform can be run from the <span class="ph filepath">.ktr</span>  file using <code class="ph codeph">runTransformationFromFileSystem()</code>            or from a PDI repository using <code class="ph codeph">runTransfomrationFromRepository()</code>.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span> </li>
+          <li class="li step"><span class="ph cmd">Prepare the transformation.</span>  The definition of a PDI transformation is represented by a
+            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"
+            rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/TransMeta.html"><code class="ph codeph">TransMeta</code></a>  object. You can load this object from a .<span class="ph filepath">ktr</span>  file, a PDI repository, or you can generate it dynamically. To query the declared parameters of the transformation definition
+            use <code class="ph codeph">listParameters()</code>, or to query the assigned values use <code class="ph codeph">setParameterValue()</code>.</li>
+          <li class="li step"><span class="ph cmd">Execute the transformation. </span>  An executable
+            <a class="external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Trans.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Trans.html"
+            target="_blank"><code class="ph codeph">Trans</code></a>  object is derived from the <code class="ph codeph">TransMeta</code> object that is passed to the constructor. The <code class="ph codeph">Trans</code> object starts and then executes asynchronously.
+            To ensure that all steps of the <code class="ph codeph">Trans</code> object have completed, call <code class="ph codeph">waitUntilFinished()</code>.</li>
+          <li class="li step"><span class="ph cmd">Evaluate the transformation outcome.</span>  After the <code class="ph codeph">Trans</code> object completes, you can access the result using <code class="ph codeph">getResult()</code>. The
+            <a class="xref external" target="_blank"
+            title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/Result.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/Result.html"><code class="ph codeph">Result</code></a>  object can be queried for success by evaluating <code class="ph codeph">getNrErrors()</code>. This method returns zero (0) on success and a non-zero value when there are errors. To get more information,
+            retrieve the transformation log lines.</li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

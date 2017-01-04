@@ -1,0 +1,288 @@
+<content type="text/html" title="Spark Submit">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="mt-page-summary">
+      <div class="mt-page-overview"></div>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="Description"></span> 
+      <h2 class="editable">Description</h2>
+      <p>Apache&nbsp;Spark&nbsp;is an open-source cluster computing framework.&nbsp;With the&nbsp;<strong>Spark Submit</strong> &nbsp;entry, you can submit Spark jobs to CDH clusters version 5.3 and later, HDP 2.3 and later, and EMR 3.10 and later. The Spark
+        job you submit may be written in either Java, Scala, or Python.</p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Install_and_Configure_Spark_Client_for_PDI_Use"></span> 
+      <h2 class="editable">
+        <a name="SparkSubmit-InstallandConfigureSparkClientforPDIUse"></a> Install and Configure Spark Client for PDI Use</h2>
+      <p>Before you use this entry, you will need to install and configure a Spark client on any node from which you will run Spark jobs.&nbsp;
+        <font color="#212121">&nbsp;</font>
+      </p>
+      <div id="section_3" class="mt-page-section"><span id="Before_You_Begin"></span> 
+        <h3 class="editable">
+          <a name="SparkSubmit-InstallationPrerequisites"></a> Before You Begin</h3>
+        <ul>
+          <li>Install and configure a supported version of CDH that supports Spark. See our&nbsp;
+            <a href="/Documentation/7.0/0D0/160/000" rel="nofollow" title="Documentation/7.0/0D0/160/000">Support Matrix</a> &nbsp;for more details on the supported version.&nbsp;You do not need to set CDH as the active Hadoop Configuration.&nbsp;</li>
+          <li>Before you install Spark, we strongly recommend that you review Spark documentation, release notes, and known issues first.&nbsp; Some helpful references are:
+            <ul>
+              <li> <a href="https://spark.apache.org/releases/" rel="nofollow" title="https://spark.apache.org/releases/">https://spark.apache.org/releases/</a>  </li>
+              <li> <a href="https://spark.apache.org/docs/latest/configuration.html" rel="nofollow">https://spark.apache.org/docs/latest/configuration.html</a> &nbsp; </li>
+              <li> <a href="https://spark.apache.org/docs/latest/running-on-yarn.html" rel="nofollow">https://spark.apache.org/docs/latest/running-on-yarn.html</a>  </li>
+              <li> <a href="http://spark.apache.org/" rel="nofollow">Spark installation and configuration documentation</a>  </li>
+            </ul>
+          </li>
+        </ul>
+        <ul>
+          <li>You might also want to reference instructions here to learn how to submit jobs for Spark:&nbsp;
+            <a href="https://spark.apache.org/docs/1.2.0/submitting-applications.html" rel="nofollow">https://spark.apache.org/docs/1.2.0/submitting-applications.html</a> 
+          </li>
+        </ul>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Configuring_the_Spark_Client"></span> 
+        <h3 class="editable">
+          <a name="SparkSubmit-ConfiguretheSparkClient"></a> Configuring&nbsp;the Spark Client</h3>
+        <p>You will need to configure the Spark client to work with the cluster on every machine where sparks jobs can be run from.&nbsp;Complete these steps.</p>
+        <ol>
+          <li>On the client, download the Spark distribution of the same or higher version as&nbsp;the one used on the cluster.</li>
+          <li>Set the HADOOP_CONF_DIR environment variable to the following:&nbsp;<span style="font-family:courier new,courier,monospace;">pentaho-big-data-plugin/hadoop-configurations/<shim directory></span> </li>
+          <li>Navigate to
+            <SPARK_HOME>/conf/ and create the <span style="font-family:courier new,courier,monospace;">spark-defaults.conf</span>  file using the instructions here:&nbsp;
+              <a href="https://spark.apache.org/docs/latest/configuration.html" rel="nofollow">https://spark.apache.org/docs/latest/configuration.html</a> 
+          </li>
+          <li>In the <span style="font-family:courier new,courier,monospace;">spark-defaults.conf</span>  file, add the following line of code. If necessary, adjust the HDFS name and location to match the path to the <span style="font-family:courier new,courier,monospace;">spark-assembly.jar</span>             in your environment.&nbsp;Here are a couple of examples:</li>
+        </ol>
+        <ul>
+          <li><strong>CDH Example: spark.yarn.jar</strong> &nbsp;hdfs://<em>nn1.example.com</em> /user/spark/share/lib/spark-assembly.jar&nbsp;</li>
+          <li><strong>HDP Example: spark.yarn.jar&nbsp;</strong> hdfs://<em>nn1.example.com</em> /user/spark/hadoop27/spark-assembly.jar</li>
+        </ul>
+        <ol start="5">
+          <li>Create home folders with write permissions for each user who will be running the Spark job. For example:</li>
+        </ol>
+        <ul>
+          <li><span style="font-family:courier new,courier,monospace;">hadoop fs -mkdir /user/<em><user name></em> </span> </li>
+          <li><span style="font-family:courier new,courier,monospace;">hadoop fs -chown <em><user name></em>  /user/<em><user name></em> </span> </li>
+        </ul>
+        <ol start="6">
+          <li>If you are connecting to an HDP cluster, add the following lines in the spark-defaults.conf file:</li>
+        </ol>
+        <ul>
+          <li><strong>spark.driver.extraJavaOptions -Dhdp.version=2.7.1.2.3.0.0-2557</strong> </li>
+          <li><strong>spark.yarn.am.extraJavaOptions -Dhdp.version=2.7.1.2.3.0.0-2557</strong> </li>
+        </ul>
+        <p class="pentaho-note">The Hadoop version should be the same as Hadoop version used on the cluster.</p>
+        <ol start="7">
+          <li>If you are connecting to a supported version of the HDP cluster, the CDH 5.5 cluster, or the CDH 5.7 cluster;&nbsp;open the <span style="font-family:courier new,courier,monospace;">core-site.xml</span>  file, then comment out the <span style="font-family:courier new,courier,monospace;">net.topology.script.file</span>             property like this:</li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!--
+<property>
+<name>net.topology.script.file.name</name>
+<value>/etc/hadoop/conf/topology_script.py</value>
+</property>
+--></pre>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Troubleshooting"></span> 
+        <h3 class="editable">Troubleshooting</h3>
+        <p>If you are connecting to CDH 5.7 cluster when using Apache Spark 1.6.0 on your client node, an error may occur while trying to run a job containing a Spark Submit entry in yarn-client mode. This error will be similar to the following message:</p>
+        <ul>
+          <li>
+            <p><span style="font-family:courier new,courier,monospace;">Caused by: java.io.InvalidClassException: org.apache.spark.rdd.MapPartitionsRDD; local class incompatible: stream classdesc serialVersionUID = -1059539896677275380, local class serialVersionUID = 6732270565076291202</span> </p>
+          </li>
+        </ul>
+        <p>Perform one of the following tasks to resolve this error:</p>
+        <ul>
+          <li>Install and configure CDH 5.7 Spark on the client machine where Pentaho is running instead of Apache Spark 1.6.0. See
+            <a title="http://www.cloudera.com/documentation/enterprise/latest/topics/cdh_ig_spark_installation.html" class=" external"
+            rel="external nofollow" href="http://www.cloudera.com/documentation/enterprise/latest/topics/cdh_ig_spark_installation.html" target="_blank">Cloudera documentation for Spark installation instructions</a> .</li>
+          <li>If you want to use Apache Spark 1.6.0 on a client machine, then upload <span style="font-family:courier new,courier,monospace;">spark-assembly.jar</span>  from the client machine to your cluster in HDFS, and point the <span style="font-family:courier new,courier,monospace;">spark.yarn.jar</span>             property in the <span style="font-family:courier new,courier,monospace;">spark-defaults.conf</span>  file to this uploaded <span style="font-family:courier new,courier,monospace;">spark-assembly.jar</span>  file on HDFS.</li>
+        </ul>
+      </div>
+    </div>
+    <div id="section_6" class="mt-page-section"><span id="Spark_Submit_Entry_Properties"></span> 
+      <h2 class="editable">
+        <a name="SparkSubmit-SparkSubmitEntryProperties"></a> Spark Submit Entry Properties</h2>
+      <p>We support the yarn-cluster and yarn-client modes. Descriptions of the modes can be found here:</p>
+      <ul>
+        <li> <a href="https://spark.apache.org/docs/latest/submitting-applications.html#master-urls" rel="nofollow">https://spark.apache.org/docs/latest/submitting-applications.html#master-urls</a>  </li>
+      </ul>
+      <p class="pentaho-note">If you have configured your Hadoop Cluster and Spark for Kerberos, a valid Kerberos ticket must already be in the ticket cache area on your client machine before you launch and submit the Spark Submit job.</p>
+      <div id="section_7" class="mt-page-section"><span id="Job_Setup"></span> 
+        <h3 class="editable">
+          <a name="SparkSubmit-JobSetup"></a> Job Setup</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th style="width: 183px;"><strong>Field</strong> </th>
+              <th style="width: 1055px;"><strong>Description</strong> </th>
+            </tr>
+            <tr>
+              <td style="width: 183px;">Entry Name</td>
+              <td style="width: 1055px;">Name of the entry. You can customize this, or leave it as the default.</td>
+            </tr>
+            <tr>
+              <td style="width: 183px;">Spark&nbsp;Submit Utility</td>
+              <td style="width: 1055px;">Script that launches the spark job.</td>
+            </tr>
+            <tr>
+              <td style="width: 183px;">Master URL</td>
+              <td style="width: 1055px;">The master URL for the cluster. Two options are supported:&nbsp;
+                <ul>
+                  <li>Yarn-Cluster, which runs the driver program as a thread of the yarn application master (one of the node managers in the cluster). This is very similar to the way MapReduce works.</li>
+                  <li>Yarn-Client, which runs the driver program on the yarn client. Tasks are still executing&nbsp;in the node managers of the YARN cluster.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 183px;">Type</td>
+              <td style="width: 1055px;">The file type of your Spark job to be submitted. Your job can be written in Java, Scala, or Python. The fields displayed in the <strong>Files</strong>  tab will depend on what&nbsp;language option you select.</td>
+            </tr>
+            <tr>
+              <td style="width: 183px;">Enable Blocking</td>
+              <td style="width: 1055px;">
+                <font color="#333333">This option is enabled by default. If this option is selected, the job entry waits until the Spark job finishes running.</font>
+                <font color="#333333">&nbsp;If it is not, the job entry proceeds with its&nbsp;</font>
+                <font color="#333333">execution</font>
+                <font color="#333333">&nbsp;once the Spark job is submitted for&nbsp;</font>
+                <font color="#333333">execution.</font>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="pentaho-note">Python support&nbsp;on Windows requires Spark&nbsp;version 1.5.2 or higher.</p>
+        <div id="section_8" class="mt-page-section"><span id="Files_Tab"></span> 
+          <h4 class="editable">Files Tab</h4>
+          <p>If you select <strong>Java or Scala</strong>  as the file <strong>Type</strong>, the <strong>Files</strong>  tab will contain the following fields:</p>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 184px;">Field</th>
+                <th scope="col" style="width: 1054px;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 184px;">Class</td>
+                <td style="width: 1054px;">Optional entry point for your application.</td>
+              </tr>
+              <tr>
+                <td style="width: 184px;">Application Jar</td>
+                <td style="width: 1054px;">The main file of the Spark job you are submitting. It is a path to a bundled jar including your application and all dependencies. The URL must be globally visible inside of your cluster, for instance, an <span style="font-family: courier new,courier,monospace;">hdfs://</span>                   path or a <span style="font-family: courier new,courier,monospace;">file://</span>  path that is present on all nodes.</td>
+              </tr>
+              <tr>
+                <td style="width: 184px;">Dependencies</td>
+                <td style="width: 1054px;">The <strong>Environment</strong>  and <strong>Path</strong>  of other packages, bundles, or libraries used as a part of your Spark job. <strong>Environment</strong>  defines whether these dependencies are <strong>Local</strong>  to your machine
+                  or <strong>Static</strong>  on the HDFS or the web.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>If you select <span style="font-weight: 600;">Python</span> &nbsp;as the file <strong>Type</strong>, the <strong>Files</strong>  tab will contain the following fields:</p>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 184px;">Field</th>
+                <th scope="col" style="width: 1054px;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 184px;">Py File</td>
+                <td style="width: 1054px;">The main Python file of the Spark job you are submitting.</td>
+              </tr>
+              <tr>
+                <td style="width: 184px;">Dependencies</td>
+                <td style="width: 1054px;">The <strong>Environment</strong>  and <strong>Path</strong>  of other packages, bundles, or libraries used as a part of your Spark job. <strong>Environment</strong>  defines whether these dependencies are <strong>Local</strong>  to your machine
+                  or <strong>Static</strong>  on the HDFS or the web.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Arguments_Tab"></span> 
+          <h4 class="editable">Arguments Tab</h4>
+          <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 187px;">Field</th>
+                <th scope="col" style="width: 1051px;">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 187px;">Arguments</td>
+                <td style="width: 1051px;">Arguments passed to your main Java class, Scala class, or Python Py file, if any. Use this text box to specify these arguments.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Options_Tab"></span> 
+          <h4 class="editable">
+            <a name="SparkSubmit-Parameters"></a> Options Tab</h4>
+          <table style="line-height: inherit; font-size: 16px;">
+            <tbody>
+              <tr>
+                <th style="width: 191px;"><strong>Field</strong> </th>
+                <th style="width: 1047px;"><strong>Description</strong> </th>
+              </tr>
+              <tr>
+                <td style="width: 191px;">Executor Memory</td>
+                <td style="width: 1047px;">
+                  <font color="#333333">Amount of memory to use per executor process. </font>
+                  <font color="#333333">Use the JVM format (for example,&nbsp;</font>512m
+                  <font color="#333333">,&nbsp;</font>2g
+                  <font color="#333333">).</font>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 191px;">Driver Memory</td>
+                <td style="width: 1047px;">
+                  <font color="#333333">Amount of memory to use per driver. Use the JVM format (for example,</font>&nbsp;512m
+                  <font color="#333333">,&nbsp;</font>2g
+                  <font color="#333333">).</font>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 191px;">Utility Parameters</td>
+                <td style="width: 1047px;"><strong>Name</strong>  and <strong>Value</strong>  of optional Spark configuration parameters associated with the <span style="font-family: courier new,courier,monospace;">spark-defaults.conf</span>  file.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id=""></span> 
+        <h3 class="editable">&nbsp;</h3>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Description" rel="internal">Description</a>  </li>
+      <li>
+        <a href="#Install_and_Configure_Spark_Client_for_PDI_Use" rel="internal">Install and Configure Spark Client for PDI Use</a> 
+        <ol>
+          <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+          <li> <a href="#Configuring_the_Spark_Client" rel="internal">Configuring&nbsp;the Spark Client</a>  </li>
+          <li> <a href="#Troubleshooting" rel="internal">Troubleshooting</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Spark_Submit_Entry_Properties" rel="internal">Spark Submit Entry Properties</a> 
+        <ol>
+          <li>
+            <a href="#Job_Setup" rel="internal">Job Setup</a> 
+            <ol>
+              <li> <a href="#Files_Tab" rel="internal">Files Tab</a>  </li>
+              <li> <a href="#Arguments_Tab" rel="internal">Arguments Tab</a>  </li>
+              <li> <a href="#Options_Tab" rel="internal">Options Tab</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#" rel="internal">&nbsp;</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,107 @@
+<content type="text/html" title="Specify Data Connections for the Pentaho Server">
+  <body>
+    <div>
+      <div class="body">
+        <div class="p">
+          <p>For business analytics, you can use the Pentaho&nbsp;User Console to define the connection to where you store data. We support accessing data stored in the following ways:</p>
+          <ul class="ul" id="91c893f9-17f7-45cc-a2da-617e93256ed5__admin_jndi_sources__ul_o2f_dy4_bk">
+            <li class="li">Comma separated values (CSV) files or any file that can be converted to CSV, such as spreadsheets, XML, or other semi-structured or tabular data file. To work with .csv file, you only need to know the location of the files. Use .csv files
+              if you are evaluating Pentaho or you&nbsp;want to get started quickly.</li>
+            <li class="li">JDBC drivers&nbsp;to help with database connections.</li>
+          </ul>
+        </div>
+      </div>
+      <p>In Pentaho Data Integration (PDI), you can&nbsp;make connections in each job and transformation through an input step. Although users can create connections themselves, it is best to set up shared connections for your users so that they can simply
+        select the connection they need from a list. We help you download the correct JDBC&nbsp;drivers, choose the connection type, and then create the connection.&nbsp; &nbsp;</p>
+      <div class="topic nested1" id="91c893f9-17f7-45cc-a2da-617e93256ed5__jdbc_database_connections">
+        <div id="section_1" class="mt-page-section"><span id="JDBC_Database_Connections"></span> 
+          <h2 class="editable">JDBC Database Connections</h2>
+          <div class="body">
+            <div class="p">
+              <p>To connect to databases, install the driver for your database, as well as define the access protocol and settings now. You can choose from these access protocols:</p>
+              <ul class="ul" id="91c893f9-17f7-45cc-a2da-617e93256ed5__jdbc_database_connections__ul_qv5_4px_ck">
+                <li class="li">Native (
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://en.wikipedia.org/wiki/Java_Database_Connectivity"> <span class="ph uicontrol">JDBC</span>  </a> ): This is a commonly used access protocol. Please see details in the Database Access Protocol Decision Table to ensure you make an informed choice.</li>
+                <li class="li">
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://en.wikipedia.org/wiki/Java_Naming_and_Directory_Interface"> <span class="ph uicontrol">JNDI</span>  </a> : This also is a commonly used access type. Please see details in the Database Access Protocol Decision Table to ensure you make an informed choice.</li>
+                <li class="li">
+                  <a class="xref external" rel="external nofollow" href="http://en.wikipedia.org/wiki/ODBC" target="_blank"> <span class="ph uicontrol">ODBC</span>  </a> : We do not support ODBC, but we make it available in case you need it. If you must use ODBC, contact
+                  <a class="xref" title="Help and Support Resources" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Additional_Resources">Pentaho Support</a>  to ensure you are successful.</li>
+                <li class="li">
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://en.wikipedia.org/wiki/Oracle_Call_Interface"> <span class="ph uicontrol">OCI</span>  </a> : If you are connecting to an Oracle database, click this link to install the appropriate
+                  <a class="xref" title="Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server" rel="internal"
+                  href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_Native_(JDBC)_or_OCI_Data_Connections_for_the_Pentaho_Server">OCI driver and add the OCI connection</a>  now.</li>
+              </ul>
+            </div>
+            <div class="p">
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="91c893f9-17f7-45cc-a2da-617e93256ed5__jdbc_database_connections__data_connection_decision_table" rules="all" summary="">
+                  <caption><span class="tablecap">Table 1. Database Access Protocol Decision Table</span> </caption>
+                  <thead align="left" class="thead">
+                    <tr class="row">
+                      <th class="entry" id="91c893f9-17f7-45cc-a2da-617e93256ed5__d22703e170" rowspan="2" style="width: 238px;" valign="top" width="22.67%">Explore Considerations</th>
+                      <th align="center" class="entry" colspan="2" id="91c893f9-17f7-45cc-a2da-617e93256ed5__d22703e173" style="width: 1000px;" valign="top">Choose Options</th>
+                    </tr>
+                    <tr class="row">
+                      <th class="entry" id="91c893f9-17f7-45cc-a2da-617e93256ed5__d22703e179" style="width: 471px;" valign="top" width="22.67%">
+                        <a class="xref" title="Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_Native_(JDBC)_or_OCI_Data_Connections_for_the_Pentaho_Server">Native (JDBC)</a> 
+                      </th>
+                      <th class="entry" id="91c893f9-17f7-45cc-a2da-617e93256ed5__d22703e184" style="width: 527px;" valign="top" width="37.41%">
+                        <a class="xref" title="Define JNDI Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_JNDI_Connections_for_the_Pentaho_Server">JNDI</a> 
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" headers="d22703e170 d22703e179 " style="width: 238px;" valign="top" width="22.67%"><strong class="ph b">Summary</strong> </td>
+                      <td class="entry" headers="d22703e173 d22703e184 " style="width: 471px;" valign="top" width="37.41%">
+                        <p>Native (JDBC) connections are the easiest way to get going quickly. You specify the connection information in PUC. The connections are controlled by the Pentaho Server.</p>
+                        <p>If the connection information changes, you change it in PUC for each connection you have defined.</p>
+                      </td>
+                      <td class="entry" headers="d22703e173 " style="width: 527px;" valign="top" width="39.9%">
+                        <p>JNDI connections are maintained in the application server, offering more advanced configuration options. One typical use case is you may want to hide security credentials from administrators of the Pentaho system. You specify the
+                          connection information by editing the <span class="ph filepath">context.xml</span>  file and selecting JNDI as the access type in PUC.</p>
+                        <p>If the connection information changes, you change the <span class="ph filepath mt-font-size-16">context.xml</span>  file.</p>
+                      </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d22703e170 d22703e179 " style="width: 238px;" valign="top" width="22.67%"><strong class="ph b">Expertise</strong> </td>
+                      <td class="entry" headers="d22703e173 d22703e184 " style="width: 471px;" valign="top" width="37.41%">Knowledge of the JDBC driver and options for your RDBMS</td>
+                      <td class="entry" headers="d22703e173 " style="width: 527px;" valign="top" width="39.9%">Knowledge of Tomcat or JBoss JNDI connection procedures and options</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d22703e170 d22703e179 " style="width: 238px;" valign="top" width="22.67%"><strong class="ph b">Recommendation</strong> </td>
+                      <td class="entry" headers="d22703e173 d22703e184 " style="width: 471px;" valign="top" width="37.41%"><strong class="ph b">Use for the Pentaho Trial Download and evaluation.</strong> </td>
+                      <td class="entry" headers="d22703e173 " style="width: 527px;" valign="top" width="39.9%"><strong class="ph b">Use for production, when the work environment is distributed in a network, or if you want to hide security credentials from Pentaho administrators.</strong> </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <div class="p">
+        <p class="li">To learn how to&nbsp;set up&nbsp;data connections, see the articles&nbsp;below:</p>
+      </div>
+    </div>
+    <ul>
+      <li class="related-links">
+        <a title="Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_Native_(JDBC)_or_OCI_Data_Connections_for_the_Pentaho_Server">Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server</a> 
+      </li>
+      <li class="related-links">
+        <a title="Set Up JNDI Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_JNDI_Connections_for_the_Pentaho_Server">Set Up JNDI Connections for the Pentaho Server</a> 
+      </li>
+    </ul>
+    <p class="related-links">To learn how to define data connections, see
+      <a title="Define Data Connections for the Pentaho Server" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Define_Data_Connections_for_the_Pentaho_Server">Define Data Connections for the Pentaho Server</a> .</p>
+    <p>&nbsp;</p>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#JDBC_Database_Connections" rel="internal">JDBC Database Connections</a>  </li>
+    </ol>
+  </body>
+</content>

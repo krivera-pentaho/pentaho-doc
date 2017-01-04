@@ -1,0 +1,93 @@
+<content type="text/html" title="Create LDAP/JDBC Hybrid Configuration for the DI Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to create an LDAP/JDBC Hybrid configuration on the DI Server.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section prereq p">You must have a working directory server with an established configuration, and a database containing your user roles before continuing.</div>
+        <div class="section context">
+          <p class="p">It is possible to use a directory server for user authentication and a JDBC security table for role definitions. This is common in situations where LDAP roles cannot be redefined for DI Server use. Follow the below instructions to switch the
+            BA Server's authentication backend from the Pentaho data access object to an LDAP/JDBC hybrid.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  Replace the <strong class="ph b">pentahoAdmins</strong>  and <strong class="ph b">pentahoUsers</strong>  references in the examples below with the appropriate roles from your LDAP configuration.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the DI Server and Spoon.</span> </li>
+          <li class="li step"><span class="ph cmd">Open <span class="ph filepath">/pentaho-solutions/system/security.properties</span>  with a text editor, then change the value of the property provider to <code class="ph codeph">ldap</code>.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Open the<span class="ph filepath"> /pentaho-solutions/system/pentahoObjects.spring.xml</span>  with a text editor, then find this code block and change the providerName to <code class="ph codeph">jdbc</code>.</span> 
+            <pre
+            class="pre codeblock">
+
+              <!-- Reference to a bean in one of the applicationContext-pentaho-security-*.xml; selected by configured provider-->
+              <pen:bean id=&quot;activeUserRoleListService&quot; class=&quot;org.pentaho.platform.api.engine.IUserRoleListService&quot;>
+                <pen:attributes>
+                  <pen:attr key=&quot;providerName&quot; value=&quot;${security.provider}&quot;/>
+                </pen:attributes>
+              </pen:bean>
+              <pen:publish as-type=&quot;INTERFACES&quot;>
+                <pen:attributes>
+                  <pen:attr key=&quot;priority&quot; value=&quot;50&quot;/>
+                </pen:attributes>
+              </pen:publish>
+              </pen:bean>
+              </pre>
+          </li>
+          <li class="li step"><span class="ph cmd">Edit the <span class="ph filepath">/pentaho-solutions/system/applicationContext-pentaho-security-jdbc.xml</span>  file and add the following two bean definitions, changing the connection and JDBC details to match your security
+            database.</span>  <pre class="pre codeblock">
+<bean id=&quot;dataSource&quot; 
+class=&quot;org.springframework.jdbc.datasource.DriverManagerDataSource&quot;>
+     <property name=&quot;driverClassName&quot; value=&quot;org.hsqldb:hsql://localhost:9002/userdb&quot; />
+     <property name=&quot;url&quot; value=&quot;jdbc:hsqldb:hsql://localhost:9002/userdb&quot; />
+     <property name=&quot;username&quot; value=&quot;sa&quot; />
+     <property name=&quot;password&quot; value=&quot;&quot; />
+</bean>
+<bean id=&quot;userDetailsService&quot;
+class=&quot;org.springframework.security.userdetails.jdbc.JdbcDaoImpl&quot;>
+     <property name=&quot;dataSource&quot;>
+        <ref local=&quot;dataSource&quot; />
+     </property>
+     <property name=&quot;authoritiesByUsernameQuery&quot;>
+        <value> <![CDATA[SELECT username, authority FROM
+        granted_authorities WHERE username = ?}}></value>
+     </property>
+     <property name=&quot;usersByUsernameQuery&quot;>
+        <value> <![CDATA[SELECT username, 
+        password, enabled FROM users WHERE username = ?]]>
+        </value>
+     </property>
+</bean></pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file, then open <span class="ph filepath">/pentaho-solutions/system/applicationContext-pentaho-security-jdbc.xml</span> . Find this code block and change <code class="ph codeph">Admin</code> to an appropriate
+            administrator role in your JDBC authentication database. </span>  <pre class="pre codeblock">
+
+<!-- map ldap role to pentaho security role -->
+<util:map id=&quot;jdbcRoleMap&quot;>
+   <entry key=&quot;Admin&quot; value=&quot;Administrator&quot;/>
+</util:map></pre> </li>
+          <li class="li step"><span class="ph cmd">Close <span class="ph filepath">applicationContext-pentaho-security-jdbc.xml</span> . </span> 
+          </li>
+          <li class="li step">Open <span class="ph filepath">/pentaho-solutions/system/applicationContext-springsecurity-ldap.xml</span>  file and replace the populator bean definition with this one. <pre class="pre codeblock">
+<bean id=&quot;populator&quot; class=&quot;org.springframework.security.
+	ldap.populator.UserDetailsServiceLdapAuthoritiesPopulator&quot;>	
+    <constructor-arg ref=&quot;jdbcUserDetailsService&quot; />	
+</bean></pre> &#8203;</li>
+          <li class="li step"><span class="ph cmd">Delete the <span class="ph filepath">/tomcat/work/</span>  and <span class="ph filepath">/tomcat/temp/</span>  directories.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">If needed, configure the Pentaho LDAP connection as explained in <a class="xref" title="Documentation/5.1/0P0/0W0/001/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/0W0/001/000">LDAP Properties</a> .</span> </li>
+          <li class="li step"><span class="ph cmd">Start the DI Server and Spoon, then l<span class="ph cmd">og into Spoon.</span> </span> 
+          </li>
+        </ol>
+        <p class="li step"><span class="ph cmd">The DI Server is configured to authenticate users against your directory server.</span> </p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

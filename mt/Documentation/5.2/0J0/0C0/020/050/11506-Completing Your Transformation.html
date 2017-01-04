@@ -1,0 +1,46 @@
+<content type="text/html" title="Completing Your Transformation">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how complete the transformation.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">After you
+            <a class="xref" title="Resolving Missing Zip Code Information" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0J0/0C0/020/040">resolve missing zip code information</a>, the last task is to clean up the field layout on your lookup stream. Cleaning up makes it so that it matches the format and layout of your other stream going to the <span class="ph uicontrol">Write to Database</span>             step. Create a <span class="ph uicontrol">Select values</span>  step for renaming fields on the stream, removing unnecessary fields, and more.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Add a <strong class="ph b">Select Values</strong>  step to your transformation by expanding the <strong class="ph b">Transform</strong>  folder and choosing <strong class="ph b">Select Values</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Create a hop from the <strong class="ph b">Lookup Missing Zips</strong>  to the&nbsp;<strong class="ph b">Select Values</strong>  step.</span> </li>
+          <li class="li step"><span class="ph cmd">Double-click the <strong class="ph b">Select Values</strong>  step to open its properties dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">Rename the Select Values step to <strong class="ph b">Prepare Field Layout</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Get fields to select</strong>  to retrieve all fields and begin modifying the stream layout.</span> </li>
+          <li class="li step"><span class="ph cmd">Select the <strong class="ph b">ZIP_RESOLVED</strong>  field in the <strong class="ph b">Fields</strong>  list and use <<strong class="ph b">CTRL</strong> ><<strong class="ph b">UP</strong> > to move it just below the <strong class="ph b">POSTALCODE</strong>  field (the one that still contains null values).</span> </li>
+          <li class="li step"><span class="ph cmd">Select the old <strong class="ph b">POSTALCODE</strong>  field in the list (line 20) and delete it. </span> 
+            <img alt="File:/pdi_select_and_alter.png" class="image internal" id="68e39643-490e-44bd-b29c-3a764ef951ba__task_completing_your_transformation__image_bf58f91c-6ddc-41ae-9aa1-7aee2f18b92e"
+            src="http://help.pentaho.com/@api/deki/files/2303/pdi_select_and_alter.png?revision=1" />
+          </li>
+          <li class="li step"><span class="ph cmd">The original POSTALCODE field was formatted as an 9-character string. You must modify your new field to match the form. Click the <strong class="ph b">Meta-Data</strong>  tab. </span> </li>
+          <li class="li step"><span class="ph cmd">In the first row of the<strong class="ph b"> Fields to alter table the meta-data for </strong> section, click in the <strong class="ph b">Fieldname</strong>  column and select <strong class="ph b">ZIP_RESOLVED</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">Type <strong class="ph b">POSTALCODE</strong>  in the <strong class="ph b">Rename</strong>  to column; select <strong class="ph b">String</strong>  in the Type column, and type <strong class="ph b">9</strong>  in the <strong class="ph b">Length</strong>  column. Click <strong class="ph b">OK</strong>  to exit the edit properties dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">Draw a hop from the <strong class="ph b">Prepare Field Layout</strong>  (Select values) step to the <strong class="ph b">Write to Database </strong>  (Table output) step.</span> </li>
+          <li class="li step"><span class="ph cmd">When prompted, select the <strong>Main output of the step&nbsp;</strong> option.</span> </li>
+          <li class="li step"><span class="ph cmd">Save your transformation.</span> </li>
+        </ol>
+        <p class="li step">
+          <img alt="File:/pdi_final_transformation_steps.png" class="image internal" id="68e39643-490e-44bd-b29c-3a764ef951ba__task_completing_your_transformation__image_90e4344e-a7c3-4720-8846-0ebd2be498a6" src="http://help.pentaho.com/@api/deki/files/2302/pdi_final_transformation_steps.png?revision=1"
+          />
+        </p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

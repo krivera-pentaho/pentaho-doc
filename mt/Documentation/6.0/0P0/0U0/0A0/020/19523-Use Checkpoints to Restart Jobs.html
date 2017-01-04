@@ -1,0 +1,81 @@
+<content type="text/html" title="Use Checkpoints to Restart Jobs">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">Checkpoints let you restart jobs that fail without you having to rerun the entire job from the beginning.&nbsp; You add checkpoints at hops that connect one job entry to another. &nbsp;Then, when you run the job and a checkpoint is encountered,
+          the software saves the state of the job entry, including the parameters, internal result rows, and result files.&nbsp; If an error occurs that causes the job to fail, like the database is not functioning properly so you can't connect to it,
+          the job ends.&nbsp; But, when the error is resolved and you restart the job, instead of the job starting at the beginning, it starts at the last checkpoint before the error occurred. &nbsp;Because the state of the job entry performed up to the
+          checkpoint was saved, the job resumes as if the failure had not occurred.&nbsp; In addition to setting up checkpoints, you need to set up a checkpoint log. The checkpoint log tracks each time a job runs and where failures occur. This can be
+          helpful for troubleshooting.
+          <p class="p">In addition to the general instructions presented in this section,
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Job+checkpoints+and+restartability">checkpoints are addressed in detail in the wiki</a> .</p>
+          <ul class="ul">
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0U0/0A0/020#9385b253-aeb6-4948-b4f3-ef46211aa994__transformation_transaction" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/020#9385b253-aeb6-4948-b4f3-ef46211aa994__transformation_transaction">Add a Checkpoint</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0U0/0A0/020#9385b253-aeb6-4948-b4f3-ef46211aa994__job_transaction" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/020#9385b253-aeb6-4948-b4f3-ef46211aa994__job_transaction">Delete a Checkpoint</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0U0/0A0/020#9385b253-aeb6-4948-b4f3-ef46211aa994__id_lkz_zrf_ll" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0P0/0U0/0A0/020#9385b253-aeb6-4948-b4f3-ef46211aa994__id_lkz_zrf_ll">Set Up a Checkpoint Log</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="9385b253-aeb6-4948-b4f3-ef46211aa994__transformation_transaction">
+        <div id="section_1" class="mt-page-section"><span id="Add_a_Checkpoint"></span> 
+          <h2 class="editable">Add a Checkpoint</h2>
+          <div class="body taskbody">
+            <div class="section context">To add a checkpoint, complete these steps.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">In Spoon, open a job.</span> </li>
+              <li class="li step"><span class="ph cmd">Right-click a step or transformation in the job, then select <strong>R</strong> <strong class="ph b">estartable Checkpoint</strong>  from the menu that appears. </span> </li>
+              <li class="li step"><span class="ph cmd">The checkpoint is added to the job.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="9385b253-aeb6-4948-b4f3-ef46211aa994__job_transaction">
+        <div id="section_2" class="mt-page-section"><span id="Delete_a_Checkpoint"></span> 
+          <h2 class="editable">Delete a Checkpoint</h2>
+          <div class="body taskbody">
+            <div class="section context">To delete a checkpoint, complete these steps.</div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">In Spoon, open a job.</span> </li>
+              <li class="li step"><span class="ph cmd">Right-click a step or transformation in the job, then select <strong class="ph b">Clear Checkpoint Marker</strong>  from the menu that appears. </span> </li>
+              <li class="li step"><span class="ph cmd">The checkpoint is cleared from the job.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="9385b253-aeb6-4948-b4f3-ef46211aa994__id_lkz_zrf_ll">
+        <div id="section_3" class="mt-page-section"><span id="Set_Up_a_Checkpoint_Log"></span> 
+          <h2 class="editable">Set Up a Checkpoint Log</h2>
+          <div class="body taskbody">
+            <div class="section context">To set up a checkpoint log, complete these steps. Checkpoints logs are covered in detail
+              <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/display/EAI/Job+checkpoints+and+restartability">in the wiki</a> .</div>
+            <ol class="ol steps" id="9385b253-aeb6-4948-b4f3-ef46211aa994__id_lkz_zrf_ll__steps_blz_zrf_ll">
+              <li class="li step"><span class="ph cmd">In Spoon, open a job.</span> </li>
+              <li class="li step"><span class="ph cmd">Right-click in an empty space in the job&rsquo;s tab that appears in the Spoon window. &nbsp; In the <strong class="ph b">Job Properties</strong>  window, click the <strong class="ph b">Log</strong>  tab.</span> </li>
+              <li
+              class="li step"><span class="ph cmd">Select <strong class="ph b">Checkpoints log table</strong> . </span> </li>
+            </ol>
+            <p class="li step"><span class="ph cmd">&#8203;<a class="thumb" title="checkpointlogtable1.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/6463/checkpointlogtable1.png"><img alt="checkpointlogtable1.png" class="internal default" style="width: 550px; height: 357px;" width="550px" height="357px" src="http://help.pentaho.com/@api/deki/files/6463/checkpointlogtable1.png?size=bestfit&amp;width=550&amp;height=357&amp;revision=1" /></a> </span> </p>
+            <ol class="ol steps" id="9385b253-aeb6-4948-b4f3-ef46211aa994__id_lkz_zrf_ll__steps_blz_zrf_ll" start="4">
+              <li class="li step"><span class="ph cmd">Add the log connection and the name of the log table, as well as other information as needed. </span> </li>
+              <li class="li step"><span class="ph cmd">Choose the log table fields you want enabled.</span> </li>
+              <li class="li step"><span class="ph cmd">When complete, click <strong class="ph b">OK</strong> .</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Add_a_Checkpoint" rel="internal">Add a Checkpoint</a>  </li>
+      <li> <a href="#Delete_a_Checkpoint" rel="internal">Delete a Checkpoint</a>  </li>
+      <li> <a href="#Set_Up_a_Checkpoint_Log" rel="internal">Set Up a Checkpoint Log</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,35 @@
+<content type="text/html" title="Change the DI Server URL">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to change the DI Server URL.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">You can change the DI Server hostname from localhost to a specific IP address, hostname, or domain name by following these instructions. This procedure is also a requirement if you are changing the DI Server port number.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Stop the DI Server through your preferred means.</span> </li>
+          <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/web.xml</span>  file with a text editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Modify the value of the <strong class="ph b">fully-qualified-server-url</strong>  element appropriately.</span>  <pre class="pre codeblock">
+<context-param>
+    <param-name>fully-qualified-server-url</param-name>
+    <param-value>http://localhost:9080/pentaho-di/</param-value>
+</context-param></pre> </li>
+          <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+          <li class="li step"><span class="ph cmd">Start the DI Server.</span> </li>
+        </ol>
+        <div class="section result">The DI Server is now configured to reference itself at the specified URL.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

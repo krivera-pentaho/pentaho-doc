@@ -1,0 +1,393 @@
+<content type="text/html" title="Big Data Issues">
+  <body>
+    <div class="body">
+      <p class="p">Follow the suggestions in these topics to help resolve common issues when working&nbsp;with Big Data:</p>
+      <ul>
+        <li class="p">General Configuration Problems</li>
+        <li class="p">Cannot Access Cluster with&nbsp;Kerberos Enabled</li>
+        <li class="p">Cannot Access a Hive Cluster</li>
+        <li class="p">Cannot use Keytab File to Authenticate Access to PMR Cluster</li>
+        <li class="p">HBase Get Master Failed Error</li>
+        <li class="p">
+          <p>Sqoop Import into Hive Fails</p>
+        </li>
+        <li class="p">Cannot Start Any&nbsp;Pentaho&nbsp;Components after Setting MapR as Active Hadoop Configuration</li>
+        <li class="p">Kettle Cluster on YARN&nbsp;Will Not&nbsp;Start</li>
+      </ul>
+      <div class="body">
+        <p>See Pentaho&nbsp;
+          <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting</a>  articles for additional&nbsp;topics.</p>
+      </div>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="General_Configuration_Problems"></span> 
+      <h2 class="editable">
+        <a id="bigdata_general" name="bigdata_general"></a> General Configuration Problems</h2>
+      <p>The issues in this section explain how to resolve common configuration problems.&nbsp;</p>
+      <div id="section_2" class="mt-page-section"><span id="Shim_and_Configuration_Issues"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_shim_loading" name="bigdata_general_shim_loading"></a> Shim and Configuration Issues</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 211px;">Symptoms</th>
+              <th style="width: 371px;">Common Causes</th>
+              <th style="width: 654px;">Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 211px;">
+                <p>No shim</p>
+              </td>
+              <td style="width: 371px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Active shim was not selected.</li>
+                  <li>Shim was installed in the&nbsp;wrong place.</li>
+                  <li>Shim name was not entered correctly in the <span class="filepath style-wrap">plugin.properties</span>  file.</li>
+                </ul>
+              </td>
+              <td style="width: 654px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the plugin name that is in the <span class="filepath style-wrap">plugin.properties</span>  file <span class="mt-color-000000">matches the directory name in the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations</span>                     directory</span> .&nbsp;</li>
+                  <li>Verify the shim is installed in the <span class="mt-color-000000">correct place</span> .</li>
+                  <li>Check the instructions for your Hadoop distribution in the
+                    <a title="Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster">Set Up Pentaho to Connect to a&nbsp;Hadoop Cluster</a>  article for more details on how to verify the plugin name and shim installation directory.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 211px;">Shim does not load</td>
+              <td style="width: 371px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Required licenses are not installed.</li>
+                  <li>You tried to load a shim that is not supported by your version of Pentaho.</li>
+                  <li>If you are using MapR, the client might not have been installed correctly.&nbsp;</li>
+                  <li>Configuration file changes were made incorrectly.</li>
+                </ul>
+              </td>
+              <td style="width: 654px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify the
+                    <a title="Managing Pentaho Licenses" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_Pentaho_Licenses">required licenses are installed</a>  and have not expired.</li>
+                  <li>Verify that the shim is supported by your version of Pentaho.
+                    <a title="Get Help and Version Information" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/010">Find your version of Pentaho</a>, then look for the corresponding
+                    <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000">Components Reference</a> &nbsp;for more details.</li>
+                  <li>Verify that configuration file changes were made correctly.&nbsp;Contact your Hadoop Administrator or see the
+                    <a title="Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster">Set Up Pentaho to Connect to a&nbsp;Hadoop Cluster</a>  article.</li>
+                  <li>If you are connecting to MapR, verify that the client was properly installed.&nbsp; See MapR documentation for details.</li>
+                  <li>Restart the PDI client (also known as Spoon), then test again.</li>
+                  <li>If this error continues to occur, files might be corrupted.&nbsp;Download a new copy of the shim from the Pentaho Customer Support Portal.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 211px;">The file system's URL does not match the URL in the configuration file.</td>
+              <td style="width: 371px;">
+                <ul>
+                  <li>Configuration files (<span class="filepath style-wrap">*-site.xml</span>  files) were not configured properly.&nbsp;</li>
+                </ul>
+              </td>
+              <td style="width: 654px;">
+                <ul>
+                  <li>Verify that the configuration files were configured correctly.</li>
+                  <li>Verify that the <span class="filepath style-wrap">core-site.xml</span>  file is configured correctly.&nbsp;See the instructions for your Hadoop distribution in the
+                    <a title="Configuration" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster">Set Up Pentaho to Connect to a&nbsp;Hadoop Cluster</a>  article for details.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Connection_Problems"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_cluster_connect" name="bigdata_general_cluster_connect"></a> Connection Problems</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 208px;">Symptoms</th>
+              <th style="width: 369px;">Common Causes</th>
+              <th style="width: 659px;">Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 208px;">Hostname does not resolve.</td>
+              <td style="width: 369px;">
+                <ul class="pentaho-list-unordered">
+                  <li>No hostname has been specified.</li>
+                  <li>Hostname/IP Address is incorrect.</li>
+                  <li>Hostname is not resolving properly in the DNS.</li>
+                </ul>
+              </td>
+              <td style="width: 659px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the Hostname/IP address is correct.</li>
+                  <li>Check the DNS to make sure the Hostname is resolving properly.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 208px;">Port number does not resolve.</td>
+              <td style="width: 369px;">
+                <ul class="pentaho-list-unordered">
+                  <li>No port number has been specified.</li>
+                  <li>Port&nbsp;number is incorrect.</li>
+                  <li>Port number is not numeric.</li>
+                </ul>
+              </td>
+              <td style="width: 659px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the port number is correct.</li>
+                  <li>If you do not have a port number, determine whether your cluster has been enabled for high availability. If it has, then you do not need a port number.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 208px;">Cannot connect to the cluster</td>
+              <td style="width: 369px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall is a barrier to connecting.</li>
+                  <li>Other networking&nbsp;issues are occurring.</li>
+                </ul>
+              </td>
+              <td style="width: 659px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that a firewall is not impeding the connection and there are no&nbsp;other network issues.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Directory_Access_or_Permissions_Issues"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_accessdirectory" name="bigdata_general_accessdirectory"></a> Directory Access or Permissions Issues</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 220px;">Symptoms</th>
+              <th style="width: 362px;">Common Causes</th>
+              <th style="width: 652px;">Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 220px;">
+                <p>Cannot access directory</p>
+              </td>
+              <td style="width: 362px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Authorization and/or authentication&nbsp;issues.</li>
+                  <li>Directory is not on the cluster.</li>
+                </ul>
+              </td>
+              <td style="width: 652px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify the user has been granted read, write, and execute access to the directory.&nbsp;</li>
+                  <li>Verify security settings for the cluster and shim allow access.</li>
+                  <li>Verify the hostname and port number are correct for the Hadoop File System's&nbsp;<code>namenode</code>.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 220px;">
+                <p>Cannot create, read, update, or delete files or directories</p>
+              </td>
+              <td style="width: 362px;">
+                <ul>
+                  <li>Authorization and/or authentication&nbsp;issues.</li>
+                </ul>
+              </td>
+              <td style="width: 652px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify the user has been authorized execute&nbsp;access to the directory.&nbsp;</li>
+                  <li>Verify security settings for the cluster and shim allow access.</li>
+                  <li>Verify that the hostname and port number are correct for the Hadoop File System's&nbsp;<code>namenode</code>.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 220px;">Test file cannot be overwritten.</td>
+              <td style="width: 362px;">
+                <ul>
+                  <li>Pentaho test file is already in the directory.</li>
+                </ul>
+              </td>
+              <td style="width: 652px;">
+                <ul class="pentaho-list-unordered">
+                  <li>The test was run, but the file was not deleted.&nbsp;You will need to manually delete the test file.&nbsp;Check the log for the test file name.
+                    <ul>
+                      <li>A file with the same name as the Pentaho test file is already in the directory.&nbsp;The test file is used to make sure that the user can create, write, and delete in the user's home directory.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Oozie_Issues"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_oozie" name="bigdata_general_oozie"></a> Oozie Issues</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 221px;">Symptoms</th>
+              <th style="width: 384px;">Common Causes</th>
+              <th style="width: 631px;">Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 221px;">
+                <p>Cannot connect to Oozie</p>
+              </td>
+              <td style="width: 384px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall issue.</li>
+                  <li>Other networking&nbsp;issues.</li>
+                  <li>Oozie URL is incorrect.</li>
+                </ul>
+              </td>
+              <td style="width: 631px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the Oozie URL was correctly entered.</li>
+                  <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Zookeeper_Problems"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_zookeeper" name="bigdata_general_zookeeper"></a> Zookeeper Problems</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 304px;">Symptoms</th>
+              <th style="width: 322px;">Common Causes</th>
+              <th style="width: 609px;">Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 304px;">
+                <p>Cannot connect to Zookeeper</p>
+              </td>
+              <td style="width: 322px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall is impeding connection with the Zookeeper service.</li>
+                  <li>Other networking&nbsp;issues.</li>
+                </ul>
+              </td>
+              <td style="width: 609px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 304px;">
+                <p>Zookeeper hostname or port not found or does not resolve properly.&nbsp;&nbsp;</p>
+              </td>
+              <td style="width: 322px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Hostname/IP Address and Port name is missing or is incorrect.</li>
+                </ul>
+              </td>
+              <td style="width: 609px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Try to connect to the Zookeeper nodes using ping or another method.</li>
+                  <li>Verify that the Hostname/IP Address and Port numbers are correct.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="section_7" class="mt-page-section"><span id="Cannot_Access_Cluster_with_Kerberos_Enabled"></span> 
+      <h2 class="editable">Cannot Access Cluster with&nbsp;Kerberos Enabled</h2>
+      <p>If a step or entry cannot access a Kerberos authenticated cluster, review the steps in
+        <a title="Use Impersonation to Access a MapR Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Use_Kerberos_Authentication_to_Access_a_MapR_Cluster">Use Impersonation to Access a MapR Cluster</a> .</p>
+      <p>If this issue&nbsp;persists, verify&nbsp;the username, password, UID, and GID for each impersonated or spoofed user is the same on each node.&nbsp;When a user is deleted and recreated, it may then have different UIDs and GIDs causing this issue.</p>
+    </div>
+    <div id="section_8" class="mt-page-section"><span id="Cannot_Access_a_Hive_Cluster"></span> 
+      <h2 class="editable">Cannot Access a Hive Cluster</h2>
+      <p>If you cannot use Kerberos impersonation to authenticate and access a Hive cluster, review the steps in
+        <a title="Use Impersonation to Access a MapR Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Use_Kerberos_Authentication_to_Access_a_MapR_Cluster">Use Impersonation to Access a MapR Cluster</a> .</p>
+      <p>If this issue&nbsp;persists, copy the <code>hive-site.xml</code> file on the Hive server to the MapR distribution in these directories:&nbsp;</p>
+      <ul>
+        <li>
+          <p>Pentaho Server: <code>pentaho-server/pentaho-solutions/system/kettle/plugins/pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</code></p>
+        </li>
+        <li>
+          <p>PDI Client: <code>data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</code></p>
+        </li>
+      </ul>
+      <p>If this still does not work, disable pooled connections for Hive.</p>
+    </div>
+    <div id="section_9" class="mt-page-section"><span id="Cannot_use_Keytab_File_to_Authenticate_Access_to_PMR_Cluster"></span> 
+      <h2 class="editable">Cannot use Keytab File to Authenticate Access to PMR Cluster</h2>
+      <p>If you cannot authenticate and gain access to the PMR cluster, copy the keytab file to each task tracker node on the PMR cluster.</p>
+    </div>
+    <div id="section_10" class="mt-page-section"><span id="HBase_Get_Master_Failed_Error"></span> 
+      <h2 class="editable">HBase Get Master Failed Error</h2>
+      <p>If the&nbsp;<code>HBase cannot negation the authenticated portion of the connection</code>&nbsp;error occurs, copy the <code>hbase-site.xml</code> file from the HBase server to the MapR distribution in these directories:</p>
+      <ul>
+        <li>
+          <p>Pentaho Server: <code>pentaho-server/pentaho-solutions/system/kettle/plugins/pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</code></p>
+        </li>
+        <li>
+          <p>PDI&nbsp;Client: <code>data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</code></p>
+        </li>
+      </ul>
+    </div>
+    <div id="section_11" class="mt-page-section"><span id="Sqoop_Import_into_Hive_Fails"></span> 
+      <h2 class="editable">Sqoop Import into Hive Fails</h2>
+      <p class="p">If executing a Sqoop import into Hive fails to execute on a remote installation, the local Hive installation configuration does not match the Hadoop cluster connection information used to perform the Sqoop job.</p>
+      <p class="p">Verify the Hadoop connection information used by the local Hive installation is configured the same as the Sqoop job entry.</p>
+    </div>
+    <div id="section_12" class="mt-page-section"><span id="Cannot_Start_Any_Pentaho_Components_after_Setting_MapR_as_Active_Hadoop_Configuration"></span> 
+      <h2 class="editable">Cannot Start Any&nbsp;Pentaho&nbsp;Components after Setting MapR as Active Hadoop Configuration</h2>
+      <p>If you set MapR to be your active Hadoop configuration, but you cannot start any Pentaho component&nbsp;(Pentaho&nbsp;Server, Spoon, Report Designer, or&nbsp;the Metadata&nbsp;Editor),&nbsp;make sure that you have&nbsp;completed proper&nbsp;configuration
+        of MapR.</p>
+      <p>As you review the instructions for&nbsp;configuring MapR,&nbsp;make sure that you have&nbsp;copied the required&nbsp;JAR&nbsp;files to&nbsp;the <code>pentaho-big-data-plugin/hadoop-configurations/mapr3x</code>&nbsp;folders&nbsp;for each component
+        listed.&nbsp; For information on how to configure MapR,&nbsp;see the following&nbsp;references:</p>
+      <ul class="pentaho-list-unordered">
+        <li> <a class="external" id="lnk956357" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims" target="_blank">http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims</a>  </li>
+        <li> <a class="external" id="lnk596467" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims#AdditionalConfigurationforMapRShims-SetActiveMapRLinux" target="_blank">http://wiki.pentaho.com/display/BAD/Additional+Configuration+for+MapR+Shims#AdditionalConfigurationforMapRShims-SetActiveMapRLinux</a>  </li>
+      </ul>
+    </div>
+    <div id="section_13" class="mt-page-section"><span id="The_'Group_by'_Step_is_not_Supported_in_a_Single_Threaded_Transformation_Engine"></span> 
+      <h2 class="editable">The 'Group by' Step is not Supported in a Single Threaded Transformation Engine&nbsp;</h2>
+      <p>If you have&nbsp;a job that contains both&nbsp;a&nbsp;<strong>Pentaho&nbsp;MapReduce</strong>  entry and a Reducer transformation with a <strong>Group by</strong>  step, you may receive&nbsp;a&nbsp;<span class="filepath style-wrap">Step 'Group by' of type 'GroupBy' is not Supported in a Single Threaded Transformation Engine</span> &nbsp;error
+        message. This error can occurs if:</p>
+      <ul class="pentaho-list-unordered">
+        <li>An entire set of rows sharing the same grouping key are filtered from the transformation before the <strong>Group By</strong>  step</li>
+        <li>The <strong>Reduce single threaded</strong>  option in the <strong>Pentaho MapReduce</strong>  entry's <strong>Reducer </strong> tab is selected.</li>
+      </ul>
+      <p>To fix this issue, open the <strong>Pentaho MapReduce</strong>  entry and deselect&nbsp;the <strong>Reduce single threaded</strong>  option in the <strong>Reducer</strong>  tab.</p>
+    </div>
+    <div id="section_14" class="mt-page-section"><span id="Kettle_Cluster_on_YARN_Will_Not_Start"></span> 
+      <h2 class="editable">
+        <span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">Kettle Cluster on YARN&nbsp;Will Not&nbsp;Start</span> 
+      </h2>
+      <p>When you are using the <strong>Start&nbsp;a PDI Cluster on YARN&nbsp;</strong> job entry, the Kettle cluster&nbsp;may not&nbsp;start.</p>
+      <p>Verify&nbsp;the <strong>Default FS </strong> setting matches the configured hostname for the HDFS Name node, then try starting the kettle cluster again.</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#General_Configuration_Problems" rel="internal">General Configuration Problems</a> 
+        <ol>
+          <li> <a href="#Shim_and_Configuration_Issues" rel="internal">Shim and Configuration Issues</a>  </li>
+          <li> <a href="#Connection_Problems" rel="internal">Connection Problems</a>  </li>
+          <li> <a href="#Directory_Access_or_Permissions_Issues" rel="internal">Directory Access or Permissions Issues</a>  </li>
+          <li> <a href="#Oozie_Issues" rel="internal">Oozie Issues</a>  </li>
+          <li> <a href="#Zookeeper_Problems" rel="internal">Zookeeper Problems</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Cannot_Access_Cluster_with_Kerberos_Enabled" rel="internal">Cannot Access Cluster with&nbsp;Kerberos Enabled</a>  </li>
+      <li> <a href="#Cannot_Access_a_Hive_Cluster" rel="internal">Cannot Access a Hive Cluster</a>  </li>
+      <li> <a href="#Cannot_use_Keytab_File_to_Authenticate_Access_to_PMR_Cluster" rel="internal">Cannot use Keytab File to Authenticate Access to PMR Cluster</a>  </li>
+      <li> <a href="#HBase_Get_Master_Failed_Error" rel="internal">HBase Get Master Failed Error</a>  </li>
+      <li> <a href="#Sqoop_Import_into_Hive_Fails" rel="internal">Sqoop Import into Hive Fails</a>  </li>
+      <li> <a href="#Cannot_Start_Any_Pentaho_Components_after_Setting_MapR_as_Active_Hadoop_Configuration" rel="internal">Cannot Start Any&nbsp;Pentaho&nbsp;Components after Setting MapR as Active Hadoop Configuration</a>  </li>
+      <li> <a href="#The_'Group_by'_Step_is_not_Supported_in_a_Single_Threaded_Transformation_Engine" rel="internal">The 'Group by' Step is not Supported in a Single Threaded Transformation Engine&nbsp;</a>  </li>
+      <li> <a href="#Kettle_Cluster_on_YARN_Will_Not_Start" rel="internal">Kettle Cluster on YARN&nbsp;Will Not&nbsp;Start</a>  </li>
+    </ol>
+  </body>
+</content>

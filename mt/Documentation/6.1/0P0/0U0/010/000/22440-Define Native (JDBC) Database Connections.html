@@ -1,0 +1,390 @@
+<content type="text/html" title="Define Native (JDBC) Database Connections">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div>
+        <div class="pentaho-overview-hidden">
+          <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+            <h2 class="editable">Overview</h2>
+            <p>Explains how to define Native JDBC Database Connections.</p>
+          </div>
+        </div>
+        <div class="body taskbody">
+          <div class="section context">Once you have
+            <a class="xref" title="Documentation/5.1/0P0/0U0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/010">chosen to use the Native (JDBC) access protocol</a>, here are configuration and maintenance tasks you can perform.</div>
+        </div>
+        <div class="topic task nested1" id="a26f2312-f251-4bdf-85a5-398290a8a230__add_di_driver">
+          <div id="section_2" class="mt-page-section"><span id="Add_Drivers"></span> 
+            <h2 class="editable">Add Drivers</h2>
+            <div class="body taskbody">
+              <div class="section context">
+                <p class="p">The DI Server and workstations need the appropriate driver to connect to the database that stores your data. Your database administrator, Chief Intelligence Officer, or IT manager should be able to provide the appropriate driver. If not,
+                  you can download drivers from your database vendor's website. See the
+                  <a class="xref" title="Review Supported Technologies" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160">Supported Technologies</a>  to ensure that your database and its driver are supported by Pentaho.</p>
+                <div class="note note"><span class="notetitle">Note:</span>  If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+                  <a class="xref" title="Documentation/5.1/0B0/000" rel="internal"
+                  href="http://help.pentaho.com/Documentation/6.1/0B0/Get_Help_and_Support/001">Pentaho support</a>  to ensure that you are adding the correct driver.</div>
+                <p class="p"><strong class="ph b">Installing Drivers</strong> </p>
+                <p class="p">Once you have the correct driver, copy it to these directories.</p>
+                <p class="p"><strong class="ph b">DI Server</strong> : <span class="ph filepath"> /pentaho/server/data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/lib/ </span> .</p>
+                <p class="p"><strong class="ph b">Spoon:</strong>  <span class="ph filepath">data-integration/lib </span> </p>
+                <p class="p">You must restart Spoon for the driver to take effect.</p>
+                <p class="p">There should be only one driver for your database in this directory. Ensure that there are no other versions of the same vendor's driver in this directory. If there are, back up the old driver files and remove them to avoid version conflicts.
+                  This is a concern when you are adding a driver for the same database type as your Pentaho solution repository. If you have any concerns about how to proceed, contact
+                  <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0B0/Get_Help_and_Support/001">Pentaho support</a> .</p>
+                <p class="p">When the driver files are in place
+                  <a class="xref" title="Documentation/5.1/0H0/070/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/000">restart</a>  the server.</p>
+                <p class="p"><strong class="ph b">Connecting to a Microsoft SQL Server Using Integrated or Windows Authentication</strong> </p>
+                <p class="p">If you are using a Microsoft SQL Server (MSSQL), you might need to use an alternative, non-vendor-supported driver called JTDS. Contact
+                  <a class="xref" title="Documentation/5.1/0B0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0B0/Get_Help_and_Support/001">Pentaho support</a>  to ensure that you are adding the correct driver</p>
+                <p class="p">For Microsoft Windows, most JDBC drivers support Type 2 integrated authentication through the <span class="ph filepath">integratedSecurity</span>  connection string property. To use integrated authentication, copy the <span class="ph filepath">sqljdbc_auth.dll</span>                   file to all machines and directories to which you copied the JDBC driver. You can find this file in this location.</p>
+                <div class="p"> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><installation directory>\sqljdbc_<version>\<language>\auth\</pre> </div>
+                <div class="p">
+                  <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e171" valign="top">If running:</th>
+                        <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e174" valign="top">Use the sqljdbc_auth.dll file here:</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d83243e171 d83243e174 " valign="top">64-bit JVM on a x64 processor</td>
+                        <td class="entry" headers="d83243e171 d83243e174 " valign="top">x64 folder</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e171 d83243e174 " valign="top">64-bit JVM on an Itanium processor</td>
+                        <td class="entry" headers="d83243e171 d83243e174 " valign="top">IA64 folder</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="a26f2312-f251-4bdf-85a5-398290a8a230__specify_di_connections">
+        <div id="section_3" class="mt-page-section"><span id="Specify_Native_(JDBC)_Connection_Information"></span> 
+          <h2 class="editable">Specify Native (JDBC) Connection Information</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Before you can create the connection, you must have
+                <a class="xref" title="Documentation/5.1/0P0/0U0/010/000#a26f2312-f251-4bdf-85a5-398290a8a230__add_di_driver" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/010/000#a26f2312-f251-4bdf-85a5-398290a8a230__add_di_driver">installed the appropriate JDBC driver</a>  for your particular data.</p>
+              <p class="p">Pentaho Data Integration (PDI) allows you to define connections to multiple databases provided by multiple database vendors (MySQL, Oracle, PostgreSQL, and many more). PDI ships with the most suitable JDBC drivers for PostgreSQL, our default
+                database.</p>
+              <div class="note note"><span class="notetitle">Note:</span> 
+                <p class="p">Pentaho recommends that you avoid using ODBC connections. The ODBC to JDBC bridge driver does not always provide an exact match and adds another level of complexity that may affect performance. The only time you may have to use ODBC is
+                  if there is no available JDBC driver. For details, this article explains &quot;Why you should avoid ODBC.&quot;
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/pages/viewpage.action?pageId=14850644">http://wiki.pentaho.com/pages/viewpage.action?pageId=14850644</a> .</p>
+              </div>
+              <p class="p">When you define a database connection, the connection information (for example, the user name, password, and port number) is stored in the DI Repository and is available to other users when they connect to the repository. If you are not
+                using the DI Repository, the database connection information is stored in the XML file associated with the transformation or job.</p>
+              <p class="p">Connections that are available for use with a transformation or job are listed under the <strong class="ph b">Database connections</strong>  node
+                <a class="xref" title="Documentation/5.1/0H0/070/010/020#d8cc6f93-2812-4207-8575-d0565302355c__tour_spoon"
+                rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020#d8cc6f93-2812-4207-8575-d0565302355c__tour_spoon">in the <strong class="ph b">View</strong>  pane in Spoon</a> .</p>
+              <div class="p">You must have information about your database, such as your database type, port number, user name and password, before you define a JDBC connection. You can also set connection properties using variables. Variables provide you with the ability
+                to access data from multiple database types using the same transformations and jobs.
+                <div class="note note"><span class="notetitle">Note:</span>  Make sure to use clean ANSI SQL that works on all used database types.</div>
+              </div>
+              <p class="p">
+                <a class="thumb" title="DatabaseConnection.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8189/DatabaseConnection.png">
+                  <img alt="DatabaseConnection.png" class="internal default" style="width: 550px; height: 510px;" width="550px" height="510px" src="http://help.pentaho.com/@api/deki/files/8189/DatabaseConnection.png?size=bestfit&amp;width=550&amp;height=510&amp;revision=1"
+                  />
+                </a> 
+              </p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">From within <span class="ph uicontrol">Spoon</span>, navigate to the <span class="ph uicontrol">View</span>  tab of the <span class="ph uicontrol">Explorer</span>  pane. Double-click on the<strong> <span class="ph uicontrol">Database connections</span> </strong>                 folder. </span>  The <strong class="ph b">Database Connection</strong>  dialog box appears.
+                <div class="p">
+                  <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" id="a26f2312-f251-4bdf-85a5-398290a8a230__specify_di_connections__data_connection_options" rules="all" summary="" title="Pentaho Table">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e309" style="width: 202px;" valign="top" width="50%">Section Name</th>
+                        <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e312" style="width: 449px;" valign="top" width="50%">What to Do</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Connection Name</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Type name that uniquely identifies your new connection</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Connection Type</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Select the type of database to which you are connecting</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Access</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Select your method of access. Available access types depend on the connecting database type.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Host Name</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Type the name of the server that hosts the database to which you are connecting. Alternatively, you can specify the host by IP address.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Database Name</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Enter the name of the database to which you are connecting. If you are using a ODBC connection, enter the Data Source Name (DSN) in this field.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Port Number</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Enter the TCP/IP port number if it is different from the default.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">User name</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Optionally, type the user name used to connect to the database.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d83243e309 " style="width: 202px;" valign="top" width="50%"><strong class="ph b">Password</strong> </td>
+                        <td class="entry" headers="d83243e312 " style="width: 449px;" valign="top" width="50%">Optionally, type the password used to connect to the database.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <ul class="pentaho-list-unordered">
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">Test</strong> . </span>  A confirmation message displays if Spoon is able to establish a connection with the target database.</li>
+            <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to save your entries and exit the Database Connection dialog box.</span> </li>
+            <li class="li step"><span class="ph cmd">From within the <a class="xref" title="Documentation/5.1/0H0/070/010/020#d8cc6f93-2812-4207-8575-d0565302355c__tour_spoon" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020#d8cc6f93-2812-4207-8575-d0565302355c__tour_spoon"> <span class="ph uicontrol">View</span>               tab </a>, right-click on the connection and select <span class="ph uicontrol">Share</span>  from the list that appears.</span>  This shares the connection with your users. They will be able to select the shared connection. From within the
+              <a
+              class="xref" title="Documentation/5.1/0H0/070/010/020#d8cc6f93-2812-4207-8575-d0565302355c__tour_spoon" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/010/020#d8cc6f93-2812-4207-8575-d0565302355c__tour_spoon"><span class="ph uicontrol">View</span>  tab</a>, click <strong class="ph b">Explore</strong>  to open the <strong class="ph b">Database Explorer</strong>  for an existing connection. This shows you the schemas and tables inside the connection.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested2" id="a26f2312-f251-4bdf-85a5-398290a8a230__pdi_db_connections_dialog">
+        <div id="section_4" class="mt-page-section"><span id="Add_Database-Specific_Options"></span> 
+          <h2 class="editable">Add Database-Specific Options</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Add database-specific options by adding parameters to the generated URL.</p>
+            </div>
+            <ol class="pentaho-list-ordered">
+              <li class="li step"><span class="ph cmd">From within the <span class="ph uicontrol">Database Connection window</span>, select <span class="ph uicontrol">Options</span> .</span> 
+              </li>
+            </ol>
+            <p class="li step"><span class="ph cmd">&#8203;<a class="thumb" title="DatabaseConnection_Options.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8192/DatabaseConnection_Options.png"><img alt="DatabaseConnection_Options.png" class="internal default" style="width: 550px; height: 510px;" width="550px" height="510px" src="http://help.pentaho.com/@api/deki/files/8192/DatabaseConnection_Options.png?size=bestfit&amp;width=550&amp;height=510&amp;revision=1" /></a> </span> </p>
+            <ol class="pentaho-list-ordered" start="2">
+              <li class="li step"><span class="ph cmd">Select the first available row in the parameter table.</span> </li>
+              <li class="li step"><span class="ph cmd">Choose the database type and enter a valid parameter name and its corresponding value.</span> 
+                <div class="note note"><span class="notetitle">Note:</span>  For more database-specific configuration help, click <strong class="ph b">Help</strong> . A new browser opens and displays additional information about configuring the JDBC connection for the currently
+                  selected database type.</div>
+              </li>
+              <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to save your entries.</span> </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested2" id="a26f2312-f251-4bdf-85a5-398290a8a230__concept_pdi_db_connections_advanced">
+        <div id="section_5" class="mt-page-section"><span id="Advanced_Configuration_of_Database_Connections"></span> 
+          <h2 class="editable">Advanced Configuration of Database Connections</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The <strong class="ph b">Advanced</strong>  option in the <span class="ph uicontrol">Database Connection</span>  dialog box allows you to configure properties that are, for most part, associated with how SQL is generated. These options allow
+                you to set a standard across all of your SQL tools, ETL tools and design tools. All database table names and column names are always upper case or lower case no matter what users do in the tools.</p>
+              <p class="p">
+                <a class="thumb" title="DatabaseConnection_Advanced.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8190/DatabaseConnection_Advanced.png">
+                  <img alt="DatabaseConnection_Advanced.png" class="internal default" style="width: 550px; height: 510px;" width="550px" height="510px" src="http://help.pentaho.com/@api/deki/files/8190/DatabaseConnection_Advanced.png?size=bestfit&amp;width=550&amp;height=510&amp;revision=1"
+                  />
+                </a> 
+              </p>
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e562" style="width: 118px;" valign="top"><strong class="ph b">Feature</strong> </th>
+                    <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e566" style="width: 557px;" valign="top"><strong class="ph b">Description</strong> </th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Supports the boolean data type</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Instructs PDI to use native boolean data types if supported by the database.</td>
+                  </tr>
+                  <tr>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Supports the boolean timestamp&nbsp;type</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Instructs PDI to use timestamp&nbsp;data type&nbsp;if supported by the database.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Quote all in database</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Enables the databases to use a case-sensitive tablename (for example MySQL is case-sensitive on Linux but not case sensitive on Windows). If you quote the identifiers, the databases will use a case sensitive tablename.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Force all to lower case</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Enables all identifiers to lower case.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Force all to upper case</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Enables all identifiers to upper case.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Preferred schema name...</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Enter the preferred schema name (for example, MYSCHEMA).</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 118px;" valign="top"><strong class="ph b">Enter SQL name...</strong> </td>
+                    <td class="entry" headers="d83243e562 d83243e566 " style="width: 557px;" valign="top">Enter the SQL statement used to initialize a connection.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="p">Pentaho has implemented a database-specific quoting system that allows you to use any name or character acceptable to the supported databases' naming conventions.</p>
+            <p class="p">Pentaho Data Integration contains a list of reserved words for most of the supported databases. To ensure that quoting behaves correctly, Pentaho has implemented a strict separation between the schema (user/owner) of a table and the table
+              name itself. Doing otherwise makes it impossible to quote tables or fields with one or more periods in them correctly. Placing periods in table and field names is common practice in some ERP systems (for example, fields such as &quot;V.A.T.&quot;)</p>
+            <p class="p">To avoid quoting-related errors, a rule stops the Pentaho Data Integration from performing quoting activity when there is a start or end quote in the table name or schema. This allows you to specify the quoting mechanism yourself.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested2" id="a26f2312-f251-4bdf-85a5-398290a8a230__di_pooling">
+        <div id="section_6" class="mt-page-section"><span id="Define_Connection_Pooling"></span> 
+          <h2 class="editable">Define Connection Pooling</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Instead of having a connection open for each individual step in a transformation, you can set up a connection pool and define options like the initial pool size, maximum pool size, and connection pool parameters. For example, you might start
+                with a pool of ten or fifteen connections, and as you run jobs or transformations, the unused connections drop off. Pooling helps control database access, especially if you have transformations that contain many steps and that require
+                a large number of connections. Pooling can also be implemented when your database licensing restricts the number of active concurrent connections.</p>
+              <p class="p">
+                <a class="thumb" title="DatabaseConnection_Pooling.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8193/DatabaseConnection_Pooling.png">
+                  <img alt="DatabaseConnection_Pooling.png" class="internal default" style="width: 550px; height: 510px;" width="550px" height="510px" src="http://help.pentaho.com/@api/deki/files/8193/DatabaseConnection_Pooling.png?size=bestfit&amp;width=550&amp;height=510&amp;revision=1"
+                  />
+                </a> 
+              </p>
+              <p class="p">This table shows descriptions of the pooling options.</p>
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e681" valign="top"><strong class="ph b">Feature</strong> </th>
+                    <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e687" valign="top"><strong class="ph b">Description</strong> </th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top"><strong class="ph b">Enable connection pooling</strong> </td>
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top">Enables connection pooling</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top"><strong class="ph b">Pool Size</strong> </td>
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top">Sets the <em class="ph i">initial</em>  size of the connection pool; sets the <em class="ph i">maximum</em>  number of connections in the connection pool</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top"><strong class="ph b">Parameters</strong> </td>
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top">Allows you to define additional custom pool parameters; click <strong class="ph b">Restore Defaults</strong>  when appropriate</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top"><strong class="ph b">Description</strong> </td>
+                    <td class="entry" headers="d83243e681 d83243e687 " valign="top">Allows you to add a description for your parameters</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <ol class="pentaho-list-ordered">
+            <li class="li step"><span class="ph cmd">Select <span class="ph uicontrol">Enable Connection Pooling</span> .</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Type the initial pool size in the <span class="ph uicontrol">Initial:</span>  area and the maximum pool size in the <span class="ph uicontrol">Maximum:</span>  area.</span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Select the parameters you need from within the <span class="ph uicontrol">Parameters:</span>  area.</span>  A Description of the parameter appears in the <span class="ph uicontrol">Description:</span>  area when you select
+              a check box.</li>
+            <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">OK</span>  to save your selections and close the <span class="ph uicontrol">Database Connection</span>  window.</span> 
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="topic task nested2" id="a26f2312-f251-4bdf-85a5-398290a8a230__connect_to_clusters">
+        <div id="section_7" class="mt-page-section"><span id="Connect_to_Clusters"></span> 
+          <h2 class="editable">Connect to Clusters</h2>
+          <div class="body taskbody">
+            <div class="section context">This option allows you to enable clustering for the database connection and create connections to the data partitions. To create a new data partition, enter a <strong class="ph b">Partition ID</strong>  and the <strong class="ph b">Host Name</strong>,
+              <strong class="ph b">Port</strong>, <strong class="ph b">Database</strong>, <strong class="ph b">User Name</strong>, and <strong class="ph b">Password</strong>  for connecting to the partition.</div>
+            <div class="section context">
+              <a class="thumb" title="DatabaseConnection_Cluster.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/8191/DatabaseConnection_Cluster.png">
+                <img alt="DatabaseConnection_Cluster.png" class="internal default" style="width: 550px; height: 510px;" width="550px" height="510px" src="http://help.pentaho.com/@api/deki/files/8191/DatabaseConnection_Cluster.png?size=bestfit&amp;width=550&amp;height=510&amp;revision=1"
+                />
+              </a> 
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested2" id="a26f2312-f251-4bdf-85a5-398290a8a230__topic_pdi_edit_dupe_db_connect">
+        <div id="section_8" class="mt-page-section"><span id="Modify_Connections"></span> 
+          <h2 class="editable">Modify Connections</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">This table contains information about other database-related connection tasks you can perform.</p>
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" frame="border" rules="all" summary="" title="Pentaho Table">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e862" valign="top">Task</th>
+                    <th class="entry" id="a26f2312-f251-4bdf-85a5-398290a8a230__d83243e865" valign="top">Description</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Edit a Connection</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Right-click on the connection name and select <strong class="ph b">Edit</strong> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Duplicate a Connection</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Right-click on the connection name and select <strong class="ph b">Duplicate</strong> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Copy to a Clipboard</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Allows you to copy the XML defining the step to the clipboard. You can then paste this step into another transformation. Double-click on the connection name in the tree or right-click on the connection name and select <strong class="ph b">Copy to Clipboard</strong> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Delete a Connection</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Double-click on the connection name in the tree or right-click on the connection name and select <strong class="ph b">Delete</strong> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">SQL Editor</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">To execute SQL command against an existing connection, right-click on the connection name and select
+                      <a class="xref" title="Documentation/5.1/0L0/0Y0/0B0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/0A0">SQL Editor</a> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Clear the Database Cache</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">To speed up connections Pentaho Data Integration uses a database cache. When the information in the cache no longer represents the layout of the database, right-click on the connection in the tree and select <strong class="ph b">Clear DB Cache...</strong> .
+                      This command is commonly used when databases tables have been changed, created or deleted.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Share a Connection</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Rather than redefining a connection each time you create a job or transformation on your <em class="ph i">local device</em>, right-click and select <strong class="ph b">Share</strong>  to share the connection information among jobs
+                      and transformations.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Exploring the Database</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Double-click on the connection name in the tree or right-click on the connection name and select
+                      <a class="xref" title="Documentation/5.1/0L0/0Y0/0C0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/040/Using_the_Database_Explorer">Explore</a> .</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top"><strong class="ph b">Show dependencies</strong> </td>
+                    <td class="entry" headers="d83243e862 d83243e865 " valign="top">Right-click a connection name and select <strong class="ph b">Show dependencies</strong>  to see all of the transformations and jobs that use this database connection.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Add_Drivers" rel="internal">Add Drivers</a>  </li>
+      <li> <a href="#Specify_Native_(JDBC)_Connection_Information" rel="internal">Specify Native (JDBC) Connection Information</a>  </li>
+      <li> <a href="#Add_Database-Specific_Options" rel="internal">Add Database-Specific Options</a>  </li>
+      <li> <a href="#Advanced_Configuration_of_Database_Connections" rel="internal">Advanced Configuration of Database Connections</a>  </li>
+      <li> <a href="#Define_Connection_Pooling" rel="internal">Define Connection Pooling</a>  </li>
+      <li> <a href="#Connect_to_Clusters" rel="internal">Connect to Clusters</a>  </li>
+      <li> <a href="#Modify_Connections" rel="internal">Modify Connections</a>  </li>
+    </ol>
+  </body>
+</content>

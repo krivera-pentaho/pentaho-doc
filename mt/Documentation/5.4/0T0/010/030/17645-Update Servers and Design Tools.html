@@ -1,0 +1,119 @@
+<content type="text/html" title="Update Servers and Design Tools">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to update the BA and DI Servers as well as the Design Tools.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Update_Your_BA_Server"></span> 
+        <h2 class="editable">Update Your BA Server</h2>
+        <p>These instructions are for users who installed&nbsp;Pentaho&nbsp;5.1.x, 5.2.x, or 5.3.x using the Wizard or their own repository.</p>
+        <ol class="pentaho-list-ordered">
+          <li>If you have not already done so,
+            <a title="Prepare Your Environment" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0T0/010/020">prepare your environment</a> .</li>
+          <li>At a command prompt, run the&nbsp;<span class="filepath style-wrap">BAServerConfigAndSolutionsBackup&nbsp;</span> utility to create three <span class="filepath style-wrap">.zip</span>  files in the current user&rsquo;s home folder. The utility
+            receives one parameter, the path to the existing tomcat and&nbsp;<span class="filepath style-wrap">pentaho-solutions</span> &nbsp;folders.</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsBackup &quot;C:\Program Files\pentaho\server\biserver-ee&quot;</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsBackup '/opt/custom software/pentaho/server/biserver-ee'</pre>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Move the existing <span class="filepath style-wrap">pentaho/server/biserver-ee/tomcat/webapps/pentaho</span>  folder to a location outside the Pentaho folder structure.</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\Windows\temp or C:\temp</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/tmp</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>From the unzipped biserver-ee-5.4 directory, copy the new <span class="filepath style-wrap">tomcat/webapps/pentaho</span> &nbsp;folder to the existing&nbsp;<span class="filepath style-wrap">pentaho/server/biserver-ee/tomcat/webapps/</span>  directory.</li>
+          <li>Move the&nbsp;<span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system</span>  folder to a location outside&nbsp;Pentaho&nbsp;folder structure.</li>
+        </ol>
+        <p><strong>Windows example</strong> :</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\Windows\temp or C:\temp</pre>
+        <p><strong>Linux example</strong> :</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/tmp</pre>
+        <ol class="pentaho-list-ordered" start="6">
+          <li>From the unzipped biserver-ee-5.4 directory, copy the<span class="filepath style-wrap">&nbsp;pentaho-solutions/system </span> folder to the existing&nbsp;<span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/</span>  directory.</li>
+          <li>Move the downloaded plugin files you are licensed to use to the&nbsp;<span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system</span>  folder.</li>
+          <li>At a command prompt, run the&nbsp;<span class="filepath style-wrap">BAServerConfigAndSolutionsRestore&nbsp;</span> utility to restore the three<span class="filepath style-wrap"> .zip</span>  files from the current user&rsquo;s home folder. The
+            utility receives one parameter, the path to the folder containing the tomcat and&nbsp;<span class="filepath style-wrap">pentaho&#8208;solutions </span> folders.</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsRestore &quot;C:\Program Files\pentaho\server\biserver-ee&quot;</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsRestore /opt/home/pentaho/server/biserver-ee</pre>
+        <ol class="pentaho-list-ordered"
+        start="9">
+          <li>Restart the server. This link shows you how:&nbsp;
+            <a title="Documentation/5.3/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0H0/060/010/000">https://help.pentaho.com/Documentation/5.4/0H0/060/010/000</a> 
+          </li>
+        </ol>
+        <p class="pentaho-caution">If you do not wish to upload or replace your current sample data, it is recommended that you rename the files located in the <span class="filepath style-wrap">pentaho-solutions/system/default-content</span>  directory prior to restarting the server.
+          These files may include <span class="filepath style-wrap">pentaho-operations-mart-etl</span>, <span class="filepath style-wrap">pentaho-operations-mart-operations</span>, <span class="filepath style-wrap">plugin-samples-zip</span>, and
+          <span
+          class="filepath style-wrap">samples-zip</span> .</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Update_Your_DI_Server"></span> 
+        <h2 class="editable">Update Your DI Server</h2>
+        <p>These instructions are for those users who installed&nbsp;Pentaho&nbsp;5.1.x, 5.2.x, or 5.3.x using the Wizard or their own repository.</p>
+        <ol class="pentaho-list-ordered">
+          <li>If you have not done so already,
+            <a title="Prepare Your Environment" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0T0/010/020">prepare your environment</a> .</li>
+          <li>At a command prompt, run the&nbsp;<span class="filepath style-wrap">DIServerConfigAndSolutionsBackup</span> &nbsp;utility to create three<span class="filepath style-wrap"> .zip</span>  files in the current user&rsquo;s home folder. The utility
+            receives one parameter, the path to the existing tomcat and&nbsp;<span class="filepath style-wrap">pentaho-solutions</span> &nbsp;folders.</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">DIServerConfigAndSolutionsBackup &quot;C:\Program Files\pentaho\data-integration-server&quot;</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">DIServerConfigAndSolutionsBackup '/opt/custom software/pentaho/data-integration-server'</pre>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Move the existing&nbsp;<span class="filepath style-wrap">pentaho/server/data-integration-server/tomcat/webapps/pentaho-di</span> &nbsp;folder to a location outside the&nbsp;Pentaho&nbsp;folder structure.</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\Windows\temp or C:\temp</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/tmp</pre>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>From the unzipped pdi&#8208;ee&#8208;5.4 directory, copy the new<span class="filepath style-wrap"> tomcat/webapps/pentaho-di</span> &nbsp;folder to the existing&nbsp;<span class="filepath style-wrap">pentaho/server/biserver-ee/tomcat/webapps/</span>             directory.</li>
+          <li>Move the folder<span class="filepath style-wrap">&nbsp;pentaho/server/data-integration-server/pentaho-solutions/system</span>  to a safe location outside the&nbsp;pentaho&nbsp;folder structure.</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">C:\Windows\temp or C:\temp</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">/tmp</pre>
+        <ol class="pentaho-list-ordered" start="6">
+          <li>From the unzipped&nbsp;data&#8208;integration&#8208;server 5.4 file, copy the&nbsp;<span class="filepath style-wrap">pentaho-solutions/system</span>  directory to the existing&nbsp;<span class="filepath style-wrap">pentaho/server/data-integration-server/pentaho-solutions/</span>             directory.</li>
+          <li>At a command prompt, run the&nbsp;<span class="filepath style-wrap">DIServerConfigAndSolutionsRestore&nbsp;</span> utility to restore the three .zip files from the user&rsquo;s home directory. The utility receives one parameter: the path to the
+            folder containing the <span class="filepath style-wrap">tomcat </span> and&nbsp;<span class="filepath style-wrap">pentaho&#8208;solutions</span>  folders.&nbsp;</li>
+        </ol>
+        <p><strong>Windows example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsRestore &quot;C:\Program Files\pentaho\data-integration-server&quot;</pre>
+        <p><strong>Linux example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsRestore /opt/home/pentaho/data-integration-server</pre>
+        <ol class="pentaho-list-ordered"
+        start="8">
+          <li>Restart the server. This link shows you how:&nbsp;
+            <a title="Documentation/5.3/0F0/0O0/040" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0F0/0O0/040">https://help.pentaho.com/Documentation/5.4/0F0/0O0/040</a> 
+          </li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Update_Your_Design_Tools"></span> 
+        <h2 class="editable">Update Your Design Tools</h2>
+        <p>The design tools are stand-alone tools, and can be updated on workstations as follows.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Stop the design tool if it&rsquo;s running. These links show&nbsp;you how:
+            <a title="Start and Stop BA Design Tools" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0H0/060/020/000">Start and Stop BA Design Tools</a> &nbsp;or
+            <a title="https://help.pentaho.com/Documentation/5.4/0H0/070/010/020#Start_Spoon" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0H0/070/010/020#Start_Spoon">Start Spoon</a> .</li>
+          <li>Move the old design tool out of the&nbsp;Pentaho&nbsp;folder structure to a temporary folder.</li>
+          <li>Copy the new version of the design tool into the&nbsp;Pentaho&nbsp;folder structure.</li>
+          <li>Restart your design tool.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Update_Your_BA_Server" rel="internal">Update Your BA Server</a>  </li>
+      <li> <a href="#Update_Your_DI_Server" rel="internal">Update Your DI Server</a>  </li>
+      <li> <a href="#Update_Your_Design_Tools" rel="internal">Update Your Design Tools</a>  </li>
+    </ol>
+  </body>
+</content>

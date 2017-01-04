@@ -1,0 +1,133 @@
+<content type="text/html" title="Pentaho Data Integration Performance Tuning Tips">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The tips described here may help you to identify and correct performance-related issues associated with PDI transformations. </p>
+        <div class="tablenoborder">
+          <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all">
+            <thead class="thead" align="left">
+              <tr class="row">
+                <th class="entry" valign="top" width="14.771048744460854%" id="58e55e41-0d9c-4c0b-aac6-8a6718799e70__d75648e33"> <strong class="ph b">Step</strong>  </th>
+                <th class="entry" valign="top" width="19.49778434268833%" id="58e55e41-0d9c-4c0b-aac6-8a6718799e70__d75648e39"> <strong class="ph b">Tip</strong>  </th>
+                <th class="entry" valign="top" width="65.73116691285081%" id="58e55e41-0d9c-4c0b-aac6-8a6718799e70__d75648e45"> <strong class="ph b">Description</strong>  </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">JavaScript</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Turn off compatibility mode</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">Rewriting JavaScript to use a format that is not compatible with previous versions is, in most instances, easy to do and makes scripts easier to work with and to read. By default, old JavaScript programs run in compatibility mode. That
+                  means that the step will process like it did in a previous version. You may see a small performance drop because of the overload associated with forcing compatibility. If you want make use of the new architecture, disable compatibility
+                  mode and change the code as shown below:
+                  <ul class="ul">
+                    <li class="li"><code class="ph codeph">intField.getInteger() --> intField</code></li>
+                    <li class="li"><code class="ph codeph">numberField.getNumber() --> numberField</code></li>
+                    <li class="li"><code class="ph codeph">dateField.getDate() --> dateField</code></li>
+                    <li class="li"><code class="ph codeph">bigNumberField.getBigNumber() --> bigNumberField</code></li>
+                    <li class="li">and so on...</li>
+                  </ul> Instead of Java methods, use the built-in library. Notice that the resulting program code is more intuitive. For example :
+                  <ul class="ul">
+                    <li class="li">checking for null is now: <code class="ph codeph">field.isNull() --> field==null</code></li>
+                    <li class="li">Converting string to date: <code class="ph codeph">field.Clone().str2dat() --> str2date(field)</code></li>
+                    <li class="li">and so on... </li>
+                  </ul>
+                  If you convert your code as shown above, you may get significant performance benefits.
+                  <div class="note note"><span class="notetitle">Note:</span>  It is no longer possible to modify data in-place using the value methods. This was a design decision to ensure that no data with the wrong type would end up in the output rows of the step. Instead
+                    of modifying fields in-place, create new fields using the table at the bottom of the Modified JavaScript transformation.</div>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">JavaScript</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Combine steps</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">One large JavaScript step runs faster than three consecutive smaller steps. Combining processes in one larger step helps to reduce overhead.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">JavaScript</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Avoid the JavaScript step or write a custom plug in</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">Remember that while JavaScript is the fastest scripting language for Java, it is still a scripting language. If you do the same amount of work in a native step or plugin, you avoid the overhead of the JS scripting engine. This has been
+                  known to result in significant performance gains. It is also the primary reason why the Calculator step was created &mdash; to avoid the use of JavaScript for simple calculations.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">JavaScript</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Create a copy of a field</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">No JavaScript is required for this; a &quot;Select Values&quot; step does the trick. You can specify the same field twice. Once without a rename, once (or more) with a rename. Another trick is to use B=NVL(A,A) in a Calculator step where
+                  B is forced to be a copy of A. An explicit &quot;create copy of field A&quot; function has been added to the Calculator.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">JavaScript</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Data conversion</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">Consider performing conversions between data types (dates, numeric data, and so on) in a &quot;Select Values&quot; step. You can do this in the Metadata tab of the step.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">JavaScript</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Variable creation</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">If you have variables that can be declared once at the beginning of the transformation, make sure you put them in a separate script and mark that script as a startup script (right click on the script name in the tab). JavaScript object
+                  creation is time consuming so if you can avoid creating a new object for every row you are transforming, this will translate to a performance boost for the step.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Not Applicable</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Launch several copies of a step</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">There are two important reasons why launching multiple copies of a step may result in better performance:
+                  <ol class="ol">
+                    <li class="li">The step uses a lot of CPU resources and you have multiple processor cores in your computer. Example: a JavaScript step</li>
+                    <li class="li">Network latencies and launching multiple copies of a step can reduce average latency. If you have a low network latency of say 5ms and you need to do a round trip to the database, the maximum performance you get is 200 (x5) rows per
+                      second, even if the database is running smoothly. You can try to reduce the round trips with caching, but if not, you can try to run multiple copies. Example: a database lookup or table output</li>
+                  </ol>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Not Applicable</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Manage thread priorities</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">This feature that is found in the &quot;Transformation Settings&quot; dialog box under the (Misc tab) improves performance by reducing the locking overhead in certain situations. This feature is enabled by default for new transformations
+                  that are created in recent versions, but for older transformations this can be different.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Select Value</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">If possible, don't remove fields in Select Value</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">Don't remove fields in Select Value unless you must. It's a CPU-intensive task as the engine needs to reconstruct the complete row. It is almost always faster to add fields to a row rather than delete fields from a row.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Get Variables</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Watch your use of Get Variables</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">May cause bottlenecks if you use it in a high-volume stream (accepting input). To solve the problem, take the &quot;Get Variables&quot; step out of the transformation (right click, detach)then insert it in with a &quot;Join Rows (cart
+                  prod)&quot; step. Make sure to specify the main step from which to read in the &quot;Join Rows&quot; step. Set it to the step that originally provided the &quot;Get Variables&quot; step with data.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Not Applicable</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Use new text file input</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">The new &quot;CSV Input&quot; or &quot;Fixed Input&quot; steps provide optimal performance. If you have a fixed width (field/row) input file, you can even read data in parallel. (multiple copies) These new steps have been rewritten using
+                  Non-blocking I/O (NIO) features. Typically, the larger the NIO buffer you specify in the step, the better your read performance will be. </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Not applicable</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">When appropriate, use lazy conversion</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">In instances in which you are reading data from a text file and you write the data back to a text file, use Lazy conversion to speed up the process. The principle behind lazy conversion that it delays data conversion in hopes that it isn't
+                  necessary (reading from a file and writing it back comes to mind). Beyond helping with data conversion, lazy conversion also helps to keep the data in &quot;binary&quot; storage form. This, in turn, helps the internal Kettle engine to
+                  perform faster data serialization (sort, clustering, and so on). The Lazy Conversion option is available in the &quot;CSV Input&quot; and &quot;Fixed input&quot; text file reading steps. </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Join Rows</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Use Join Rows</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">You need to specify the main step from which to read. This prevents the step from performing any unnecessary spooling to disk. If you are joining with a set of data that can fit into memory, make sure that the cache size (in rows of data)
+                  is large enough. This prevents (slow) spooling to disk. </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Not Applicable</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Review the big picture: database, commit size, row set size and other factors</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">Consider how the whole environment influences performance. There can be limiting factors in the transformation itself and limiting factors that result from other applications and PDI. Performance depends on your database, your tables,
+                  indexes, the JDBC driver, your hardware, speed of the LAN connection to the database, the row size of data and your transformation itself. Test performance using different commit sizes and changing the number of rows in row sets in your
+                  transformation settings. Change buffer sizes in your JDBC drivers or database.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="14.771048744460854%" headers="d75648e33 ">Not Applicable</td>
+                <td class="entry" valign="top" width="19.49778434268833%" headers="d75648e39 ">Step Performance Monitoring</td>
+                <td class="entry" valign="top" width="65.73116691285081%" headers="d75648e45 ">You can track the performance of individual steps in a transformation. Step Performance Monitoring is an important tool that allows you identify the slowest step in your transformation.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

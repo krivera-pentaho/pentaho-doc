@@ -1,0 +1,144 @@
+<content type="text/html" title="Resolve Security Problems">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how resolve common security issues.</p>
+        </div>
+      </div>
+      <p>Solutions to common security problems appear in the following sections.</p> <span id="s9778"></span> <span id="LDAP_Incorrectly_Authenticates_User_IDs_That_Do_Not_Match_Letter_Case"></span> <span id="LDAP_Incorrectly_Authenticates_User_IDs_That_Do_Not_Match_Letter_Case-9778"></span> 
+      <h2>LDAP Incorrectly Authenticates User IDs That Do Not Match Letter Case</h2>
+      <div>
+        <div class="body conbody">
+          <p class="p">Some LDAP implementations are case-insensitive, most notably Microsoft Active Directory. When using one of these LDAP distributions as a BA Server authentication back end, you might run into an issue where a valid user name with invalid letter
+            cases will improperly validate. For instance, if <strong class="ph b">Bill</strong>  is the valid user ID, and someone types in <strong class="ph b">bILL</strong>  at the User Console login screen, that name will authenticate, but it might have
+            improper access to parts of the BA Server.</p>
+          <p class="p">The fix for this is documented:
+            <a class="xref" title="Documentation/5.1/0P0/170/030/080/000" rel="internal" href="#s9779">LDAP Authenticates User IDs That Do Not Match Case</a> .</p>
+        </div>
+        <div class="related-links">
+          <ul class="ullinks">
+            <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/170/030/080/000" rel="internal" href="#s9779">LDAP Authenticates User IDs That Do Not Match Case</a> </strong> 
+              <br />
+            </li>
+          </ul>
+        </div>
+      </div><span id="s9779"></span> <span id="LDAP_Authenticates_User_IDs_That_Do_Not_Match_Case"></span> <span id="LDAP_Authenticates_User_IDs_That_Do_Not_Match_Case-9779"></span> 
+      <h2>LDAP Authenticates User IDs That Do Not Match Case</h2>
+      <div>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">Some LDAP implementations are case-insensitive for user names, most notably Microsoft Active Directory. You might run into an issue where a user name typed into the login screen does not exactly match the letter case of that user's ID in the
+              directory, but the server will authenticate it anyway and may give the user improper access to parts of the BA Server. For example, if <span class="ph uicontrol">Bill</span>  is the valid user ID, and someone types in <span class="ph uicontrol">bILL</span>               at the User Console login screen, the incorrectly typed one will authenticate, but it may have improper access to parts of the BA Server.</p>
+            <p class="p">Follow these instructions to force case-sensitivity and fix this potential security risk. </p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"> <span class="ph cmd">Stop the BA Server.</span>  </li>
+            <li class="li step"> <span class="ph cmd">Edit the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/applicationContext-spring-security-ldap.xml</span>  file.</span> 
+            </li>
+            <li class="li step"> <span class="ph cmd">Find the <strong class="ph b">daoAuthenticationProvider</strong>  bean, and below the last <strong class="ph b"></constructor-arg></strong>  therein, and add the <strong class="ph b"><property></strong>  definition shown in the example:</span>               <pre class="pre codeblock"><property name=&quot;userDetailsContextMapper&quot;>
+    <ref local=&quot;ldapContextMapper&quot; />
+</property></pre> </li>
+            <li class="li step"> <span class="ph cmd">After the <strong class="ph b"></bean></strong>  tag for <strong class="ph b">daoAuthenticationProvider</strong>, add the following bean definition, changing the <strong class="ph b">ldapUsernameAttribute</strong>  from <strong class="ph b">samAccountName</strong>  to the value that matches your environment:</span>               <pre class="pre codeblock"><bean id=&quot;ldapContextMapper&quot; class=&quot;org.pentaho.platform.engine.security.UseridAttributeLdapContextMapper&quot;>
+    <property name=&quot;ldapUsernameAttribute&quot; value=&quot;samAccountName&quot; />
+</bean></pre> </li>
+            <li class="li step"> <span class="ph cmd">Start the BA Server.</span>  </li>
+          </ol>
+          <div class="section result">The BA Server will now force case sensitivity in LDAP user names.</div>
+        </div>
+      </div><span id="s9780"></span> <span id="LDAP_Roles_Are_Not_.22Admin.22_and_.22Authenticated.22"></span> <span id="LDAP_Roles_Are_Not_.22Admin.22_and_.22Authenticated.22-9780"></span> 
+      <h2>LDAP Roles Are Not &quot;Admin&quot; and &quot;Authenticated&quot;</h2>
+      <div>
+        <div class="body conbody">
+          <p class="p">You must not use <strong class="ph b">Admin</strong>  and <strong class="ph b">Authenticated</strong>  roles in your LDAP. Instead you must configure your system to use <strong class="ph b">pentahoAdmins</strong>  and <strong class="ph b">pentahoUsers</strong>             or other easily identifiable role names. Edit <code class="ph codeph">/pentaho-solutions/system/applicationContext-spring-security.xml</code>. At the bottom of this file, you will find a number of lines that look like: <code class="ph codeph">A/docs/.*Z=Anonymous,Authenticated</code>.</p>
+          <p class="p">These are entries for URL Security. They are regular expressions to match a path on the browser&rsquo;s URL that require the user to be a member of the defined role to gain access. In the example above, both Anonymous and Authenticated get access.
+            In the example above, use <strong class="ph b">pentahoUsers</strong>  in the place of <strong class="ph b">Authenticated</strong> . by entering <code class="ph codeph">A/docs/.*Z=Anonymous,pentahoUsers</code>. For all entries that show Authenticated,
+            replace it with <strong class="ph b">pentahoUsers</strong>  or your chosen name. Replace <strong class="ph b">Admin</strong>  with <strong class="ph b">pentahoAdmins</strong>  or your chosen name. For the change from <strong class="ph b">Authenticated</strong>             to <strong class="ph b">pentahoUsers</strong>  replace all occurrences. For <strong class="ph b">Admin</strong>  to <strong class="ph b">pentahoAdmins</strong>  you need to be a little more careful because there are some entries that look like
+            this: <code class="ph codeph">A/admin.*Z=pentahoAdmins</code>.</p>
+          <p class="p">Edit the <span class="ph filepath">/pentaho-solutions/system/repository.spring.xml</span>  file and change:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAuthenticatedAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;Authenticated&quot; />
+   </bean></pre>
+          <p class="p">to:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAuthenticatedAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;pentahoUsers&quot; />
+   </bean></pre>
+          <p class="p">and:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAdminAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;Admin&quot; />
+   </bean></pre>
+          <p class="p">to:</p> <pre class="pre codeblock"><bean id=&quot;singleTenantAdminAuthorityName&quot; class=&quot;java.lang.String&quot;>
+    <constructor-arg value=&quot;pentahoAdmins&quot; />
+   </bean></pre> </div>
+      </div><span id="s22567"></span> <span id="With_LDAP_Authentication.2C_the_PDI_Repository_Explorer_is_Empty"></span> <span id="With_LDAP_Authentication.2C_the_PDI_Repository_Explorer_is_Empty-22567"></span> 
+      <h2>With LDAP Authentication, the PDI Repository Explorer is Empty</h2>
+      <div>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">If you log into a solution repository from Spoon before you switch the authentication to LDAP, then the repository IDs and security structures will be broken. You won't see an error message, but the solution repository explorer will be empty
+              and you won't be able to create new folders or save PDI content to it. To fix the problem, you will have to delete the security settings established with the previously used authentication method, which will force the DI Server to regenerate
+              them for LDAP.</p>
+            <div class="cautiontitle">CAUTION:</div>
+            <div class="note caution">Following this procedure will destroy any previously defined&nbsp;Pentaho Repository users, roles, and access controls. You should back up the files that you delete in these instructions.</div>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Stop the DI Server</span> </li>
+            <li class="li step"><span class="ph cmd">Delete the security and default directories from the following directory: <span class="ph filepath">/pentaho-solutions/system/jackrabbit/repository/workspaces/</span> </span> 
+            </li>
+            <li class="li step"><span class="ph cmd">Start the DI Server</span> </li>
+          </ol>
+          <div class="section result">You should now have a proper LDAP-based&nbsp;Pentaho Repository that can store content and create new directories.</div>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Cannot_Access_Kerberos_Nodes"></span> 
+        <h2 class="editable">Cannot Access Kerberos Nodes</h2>
+        <p>If a step or entry cannot access a Kerberos authenticated cluster, review the steps in
+          <a href="#_Use_Impersonation_and">Use Impersonation to Access a MapR Cluster</a> .</p>
+        <p>If you are still having problems, make sure the username, password, UID, and GID for
+          <u>each</u> impersonated or spoofed user is the same on each node.&nbsp; Sometimes they are not the same if a user was&nbsp; deleted, then recreated with different UIDs and GIDs.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Cannot_Access_a_Hive_Cluster"></span> 
+        <h2 class="editable">Cannot Access a Hive Cluster</h2>
+        <p>If you cannot use Kerberos impersonation to authenticate and access a Hive cluster, review the steps in
+          <a href="#_Use_Impersonation_and">Use Impersonation to Access a MapR Cluster</a> .</p>
+        <p>If problems persist, copy the hive-site.xml file on the Hive server to the MapR distribution in these directories:&nbsp;</p>
+        <ul>
+          <li>
+            <p>DI Server: data-integration-server/pentaho-solutions/system/kettle/plugins/ pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</p>
+          </li>
+          <li>
+            <p>Spoon: data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</p>
+          </li>
+        </ul>
+        <p>If this still does not work, disable pooled connections for Hive.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Cannot_use_Keytab_File_to_Authenticate_Access_to_PMR_Cluster"></span> 
+        <h2 class="editable">Cannot use Keytab File to Authenticate Access to PMR Cluster</h2>
+        <p>If you cannot authenticate and gain access to the PMR cluster, copy the keytab file to each task tracker node on the PMR cluster.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="HBase_Get_Master_Failed_Error"></span> 
+        <h2 class="editable">HBase Get Master Failed Error</h2>
+        <p>If this error occurs &ldquo;HBase cannot negation the authenticated portion of the connection&rdquo; copy the hbase-site.xml file from the HBase server to the MapR distribution in these directories:</p>
+        <ul>
+          <li>
+            <p>DI Server: data-integration-server/pentaho-solutions/system/kettle/plugins/ pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</p>
+          </li>
+          <li>
+            <p>Spoon: data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/[mapr distribution]</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#LDAP_Incorrectly_Authenticates_User_IDs_That_Do_Not_Match_Letter_Case" rel="internal">LDAP Incorrectly Authenticates User IDs That Do Not Match Letter Case</a>  </li>
+      <li> <a href="#LDAP_Authenticates_User_IDs_That_Do_Not_Match_Case" rel="internal">LDAP Authenticates User IDs That Do Not Match Case</a>  </li>
+      <li> <a href="#LDAP_Roles_Are_Not_.22Admin.22_and_.22Authenticated.22" rel="internal">LDAP Roles Are Not &quot;Admin&quot; and &quot;Authenticated&quot;</a>  </li>
+      <li> <a href="#With_LDAP_Authentication.2C_the_PDI_Repository_Explorer_is_Empty" rel="internal">With LDAP Authentication, the PDI Repository Explorer is Empty</a>  </li>
+      <li> <a href="#Cannot_Access_Kerberos_Nodes" rel="internal">Cannot Access Kerberos Nodes</a>  </li>
+      <li> <a href="#Cannot_Access_a_Hive_Cluster" rel="internal">Cannot Access a Hive Cluster</a>  </li>
+      <li> <a href="#Cannot_use_Keytab_File_to_Authenticate_Access_to_PMR_Cluster" rel="internal">Cannot use Keytab File to Authenticate Access to PMR Cluster</a>  </li>
+      <li> <a href="#HBase_Get_Master_Failed_Error" rel="internal">HBase Get Master Failed Error</a>  </li>
+    </ol>
+  </body>
+</content>

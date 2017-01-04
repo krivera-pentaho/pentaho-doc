@@ -1,0 +1,36 @@
+<content type="text/html" title="Building Jobs Dynamically">
+  <body>
+    <div class="body taskbody">
+      <div class="section context">
+        <p class="p">To enable your application to respond quickly to changing conditions, you can build jobs dynamically. The example class, <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingJobs</code>, shows you how. It generates a job definition
+          and saves it to a .<span class="ph filepath">kjb</span>  file.</p>
+      </div>
+      <ol class="ol steps">
+        <li class="li step"><span class="ph cmd">Always make the first call to <code class="ph codeph">KettleEnvironment.init()</code> whenever you are working with the PDI APIs.</span> </li>
+        <li class="li step"><span class="ph cmd">Create and configure a job definition object.</span>  A job definition is represented by a
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobMeta.html"><code class="ph codeph">JobMeta</code></a>  object. Create this object using the default constructor. The job definition includes the name, the declared parameters, and the required database connections.&nbsp;</li>
+        <li class="li step"><span class="ph cmd">Populate the <code class="ph codeph">JobMeta</code> object with job entries.</span>  The control flow of a job is defined by job entries that are connected by hops.
+          <ol class="ol substeps" type="a">
+            <li class="li substep"><span class="ph cmd">Create the job entry by instantiating its class directly and configure it using its <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The job entries reside in sub-packages of <code class="ph codeph">org.pentaho.di.job.entries</code>. For example, use the <span class="ph uicontrol">File Exists</span>               job entry, create an instance of
+              <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/fileexists/JobEntryFileExists.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/fileexists/JobEntryFileExists.html"><code class="ph codeph">org.pentaho.di.job.entries.fileexists.JobEntryFileExists</code></a>, and use <code class="ph codeph">setFilename()</code> to configure it. </span>  The <span class="ph uicontrol">Start</span>  job entry is implemented
+              by
+              <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/special/JobEntrySpecial.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entries/special/JobEntrySpecial.html"><code class="ph codeph">org.pentaho.di.job.entries.special.JobEntrySpecial</code>.</a> 
+            </li>
+            <li class="li substep"><span class="ph cmd">Create an instance of <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryCopy.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/entry/JobEntryCopy.html"><code class="ph codeph">org.pentaho.di.job.entry.JobEntryCopy</code></a>  by passing the job entry created in the previous step to the constructor. An instance of <code class="ph codeph">JobEntryCopy</code> encapsulates the properties of a job entry, as well as controls the placement of the job entry on the Spoon canvas and connections to hops. Once created, call <code class="ph codeph">setDrawn(true)</code> and <code class="ph codeph">setLocation(x,y)</code> to make sure the job entry appears correctly on the Spoon canvas. Finally, add the job entry to the job by calling <code class="ph codeph">addJobEntry()</code> on the job definition object. </span>               It is possible to&nbsp; place the same job entry in several places on the canvas by creating multiple instances of <code class="ph codeph">JobEntryCopy</code> and passing in the same job entry instance.&nbsp;</li>
+            <li class="li substep"><span class="ph cmd">Once job entries have been added to the job definition, they need to be connected by hops. To create a hop, create an instance of <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobHopMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/job/JobHopMeta.html"><code class="ph codeph">org.pentaho.di.job.JobHopMeta</code></a>, passing in the From and To job entries as arguments to the constructor. Configure the hop consistently. Configure it as a green or red hop by calling <code class="ph codeph">setConditional()</code> and <code class="ph codeph">setEvaluation(true/false)</code>. If it is an unconditional hop, call <code class="ph codeph">setUnconditional()</code>. Add the hop to the job definition by calling <code class="ph codeph">addJobHop()</code>. </span> </li>
+          </ol>
+        </li>
+      </ol>
+      <div class="section result">
+        <p class="p">After all job entries have been added and connected by hops, the job definition object can be serialized to a .<span class="ph filepath">kjb</span>  file by calling <code class="ph codeph">getXML()</code>, and opened in Spoon for inspection. The
+          sample class <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.GeneratingJobs</code> generates this job.
+          <img class="image" id="c273df29-b884-4cef-b8a8-7f09f58dbcf2__building_jobs_on_the_fly__image_tnm_1rq_mh" />
+          <br />
+          <img alt="buildjobdynamically.png" class="internal default" style="width: 480px; height: 253px;" width="480px" height="253px" src="http://help.pentaho.com/@api/deki/files/8318/buildjobdynamically.png?size=bestfit&amp;width=480&amp;height=253&amp;revision=1"
+          />
+        </p> .</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

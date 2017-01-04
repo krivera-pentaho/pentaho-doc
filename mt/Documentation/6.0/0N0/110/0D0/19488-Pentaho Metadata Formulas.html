@@ -1,0 +1,142 @@
+<content type="text/html" title="Pentaho Metadata Formulas">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Formulas have multiple uses in Pentaho Metadata. The first use of formulas in Pentaho Metadata is in the constraint definition of a Metadata Query, also known as MQL. A constraint function references business table columns and uses various comparison
+          operators to determine which subset of data the business user is interested in. </p>
+        <p class="p">The second use is in the definition of Physical Table Columns. In addition to Physical table columns mapping directly to a database table column, physical table columns defined in Pentaho Metadata may also be defined as a formula. This allows
+          for combining of multiple columns into a single column, and also for doing more advanced aggregate calculations within aggregate table definitions. </p>
+        <p class="p">The third use is in the definition of complex joins within business model relationships. This allows for multiple key joins as well as other logic when joining tables. </p>
+        <p class="p">The fourth use is row level security. Under the covers, Pentaho Metadata uses JFreeReport's libFormula package for interpreting formulas. The goal is to support OpenFormula syntax in the Metadata environment. Formulas are first interpreted by
+          libFormula, and then in the Metadata system are converted to native SQL depending on the type of database used.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="First_Use_.E2.80.94_MQL_Constraints"></span> 
+            <h2 class="editable"> 
+              <strong class="ph b">First Use &mdash; MQL Constraints</strong>  
+            </h2>
+            <p class="p">Below is an example of an MQL Constraint formula:</p>
+            <div class="p"> <pre class="pre codeblock">OR([BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME] = &quot;EuroCars&quot;;
+                    (([BT_CUSTOMERS.BC_CUSTOMERS_CREDITLIMIT] * 2) / 3 > 1000))</pre> </div>
+            <p class="p">Note the <code class="ph codeph">OR</code> function. This is a boolean function that has two parameters, separated by semicolons. These parameters are boolean expressions. The first boolean expression references a business column from the
+              Metadata model. All references appear with brackets around them []. This reference refers to the business table, and then to the business column. This boolean expression does some arithmetic and checks to see if the final value is larger
+              than 1000. In the second expression, business column <strong class="ph b">BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME</strong>  is compared to <strong class="ph b">EuroCars</strong> . Notice that double quotes are used when referring to text; double
+              quotes are required.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Second_Use_.E2.80.94_Physical_Table_Column_Formulas"></span> 
+            <h2 class="editable"> 
+              <strong class="ph b">Second Use &mdash; Physical Table Column Formulas</strong>  
+            </h2>
+            <p class="p">Below is an example of a Physical Table Column Formula: </p>
+            <div class="p"> <pre class="pre codeblock">[QUANTITYORDERED]*[PRICEEACH] </pre> </div>
+            <p class="p">The references in this example specifically refer to the database column, not derived the physical column definitions. All operators and functions may be used in the definition of the physical table column. For this formula to be recognized,
+              the <strong class="ph b">isExact</strong>  property of the physical table column must be set to <strong class="ph b">true</strong> . The referenced physical column must be explicitly defined in the metadata model. </p>
+            <div class="p">
+              <div class="note note"><span class="notetitle">Note:</span>  In earlier versions of Pentaho Metadata Editor, (prior to the 3.5 release), aggregation functions had to be specified explicitly and the aggregation rule had to be selected. This is no longer necessary;
+                the query that is generated will use the selected aggregation rule during execution.</div>
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Multi-table_expressions_.E2.80.94_Formulas_can_use_any_business_column_in_the_model"></span> 
+            <h2 class="editable">Multi-table expressions &mdash; Formulas can use any business column in the model</h2>
+            <p class="p">Since the latest versions (after 2008/03/14) it is possible to define formulas that use business columns from anywhere in the business model. For example suppose there are two business tables:</p>
+            <ul class="ul">
+              <li class="li">Orders (fact table), ID=BT_ORDER_FACT</li>
+              <li class="li">Product (dimension), ID=BT_PRODUCT</li>
+            </ul>
+            <p class="p">Suppose you want to calculate the turnover based on:</p>
+            <ul class="ul">
+              <li class="li">Orders (fact table), ID=BT_ORDER_FACT</li>
+              <li class="li">Product (dimension), ID=BT_PRODUCT</li>
+            </ul>
+            <ul class="ul">
+              <li class="li">The number of products sold, from the Orders table, ID=BC_FACT_ORDER_NRPRODUCTS</li>
+              <li class="li">The price of the product, from the Product table, ID=BC_DIM_PRODUCT_PRICE</li>
+            </ul>
+            <p class="p">To get there, you must define a new business column, say in the Orders business table (although you could take Product too):</p>
+            <ul class="ul">
+              <li class="li">Table: Orders (BT_ORDER_FACT)</li>
+              <li class="li">ID = BC_FACT_ORDER_TURNOVER</li>
+              <li class="li">Name = Turnover</li>
+              <li class="li">Formula = [BT_ORDER_FACT.BC_FACT_ORDER_NRPRODUCTS]</li>
+              <li class="li">Exact = Yes</li>
+              <li class="li">Aggregation Rule = SUM</li>
+            </ul>
+            <p class="p">The SQL generator is now going to replace the business columns by their respective SQL variants. As such, you must make sure that the business columns are resolving correctly. In this specific case, this means you want the two columns to be
+              non-aggregated. If you now select the single business column BT_FACT_ORDER_TURNOVER, below is the SQL that is generated: </p>
+            <pre class="pre codeblock">SELECT 
+                SUM( BT_ORDER_FACT.NRPRODUCTS * BT_PRODUCT.PRICE ) AS COL0 
+FROM
+                FACT_ORDER BT_ORDER_FACT ,DIM_PRODUCT BT_PRODUCT 
+WHERE           ( BT_ORDER_FACT.PRODUCT_TK =
+                BT_PRODUCT.PRODUCT_TK )</pre>
+            <p class="p">Now, suppose you want to generate the multiplication of the two sums (different use-case). You define the formula as &quot;[BT_ORDER_FACT.BC_FACT_ORDER_NRPRODUCTS] * [BT_PRODUCT.BC_DIM_PRODUCT_PRICE]&quot; (without the SUM) and specify an
+              aggregation for the two business columns in use. The generated SQL will be as follows:</p>
+            <pre class="pre codeblock">SELECT 
+                SUM( BT_ORDER_FACT.NRPRODUCTS ) * SUM( BT_PRODUCT.PRICE ) AS COL0 
+FROM
+                FACT_ORDER BT_ORDER_FACT ,DIM_PRODUCT BT_PRODUCT 
+WHERE          ( BT_ORDER_FACT.PRODUCT_TK =
+                BT_PRODUCT.PRODUCT_TK )</pre>
+            <p class="p">It is possible to create two versions of the used business columns, one aggregated (exposed to the users) and one non-aggregated (hidden from the users) for example.</p>
+            <p class="p">The SQL generator works recursively. That means that it is possible to create a formula that calculates 7% (taxes for example) of the turnover:</p>
+            <ul class="ul">
+              <li class="li">ID = BC_FACT_ORDER_TURNOVER_TAXES</li>
+              <li class="li">Name = Turnover Taxes</li>
+              <li class="li">Formula = [BT_ORDER_FACT.BC_FACT_ORDER_TURNOVER] * 7 / 100</li>
+              <li class="li">Exact = Yes</li>
+            </ul> If you add that column to the selection, you get one extra column as shown below: <pre class="pre codeblock">(  SUM( BT_ORDER_FACT.NRPRODUCTS  *  BT_PRODUCT.PRICE )  * 7 / 100) AS COL1</pre>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_4" class="mt-page-section"><span id="Formula_Syntax"></span> 
+            <h2 class="editable">
+              <strong class="ph b">Formula Syntax</strong> 
+            </h2>
+            <p class="p"><em class="ph i">Function syntax</em> :</p>
+            <p class="p"><code class="ph codeph">FUNCTION_NAME ( PARAM ; PARAM )</code></p>
+            <p class="p"><em class="ph i">Text (requires double quotes)</em> :</p>
+            <p class="p"><code class="ph codeph">&quot;TEXT&quot;</code></p>
+            <p class="p"><em class="ph i">Parenthesis are used for formula precedence</em> :</p>
+            <p class="p"><code class="ph codeph">( 1 + 2) * 3</code></p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_5" class="mt-page-section"><span id="Metadata_References"></span> 
+            <h2 class="editable">
+              <strong class="ph b">Metadata References</strong> 
+            </h2>
+            <p class="p"><em class="ph i">Business Column References</em> :</p>
+            <p class="p">[<code class="ph codeph"><BUSINESS_TABLE_ID>.<BUSINESS_COLUMN_ID>]</code></p>
+            <p class="p"><em class="ph i">Physical Column References (only used in physical column formula definitions)</em> :</p>
+            <p class="p"><code class="ph codeph">[<PHYSICAL_COLUMN_NAME>]</code></p>
+          </div>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/110/0D0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/110/0D0/000">Supported Functions</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/110/0D0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/110/0D0/010">Supported Operators</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/110/0D0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/110/0D0/020">Supported Aggregate Functions</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#First_Use_.E2.80.94_MQL_Constraints" rel="internal"> First Use &mdash; MQL Constraints </a>  </li>
+      <li> <a href="#Second_Use_.E2.80.94_Physical_Table_Column_Formulas" rel="internal"> Second Use &mdash; Physical Table Column Formulas </a>  </li>
+      <li> <a href="#Multi-table_expressions_.E2.80.94_Formulas_can_use_any_business_column_in_the_model" rel="internal">Multi-table expressions &mdash; Formulas can use any business column in the model</a>  </li>
+      <li> <a href="#Formula_Syntax" rel="internal">Formula Syntax</a>  </li>
+      <li> <a href="#Metadata_References" rel="internal">Metadata References</a>  </li>
+    </ol>
+  </body>
+</content>

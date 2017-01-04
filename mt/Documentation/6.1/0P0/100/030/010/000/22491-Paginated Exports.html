@@ -1,0 +1,56 @@
+<content type="text/html" title="Paginated Exports">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="section">
+          <p class="p">A pageable report generates a stream of pages. Each page has the same height, even if the page is not fully filled with content. When a page is filled, the layouted page will be passed over to the output target to render it in either a Graphics2D
+            or a streaming output (PDF, Plaintext, HTML, etc.) context.</p>
+        </div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Page_break_methods"></span> 
+            <h2 class="editable">Page break methods</h2>
+            <p class="p">When the content contains a manual pagebreak, the page will be considered full. If the pagebreak is a <strong class="ph b">before-print</strong>  break, then the break will be converted to an <strong class="ph b">after-break</strong>, the internal
+              report states will be rolled back, and the report processing restarts to regenerate the layout with the new constraints. A similar rollback happens if the current band does not fit on the page. Because of this, you would generally prefer
+              break-before over break-after.</p>
+            <p class="p">So for large reports, you might consider removing manual page breaks and limiting the width of bands.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Page_states"></span> 
+            <h2 class="editable">Page states</h2>
+            <p class="p">When processing a pageable report, the reporting engine assumes that the report will be run in <strong class="ph b">interactive mode</strong>, which allows for parameterization control. To make browsing through the pages faster, a number of
+              page states will be stored to allow report end-users to restart output processing at the point in the report where they adjust the parameters.</p>
+            <p class="p">Reports that are run to fully export all pages usually do not need to store those page states. A series of Report engine settings controls the number and frequency of the page states stored:</p>
+            <ul class="ul">
+              <li class="li">org.pentaho.reporting.engine.classic.core.performance.pagestates.PrimaryPoolSize=20</li>
+              <li class="li">org.pentaho.reporting.engine.classic.core.performance.pagestates.SecondaryPoolFrequency=4</li>
+              <li class="li">org.pentaho.reporting.engine.classic.core.performance.pagestates.SecondaryPoolSize=100</li>
+              <li class="li">org.pentaho.reporting.engine.classic.core.performance.pagestates.TertiaryPoolFrequency=10</li>
+            </ul>
+            <p class="p">The Reporting engine uses three lists to store page states. The default configuration looks as follows:</p>
+            <ol class="ol">
+              <li class="li">The first 20 states (Pages 1 to 20) are stored in the <strong class="ph b">primary pool</strong> . All states are stored with strong references and will not be garbage collected.</li>
+              <li class="li">The next 400 states (pages 21 to 421) are stored into the <strong class="ph b">secondary pool</strong> . Of those, every fourth state is stored with a strong reference and cannot be garbage collected as long as the report processor is open.</li>
+              <li class="li">All subsequent states (pages > 421) are stored in the <strong class="ph b">tertiary pool</strong>  and every tenth state is stored as strong reference.</li>
+            </ol>
+            <p class="p">So for a 2000-page report, a total of about 270 states will be stored with strong references.</p>
+            <p class="p">In server mode, the settings could be cut down to:</p> <pre class="pre codeblock">org.pentaho.reporting.engine.classic.core.performance.pagestates.PrimaryPoolSize=1
+org.pentaho.reporting.engine.classic.core.performance.pagestates.
+  SecondaryPoolFrequency=1
+org.pentaho.reporting.engine.classic.core.performance.pagestates.SecondaryPoolSize=1
+org.pentaho.reporting.engine.classic.core.performance.pagestates.
+  TertiaryPoolFrequency=100</pre>
+            <p class="p">This reduces the number of states stored for a 2000 page report to 22, thus cutting the memory consumption for the page states to a 1/10th.</p>
+            <div class="note note"><span class="notetitle">Note:</span>  In the current versioin full exports do not generate page states and thus these settings have no effect on such exports. They still affect the interactive mode.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Page_break_methods" rel="internal">Page break methods</a>  </li>
+      <li> <a href="#Page_states" rel="internal">Page states</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,669 @@
+<content type="text/html" title="User Role List Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Lists roles, permissions, and users. Provides a list of users per role and roles per user.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Overview_2"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>The UserRoleListResource service lists roles, permissions, and users. Provides a list of users per role and roles per user.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__userrolelist_allRoles.html">/userrolelist/allRoles</a>  </li>
+              <li> <a href="#path__userrolelist_extraRoles.html">/userrolelist/extraRoles</a>  </li>
+              <li> <a href="#path__userrolelist_getRolesForUser.html">/userrolelist/getRolesForUser</a>  </li>
+              <li> <a href="#path__userrolelist_getUsersInRole.html">/userrolelist/getUsersInRole</a>  </li>
+              <li> <a href="#path__userrolelist_permission-roles.html">/userrolelist/permission-roles</a>  </li>
+              <li> <a href="#path__userrolelist_permission-users.html">/userrolelist/permission-users</a>  </li>
+              <li> <a href="#path__userrolelist_roles.html">/userrolelist/roles</a>  </li>
+              <li> <a href="#path__userrolelist_systemRoles.html">/userrolelist/systemRoles</a>  </li>
+              <li> <a href="#path__userrolelist_users.html">/userrolelist/users</a>  </li>
+            </ul>
+            <a name="path__userrolelist_allRoles.html"></a> 
+            <div id="section_3" class="mt-page-section"><span id=".2Fuserrolelist.2FallRoles"></span> 
+              <h1 class="editable">/userrolelist/allRoles</h1>
+              <a name="GET"></a> 
+              <div id="section_4" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Get a list of the all roles in the platform including Anonymous and Administrator.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/allRoles</pre>
+                <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/010">roleList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of Role objects that contains all the roles in the platform.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<roleList>
+   <roles>Anonymous</roles>
+   <roles>Business Analyst</roles>
+   <roles>Authenticated</roles>
+   <roles>Report Author</roles>
+   <roles>Power User</roles>
+   <roles>Authenticated</roles>
+   <roles>Anonymous</roles>
+</roleList></pre> </div>
+                <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of Role objects.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_extraRoles.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_7" class="mt-page-section"><span id=".2Fuserrolelist.2FextraRoles"></span> 
+              <h1 class="editable">/userrolelist/extraRoles</h1>
+              <a name="GET"></a> 
+              <div id="section_8" class="mt-page-section"><span id="GET_2"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns roles identified as &quot;extra roles&quot; from the repository.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/extraRoles</pre>
+                <div id="section_9" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/010">roleList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>Roles identified as &quot;extra roles&quot; are returned as a list from the repository as shown in the example.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<roleList>
+   <roles>Authenticated</roles>
+   <roles>Anonymous</roles>
+</roleList></pre> </div>
+                <div id="section_10" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully returns extra role list.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_getRolesForUser.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_11" class="mt-page-section"><span id=".2Fuserrolelist.2FgetRolesForUser"></span> 
+              <h1 class="editable">/userrolelist/getRolesForUser</h1>
+              <a name="GET"></a> 
+              <div id="section_12" class="mt-page-section"><span id="GET_3"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Gets the roles for the given user.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/getRolesForUser?user=admin</pre>
+                <div id="section_13"
+                class="mt-page-section"><span id="Parameters"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>user</td>
+                        <td>The username to get the roles for</td>
+                        <td>query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_14" class="mt-page-section"><span id="Response_Body_3"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of Role objects containing the roles for the given user.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<roles>
+   <role>Administrator</role>
+   <role>Authenticated</role>
+</roles></pre> </div>
+                <div id="section_15" class="mt-page-section"><span id="Status_Codes_3"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of Role objects.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid user parameter.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_getUsersInRole.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_16" class="mt-page-section"><span id=".2Fuserrolelist.2FgetUsersInRole"></span> 
+              <h1 class="editable">/userrolelist/getUsersInRole</h1>
+              <a name="GET"></a> 
+              <div id="section_17" class="mt-page-section"><span id="GET_4"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Gets the list of users that have the role specified by the role parameter. The list of valid roles can be obtained by calling the /roles endpoint.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/getUsersInRole?role=Authenticated</pre>
+                <div id="section_18"
+                class="mt-page-section"><span id="Parameters_2"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>role</td>
+                        <td>The role to get the users for</td>
+                        <td>query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_19" class="mt-page-section"><span id="Response_Body_4"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of User objects that have the roles specified in the role parameter.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<users>
+   <user>pat</user>
+   <user>admin</user>
+   <user>suzy</user>
+   <user>tiffany</user>
+   <user>enco*de:te^s_t$</user>
+</users></pre> </div>
+                <div id="section_20" class="mt-page-section"><span id="Status_Codes_4"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of User objects.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Missing the role parameter.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_permission-roles.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_21" class="mt-page-section"><span id=".2Fuserrolelist.2Fpermission-roles"></span> 
+              <h1 class="editable">/userrolelist/permission-roles</h1>
+              <a name="GET"></a> 
+              <div id="section_22" class="mt-page-section"><span id="GET_5"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Return a list of the permission roles in the platform.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/permission-roles</pre>
+                <div id="section_23" class="mt-page-section"><span id="Response_Body_5"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/010">roleList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of permission roles in the platform.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?>
+<roleList>
+   <roles>Anonymous</roles>   
+   <roles>Business Analyst</roles>   
+   <roles>Authenticated</roles>   
+   <roles>Report Author</roles>
+   <roles>Power User</roles>
+</roleList></pre> </div>
+                <div id="section_24" class="mt-page-section"><span id="Status_Codes_5"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of permission roles.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_permission-users.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_25" class="mt-page-section"><span id=".2Fuserrolelist.2Fpermission-users"></span> 
+              <h1 class="editable">/userrolelist/permission-users</h1>
+              <a name="GET"></a> 
+              <div id="section_26" class="mt-page-section"><span id="GET_6"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns the list of permission users in the platform.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/permission-users</pre>
+                <div id="section_27" class="mt-page-section"><span id="Response_Body_6"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/020">userList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of User objects for users with permissions in the platform.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<userList>
+   <users>pat</users>
+   <users>admin</users>
+   <users>suzy</users>
+   <users>tiffany</users>
+   <users>enco*de:te^s_t$</users>
+</userList></pre> </div>
+                <div id="section_28" class="mt-page-section"><span id="Status_Codes_6"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of User objects.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Unable to retrieve User objects.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_roles.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_29" class="mt-page-section"><span id=".2Fuserrolelist.2Froles"></span> 
+              <h1 class="editable">/userrolelist/roles</h1>
+              <a name="GET"></a> 
+              <div id="section_30" class="mt-page-section"><span id="GET_7"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Get a list of the standard roles in the platform.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/roles</pre>
+                <div id="section_31" class="mt-page-section"><span id="Response_Body_7"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/010">roleList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of Role objects that contains the standard roles in the platform.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<roleList>
+   <roles>Anonymous</roles>
+   <roles>Business Analyst</roles>
+   <roles>Authenticated</roles>
+   <roles>Report Author</roles>
+   <roles>Power User</roles>
+</roleList></pre> </div>
+                <div id="section_32" class="mt-page-section"><span id="Status_Codes_7"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of Role objects.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_systemRoles.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_33" class="mt-page-section"><span id=".2Fuserrolelist.2FsystemRoles"></span> 
+              <h1 class="editable">/userrolelist/systemRoles</h1>
+              <a name="GET"></a> 
+              <div id="section_34" class="mt-page-section"><span id="GET_8"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns Roles identified as &quot;system roles&quot; from the repository.</p>
+                <p><strong>Example Request:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userrolelist/systemRoles</pre>
+                <div id="section_35" class="mt-page-section"><span id="Response_Body_8"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/010">roleList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of system roles.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<roleList>
+   <roles>Authenticated</roles>
+   <roles>Administrator</roles>
+   <roles>Anonymous</roles>
+</roleList></pre> </div>
+                <div id="section_36" class="mt-page-section"><span id="Status_Codes_8"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully returns system role list.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__userrolelist_users.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_37" class="mt-page-section"><span id=".2Fuserrolelist.2Fusers"></span> 
+              <h1 class="editable">/userrolelist/users</h1>
+              <p>
+                <a name="GET"></a> 
+              </p>
+              <div id="section_38" class="mt-page-section"><span id="GET_9"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns the list of users in the platform.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Example Request:
+GET pentaho/api/userrolelist/users</pre>
+                <div id="section_39" class="mt-page-section"><span id="Response_Body_9"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0D0/0N0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0D0/0N0/020">userList</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of User objects for users in the platform.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<userList>
+   <users>pat</users>
+   <users>admin</users>
+   <users>suzy</users>
+   <users>tiffany</users>
+   <users>enco*de:te^s_t$</users>
+</userList></pre> </div>
+                <div id="section_40" class="mt-page-section"><span id="Status_Codes_9"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of User objects.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Unable to retrieve User objects.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>
+                    <a name="DELETEusers"></a> 
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> 
+              <br /> Generated by
+              <a class="external" rel="external nofollow" href="http://enunciate.codehaus.org" target="_blank">Enunciate</a> .</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fuserrolelist.2FallRoles" rel="internal">/userrolelist/allRoles</a> 
+        <ol>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2FextraRoles" rel="internal">/userrolelist/extraRoles</a> 
+        <ol>
+          <li>
+            <a href="#GET_2" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2FgetRolesForUser" rel="internal">/userrolelist/getRolesForUser</a> 
+        <ol>
+          <li>
+            <a href="#GET_3" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2FgetUsersInRole" rel="internal">/userrolelist/getUsersInRole</a> 
+        <ol>
+          <li>
+            <a href="#GET_4" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2Fpermission-roles" rel="internal">/userrolelist/permission-roles</a> 
+        <ol>
+          <li>
+            <a href="#GET_5" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_5" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_5" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2Fpermission-users" rel="internal">/userrolelist/permission-users</a> 
+        <ol>
+          <li>
+            <a href="#GET_6" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_6" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_6" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2Froles" rel="internal">/userrolelist/roles</a> 
+        <ol>
+          <li>
+            <a href="#GET_7" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_7" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_7" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2FsystemRoles" rel="internal">/userrolelist/systemRoles</a> 
+        <ol>
+          <li>
+            <a href="#GET_8" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_8" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_8" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fuserrolelist.2Fusers" rel="internal">/userrolelist/users</a> 
+        <ol>
+          <li>
+            <a href="#GET_9" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_9" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_9" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

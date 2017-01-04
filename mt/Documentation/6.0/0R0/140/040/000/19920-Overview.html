@@ -1,0 +1,97 @@
+<content type="text/html" title="Overview">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">In the following samples, the interaction with the Reporting engine follows these basic steps:</p>
+        <ol class="pentaho-list-ordered">
+          <li class="li">Boot (initialize)</li>
+          <li class="li">Get the report definition</li>
+          <li class="li">Get the data for the report (if it is created outside of the report definition)</li>
+          <li class="li">Get any report generation parameters (optional)</li>
+          <li class="li">Generate the report output in the requested format</li>
+        </ol>
+        <p class="p">With the samples, this allows us to create an abstract base class for all the samples (AbstractReportGenerator). This class defines the abstract methods:</p>
+        <ul class="ul">
+          <li class="li"><strong class="ph b">getReportDefinition()</strong> : this loads/creates/returns the report definition</li>
+          <li class="li"><strong class="ph b">getDataFactory()</strong> : this returns the data to be used by the reporting engine (if the report definition does not tell the engine how to retrieve the data).</li>
+          <li class="li"><strong class="ph b">getReportParameters()</strong> : this returns the set of parameters the reporting engine will use while generating the report</li>
+        </ul>
+        <p class="p">The <strong class="ph b">generateReport()</strong>  method tells the reporting engine to generate the report using the above method, and creates the output in one of the following methods (using the OutputType parameter): HTML, PDF, or XLS (Excel).
+          A full list of output types is listed later in this section, but to keep these examples simple, we'll concentrate on these three.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Sample1.java"></span> 
+            <h2 class="editable">Sample1.java</h2>
+            <p class="p">In this sample, the <strong class="ph b">getReportDefinition()</strong>  method loads the report definition from a PRPT file created using the Pentaho Report Designer. This report definition defines the following:</p>
+            <ul class="ul">
+              <li class="li">Data Query (retrieving a list of customers based on a set of customer names)</li>
+              <li class="li">Report Title</li>
+              <li class="li">Report Header &ndash; set of 4 columns (Customer Number, Customer Name, Postal Code, Country)</li>
+              <li class="li">Report Data &ndash; set of 4 columns (Customer Number, Customer Name, Postal Code, Country)</li>
+            </ul>
+            <p class="p">The <strong class="ph b">getDataFactory()</strong>  method returns null to indicate that no data factory is required to be provided. In this example, the source of data is defined in the report definition.</p>
+            <p class="p">The <strong class="ph b">getReportParameters()</strong>  method defines three parameters in a HashMap:</p>
+            <table border="1" cellpadding="4" cellspacing="0" class="simpletable" summary="">
+              <tbody>
+                <tr class="sthead">
+                  <th align="left" class="stentry" id="2d33fb3d-e790-471b-91c1-cfa8881330e0__d205e108" valign="bottom">Parameter Name</th>
+                  <th align="left" class="stentry" id="2d33fb3d-e790-471b-91c1-cfa8881330e0__d205e111" valign="bottom">Parameter Value</th>
+                  <th align="left" class="stentry" id="2d33fb3d-e790-471b-91c1-cfa8881330e0__d205e114" valign="bottom">Description</th>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" headers="d205e108" valign="top">Report Title</td>
+                  <td class="stentry" headers="d205e111" valign="top">Simple Embedded Report Example with Parameters</td>
+                  <td class="stentry" headers="d205e114" valign="top">The value of this parameter will be placed in the Report Title that is centered on the top of each page in the report. In the report definition, the Report Title field is a Text Field whose value is &ldquo;Report Title&rdquo;. This indicates
+                    that the field will use the value of the parameter &ldquo;Report Title&rdquo; when the report is generated.</td>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" headers="d205e108" valign="top">Col Headers BG Color</td>
+                  <td class="stentry" headers="d205e111" valign="top">yellow</td>
+                  <td class="stentry" headers="d205e114" valign="top">The value of this parameter will be used as the background color of the column header fields. In the report definition, all four of the column header fields are defined with a bg-color style of &ldquo;=[Col Headers BG Color]&rdquo;.
+                    This indicates that the value of the &ldquo;Col Header BG Color&rdquo; parameter will be used as that value.</td>
+                </tr>
+                <tr class="strow">
+                  <td class="stentry" headers="d205e108" valign="top">Customer Names</td>
+                  <td class="stentry" headers="d205e111" valign="top"> <pre class="pre codeblock">
+&quot;American Souvenirs Inc&quot;,
+&quot;Toys4GrownUps.com&quot;,
+&quot;giftsbymail.co.uk&quot;,
+&quot;BG&amp;E Collectables&quot;,
+&quot;Classic Gift Ideas, Inc&quot;</pre> </td>
+                  <td class="stentry" headers="d205e114" valign="top">The value of this parameter defines a set of Customer Names that will be used in the data query. This allows the sample to define which customers will be used in the report at the time the report is generated. <pre class="pre codeblock">
+SELECT
+    &quot;CUSTOMERS&quot;.&quot;CUSTOMERNAME&quot;,
+    &quot;CUSTOMERS&quot;.&quot;POSTALCODE&quot;,
+    &quot;CUSTOMERS&quot;.&quot;COUNTRY&quot;,
+    &quot;CUSTOMERS&quot;.&quot;CUSTOMERNUMBER&quot;
+FROM
+    &quot;CUSTOMERS&quot;
+WHERE
+    &quot;CUSTOMERS&quot;.&quot;CUSTOMERNAME&quot; IN (${Customer Names})</pre> </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="p">The <strong class="ph b">main()</strong>  method creates an output filename in which the report will be generated and then starts the report generation process.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Sample2.java"></span> 
+            <h2 class="editable">Sample2.java</h2>
+            <p class="p">In this sample, the <strong class="ph b">getReportDefinition()</strong>  method creates a blank report and sets the query name to &ldquo;ReportQuery&rdquo;. It then adds a report pre-processor called <strong class="ph b">RelationalAutoGeneratorPreProcessor</strong> .</p>
+            <p class="p">Report pre-processors execute during the report generation process after the data query has been executed but before the report definition is used to determine the actual layout of the report. The benefit of this is that the <strong class="ph b">RelationalAutoGeneratorPreProcessor</strong>               will use the column information retrieved from the data query to add header fields in the Page Header and data fields in the Item Band of the report definition for each column of data in the result set.</p>
+            <p class="p">The <strong class="ph b">getDataFactory()</strong>  method first defines the <strong class="ph b">&ldquo;DriverConnectionProvider&rdquo;</strong>  which contains all the information required to connect to the database. It then defines the &ldquo;DataFactory&rdquo;
+              which will use the connection provider to connect to the database. The Data Factory then has the query set which will be used in report generation. The query name <strong class="ph b">&ldquo;ReportQuery&rdquo;</strong>  must match the query
+              name defined when the report definition was created or else the report will contain no data.</p>
+            <p class="p">The <strong class="ph b">getReportParameters()</strong>  method is not used in this example, so it returns null.</p>
+            <p class="p">The <strong class="ph b">main()</strong>  method creates an output filename in which the report will be generated and then starts the report generation process.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Sample1.java" rel="internal">Sample1.java</a>  </li>
+      <li> <a href="#Sample2.java" rel="internal">Sample2.java</a>  </li>
+    </ol>
+  </body>
+</content>

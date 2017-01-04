@@ -1,0 +1,81 @@
+<content type="text/html" title="Switch to MS Active Directory">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <ol class="ol steps" id="d7bd75a0-6586-4da2-82e8-73adc9ef857b__task_wfk_3ft_wj__steps_dfh_wys_fl">
+          <li class="li step"><span class="ph cmd">From User Console <span class="ph uicontrol">Home</span>  menu, click <span class="ph uicontrol">Administration</span>, then select <span class="ph uicontrol">Authentication</span>  from the left.</span>  The <span class="ph uicontrol">Authentication</span>             interface appears. <span class="ph uicontrol">Local - Use basic Pentaho Authentication</span>  is selected by default.</li>
+          <li class="li step"><span class="ph cmd">Choose the <span class="ph uicontrol">External - Use LDAP / Active Directory server</span>  radio button. The <span class="ph uicontrol">LDAP Server Connection </span>  fields populate with a default URL, user name, and password.
+            </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Change the <span class="ph uicontrol">Server URL</span>, <span class="ph uicontrol">User Name</span>, and <span class="ph uicontrol">Password</span>  as needed.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Test Server Connection</span>  to verify the connection to your server and to complete the set up.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Click the Browse buttons to select the <span class="ph uicontrol">Pentaho System Administrator</span>  user and role to match your configuration. Click <span class="ph uicontrol">OK</span> .</span>  The text box auto-populates
+            with the selected values.</li>
+          <li class="li step"><span class="ph cmd">For MSAD, choose <span class="ph uicontrol">Custom Configuration</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">For <span class="ph uicontrol">Users</span> :</span> 
+            <ol class="ol substeps" id="d7bd75a0-6586-4da2-82e8-73adc9ef857b__task_wfk_3ft_wj__substeps_e3j_p5z_jl" type="a">
+              <li class="li substep"><span class="ph cmd"><span class="ph uicontrol">Search Base</span>  by entering the path where your users are located. Example:</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">CN=Users,DC=MyDomain,DC=com</pre>                </li>
+              <li class="li substep"><span class="ph cmd"><span class="ph uicontrol">Search Filter</span>  by entering in the attribute that users will login with. Example:</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">(sAMAccountName={0})</pre>                </li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">For <span class="ph uicontrol">Roles</span> :</span> 
+            <ol class="ol substeps" id="d7bd75a0-6586-4da2-82e8-73adc9ef857b__task_wfk_3ft_wj__substeps_inq_mvz_jl" type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Role Attributes</span>, enter in the Attribute that is used for roles/groups. Example:</span>  <pre class="pre codeblock">
+CN
+</pre> </li>
+              <li class="li substep"><span class="ph cmd">For a <span class="ph uicontrol">Role Search Filter</span>, enter in the ObjectClass that defines that these are roles or groups.&nbsp;Example: </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">(&amp;(objectClass=group)(CN=Pentaho*))</pre>                </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Role Search Base</span>, enter in the path where your roles or groups are located. Example:</span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">OU=groups,DC=MyDOmain,DC=com</pre>                </li>
+            </ol>
+            <ol class="ol substeps" id="d7bd75a0-6586-4da2-82e8-73adc9ef857b__task_wfk_3ft_wj__substeps_fd4_dwz_jl" type="a">
+              <li class="li substep"><span class="ph cmd">Click <span class="ph uicontrol">Test</span> .</span> 
+              </li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">For <span class="ph uicontrol">Populator</span> :</span> 
+            <ol class="ol substeps" id="d7bd75a0-6586-4da2-82e8-73adc9ef857b__task_wfk_3ft_wj__substeps_ox4_4wz_jl" type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Group Role Attribute</span>, enter in the Attribute that is used for groups. Example:</span>  <pre class="pre codeblock">
+CN
+</pre> </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Group Search Base</span>, enter in the path to where your groups are located. Example: </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">OU=groups,DC=MyDOmain,DC=com</pre>                </li>
+              <li class="li substep"><span class="ph cmd">Set the <span class="ph uicontrol">Group Search Filter</span>  to </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">(member:1.2.840.113556.1.4.1941:={0})</pre>                You can set a <span class="ph uicontrol">Role Prefix</span>  if you need one to filter by.</li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">Test</span>, then click <span class="ph uicontrol">Save</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Shut down the BA Server.</span> </li>
+          <li class="li step"><span class="ph cmd">Locate these three files and modify the settings as noted.</span> 
+            <ol class="ol substeps" id="d7bd75a0-6586-4da2-82e8-73adc9ef857b__task_wfk_3ft_wj__substeps_z5k_flj_2n" type="a">
+              <li class="li substep"><span class="ph cmd">Navigate to the <span class="ph filepath">pentaho-solutions/system</span>  directory, and open the <span class="ph uicontrol">repository.spring.properties</span>  file with a text editor. Find these two sections and edit
+                them to match your Active Directory settings, then save and close the file. </span> 
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">singleTenantAdminUserName=admin</pre> </div> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">singleTenantAdminAuthorityName=Administrator</pre>                </li>
+              <li class="li substep"><span class="ph cmd">In the <span class="ph filepath">pentaho-solutions/system</span>  directory, open the pentaho.xml file with a text editor. Find this section and edit it to match your Active Directory settings, then save and close the
+                file. </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><acl-voter> <admin-role>Administrator</admin-role> </acl-voter></pre> </li>
+              <li class="li substep"><span class="ph cmd">Navigate to the <span class="ph filepath">pentaho-solutions/system/data-access</span>  directory, and open the <span class="ph uicontrol">settings.xml</span>  file with a text editor. Find these two sections and edit them
+                to match your Active Directory settings, then save and close the file.</span> 
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><data-access-roles>Administrator</data-access-roles></pre> </div> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><data-access-view-roles>Authenticated,Administrator</data-access-view-roles></pre>
+                <p class="p">&nbsp;</p>
+              </li>
+            </ol>
+          </li>
+          <li class="li step"><span class="ph cmd">Restart the BA Server.</span> </li>
+        </ol>
+        <div class="section result">The BA Server is now configured to authenticate users against your MSAD server.</div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

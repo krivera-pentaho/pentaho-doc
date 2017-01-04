@@ -1,0 +1,95 @@
+<content type="text/html" title="Create ETL Logging Reports">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Open a new report in Report Designer.</span> </li>
+          <li class="li step"><span class="ph cmd">Create two parameters named <span class="ph filepath">Start Date</span>  and <span class="ph filepath">End Date</span>, both with a <span class="ph uicontrol">Value Type</span>  of <span class="ph filepath">Date</span>  and
+            a <span class="ph uicontrol">Prompt Display Type</span>  of <span class="ph filepath">Date Picker</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a parameter named <span class="ph filepath">Number of Rows</span>  with a <span class="ph uicontrol">Value Type</span>  of <span class="ph filepath">Integer</span>  and a default value of <span class="ph filepath">50</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a table data set named <span class="ph filepath">PeriodSelection</span>  with an <span class="ph uicontrol">ID</span>  column of type <span class="ph filepath">Integer</span>  and a <span class="ph uicontrol">Value</span>             column of type <span class="ph filepath">String</span> . Enter these ID/Value pairs into the table.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">1, &quot;24 Hours&quot;</code></li>
+              <li class="li choice"><code class="ph codeph">7, &quot;7 Days&quot;</code></li>
+              <li class="li choice"><code class="ph codeph">30, &quot;30 Days&quot;</code></li>
+            </ul>
+          </li>
+          <li class="li step" value="5"><span class="ph cmd">Create a parameter named <span class="ph filepath">Period Selection</span>  with the these settings.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Value Type = Integer</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Display Type = Single Selection Button</code></li>
+              <li class="li choice"><code class="ph codeph">Query = PeriodSelection</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Value = ID</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Display Name = Value</code></li>
+            </ul> Check the <span class="ph uicontrol">Validate Values</span>  and <span class="ph uicontrol">Use first value if default value formula results in NA</span>  boxes.</li>
+          <li class="li step" value="6"><span class="ph cmd">Create a new metadata data set. In the Metadata Data Source editor under<span class="ph uicontrol"> XMI file</span>, point to the metadata file in the solutions folder under the BA Server at <span class="ph filepath">biserver-ee/pentaho-solutions/PDI Operations Mart Sample Reports/[MyBusinessModel.xmi]</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a query against the metadata data set named <span class="ph filepath">Status</span>  and add the following field to the <span class="ph uicontrol">Selected Columns</span>  list: <span class="ph uicontrol">Dim execution > Execution status</span> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Add a parameter named <span class="ph filepath">Status Selection</span>  with the these settings.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Value Type = String</code></li>
+              <li class="li choice"><code class="ph codeph">Default Value = [start,end]</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Display Type = Multivalue List</code></li>
+              <li class="li choice"><code class="ph codeph">Query = Status</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Value = Execution Status</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Display Name = Execution Status</code></li>
+            </ul> Check the <span class="ph uicontrol">Validate Values</span>  and <span class="ph uicontrol">Use first value if default value formula results in NA</span>  boxes.</li>
+          <li class="li step" value="9"><span class="ph cmd">Create a query against the metadata data set named <span class="ph filepath">TypeSelection</span>, add the <span class="ph uicontrol">Dim executor > Executor type</span>  field to the <span class="ph uicontrol">Selected Columns</span>             list.</span>  Add the following condition: <span class="ph filepath">Dim executor > Executor type is not null</span> .</li>
+          <li class="li step"><span class="ph cmd">Add a parameter named with these settings.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Value Type = String</code></li>
+              <li class="li choice"><code class="ph codeph">Default Value = [job,transformation]</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Display Type = Multi Selection Button</code></li>
+              <li class="li choice"><code class="ph codeph">Query = TypeSelection</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Value = Executor type</code></li>
+              <li class="li choice"><code class="ph codeph">Prompt Display Name = Executor type</code></li>
+            </ul> Check the <span class="ph uicontrol">Validate Values</span>  and <span class="ph uicontrol">Use first value if default value formula results in NA</span>  boxes.</li>
+          <li class="li step" value="11"><span class="ph cmd">Create a query against the Metadata data set named <span class="ph filepath">LastRun</span>  and add these fields to the <span class="ph uicontrol">Selected Columns</span>  list.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Dim executor > Executor name</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Executor timestamp</code></li>
+              <li class="li choice"><code class="ph codeph">Dim execution > Execution status</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Duration</code></li>
+              <li class="li choice"><code class="ph codeph">Dim executor > Executor type</code></li>
+            </ul>
+          </li>
+          <li class="li step" value="12"><span class="ph cmd">Add these conditions to the query.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Dim execution > Execution status in {Status Selection}, with default value &quot;start|end&quot;</code></li>
+              <li class="li choice"><code class="ph codeph">Dim executor > Executor type in {Kettle Type}, with default value &quot;transformation&quot; </code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Execution Timestamp >= {Start Date}</code></li>
+              <li class="li choice"><code class="ph codeph">Fact execution > Execution Timestamp <= {End Date}</code></li>
+            </ul>
+          </li>
+          <li class="li step" value="13"><span class="ph cmd">Add the following order to the query: <code class="ph codeph">Fact execution > Execution timestamp (Descending - DESC)</code>.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <span class="ph uicontrol">OK</span>  twice to exit the Query Editor and the Metadata Data Source Editor.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Drag a <span class="ph uicontrol">Message</span>  field from the panel on the left onto the report under <span class="ph uicontrol">Report Header</span>, enter <span class="ph filepath">Last Run Jobs and Transformations</span>             and format as necessary.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Drag 5 <span class="ph uicontrol">Message</span>  fields onto the <span class="ph uicontrol">Group Header</span>  band and fill them with the this text.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><code class="ph codeph">Date/Time of Execution</code></li>
+              <li class="li choice"><code class="ph codeph">Name of Job or Transformation</code></li>
+              <li class="li choice"><code class="ph codeph">Type</code></li>
+              <li class="li choice"><code class="ph codeph">Execution Status</code></li>
+              <li class="li choice"><code class="ph codeph">Duration (sec)</code></li>
+            </ul> Format as necessary.</li>
+          <li class="li step" value="17"><span class="ph cmd">Drag the these fields onto the <span class="ph uicontrol">Details</span>  band and fill them with the corresponding values.</span> 
+            <ul class="ul choices">
+              <li class="li choice"><span class="ph uicontrol">Date</span>  field: <span class="ph filepath">Execution Timestamp</span> </li>
+              <li class="li choice"><span class="ph uicontrol">String</span>  field: <span class="ph filepath">Executor Name</span> </li>
+              <li class="li choice"><span class="ph uicontrol">String</span>  field: <span class="ph filepath">Executor Type</span> </li>
+              <li class="li choice"><span class="ph uicontrol">String</span>  field: <span class="ph filepath">Execution Status</span> </li>
+              <li class="li choice"><span class="ph uicontrol">Number</span>  field: <span class="ph filepath">Duration</span> </li>
+            </ul> Align the field widths to the <span class="ph uicontrol">Group Header</span>  message field widths, in order to align the headers with the values.</li>
+          <li class="li step" value="18"><span class="ph cmd">Review the report, selecting various parameter values to verify the report is working correctly.</span> </li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

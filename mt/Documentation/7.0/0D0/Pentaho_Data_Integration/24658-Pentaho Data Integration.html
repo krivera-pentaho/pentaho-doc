@@ -1,0 +1,420 @@
+<content type="text/html" title="Pentaho Data Integration">
+  <body>
+    <div class="body conbody">
+      <div class="wiki-toc noindex">
+        <ol>
+          <li> <a href="#Using_the_PDI_Client" rel="internal">Using the PDI Client&nbsp;</a>  </li>
+          <li> <a href="#Work_with_Repositories" rel="internal">Work with Repositories</a>  </li>
+          <li> <a href="#Using_the_Data_Integration_Perspective" rel="internal">Using the Data Integration Perspective</a>  </li>
+          <li> <a href="#Using_the_Schedule_Perspective_in_PDI" rel="internal">Using the Schedule Perspective in PDI</a>  </li>
+          <li> <a href="#PDI_Administration" rel="internal">PDI Administration</a>  </li>
+          <li> <a href="#Advanced_PDI_Concepts" rel="internal">Advanced PDI Concepts</a>  </li>
+        </ol>
+      </div>
+      <script type="text/javascript">
+        /*<![CDATA[*/
+        var openlink = "<button class='wiki-toc-toggle mt-toggle mt-summary-toggle ui-button-icon mt-toggle-collapse'>Table of contents</button>";
+        $(".wiki-toc").prepend(openlink);
+        $(".wiki-toc-toggle").click(function() {
+          $(".wiki-toc ol").toggle();
+          $(".wiki-toc button").toggleClass("mt-toggle-collapse");
+          $(".wiki-toc button").toggleClass("mt-toggle-expand");
+        });
+        /*]]>*/
+      </script>
+      <p>Pentaho Data Integration (PDI) provides the Extract, Transform, and Load&nbsp;(ETL) capabilities that facilitates the process of capturing, cleansing, and storing data using a uniform and consistent format that is accessible and relevant to end
+        users and IoT technologies.</p>
+      <div class="body conbody">
+        <p>Common uses of Pentaho Data Integration include:</p>
+        <ul>
+          <li>Data migration between different databases and applications</li>
+          <li>Loading huge data sets into databases taking full advantage of cloud, clustered and massively parallel processing environments</li>
+          <li>Data Cleansing with steps ranging from very simple to very complex transformations</li>
+          <li>Data Integration including the ability to leverage real-time ETL as a data source for Pentaho Reporting</li>
+          <li>Data warehouse population with built-in support for slowly changing dimensions and surrogate key creation (as described above)</li>
+        </ul>
+        <div id="section_1" class="mt-page-section"><span id="Using_the_PDI_Client"></span> 
+          <h2 class="editable">Using the PDI Client&nbsp;</h2>
+          <p>PDI Client (Spoon) is a desktop application that you install on your workstation, which enables you to build transformations and schedule and run jobs:</p>
+          <ul>
+            <li>Watch these two short videos:
+              <ul>
+                <li class="li">
+                  <a class="external" target="_blank" rel="external nofollow" href="http://youtu.be/ZX41hKujXRg">PDI Overview</a> 
+                </li>
+                <li class="li">
+                  <a class="external" target="_blank" rel="external nofollow" href="http://www.youtube.com/watch?v=hCMtrLCsBuE">PDI and the Business Analytics Platform</a>  (Optional)</li>
+              </ul>
+            </li>
+            <li class="li">
+              <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/020">Familiarize</a>  yourself with the interface</li>
+          </ul>
+        </div>
+        <div id="section_2" class="mt-page-section"><span id="Work_with_Repositories"></span> 
+          <h2 class="editable">Work with Repositories</h2>
+          <p>We&nbsp;recommend that you use the Pentaho Repository for enterprise deployments.</p>
+          <table border="1" cellpadding="1" cellspacing="1" style="table-layout: fixed; width: 100%;">
+            <tbody>
+              <tr>
+                <td>
+                  <p><strong>Repository Configuration and Management</strong> </p>
+                </td>
+                <td>
+                  <ul>
+                    <li> <a title="Work with Repositories" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040#Creating_a_Connection_in_the_PDI_Client">Create a Repository Connection</a>  </li>
+                    <li> <a title="Work with Repositories" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040#Connecting_to_a_Pentaho_Repository">Connect&nbsp;to a Pentaho Repository</a>  </li>
+                    <li>
+                      <a title="Managing Content in the Pentaho Repository Explorer" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/010">Manage Content in the Pentaho Repository Explorer</a> 
+                      <ul>
+                        <li> <a title="Exporting Content from Solutions Repositories with Command-Line Tools" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/010/010">Export&nbsp;Content from Solutions Repositories with Command-Line Tools</a>  </li>
+                        <li> <a title="Access Control List (ACL) Permissions" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/010/Access_Control_List_(ACL)_Permissions">Access Control List (ACL) Permissions</a>  </li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a title="Working with Version History" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/020">Work&nbsp;with Version History</a> 
+                      <ul>
+                        <li> <a title="Set PDI Version Control and Comment Tracking Options" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Repository/Set_PDI_Version_Control_and_Comment_Tracking_Options">Set DI Version Control and Comment Tracking Options</a>  </li>
+                      </ul>
+                    </li>
+                    <li> <a title="Import and Export PDI Content" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Repository/Import_and_Export_PDI_Content">Import and Export PDI Content</a>  </li>
+                    <li> <a title="Purge Transformations, Jobs, and Shared Objects from the Pentaho Repository" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Repository/Purge_Transformations%2C_Jobs%2C_and_Shared_Objects_from_the_Pentaho_Repository">Purge Transformations, Jobs, and Shared Objects</a>  </li>
+                    <li> <a title="Backup and Restore Pentaho Repositories" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Repository/Backup_and_Restore_Pentaho_Repositories">Backup and Restore Pentaho Repositories</a>  </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Using_the_Data_Integration_Perspective"></span> 
+          <h2 class="editable">Using the Data Integration Perspective</h2>
+          <p class="p">PDI workflows are built using steps or entries joined by hops that pass data from one item to the next. This workflow is built within two basic file types:</p>
+          <ul class="ul">
+            <li class="p">Transformations perform ETL tasks.</li>
+            <li class="p">Jobs orchestrate ETL activities such as defining the flow, dependencies, and execution preparation.</li>
+          </ul>
+          <table border="1" cellpadding="1" cellspacing="1" style="table-layout: fixed; width: 100%;">
+            <tbody>
+              <tr>
+                <td><strong>Using Transformations and Jobs</strong> </td>
+                <td>
+                  <ul>
+                    <li class="p">
+                      <a title="Documentation/7.0/0L0/0Y0/030/010" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/010">Understand&nbsp;</a> 
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/010">Transformations</a> 
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/010">, Jobs and Hops</a> 
+                      <ul>
+                        <li class="p">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/030">Work&nbsp;with Transformations</a> 
+                          <ul>
+                            <li class="p">
+                              <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/Inspecting_Your_Data">Inspect Data</a> 
+                            </li>
+                            <li class="p">
+                              <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/030/010">Run&nbsp;a Transformation</a> 
+                            </li>
+                            <li class="p">
+                              <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/020">PDI Transformation Tutorial</a> 
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="p">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/040">Work&nbsp;with Jobs</a> 
+                          <ul>
+                            <li class="p">
+                              <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/040/010">Run&nbsp;a Job</a> 
+                            </li>
+                            <li class="p">
+                              <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0J0/0C0/030">PDI Job Tutorial</a> 
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Additional Features</strong> </td>
+                <td>
+                  <ul>
+                    <li class="p">
+                      <a title="Documentation/7.0/0L0/0Y0/030/020" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/020">Understand&nbsp;</a> 
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/020">PDI Client Options Dialog</a> 
+                    </li>
+                    <li class="p">
+                      <a title="Documentation/7.0/0L0/0Y0/030/050" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050">Understand&nbsp;</a> 
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/050">Arguments, Parameters, and Variables</a> 
+                    </li>
+                    <li class="p">
+                      <a title="Documentation/7.0/0L0/0Y0/030/060" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/060">Use&nbsp;</a> 
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/060">Performance Monitoring and Logging</a> 
+                      <ul>
+                        <li class="p">
+                          <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Monitoring_System_Performance/Enable_Logging">Enable Logging</a> 
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="p">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/070">Interact with Web Services</a> 
+                    </li>
+                    <li class="p">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/080">Use the SQL Editor</a> 
+                    </li>
+                    <li class="p">
+                      <a title="Documentation/7.0/0L0/0Y0/030/090" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/090">Understand&nbsp;</a> 
+                      <a title="Documentation/7.0/0L0/0Y0/030/090" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/090">V</a> FS
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/090"> File Dialogs</a> 
+                    </li>
+                    <li class="p">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/095">Reuse Transformation Flows with Mapping Steps</a> 
+                    </li>
+                    <li class="p">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/030/0A0">Use Notes with Transformations and Jobs</a> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="p"><strong>Step and Entry Reference</strong> </p>
+                </td>
+                <td>
+                  <ul>
+                    <li>
+                      <a title="Documentation/7.0/0D0/1A0/010/030" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/1A0/010/030">Learn&nbsp;</a> 
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/1A0/010/030">Commonly-Used PDI Steps and Entries</a> 
+                      <ul>
+                        <li class="li">Use Newer Steps and Entries, like
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/040/029">Spark</a> 
+                        </li>
+                        <li class="li">Use the
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0K0/ETL_Metadata_Injection">ETL Metadata Injection</a>  Step</li>
+                      </ul>
+                    </li>
+                    <li>
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0K0">View </a> 
+                      <a title="Documentation/7.0/0L0/0Y0/0K0" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0K0">Supported Steps and Documentation</a> 
+                    </li>
+                    <li>
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0L0">View </a> 
+                      <a title="Documentation/7.0/0L0/0Y0/0L0" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0L0">Supported Entries and Documentation</a> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Using_the_Schedule_Perspective_in_PDI"></span> 
+          <h2 class="editable">Using the Schedule Perspective in PDI</h2>
+          <p>Schedule transformations and jobs to run at specific times.</p>
+          <table border="1" cellpadding="1" cellspacing="1" style="table-layout: fixed; width: 100%;">
+            <tbody>
+              <tr>
+                <td><strong>All about Scheduling</strong> </td>
+                <td>
+                  <p>
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/050">Learn how to</a>  Schedule Transformations and Jobs</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="PDI_Administration"></span> 
+          <h2 class="editable">PDI Administration</h2>
+          <p>Learn about system requirements, the permissions needed for license and security management, and how to perform ETL solutions and data analytics tasks in PDI and Pentaho Business Analytics.</p>
+          <table border="1" cellpadding="1" cellspacing="1"
+          style="table-layout: fixed; width: 100%;">
+            <tbody>
+              <tr>
+                <td>
+                  <p><strong>Supported Technologies</strong> </p>
+                </td>
+                <td>
+                  <p>View the full list of hardware and software requirements for PDI and Pentaho Business Analytics:</p>
+                  <ul class="ul" id="8f79a011-214e-4c70-9492-ce6e91c2fbec__task_dev_config_di__ul_nt1_5jz_hl">
+                    <li class="li">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000">Components Reference</a> 
+                    </li>
+                    <li class="li">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/010">JDBC Drivers Reference</a> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><strong>Installation and Licenses</strong> </p>
+                </td>
+                <td>
+                  <p>Use one of the following methods to install PDI and Pentaho Business Analytics:</p>
+                  <ul>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0">Install Pentaho Business Analytics</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0/Install_the_Pentaho_Client_Tools/Install_PDI_Tools_and_Plugins">Install the&nbsp;PDI Client (Spoon) and Plugins</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_Pentaho_Licenses">Manage Pentaho Licenses</a>  </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p><strong>Configuration and Management</strong> </p>
+                </td>
+                <td>
+                  <p>Get started creating ETL solutions and data analytics tasks, manage servers, and fine-tune performance:</p>
+                  <p><em>PDI Tools and User Management</em> </p>
+                  <ul>
+                    <li>
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#PDI_Design_Tools_and_Utilities">Set Up the PDI Client and Utilities</a> 
+                      <ul>
+                        <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Manage_Users_and_Roles_in_the_PDI_Client">Manage Users in the PDI Client</a>  </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <p><em>Server Management</em> </p>
+                  <ul>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Start_and_Stop_the_Pentaho_Server_for_Configuration">Start and Stop the Pentaho Server</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Change_Ports_and_URLs">Change the Ports and URLs</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Change_the_PDI_Home_Directory_Location">Change the PDI Home Directory Location</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Increase_the_Pentaho_Server_Memory_Limit">Increase the Pentaho Server Memory Limit</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_BA_Design_Tools">Specify Data Connections for BA Design Tools</a>  </li>
+                    <li>
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server">Specify Data Connections for the Pentaho Server</a> 
+                      <ul>
+                        <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_Native_(JDBC)_or_OCI_Data_Connections_for_the_Pentaho_Server">Set Up Native (JDBC) or OCI Data Connections for the Pentaho Server</a>  </li>
+                        <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Specify_Data_Connections_for_the_Pentaho_Server/Set_Up_JNDI_Connections_for_the_Pentaho_Server">Set Up JNDI Connections for the Pentaho Server</a>  </li>
+                      </ul>
+                    </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Cluster_the_Application_Server">Cluster the Application Server</a>  </li>
+                    <li> <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Maintain_the_Pentaho_Server_Manually">Maintain the Pentaho Server Manually</a>  </li>
+                    <li>
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_User_Security">Set Up Security</a> 
+                      <ul>
+                        <li class="li">Integration with&nbsp;
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_User_Security">Pentaho Security</a>,
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_User_Security/Implement_Advanced_Security/010"> LDAP</a>,
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_User_Security/Implement_Advanced_Security/000">MSAD</a>, and
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho">Kerberos</a> &nbsp;&nbsp;</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <p><em>Performance Improvement&nbsp;</em> </p>
+                  <ul>
+                    <li class="li">
+                      <a title="Documentation/7.0/0P0/100/040/010" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/100/040/010">Troubleshoot&nbsp;Performance&nbsp;Issues</a> 
+                    </li>
+                    <li class="li">
+                      <a title="Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback">Use&nbsp;</a> 
+                      <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback">Transactional Databases</a> 
+                      <a title="Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/040/Transactional_Databases_and_Job_Rollback">&nbsp;and Job Rollback</a> 
+                    </li>
+                    <li class="li">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Monitoring_System_Performance/Integrate_Pentaho_with_3rd-Party_Monitoring_through_SNMP">Monitor&nbsp;with PDI and SNMP Traps</a> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Advanced_PDI_Concepts"></span> 
+          <h2 class="editable">Advanced PDI Concepts</h2>
+          <p><span class="mt-font-Open Sans,sans-serif">Learn about developing custom plugins to extend or embed PDI functionality, sharing plugins, <span class="mt-color-black">streamlining the data modeling process, connecting to Big Data sources, ways to maintain meaningful data and more. </span> </span> 
+          </p>
+          <table border="1" cellpadding="1" cellspacing="1" style="table-layout: fixed; width: 100%;">
+            <tbody>
+              <tr>
+                <td><strong>Use the Command Line with PDI</strong> </td>
+                <td>
+                  <p>Kitchen, Pan, and Carte are command line tools for executing jobs and transformations modeled in Spoon:</p>
+                  <ul class="ul" id="7f209c34-19b4-4c64-a6a1-9fbdcad54f4b__kitchen_pan_carte__ul_pwj_wps_hl">
+                    <li class="li">
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/070">Use Pan and Kitchen</a>  for Transformations and Jobs</li>
+                    <li class="li">Use Carte Clusters to:
+                      <ul>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Execute_Transformations_and_Jobs_on_a_Carte_Cluster">Run Transformations and Jobs on a Carte Cluster</a> 
+                        </li>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Scheduled_Jobs_to_Run_on_a_Remote_Carte_Server">Schedule&nbsp;Jobs to Run on a Remote Carte Server</a> 
+                        </li>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Stop_or_URLStop_Carte_from_the_Command_Line_Interface_or_URL">Stop or URLStop Carte from the Command Line Interface or URL</a> 
+                        </li>
+                        <li class="li">
+                          <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060#Run_Transformations_and_Jobs_from_the_Repository_on_the_Carte_Server">Run Transformations and Jobs from the Repository on the Carte Server</a> 
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Embed and Extend PDI</strong> </td>
+                <td>
+                  <p>
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0">Learn how</a>  to develop custom plugins that extend PDI functionality or embed the engine into your own Java applications.</p>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Data Services</strong> </td>
+                <td>
+                  <p>
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/090">Use a Data Service</a>  to query the output of a step as if the data were stored in a physical table.&nbsp;Read about how to
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/090">turn a transformation into a data service</a> .</p>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Marketplace</strong> </td>
+                <td>
+                  <p>
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/0A0">Use the Marketplace</a>  to download, install, and share plugins developed by Pentaho and members of the user community.</p>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Data Lineage</strong> </td>
+                <td>
+                  <p>
+                    <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/Data_Lineage">Use Data Lineage</a>  to track your data from source systems to target applications &nbsp;and take advantage of third-party tools, such as Meta Integration Technology (MITI) and yEd,&nbsp;to&nbsp;track and view specific data.</p>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Big Data and Streamlined Data Refinery</strong> </td>
+                <td>
+                  <p class="p">Use transformation steps to connect to a variety of Big Data data sources, including Hadoop, NoSQL, and analytical databases such as MongoDB. Work&nbsp;through step-by-step tutorials, move beyond the basics, and learn how to edit transformations
+                    and metadata models.</p>
+                  <ul>
+                    <li class="p">Watch
+                      <a class="xref external" target="_blank" rel="external nofollow" href="http://www.youtube.com/watch?v=vOMOFPMnXgk">Big Data Videos</a> .</li>
+                    <li class="p">Learn how to work with
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060">Streamlined Data Refinery.</a> 
+                    </li>
+                    <li class="p">Learn to&nbsp;
+                      <a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060/0B0/020/0A0">auto model using the Build Model</a>  job entry and how this feature intersects with Analyzer.</li>
+                    <li class="p">Find out what
+                      <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/040/040">Big Data steps are available</a> &nbsp;by default.</li>
+                    <li class="p">Find out which
+                      <a class="external" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0#Set_Up_Pentaho_to_Connect_to_a_Hadoop_Cluster">Hadoop Distributions are available and how to configure them</a> .&nbsp;</li>
+                    <li class="p">Edit
+                      <a class="xref" rel="internal" href="http://help.pentaho.com/UX_and_Documentation_Home/Agile_BI_Topics_(Removed_from_7.0)/Use_the_Model_and_Visualization_Perspectives_to_Rapidly_Analyze_Schema_Prototypes">Transformations and Metadata Models</a> .</li>
+                    <li class="p">Watch a video about how to use PDI to
+                      <a class="xref external" target="_blank" rel="external nofollow" href="http://www.youtube.com/watch?v=JyypUdwySrQ">blend Big Data</a> .</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Using_the_PDI_Client" rel="internal">Using the PDI Client&nbsp;</a>  </li>
+      <li> <a href="#Work_with_Repositories" rel="internal">Work with Repositories</a>  </li>
+      <li> <a href="#Using_the_Data_Integration_Perspective" rel="internal">Using the Data Integration Perspective</a>  </li>
+      <li> <a href="#Using_the_Schedule_Perspective_in_PDI" rel="internal">Using the Schedule Perspective in PDI</a>  </li>
+      <li> <a href="#PDI_Administration" rel="internal">PDI Administration</a>  </li>
+      <li> <a href="#Advanced_PDI_Concepts" rel="internal">Advanced PDI Concepts</a>  </li>
+    </ol>
+  </body>
+</content>

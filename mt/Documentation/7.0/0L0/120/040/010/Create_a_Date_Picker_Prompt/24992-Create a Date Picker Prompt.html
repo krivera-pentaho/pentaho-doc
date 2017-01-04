@@ -1,0 +1,161 @@
+<content type="text/html" title="Create a Date Picker Prompt">
+  <body>
+    <div class="mt-page-summary">
+      <div class="mt-page-overview"></div>
+    </div>
+    <p>The date picker prompt allows users to select values based on calendar dates. When creating a date picker prompt, you will need to set a date format which the user will select using the date picker prompt. By default, the format used is 'yyyy-MM-dd'.</p>
+    <p>The date picker prompt uses
+      <a class="link-https" title="https://dojotoolkit.org/reference-guide/1.9/dojo/date/locale/format.html" rel="external nofollow" href="https://dojotoolkit.org/reference-guide/1.9/dojo/date/locale/format.html" target="_blank">Dojo date formats</a> . In the past, this component was based on the
+      <a class="external" title="http://api.jqueryui.com/datepicker/" rel="external nofollow" href="http://api.jqueryui.com/datepicker/" target="_blank">JQuery Date Picker</a>, and to support legacy formats, the old formats will be converted automatically.</p>
+    <p>Note that not all formats are supported or make sense when a date is selected. For instance, anything with less granularity than a unit of 'day' will default to the Dojo format, so we encourage you to use any format from 'd' to 'y' which is currently
+      supported by the date picker control type. You can use any desired configuration where 'yyyy-MM-dd', 'yy-M-d' or 'd/MM/yyyy' is a valid format.</p>
+    <p>As a result the pattern can be any combinations of the following patterns of years, quarters, months and days:</p>
+    <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+      <tbody>
+        <tr>
+          <td>
+            <p><strong>Pattern</strong> </p>
+          </td>
+          <td>
+            <p><strong>Description</strong> </p>
+          </td>
+          <td>
+            <p><strong>Example,<em>&nbsp;'Monday, January&nbsp;4, 2016'</em> </strong> </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">G</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">era</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">AD</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">y or yy</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">year (two digit)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">16</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">yyy or yyyy</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">year (four digit)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">2016</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">q or Q</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">quarter (one digit)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">M</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">month numeric (no leading zero)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">1</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">MM</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">month numeric (two digit)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">01</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">MMM</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">month name short</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">Jan</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">MMMM</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">month name long</p>
+          </td>
+          <td>January&nbsp;</td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">d</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">day of month (no leading zero)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">4</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">dd</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">day of month (two digit)</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">04</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">D</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">day of the year</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">4</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">E</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">day of the week</p>
+          </td>
+          <td>
+            <p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;">2</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

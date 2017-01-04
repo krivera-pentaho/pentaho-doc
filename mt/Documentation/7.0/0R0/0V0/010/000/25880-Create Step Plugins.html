@@ -1,0 +1,1073 @@
+<content type="text/html" title="Create Step Plugins">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+  </head>
+  <body>
+    <div class="body conbody">
+      <p class="p">A transformation step implements a data processing task in an ETL data flow. It operates on a stream of data rows. Transformation steps are designed for input, processing, or output. Input steps fetch data rows from external data sources, such as
+        files or databases. Processing steps work with data rows, perform field calculations, and stream operations, such as joining or filtering. Output steps write the processed data back to storage, files, or databases.
+        <br />
+        <img alt="createStepPlugins.png" class="internal default" style="width: 550px; height: 180px;" width="550px" height="180px" src="http://help.pentaho.com/@api/deki/files/11632/createStepPlugins.png?size=bestfit&amp;width=550&amp;height=180&amp;revision=1"
+        />
+      </p>
+      <p class="p">This section explains the architecture and programming concepts for creating your own PDI transformation step plugin. We recommended that you open and refer to the
+        <a title="Sample Step Plugin" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000">sample step plugin sources</a>  while following these instructions.</p>
+      <p class="p">A step plugin integrates with PDI by implementing four distinct Java interfaces. Each interface represents a set of responsibilities performed by a PDI step. Each of the interfaces has a base class that implements the bulk of the interface in order
+        to simplify plugin development.</p>
+      <p class="p">Unless noted otherwise, all step interfaces and corresponding base classes are part of the <code class="ph codeph">org.pentaho.di.trans.step</code> package.&nbsp;</p>
+      <div class="tablenoborder">
+        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+          <thead align="left" class="thead">
+            <tr class="row">
+              <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e54" valign="top" width="26.59%"><strong class="ph b">Java Interface</strong> </th>
+              <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e60" valign="top" width="52.12%"><strong class="ph b">Base Class</strong> </th>
+              <th class="entry" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__d16384e66" valign="top" width="21.27%"><strong class="ph b">Main Responsibilities</strong> </th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr class="row">
+              <td class="entry" headers="d16384e54 " valign="top" width="26.59%"><code class="ph codeph">StepMetaInterface</code></td>
+              <td class="entry" headers="d16384e60 " valign="top" width="52.12%"><code class="ph codeph">BaseStepMeta</code></td>
+              <td class="entry" headers="d16384e66 " valign="top" width="21.27%">
+                <ul class="ul">
+                  <li class="li">Maintain step settings</li>
+                  <li class="li">Validate step settings</li>
+                  <li class="li">Serialize step settings</li>
+                  <li class="li">Provide access to step classes</li>
+                  <li class="li">Perform row layout changes</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d16384e54 " valign="top" width="26.59%"><code class="ph codeph">StepDialogInterface</code></td>
+              <td class="entry" headers="d16384e60 " valign="top" width="52.12%"><code class="ph codeph">org.pentaho.di.ui.trans.step.BaseStepDialog</code></td>
+              <td class="entry" headers="d16384e66 " valign="top" width="21.27%">
+                <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_jcv_5m2_4h">
+                  <li class="li">Step settings dialog</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d16384e54 " valign="top" width="26.59%"><code class="ph codeph">StepInterface</code></td>
+              <td class="entry" headers="d16384e60 " valign="top" width="52.12%"><code class="ph codeph">BaseStep</code></td>
+              <td class="entry" headers="d16384e66 " valign="top" width="21.27%">
+                <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_gyg_vm2_4h">
+                  <li class="li">Process rows</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d16384e54 " valign="top" width="26.59%"><code class="ph codeph">StepDataInterface</code></td>
+              <td class="entry" headers="d16384e60 " valign="top" width="52.12%"><code class="ph codeph">BaseStepData</code></td>
+              <td class="entry" headers="d16384e66 " valign="top" width="21.27%">
+                <ul class="ul" id="5e3195b1-f092-496f-8134-0fc5e4d34ae6__creating_step_plugins__ul_zfv_vm2_4h">
+                  <li class="li">Store processing state, and to declare and serve as a place for field variables during row processing</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="section_1" class="mt-page-section"><span id="Using_Your_Icon_in_PDI"></span> 
+      <h2 class="editable">Using Your Icon in PDI&nbsp; &nbsp;</h2>
+      <p>Now that you have an image which provides a quick, intuitive representation of what your Step or Entry does and
+        <br /> maintains consistency with other user interface elements within PDI, you need to save it delete in the proper format and to the proper location.</p>
+      <div id="section_2" class="mt-page-section"><span id="Including_Images_in_a_Built-In_Kettle_Transformation_or_Job"></span> 
+        <h3 class="editable">
+          <span>Including Images in a Built-In Kettle Transformation or Job</span> 
+        </h3>
+        <ol class="pentaho-list-ordered">
+          <li>Save your icon to Scalable Vector Graphics (SVG) Version 1.1 format.</li>
+          <li>
+            <p>If you want to include an image in a built-in Kettle transformation or job, do the following: &nbsp;Place the SVG (and PNG) images in the&nbsp;<strong>pentaho-kettle/ui/packages-res/ui/images</strong> </p>
+          </li>
+          <li>
+            <p>Edit the kettle-job-entries.xml or kettle-steps.xml file to point to the new icon file. This file is located inside of the&nbsp;<strong>{kettle-install}/lib/kettle-engine-VERSION.jar.&nbsp;</strong> This can be done like this:</p>
+          </li>
+        </ol>
+        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; table-layout: fixed;">
+          <tbody>
+            <tr>
+              <td style="width: 653px; vertical-align: top;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><job-entry id=&quot;COPY_FILES&quot;> <description>i18n:org.pentaho.di.job.entry:JobEntry.CopyFiles.TypeDesc</description> 
+<classname>org.pentaho.di.job.entries.copyfiles.JobEntryCopyFiles</classname> <category>i18n:org.pentaho.di.job:JobCategory.Category.FileManagement</category> 
+<tooltip>i18n:org.pentaho.di.job.entry:JobEntry.CopyFiles.Tooltip</tooltip> <iconfile>ui/images/CPY.svg</iconfile> 
+<documentation_url>http://wiki.pentaho.com/display/EAI/Copy+Files</documentation_url> <cases_url/> <forum_url/> </job-entry></pre> </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Including_Images_in_a_Kettle_Plugin"></span> 
+        <h3 class="editable">
+          <span>Including Images in a Kettle Plugin</span> 
+        </h3>
+        <ol class="pentaho-list-ordered">
+          <li>Save your icon to Scalable Vector Graphics (SVG) Version 1.1 format.</li>
+          <li>
+            <p>Place the image in the plugin. &nbsp;The specifics of the plugin's assembly will indicate where to put the image, but usually it is placed in the <strong>your-plugin-project/src</strong>  folder. &nbsp;</p>
+          </li>
+          <li>
+            <p>The image will be loaded, at runtime, from the plugin&rsquo;s jar file. &nbsp;The location of the file is indicated by the JobMeta or StepMeta for your plugin. &nbsp;This is usually accomplished with a Java annotation, like in this example:</p>
+            <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@JobEntry( id = &quot;HadoopCopyFilesPlugin&quot;, image = &quot;HDM.svg&quot;, name = &quot;HadoopCopyFilesPlugin.Name&quot;,
+    description = &quot;HadoopCopyFilesPlugin.Description&quot;,
+    categoryDescription = &quot;i18n:org.pentaho.di.job:JobCategory.Category.BigData&quot;,
+    i18nPackageName = &quot;org.pentaho.di.job.entries.hadoopcopyfiles&quot; )
+public class JobEntryHadoopCopyFiles extends JobEntryCopyFiles {</pre> </li>
+          <li>If you have developed a dialog (UI) for your plugin, you might want an SVG graphic to appear, as per UX standards. &nbsp;This code should be put in your plugin, in the Job or Step classes.&nbsp;This can be done like this: <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">icon.setImage(UIResource.getInstance().getImage(&quot;ModelAnnotation.svg&quot;, getClass().getClassLoader(), ConstUI.ICON_SIZE, ConstUI.ICON_SIZE));</pre>            </li>
+        </ol>
+        <div class="related-links">
+          <div id="section_4" class="mt-page-section"><span id="Maintain_Step_Settings"></span> 
+            <h2 class="editable">Maintain Step Settings</h2>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                    <td class="entry" valign="top" width="75%">
+                      <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepMetaInterface</code> </a> 
+                    </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                    <td class="entry" valign="top" width="75%">
+                      <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStepMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStepMeta.html"><code class="ph codeph">org.pentaho.di.trans.step.BaseStepMeta</code> </a> 
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="p">The <code class="ph codeph">StepMetaInterface</code> is the main Java interface that a plugin implements.</p>
+            <p class="p"><strong class="ph b">Keep Track Of the Step Settings</strong> </p>
+            <p class="p">The implementing class keeps track of step settings using private fields with corresponding <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The dialog class implementing <code class="ph codeph">StepDialogInterface</code>              uses these methods to copy the user supplied configuration in and out of the dialog.</p>
+            <p class="p">These interface methods are also used to maintain settings.</p>
+            <p class="p"><code class="ph codeph">void setDefault()</code></p>
+            <p class="p">This method is called every time a new step is created and allocates or sets the step configuration to sensible defaults. The values set here are used by Spoon when a new step is created. This is a good place to ensure that the step settings
+              are initialized to non-null values. Values that are <code class="ph codeph">null</code> can be cumbersome to deal with in serialization and dialog population, so most PDI step implementations stick to non-null values for all step settings.</p>
+            <p class="p"><code class="ph codeph">public Object clone()</code></p>
+            <p class="p">This method is called when a step is duplicated in Spoon. It returns a deep copy of the step meta object. It is essential that the implementing class creates proper deep copies if the step configuration is stored in modifiable objects, such
+              as lists or custom helper objects.</p>
+            <p class="p">See <code class="ph codeph">org.pentaho.di.trans.steps.rowgenerator.RowGeneratorMeta.clone()</code> in the PDI source for an example of creating a deep copy.</p>
+            <p class="p"><strong class="ph b">Serialize Step Settings</strong> </p>
+            <p class="p">The plugin serializes its settings to both XML and a PDI repository. These interface methods provide this functionality.</p>
+            <p class="p"><code class="ph codeph">public String getXML()</code></p>
+            <p class="p">This method is called by PDI whenever a step serializes its settings to XML. It is called when saving a transformation in Spoon. The method returns an XML string containing the serialized step settings. The string contains a series of XML
+              tags, one tag per setting. The helper class, <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code>, constructs the XML string.</p>
+            <p class="p"><code class="ph codeph">public void loadXML()&nbsp;</code></p>
+            <p class="p">This method is called by PDI whenever a step reads its settings from XML. The XML node containing the step settings is passed in as an argument. Again, the helper class, <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code>, reads
+              the step settings from the XML node.</p>
+            <p class="p"><code class="ph codeph">public void saveRep()</code></p>
+            <p class="p">This method is called by PDI whenever a step saves its settings to a PDI repository. The repository object passed in as the first argument provides a set of methods for serializing step settings. The passed in transformation id and step id
+              are used by the step as identifiers when calling the repository serialization methods.</p>
+            <p class="p"><code class="ph codeph">public void readRep()</code></p>
+            <p class="p">This method is called by PDI whenever a step reads its configuration from a PDI repository. The step id given in the arguments is used as the identifier when using the repositories serialization methods.</p>
+            <p class="p">When developing plugins, make sure the serialization code is in synch with the settings available from the step dialog. When testing a step in Spoon, PDI internally saves and loads a copy of the transformation before executing it.&nbsp;</p>
+            <p class="p"><strong class="ph b">Provide Instances of Other Plugin Classes</strong> </p>
+            <p class="p">The <code class="ph codeph">StepMetaInterface</code> plugin class is the main class, tying in with the rest of PDI architecture. It is responsible for supplying instances of the other plugin classes implementing <code class="ph codeph">StepDialogInterface</code>,
+              <code class="ph codeph">StepInterface</code>, and <code class="ph codeph">StepDataInterface</code>. The following methods cover these responsibilities. Each method implementation constructs a new instance of the corresponding class, forwarding
+              the passed in arguments to the constructor.</p>
+            <ul class="ul">
+              <li class="li"><code class="ph codeph">public StepDialogInterface getDialog()</code></li>
+              <li class="li"><code class="ph codeph">public StepInterface getStep()</code></li>
+              <li class="li"><code class="ph codeph">public StepDataInterface getStepData()</code></li>
+            </ul>
+            <p class="p">Each of these methods returns a new instance of the plugin class implementing <code class="ph codeph">StepDialogInterface</code>, <code class="ph codeph">StepInterface</code>, and <code class="ph codeph">StepDataInterface</code>.</p>
+            <p class="p"><strong class="ph b">Report Step Changes to the Row Stream</strong> </p>
+            <p class="p">PDI needs to know how a step affects the row structure. A step may be adding or removing fields, as well as modifying the metadata of a field. The method implementing this aspect of a step plugin is <code class="ph codeph">getFields()</code>.</p>
+            <p class="p"><code class="ph codeph">public void getFields()</code></p>
+            <p class="p">Given a description of the input rows, the plugin modifies it to match the structure for its output fields. The implementation modifies the passed in <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html">RowMetaInterface</a> </code>              object to reflect changes to the row stream. A step adds fields to the row structure. This is done by creating <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMeta.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMeta.html">ValueMeta</a> </code>              objects, such as the PDI default implementation of <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html">ValueMetaInterface</a> </code>,
+              and appending them to the <code class="ph codeph">RowMetaInterface</code> object. The
+              <a class="xref" title="Working With Fields" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000/020/020">Working with Fields</a>  section goes into deeper detail about <code class="ph codeph">ValueMetaInterface</code>.&nbsp;</p>
+            <p class="p">This sample transformation uses two steps. The Demo step adds the field, <code class="ph codeph">demo_field</code>, to empty rows produced by the Generate Rows step.&nbsp;</p>
+            <p class="p">
+              <br />
+              <strong class="ph b">Validate Step Settings</strong> </p>
+            <p class="p">Spoon supports a Validate Transformation feature, which triggers a self-check of all steps.&nbsp; PDI invokes the <code class="ph codeph">check()</code> method of each step on the canvas, allowing each step to validate its settings.</p>
+            <p
+            class="p"><code class="ph codeph">public void check()</code></p>
+              <p class="p">Each step has the opportunity to validate its settings and verify that the configuration given by the user is reasonable. In addition, a step checks if it is connected to preceding or following steps, if the nature of the step requires that
+                kind of connection. An input step may expect to not have a preceding step for example. The check method passes in a list of check remarks, to which the method appends its validation results. Spoon displays the list of remarks collected
+                from the steps, allowing you to take corrective action in case there are validation warnings or errors.</p>
+              <p class="p">
+                <a class="thumb" title="validateTransformation.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/11636/validateTransformation.png">
+                  <img alt="validateTransformation.png" class="internal default" style="width: 550px; height: 313px;" width="550px" height="313px" src="http://help.pentaho.com/@api/deki/files/11636/validateTransformation.png?size=bestfit&amp;width=550&amp;height=313&amp;revision=2"
+                  />
+                </a> 
+              </p>
+              &nbsp;
+              <p class="p"><strong class="ph b">Interface with the PDI plugin system</strong> </p>
+              <p class="p">The class implementing <code class="ph codeph">StepMetaInterface</code> must be annotated with the
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/annotations/Step.html"><code class="ph codeph">Step</code></a>  Java annotation. Supply the following annotation attributes:</p>
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="8a4c1c88-db0d-49cc-bb2c-00bcbb9d3601__maintaining_step_settings__table_bw2_g4h_2k" rules="all" summary="">
+                  <thead align="left" class="thead">
+                    <tr class="row">
+                      <th class="entry" id="8a4c1c88-db0d-49cc-bb2c-00bcbb9d3601__d23798e345" valign="top" width="25%"><strong class="ph b">Attribute</strong> </th>
+                      <th class="entry" id="8a4c1c88-db0d-49cc-bb2c-00bcbb9d3601__d23798e351" valign="top" width="75%"><strong class="ph b">Description</strong> </th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">id </code></td>
+                      <td class="entry" headers="d23798e351 " valign="top" width="75%">A globally unique ID for the step</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">image</code></td>
+                      <td class="entry" headers="d23798e351 " valign="top" width="75%">The resource location for the png icon image of the step</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">name</code></td>
+                      <td class="entry" headers="d23798e351 " valign="top" width="75%">A short label for the step</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">description</code></td>
+                      <td class="entry" headers="d23798e351 " valign="top" width="75%">A longer description for the step</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">categoryDescription</code></td>
+                      <td class="entry" headers="d23798e351 " valign="top" width="75%">The category the step should appear under in the PDI step tree. For example Input, Output, Transform, etc.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d23798e345 " valign="top" width="25%"><code class="ph codeph">i18nPackageName</code></td>
+                      <td class="entry" headers="d23798e351 " valign="top" width="75%">If the <code class="ph codeph">i18nPackageName</code> attribute is supplied in the annotation attributes, the values of name, description, and categoryDescription are interpreted as <code class="ph codeph">i18n</code> keys relative
+                        to the message bundle contained in given package. The keys may be supplied in the extended form&nbsp; <code class="ph codeph">i18n:<packagename></code> key to specify a package that is different from the package given in the
+                        <code
+                        class="ph codeph">i18nPackageName</code> attribute.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="p">Please refer to the
+                <a title="Sample Step Plugin" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000">Sample Step Plugin</a>  for a complete implementation example. &nbsp;</p>
+          </div>
+          <div id="section_5" class="mt-page-section"><span id="Implement_the_Step_Settings_Dialog_Box"></span> 
+            <h2 class="editable">Implement the Step Settings Dialog Box</h2>
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                    <td class="entry" valign="top" width="75%">
+                      <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDialogInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDialogInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepDialogInterface</code> </a> 
+                    </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                    <td class="entry" valign="top" width="75%">
+                      <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-ui-swt-5.3.0.0-javadoc/org/pentaho/di/ui/trans/step/BaseStepDialog.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-ui-swt-5.3.0.0-javadoc/org/pentaho/di/ui/trans/step/BaseStepDialog.html"><code class="ph codeph">org.pentaho.di.ui.trans.step.BaseStepDialog</code> </a> 
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="p"><code class="ph codeph">StepDialogInterface</code> is the Java interface that implements the plugin settings dialog.</p>
+            <p class="p"><strong class="ph b">Maintain the Dialog for Step Settings</strong> </p>
+            <p class="p">The <code class="ph codeph">dialog</code> class is responsible for constructing and opening the settings dialog for the step. Whenever you open the step settings in Spoon, the system instantiates the <code class="ph codeph">dialog</code> class
+              passing in the <code class="ph codeph">StepMetaInterface</code> object and calling <code class="ph codeph">open()</code> on the dialog.
+              <a class="xref external" target="_blank" rel="external nofollow" href="http://www.eclipse.org/swt/">SWT</a>  is the native windowing environment of Spoon and is the framework used for implementing step dialogs.&nbsp;</p>
+            <p class="p"><code class="ph codeph">public String open()</code></p>
+            <p class="p">This method returns only after the dialog has been confirmed or cancelled. The method must conform to these rules.&nbsp;</p>
+            <ul class="ul">
+              <li class="li">If the dialog is confirmed
+                <ul class="ul">
+                  <li class="li">The <code class="ph codeph">StepMetaInterface</code> object must be updated to reflect the new step settings</li>
+                  <li class="li">If you changed any step settings, the Changed flag of the <code class="ph codeph">StepMetaInterface</code> object flag must be set to <code class="ph codeph">true</code></li>
+                  <li class="li"><code class="ph codeph">open()</code> returns the name of the step</li>
+                </ul>
+              </li>
+              <li class="li">If the dialog is cancelled
+                <ul class="ul">
+                  <li class="li">The <code class="ph codeph">StepMetaInterface</code> object must not be changed</li>
+                  <li class="li">The Changed flag of the <code class="ph codeph">StepMetaInterface</code> object must be set to the value it had at the time the dialog opened</li>
+                  <li class="li"><code class="ph codeph">open()</code> must return <code class="ph codeph">null</code></li>
+                </ul>
+              </li>
+            </ul>
+            <p class="p">The <code class="ph codeph">StepMetaInterface</code> object has an internal Changed flag that is accessible using <code class="ph codeph">hasChanged()</code> and <code class="ph codeph">setChanged()</code>. Spoon decides whether the transformation
+              has unsaved changes based on the Changed flag, so it is important for the dialog to set the flag appropriately.&nbsp;</p>
+            <p class="p">The
+              <a title="Sample Step Plugin" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000">sample step plugin project</a>  has an implementation of the dialog class that is consistent with these rules and is a good basis for creating your own dialog. &nbsp;</p>
+          </div>
+          <div id="section_6" class="mt-page-section"><span id="Process_Rows"></span> 
+            <h2 class="editable">Process Rows</h2>
+            <div class="body conbody">
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                      <td class="entry" valign="top" width="75%">
+                        <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepInterface </code> </a> 
+                      </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                      <td class="entry" valign="top" width="75%">
+                        <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStep.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStep.html"><code class="ph codeph">org.pentaho.di.trans.step.BaseStep</code> </a> 
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="p">The class implementing <code class="ph codeph">StepInterface</code> is responsible for the actual row processing when the transformation runs.&nbsp;</p>
+              <p class="p">The implementing class can rely on the base class and has only three important methods it implements itself. The three methods implement the step life cycle during transformation execution: initialization, row processing, and clean-up.&nbsp;</p>
+              <br />
+              <img alt="File:/step_plugin_lifecycle.png" class="image internal" id="05afbac3-6f37-40b6-93e9-d82dc7496cd3__processing_rows__image_jpd_lxh_nh" src="http://help.pentaho.com/@api/deki/files/11637/step_plugin_lifecycle.png?revision=2" />
+              <p class="p">During initialization PDI calls the <code class="ph codeph">init()</code> method of the step once. After all steps have initialized, PDI calls <code class="ph codeph">processRow()</code> repeatedly until the step signals that it is done
+                processing all rows. After the step is finished processing rows, PDI calls <code class="ph codeph">dispose()</code>.&nbsp;</p>
+              <p class="p">The method signatures have a
+                <a class="xref external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html"
+                target="_blank"><code class="ph codeph">StepMetaInterface</code> </a> object and a
+                <a class="xref external" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDataInterface.html" rel="external nofollow"
+                href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDataInterface.html" target="_blank"><code class="ph codeph">StepDataInterface</code></a>  object. Both objects can be safely cast down to the specific implementation classes of the step.&nbsp;</p>
+              <p class="p">Aside from the methods it needs to implement, there is one additional and very important rule: the class must not declare any fields. All variables must be kept as part of the class implementing <code class="ph codeph">StepDataInterface</code>.
+                In practice this is not a problem, since the object implementing <code class="ph codeph">StepDataInterface</code> is passed in to all relevant methods, and its fields are used instead of local ones. The reason for this rule is the need
+                to decouple step variables from instances of <code class="ph codeph">StepInterface</code>. This enables PDI to implement different threading models to execute a transformation.</p>
+              <p class="p"><strong class="ph b">Step Initialization</strong> </p>
+              <p class="p">The <code class="ph codeph">init()</code> method is called when a transformation is preparing to start execution.&nbsp;</p>
+              <p class="p"><code class="ph codeph">public boolean init()</code></p>
+              <p class="p">Every step is given the opportunity to do one-time initialization tasks, such as opening files or establishing database connections. For any steps derived from <code class="ph codeph">BaseStep</code>, it is mandatory that <code class="ph codeph">super.init()</code>                is called to ensure correct behavior. The method returns <code class="ph codeph">true</code> in case the step initialized correctly, it returns <code class="ph codeph">false</code> if there is an initialization error. PDI will abort the
+                execution of a transformation in case any step returns <code class="ph codeph">false</code> upon initialization.</p>
+              <p class="p"><strong class="ph b">Row Processing</strong> </p>
+              <p class="p">Once the transformation starts, it enters a tight loop, calling <code class="ph codeph">processRow()</code> on each step until the method returns <code class="ph codeph">false</code>. In most cases, each step reads a single row from the
+                input stream, alters the row structure and fields, and passes the row on to the next step. Some steps, such as input, grouping, and sorting steps, read rows in batches, or can hold on to the read rows to perform other processing before
+                passing them on to the next step.</p>
+              <p class="p"><code class="ph codeph">public boolean processRow()</code></p>
+              <p class="p">A PDI step queries for incoming input rows by calling <code class="ph codeph">getRow()</code>, which is a blocking call that returns a row object or <code class="ph codeph">null</code> in case there is no more input. If there is an input
+                row, the step does the necessary row processing and calls <code class="ph codeph">putRow()</code> to pass the row on to the next step. If there are no more rows, the step calls <code class="ph codeph">setOutputDone()</code> and returns
+                <code class="ph codeph">false</code>.</p>
+              <p class="p">The method must conform to these rules.</p>
+              <ul class="ul" id="05afbac3-6f37-40b6-93e9-d82dc7496cd3__processing_rows__ul_npd_lxh_nh">
+                <li class="li">If the step is done processing all rows, the method calls <code class="ph codeph">setOutputDone()</code> and returns <code class="ph codeph">false</code>.</li>
+                <li class="li">If the step is not done processing all rows, the method returns <code class="ph codeph">true</code>. PDI calls <code class="ph codeph">processRow()</code> again in this case.</li>
+              </ul>
+              <p class="p">The
+                <a title="Sample Step Plugin" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000">sample step plugin project</a>  shows an&nbsp;implementation of <code class="ph codeph">processRow()</code> that is commonly used in data processing steps.</p>
+              <p class="p">In contrast to that, input steps do not usually expect any incoming rows from previous steps. They are designed to execute <code class="ph codeph">processRow(</code>) exactly once, fetching data from the outside world, and putting them into
+                the row stream by calling <code class="ph codeph">putRow()</code> repeatedly until done. Examining existing PDI steps is a good guide for designing your <code class="ph codeph">processRow()</code> method.&nbsp;</p>
+              <p class="p">The row structure object is used during the first invocation of <code class="ph codeph">processRow()</code> to determine the indexes of fields on which the step operates. The <code class="ph codeph">BaseStep</code> class already provides
+                a convenient First flag to help implement special processing on the first invocation of <code class="ph codeph">processRow()</code>. Since the row structure is equal for all input rows, steps cache field index information in variables
+                on their <code class="ph codeph">StepDataInterface</code> object.</p>
+              <p class="p"><strong class="ph b">Step Clean-Up</strong> </p>
+              <p class="p">Once the transformation is complete, PDI calls <code class="ph codeph">dispose()</code> on all steps.&nbsp;</p>
+              <p class="p"><code class="ph codeph">Public void dispose()</code></p>
+              <p class="p">Steps are required to deallocate resources allocated during <code class="ph codeph">init()</code> or subsequent row processing. Your implementation should clear all fields of the <code class="ph codeph">StepDataInterface</code> object, and
+                ensure that all open files or connections are properly closed. For any steps derived from <code class="ph codeph">BaseStep,</code> it is mandatory that <code class="ph codeph">super.dispose()</code> is called to ensure correct deallocation.</p>
+            </div>
+            <div class="related-links">
+              <div id="section_7" class="mt-page-section"><span id="Store_the_Processing_State"></span> 
+                <h3 class="editable">Store the Processing State</h3>
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" valign="top" width="25.510204081632654%"><strong class="ph b">Java Interface</strong> </td>
+                        <td class="entry" valign="top" width="74.48979591836735%">
+                          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDataInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDataInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepDataInterface</code></a> 
+                        </td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" valign="top" width="25.510204081632654%"><strong class="ph b">Base class</strong> </td>
+                        <td class="entry" valign="top" width="74.48979591836735%">
+                          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStepData.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStepData.html"><code class="ph codeph">org.pentaho.di.trans.step.BaseStepData </code></a> 
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="p">The class implementing <code class="ph codeph">StepInterface</code> does not store processing state in any of its fields. Instead an additional class implementing <code class="ph codeph">StepDataInterface</code> is used to store processing
+                  state, including status flags, indexes, cache tables, database connections, file handles, and alike. Implementations of <code class="ph codeph">StepDataInterface</code> declare the fields used during row processing and add accessor functions.&nbsp;
+                  In essence the class implementing <code class="ph codeph">StepDataInterface</code> is used as a place for field variables during row processing.</p>
+                <p class="p">PDI creates instances of the class implementing <code class="ph codeph">StepDataInterface</code> at the appropriate time and passes it on to the <code class="ph codeph">StepInterface</code> object in the appropriate method calls. The base
+                  class already implements all necessary interactions with PDI and there is no need&nbsp;to override any base class methods.&nbsp;</p>
+              </div>
+              <div id="section_8" class="mt-page-section"><span id="Work_with_Rows"></span> 
+                <h3 class="editable">Work with Rows</h3>
+                <div class="body conbody">
+                  <p class="p">A row in PDI is represented by a Java object array, <code class="ph codeph">Object[]</code>. Each field value is stored at an index in the row. While the array representation is efficient to pass data around, it is not immediately clear
+                    how to determine the field names and types that go with the array. The row array itself does not carry this meta data. Also an object array representing a row usually has empty slots towards its end, so a row can accommodate additional
+                    fields efficiently. Consequently, the length of the row array does not equal the amount of fields in the row. The following sections explain how to safely access fields in a row array.</p>
+                  <p class="p">PDI uses internal objects that implement
+                    <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html"><code class="ph codeph">RowMetaInterface</code></a>  to describe and manipulate row structure. Inside <code class="ph codeph">processRow()</code> a step can retrieve the structure of incoming rows by calling <code class="ph codeph">getInputRowMeta(</code>),
+                    which is provided by the <code class="ph codeph">BaseStep</code> class. The step clones the <code class="ph codeph">RowMetaInterface</code> object and passes it to <code class="ph codeph">getFields()</code> of its <span class="filepath style-wrap">meta class</span>                     to reflect any changes in row structure caused by the step itself. Now, the step has <code class="ph codeph">RowMetaInterface</code> objects describing both the input and output rows. This illustrates how to use <code class="ph codeph">RowMetaInterface</code>                    objects to inspect row structure.&nbsp;</p>
+                  <p class="p">There is a similar object that holds information about individual row fields. PDI uses internal objects that implement
+                    <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"
+                    rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  to describe and manipulate field information, such as field name, data type, format mask, and alike.&nbsp;</p>
+                  <p class="p">A step looks for the indexes and types of relevant fields upon first execution of <code class="ph codeph">processRow()</code>. These methods of <code class="ph codeph">RowMetaInterface</code> are useful to achieve this.</p>
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e91" valign="top" width="40%"><strong class="ph b">Method</strong> </th>
+                          <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e97" valign="top" width="60%"><strong class="ph b">Purpose</strong> </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">indexOfValue(String valueName)</code></td>
+                          <td class="entry" headers="d29500e97 " valign="top" width="60%">Given a field name, determine the index of the field in the row.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">getFieldNames()</code></td>
+                          <td class="entry" headers="d29500e97 " valign="top" width="60%">Returns an array of field names. The index of a field name matches the field index in the row array.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">searchValueMeta(String valueName)</code></td>
+                          <td class="entry" headers="d29500e97 " valign="top" width="60%">Given a field name, determine the meta data for the field.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">getValueMeta(int index)</code></td>
+                          <td class="entry" headers="d29500e97 " valign="top" width="60%">Given a field index, determine the meta data for the field.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d29500e91 " valign="top" width="40%"><code class="ph codeph">getValueMetaList()</code></td>
+                          <td class="entry" headers="d29500e97 " valign="top" width="60%">Returns a list of all field descriptions. The index of the field description matches the field index in the row array.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <p class="p">If a step needs to create copies of rows, use the <code class="ph codeph">cloneRow()</code> methods of <code class="ph codeph">RowMetaInterface</code> to create proper copies. If a step needs to add or remove fields in the row array,
+                    use the static helper methods of
+                    <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html"><code class="ph codeph">RowDataUtil</code></a> . For example, if a step is adding a field to the row, call <code class="ph codeph">resizeArray()</code>, to add the field. If the array has enough slots, the orignial array is retruned
+                    as is. If the array does not have enough slots, a resized copy of the array is returned. If a step needs to create new rows from scratch, use <code class="ph codeph">allocateRowData()</code>, which returns a somewhat over-allocated
+                    object array to fit the desired number of fields.</p>
+                  <p class="p"><strong class="ph b">Summary Table of Classes and Interfaces for Row Processing</strong> </p>
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e235" valign="top" width="25%"><strong class="ph b">Class/Interface</strong> </th>
+                          <th class="entry" id="dd051d20-bb55-4efb-be0c-ac1ce940b743__d29500e241" valign="top" width="75%"><strong class="ph b">Purpose</strong> </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d29500e235 " valign="top" width="25%">
+                            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowMetaInterface.html"><code class="ph codeph">RowMetaInterface</code> </a> 
+                          </td>
+                          <td class="entry" headers="d29500e241 " valign="top" width="75%">Describes and manipulates row structure</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d29500e235 " valign="top" width="25%">
+                            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code> </a> 
+                          </td>
+                          <td class="entry" headers="d29500e241 " valign="top" width="75%">Describes and manipulates field types and formats</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d29500e235 " valign="top" width="25%">
+                            <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/RowDataUtil.html"><code class="ph codeph">RowDataUtil</code> </a> 
+                          </td>
+                          <td class="entry" headers="d29500e241 " valign="top" width="75%">Allocates space in row array</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div id="section_9" class="mt-page-section"><span id="Work_With_Fields"></span> 
+                <h3 class="editable">Work With Fields</h3>
+                <p class="p"><strong class="ph b">Data Type</strong> </p>
+                <p class="p">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  objects are used to determine the characteristics of the row fields. They are typically obtained from a <code class="ph codeph">RowMetaInterface</code> object, which is acquired by
+                  a call to <code class="ph codeph">getInputRowMeta()</code>. The <code class="ph codeph">getType()</code> method returns one of the static constants declared by
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"
+                  rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  to indicate the PDI field type. Each field type maps to a corresponding native Java type for the actual value. The following table illustrates the mapping of the most frequently used
+                  field types.</p>
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e64" valign="top"><strong class="ph b">PDI data type</strong> </th>
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e70" valign="top"><strong class="ph b">Type constant</strong> </th>
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e76" valign="top"><strong class="ph b">Java data type</strong> </th>
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e82" valign="top"><strong class="ph b">Description&nbsp;</strong> </th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">String</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_STRING</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.String</code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">A variable unlimited length text encoded in UTF-8 (Unicode)&nbsp;</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">Integer</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_INTEGER</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.Long</code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">A signed long 64-bit integer&nbsp;</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">Number</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_NUMBER</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.Double </code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">A double precision floating point value&nbsp;</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">BigNumber</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_BIGNUMBER</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.math.BigDecimal </code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">An arbitrary unlimited precision number&nbsp;</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">Date</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_DATE</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.util.Date</code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">A date-time value with millisecond precision&nbsp;</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">Boolean</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_BOOLEAN</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.Boolean</code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">A boolean value <code class="ph codeph">true</code> or <code class="ph codeph">false</code></td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e64 " valign="top">Binary</td>
+                        <td class="entry" headers="d28295e70 " valign="top">TYPE_BINARY</td>
+                        <td class="entry" headers="d28295e76 " valign="top"><code class="ph codeph">java.lang.byte[] </code></td>
+                        <td class="entry" headers="d28295e82 " valign="top">An array of bytes that contain any type of binary data.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="p">Do not assume that the Java value of a row field matches these data types directly. This may or may not be true, based on the storage type used for the field.&nbsp;</p>
+                <p class="p"><strong class="ph b">Storage Types</strong> </p>
+                <p class="p">In addition to the data type of a field, the storage type, <code class="ph codeph">getStorageType()</code>/<code class="ph codeph">setStorageType()</code>, is used to interpret the actual field value in a row array. These storage types
+                  are available.</p>
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e266" valign="top"><strong class="ph b">Type constant</strong> </th>
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e272" valign="top"><strong class="ph b">Actual field data type</strong> </th>
+                        <th class="entry" id="7dca6d64-16dc-4579-9791-5c4157e45f53__d28295e278" valign="top"><strong class="ph b">Interpretation&nbsp;</strong> </th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d28295e266 " valign="top">STORAGE_TYPE_NORMAL</td>
+                        <td class="entry" headers="d28295e272 " valign="top">As listed in previous table</td>
+                        <td class="entry" headers="d28295e278 " valign="top">The value in the row array is of the type listed in the data type table above and represents the field value directly.</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e266 " valign="top">STORAGE_TYPE_BINARY_STRING&nbsp;</td>
+                        <td class="entry" headers="d28295e272 " valign="top"><code class="ph codeph">java.lang.byte[] </code></td>
+                        <td class="entry" headers="d28295e278 " valign="top">The field has been created using the Lazy Conversion feature. This means it is a non-altered sequence of bytes as read from an external medium, usually a file.&nbsp;</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d28295e266 " valign="top">STORAGE_TYPE_INDEXED</td>
+                        <td class="entry" headers="d28295e272 " valign="top"><code class="ph codeph">java.lang.Integer</code></td>
+                        <td class="entry" headers="d28295e278 " valign="top">The row value is an integer index into a fixed array of possible values. The <code class="ph codeph">ValueMetaInterface</code> object maintains the set of possible values in <code class="ph codeph">getIndex()</code><em class="ph i">/</em> 
+                          <code
+                          class="ph codeph">setIndex()</code>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="p"><strong class="ph b">Accessing Row Values</strong> </p>
+                <p class="p">In a typical data processing scenario, a step is not interested in dealing with the complexities of the storage type. It just needs the actual data value on which to do processing. In order to safely read the value of a field, the
+                  <code
+                  class="ph codeph">ValueMetaInterface</code> object provides a set of accessor methods to get at the actual Java value. The argument is a value from a row array that corresponds to the <code class="ph codeph">ValueMetaInterface</code> object. The accessor
+                    methods always return a proper data value, regardless of the field storage type.</p>
+                <ul class="ul">
+                  <li class="li"><code class="ph codeph">getString()</code></li>
+                  <li class="li"><code class="ph codeph">getInteger()</code></li>
+                  <li class="li"><code class="ph codeph">getNumber()</code></li>
+                  <li class="li"><code class="ph codeph">getBigNumber()</code></li>
+                  <li class="li"><code class="ph codeph">getDate()</code></li>
+                  <li class="li"><code class="ph codeph">getBoolean()</code></li>
+                  <li class="li"><code class="ph codeph">getBinary()</code></li>
+                </ul>
+                <p class="p">For each of these methods, <code class="ph codeph">RowMetaInterface</code> has corresponding methods that require the row array and the index of the field as arguments.</p>
+                <p class="p"><strong class="ph b">Additional Field Characteristics</strong> </p>
+                <p class="p">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/row/ValueMetaInterface.html"><code class="ph codeph">ValueMetaInterface</code></a>  represents all aspects of a PDI field, including conversion masks, trim type, and alike. All of these are available using corresponding accessor methods, such as
+                  <a class="xref external"
+                  target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/row/ValueMetaInterface.html#getConversionMask%28%29"><code class="ph codeph">getConversionMask()</code></a>  and
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/row/ValueMetaInterface.html#getTrimType%28%29"><code class="ph codeph">getTrimType()</code></a> . Refer to the
+                  <a class="xref external" target="_blank" rel="external nofollow" href="http://javadoc.pentaho.com/kettle/org/pentaho/di/core/row/ValueMetaInterface.html">Javadoc</a>  for a complete overview.</p>
+              </div>
+              <div id="section_10" class="mt-page-section"><span id="Handling_Errors"></span> 
+                <h3 class="editable">Handling Errors</h3>
+                <p class="p">Transformation steps may encounter errors at many levels. They may encounter unexpected data, or problems with the execution environment. Depending on the nature of the error, the step may decide to stop the transformation by throwing
+                  an exception, or support the PDI Error Handling feature, which allows you to divert bad rows to an error handling step.</p>
+                <p class="p"><strong class="ph b">Throwing a KettleException: Calling a Hard Stop</strong> </p>
+                <p class="p">If a step encounters an error during row processing, it may log an error and stop the transformation. This is done by calling <code class="ph codeph">setErrors(1)</code>, <code class="ph codeph">stopAll()</code>, <code class="ph codeph">setOutputDone()</code>,
+                  and returning <code class="ph codeph">false</code> from <code class="ph codeph">processRow()</code>. Alternatively, the step can throw a
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/exception/KettleException.html"
+                  rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/exception/KettleException.html"><code class="ph codeph">KettleException</code></a>, which also causes the transformation to stop.&nbsp;</p>
+                <p class="p">It is sensible to stop the transformation when there is a problem with the environment or configuration of a step. For example, when a database connection cannot be made, a required file is not present, or an expected field is not in the
+                  row stream. These are errors that affect the execution of the transformation as a whole. If on the other hand the error is related to row data, the step should implement support for the PDI Error Handling feature.&nbsp;</p>
+                <p class="p"><strong class="ph b">Implementing Per-Row Error Handling</strong> </p>
+                <p class="p">You may want to divert bad rows to a specific error handling step. This capability is referred to as the Error Handling feature. A step supporting this feature overrides the <code class="ph codeph">BaseStep</code> implementation of
+                  <a
+                  class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepMetaInterface.html"><code class="ph codeph">supportsErrorHandling()</code></a>  to return <code class="ph codeph">true</code>. This enables you to specify a target step for bad rows in the Spoon UI. During runtime, the step checks if you configured a target
+                    step for error rows by calling <code class="ph codeph">getStepMeta().isDoingErrorHandling()</code>. If error rows are diverted, the step passes the offending input row to
+                    <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStep.html"
+                    rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/BaseStep.html"><code class="ph codeph">putError()</code></a>  and provides additional information about the errors encountered. It does not throw a <code class="ph codeph">KettleException</code>. If you do not configure a step to generate error rows
+                    and send them to another step for processing, the step falls back to calling a hard stop.&nbsp;</p>
+                <p class="p">Most core PDI steps support row-level error handling. The Number Range step is a good example. If error handling is enabled, it diverts the row into the error stream. If it is not, the step stops the transformation.&nbsp;</p>
+              </div>
+              <div id="section_11" class="mt-page-section"><span id="Understanding_Row_Counters"></span> 
+                <h3 class="editable">Understanding Row Counters</h3>
+                <div class="body conbody">
+                  <p class="p">During transformation execution, each PDI step keeps track of a set of step metrics. These are displayed in Spoon in the <span class="ph uicontrol">Step Metrics</span>  tab.</p>
+                  <img alt="csvInputErrorLogging.png" class="internal default" style="width: 550px; height: 291px;" width="550px" height="291px" src="http://help.pentaho.com/@api/deki/files/11638/csvInputErrorLogging.png?size=bestfit&amp;width=550&amp;height=291&amp;revision=2"
+                  />
+                  <br /> &nbsp;
+                  <p class="p">Each step metric is essentially a row counter. The counters are manipulated by calling the corresponding increment, decrement, get, and set methods on <code class="ph codeph">BaseStep</code>. This table provides a list of the counters
+                    and the correct way to use them.&nbsp;</p>
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__undetstanding_row_counters__table_z5m_4yh_nh" rules="all" summary="">
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th class="entry" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__d27747e47" valign="top" width="16.666666666666664%"><strong class="ph b">Counter Name</strong> </th>
+                          <th class="entry" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__d27747e53" valign="top" width="33.33333333333333%"><strong class="ph b">Meaning</strong> </th>
+                          <th class="entry" id="7d49840a-897e-4b80-87e4-f9a7e700fa60__d27747e59" valign="top" width="50%"><strong class="ph b">When to Increment</strong> </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesRead </code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows received from previous steps</td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Never increment manually. This is handled by <code class="ph codeph">getRow()</code>.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesWritten </code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows passed to next steps</td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Never increment manually. This is handled by <code class="ph codeph">putRow()</code>.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesInput </code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows read from external sources, such as files, database, and alike</td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesInput()</code> when a new row is received from an external source.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesOutput </code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows written to external sources, such as files, database, and alike</td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesOutput()</code> when a row is written to an external system or file.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesUpdated </code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows updated in external sources, such as database, and alike</td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesUpdated()</code> when a row is updated in an external system or file.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesSkipped</code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows for which part of the processing has been skipped</td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Call <code class="ph codeph">incrementLinesSkipped()</code> when a row was skipped. This is relevant when the step implements conditional processing, and the condition for processing a row is not satisfied. For example, an updating
+                            step may skip rows that are already up to date.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" headers="d27747e47 " valign="top" width="16.666666666666664%"><code class="ph codeph">linesRejected </code></td>
+                          <td class="entry" headers="d27747e53 " valign="top" width="33.33333333333333%">Rows diverted to an error step as part of
+                            <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0R0/0V0/010/000/020/030" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000/020/030">error handling </a> 
+                          </td>
+                          <td class="entry" headers="d27747e59 " valign="top" width="50%">Never increment manually. This is handled by <code class="ph codeph">putError()</code>.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div id="section_12" class="mt-page-section"><span id="Logging_in_Steps"></span> 
+                <h3 class="editable">Logging in Steps</h3>
+                <p>A step interacts with the PDI logging system by using the logging methods inherited from <code class="ph codeph">BaseStep</code>.&nbsp;</p>
+                <div class="p" id="20424097-9d89-4b0c-a6b2-bc9449afdc17__logging_Rows__logLines">
+                  <p>These methods are used to issue log lines to the PDI logging system on different severity levels. Multi-argument versions of the methods are available to do some basic formatting, which is equivalent to a call to
+                    <a class="xref external"
+                    target="_blank" rel="external nofollow" href="http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html#format%28java.lang.String,%20java.lang.Object...%29"><code class="ph codeph">MessageFormat.format(message, arguments)</code></a> .</p>
+                  <ul class="ul">
+                    <li class="li"><code class="ph codeph">public void logMinimal()</code></li>
+                    <li class="li"><code class="ph codeph">public void logBasic() </code></li>
+                    <li class="li"><code class="ph codeph">public void logDetailed()</code></li>
+                    <li class="li"><code class="ph codeph">public void logDebug() </code></li>
+                    <li class="li"><code class="ph codeph">public void logRowlevel()</code></li>
+                    <li class="li"><code class="ph codeph">public void logError() </code></li>
+                  </ul>
+                  <p>These methods query the logging level. They are often used to guard sections of code, that should only be executed with elevated logging settings.</p>
+                  <ul class="ul">
+                    <li class="li"><code class="ph codeph">public boolean isBasic()</code></li>
+                    <li class="li"><code class="ph codeph">public boolean isDetailed()</code></li>
+                    <li class="li"><code class="ph codeph">public boolean isDebug()</code></li>
+                    <li class="li"><code class="ph codeph">public boolean isRowLevel()</code></li>
+                  </ul>
+                </div>
+                <p class="p">Steps should log this information at specified levels.</p>
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="20424097-9d89-4b0c-a6b2-bc9449afdc17__d23232e114" valign="top" width="25%"><strong class="ph b">Log Level</strong> </th>
+                        <th class="entry" id="20424097-9d89-4b0c-a6b2-bc9449afdc17__d23232e120" valign="top" width="75%"><strong class="ph b">Log Information Content</strong> </th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d23232e114 " valign="top" width="25%">Minimal</td>
+                        <td class="entry" headers="d23232e120 " valign="top" width="75%">Only information that is interesting at very high-levels, for example Transformation Started or Ended; individual steps do not log anything at this level</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d23232e114 " valign="top" width="25%">Basic</td>
+                        <td class="entry" headers="d23232e120 " valign="top" width="75%">Information that may be interesting to you during regular ETL operation</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d23232e114 " valign="top" width="25%">Detailed</td>
+                        <td class="entry" headers="d23232e120 " valign="top" width="75%">Prepared SQL or other query statements, resource allocation and initialization like opening files or connections</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d23232e114 " valign="top" width="25%">Debug</td>
+                        <td class="entry" headers="d23232e120 " valign="top" width="75%">Anything that may be useful in debugging step operations</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d23232e114 " valign="top" width="25%">RowLevel</td>
+                        <td class="entry" headers="d23232e120 " valign="top" width="75%">Anything that may be helpful in debugging problems at the level of individual rows and values</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d23232e114 " valign="top" width="25%">Error</td>
+                        <td class="entry" headers="d23232e120 " valign="top" width="75%">Fatal errors that abort the transformation</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="p"><strong class="ph b">Feedback Logging</strong> </p>
+                <p class="p">A transformation defines a feedback size in its settings. The feedback size defines the number of rows after which each step logs a line reporting its progress. This is implemented by calling <code class="ph codeph">checkFeedback()</code>                  with an appropriate row counter as argument to determine if feedback should be logged. Feedback logging happens on the basic log-level. There are many ways you can implement this. Here is an example implementation snippet.</p> <pre class="pre codeblock">
+if (checkFeedback(getLinesWritten())) {
+  if(isBasic()) logBasic(&quot;linenr &quot;+getLinesWritten());
+} </pre>
+                <p class="p">It may make sense to use different row counters for checking the feedback size depending on the implementation logic of your step. For example, a step that accumulates incoming rows into one single summary row, should probably use the
+                  <code class="ph codeph">linesRead</code> counter to determine the feedback interval.</p>
+                <p class="p">The Excel Output step has a good example implementation of feedback logging.</p>
+              </div>
+            </div>
+          </div>
+          <div id="section_13" class="mt-page-section"><span id="Add_Metadata_Injection_Support_to_Your_Step"></span> 
+            <h2 class="editable">Add Metadata Injection Support to Your Step</h2>
+            <div>
+              <div class="body conbody">
+                <p class="p">You can add metadata injection support to your step by marking the step&nbsp;meta class and the step&rsquo;s fields with injection-specific annotations. You use the @InjectionSupported annotation to specify that your step is able to support
+                  metadata injection. Then, you use either the @Injection annotation to specify which fields in your step can be injected as metadata, or use the @InjectionDeep annotation for fields more complex than usual primitive types (such as string,
+                  int, float, etc.).</p>
+                <div id="section_14" class="mt-page-section"><span id="InjectionSupported"></span> 
+                  <h3 class="editable">InjectionSupported</h3>
+                  <p class="p">Use the @InjectionSupported annotation in your step meta class to indicate that it supports metadata injection. This annotation has the following parameters.</p>
+                  <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table"
+                  style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 216.5px;">Parameter</th>
+                        <th scope="col" style="width: 1018.5px;">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="width: 215.5px;"><span class="mt-font-courier-new">localizationPrefix</span> </td>
+                        <td style="width: 1017.5px;">Indicates the location for your messages in the <span class="mt-font-courier-new"><step_package>/messages/messages_<locale>.properties</span>  file. When the metadata injection properties are displayed in PDI, the description for
+                          the field is retrieved from the localization file by the mask
+                          <<span class="mt-font-courier-new">localization_prefix</span> >
+                            <<span class="mt-font-courier-new">field_name</span> >.</td>
+                      </tr>
+                      <tr>
+                        <td style="width: 215.5px;"><span class="mt-font-courier-new">groups</span> </td>
+                        <td style="width: 1017.5px;">Indicates the optional name of the groups you use to arrange your fields. Your fields will be arranged in these groups when they appear in the ETL Metadata Injection step properties dialog.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>For example, setting the <span class="mt-font-courier-new">localizationPrefix</span>  parameter to &ldquo;Injection.&rdquo; for the &ldquo;FILENAME&rdquo; field indicates the <span class="mt-font-courier-new"><step_package>/messages/messages_Injection.FILENAME.properties</span>                     file. This prefix and &quot;FILENAME&quot; field within the following @InjectionSupported annotation tells the system to use the key &quot;Injection.FILENAME&quot; to retrieve descriptions along with the optional &ldquo;GROUP1&rdquo;
+                    and &ldquo;GROUP2&quot; groups.</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@InjectionSupported(localizationPrefix=&quot;Injection.&quot;, groups = {&quot;GROUP1&quot;,&quot;GROUP2&quot;})</pre>
+                  <p>If your step already has metadata injection support using a pre-6.0 method, such as it returns an object from the <span class="mt-font-courier-new">getStepMetaInjectionInterface()</span>  method, then you will need to remove the injection
+                    class and <span class="mt-font-courier-new">getStepMetaInjectionInterface()</span>  method from the step&nbsp;meta class. After this class and method are removed, the method <span class="mt-font-courier-new">getStepMetaInjectionInterface()</span>                     is called from the base class (<span class="mt-font-courier-new">BaseStepMeta</span> ), and returns null. The null value indicates your step does not support pre-6.0 style metadata injection. Otherwise, if your step did not use this
+                    type of implementation, you do not need to add or manually modify this method to the step&nbsp;meta class.</p>
+                  <p>Although inheritance applies to injectable fields specified by the @Injection and @InjectionDeep annotations, you still need to apply the @InjectionSupported annotation to any step inheriting the injectable fields from another step.
+                    For example, if an existing input step has already specified injectable fields through the @Injection annotation, you do not need to use the @Injection annotation for fields you inherited within the step you create. However, you still
+                    need to use the @InjectionSupported annotation in your step meta class even though that annotation is also already applied in the existing input step.</p>
+                </div>
+                <div id="section_15" class="mt-page-section"><span id="Injection"></span> 
+                  <h3 class="editable">Injection</h3>
+                  <p class="p">Each field (or setter) you want to be injected into your step should be marked by the @Injection annotation. The parameters of this annotation are the name of the injectable field and the group containing this field:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Injection(name = &quot;FILENAME&quot;, group = &quot;FILE_GROUP&quot;) - on the field or setter</pre>
+                  <p class="p">This annotation has the following parameters.</p>
+                  <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width: 241.5px;">Parameter</th>
+                        <th scope="col" style="width: 994.5px;">Description</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="width: 240.5px;"><span class="mt-font-courier-new">name</span> </td>
+                        <td style="width: 993.5px;">Indicates the name of the field. If the annotation is declared on the setter (typical style setter with no return type and accepts a single parameter), this parameter type is used for data conversion, as if it was declared on a
+                          field.</td>
+                      </tr>
+                      <tr>
+                        <td style="width: 240.5px;"><span class="mt-font-courier-new">group</span> </td>
+                        <td style="width: 993.5px;">Indicates the groups containing the field. If group is not specified, root is used when the field displayed in the ETL Metadata Injection step properties dialog.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>This annotation can be used either:</p>
+                  <ul>
+                    <li>On a field with simple type (string, integer, float, etc.)</li>
+                    <li>On the setter of a simple type</li>
+                    <li>In an array of simple types</li>
+                    <li>On a <span class="mt-font-courier-new">java.util.List</span>  of simple types. For this <span class="mt-font-courier-new">List</span>  usage, type should be declared as
+                      <a title="Add Metadata Injection Support to Your Step" rel="internal"
+                      href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000#Generics">generic</a> .</li>
+                  </ul>
+                  <p>Besides with these types, you need to understand special exceptions for enums, arrays, and data type conversions.</p>
+                  <div id="section_16" class="mt-page-section"><span id="Enums"></span> 
+                    <h4 class="editable">Enums</h4>
+                    <p class="p">You can mark any enum field with the @Injection annotation. For enum fields, metadata injection converts source TYPE_STRING values into enum values of the same name. For your user to be able to use any specified values, all possible
+                      values should be described in the documentation of your metadata injection step.</p>
+                  </div>
+                  <div id="section_17" class="mt-page-section"><span id="Arrays"></span> 
+                    <h4 class="editable">Arrays</h4>
+                    <p class="p">Any @Injection annotation can be added to an array field:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@Injection(name=&quot;FILES&quot;)
+private String[] files;</pre>
+                    <p class="p">The metadata object can also have a more complex structure:</p>
+                    <p class="p"><strong><span class="mt-font-courier-new">MyStepMeta.java</span> </strong> </p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public class MyStepMeta {
+  @InjectionDeep
+  private OneFile[] files;
+  public class OneFile {
+    @Injection(name=&quot;NAME&quot;, group=&quot;FILES&quot;)
+    public String name;
+    @Injection(name=&quot;SIZE&quot;, group=&quot;FILES&quot;)
+    public int size;
+  }
+}</pre>
+                    <p>Metadata injection creates objects for each row from the injection information stream. The number of objects equals the number of rows in the information stream. If different injections (like NAME and SIZE in the example above) are
+                      loaded from different information streams, you have to make sure that the row numbers are equal on both streams.</p>
+                    <p class="pentaho-note">Instead of an array, you could use <span class="mt-font-courier-new">Java.util.List </span> with
+                      <a title="Add Metadata Injection Support to Your Step" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/000#Generics">generics</a> .</p>
+                  </div>
+                  <div id="section_18" class="mt-page-section"><span id="Data_Type_Conversions"></span> 
+                    <h4 class="editable">Data Type Conversions</h4>
+                    <p>You can convert from <span class="mt-font-courier-new">RowSet</span>  to simple type for a field with the <span class="mt-font-courier-new">DefaultInjectionTypeConverter</span>  class. Currently supported data types for fields are string,
+                      boolean, integer, long, and enum. You can also define non-standard custom converters for some fields by declaring them in the 'converter' attribute of @Injection annotation. These custom conversations are extended from the
+                      <span
+                      class="mt-font-courier-new">InjectionTypeConverter</span>  class.</p>
+                  </div>
+                </div>
+                <div id="section_19" class="mt-page-section"><span id="InjectionDeep"></span> 
+                  <h3 class="editable">InjectionDeep</h3>
+                  <p>Only the fields of the step&nbsp;meta class (and its ancestors) are checked for annotations, which works well for simple structures. If your step meta class contains more complex structures (beyond primitive types), you can use the @InjectionDeep
+                    annotation with an optional prefix parameter&nbsp;to inspect annotations inside these complex (not primitive) fields:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@InjectionDeep(prefix = &quot;MyPrefix&quot;)</pre>
+                  <p>This annotation can be used on the array or <span class="mt-font-courier-new">java.util.List</span>  of complex fields.</p>
+                  <p>The optional <span class="mt-font-courier-new">prefix</span>  parameter enables you to use a class in the @InjectionDeep annotation more than once and still keep unique metadata injection property names. For example, <span class="mt-font-courier-new">MyStepMeta</span> &nbsp;has&nbsp;more
+                    than one <span class="mt-font-courier-new">Info</span>  field.&nbsp;By specifying &quot;FIRST&quot; and &quot;LAST&quot; prefixes through the @InjectionDeep annotation, the metadata injection property structures of &quot;FIRST.NAME&quot;
+                    and &quot;LAST.NAME&quot; can be uniquely identified:</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public class Info {
+  @Injection(name = &quot;NAME&quot;)
+  String name;
+}
+public class MyStepMeta {
+  @InjectionDeep(prefix = &quot;FIRST&quot;)
+  Info first;
+  @InjectionDeep(prefix = &quot;LAST&quot;)
+  Info last;
+}</pre>
+                </div>
+              </div>
+            </div>
+            <div id="section_20" class="mt-page-section"><span id="Generics"></span> 
+              <h3 class="editable"><span class="mt-bgcolor-ffff00">
+                <span class="mt-bgcolor-ffffff">Generics</span> </span> 
+              </h3>
+              <p><span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">You can use generic object types in your declared variables,&nbsp;arrays, or lists. Your step meta class must extend or implement a base which uses generics.&nbsp;For example, if you have a base class named </span> </span> 
+                <span
+                class="mt-font-courier-new"><span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">MyBaseMeta</span> </span> 
+                  </span> <span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">, which makes use of generic types,&nbsp;you need to extend it within the step meta class</span> </span> <span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">:</span> </span> 
+              </p>
+              <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">@InjectionSupported(...)
+  public class MyMeta extends MyBaseMeta<String> {
+}</pre>
+              <p><span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">Your&nbsp;base class (<code>MyBaseMeta</code>) </span> <span class="mt-bgcolor-ffffff">could then be defined with any of the following generics:&nbsp;</span> </span> 
+              </p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public abstract class MyBaseMeta<T> {
+   @Injection(...)
+   T name;
+   @Injection(...)
+   T[] children;
+   @Injection(...)
+   List<T> additional;
+}</pre>
+              <p><span class="mt-bgcolor-ffffff">&nbsp;</span> <span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">You can also use generics </span> </span> <span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">with the @</span> </span> 
+                <span
+                class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">InjectionDeep</span> </span> <span class="mt-bgcolor-ffff00"><span class="mt-bgcolor-ffffff">&nbsp;annotation. For example:&nbsp;</span> </span> 
+              </p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">public abstract class MyBaseMeta<T> {
+  @InjectionDeep
+  T info;
+  @InjectionDeep
+  T[] children;
+  @InjectionDeep
+  List<T> additional;
+}</pre>
+            </div>
+          </div>
+          <div id="section_21" class="mt-page-section"><span id="Deploy_Step_Plugins"></span> 
+            <h2 class="editable">Deploy Step Plugins</h2>
+            <p>&nbsp;To deploy your plugin, follow the following steps.</p>
+            <div>
+              <div class="body conbody">
+                <ol class="pentaho-list-ordered" id="1edd5d33-9306-435d-a68e-5a2cd4f54715__deploying_step_plugins__ol_wqj_5rz_dk">
+                  <li class="li">Create a jar file containing your plugin classes and resources</li>
+                  <li class="li">Create a new folder, give it a meaningful name, and place your jar file inside the folder</li>
+                  <li class="li">Place the plugin folder you just created in a specific location for PDI to find. Depending on how you use PDI, you need to copy the plugin folder to one or more locations as follows.
+                    <div class="p">
+                      <ul class="ul" id="1edd5d33-9306-435d-a68e-5a2cd4f54715__deploying_step_plugins__ul_brj_5rz_dk" style="list-style-type: disc;">
+                        <li class="li">
+                          <p class="p"><strong>Deploying to Spoon or Carte:</strong> </p>
+                          <ol>
+                            <li class="li">
+                              <p class="p">Copy the plugin folder into this location:&nbsp;<span class="ph filepath">design-tools/data-integration/plugins/steps</span> </p>
+                            </li>
+                            <li class="li">
+                              <p>Restart Spoon.After restarting Spoon, the new job entry is available for use.</p>
+                            </li>
+                          </ol>
+                        </li>
+                        <li class="li">
+                          <p class="p"><strong>Deploying to the&nbsp;Pentaho Server:</strong> </p>
+                          <ol>
+                            <li class="li">
+                              <p class="p">Copy the data integration&nbsp;plugin folder to this location:&nbsp;<span class="ph filepath">server/pentaho-server/pentaho-solutions/system/kettle/plugins/steps</span> </p>
+                            </li>
+                            <li class="li">
+                              <p class="p">Copy the business analytics&nbsp;plugin folder to this location:&nbsp;<span class="ph filepath">server/pentaho-server/pentaho-solutions/system/kettle/plugins/steps</span> </p>
+                            </li>
+                            <li class="li">
+                              <p class="p">Restart the server. After restarting the Pentaho Server, the plugins are available to the server.</p>
+                            </li>
+                          </ol>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div id="section_22" class="mt-page-section"><span id="Sample_Step_Plugin"></span> 
+            <h2 class="editable">Sample Step Plugin</h2>
+            <p class="p">The sample Step plugin is designed to show a minimal functional implementation of a step plugin that you can use as a basis to develop your own custom transformation steps.</p>
+            <p class="p">The sample Step plugin functionality adds a string field to a row stream and fills it with <em class="ph i">Hello World!</em> .&nbsp;This screen shot shows the step configuration dialog and preview window.
+              <br />
+              <img alt="File:/screenshot_demo_step.png" class="internal default" style="width: 665px; height: 380px;" width="665px" height="380px" src="http://help.pentaho.com/@api/deki/files/11640/demo_trans.png?size=bestfit&amp;width=665&amp;height=380&amp;revision=2"
+              />
+            </p>
+            <div class="p">
+              <ol class="pentaho-list-ordered">
+                <li class="li">Obtain the Sample Plugin Source
+                  <p class="p">The plugin source is available in the
+                    <a title="Get Started" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/000">download package</a> . Download the package and unzip it. The job entry plugin resides in the <span class="ph filepath">kettle-sdk-step-plugin</span>  folder.</p>
+                </li>
+                <li class="li">Configure the Build
+                  <p class="p">Open <span class="ph filepath">kettle-sdk-step-plugin/build/build.properties</span>  and set the <code class="ph codeph">kettle-dir</code> property to the base directory of your PDI installation.</p>
+                </li>
+                <li class="li">Build and Deploy
+                  <p class="p">You may choose to build and deploy the plugin from the command line, or work with the Eclipse IDE instead. Both options are described below.</p>
+                  <div class="p">
+                    <ul class="ul" id="a4f894fe-379d-4d20-a9a3-e680d00593a9__sample_step_plugin__ul_l1t_5ph_2k">
+                      <li class="li">
+                        <p class="p">Build and Deploy From the Command Line</p>
+                        <p class="p">The plugin is built using
+                          <a class="xref external" target="_blank" rel="external nofollow" href="http://ant.apache.org/">Apache Ant</a> . Build and deploy the plugin from the command line by invoking the install target from the build directory.&nbsp;</p> <pre class="pre codeblock">
+kettle-sdk-step-plugin $ cd build
+build $ ant install</pre>
+                        <p class="p">The install target compiles the source, creates a <span class="ph filepath">jar</span>  file, creates a plugin folder, and copies the plugin folder into the <span class="ph filepath">plugins/steps</span>  directory of your PDI installation.</p>
+                      </li>
+                      <li class="li">
+                        <p class="p">Build and Deploy From Eclipse</p>
+                        <p class="p">Import the plugin sources into Eclipse:</p>
+                        <ol class="ol" id="a4f894fe-379d-4d20-a9a3-e680d00593a9__sample_step_plugin__ol_s1t_5ph_2k" type="a">
+                          <li class="li">From the menu, select <span class="ph uicontrol">File</span>  > <span class="ph uicontrol"> Import</span>  > <span class="ph uicontrol">Existing Projects Into Worksapace</span> .</li>
+                          <li class="li">Browse to the <span class="ph filepath">kettle-sdk-step-plugin</span>  folder and choose the project to be imported.&nbsp;</li>
+                        </ol>
+                        <div class="p" id="a4f894fe-379d-4d20-a9a3-e680d00593a9__sample_step_plugin__importBuild">To build and install the plugin, follow these steps:
+                          <ol class="ol" type="a">
+                            <li class="li">Open the Ant view in Eclipse by selecting <span class="ph uicontrol">Window</span>  > <span class="ph uicontrol">Show View</span>  from the main menu and select <span class="ph uicontrol">Ant</span> .
+                              <p class="p">You may have to select <span class="ph uicontrol">Other</span>  > <span class="ph uicontrol">Ant</span>  if you have not used the Ant view before.</p>
+                            </li>
+                            <li class="li">Drag the file <span class="ph filepath">build/build.xml</span>  from your project into the Ant view, and execute the install target by double-clicking it.</li>
+                            <li class="li">After the plugin has been deployed, restart Spoon.</li>
+                          </ol>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+                <li class="li">Open Spoon, and verify that the new step is available as &quot;Demo Step&quot; in the <span class="ph uicontrol">Transform</span>  section.</li>
+              </ol>
+            </div>
+            <p>
+              <img alt="" class="default internal" style="width: 551px; height: 392px;" width="551px" height="392px" src="http://help.pentaho.com/@api/deki/files/11646/ssPDISampleStepPluginDemo_WithTree2.PNG?size=bestfit&amp;width=551&amp;height=392&amp;revision=2"
+              />
+            </p>
+          </div>
+          <div id="section_23" class="mt-page-section"><span id="Exploring_More_Steps"></span> 
+            <h2 class="editable">Exploring More Steps</h2>
+            <p class="p">
+              <a title="Get Started" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/000">PDI sources</a>  provide example implementations of transformation steps. Each PDI core step is located in a sub-package of <code class="ph codeph">org.pentaho.di.trans.steps</code> found in the <span class="ph filepath">engine/src</span>               folder. The corresponding dialog class in located in <code class="ph codeph">org.pentaho.di.ui.trans.steps</code> found in the <span class="ph filepath">ui/src</span>  folder.&nbsp;</p>
+            <p class="p">For example, these are the classes that make up the Row Generator step.</p>
+            <ul class="ul">
+              <li class="li"><code class="ph codeph">org.pentaho.di.trans.steps.rowgenerator.RowGeneratorMeta</code></li>
+              <li class="li"><code class="ph codeph">org.pentaho.di.trans.steps.rowgenerator.RowGenerator</code></li>
+              <li class="li"><code class="ph codeph">org.pentaho.di.trans.steps.rowgenerator.RowGeneratorData</code></li>
+              <li class="li"><code class="ph codeph">org.pentaho.di.ui.trans.steps.rowgenerator.RowGeneratorDialog</code></li>
+            </ul>
+            <p class="p" id="f55d9b4d-17b2-45c9-8f19-40c72f2a9e74__exploring_more_steps__loadingJARs">The <code class="ph codeph">dialog</code> classes of the core PDI steps are located in a different package and source folder. They are also assembled into a separate <span class="ph filepath">jar</span>  file. This allows PDI to load the UI-related
+              <span class="ph filepath">jar</span>  file when launching Spoon and avoid loading the UI-related <span class="ph filepath">jar</span>  when it is not needed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Using_Your_Icon_in_PDI" rel="internal">Using Your Icon in PDI&nbsp; &nbsp;</a> 
+        <ol>
+          <li> <a href="#Including_Images_in_a_Built-In_Kettle_Transformation_or_Job" rel="internal">Including Images in a Built-In Kettle Transformation or Job</a>  </li>
+          <li> <a href="#Including_Images_in_a_Kettle_Plugin" rel="internal">Including Images in a Kettle Plugin</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Maintain_Step_Settings" rel="internal">Maintain Step Settings</a>  </li>
+      <li> <a href="#Implement_the_Step_Settings_Dialog_Box" rel="internal">Implement the Step Settings Dialog Box</a>  </li>
+      <li>
+        <a href="#Process_Rows" rel="internal">Process Rows</a> 
+        <ol>
+          <li> <a href="#Store_the_Processing_State" rel="internal">Store the Processing State</a>  </li>
+          <li> <a href="#Work_with_Rows" rel="internal">Work with Rows</a>  </li>
+          <li> <a href="#Work_With_Fields" rel="internal">Work With Fields</a>  </li>
+          <li> <a href="#Handling_Errors" rel="internal">Handling Errors</a>  </li>
+          <li> <a href="#Understanding_Row_Counters" rel="internal">Understanding Row Counters</a>  </li>
+          <li> <a href="#Logging_in_Steps" rel="internal">Logging in Steps</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Add_Metadata_Injection_Support_to_Your_Step" rel="internal">Add Metadata Injection Support to Your Step</a> 
+        <ol>
+          <li> <a href="#InjectionSupported" rel="internal">InjectionSupported</a>  </li>
+          <li>
+            <a href="#Injection" rel="internal">Injection</a> 
+            <ol>
+              <li> <a href="#Enums" rel="internal">Enums</a>  </li>
+              <li> <a href="#Arrays" rel="internal">Arrays</a>  </li>
+              <li> <a href="#Data_Type_Conversions" rel="internal">Data Type Conversions</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#InjectionDeep" rel="internal">InjectionDeep</a>  </li>
+          <li> <a href="#Generics" rel="internal">Generics</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Deploy_Step_Plugins" rel="internal">Deploy Step Plugins</a>  </li>
+      <li> <a href="#Sample_Step_Plugin" rel="internal">Sample Step Plugin</a>  </li>
+      <li> <a href="#Exploring_More_Steps" rel="internal">Exploring More Steps</a>  </li>
+    </ol>
+  </body>
+</content>

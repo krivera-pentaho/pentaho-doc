@@ -1,0 +1,62 @@
+<content type="text/html" title="Configuring Pentaho Analyzer for Large Data Warehouses">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Analyzer has some low-level configuration options that will improve performance when working with large data warehouses and high-cardinality dimensions:</p>
+        <ul class="ul">
+          <li class="li">filter.members.max.count=500</li>
+          <li class="li">filter.dialog.apply.report.context=false</li>
+          <li class="li">filter.dialog.useTopCount=true</li>
+          <li class="li">report.request.service.result.expire.time.seconds=30</li>
+          <li class="li">report.request.service.result.cleanup.time.seconds=300 </li>
+        </ul>
+        <p class="p">These <strong class="ph b">analyzer.properties</strong>  settings are explained in more detail below.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="filter.members.max.count"></span> 
+            <h2 class="editable">filter.members.max.count</h2>
+            <p class="p">Controls the maximum number of values to show in the filter dialogue, such as include/exclude filters and date range dropdowns.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="filter.dialog.apply.report.context"></span> 
+            <h2 class="editable">filter.dialog.apply.report.context</h2>
+            <p class="p">If set to <strong class="ph b">true</strong>, when showing available members in the filter dialog, Analyzer will limit those members to the existing filters or measures on the report. This means that when retrieving the list of members, Analyzer
+              will perform the join in the fact table and then apply dimension filters. For a high-cardinality dimension, this may significantly reduce the list of members loaded into memory.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="filter.dialog.useTopCount"></span> 
+            <h2 class="editable">filter.dialog.useTopCount</h2>
+            <p class="p">If both this and <strong class="ph b">mondrian.native.topcount.enable</strong>  in <strong class="ph b">mondrian.properties</strong>  are set to <strong class="ph b">true</strong>, when showing the first set of members in the filter dialogue,
+              Analyzer will only show that set of members sorted within hierarchy. For high-cardinality dimensions, this is required to avoid loading all members into memory. However, if a user uses the <strong class="ph b">Find</strong>  box in the filter
+              dialogue or if you have <strong class="ph b">filter.dialog.apply.report.context</strong>  set to <strong class="ph b">true</strong>, then the TopCount will not be used.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_4" class="mt-page-section"><span id="report.request.service.result.expire.time.seconds"></span> 
+            <h2 class="editable">report.request.service.result.expire.time.seconds</h2>
+            <p class="p">Report results are released after this amount of time has passed.</p>
+            <p class="p">Analyzer report requests are processed asynchronously and immediately cleaned up after the first download. While this is efficient because clients usually don't need to download a report more than once, it causes issues with popup blockers
+              that will block the first download and re-submit the download after prompting the user. If you expire the request after 30 seconds, you will work around the popup blocker issues while also enabling people to refresh the browser to re-download
+              a report. This only applies to PDF, Excel or CSV downloads.</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_5" class="mt-page-section"><span id="report.request.service.result.cleanup.time.seconds"></span> 
+            <h2 class="editable">report.request.service.result.cleanup.time.seconds</h2>
+            <p class="p">Report result cleanup occurs after this amount of time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#filter.members.max.count" rel="internal">filter.members.max.count</a>  </li>
+      <li> <a href="#filter.dialog.apply.report.context" rel="internal">filter.dialog.apply.report.context</a>  </li>
+      <li> <a href="#filter.dialog.useTopCount" rel="internal">filter.dialog.useTopCount</a>  </li>
+      <li> <a href="#report.request.service.result.expire.time.seconds" rel="internal">report.request.service.result.expire.time.seconds</a>  </li>
+      <li> <a href="#report.request.service.result.cleanup.time.seconds" rel="internal">report.request.service.result.cleanup.time.seconds</a>  </li>
+    </ol>
+  </body>
+</content>

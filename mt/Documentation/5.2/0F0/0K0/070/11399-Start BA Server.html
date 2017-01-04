@@ -1,0 +1,170 @@
+<content type="text/html" title="Start BA Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to start the BA Server.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the BA Manual installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/2154/grBaManualStartBaServer.png?revision=1" />
+          </p>
+          <p class="p">After you've complete the tasks in the
+            <a class="xref" title="Documentation/5.1/0F0/0K0/020" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0K0/020">Prepare Environment</a>,
+            <a class="xref" title="Documentation/5.1/0F0/0K0/030" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0K0/030">Initialize Repository</a>,
+            <a class="xref" title="Documentation/5.1/0F0/0K0/050" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0K0/050">Specify Connections</a>, and
+            <a class="xref" title="Documentation/5.1/0F0/0K0/060" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0F0/0K0/060">Prepare Web Server</a>  steps, the BA Server's <span class="ph filepath">pentaho.war</span>  file is ready to be deployed. The way that tasks for deployment are performed vary slightly depending on whether you deploy the <span class="ph filepath">pentaho.war</span>             file on the Tomcat or JBoss web application servers.</p>
+          <p class="p">Once the <span class="ph filepath">pentaho.war</span>  file has been deployed, manually start the BA Server application.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__manual_tomcat_startup_scripts">
+        <div id="section_2" class="mt-page-section"><span id="Modify_Tomcat_Startup_Script"></span> 
+          <h2 class="editable">Modify Tomcat Startup Script</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The Tomcat startup script must be modified to include the <code class="ph codeph">CATALINA_OPTS</code> variable. <code class="ph codeph">CATALINA_OPTS</code> indicates the amount of memory to allocate. It also indicates where Pentaho licenses
+                are installed. Specific instructions on how to modify the startup script depend on your operating system.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__manual_deployment_tomcat_windows_startup">
+            <div id="section_3" class="mt-page-section"><span id="Modify_the_Tomcat_Windows_Startup_Script"></span> 
+              <h3 class="editable">Modify the Tomcat Windows Startup Script</h3>
+              <div class="body taskbody">
+                <ol>
+                  <li class="li step"><span class="ph cmd">Make sure the Tomcat web application server is not running by starting the Windows <span class="ph uicontrol">Task Manager</span>  and looking for <strong class="ph b">Tomcat</strong>  in the <span class="ph uicontrol">Applications </span> tab.
+                    If the server is running, stop it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">startup.bat</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line directly before the <code class="ph codeph">call &quot;%EXECUTABLE%&quot; start %CMD_LINE_ARGS%</code> line, which is located near the end of the file.</span>  <code class="ph codeph">set CATALINA_OPTS=-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH%</code></li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.<span id="cke_bm_96E" style="display: none;">&nbsp;</span> </span> 
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__manual_deployment_tomcat_nix_startup">
+            <div id="section_4" class="mt-page-section"><span id="Modifying_the_Tomcat_Linux_Startup_Script"></span> 
+              <h3 class="editable">Modifying the Tomcat Linux Startup Script</h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Make sure the Tomcat web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <code class="ph codeph">ps -A</code> at the prompt. If the server is running, stop
+                    it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">startup.sh</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line directly before the <code class="ph codeph">exec &quot;$PRGDIR&quot;/&quot;$EXECUTABLE&quot; start &quot;$@&quot;</code> line near the end of the file.</span>  <code class="ph codeph">export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH&quot;</code></li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__manual_install_jboss_deploy">
+        <div id="section_5" class="mt-page-section"><span id="Modify_JBoss_Startup_Script"></span> 
+          <h2 class="editable">Modify JBoss Startup Script</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The JBoss startup script must be modified to include the <code class="ph codeph">JAVA_OPTS</code> variable. <code class="ph codeph">JAVA_OPTS</code> indicates the amount of memory to allocate. It also indicates where Pentaho licenses are
+                installed. Specific instructions on how to modify the startup script depend on your operating system.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__manual_deployment_jboss_linux_runconf">
+            <div id="section_6" class="mt-page-section"><span id="Modify_the_JBoss_Windows_Startup_Script"></span> 
+              <h3 class="editable">Modify the JBoss Windows Startup Script</h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Make sure the JBoss web application server is not running by starting the Windows <span class="ph uicontrol">Task Manager</span>  and looking for <strong class="ph b">JBoss</strong>  in the <span class="ph uicontrol">Applications </span> tab.
+                    If the server is running, stop it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">standalone.bat</span>  file, which is located in the JBoss <span class="ph filepath">bin</span>  directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line below the <code class="ph codeph">JAVA_OPTS IF</code> statement. It should be outside of the brackets and not part of the <code class="ph codeph">IF</code> statement.</span>  <code class="ph codeph">set JAVA_OPTS=%JAVA_OPTS% -Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH%</code></li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__manual_deployment_jboss_linux_startup_script">
+            <div id="section_7" class="mt-page-section"><span id="Modifying_the_JBoss_Linux_Startup_Script"></span> 
+              <h3 class="editable">Modifying the JBoss Linux Startup Script</h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Make sure the JBoss web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <code class="ph codeph">ps -A</code> at the prompt. If the server is running, stop
+                    it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">standalone.conf</span>  file. The file is located in the <span class="ph filepath">bin</span>  subdirectory of your JBoss home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Modify the <code class="ph codeph">Xms</code> memory settings in the <span class="ph filepath">JAVA_OPTS</span>  line to be at least 4096 MB or more, if you have the resources and are concerned with performance. Change
+                    the <code class="ph codeph">Xmx</code> value to at least 6144 MB.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add the following options to the <span class="ph filepath">JAVA_OPTS</span>  line:</span>  <code class="ph codeph">-Djava.awt.headless=true</code> <code class="ph codeph">-Djava.io.tmpdir=/tmp/</code> <code class="ph codeph">-Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH</code>                    <pre class="pre codeblock">
+# Specify options to pass to the Java VM.
+    if [ &quot;x$JAVA_OPTS&quot; = &quot;x&quot; ]; then
+        JAVA_OPTS=&quot;-Xms4096m \
+        -Xmx6144m \
+        -XX:MaxPermSize=256m \
+        -Dsun.rmi.dgc.client.gcInterval=3600000 \
+        -Dsun.rmi.dgc.server.gcInterval=3600000 \
+        <b>-Djava.awt.headless=true \
+        -Djava.io.tmpdir=/tmp/ \
+        -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH
+</pre> You may need to adjust these settings for your environment. For instance, if you do not have a <span class="ph filepath">/tmp/</span>  directory, you may want to change that setting to <span class="ph filepath">/var/tmp/</span>  or some other location.</li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__install_starting_servers">
+        <div id="section_8" class="mt-page-section"><span id="Start_BA_Server"></span> 
+          <h2 class="editable">Start BA Server</h2>
+          <div class="body taskbody">
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Run the startup script for your web application server by launching one these files.</span> 
+                <div class="p">
+                  <ul class="ul" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__install_starting_servers__ul_jjb_vsr_zk">
+                    <li class="li"><strong class="ph b">Windows Tomcat:</strong>  Launch the <span class="ph filepath">startup.bat</span>  file. The startup.bat file is in the Tomcat <span class="ph filepath">bin</span>  directory.</li>
+                    <li class="li"><strong class="ph b">Linux Tomcat:</strong>  Launch the <span class="ph filepath">startup.bat</span>  file. The startup.sh file is in the Tomcat <span class="ph filepath">bin</span>  directory.</li>
+                    <li class="li"><strong class="ph b">Windows JBoss:</strong>  Launch the <span class="ph filepath">standalone.bat</span>  file. The startup.bat file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+                    <li class="li"><strong class="ph b">Linux JBoss:</strong>  Launch the <span class="ph filepath">standalone.sh</span>  file. The startup.bat file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+                  </ul>
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">Open a web browser and enter this URL: <span class="ph filepath"><a rel="freeklink" href="http://localhost:8080/pentaho" title="http://localhost:8080/pentaho" class="external">http://localhost:8080/pentaho</a> </span> .
+                The <span class="ph uicontrol">User Console Log On</span>  window appears. Note that you will be prompted to install a license. Information on how to do that appears in the
+                <a class="xref" title="Documentation/5.1/0H0/060/010/020" rel="internal"
+                href="http://help.pentaho.com/Documentation/5.2/0H0/060/010/020">Set Up BA Server</a>  instructions. </span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Modify_Tomcat_Startup_Script" rel="internal">Modify Tomcat Startup Script</a> 
+        <ol>
+          <li> <a href="#Modify_the_Tomcat_Windows_Startup_Script" rel="internal">Modify the Tomcat Windows Startup Script</a>  </li>
+          <li> <a href="#Modifying_the_Tomcat_Linux_Startup_Script" rel="internal">Modifying the Tomcat Linux Startup Script</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Modify_JBoss_Startup_Script" rel="internal">Modify JBoss Startup Script</a> 
+        <ol>
+          <li> <a href="#Modify_the_JBoss_Windows_Startup_Script" rel="internal">Modify the JBoss Windows Startup Script</a>  </li>
+          <li> <a href="#Modifying_the_JBoss_Linux_Startup_Script" rel="internal">Modifying the JBoss Linux Startup Script</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Start_BA_Server" rel="internal">Start BA Server</a>  </li>
+    </ol>
+  </body>
+</content>

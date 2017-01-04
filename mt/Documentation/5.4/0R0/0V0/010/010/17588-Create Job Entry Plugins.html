@@ -1,0 +1,64 @@
+<content type="text/html" title="Create Job Entry Plugins">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A job entry implements a logical task in ETL control flow. Job entries are executed in sequence, each job entry generating a boolean result that can be used for conditional branching in the job sequence.</p>
+        <p class="p">
+          <img alt="jobEntryPlugins.png" class="internal default" style="width: 779px; height: 469px;" width="779px" height="469px" src="http://help.pentaho.com/@api/deki/files/5194/jobEntryPlugins.png?size=bestfit&amp;width=779&amp;height=469&amp;revision=1"
+          />
+        </p> &nbsp;
+        <p class="p">This section explains the architecture and programming concepts for creating your own PDI job entry plugin. We recommended that you open and refer to the
+          <a class="xref" title="Sample Job Entry Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/040">
+          sample job entry plugin sources</a>  while following these instructions.</p>
+        <p class="p">A job entry plugin integrates with PDI by implementing two distinct Java interfaces. Each interface represents a set of responsibilities performed by a PDI job. Each of the interfaces has a base class that implements the bulk of the interface
+          in order to simplify plugin development.</p>
+        <p class="p">All job entry interfaces and corresponding base classes are part of the <code class="ph codeph">org.pentaho.di.job.entry</code> package.&nbsp;</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="e34e8b61-ae69-4339-bc20-f431d0e6e8d5__d15557e55" valign="top"><strong class="ph b">Java Interface</strong> </th>
+                <th class="entry" id="e34e8b61-ae69-4339-bc20-f431d0e6e8d5__d15557e61" valign="top"><strong class="ph b">Base Class</strong> </th>
+                <th class="entry" id="e34e8b61-ae69-4339-bc20-f431d0e6e8d5__d15557e67" valign="top"><strong class="ph b">Main Responsibilities</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d15557e55 " valign="top"><code class="ph codeph">JobEntryInterface</code></td>
+                <td class="entry" headers="d15557e61 " valign="top"><code class="ph codeph">JobEntryBase</code></td>
+                <td class="entry" headers="d15557e67 " valign="top">
+                  <ul class="ul">
+                    <li class="li">Maintain job entry settings</li>
+                    <li class="li">Serialize job entry settings</li>
+                    <li class="li">Provide access to dialog class</li>
+                    <li class="li">Execute job entry task</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d15557e55 " valign="top"><code class="ph codeph">JobEntryDialogInterface</code></td>
+                <td class="entry" headers="d15557e61 " valign="top"><code class="ph codeph">JobEntryDialog</code></td>
+                <td class="entry" headers="d15557e67 " valign="top">
+                  <ul class="ul">
+                    <li class="li">Job entry settings dialog</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Implementing a Job Entry" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/000">Implementing a Job Entry</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Implementing the Job Entry Settings Dialog Box" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/010">Implementing the Job Entry Settings Dialog Box</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Logging in Job Entries" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/020">Logging in Job Entries</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Deploying Job Entry Plugins" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/030">Deploying Job Entry Plugins</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Sample Job Entry Plugin" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/040">Sample Job Entry Plugin</a> </strong> </li>
+          <li class="link ulchildlink"><strong><a title="Exploring More Job Entries" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/0V0/010/010/050">Exploring More Job Entries</a> </strong> </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

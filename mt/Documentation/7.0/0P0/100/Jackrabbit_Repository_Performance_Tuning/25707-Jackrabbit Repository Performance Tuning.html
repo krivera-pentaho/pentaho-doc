@@ -1,0 +1,117 @@
+<content type="text/html" title="Jackrabbit Repository Performance Tuning">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>These topics&nbsp;will help you to get&nbsp;the best performance out of your Jackrabbit repository, using background information on known Jackrabbit performance&nbsp;issues as well as&nbsp;step-by-step instructions on addressing them in the&nbsp;Pentaho
+      software.</p>
+    <div id="section_1" class="mt-page-section"><span id="Jackrabbit_Hangs_on_Unused_Data"></span> 
+      <h2 class="editable">Jackrabbit Hangs on Unused Data</h2>
+      <p>Jackrabbit Repository (JCR) often&nbsp;retains to a lot of unused data if you perform migrations&nbsp;from the same repository multiple times. This leads to an increase in table sizes and slowdowns on the repository.</p>
+      <p>You can clean up this unused data&nbsp;in the JCR by enabling a system listener designed for this purpose.&nbsp;Cleaning up the JCR can only be done with no users logged into it, and the repository remains locked while the process is running.&nbsp;</p>
+      <ol class="pentaho-list-ordered">
+        <li>Stop the Pentaho Server.</li>
+        <li>Locate the <span class="filepath style-wrap">pentaho-server/pentaho-solutions/system</span> &nbsp;&nbsp;directory and open the <span class="filepath style-wrap">systemListeners.xml</span>  with any text editor.</li>
+        <li>
+          <p>Add this bean as the last item within&nbsp;the <span class="filepath style-wrap">list </span> tags.</p>
+        </li>
+      </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><bean id=&quot;repositoryCleanerSystemListener&quot; class=&quot;org.pentaho.platform.plugin.services.repository.RepositoryCleanerSystemListener&quot;>
+<property name=&quot;gcEnabled&quot; value=&quot;true&quot;/>
+<property name=&quot;execute&quot; value=&quot;now&quot;/>
+</bean></pre>
+      <ol class="pentaho-list-ordered" start="4">
+        <li>Save and close the <span class="filepath style-wrap">systemListeners.xml</span>  file and restart the Pentaho Server.</li>
+      </ol>
+      <p>You can customize the settings for the <span class="filepath style-wrap">repositoryCleanerSystemListener</span>  by editing these properties. We recommend cleaning up the Jackrabbit repository on a regular schedule.</p>
+      <table border="1" cellpadding="1"
+      cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col">Property</th>
+            <th scope="col">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>gcEnabled</td>
+            <td>This is a Boolean flag that&nbsp;turns the listener On (<span class="filepath style-wrap">true</span> ) or Off (<span class="filepath style-wrap">false</span> ).</td>
+          </tr>
+          <tr>
+            <td>execute</td>
+            <td>You can chose to run the listener:
+              <ul>
+                <li>now - runs once during server start-up</li>
+                <li>weekly - runs on the first day of each week (Sunday)</li>
+                <li>monthly - runs on the first day of each month</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Jackrabbit_Runs_Slowly_with_Too_Many_Home_Directories"></span> 
+      <h2 class="editable">Jackrabbit Runs Slowly with Too Many Home Directories</h2>
+      <p>Before Pentaho 6.1, the Jackrabbit repository ran slowly when there are too many home directories. Jackrabbit scanned each and every home directory on the first login after a server restart, calling <span class="filepath style-wrap">UserDetailService </span> for
+        each home directory owner.&nbsp;</p>
+      <p>A flag has been added to skip user verification on principal creation by default. &nbsp;It retrieves user&nbsp;details from the user cache only, which speeds up repository loading.</p>
+      <p>You may need to restore the old behavior if your authorization system is expecting the Pentaho server to load all of the user information on startup. Restore the old behavior by changing the <span class="filepath style-wrap">skipUserVerificationOnPrincipalCreation </span> to
+        false. This&nbsp;allows user verification to operate in the same way it did before 6.1.&nbsp;</p>
+      <ol class="pentaho-list-ordered">
+        <li>Navigate to the <span class="filepath style-wrap">pentaho-solutions/system/jackrabbit</span>  directory.</li>
+        <li>Open the <span class="filepath style-wrap">security.properties</span>  file with any text editor.</li>
+        <li>Locate the <span class="filepath style-wrap">skipUserVerificationOnPrincipalCreation </span> property and set the value as needed.</li>
+        <li>Save and close the file.</li>
+      </ol>
+      <p>If you discover that you need to re-enable the old mode of verification, then it is likely an issue exists with your authentication system. We recommend contacting
+        <a class="link-https" title="https://support.pentaho.com/hc/en-us" rel="external nofollow"
+        href="https://support.pentaho.com/hc/en-us" target="_blank">Pentaho Support</a>  if you need help.&nbsp;</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Jackrabbit_Lucene_SearchIndex_Slows_Server_Performance"></span> 
+      <h2 class="editable">Jackrabbit Lucene SearchIndex Slows Server Performance</h2>
+      <p>The purpose of the Jackrabbit <span class="filepath style-wrap">SearchIndex </span> tag is to index property values and node names when data is saved or whenever a data transaction is performed. With the Pentaho Platform, Jackrabbit&rsquo;s Lucene
+        tries to index all of the text from every file in the repository. The <span class="filepath style-wrap">SearchIndex </span> tag has been disabled for Pentaho 6.1 and higher&nbsp;to improve overall repository performance.</p>
+      <p>When you upgrade to Pentaho 6.1 or higher&nbsp;and bring your previous <span class="filepath style-wrap">repository.xml</span>  forward to the new version, your server will start and function as it did in your previous version of Pentaho. This Jackrabbit
+        Lucene indexing can cause degradation in repository performance.&nbsp;</p>
+      <p>If you are bringing forward your <span class="filepath style-wrap">repository.xml</span>,&nbsp;you will need to disable the <span class="filepath style-wrap">SearchIndex </span> tag within Jackrabbit. Follow these steps to disable the <span class="filepath style-wrap">SearchIndex </span> tag:&nbsp;</p>
+      <p>If you have a <strong>custom-configured</strong>  <span class="filepath style-wrap">repository.xml</span> :</p>
+      <ol class="pentaho-list-ordered">
+        <li>Navigate to the <span class="filepath style-wrap">pentaho-solutions/system/jackrabbit</span>  directory.</li>
+        <li>Open the <span class="filepath style-wrap">repository.xml </span> file with any text editor.</li>
+        <li>Search for the <span class="filepath style-wrap">SearchIndex </span> tag.&nbsp;</li>
+        <li>You should find it within two tags: the <span class="filepath style-wrap"><Workspace></span>  tag and the <span class="filepath style-wrap"><Repository></span>  tag.</li>
+        <li>In the <span class="filepath style-wrap"><Repository></span>  tag only, delete or comment out the <span class="filepath style-wrap">SearchIndex </span> tag.&nbsp;Make sure that you don't change&nbsp;the <span class="filepath style-wrap">SearchIndex </span> tag
+          within the&nbsp;<span class="filepath style-wrap"><Workspace></span> &nbsp;tag.</li>
+        <li>Save and close the <span class="filepath style-wrap">repository.xml</span>  file.</li>
+      </ol>
+      <p>If you are using the <strong>default</strong>  <span class="filepath style-wrap">repository.xml</span> :</p>
+      <ol class="pentaho-list-ordered">
+        <li>Navigate to the <span class="filepath style-wrap">pentaho-solutions/system/jackrabbit</span>  directory.</li>
+        <li>Open the <span class="filepath style-wrap">repository.xml </span> file with any text editor.</li>
+        <li>Search for the following instance of the <span class="filepath style-wrap">SearchIndex </span> tag:</li>
+      </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><SearchIndex class=&quot;org.apache.jackrabbit.core.query.lucene.SearchIndex&quot;>
+    <param name=&quot;path&quot; value=&quot;${rep.home}/repository/index&quot;/>
+    <param name=&quot;supportHighlighting&quot; value=&quot;true&quot;/>
+</SearchIndex></pre>
+      <ol class="pentaho-list-ordered" start="4">
+        <li>Delete or comment out that <span class="filepath style-wrap">SearchIndex </span> tag.</li>
+        <li>Save and close the <span class="filepath style-wrap">repository.xml</span>  file.</li>
+      </ol>
+      <p>Whenever you make any changes to the Jackrabbit <span class="filepath style-wrap">repository.xml</span>  file, you need to delete the <span class="filepath style-wrap">pentaho-solutions/system/jackrabbit/repository</span>  folder and restart your
+        Pentaho Server. The folder will be recreated with your new <span class="filepath style-wrap">repository.xml</span>  settings upon server restart.</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Jackrabbit_Hangs_on_Unused_Data" rel="internal">Jackrabbit Hangs on Unused Data</a>  </li>
+      <li> <a href="#Jackrabbit_Runs_Slowly_with_Too_Many_Home_Directories" rel="internal">Jackrabbit Runs Slowly with Too Many Home Directories</a>  </li>
+      <li> <a href="#Jackrabbit_Lucene_SearchIndex_Slows_Server_Performance" rel="internal">Jackrabbit Lucene SearchIndex Slows Server Performance</a>  </li>
+    </ol>
+  </body>
+</content>

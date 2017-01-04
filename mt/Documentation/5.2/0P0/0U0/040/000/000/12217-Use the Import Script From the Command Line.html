@@ -1,0 +1,86 @@
+<content type="text/html" title="Use the Import Script From the Command Line">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>The import script is a command line utility that pulls content into an enterprise or database repository from two kinds of files: Individual KJB or KTR files, or complete repository export XML files.</p>
+    <p>You must also declare a rules file that defines certain parameters for the data integration content you're importing. We provide a sample file called <span class="filepath style-wrap">import-rules.xml</span>, included with the standard Data Integration
+      client tool distribution. It contains all of the potential rules with comments that describe what each rule does. You can either modify this file, or copy its contents to another file; regardless, you must declare the rules file as a command line
+      parameter.</p>
+    <div id="section_1" class="mt-page-section"><span id="Options"></span> 
+      <h2 class="editable">Options</h2>
+      <p>The table below defines command line options for the import script. Options are declared with a dash, followed by the option, then the (equals) sign and the value.</p>
+      <p><strong>Example:</strong> </p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">sh import.sh -rep=PRODUCTION -user=admin -pass=12345 -dir=/ -file=import-rules.xml -rules=import-rules.xml -replace -comment=&quot;New version upload from UAT&quot;</pre>
+      <table class="pentaho-table" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 75px;">Parameter</th>
+            <th scope="col" style="width: 550px;">Definition or Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 55px;"><strong>rep</strong> </td>
+            <td style="width: 620px;">The name of the enterprise or database repository to import into.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>user</strong> </td>
+            <td style="width: 620px;">The repository username you will use for authentication.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>pass</strong> </td>
+            <td style="width: 620px;">The password for the username you specified with <strong>user</strong> .</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>dir</strong> </td>
+            <td style="width: 620px;">The directory in the repository that you want to copy the content to.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>limitdir</strong> </td>
+            <td style="width: 620px;"><strong>Optional.</strong>  A list of comma-separated source directories to include (excluding those directories not explicitly declared).</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>file</strong> </td>
+            <td style="width: 620px;">The path to the repository export file that you will import from.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>rules</strong> </td>
+            <td style="width: 620px;">The path to the rules file, as explained above.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>comment</strong> </td>
+            <td style="width: 620px;">The comment that will be set for the new revisions of the imported transformations and jobs.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>replace</strong> </td>
+            <td style="width: 620px;">Set to <strong>Y</strong>  to replace existing transformations and jobs in the repository. Default value is <strong>N</strong> .</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>coe</strong> </td>
+            <td style="width: 620px;">Continue on error, ignoring all validation errors (Y/N). Default value is <strong>N</strong> .</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>version</strong> </td>
+            <td style="width: 620px;">Shows the version, revision, and build date of the PDI instance that the import script interfaces with.</td>
+          </tr>
+          <tr>
+            <td style="width: 55px;"><strong>norules</strong> </td>
+            <td style="width: 620px;">Do not use a rules file (Y/N). Default value is <strong>N</strong> .</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Options" rel="internal">Options</a>  </li>
+    </ol>
+  </body>
+</content>

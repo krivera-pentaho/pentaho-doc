@@ -1,0 +1,180 @@
+<content type="text/html" title="Advanced Settings for Using the SDR">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>The <strong>SDR </strong> information described here is provided as a set of building blocks for you to use to create your own data refinery solutions.</p>
+        </div>
+      </div>
+      <p>The <strong>SDR </strong> information described here is provided as a set of building blocks for you to use to create your own data refinery solutions.</p>
+      <div id="section_2" class="mt-page-section"><span id="Install_Vertica_JDBC_Driver"></span> 
+        <h2 class="editable">Install Vertica JDBC Driver</h2>
+        <p>If you are using Vertica, you will need to follow these steps to install the Vertica JDBC driver.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Exit Spoon, if you have it running.</li>
+          <li>Stop the Data Integration server.
+            <ol class="pentaho-list-ordered">
+              <li><strong>Windows</strong> : Stop the DI Server by going to <strong>Start > Pentaho Enterprise Edition > Server Management </strong> and double-clicking the <strong>Stop DI Server</strong>  icon.</li>
+              <li><strong>Mac OS</strong> : In the command line, run this script to stop the DI Server.&nbsp; <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">shutdown data-integration-server ./ctlscript.sh stop data-integration-server</pre>                </li>
+              <li>Copy the driver to these three directories: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSTALL_DIR/server/biserver-ee/tomcat/webapps/pentaho/WEB-INF/lib</pre>                <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSTALL_DIR/server/data-integration-server/tomcat/webapps/pentaho-di/WEB-INF/lib</pre> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSTALL_DIR/design-tools/data-integration/lib</pre>                </li>
+            </ol>
+          </li>
+        </ol>
+        <p>Next, we are going to
+          <a title="https://help.pentaho.com/Documentation/5.2/0R0/150#Steps_to_Using_the_(TBD)_Sample" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/150#Steps_to_Using_the_(TBD)_Sample">download and install</a>  the SDR sample.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Configure_.KTR_Files_for_Your_Environment"></span> 
+        <h2 class="editable">Configure .KTR Files for Your Environment</h2>
+        <p>If you are NOT using Postgres and a default installation, you will need to configure a few . KTRS in Spoon in order to use the SDR form.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Click <strong>File </strong> > <strong>Open </strong> and navigate to find the <span class="filepath style-wrap">SDR_data.ktr</span>  in this directory: <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/SDR/endpoints/kettle</span> .
+            Right-click on the <strong>Set Local Variables</strong>  step to edit, and enter the URL for your BA Server. Click <strong>OK</strong> .
+            <p style="text-align: center;">
+              <a title="SetLocalVariables.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2821/SetLocalVariables.png">
+                <img alt="SetLocalVariables.png" class="undefined internal" style="width: 550px; height: 323px;" width="550px" height="323px" src="http://help.pentaho.com/@api/deki/files/2821/SetLocalVariables.png?size=bestfit&amp;width=550&amp;height=323&amp;revision=1"
+                />
+              </a> 
+            </p>
+          </li>
+          <li>In the same transformation, right-click on the <span class="filepath style-wrap">Call_ML_SDR </span> Job and select<strong> Open Referenced Object </strong> ><strong> Job</strong>  to open the _<span class="filepath style-wrap">ML_SDR</span> 
+            <span
+            class="filepath style-wrap">.job</span> . Right-click to edit the <strong>Create Table</strong>  step to point to your staging database. Click <strong>OK</strong> .
+              <p style="text-align: center;">
+                <a class="thumb" title="OrchestrateMe.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2834/OrchestrateMe.png">
+                  <img alt="OrchestrateMe.png" class="internal default" style="width: 550px; height: 303px;" width="550px" height="303px" src="http://help.pentaho.com/@api/deki/files/2834/OrchestrateMe.png?size=bestfit&amp;width=550&amp;height=303&amp;revision=1"
+                  />
+                </a> 
+              </p>
+          </li>
+          <li>Next, right-click to edit the <strong>Publish Model</strong>  step and enter your user id and password for the BA Server. Click <strong>Test Connection</strong>, then click <strong>OK</strong> .</li>
+          <li>Open the <span class="filepath style-wrap">ML_SDR_REFINERY.ktr</span> . Right-click to edit the <strong>Out to Staging DB</strong>  step and select your staging database from the drop-down menu.
+            <p style="text-align: center;">
+              <a title="StagingDB.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2823/StagingDB.png">
+                <img alt="StagingDB.png" class="undefined internal" style="width: 550px; height: 285px;" width="550px" height="285px" src="http://help.pentaho.com/@api/deki/files/2823/StagingDB.png?size=bestfit&amp;width=550&amp;height=285&amp;revision=1"
+                />
+              </a> 
+            </p>
+          </li>
+          <li>Save all of these files and exit out of Spoon.</li>
+          <li>Restart the BA and DI servers.</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Use_Hadoop_with_SDR"></span> 
+        <h2 class="editable">Use Hadoop with SDR</h2>
+        <p>There are a
+          <a class="external" title="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version"
+          target="_blank">few prerequisites</a>  that you need to make sure are satisfied before you can begin using SDR with Hadoop.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">ML_SDR_REFINERY.ktr</span>  and locate the <span class="filepath style-wrap">Hadoop File Input</span>  step in the upper-left.</li>
+          <li>Click to activate the hop between the <span class="filepath style-wrap">Hadoop File Input</span>  and <span class="filepath style-wrap">Parse weblog</span>  steps.</li>
+          <li>Click to deactivate all of&nbsp; the hops between the <span class="filepath style-wrap">Log File List</span>  and <span class="filepath style-wrap">Read Weblog Files</span>  steps.
+            <p style="text-align: center;">
+              <a class="thumb" title="HadoopActivated2.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/2837/HadoopActivated2.png">
+                <img alt="HadoopActivated2.png" class="internal default" style="width: 550px; height: 254px;" width="550px" height="254px" src="http://help.pentaho.com/@api/deki/files/2837/HadoopActivated2.png?size=bestfit&amp;width=550&amp;height=254&amp;revision=1"
+                />
+              </a> 
+            </p>
+          </li>
+          <li>Right-click to edit the <strong>Out to Staging DB</strong>  step and select your staging database from the drop-down menu</li>
+          <li>Click OK to close the window and save the transformation.</li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Update_the_SDR_Sample_to_Call_the_DI_Server"></span> 
+        <h2 class="editable">Update the SDR Sample to Call the DI Server</h2>
+        <p>You will need to configure the repository location to run jobs through HTTP before you can use the SDR sample with the DI Server.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the <span class="filepath style-wrap">data-integration-server\pentaho-solutions\system\kettle</span>  directory and open the <span class="filepath style-wrap">slave-server-config.xml</span>  file with any text editor.</li>
+          <li>Import the SDR KJB/KTR into the DI Server.
+            <ol>
+              <li>Find the KJB and KTRs located in the <span class="filepath style-wrap">biserver-ee\pentaho-solutions\system\SDR\endpoints\kettle\ML_SDR</span> .</li>
+              <li>Import them into the DI Server.</li>
+            </ol>
+          </li>
+          <li>Configure the SDR KJB/KTR to run from the DI Server.
+            <ol>
+              <li>Update the job so that it runs the KTR from the repository, instead of the filesystem.</li>
+              <li>Update the transformation so that it can find the <strong>weblog </strong> and <strong>lookup </strong> files.</li>
+            </ol>
+          </li>
+          <li>Update the SDR endpoint to call the DI Server to run the job.
+            <ol>
+              <li>Switch to the HTTP Client Lookup step to make the HTTP call.</li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="App_Endpoints_for_Forms"></span> 
+        <h2 class="editable">App Endpoints for Forms</h2>
+        <p>These are a few API endpoints that you can also use to run the app. To perform a command, alter this example to match your parameters:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://{host}/pentaho/plugin/{pluginID}/api/{command}</pre>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 167px;">Endpoint</th>
+              <th scope="col" style="width: 375px;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 167px;">genre</td>
+              <td style="width: 507px;">Populates the options for the <strong>genre </strong> selector.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">gender</td>
+              <td style="width: 507px;">Populates the options for the <strong>gender </strong> selector.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">occupation</td>
+              <td style="width: 507px;">Populates the options for the <strong>occupation </strong> selector.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">income</td>
+              <td style="width: 507px;">Populates the options for the <strong>income </strong> selector.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">firstdate</td>
+              <td style="width: 507px;">Returns the limit dates for the data to be processed.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">data_source_name</td>
+              <td style="width: 507px;">Returns the names of all data sources available on the server.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">latest_requests</td>
+              <td style="width: 507px;">Returns the latest 10 requests made in a table, instead of inside of a popup.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">sdr_data</td>
+              <td style="width: 507px;">Processes the request and returns the status of the data.</td>
+            </tr>
+            <tr>
+              <td style="width: 167px;">refresh</td>
+              <td style="width: 507px;">Refreshes the kettle and dashboard elements to reflect any saved changes. Clears the cache for all kettle endpoints.</td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_Vertica_JDBC_Driver" rel="internal">Install Vertica JDBC Driver</a>  </li>
+      <li> <a href="#Configure_.KTR_Files_for_Your_Environment" rel="internal">Configure .KTR Files for Your Environment</a>  </li>
+      <li> <a href="#Use_Hadoop_with_SDR" rel="internal">Use Hadoop with SDR</a>  </li>
+      <li> <a href="#Update_the_SDR_Sample_to_Call_the_DI_Server" rel="internal">Update the SDR Sample to Call the DI Server</a>  </li>
+      <li> <a href="#App_Endpoints_for_Forms" rel="internal">App Endpoints for Forms</a>  </li>
+    </ol>
+  </body>
+</content>

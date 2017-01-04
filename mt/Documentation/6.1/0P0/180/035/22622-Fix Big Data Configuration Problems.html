@@ -1,0 +1,288 @@
+<content type="text/html" title="Fix Big Data Configuration Problems">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>This section explains how to fix CDH, EMR, HDP, and MapR configuration problems and issues.</p>
+      </div>
+    </div>
+    <p>This section explains how to fix common Hadoop cluster connection problems and issues.</p>
+    <div id="section_2" class="mt-page-section"><span id="General_Configuration_Problems"></span> 
+      <h2 class="editable">
+        <a id="bigdata_general" name="bigdata_general"></a> General Configuration Problems</h2>
+      <p>The issues in this section explain how to resolve common configuration problems.&nbsp;</p>
+      <div id="section_3" class="mt-page-section"><span id="Shim_and_Configuration_Issues"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_shim_loading" name="bigdata_general_shim_loading"></a> Shim and Configuration Issues</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 152px;">Symptoms</th>
+              <th style="width: 226px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 152px;">
+                <p>No shim</p>
+              </td>
+              <td style="width: 226px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Active shim was not selected.</li>
+                  <li>Shim was installed in the&nbsp; wrong place.</li>
+                  <li>Shim name was not entered correctly in the <span class="filepath style-wrap">plugin.properties</span>  file.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the plugin name that is in the <span class="filepath style-wrap">plugin.properties</span>  file <span style="color:#000000;">matches the directory name in the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations</span>                     directory</span> .&nbsp;</li>
+                  <li>Make sure the shim is installed in the <span style="color:#000000;">correct place</span> .</li>
+                  <li>Check the instructions for your Hadoop distribution in the
+                    <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article for more details on how to verify the plugin name and shim installation directory.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 152px;">Shim doesn't load</td>
+              <td style="width: 226px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Required licenses are not installed.</li>
+                  <li>You tried to load a shim that is not supported by your version of Pentaho.</li>
+                  <li>If you are using MapR, the client might not have been installed correctly.&nbsp;</li>
+                  <li>Configuration file changes were made incorrectly.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify the
+                    <a title="Enter Licenses and Connect to the DI Repository" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/020/020">required licenses are installed</a>  and have not expired.</li>
+                  <li>Verify that the shim is supported by your version of Pentaho.
+                    <a title="https://help.pentaho.com/Documentation/6.0/0L0/0Y0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/010">Find your version of Pentaho</a>, then look for the corresponding
+                    <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/000#Big_Data_Sources">Components Reference</a>  for more details.</li>
+                  <li>Verify that configuration file changes were made correctly.&nbsp; Contact your Hadoop Administrator or see the
+                    <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article.</li>
+                  <li>If you are connecting to MapR, verify that the client was properly installed.&nbsp; See MapR documentation for details.</li>
+                  <li>Restart Spoon, then test again.</li>
+                  <li>If this error continues to occur, files might be corrupted.&nbsp; Download a new copy of the shim from the Pentaho Customer Support Portal.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 152px;">The file system's URL does not match the URL in the configuration file.</td>
+              <td style="width: 226px;">Configuration files (<span class="filepath style-wrap">*-site.xml</span>  files) were not configured properly.&nbsp;</td>
+              <td>Verify that the configuration files were configured correctly.&nbsp; Verify that the <span class="filepath style-wrap">core-site.xml</span>  file is configured correctly.&nbsp; See the instructions for your Hadoop distribution in the
+                <a title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)"
+                rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/070/030">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article for details.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Connection_Problems"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_cluster_connect" name="bigdata_general_cluster_connect"></a> Connection Problems</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Hostname incorrect or not resolving properly.</td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>No hostname has been specified.</li>
+                  <li>Hostname/IP Address is incorrect.</li>
+                  <li>Hostname is not resolving properly in the DNS.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the Hostname/IP address is correct.</li>
+                  <li>Check the DNS to make sure the Hostname is resolving properly.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Port name is incorrect.</td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>No port number has been specified.</li>
+                  <li>Port&nbsp; number is incorrect.</li>
+                  <li>Port number is not numeric.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the port number is correct.</li>
+                  <li>If you don't have a port number, determine whether your cluster has been enabled for high availability. If it has, then you do not need a port number.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Can't connect.</td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall is a barrier to connecting.</li>
+                  <li>Other networking&nbsp;issues are occurring.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that a firewall is not impeding the connection and that there aren't other network issues.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Directory_Access_or_Permissions_Issues"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_accessdirectory" name="bigdata_general_accessdirectory"></a> Directory Access or Permissions Issues</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 143px;">
+                <p>Can't access directory.</p>
+              </td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Authorization and/or authentication&nbsp;issues.</li>
+                  <li>Directory is not on the cluster.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Make sure the user has been granted read, write, and execute access to the directory.&nbsp;</li>
+                  <li>Ensure security settings for the cluster and shim allow access.</li>
+                  <li>Verify the hostname and port number are correct for the Hadoop File System's&nbsp;namenode.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">
+                <p>Can't create, read, update, or delete files or directories</p>
+              </td>
+              <td style="width: 180px;">
+                <p>Authorization and/or authentication&nbsp;issues.</p>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Make sure the user has been authorized execute&nbsp;access to the directory.&nbsp;</li>
+                  <li>Ensure security settings for the cluster and shim allow access.</li>
+                  <li>Verify that the hostname and port number are correct for the Hadoop File System's&nbsp;namenode.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Test file cannot be overwritten.&nbsp;</td>
+              <td style="width: 180px;">Pentaho test file is already in the directory.</td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>A file with the same name as the Pentaho test file is already in the directory.&nbsp; The test file is used to make sure that the user can create, write, and delete in the user's home directory.</li>
+                  <li>The test was run, but the file was not deleted.&nbsp; You will need to manually delete the test file.&nbsp; Check the log fo the test file name.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Oozie_Issues"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_oozie" name="bigdata_general_oozie"></a> Oozie Issues</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 143px;">
+                <p>Can't connect to Oozie.</p>
+              </td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall issue.</li>
+                  <li>Other networking&nbsp;issues.</li>
+                  <li>Oozie URL is incorrect.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the Oozie URL was correctly entered.</li>
+                  <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Zookeeper_Problems"></span> 
+        <h3 class="editable">
+          <a id="bigdata_general_zookeeper" name="bigdata_general_zookeeper"></a> Zookeeper Problems</h3>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 191px;">
+                <p>Can't connect to Zookeeper.</p>
+              </td>
+              <td style="width: 193px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall is hindering connection with the Zookeeper service.</li>
+                  <li>Other networking&nbsp;issues.</li>
+                </ul>
+              </td>
+              <td style="width: 297px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>Zookeeper hostname or port not found or doesn't resolve properly.&nbsp;&nbsp;</p>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Hostname/IP Address and Port name is missing or is incorrect.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Try to connect to the Zookeeper nodes using ping or another method.</li>
+                  <li>Verify that the Hostname/IP Address and Port numbers are correct.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#General_Configuration_Problems" rel="internal">General Configuration Problems</a> 
+        <ol>
+          <li> <a href="#Shim_and_Configuration_Issues" rel="internal">Shim and Configuration Issues</a>  </li>
+          <li> <a href="#Connection_Problems" rel="internal">Connection Problems</a>  </li>
+          <li> <a href="#Directory_Access_or_Permissions_Issues" rel="internal">Directory Access or Permissions Issues</a>  </li>
+          <li> <a href="#Oozie_Issues" rel="internal">Oozie Issues</a>  </li>
+          <li> <a href="#Zookeeper_Problems" rel="internal">Zookeeper Problems</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

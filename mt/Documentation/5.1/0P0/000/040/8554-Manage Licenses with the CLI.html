@@ -1,0 +1,112 @@
+<content type="text/html" title="Manage Licenses with the CLI">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Although the
+            <a class="xref" title="Documentation/5.1/060/010/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/020"> <span class="ph uicontrol">Administration</span>  </a>  page of the User Console is the quickest, easiest, and most comprehensive way to manage the BA Server, you may be in environments where it is difficult or impossible to deploy or use the
+            console. See the alternative instructions for
+            <a title="Documentation/5.1/000/040" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/5.1/0P0/000/040">command line interface (CLI) license</a>  registration for step-by-step instructions.</p>
+        </div>
+      </div>
+      <p class="p">Although the
+        <a class="xref" title="Documentation/5.1/060/010/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/020"> <span class="ph uicontrol">Administration</span>  </a>  page of the User Console is the quickest, easiest, and most comprehensive way to manage the BA Server, you may be in environments where it is difficult or impossible to deploy or use the console.
+        See the alternative instructions for
+        <a title="Documentation/5.1/000/040" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/5.1/0P0/000/040">command line interface (CLI) license</a>  registration for step-by-step instructions.</p>
+      <p class="p">To ensure that the BA Server and DI Server use the same location to store and retrieve Pentaho licenses, you must create a <strong class="ph b">PENTAHO_INSTALLED_LICENSE_PATH</strong>  system variable for your <strong class="ph b">pentaho</strong>         user account. If you do not set this variable, the User Console and the command line license installation script will store license data in a place that the DI Server and BA Server will not look.</p>
+      <p class="p">It does not matter what you set this location to; however, it needs to be available to the user account(s) that run the User Console and the BA and DI Server.</p>
+      <div class="topic task nested1" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_variable_linux">
+        <div id="section_2" class="mt-page-section"><span id="Set_the_License_Path_Variable_on_Linux"></span> 
+          <h2 class="editable">Set the License Path Variable on Linux</h2>
+          <div class="body taskbody">
+            <ol class="ol steps" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_variable_linux__steps_nrn_qmr_ck">
+              <li class="li step"><span class="ph cmd">Edit your <strong class="ph b">/etc/environment</strong>  file with a text editor.</span>  If you're using Solaris, you will have to set this environment variable through whatever means are available to you.</li>
+              <li class="li step"><span class="ph cmd">Add this line in a convenient place (changing the path as explained above, if necessary): <strong class="ph b">export PENTAHO_INSTALLED_LICENSE_PATH=/home/pentaho/.installedLicenses.xml</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">You must log out and log back into the operating system for the change to take effect.</span> </li>
+              <li class="li step"><span class="ph cmd">Verify that the variable is properly set.</span>  <pre class="pre codeblock">
+env | grep PENTAHO_INSTALLED_LICENSE_PATH</pre> </li>
+            </ol>
+            <div class="section result">The PENTAHO_INSTALLED_LICENSE_PATH variable is now set.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_variable_windows">
+        <div id="section_3" class="mt-page-section"><span id="Set_the_License_Path_Variable_on_Windows"></span> 
+          <h2 class="editable">Set the License Path Variable on Windows</h2>
+          <div class="body taskbody">
+            <ol class="ol steps" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_variable_windows__steps_gh2_tmr_ck">
+              <li class="li step"><span class="ph cmd">In <strong class="ph b">Windows 2008 Server</strong>, right-click on <strong class="ph b">Computer</strong>, then select <strong class="ph b">Properties</strong>  from context menu, then click <strong class="ph b">Advanced System Settings</strong> .</span>                 The <strong class="ph b">System Properties</strong>  window will come up.</li>
+              <li class="li step"><span class="ph cmd">In the System Properties window, click the <strong class="ph b">Advanced</strong>  tab, then click <strong class="ph b">Environment Variables</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">In the System Variable section, click New.</span> </li>
+              <li class="li step"><span class="ph cmd">A popup dialog will ask for a variable name and value. Type <strong class="ph b">PENTAHO_INSTALLED_LICENSE_PATH</strong>  into the name field, and the directory you intend to install licenses to plus <strong class="ph b">.installedLicenses.xml</strong>  in the value field, then click <strong class="ph b">OK</strong> .</span>                 <pre class="pre codeblock">
+C:/pentaho/.installedLicenses.xml</pre> </li>
+              <li class="li step"><span class="ph cmd">In the parent window, click <strong class="ph b">Apply Changes</strong> .</span> </li>
+              <li class="li step"><span class="ph cmd">You must restart your computer for the change to take effect.</span> </li>
+              <li class="li step"><span class="ph cmd">Verify that the variable is properly set.</span>  <pre class="pre codeblock">
+echo %PENTAHO_INSTALLED_LICENSE_PATH%</pre> </li>
+            </ol>
+            <div class="section result">The PENTAHO_INSTALLED_LICENSE_PATH variable is now set.</div>
+            <div class="section postreq">If you run Tomcat automatically as a Windows service, you must also configure it to run on the Windows user account where the <strong class="ph b">.installedLicenses.xml</strong>  file is located.</div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_install_license_cli">
+        <div id="section_4" class="mt-page-section"><span id="Install_or_Update_License_Keys_from_the_Command_Line"></span> 
+          <h2 class="editable">Install or Update License Keys from the Command Line</h2>
+          <div class="body taskbody" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__cli_install">
+            <ol class="ol steps" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_install_license_cli__steps_dxk_4s4_2k">
+              <li class="li step"><span class="ph cmd">Download the .lic file you want to install.</span> </li>
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">/license-installer/</span>  directory.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Copy your .lic files to the <span class="ph filepath">/license-installer/</span>  directory.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Run the license installation script.</span> 
+                <ol class="ol substeps" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_install_license_cli__substeps_dyk_4s4_2k" type="a">
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">Linux:</strong>  Run <span class="ph filepath">install_license.sh</span>  with the install switch and the location and name of your .lic file as a parameter. You can specify multiple .lic files
+                    separated by spaces. Be sure to use backslashes to escape any spaces in the path or file name.</span>  <pre class="pre codeblock">
+<code class="ph codeph"> ./install_license.sh install Pentaho\ BI\ Platform\ Enterprise\ Edition.lic </code></pre> </li>
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">Windows:</strong>  Run <span class="ph filepath">install_license.bat</span>  with the install switch and the location and name of your license file as a parameter.</span>  <pre class="pre codeblock">
+<code class="ph codeph">install_license.bat install &quot;C:/Users/dvader/Downloads/Pentaho BA Platform Enterprise Edition.lic&quot;</code></pre> </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_remove_license_cli">
+        <div id="section_5" class="mt-page-section"><span id="List_or_Remove_License_Keys_from_the_Command_Line"></span> 
+          <h2 class="editable">List or Remove License Keys from the Command Line</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">To list or remove Pentaho keys in the command line interface, follow the below instructions.</p>
+            </div>
+            <ol class="ol steps" id="5ae8694e-7c4e-4972-8fb4-b7d58cb74abe__task_remove_license_cli__steps_tkx_rs4_2k">
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">/pentaho/server/license-installer/</span>  directory.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Run the <strong class="ph b">install_license.bat</strong>  (on Windows) or <strong class="ph b">./install_license.sh</strong>  (on Linux) script with the <strong class="ph b">display</strong>  switch.</span>  <pre class="pre codeblock">
+<span class="ph uicontrol">Windows: </span> <code class="ph codeph">install_license.bat display</code></pre> <pre class="pre codeblock">
+<span class="ph uicontrol">Linux: </span> <code class="ph codeph">./install_license.sh display</code></pre> If you have installed any Enterprise Edition keys, a list of them will appear, along with the products they cover and the duration of the license.</li>
+              <li class="li step"><span class="ph cmd">To remove a license, run the same script with the <strong class="ph b">uninstall</strong>  switch.</span>  <pre class="pre codeblock">
+<span class="ph uicontrol">Windows: </span> <code class="ph codeph">install_license.bat uninstall</code></pre> <pre class="pre codeblock">
+<span class="ph uicontrol">Linux: </span> <code class="ph codeph">./install_license.sh uninstall</code></pre> A list of installed licenses will appear, followed by a prompt for the license ID you would like to remove. If you press <span class="ph uicontrol">Enter</span>                 at this prompt, it will exit without taking any action.</li>
+              <li class="li step"><span class="ph cmd">Type in the license ID number that you want to remove, then press <span class="ph uicontrol">Enter</span> .</span> 
+                <p class="p">After removing a key, if you had more than one installed, the list will regenerate and the prompt will reappear. You can choose to remove another license key, or you can press <strong class="ph b">Enter</strong>  to exit the script.</p>
+                <p class="p">If you would prefer not to be prompted for confirmation, or if you intend to call this program as part of a script, use the <strong class="ph b">-q</strong>  switch to suppress prompting.</p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Set_the_License_Path_Variable_on_Linux" rel="internal">Set the License Path Variable on Linux</a>  </li>
+      <li> <a href="#Set_the_License_Path_Variable_on_Windows" rel="internal">Set the License Path Variable on Windows</a>  </li>
+      <li> <a href="#Install_or_Update_License_Keys_from_the_Command_Line" rel="internal">Install or Update License Keys from the Command Line</a>  </li>
+      <li> <a href="#List_or_Remove_License_Keys_from_the_Command_Line" rel="internal">List or Remove License Keys from the Command Line</a>  </li>
+    </ol>
+  </body>
+</content>

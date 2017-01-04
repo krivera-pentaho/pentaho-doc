@@ -1,0 +1,125 @@
+<content type="text/html" title="Changing Ports and URLs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Information related to the URL and Ports.</p>
+        </div>
+      </div>
+      <div class="body refbody">
+        <div id="section_2" class="mt-page-section"><span id="List_of_Server_Ports_Used_by_PDI"></span> 
+          <h2 class="editable">
+            <span>List of Server Ports Used by PDI</span> 
+          </h2>
+          <p>The port numbers below must be available internally on the machine that runs the DI Server. The only exception is SampleData, which is only for evaluation and demonstration purposes and is not necessary for production systems.&nbsp;</p>
+          <table
+          border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+            <tbody>
+              <tr class="sthead prophead">
+                <th align="left" class="stentry proptypehd" id="4048a16a-8939-4ead-9ea5-f6e6322d59cf__d78024e27" valign="bottom" width="NaN%">Service</th>
+                <th align="left" class="stentry propvaluehd" id="4048a16a-8939-4ead-9ea5-f6e6322d59cf__d78024e30" valign="bottom" width="NaN%">Port Number</th>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d78024e27" valign="top" width="NaN%">Data Integration Server</td>
+                <td class="stentry propvalue" headers="d78024e30" valign="top" width="NaN%">9080</td>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d78024e27" valign="top" width="NaN%">H2 (SampleData)</td>
+                <td class="stentry propvalue" headers="d78024e30" valign="top" width="NaN%">9092</td>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d78024e27" valign="top" width="NaN%">Embedded BA Server (Jetty)</td>
+                <td class="stentry propvalue" headers="d78024e30" valign="top" width="NaN%">10000</td>
+              </tr>
+            </tbody>
+            </table>
+        </div>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Change_Service_Port_Numbers"></span> 
+        <h2 class="editable">Change Service Port Numbers</h2>
+        <div>
+          <div class="body conbody">
+            <div class="section">
+              <div id="section_4" class="mt-page-section"><span id="DI_Server_(Tomcat)"></span> 
+                <h4 class="editable">DI Server (Tomcat)</h4>
+                <p class="p">Edit the <span class="ph filepath">/pentaho/server/data-integration-server/tomcat/conf/server.xml</span>  file and change the port numbers in the section shown below.</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- A &quot;Connector&quot; represents an endpoint by which requests are received
+         and responses are returned. Documentation at :
+         Java HTTP Connector: /docs/config/http.html (blocking &amp; non-blocking)
+         Java AJP  Connector: /docs/config/ajp.html
+         APR (HTTP/AJP) Connector: /docs/apr.html
+         Define a non-SSL HTTP/1.1 Connector on port 9080
+    -->
+    <Connector URIEncoding=&quot;UTF-8&quot; port=&quot;9080&quot; protocol=&quot;HTTP/1.1&quot; 
+               connectionTimeout=&quot;20000&quot; 
+               redirectPort=&quot;9443&quot; />
+
+    <!-- A &quot;Connector&quot; using the shared thread pool-->
+
+    <!--
+    <Connector URIEncoding=&quot;UTF-8&quot; executor=&quot;tomcatThreadPool&quot;
+               port=&quot;9080&quot; protocol=&quot;HTTP/1.1&quot; 
+               connectionTimeout=&quot;20000&quot; 
+               redirectPort=&quot;9443&quot; /></pre>
+                <div class="note note"><span class="notetitle">Note:</span>  You may also have to change the SSL and SHUTDOWN ports in this file, depending on your configuration.</div>
+                <p class="p">Next, follow the directions in Change the DI Server URL to accommodate for the new port number.</p>
+              </div>
+            </div>
+            <div class="section">
+              <div id="section_5" class="mt-page-section"><span id="Embedded_BA_Server_(Jetty)"></span> 
+                <h4 class="editable">Embedded BA Server (Jetty)</h4>
+                <p class="p">This server port is hard-coded in Pentaho Data Integration and cannot be changed. If port 10000 is unavailable, the system will increment by 1 until an available port is found.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Change_the_DI_Server_URL"></span> 
+        <h2 class="editable">Change the DI Server URL</h2>
+        <p>Explains how to change the DI Server URL.</p>
+        <div class="body taskbody">
+          <div class="section context">
+            <p class="p">You can change the DI Server hostname from localhost to a specific IP address, hostname, or domain name by following these instructions. This procedure is also a requirement if you are changing the DI Server port number.</p>
+          </div>
+          <ol class="ol steps">
+            <li class="li step"><span class="ph cmd">Stop the DI Server through your preferred means.</span> </li>
+            <li class="li step">Navigate to the /pentaho/server/data-integration/pentaho-solutions/system&nbsp;directory and open the server.properties&nbsp;file with any text editor.</li>
+            <li class="li step"><span class="ph cmd">Modify the value of the <strong class="ph b">fully-qualified-server-url</strong>  element appropriately.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">fully-qualified-server-url=http://localhost:9080/pentaho-di/</pre>              </li>
+            <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+            <li class="li step"><span class="ph cmd">Start the DI Server.</span> </li>
+          </ol>
+          <div class="section result">The DI Server is now configured to reference itself at the specified URL.</div>
+          <div class="section result">
+            <p>If you recently upgraded to Pentaho&nbsp;6.0, you may need to remove the <span class="filepath style-wrap"><context-param></span>  entry for the <span class="filepath style-wrap">fully-qualified-server-url</span> &nbsp;from the&nbsp;<span class="filepath style-wrap">/tomcat/webapps/pentaho/WEB-INF/web.xml. If so, restart the BA server after removing it.</span> &nbsp;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#List_of_Server_Ports_Used_by_PDI" rel="internal">List of Server Ports Used by PDI</a>  </li>
+      <li>
+        <a href="#Change_Service_Port_Numbers" rel="internal">Change Service Port Numbers</a> 
+        <ol>
+          <li> <a href="#DI_Server_(Tomcat)" rel="internal">DI Server (Tomcat)</a>  </li>
+          <li> <a href="#Embedded_BA_Server_(Jetty)" rel="internal">Embedded BA Server (Jetty)</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Change_the_DI_Server_URL" rel="internal">Change the DI Server URL</a>  </li>
+    </ol>
+  </body>
+</content>

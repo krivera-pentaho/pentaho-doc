@@ -1,0 +1,171 @@
+<content type="text/html" title="Get/Set Field Options APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <p>This set of APIs allows for the manipulation of the user fields in Analyzer.&nbsp; Depending on the field type, different options are available.&nbsp; As these options are turned on and off, the values will be reflected in the in the right-click
+        context menu for the appropriate field.</p>
+      <div id="section_2" class="mt-page-section"><span id="How_to_Call_these_API's"></span> 
+        <h2 class="editable">How to Call these API's</h2>
+        <p>There are two functions for editing field options, <span class="filepath style-wrap">getFieldOption </span> and <span class="filepath style-wrap">setFieldOption</span> . &nbsp;Get returns the value of the option specified in the call. Method signatures
+          are below:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getFieldOption(formula:string, name:string);</pre>
+        <p>To set an option on a field, the level or formula that contains the field is passed into the setFieldOption method along with the field name and the value to set as below:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(formula:string, name:string, value:string);</pre>
+        <p>To make sure changes are reflected in the report, the refreshReport method needs to be called.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.operation.refreshReport();</pre>        </div>
+      <div id="section_3" class="mt-page-section"><span id="Available_Options"></span> 
+        <h2 class="editable">Available Options</h2>
+        <p>These are the field options that are available for Analyzer.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="label"></span> 
+        <h2 class="editable">label</h2>
+        <p>This option allows the user to set the string label for a field. This option is available for measures and attributes.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Markets].[Territory]&quot;, &quot;label&quot;, &quot;SAMPLE_LABEL_TITLE&quot;);</pre>
+        <p>The current value of label for a field can be retrieved using the <span class="filepath style-wrap">getFieldOption </span> method.&nbsp; If the label is not specified the function returns null.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var labelValue = cv.api.report.getFieldOption(&quot;[Markets].[Territory]&quot;, &quot;label&quot;);</pre>        </div>
+      <div id="section_5" class="mt-page-section"><span id="sortOrderEnum"></span> 
+        <h2 id="UsingthegetsetFieldOptionsAPIs-sortOrderEnum" class="editable">sortOrderEnum</h2>
+        <p><span style="color: rgb(0,0,0);">This option allows the user to set the sort order to ascending or descending as well as remove the sort order for a field. The following are acceptable string values values for the value parameter:</span> </p>
+        <ul
+        class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">NONE</span>  - remove sort order</li>
+          <li><span class="filepath style-wrap">ASC</span>  - set ascending order</li>
+          <li><span class="filepath style-wrap">DESC</span>  - set descending order</li>
+          </ul>
+          <p>This option is available for measures and attributes.</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Markets].[Territory]&quot;, &quot;sortOrderEnum&quot;, &quot;ASC&quot;);</pre>
+          <p>The current value of <span class="filepath style-wrap">sortOrderEnum </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOption </span> method.&nbsp; This function returns one of acceptable values: <span class="filepath style-wrap">NONE</span>,
+            <span class="filepath style-wrap">ASC</span>, <span class="filepath style-wrap">DESC</span> .</p>
+          <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var sortOrderValue = cv.api.report.getFieldOption(&quot;[Markets].[Territory]&quot;, &quot;sortOrderEnum&quot;);</pre>          </div>
+      <div id="section_6" class="mt-page-section"><span id="showAggregate"></span> 
+        <h2 class="editable">showAggregate</h2>
+        <p>This option allows the user to show or hide the aggregate value panel.&nbsp; There are two acceptable strings for the value parameter, <span class="filepath style-wrap">true </span> and <span class="filepath style-wrap">false</span> . This option
+          is available only for measures.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showAggregate&quot;, &quot;true&quot;);</pre>
+        <p><span style="color: rgb(0,0,0);">The current value of <span class="filepath style-wrap">showAggregate </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOption </span> method. &nbsp;This function</span> 
+          <span
+          style="color: rgb(0,0,0);">&nbsp;returns either <span class="filepath style-wrap">true </span> or <span class="filepath style-wrap">false</span> .</span> 
+        </p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var showAggregate = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showAggregate&quot;);</pre>        </div>
+      <div id="section_7" class="mt-page-section"><span id="showSum"></span> 
+        <h2 class="editable">showSum</h2>
+        <p>This option allows the user to show or hide the sum value panel. There are two acceptable strings for the value parameter, <span class="filepath style-wrap">true </span> and <span class="filepath style-wrap">false</span> . This option is available
+          only for measures.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showSum&quot;, &quot;true&quot;);</pre>
+        <p>The current value of <span class="filepath style-wrap">showSum </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOption </span> method.&nbsp; This function returns either <span class="filepath style-wrap">true</span>           or <span class="filepath style-wrap">false </span> based on whether the panel is visible or not.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var showSum = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showSum&quot;);</pre>        </div>
+      <div id="section_8" class="mt-page-section"><span id="showAverage"></span> 
+        <h2 class="editable">showAverage</h2>
+        <p>This option allows the user to show or hide the average value panel. There are two acceptable strings for the value parameter, <span class="filepath style-wrap">true </span> and <span class="filepath style-wrap">false</span> . This option is available
+          only for measures.</p>
+        <p><strong><span style="color: rgb(0,0,0);font-size: 10.0pt;line-height: 13.0pt;">Example:</span> </strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showAverage&quot;, &quot;true&quot;);</pre>
+        <p>The current value of showAverage for a field can be retrieved using the getFieldOption method.&nbsp; This function returns either <span class="filepath style-wrap">true </span> or <span class="filepath style-wrap">false </span> based on whether
+          the panel is visible or not.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var showAverage = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showAverage&quot;);</pre>        </div>
+      <div id="section_9" class="mt-page-section"><span id="showMin"></span> 
+        <h2 class="editable">showMin</h2>
+        <p>This option allows the user to show or hide the minimum value panel. There are two acceptable strings for the value parameter, <span class="filepath style-wrap">true </span> and <span class="filepath style-wrap">false</span> . This option is available
+          only for measures.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showMin&quot;, &quot;true&quot;);</pre>
+        <p>The current value of showMin for a field can be retrieved using the getFieldOption method.&nbsp; This function returns either <span class="filepath style-wrap">true</span>  or <span class="filepath style-wrap">false </span> based on whether the
+          panel is visible or not.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var showMin = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showMin&quot;);</pre>        </div>
+      <div id="section_10" class="mt-page-section"><span id="showMax"></span> 
+        <h2 class="editable">showMax</h2>
+        <p>This option allows the user to show or hide the max value panel. There are two acceptable strings for the value parameter, <span class="filepath style-wrap">true </span> and <span class="filepath style-wrap">false</span> . This option is available
+          only for measures.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showMax&quot;, &quot;true&quot;);</pre>
+        <p>The current value of showMax for a field can be retrieved using the getFieldOption method.&nbsp; This function returns either <span class="filepath style-wrap">true</span>  or <span class="filepath style-wrap">false </span> based on whether the
+          panel is visible or not.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var showMax = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;showMax&quot;);</pre>        </div>
+      <div id="section_11" class="mt-page-section"><span id="showSubtotal"></span> 
+        <h2 class="editable">showSubtotal</h2>
+        <p>This option allows the user to show or hide the subtotal panel. There are two acceptable strings for the value parameter, <span class="filepath style-wrap">true</span>  and <span class="filepath style-wrap">false</span> . This option is available
+          only for measures.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Markets].[Territory]&quot;, &quot;showSubtotal&quot;, &quot;true&quot;);</pre>
+        <p>The current value of showSubtotal for a field can be retrieved using the getFieldOption method.&nbsp; This function returns either <span class="filepath style-wrap">true </span> or <span class="filepath style-wrap">false </span> based on whether
+          the panel is visible or not.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var subTotal = cv.api.report.getFieldOption(&quot;[Markets].[Territory]&quot;, &quot;showSubtotal&quot;);</pre>        </div>
+      <div id="section_12" class="mt-page-section"><span id="formatShortcut"></span> 
+        <h2 class="editable">formatShortcut</h2>
+        <p>This option allows the user to define conditional formatting on a measure. The value parameter can be set to one of the following options:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">NONE </span> - remove all color formatting.</li>
+          <li><span class="filepath style-wrap">COLOR_SCALE_G_Y_R</span>  - green, yellow and red gradients are applied from maximum value to minimum value.</li>
+          <li><span class="filepath style-wrap">COLOR_SCALE_R_Y_G</span>  - red, yellow and green gradients are applied from maximum value to minimum value.</li>
+          <li><span class="filepath style-wrap">COLOR_SCALE_B_Y_R</span>  - blue, yellow and red gradients are applied from maximum value to minimum value.</li>
+          <li><span class="filepath style-wrap">COLOR_SCALE_R_Y_B</span>  - red, yellow and blue gradients are applied from maximum value to minimum value.</li>
+          <li><span class="filepath style-wrap">TREND_ARROW_GR</span>  - gradient for green arrow.</li>
+          <li><span class="filepath style-wrap">TREND_ARROW_RG</span>  - gradient for red arrow.</li>
+          <li><span class="filepath style-wrap">DATA_BAR_RED</span>  - red gradient for bar scale.</li>
+          <li><span class="filepath style-wrap">DATA_BAR_GREEN</span>  - green gradient for bar scale.</li>
+          <li><span class="filepath style-wrap">DATA_BAR_BLUE</span>  - blue gradient for bar scale.</li>
+        </ul>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatShortcut&quot;, &quot;DATA_BAR_BLUE&quot;);</pre>
+        <p>The current value of <span class="filepath style-wrap">formatShortcut </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOptions </span> method.&nbsp; This function returns the shortcut color gradient as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var format = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatShortcut&quot;);</pre>        </div>
+      <div id="section_13" class="mt-page-section"><span id="formatCategory"></span> 
+        <h2 class="editable">formatCategory</h2>
+        <p>This option allows the user to define category formatting on a measure. The following strings are acceptable for the the value parameter: <span class="filepath style-wrap">Default</span>, <span class="filepath style-wrap">General Number</span>,
+          <span class="filepath style-wrap">Currency ($)</span>, <span class="filepath style-wrap">Percentage (%)</span>, <span class="filepath style-wrap">Expression</span> .</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatCategory&quot;, &quot;Percentage (%)&quot;);</pre>
+        <p>The current value of <span class="filepath style-wrap">formatCategory </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOption </span> method.&nbsp; This function returns the category as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var category = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatCategory&quot;)</pre>        </div>
+      <div id="section_14" class="mt-page-section"><span id="formatScale"></span> 
+        <h2 class="editable">formatScale&nbsp;&nbsp;&nbsp;&nbsp;</h2>
+        <p>This option allows the user to set the number of decimal digits used in a measure. The parameter value can have one of the following string values: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10. The user can see this result with any <span class="filepath style-wrap">formatCategory </span> except
+          for <span class="filepath style-wrap">Expression</span>, since it is not a numeric value.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatScale&quot;, &quot;3&quot;);</pre>
+        <p>The current value of <span class="filepath style-wrap">formatScale </span> for a field can be retrieved using the getFieldOption method.&nbsp; This function returns the scale as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">var scale = cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatScale&quot;);</pre>        </div>
+      <div id="section_15" class="mt-page-section"><span id="formatExpression"></span> 
+        <h2 class="editable">formatExpression</h2>
+        <p>This option allows the user to define an MDX expression for formatting a measure. This can only be used with the <span class="filepath style-wrap">formatCategory </span> set to <span class="filepath style-wrap">Expression</span> .&nbsp; The value
+          parameter must be a string representation of a valid MDX expression.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatExpression&quot;, &quot;Case When [Measures].CurrentMember > 0 Then '~~#,##0~~' Else '|#,##0' End&quot;);</pre>
+        <p>The current value of <span class="filepath style-wrap">formatExpression </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOptions </span> method.&nbsp; This function returns the MDX expression as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;formatExpression&quot;);</pre>        </div>
+      <div id="section_16" class="mt-page-section"><span id="currencySymbol"></span> 
+        <h2 class="editable">currencySymbol</h2>
+        <p>This option allows the user to set the currency symbol for a measure. This symbol is displayed with the value of a measure.&nbsp; The value parameter can be any string value. This option only works with <span class="filepath style-wrap">formatCategory = &ldquo;Currency ($)&rdquo;</span> .</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.setFieldOption(&quot;[Measures].[Sales]&quot;, &quot;currencySymbol&quot;, &quot;!!!&quot;);</pre>
+        <p>The current value of <span class="filepath style-wrap">currencySymbol </span> for a field can be retrieved using the <span class="filepath style-wrap">getFieldOption </span> method.&nbsp; This function returns the currency symbol as a string.</p>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">cv.api.report.getFieldOption(&quot;[Measures].[Sales]&quot;, &quot;currencySymbol&quot;);</pre>
+        <br
+        />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#How_to_Call_these_API's" rel="internal">How to Call these API's</a>  </li>
+      <li> <a href="#Available_Options" rel="internal">Available Options</a>  </li>
+      <li> <a href="#label" rel="internal">label</a>  </li>
+      <li> <a href="#sortOrderEnum" rel="internal">sortOrderEnum</a>  </li>
+      <li> <a href="#showAggregate" rel="internal">showAggregate</a>  </li>
+      <li> <a href="#showSum" rel="internal">showSum</a>  </li>
+      <li> <a href="#showAverage" rel="internal">showAverage</a>  </li>
+      <li> <a href="#showMin" rel="internal">showMin</a>  </li>
+      <li> <a href="#showMax" rel="internal">showMax</a>  </li>
+      <li> <a href="#showSubtotal" rel="internal">showSubtotal</a>  </li>
+      <li> <a href="#formatShortcut" rel="internal">formatShortcut</a>  </li>
+      <li> <a href="#formatCategory" rel="internal">formatCategory</a>  </li>
+      <li> <a href="#formatScale" rel="internal">formatScale&nbsp;&nbsp;&nbsp;&nbsp;</a>  </li>
+      <li> <a href="#formatExpression" rel="internal">formatExpression</a>  </li>
+      <li> <a href="#currencySymbol" rel="internal">currencySymbol</a>  </li>
+    </ol>
+  </body>
+</content>

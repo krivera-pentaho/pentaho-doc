@@ -1,0 +1,39 @@
+<content type="text/html" title="Debugging Plugins">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">A good way to debug PDI plugins is to deploy the plugin, launch Spoon, and connect the debugger to the Spoon JVM. This section explains how to debug a plugin in Eclipse.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Prepare Spoon for debugging.</span> 
+            <ol type="a" class="ol substeps" id="03f51f07-50ec-4d4d-9b9a-6b1b50f93ce1__debugging_plugins__substeps_cdx_351_4h">
+              <li class="li substep"> <span class="ph cmd">Start the Spoon JVM, allowing debug sessions and passing these arguments to the Spoon JVM.</span>  <pre class="pre codeblock">-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044</pre>
+                <p class="p">The address argument can be any free port on your machine. This example uses port 1044.&nbsp;</p>
+                <p class="p">If you are using <span class="ph filepath">Spoon.bat</span>  or <span class="ph filepath">spoon.sh</span>  to launch Spoon, create a copy of the file and edit it to include the debugging parameters to the Java options near the bottom of
+                  the file. If you are using a Mac app, add the JVM parameters to&nbsp;</p>
+                <p class="p"><code class="ph codeph">VMOptions key of &ldquo;Data Integration 64-bit.app/Contents/Info.plist&rdquo; </code>or <code class="ph codeph">&ldquo;Data Integration 32-bit.app/Contents/Info.plist&rdquo;</code> respectively.&nbsp;</p>
+              </li>
+            </ol> When you start Spoon, debuggers connect on port 1044. </li>
+          <li class="li step"> <span class="ph cmd">Launch a debug session.</span> 
+            <ol type="a" class="ol substeps" id="03f51f07-50ec-4d4d-9b9a-6b1b50f93ce1__debugging_plugins__substeps_ezq_zv1_4h">
+              <li class="li substep"> <span class="ph cmd">Ensure that Spoon is set up for debugging and running with the plugin deployed.</span>  </li>
+              <li class="li substep"> <span class="ph cmd">Connect the Eclipse debugger by creating a debug configuration for your plugin project. From the <span class="ph uicontrol">Run/Debug Configurations</span>  menu, create a new configuration for <span class="ph uicontrol">Remote Java Application</span> .
+                </span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Select your project, making sure the port matches the port configured in step 1.</span>  </li>
+              <li class="li substep"> <span class="ph cmd">Decide whether you want to be able to kill the Spoon JVM from the debugger, then click <span class="ph uicontrol">Apply</span>  and <span class="ph uicontrol">Debug</span> .</span> 
+              </li>
+            </ol> The debugger opens, stops at the breakpoints you set, and in-line editing of the plugin source is enabled.
+            <p class="p">
+              <br />
+              <img id="03f51f07-50ec-4d4d-9b9a-6b1b50f93ce1__debugging_plugins__image_p1m_wh3_nh" alt="File:/screenshot_debug_configuration_eclipse.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/4707/screenshot_debug_configuration_eclipse.png?revision=1"
+              />
+              <br /> </p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

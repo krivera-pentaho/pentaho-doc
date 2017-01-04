@@ -1,0 +1,33 @@
+<content type="text/html" title="Remove Security from Data Source Management">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>This procedure changes your data source management so that an anonymous user can access it. These steps are necessary to completely remove security from the BA Server; however, this procedure does not remove <strong>all</strong>  security. Start
+        with
+        <a class="xref" title="Documentation/5.3/0P0/150/040" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0P0/150/040">Remove Security by Allowing Anonymous Access</a>  if you need to remove all security.</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">If you need to, stop the BA Server.</li>
+        <li class="li step">Open <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/data-access/settings.xml</span>  file with a text editor.
+          <ol class="ol substeps">
+            <li class="li substep">Find this line <span class="ph filepath"><data-access-roles>Administrator</data-access-roles></span>  in the file and change this text: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Administrator to Anonymous</pre>              </li>
+            <li class="li substep">Find this line <span class="ph filepath"><data-access-view-roles>Authenticated,Administrator</data-access-view-roles></span>  in the file and change this text: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Authenticated,Administrator to Anonymous</pre>              </li>
+            <li class="li substep"><span class="ph cmd">Find this line <span class="ph filepath"><data-access-view-users>suzy</data-access-view-users></span>  and change this text: </span>  <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">suzy to anonymousUser</pre>              </li>
+            <li class="li substep">Find this line <span class="ph filepath"><data-access-datasource-solution-storage>admin</data-access-datasource-solution-storage></span>  and change this text: <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">admin to anonymousUser</pre>              </li>
+          </ol>
+        </li>
+        <li class="li step">Save and close the file.</li>
+        <li class="li step">Restart the BA Server.</li>
+      </ol>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

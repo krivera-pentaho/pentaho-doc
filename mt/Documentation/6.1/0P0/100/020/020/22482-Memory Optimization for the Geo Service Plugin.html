@@ -1,0 +1,35 @@
+<content type="text/html" title="Memory Optimization for the Geo Service Plugin">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The Pentaho Geo Service enables Geo Map visualizations in Analyzer.</p>
+        <p class="p"><strong class="ph b">If you do not use Analyzer</strong>  or are sure that you are not using the Geo Service, you can free up approximately 600MB of RAM by removing the Geo Service plugin. Simply shut down the BA Server and delete the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/pentaho-geo/</span>           directory.</p>
+        <p class="p"><strong class="ph b">If you are a heavy user of the Geo Service</strong>, update the cache setting for <code class="ph codeph">pentaho-geo-municipality</code> in the <span class="ph filepath">ehcache.xml</span> . This file can be found in the
+          <span
+          class="ph filepath">/pentaho/server/biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes</span>  directory.</p> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><cache
+    name=&quot;pentaho-geo-municipality&quot;
+    maxElementsInMemory=&quot;700000&quot;
+    eternal=&quot;false&quot;
+    overflowToDisk=&quot;true&quot;
+    timeToIdleSeconds=&quot;0&quot;
+    timeToLiveSeconds=&quot;0&quot;
+    diskPersistent=&quot;false&quot;
+    <pinning store=&quot;inCache&quot; />
+</cache></pre>
+        <p class="p">When you increase the <code>maxElementsInMemory</code> settings, less memory is available for other resources. To ensure you have enough memory for other resources, change your <code>Xms</code> and <code>Xmx</code> options accordingly in your
+          startup scripts. For example, to accommodate higher <code class="ph codeph">maxElementsInMemory</code> settings, increase the maximum memory allocated to the JVM running Pentaho processes. The default setting is <code class="ph codeph">768m</code>.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

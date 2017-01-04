@@ -1,0 +1,40 @@
+<content type="text/html" title="Result Set Caching">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">When rendered, a parameterized report must account for every dataset required for every parameter. Every time a parameter field changes, every dataset is recalculated, which can negatively impact performance.</p>
+        <p class="p">You can avoid gratuitous dataset recalculations by caching parameter datasets. This is accomplished through the EHcache framework built into the BA Server. You can configure specific settings for published reports by editing the <strong class="ph b">ehcache.xml</strong>           file in the <span class="ph filepath">/WEB-INF/classes/</span>  directory inside of the pentaho.war. The relevant element is:</p>
+        <p class="p">Anything containing complex objects is not cached (CLOB and BLOB data types); neither are results coming from a scripting dataset, a Java method call, a table data source, an external data source (computed in an action sequence), or a CDA data
+          source. In all of these cases there is either no point in caching because it would be more expensive than recalculating, or because there are not enough hints available in the involved parameters.</p> <pre class="pre codeblock">
+<!--
+    Defines a cache used by the reporting engine to hold small datasets.
+    This cache can be configured to have a separate instance for each
+logged in user via the
+    global report configuration. This per-user cache is required if role
+or other security and
+    filter information is used in ways invisible for the reporting
+engine.
+  -->
+  <cache name=&quot;report-dataset-cache&quot;
+        maxElementsInMemory=&quot;50&quot;
+        eternal=&quot;false&quot;
+        overflowToDisk=&quot;false&quot;
+        timeToIdleSeconds=&quot;300&quot;
+        timeToLiveSeconds=&quot;600&quot;
+        diskPersistent=&quot;false&quot;
+        diskExpiryThreadIntervalSeconds=&quot;120&quot;
+    /></pre>
+        <p class="p">The other side of the coin is that if a cache exists for too long, when the data source is updated it may not reflect in the report output because it's still using old data. So there is a balance between performance and accuracy that you must
+          tune to your needs.</p>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/030/000/000/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0P0/100/030/000/000/000">Result Set Cache Options</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

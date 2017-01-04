@@ -1,0 +1,76 @@
+<content type="text/html" title="Use the Import Script From the Command Line">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">
+          <p class="p">The import script is a command line utility that pulls content into an enterprise or database repository from two kinds of files: Individual KJB or KTR files, or complete repository export XML files.</p>
+          <p class="p">You must also declare a rules file that defines certain parameters for the data integration content you're importing. We provide a sample file called <strong class="ph b">import-rules.xml</strong>, included with the standard Data Integration
+            client tool distribution. It contains all of the potential rules with comments that describe what each rule does. You can either modify this file, or copy its contents to another file; regardless, you must declare the rules file as a command
+            line parameter.</p>
+        </div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Options"></span> 
+            <h2 class="editable">Options</h2>
+            <p class="p">The table below defines command line options for the import script. Options are declared with a dash: <strong class="ph b">-</strong>  followed by the option, then the <strong class="ph b">=</strong>  (equals) sign and the value.</p>
+          </div>
+        </div>
+        <table cellpadding="4" cellspacing="0" summary="" border="1" class="simpletable properties">
+          <tr class="sthead prophead">
+            <th valign="bottom" align="left" class="stentry proptypehd" width="NaN%" id="6535c686-8a3e-4dcc-a4ae-27656ec22d43__d70381e44">Parameter</th>
+            <th valign="bottom" align="left" class="stentry propvaluehd" width="NaN%" id="6535c686-8a3e-4dcc-a4ae-27656ec22d43__d70381e47">Definition/value</th>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">rep</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The name of the enterprise or database repository to import into.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">user</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The repository username you will use for authentication.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">pass</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The password for the username you specified with <strong class="ph b">user</strong> .</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">dir</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The directory in the repository that you want to copy the content to.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">limitdir</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%"><strong class="ph b">Optional.</strong>  A list of comma-separated source directories to include (excluding those directories not explicitly declared).</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">file</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The path to the repository export file that you will import from.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">rules</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The path to the rules file, as explained above.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">comment</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">The comment that will be set for the new revisions of the imported transformations and jobs.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">replace</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">Set to <strong class="ph b">Y</strong>  to replace existing transformations and jobs in the repository. Default value is <strong class="ph b">N</strong> .</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">coe</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">Continue on error, ignoring all validation errors.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d70381e44" class="stentry proptype" width="NaN%">version</td>
+            <td valign="top" headers="d70381e47" class="stentry propvalue" width="NaN%">Shows the version, revision, and build date of the PDI instance that the import script interfaces with.</td>
+          </tr>
+        </table>
+        <div class="example"> <pre class="pre codeblock">sh import.sh -rep=PRODUCTION -user=admin -pass=12345 -dir=/ -file=import-rules.xml -rules=import-rules.xml -coe=false -replace=true -comment=&quot;New version upload from UAT&quot;</pre> </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Options" rel="internal">Options</a>  </li>
+    </ol>
+  </body>
+</content>

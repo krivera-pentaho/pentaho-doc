@@ -1,0 +1,38 @@
+<content type="text/html" title="Restrict Access to Specific Members">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">You can restrict access to parts of a schema by implementing the <strong class="ph b"><HierarchyGrant></strong>  element to define access to a hierarchy:</p> <pre class="pre codeblock"><Role name=&quot;California manager&quot;>
+    <SchemaGrant access=&quot;none&quot;>
+        <CubeGrant cube=&quot;Sales&quot; access=&quot;all&quot;>
+            <HierarchyGrant hierarchy=&quot;[Store]&quot; access=&quot;custom&quot; topLevel=&quot;[Store].[Store Country]&quot;>
+                <MemberGrant member=&quot;[Store].[USA].[CA]&quot; access=&quot;all&quot;/>
+                <MemberGrant member=&quot;[Store].[USA].[CA].[Los Angeles]&quot; access=&quot;none&quot;/>
+            </HierarchyGrant>
+            <HierarchyGrant hierarchy=&quot;[Customers]&quot; access=&quot;custom&quot; topLevel=&quot;[Customers].[State Province]&quot; bottomLevel=&quot;[Customers].[City]&quot;>
+                <MemberGrant member=&quot;[Customers].[USA].[CA]&quot; access=&quot;all&quot;/>
+                <MemberGrant member=&quot;[Customers].[USA].[CA].[Los Angeles]&quot; access=&quot;none&quot;/>
+            </HierarchyGrant>
+            <HierarchyGrant hierarchy=&quot;[Gender]&quot; access=&quot;none&quot;/>
+        </CubeGrant>
+    </SchemaGrant>
+</Role></pre>
+        <p class="p">The <strong class="ph b">access</strong>  attribute can be <strong class="ph b">&quot;all&quot;</strong>, meaning all members are visible; <strong class="ph b">&quot;none&quot;</strong>, meaning the hierarchy's very existence is hidden from the
+          user; and <strong class="ph b">&quot;custom&quot;</strong> . With custom access, you can use the <strong class="ph b">topLevel</strong>  attribute to define the highest visible level (preventing users from seeing too much of the 'big picture,'
+          such as viewing revenues rolled up to the Store or Country level); or use the <strong class="ph b">bottomLevel</strong>  attribute to define the lowest visible level (preventing users from looking at an individual customer's details); or control
+          which sets of members a user can see by defining nested <strong class="ph b"><MemberGrant></strong>  elements.</p>
+        <p class="p">You can only define a <strong class="ph b"><MemberGrant></strong>  element if its enclosing <strong class="ph b"><HierarchyGrant></strong>  has <strong class="ph b">access=&quot;custom&quot;</strong> . Member grants give (or remove) access to a given
+          member and all of its children. Here are the rules:</p>
+        <ol class="ol">
+          <li class="li"><strong class="ph b">Members inherit access from their parents.</strong>  If you deny access to California, you won't be able to see San Francisco.</li>
+          <li class="li"><strong class="ph b">Grants are order-dependent.</strong>  If you grant access to USA, then deny access to Oregon, then you won't be able to see Oregon or Portland. But if you were to deny access to Oregon, then grant access to USA, you can effectively
+            see everything.</li>
+          <li class="li"><strong class="ph b">A member is visible if any of its children are visible.</strong>  Suppose you deny access to USA, then grant access to California. You will be able to see USA, and California, but none of the other states. The totals against
+            USA will still reflect all states, however.</li>
+          <li class="li"><strong class="ph b">Member grants don't override the hierarchy grant's top- and bottom-levels.</strong>  If you set topLevel=&quot;[Store].[Store State]&quot;, and grant access to California, you won't be able to see USA.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

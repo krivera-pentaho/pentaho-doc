@@ -1,0 +1,304 @@
+<content type="text/html" title="Monitor System Performance Using Pentaho Operations Mart">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>The Pentaho Operations Mart makes it easy for you to monitor system performance for information, such as&nbsp;how long it takes to run certain reports.</p>
+        </div>
+      </div>
+      <p class="p">The Pentaho Operations Mart makes it easy for you to monitor system performance for information, such as&nbsp;how long it takes to run certain reports. We automatically set up a way for you to do this using the Operations Mart and Analyzer, Interactive
+        Reports, Report Designer, and Dashboards. The Operation Mart aggregates data from the BA and DI Server log files into pre-built audit reports that provide information you might need. If these reports do not meet your needs, you can use
+        <a class="xref"
+        title="undefined" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0/040">Pentaho Data Integration Operations Mart</a>  to change them.</p>
+      <div class="topic task nested1">
+        <div id="section_2" class="mt-page-section"><span id="Download_and_Install_BA_Operations_Mart_Files"></span> 
+          <h2 class="editable">Download&nbsp;and Install&nbsp;BA Operations Mart&nbsp;Files</h2>
+          <p>The Pentaho BA&nbsp;operation mart's files are&nbsp;stored in a&nbsp;pre-packaged .zip file. &nbsp;You will need to stop the BA Server, download the file and unpack it, then restart the BA Server to import the the files.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Stop the BA Server.</li>
+            <li>&#8203;Download the <span class="filepath style-wrap">pentaho-operations-mart-6.1.0.zip</span>  file from the
+              <a style="line-height: 1.5;" title="https://help.pentaho.com/Documentation/5.3/Welcome_to_Pentaho_Documentation_5.3!/Get_Help_and_Support/001"
+              rel="internal" href="http://help.pentaho.com/Documentation/6.1/0B0/Get_Help_and_Support/001">Pentaho Customer Support Portal</a>  in the archive build folder.</li>
+            <li>Unpack the file by running <span class="filepath style-wrap">install.sh or install.bat.</span> </li>
+            <li>In the <strong>IZPack </strong> window read the license agreement, select<strong> I accept the terms of this license agreement</strong>, then click <strong>Next</strong> .</li>
+            <li>In the <strong>Select the installation path</strong>  text box, save the file in the <span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/default-content</span>  directory, then click <strong>Next</strong> .</li>
+            <li>A warning&nbsp;message appears.&nbsp; Click <strong>Yes</strong> .</li>
+            <li>When the installation finishes, click <strong>Quit</strong> .</li>
+            <li>Go to the&nbsp;<span class="filepath style-wrap">pentaho/server/biserver-ee/pentaho-solutions/system/default-content</span>  directory, then delete any files that you don't need for your repository's platform. &nbsp;</li>
+          </ol>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 632px; table-layout: fixed;" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 145px;">If You're BA Repository is On:</th>
+                <th scope="col" style="width: 463px;">Only Keep These Files:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 145px;">PostgresSQL</td>
+                <td style="width: 463px;">
+                  <ul>
+                    <li><span class="ph filepath">pentaho-operations-mart-clean-6.1.0</span> <span class="ph filepath">.zip *</span> </li>
+                    <li><span class="ph filepath">pentaho-operations-mart-etl-6.1.0.zip</span> </li>
+                    <li><span class="ph filepath">&#8203;<span class="ph filepath"><span class="ph filepath">pentaho-operations-mart-operations-</span> <span class="ph filepath">6.1.0</span> <span class="ph filepath">.zip</span> </span> 
+                      </span> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 145px;">MySQL</td>
+                <td style="width: 463px;">
+                  <ul>
+                    <li><span class="ph filepath">pentaho-operations-mart-clean-mysql5-6.1.0</span> <span class="ph filepath">.zip *</span> </li>
+                    <li><span class="ph filepath">pentaho-operations-mart-etl-mysql5-6.1.0.zip</span> </li>
+                    <li><span class="ph filepath">&#8203;<span class="ph filepath">&#8203;<span class="ph filepath">pentaho-operations-mart-operations-mysql5-</span> <span class="ph filepath">6.1.0</span> <span class="ph filepath">.zip</span> </span> 
+                      </span> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 145px;">Oracle</td>
+                <td style="width: 463px;">
+                  <ul>
+                    <li><span class="ph filepath">pentaho-operations-mart-clean-oracle10g-6.1.0</span> <span class="ph filepath">.zip *</span> </li>
+                    <li><span class="ph filepath">pentaho-operations-mart-etl-oracle10g-6.1.0.zip</span> </li>
+                    <li><span class="ph filepath">&#8203;<span class="ph filepath">&#8203;<span class="ph filepath">pentaho-operations-mart-operations-oracle10g-</span> <span class="ph filepath">6.1.0</span> <span class="ph filepath">.zip</span> </span> 
+                      </span> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 145px;">MS SQL Server</td>
+                <td style="width: 463px;">
+                  <ul>
+                    <li><span class="ph filepath">pentaho-operations-mart-clean-mssql-6.1.0</span> <span class="ph filepath">.zip*</span> </li>
+                    <li><span class="ph filepath">pentaho-operations-mart-etl-mssql-6.1.0.zip</span> </li>
+                    <li><span class="ph filepath">&#8203;<span class="ph filepath">&#8203;<span class="ph filepath">pentaho-operations-mart-operations-mssql-</span> <span class="ph filepath">6.1.0</span> <span class="ph filepath">.zip</span> </span> 
+                      </span> 
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="pentaho-note">* Keep&nbsp;the <span class="filepath style-wrap">pentaho-operations-mart-clean-<database>-<span class="ph filepath">6.1.0.zip</span> </span>  file only if you want to Pentaho to&nbsp;automatically&nbsp;delete entries from the operations mart
+            on a regular schedule. &nbsp;For more information, see
+            <a title="Monitor System Performance Using Pentaho Operations Mart" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/070#Clean_Up_Operations_Mart">Clean Up Operations Mart</a>  for details.</p>
+          <ol class="pentaho-list-ordered" start="9">
+            <li>
+              <p>Restart the BA Server.</p>
+            </li>
+            <li>
+              <p>If you've deployed Pentaho on JBoss, after the server is started, update the JNDI name in the <strong>pentaho_operations_mart </strong> connection <strong>PDI_Operations_Mart</strong>  to<strong> jboss/datasource/PDI_Operations_Mart</strong> .</p>
+            </li>
+            <li>The Operations Mart tables and schemas are on the BA Repository. &nbsp;If you&rsquo;ve deployed the BA Repository on MySQL, MS SQL Server, or Oracle, &nbsp;you'll need to update&nbsp;the <strong>pentaho_operations_mart data</strong> &nbsp;database
+              connection information.
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li>Click the <strong>Manage Data Sources&nbsp;</strong> button in PUC and select&nbsp;<strong>pentaho_operations_mart</strong> . &nbsp;</li>
+                <li>Change the database connection information&nbsp;so that it reflects the information needed to connect to your&nbsp;BA Repository.</li>
+              </ol>
+            </li>
+          </ol>
+          <p>The Operations Mart is ready to be used.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__choose_prebuilt_operations_mart_report">
+        <div id="section_3" class="mt-page-section"><span id="Choose_a_Pre-Built_Operations_Mart_Report"></span> 
+          <h2 class="editable">Choose a Pre-Built Operations Mart Report</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <div class="p">We provide pre-built Interactive Reports and a data mart called the Pentaho Operations Mart. The Operations Mart contains all the data from system log files. This table shows the reports that we have pre-built for you. Choose the report
+                that fits your needs and follow the instructions in
+                <a class="xref" title="https://help.pentaho.com/Documentation/5.3/0P0/000/070#View_and_Edit_Operations_Mart_Reports" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/070#View_and_Edit_Operations_Mart_Reports">View and Edit Operations Mart Reports</a> .
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__choose_prebuilt_operations_mart_report__audit_mart_table" rules="all" summary="">
+                    <caption><span class="tablecap">Table 1. Pre-Built Audit Mart Reports</span> </caption>
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__d11274e83" valign="top" width="66.996699669967%">Information Shown</th>
+                        <th class="entry" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__d11274e86" valign="top" width="33.003300330033%">Report Name</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">Amount of time it takes a report to run</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Content Duration</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">File names of all content failures within a defined length of time</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Content Failures</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">Compare login metrics for days within a specified month</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Content Request Day of Month</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">Compare login metrics for a days in a week within a specified year</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Day of Week Request and Login Metrics</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">List of content sorted by type, used within a defined length of time</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Content Type Usage</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">List of content usage within a defined length of time</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Content Usage</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">Compare login metrics by hour for a specified day</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Hours in Day Request and Login Metrics</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e83 " valign="top" width="66.996699669967%">Length of time for logins and the number of logins per user for specified length of time</td>
+                        <td class="entry" headers="d11274e86 " valign="top" width="33.003300330033%">Session Duration Counts</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__view_web_based_audit_report">
+        <div id="section_4" class="mt-page-section"><span id="View_and_Edit_Operations_Mart_Reports"></span> 
+          <h2 class="editable">View and Edit Operations Mart Reports</h2>
+          <div class="body taskbody">
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Identify the report that you want to open from <a class="xref" title="Documentation/5.1/000/060#59763e5f-1bd6-4707-9f6f-dfa869de7deb__choose_prebuilt_operations_mart_report" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/060#59763e5f-1bd6-4707-9f6f-dfa869de7deb__choose_prebuilt_operations_mart_report">Choose a Pre-Built Operations Mart Report</a> . </span> </li>
+              <li class="li step"><span class="ph cmd">Double-click <span class="ph uicontrol">Browse Files</span> .</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Click on <span class="ph uicontrol">public</span>  > <span class="ph uicontrol">Pentaho Operations Mart</span>  > <span class="ph uicontrol">BA Audit Reports</span> .</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Select the appropriate file and click <span class="ph uicontrol">Open</span> .</span>  Your monitoring and logging data appears in the pre-built report.</li>
+              <li class="li step"><span class="ph cmd">If you need to edit this report, you can do so from within the opening tool. </span> </li>
+            </ol>
+            <p class="li step"><span class="ph cmd">See <a class="xref" title="Documentation/5.1/120/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/120/000">Build Web-Based Data Analysis, Reports, and Dashboards</a>  for more information about editing a report in Analyzer or Interactive Reporting.</span> </p>
+            <p class="li substep"><span class="ph cmd">See <a class="xref" title="Documentation/5.1/130/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/130/000">Design Print-Quality Reports</a>  for more information about editing a report using Report Designer.</span> </p>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__create_or_edit_web_based_audit_reports">
+        <div id="section_5" class="mt-page-section"><span id="Create_Operations_Mart_Reports"></span> 
+          <h2 class="editable">Create Operations Mart Reports</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If the reports we provide are not quite right for you, you can create your own reports.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">From within the User Console, select <span class="ph uicontrol">Create New</span>  and then choose the type or report you want to create.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Select the data source that you need.</span> 
+                <div class="tablenoborder">
+                  <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__create_or_edit_web_based_audit_reports__table_3x3_jr2_1l" rules="all" summary="">
+                    <thead align="left" class="thead">
+                      <tr class="row">
+                        <th class="entry" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__d11274e314" valign="top" width="50%">Information Shown</th>
+                        <th class="entry" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__d11274e317" valign="top" width="50%">Data Source</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Detail information related to the execution of the.xactions. that run the reports on the BA Server</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: BA Operations Mart - Component</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Information related to the execution of content , such as which tool or which user ran the content on the BA Server</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: BA Operations Mart - Content</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Information for the BA Server related to a user, such as number of sessions, how long, and what time</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: BA Operations Mart - User Session</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Information about individual job entry executions&nbsp;on the DI Server</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: PDI Operations Mart - Job Entry</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Detailed performance information for the DI Server</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: PDI Operations Mart - Performance</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Detailed information about individual step executions on the DI Server</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: PDI Operations Mart - Step</td>
+                      </tr>
+                      <tr class="row">
+                        <td class="entry" headers="d11274e314 " valign="top" width="50%">Information related to transformations and jobs run on the DI Server</td>
+                        <td class="entry" headers="d11274e317 " valign="top" width="50%">pentaho_operations_mart: PDI_Operations_Mart</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+              <li class="li step"><span class="ph cmd">Create a new report as described in the appropriate user section.</span> </li>
+            </ol>
+            <p class="li step"><span class="ph cmd">See <a class="xref" title="Documentation/5.1/120/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/120/000">Build Web-Based Data Analysis, Reports, and Dashboards</a>  for more information about building a report in Analyzer or Interactive Reporting.</span> </p>
+            <p class="li substep"><span class="ph cmd">See <a class="xref" title="Documentation/5.1/130/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/130/000">Design Print-Quality Reports</a>  to build a report using Report Designer.</span> </p>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="59763e5f-1bd6-4707-9f6f-dfa869de7deb__task_view_audit_report_in_PIR">
+        <div id="section_6" class="mt-page-section"><span id="Update_the_Operations_Mart"></span> 
+          <h2 class="editable">Update the Operations Mart</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">You may need to update the report date and time, or the data that is populated into the report itself.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">From within the User Console, select <span class="ph uicontrol">Browse Files</span>  > <span class="ph uicontrol">public</span>  > <span class="ph uicontrol">Pentaho Operations Mart</span>  > <span class="ph uicontrol">Update Audit Mart</span> .
+                </span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Double-click either <span class="ph uicontrol">Update Operations Mart Date &amp; Time</span>  or <span class="ph uicontrol">Update BA Operations Mart Data</span> .</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">View a report to confirm that the updates applied. </span> </li>
+            </ol>
+            <div id="section_7" class="mt-page-section"><span id="Clean_Up_Operations_Mart"></span> 
+              <h2 class="editable">
+                <span class="ph cmd"><a id="cleanupopsmart" name="cleanupopsmart"></a> Clean&nbsp;Up Operations Mart</span> 
+              </h2>
+              <div>The operational data&nbsp;in Operations Mart tables are set to automatically remove entries older than 365 days. &nbsp;If you want to change this schedule so that the operational data&nbsp;is deleted using a different time frame, you will
+                need to&nbsp;add a variable, named&nbsp;<span class="filepath style-wrap">ba.cleanup.max.age</span>, in the<span class="filepath style-wrap">&nbsp;kettle.properties</span> &nbsp;file located in&nbsp;&nbsp;<span class="filepath style-wrap">{user.home}/.kettle</span> &nbsp;directory.&nbsp;</div>
+              <div>
+                <ol>
+                  <li>Stop the BA Server.</li>
+                  <li>Open the&nbsp;<span class="filepath style-wrap">kettle.properties</span> &nbsp;file in the administrative user's&nbsp;<span class="filepath style-wrap">{user.home}/.kettle</span> &nbsp;directory. &nbsp;</li>
+                  <li class="step li">Add the&nbsp;<span class="filepath style-wrap">ba.cleanup.max.age</span> &nbsp;variable to indicate the age above which&nbsp;entries are&nbsp;deleted.&nbsp; For example, if you want to delete entries that are&nbsp;older than 30 days,
+                    add this:</li>
+                </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">ba.cleanup.max.age=30</pre>
+                <ol start="4">
+                  <li class="step li">Save and close the&nbsp;<span class="filepath style-wrap">kettle.properties</span> &nbsp;file.</li>
+                  <li class="step li">Restart your BA server for the setting to take effect.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Download_and_Install_BA_Operations_Mart_Files" rel="internal">Download&nbsp;and Install&nbsp;BA Operations Mart&nbsp;Files</a>  </li>
+      <li> <a href="#Choose_a_Pre-Built_Operations_Mart_Report" rel="internal">Choose a Pre-Built Operations Mart Report</a>  </li>
+      <li> <a href="#View_and_Edit_Operations_Mart_Reports" rel="internal">View and Edit Operations Mart Reports</a>  </li>
+      <li> <a href="#Create_Operations_Mart_Reports" rel="internal">Create Operations Mart Reports</a>  </li>
+      <li> <a href="#Update_the_Operations_Mart" rel="internal">Update the Operations Mart</a>  </li>
+      <li> <a href="#Clean_Up_Operations_Mart" rel="internal">Clean&nbsp;Up Operations Mart</a>  </li>
+    </ol>
+  </body>
+</content>

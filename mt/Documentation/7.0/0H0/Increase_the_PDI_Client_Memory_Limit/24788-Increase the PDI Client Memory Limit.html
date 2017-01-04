@@ -1,0 +1,49 @@
+<content type="text/html" title="Increase the PDI Client Memory Limit">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to increase the Spoon memory limit.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">We recommend that you increase PDI's memory limit so the Pentaho Server and the&nbsp;PDI client&nbsp;(Spoon) can perform memory-intensive tasks, like process or sort large datasets or run complex transformations and jobs. You will need to increase
+            the memory limit for both the Pentaho Server and Spoon. If you choose to not increase the memory limit, PDI uses the default memory settings that are defined in your startup scripts.</p>
+          <p class="pentaho-note">Instead of modifying the Spoon startup script, you can also set the environment variable <span class="ph filepath">PENTAHO_DI_JAVA_OPTIONS</span>  equal to <span class="ph filepath">-Xmx2g -XX:MaxPermSize=256m</span>  on your client.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="1d6c6d74-ad58-4dcc-b490-0e822dfaf6e3__startup_script">
+        <div id="section_2" class="mt-page-section"><span id="Modify_the_Spoon_Startup_Script"></span> 
+          <h2 class="editable">Modify the Spoon Startup Script</h2>
+          <div class="body taskbody">
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Exit from Spoon if it is currently running.</span> </li>
+              <li class="li step"><span class="ph cmd">Open the Spoon startup script with a text editor. The name of startup script depends on your operating system.</span>  <pre class="pre codeblock">
+<strong class="ph b">Windows Name and Location of Startup Script: </strong> pentaho/design-tools/data-integration/Spoon.bat</pre> <pre class="pre codeblock">
+<strong class="ph b">Linux Name and Location of Startup Script: </strong> pentaho/design-tools/data-integration/Spoon.sh
+</pre> </li>
+              <li class="li step"><span class="ph cmd">Modify the <strong class="ph b">-Xmx</strong>  value so that it specifies a larger upper memory limit. In this example, 2g (two gigabytes) of heap space has been allocated.</span>  <pre class="pre codeblock">
+PENTAHO_DI_JAVA_OPTIONS=&quot;-Xmx2g -XX:MaxPermSize=256m&quot;</pre> </li>
+              <li class="li step"><span class="ph cmd">Save and close the startup file.</span> </li>
+              <li class="li step"><span class="ph cmd">Start Spoon and ensure that there are no memory-related errors. If you see an error, repeat these steps to increase the memory again.</span> </li>
+            </ol>
+            <p class="pentaho-note">You need to
+              <a class="xref" title="Increase the Pentaho Server Memory Limit" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Configure_the_Pentaho_Server/General_Configuration_Tasks/Increase_the_Pentaho_Server_Memory_Limit">
+              increase the Pentaho Server memory limit</a>  as well.
+              <br /> &nbsp;
+            </p>
+            <div class="section result">Spoon now has higher memory limits.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Modify_the_Spoon_Startup_Script" rel="internal">Modify the Spoon Startup Script</a>  </li>
+    </ol>
+  </body>
+</content>

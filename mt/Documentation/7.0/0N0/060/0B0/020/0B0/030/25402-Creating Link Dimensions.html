@@ -1,0 +1,88 @@
+<content type="text/html" title="Creating Link Dimensions">
+  <body>
+    <div>
+      <p><strong>Dimensions </strong> organize attributes&nbsp;and measures so that users can answer business questions quickly. The most common dimension used is a time dimension, but dimensions are also used to classify people (such as customers), geographical
+        places, and product lines.</p>
+      <p><strong>Shared Dimensions</strong>  are dimensions which can be shared for later use. Shared dimensions are particularly useful if you are connected to a Pentaho Repository or your workstation is shared by different users. They allow you to define
+        and save your annotations, and then share them with other users. The<strong> Link Dimension</strong>  annotation allows you to reuse a previously created
+        <a href="/Documentation/7.0/0N0/060/0B0/020/0C0" rel="internal" title="Documentation/7.0/0N0/060/0B0/020/0C0">Shared Dimension</a> . For example, if you want to create a generic dimension for reuse, such as a standard time dimension, you can create a Shared Dimension and then link directly to that dimension's key. Linking to the dimension key will import
+        all hierarchies from the Shared Dimension into your data model, resulting in a star schema which&nbsp;joins the shared dimension table to&nbsp;the fact table.</p>
+      <p>When creating a shared dimension, you will need to select a field to use as a Dimension Key which allows you to identify and use the Shared Dimension in your transformation. For example, in the Shared Dimension step, you can select the field 'Year'
+        and annotate it as a Dimension Key. You may also select the field 'Year' again along with the fields 'Month' and 'Week' to annotate as attributes. Then, in the Annotate Stream step, select the field 'Year' to annotate as a 'Link Dimension'. Here,
+        select the Shared Dimension previously created using the 'Year' field. All annotations defined in the Shared Dimension will be populated in run time. When the model is published, the annotations 'Year', 'Month', and 'Week' will be in the model.</p>
+      <p class="pentaho-note">If you are using link dimensions as part of your Streamlined Data Refinery (SDR) process, be aware that link dimension annotations are dependent on shared dimensions, and shared dimensions cannot use a data service for their source. Therefore, if
+        you select a Pentaho Data Service as the source of your model in the
+        <a title="Using the Build Model Job Entry for SDR" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060/0B0/020/0A0"> Build Model job entry</a>, the link dimensions which you have defined here will not be linked to your model. See
+        <a title="Documentation/7.0/0L0/0Y0/090/040" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/090/040">Connecting to a Pentaho Data Service </a> for more information about data services.</p>
+      <div class="mt-page-section" id="section_2">
+        <div id="section_1" class="mt-page-section"><span id="Creating_a_Link_Dimension"></span> 
+          <h2 class="editable">
+            <span>Creating a Link Dimension</span> 
+          </h2>
+          <p>These steps guide you through creating a link dimension using the
+            <a href="/Documentation/7.0/0N0/060/0B0/020/0B0" rel="internal" title="Documentation/7.0/0N0/060/0B0/020/0B0">Annotate Stream</a>  step. This step assumes you have created a Shared Dimension which you want to use.</p>
+          <ol class="pentaho-list-ordered">
+            <li>If you haven't done so already, complete steps 1-7 in
+              <a href="/Documentation/7.0/0N0/060/0B0/020/0B0" rel="internal" title="Documentation/7.0/0N0/060/0B0/020/0B0">Using the Annotate Stream Step</a> .</li>
+            <li>Select <strong>Link Dimension</strong>  from the Actions drop-down menu. The Name - Value table auto-populates with a list of annotation properties for the dimension.
+              <table border="1" cellpadding="1" cellspacing="1" style="width: 100%; table-layout: fixed;">
+                <tbody>
+                  <tr>
+                    <td style="width: 122px;"><strong>Component</strong> </td>
+                    <td style="width: 528px;"><strong>Description</strong> </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 122px;">Dimension Name</td>
+                    <td style="width: 528px;">Enter a name for the dimension. Note that you can overwrite the dimension name set in the
+                      <a href="/Documentation/7.0/0N0/060/0B0/020/0C0" rel="internal" title="Documentation/7.0/0N0/060/0B0/020/0C0">Shared Dimension</a>  step.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 122px;">Shared Dimension</td>
+                    <td style="width: 528px;">Enter or select a previously created Shared Dimension to link to from the drop-down menu.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </li>
+          </ol>
+          <p style="margin-left: 40px;">
+            <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11847/SDR_CreateLinkDimension_70.png?revision=1" />
+          </p>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Use the <strong>Previous </strong> and <strong>Next </strong> buttons to navigate through the fields. When finished, click <strong>OK </strong> to save your annotations and close the dialog box, or <strong>Cancel </strong> to close the dialog
+              box without saving your annotations.</li>
+          </ol>
+          <p>Remember that before your Link Dimension can be used by others, you must create a dimension key for the shared dimension to link to. When creating annotations, you can use a single field more than once, so you will be able to use the same field
+            for both the key and to create annotations.</p>
+        </div>
+      </div>
+      <div class="mt-page-section" id="section_3">
+        <div id="section_2" class="mt-page-section"><span id="Creating_a_Dimension_Key"></span> 
+          <h2 class="editable">Creating a Dimension Key</h2>
+          <p>Before your Link Dimension can be used by others, you must create a dimension key for the shared dimension to link to.</p>
+          <p class="pentaho-note" style="visibility: visible;">You can create multiple annotations on the same field. For example, you might want to create an attribute and a dimension key on the same field, such as 'Year', in your time dimension.</p>
+          <ol class="pentaho-list-ordered">
+            <li>If you haven't done so already, complete steps 1-6 in
+              <a href="/Documentation/7.0/0N0/060/0B0/020/0B0" rel="internal" title="Documentation/7.0/0N0/060/0B0/020/0B0">Using the Annotate Stream Step</a> .</li>
+            <li>From the list in the Annotations table, choose a field to use as the dimension key by double-clicking it. The Annotate dialog box appears for the selected field. For example, you may want to use the field 'Calendar Year' as the dimension key
+              for the shared dimension 'Year'. Optionally, you can select the field in the Annotations table and then click the <strong>Edit </strong> (pencil) icon in the upper-right corner.</li>
+            <li>Select <strong>Create Dimension Key</strong>  from the Actions drop-down menu for the field. The Name - Value table auto-populates with the name and value of the dimension key. You can edit the value to use as the dimension key.</li>
+          </ol>
+          <p style="margin-left: 40px;">
+            <img alt="" class="internal default" style="" src="http://help.pentaho.com/@api/deki/files/11848/SDR_CreateDimensionKey_70.png?revision=1" />
+          </p>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Click <strong>OK </strong> to save the annotation and close the dialog box. In the
+              <a title="Using the Shared Dimension Step for SDR" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0N0/060/0B0/020/0C0">Shared Dimension</a>  dialog box, the selected field will now appear with the summary that it is the key for the shared dimension. For example, the field 'Calendar Year' may display, 'Calendar Year is key for dimension Year' in the Summary
+              column.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Creating_a_Link_Dimension" rel="internal">Creating a Link Dimension</a>  </li>
+      <li> <a href="#Creating_a_Dimension_Key" rel="internal">Creating a Dimension Key</a>  </li>
+    </ol>
+  </body>
+</content>

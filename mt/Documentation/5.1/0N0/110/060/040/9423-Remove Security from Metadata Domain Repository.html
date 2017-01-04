@@ -1,0 +1,33 @@
+<content type="text/html" title="Remove Security from Metadata Domain Repository">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>The BA Server and console must be stopped before following these instructions.</p>
+    <p>This procedure changes your default metadata domain repository so that it is no longer security-aware. It is a necessary step in completely removing security from the BA Platform; however, this procedure does not, in itself, remove <strong>all</strong>       security. To do that, start with
+      <a class="xref" title="Documentation/5.1/0P0/150/040" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0P0/150/040">Remove Security by Allowing Anonymous Access</a> .</p>
+    <ol class="pentaho-list-ordered">
+      <li class="li step">Edit the <span class="ph filepath">/pentaho-solutions/system/pentahoObjects.spring.xml</span>  file.</li>
+      <li class="li step">Comment out the <strong class="ph b">IMetadataDomainRepositoryImpl</strong>  line, and uncomment the similar line below it. Alternatively, you can switch the value of <strong>IMetadataDomainRepositoryImpl</strong>  from <strong>org.pentaho.platform.plugin.services.metadata.SecurityAwareMetadataDomainRepository</strong>         to <strong>org.pentaho.platform.plugin.services.metadata.PentahoMetadataDomainRepository</strong> . <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">
+<!-- <bean id=&quot;IMetadataDomainRepositoryImpl&quot; 
+  class=&quot;org.pentaho.platform.plugin.services.metadata.
+    SecurityAwareMetadataDomainRepository&quot; 
+      scope=&quot;singleton&quot;/> -->
+
+<!--  Use this schema factory to disable PMD security -->
+<bean id=&quot;IMetadataDomainRepositoryImpl&quot; 
+  class=&quot;org.pentaho.platform.plugin.services.metadata.PentahoMetadataDomainRepository&quot; 
+    scope=&quot;singleton&quot;/></pre> </li>
+      <li class="li step">Save and close the file.</li>
+    </ol>
+    <p>You've now switched the metadata domain repository to one that is not security-aware. Access controls will no longer be enforced on various metadata objects.</p>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

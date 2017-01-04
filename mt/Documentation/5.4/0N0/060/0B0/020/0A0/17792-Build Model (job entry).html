@@ -1,0 +1,235 @@
+<content type="text/html" title="Build Model (job entry)">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Quisque mattis rutrum ligula et pellentesque. Pellentesque massa enim, pulvinar quis quam quis, aliquet dapibus augue. Aliquam feugiat suscipit turpis, nec ultrices dolor adipiscing ut.</p>
+        </div>
+      </div>
+      <p>The Build Model job entry can be used to create Data Source Wizard data sources, wh
+        <font color="#000000">ich includes both a Metadata and a Mondrian model. It works by searching upstream for a output step to base the model on, or you can select an existing DSW or Analysis model from the BA Server to base your model on.&nbsp;</font>
+      </p>
+      <p>After you have run this job entry, a data model is created and can be published to the BA Server for the creation of Analysis reports in the Pentaho User Console.
+        <font color="#000000">Business users will also be able to refine the data model with the Data Model Editor.</font>
+        <font color="#000000">If you selected an Analysis model to build from, the Build Model step will only create an Analysis model.</font>
+      </p>
+      <p>
+        <font color="#000000">These are the operations that happen during the Build Model job entry.</font>
+      </p>
+      <ol class="pentaho-list-ordered">
+        <li>
+          <font color="#000000">Builds the model.</font>
+        </li>
+        <li>Sets variables into the job that can be modified or picked up by the
+          <a title="Documentation/5.4/0N0/060/0B0/020/0D0" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0D0">Publish Model</a>  job entry.</li>
+      </ol>
+      <p>Here is an example workflow.</p>
+      <p style="text-align: center;">
+        <img alt="SDRBasicWorkflow.png" class="internal default" style="width: 604px; height: 56px;" width="604px" height="56px" src="http://help.pentaho.com/@api/deki/files/4907/SDRBasicWorkflow.png?size=bestfit&amp;width=604&amp;height=56&amp;revision=1"
+        />
+      </p>
+      <p>After the Build Model job runs successfully,
+        <font color="#000000">you can</font>
+        <a title="Publish Model (job entry)" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0D0">publish</a> 
+        <font color="#000000">the data source to the BA Server.</font>
+      </p>
+      <div id="section_2" class="mt-page-section"><span id="Creating_a_Build_Model_Job_Entry"></span> 
+        <h2 class="editable">Creating a Build Model Job Entry</h2>
+        <p>This section describes how to set up the Build Model job entry.</p>
+        <p>
+          <img alt="BuildModelIcon2.png" class="internal default" style="width: 165px; height: 57px;" width="165px" height="57px" src="http://help.pentaho.com/@api/deki/files/4794/BuildModelIcon2.png?size=bestfit&amp;width=165&amp;height=57&amp;revision=1"
+          />
+        </p>
+        <ol class="pentaho-list-ordered">
+          <li>Locate the <strong>Build Model</strong>  entry from the <strong>Design </strong> pane in PDI.</li>
+          <li>Drag and drop the <strong>Build Model</strong>  icon onto the transformation canvas.
+            <br /> You can also double-click on icons in the <strong>Design</strong>  pane to add them to the canvas.</li>
+          <li>Double-click the <strong>Build Model</strong>  icon to open the dialog box.</li>
+          <li>Fill out the information in the dialog box:
+            <ol>
+              <li><strong>Entry Name - </strong> type a name for your entry in this field.</li>
+              <li><strong>Output Step</strong>  - choose an output step from the drop-down menu, or use CTRL + Space to select a variable.</li>
+              <li><strong>Model Name</strong>  - type a name for your data model in this field.</li>
+            </ol>
+          </li>
+          <li>Choose either <strong>Auto Model</strong>  or
+            <a title="https://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0A0#Select_Existing_Model_Options" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0N0/060/0B0/020/0A0#Select_Existing_Model_Options"><strong>Use Existing</strong> </a>  in the <strong>Modeling Method</strong>  panel.</li>
+          <li>Click <strong>OK </strong> to continue or <strong>Cancel </strong> to close the dialog box.</li>
+        </ol>
+        <p>This is an example of the Build Model dialog box, along with a table that has more details about each field.</p>
+        <p style="text-align: center;">
+          <a class="thumb" title="BuildModel.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/4791/BuildModel.png">
+            <img alt="BuildModel.png" class="internal default" style="width: 448px; height: 476px;" width="448px" height="476px" src="http://help.pentaho.com/@api/deki/files/4791/BuildModel.png?size=bestfit&amp;width=448&amp;height=476&amp;revision=3" />
+          </a> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 150px;">Options</th>
+              <th scope="col" style="width: 475px;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 172px;">Entry Name</td>
+              <td style="width: 502px;">Type to enter the name of the job entry here.
+                <br class="atl-forced-newline" />
+                <font color="#000000"><strong>Note:</strong> </font>
+                <font color="#000000">The following characters are not allowed in Data Source Wizard source names: %/:[]*|\t\r\n</font>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Output Step</td>
+              <td style="width: 502px;">
+                <font color="#000000">Enter the output step here. You can use the drop-down menu to select the output step that you want to use.</font>
+                <br class="atl-forced-newline" />
+                <font color="#000000"><strong>Note:</strong> </font>
+                <font color="#000000">If there is no data written in the table by the output step, the Build Model entry won&rsquo;t be able to build a model.</font>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Model Name</td>
+              <td style="width: 502px;">Enter the name for the model here. You can click in this field and enter CTRL-Space to get a list of variables for this.
+                <br class="atl-forced-newline" /> The model name will appear in the BA Server in the list of data sources.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Modeling Method: <strong>Auto Model or Use Existing</strong> </td>
+              <td style="width: 502px;">
+                <font color="#000000">Select the</font>
+                <font color="#000000"><strong>Auto Model</strong> </font>
+                <font color="#000000">option if you want to build a new model. Select the</font>
+                <font color="#000000"><strong>Use Existing</strong> </font>
+                <font color="#000000">option if you want to base your model on one that already exists in the BA Server. If you select Use Existing, there must be a model name </font>in the field.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Help</td>
+              <td style="width: 502px;">Provides a link to the <strong>Help </strong> documentation.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">OK</td>
+              <td style="width: 502px;">Click <strong>OK </strong> to save.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Cancel</td>
+              <td style="width: 502px;">Click <strong>Cancel </strong> to close the window.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Selecting_Existing_Model_Options"></span> 
+        <h2 class="editable">Selecting Existing Model Options</h2>
+        <p>If you selected to use an existing model to build upon, you will need to be connected to the BA Server. Once you are connected, you can select an existing model with the same physical schema to base your new model on.</p>
+        <ol class="pentaho-list-ordered">
+          <li>If the BA Server Connection information is not populated, fill in these fields to make the connection.
+            <ol>
+              <li>Enter the <strong>URL </strong> for the BA Server.</li>
+              <li>Enter the<strong> User Name </strong> and <strong>Password </strong> for the BA Server.</li>
+              <li>Click the <strong>Connect </strong> button. If the connection was successful, the <strong>Existing Models</strong>  menu will populate with a list of models to choose from.</li>
+            </ol>
+          </li>
+          <li>Select a model from the drop-down menu. If no models are listed, verify that you are connected to the BA Server.</li>
+          <li>Click <strong>OK </strong> to save the changes, or <strong>Cancel</strong>  to exit.</li>
+        </ol>
+        <p>This is an example of the Select Existing Model dialog box, along with a table that has more details about each field.</p>
+        <p style="text-align: center;">
+          <img alt="SelectExistingModel.png" class="internal default" style="width: 470px; height: 496px;" width="470px" height="496px" src="http://help.pentaho.com/@api/deki/files/4792/SelectExistingModel.png?size=bestfit&amp;width=470&amp;height=496&amp;revision=1"
+          />
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 150px;">Options</th>
+              <th scope="col" style="width: 475px;">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 172px;">URL</td>
+              <td style="width: 502px;">Enter the URL to the BA Server.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">User Name</td>
+              <td style="width: 502px;">Type the user name for the BA Server.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Password</td>
+              <td style="width: 502px;">Enter the password.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Connect</td>
+              <td style="width: 502px;">
+                <font color="#000000">Establishes a connection to the BA Server to retrieve a list of available data models. </font>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Existing Models</td>
+              <td style="width: 502px;">
+                <font color="#000000">Populates with a list of available models.</font>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Create model if not found</td>
+              <td style="width: 502px;">
+                <font color="#000000">Generates an auto model, if unable to find an existing model with the entered name.</font>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Help</td>
+              <td style="width: 502px;">Provides a link to the <strong>Help </strong> documentation.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">OK</td>
+              <td style="width: 502px;">Click <strong>OK </strong> to save.</td>
+            </tr>
+            <tr>
+              <td style="width: 172px;">Cancel</td>
+              <td style="width: 502px;">Click <strong>Cancel </strong> to discard entries and close the window.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Variables_for_Build_Model_Job_Entry"></span> 
+        <h2 class="editable">Variables for Build Model Job Entry</h2>
+        <p>You can only see these&nbsp;specific variables for the Build Model job entry if you press CTRL + Space after the first run.</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th scope="col" style="width: 290px;">Variable</th>
+              <th scope="col" style="width: 352px;">Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 298px;">JobEntryBuildModel.DatabaseConnection.
+                <Model Name>
+              </td>
+              <td style="width: 376px;">Name of database connection to deploy from PDI into BA Server.</td>
+            </tr>
+            <tr>
+              <td style="width: 298px;">JobEntryBuildModel.XMI.
+                <Model Name>
+              </td>
+              <td style="width: 376px;">XMI contents of model to publish (may or may not contain the OLAP components).</td>
+            </tr>
+            <tr>
+              <td style="width: 298px;">JobEntryBuildModel.XMI.DSW.
+                <Model Name>
+              </td>
+              <td style="width: 376px;">Shows that XMI should be deployed as a Data Source Wizard&nbsp;data source instead of a Metadata data source.</td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Creating_a_Build_Model_Job_Entry" rel="internal">Creating a Build Model Job Entry</a>  </li>
+      <li> <a href="#Selecting_Existing_Model_Options" rel="internal">Selecting Existing Model Options</a>  </li>
+      <li> <a href="#Variables_for_Build_Model_Job_Entry" rel="internal">Variables for Build Model Job Entry</a>  </li>
+    </ol>
+  </body>
+</content>

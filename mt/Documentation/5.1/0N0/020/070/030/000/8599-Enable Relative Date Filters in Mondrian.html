@@ -1,0 +1,130 @@
+<content type="text/html" title="Enable Relative Date Filters in Mondrian">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p>Pentaho Analyzer supports many types of relative date filters, but in order to apply them for a given level, you need to define the format string used to construct MDX members for that level. This is because each data warehouse implementation
+          may have a different date format and set of hierarchy levels.</p>
+        <div id="section_1" class="mt-page-section"><span id="Common_Relative_Date_Filters"></span> 
+          <h2 class="editable">Common Relative Date Filters</h2>
+          <p class="p">In the Steel Wheels sample data cube provided by Pentaho for evaluation and testing, the Month level uses abbreviated three-letter month names. Furthermore, the Month level sits under the Quarter level. In Steel Wheels, the format string for
+            an MDX member from the Month level would look like this:</p> <pre class="pre codeblock">
+[yyyy].['QTR'q].[MMM]
+</pre>
+          <p class="p">Some other common date formats:</p>
+          <ul class="pentaho-list-unordered">
+            <li class="li"><strong class="ph b">[yyyy]</strong>  (Year)</li>
+            <li class="li"><strong class="ph b">[yyyy].[q]</strong>  (Quarter)</li>
+            <li class="li"><strong class="ph b">[yyyy].[q].[M]</strong>  (Month)</li>
+            <li class="li"><strong class="ph b">[yyyy].[q].[M].[w]</strong>  (Week)</li>
+            <li class="li"><strong class="ph b">[yyyy].[q].[M].[w].[yyyy-MM-dd]</strong>  (Day)</li>
+          </ul>
+          <p class="p">The <strong class="ph b">Day</strong>  line above also specifies a format to represent the entire date. Without this format, a simple <strong class="ph b">[d]</strong>  parameter would be difficult to put into context. For more information on
+            date format strings, refer to the
+            <a class="external" title="http://icu-project.org/apiref/icu4j/com/ibm/icu/text/SimpleDateFormat.html" rel="external nofollow" href="http://icu-project.org/apiref/icu4j/com/ibm/icu/text/SimpleDateFormat.html"
+            target="_blank">SimpleDateFormat</a>  page on the ICU Project site.</p>
+          <p class="p">To setup relative date filtering, for each level, you need to do the following:</p>
+          <ul class="pentaho-list-unordered">
+            <li class="li">In your Mondrian schema file, set the <strong class="ph b">levelType</strong>  XML attribute to TimeYears, TimeMonths, TimeQuarters, TimeWeeks or TimeDate</li>
+            <li class="li">Define the MDX date member format as an annotation with the name <strong class="ph b">AnalyzerDateFormat</strong> .</li>
+          </ul>
+          <p class="p">Here is an example from the Pentaho sample data (Steel Wheels) Time dimension:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Level name=&quot;Years&quot; levelType=&quot;TimeYears&quot; ... >
+   <Annotations><Annotation name=&quot;AnalyzerDateFormat&quot;>[yyyy]</Annotation></Annotations>
+</Level>
+<Level name=&quot;Quarters&quot; levelType=&quot;TimeQuarters&quot; ... >
+   <Annotations><Annotation name=&quot;AnalyzerDateFormat&quot;>[yyyy].['QTR'q]</Annotation></Annotations>
+</Level>
+<Level name=&quot;Months&quot; levelType=&quot;TimeMonths&quot; ... >
+   <Annotations><Annotation name=&quot;AnalyzerDateFormat&quot;>[yyyy].['QTR'q].[MMM]</Annotation></Annotations>
+</Level></pre> </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Other_Relative_Date_Filters"></span> 
+        <h2 class="editable">Other Relative Date Filters</h2>
+        <p>Other types of relative date filters are often used, especially the fiscal year in the business sector. A fiscal year will vary with each business and is based on how that business calculates its annual financial statements. You can define a Fiscal
+          Calendar dimension in your Mondrian schema to accommodate this, and Analyzer will then use the current date to look up fiscal time periods in the fiscal time dimension.</p>
+        <p>For example, suppose a business has defined their fiscal year to always start on the first of May. Their fiscal time dimension table would look like this:</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+        title="Pentaho Table">
+          <thead> </thead>
+          <tbody> </tbody>
+          <tbody> </tbody>
+          <tbody>
+            <tr>
+              <td>Date</td>
+              <td>Fiscal Week</td>
+              <td>Fiscal Month</td>
+              <td>Fiscal Quarter</td>
+              <td>Fiscal Year</td>
+            </tr>
+            <tr>
+              <td>2014-04-30</td>
+              <td><span style="display: none;">&nbsp;</span> 2014-W53</td>
+              <td>2014-M12</td>
+              <td>2014-Q4</td>
+              <td>2014</td>
+            </tr>
+            <tr>
+              <td>2014-05-01</td>
+              <td>2015-W1</td>
+              <td>2015-M1</td>
+              <td>2015-Q1</td>
+              <td>2015</td>
+            </tr>
+            <tr>
+              <td>2014-05-02</td>
+              <td>2015-W1</td>
+              <td>2015-M1</td>
+              <td>2015-Q1</td>
+              <td>2015</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Looking at the table and using a date such as <strong>2014-05-01</strong>, we can find which <strong>Fiscal Week</strong>, <strong>Month</strong>, <strong>Quarter</strong>, or <strong>Year </strong> that it belongs to. Just look for the date in
+          the table, then look further up the hierarchy to find <strong>2015-M1</strong> . If you need to get the <strong>Current Month</strong>  and <strong>Previous Month</strong>, you can first find <strong>2015-M1</strong>  and then look back on the
+          hierarchy to find <strong>2014-M12</strong>, which is a sibling of <strong>2015-M1</strong>  in the hierarchy.</p>
+        <p>There are a few key points to keep in mind about this dimension, before you get started.</p>
+        <ul class="pentaho-list-unordered">
+          <li>The bottommost level must be a <strong>Date</strong>, which will be used to look up a parent-level member based on the current date.</li>
+          <li>The <strong>Date </strong> level must specify a new <strong>AnalyzerFiscalDateFormat </strong> annotation. This annotation value should specifiy a Java format string, which when evaluated with the current date, yields the MDX name of the <strong>Date </strong> level
+            member. This format string should not include the format string for any parents above the <strong>Date </strong> level. This is different from the <strong>AnalyzerDateFormat </strong> annotation in which parents are also included in the format
+            string.</li>
+          <li>The <strong>Date </strong> level members must be unique within the level, so <strong>uniquemembers </strong> is set to <span class="filepath style-wrap">true</span> . This doesn't need to be the same for parent levels, but it is a good practice
+            to do so since this is a time dimension.</li>
+          <li>All levels in this hierarchy need to specify the <strong>levelType </strong> attribute.</li>
+          <li>Levels above the <strong>Date </strong> level should not specify the <strong>AnalyzerDateFormat </strong> annotations.</li>
+        </ul>
+        <p>Here is an example of a <strong>Fiscal Calendar</strong>  dimension defined within a Mondrian schema:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Dimension name=&quot;Fiscal Calendar&quot; type=&quot;TimeDimension&quot;>
+    <Hierarchy hasAll=&quot;true&quot; primaryKey=&quot;DATE_KEY&quot;>
+        <Table schema=&quot;FOODMART&quot; name=&quot;CALENDAR&quot;/>
+        <Level name=&quot;Fiscal Year&quot; levelType=&quot;TimeYears&quot; column=&quot;FSC_YEAR_STR&quot; uniqueMembers=&quot;true&quot; type=&quot;String&quot; ordinalColumn=&quot;FSC_YEAR&quot; />
+        <Level name=&quot;Fiscal Quarter&quot; levelType=&quot;TimeQuarters&quot; column=&quot;FSC_QUARTER_YEAR_STR&quot; uniqueMembers=&quot;true&quot; type=&quot;String&quot; ordinalColumn=&quot;FSC_DIM_QUARTER_NUM&quot; />
+        <Level name=&quot;Fiscal Month&quot; levelType=&quot;TimeMonths&quot; column=&quot;FSC_MONTH_YEAR_STR&quot; uniqueMembers=&quot;true&quot; type=&quot;String&quot; ordinalColumn=&quot;FSC_DIM_MONTH_NUM&quot; />
+        <Level name=&quot;Fiscal Week&quot; levelType=&quot;TimeWeeks&quot; column=&quot;FSC_WEEK_YEAR_STR&quot; uniqueMembers=&quot;false&quot; type=&quot;String&quot; ordinalColumn=&quot;FSC_DIM_WEEK_NUM&quot; />
+        <Level name=&quot;Date&quot; levelType=&quot;TimeDays&quot; column=&quot;CAL_DATE&quot; uniqueMembers=&quot;true&quot; type=&quot;Date&quot; ordinalColumn=&quot;DATE_KEY&quot; >
+            <Annotations><Annotation name=&quot;AnalyzerFiscalDateFormat&quot;>[yyyy-MM-dd]</Annotation></Annotations>
+        </Level>
+    </Hierarchy>
+</Dimension></pre>
+        <p>With this set up, Analyzer will be able to generate the MDX to turn a filter like <strong>Current Month</strong>  into the correct <strong>Fiscal Month</strong>  member:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Ancestor([Fiscal Calendar].[Date].[1997-06-28],[Fiscal Calendar].[Fiscal Month])</pre>
+        <p>This MDX references a specific date member in the <strong>Date </strong> level, and then uses the <strong>Ancestor </strong> function to locate the parent month. Finding the <strong>Previous Month</strong>  would be as simple as using the <strong>Lag </strong> MDX
+          function:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Ancestor([Fiscal Calendar].[Date].[1997-06-28],[Fiscal Calendar].[Fiscal Month]).Lag(1)</pre>
+        <p>Once you have these set up, your users will be able to apply this filter by selecting <strong>Choose a commonly used time period</strong>  in the <strong>Filter on Fiscal Month</strong>  dialog box.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Common_Relative_Date_Filters" rel="internal">Common Relative Date Filters</a>  </li>
+      <li> <a href="#Other_Relative_Date_Filters" rel="internal">Other Relative Date Filters</a>  </li>
+    </ol>
+  </body>
+</content>

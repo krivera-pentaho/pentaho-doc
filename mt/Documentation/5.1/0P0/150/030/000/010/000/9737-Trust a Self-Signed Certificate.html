@@ -1,0 +1,28 @@
+<content type="text/html" title="Trust a Self-Signed Certificate">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">The procedure below assumes that an SSL certificate is generated and Tomcat is configured to use it.</div>
+        <div class="section context">
+          <p class="p">The instructions below explain how to complete the trust relationship between the BA Server (when it is configured for SSL) and the User Console.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Change to the home directory of the user account that starts the BA Server and Pentaho User Console processes or services.</span>  <pre class="pre codeblock">cd ~</pre> Using the default settings suggested by Pentaho, this
+            will be <span class="ph filepath">/home/pentaho/</span> . </li>
+          <li class="li step"> <span class="ph cmd">Execute the following command, changing the storepass (<strong class="ph b">pass</strong>  in the example) and keypass (<strong class="ph b">pass2</strong>  in the example) accordingly:</span>  <pre class="pre codeblock">keytool -export -alias tomcat -file tomcat.cer -storepass pass -keypass pass2 -keystore .keystore</pre>            </li>
+          <li class="li step"> <span class="ph cmd">Change to the <span class="ph filepath">$PENTAHO_JAVA_HOME/jre/lib/security/</span>  directory.</span>  <pre class="pre codeblock">cd $PENTAHO_JAVA_HOME/jre/lib/security/</pre> The <strong class="ph b">PENTAHO_JAVA_HOME</strong>             variable was established during your production installation procedure. If you are on Windows, environment variables are surrounded by percent signs, as in: <span class="ph filepath">cd %PENTAHO_JAVA_HOME%\jre\lib\security\</span> . If you
+            get an error about this path not being valid, then use <strong class="ph b">JAVA_HOME</strong>  instead of <strong class="ph b">PENTAHO_JAVA_HOME</strong> . </li>
+          <li class="li step"> <span class="ph cmd">Execute the following command, changing the alias (<strong class="ph b">tomcat</strong>  in the example), the file path to the certificate (the current user's home directory in the example), and the storepass (<strong class="ph b">pass</strong>  in the example) accordingly:</span>             <pre class="pre codeblock">keytool -import -alias tomcat -file ~/tomcat.cer -keystore cacerts -storepass pass</pre>
+            <div class="note note"><span class="notetitle">Note:</span>  If the path to your certificate involves spaces, you must either escape the spaces (on Linux, Unix, and OS X), or put double quotes around the path (on Windows) in order for the command to work properly.</div>
+          </li>
+          <li class="li step"> <span class="ph cmd">Execute the following command and make note of the MD5 sum for the <strong class="ph b">tomcat</strong>  entry:</span>  <pre class="pre codeblock">keytool -list -keystore cacerts</pre> </li>
+          <li class="li step"> <span class="ph cmd">Change back to the home directory of the user account that starts the BA Server and User Console, and run this command:</span>  <pre class="pre codeblock">keytool -list -keystore .keystore</pre> </li>
+          <li class="li step"> <span class="ph cmd">Compare the <strong class="ph b">tomcat</strong>  entry's MD5 sum to the one you generated previously and ensure that they match.</span>  If these sums do not match, you've made a mistake someplace in the certificate trust
+            process. Go through the steps again and ensure that you're working with the right user accounts and directories. </li>
+        </ol>
+        <div class="section result">The BA Server is now configured to allow access via SSL.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

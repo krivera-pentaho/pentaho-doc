@@ -1,0 +1,61 @@
+<content type="text/html" title="Resolving Missing Zip Code Information">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to resolve missing zip code information.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">After you
+            <a class="xref" title="Retrieving Data from Your Lookup File" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0J0/0C0/020/030">Retrieve Data from your Lookup File</a>, you can begin to resolve the missing zip codes.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Add a <strong class="ph b">Stream Lookup</strong>  step to your transformation. &nbsp;To do this, click the <strong>Design </strong> tab, then expand the <strong><span class="ph uicontrol">Lookup</span>  </strong> folder and
+            choose <strong class="ph b">Stream Lookup</strong> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Draw a hop from the <strong><span class="ph uicontrol">Filter Missing Zips</span> </strong>  to the&nbsp;<strong class="ph b">Stream lookup</strong>  step. In the dialog box that appears, select <strong><span class="ph uicontrol">Result is FALSE</span> </strong> .
+            </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Create a hop from the <strong class="ph b">Read Postal Codes</strong>  step to the <strong>Stream lookup</strong>  step.</span> </li>
+          <li class="li step"><span class="ph cmd">Double-click on the <strong class="ph b">Stream lookup</strong>  step to open the <strong>Stream Value Lookup&nbsp;</strong> window.</span> </li>
+          <li class="li step"><span class="ph cmd">Rename <strong>Stream Lookup</strong>  to <strong class="ph b">Lookup Missing Zips</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">From the <span class="ph uicontrol"><strong>Lookup </strong> step</span>  drop-down box, select <strong><span class="ph uicontrol">Read Postal Codes</span> </strong>  as the lookup step.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Define the <strong class="ph b">CITY</strong>  and <strong class="ph b">STATE</strong>  fields in the <strong class="ph b">key(s) to look up the value(s)</strong>  table. Click the drop down in the <strong class="ph b">Field</strong>  column and select <strong class="ph b">CITY</strong> . Then, click in the <strong class="ph b">LookupField</strong>  column and select <strong class="ph b">CITY</strong> . Perform the same actions to define the second key based on the <strong class="ph b">STATE</strong>  fields coming in on the source and lookup streams:</span> 
+            <img alt="File:/pdi_lookup_values.png" class="image internal" id="12f6978d-b5b3-4b6f-b433-fa2113acaefa__task_resolving_missing_zip_code_info__image_c04dc391-a642-49b1-a8af-761421260156" src="http://help.pentaho.com/@api/deki/files/2300/pdi_lookup_values.png?revision=1"
+            />
+            <img alt="File:/pdi_stream_lookup.png" class="image internal" id="12f6978d-b5b3-4b6f-b433-fa2113acaefa__task_resolving_missing_zip_code_info__image_622c69e6-abc8-4a2f-8465-968a9fc669eb" src="http://help.pentaho.com/@api/deki/files/2301/pdi_stream_lookup.png?revision=1"
+            />
+          </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Get Lookup Fields</strong> . </span> </li>
+          <li class="li step"><span class="ph cmd"><strong class="ph b">POSTALCODE</strong>  is the only field you want to retrieve. To delete the <span class="ph uicontrol">CITY</span>  and <span class="ph uicontrol">STATE</span>  lines, right-click in the line and select
+            <strong><span class="ph uicontrol">Delete Selected Lines</span> </strong> . </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Give <strong class="ph b">POSTALCODE</strong>  a new name of <strong class="ph b">ZIP_RESOLVED</strong>  and make sure the <strong class="ph b">Type</strong>  is set to <strong class="ph b">String</strong> . </span> </li>
+          <li
+          class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to close the <strong class="ph b">Stream Value Lookup</strong>  edit properties dialog box.&#8203;&#8203;<img alt="LookupDialog.png" style="width: 550px; height: 341px;" class="undefined internal" width="550px" height="341px" src="http://help.pentaho.com/@api/deki/files/2809/LookupDialog.png?size=bestfit&amp;width=550&amp;height=341&amp;revision=1" /></span> </li>
+            <li class="li step"><span class="ph cmd">Save your transformation.</span> </li>
+            <li class="li step">To preview the data:
+              <ol start="1" style="list-style-type: lower-alpha;">
+                <li class="li step">In the canvas, select the <strong><span class="ph uicontrol">Lookup Missing Zips</span> </strong>  step then right-click and select <strong class="ph b">Preview.</strong> &nbsp;</li>
+                <li class="li step">In the <strong>Transformation debug dialog&nbsp;</strong> window, click <strong class="ph b">Quick Launch</strong>  to preview the data flowing through this step. &nbsp;</li>
+                <li class="li step">The <strong>Examine preview data&nbsp;</strong> &nbsp;window appears. &nbsp;Notice that the new field,<strong> <span class="ph uicontrol">ZIP_RESOLVED</span> </strong>, has been added to the stream containing your resolved postal codes.</li>
+                <li class="li step">Click&nbsp;<strong>Close&nbsp;</strong> to close the window.</li>
+                <li class="li step">If the&nbsp;<strong>Select the preview step&nbsp;</strong> window appears, click the&nbsp;<strong>Close&nbsp;</strong> button.</li>
+                <li class="li step">Note that the execution results near the bottom of the&nbsp;<strong>Spoon&nbsp;</strong> window shows updated metrics in the&nbsp;<strong>Step Metrics&nbsp;</strong> tab.</li>
+              </ol>
+            </li>
+        </ol>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

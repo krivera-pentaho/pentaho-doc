@@ -1,0 +1,268 @@
+<content type="text/html" title="ElasticSearch Bulk Insert">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h1 class="editable">Overview</h1>
+        <p>&nbsp;</p>
+        <p>Explains how to use the ElasticSearch Bulk Insert step.</p>
+      </div>
+    </div>
+    <p>Elastic is a&nbsp;platform that consists of products&nbsp;that search, analyze, and visualize&nbsp;data. &nbsp;The Elastic platform includes&nbsp;ElasticSearch, which&nbsp;is a Lucene-based, multi-tenant capable, and distributed search and analytics
+      engine</p>
+    <div id="section_2" class="mt-page-section"><span id="Description"></span> 
+      <h1 class="editable">
+        <a name="Description"></a> Description</h1>
+      <p>The <strong>ElasticSearch Bulk Loader</strong>  step sends one or more batches of records&nbsp;to an ElasticSearch server for indexing. &nbsp;Because&nbsp;you can specify the size of a batch, you can use this step to send&nbsp;one, a few, or many
+        records to ElasticSearch for indexing.&nbsp;</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Context"></span> 
+      <h1 class="editable">
+        <a name="Context"></a> Context</h1>
+      <p>Use this step if you have records&nbsp;that you want to submit to an ElasticSearch server to be indexed. When record data flows out of the <strong>ElasticSearch Bulk Loader</strong>  step, PDI sends it to&nbsp;ElasticSearch along with metadata that
+        you indicate such as&nbsp;the index and type. This step is commonly used when you want to send a batch of data to an ElasticSearch server and create new indexes of a certain type (category). It is also used when you want to add a batch of data
+        to an index or category.&nbsp;</p>
+      <p>Because this is an output step, it is often placed at the end of the transformation.</p>
+      <p class="pentaho-note">Since ElasticSearch has a REST web interface&nbsp;you can also use the <strong>REST Client</strong>  step to send data&nbsp;to an ElasticSearch server and to perform other REST functions.</p>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Prerequisites"></span> 
+      <h1 class="editable">
+        <a name="Prerequisites"></a> Prerequisites</h1>
+      <p>You need:</p>
+      <ul class="pentaho-list-unordered">
+        <li>A working server that has&nbsp;ElasticSearch version 1.5.2 already installed. &nbsp;You should be able to connect to ElasticSearch&nbsp;from the computer that you are running PDI&nbsp;on.</li>
+        <li>Insert, Update, and Create privileges for the directories on the ElasticSearch&nbsp;server that you need to access.</li>
+        <li>Files or data you want ElasticSearch to index.</li>
+      </ul>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Options"></span> 
+      <h1 class="editable">
+        <a name="Options"></a> Options</h1>
+      <p>This step consists of four tabs: General, Servers, Fields, and Settings.</p>
+      <div id="section_6" class="mt-page-section"><span id="General_Tab"></span> 
+        <h2 class="editable">
+          <a name="GeneralTab"></a> General Tab</h2>
+        <p>
+          <a class="thumb" title="elasticsearch_bulk_insert_general.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7930/elasticsearch_bulk_insert_general.png">
+            <img alt="elasticsearch_bulk_insert_general.png" class="internal default" style="width: 312px; height: 350px;" width="312px" height="350px" src="http://help.pentaho.com/@api/deki/files/7930/elasticsearch_bulk_insert_general.png?size=bestfit&amp;width=312&amp;height=350&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 650px; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 116px;">Option</th>
+              <th style="width: 509px;">Description</th>
+            </tr>
+          </thead>
+          <tbody> </tbody>
+          <tbody>
+            <tr>
+              <td style="width: 116px;">Step name</td>
+              <td style="width: 509px;">Indicates the name given to&nbsp;this step.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Help</td>
+              <td style="width: 509px;">Displays help documentation.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">OK</td>
+              <td style="width: 509px;">Saves the information&nbsp;you entered, then&nbsp;closes the window.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Cancel</td>
+              <td style="width: 509px;">Discards the changes you entered, then&nbsp;closes the window.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Index</td>
+              <td style="width: 509px;">Specifies the name of the index you want to add data to. &nbsp;&nbsp;If an index with that name doesn't yet exist in ElasticSearch, it creates one.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Type</td>
+              <td style="width: 509px;">Indicates the category the data should be placed in. &nbsp;You define the category. &nbsp;In general practice, the&nbsp;type sometimes&nbsp;describes the data.&nbsp;For example, if the index is &quot;twitter&quot; the type might be &quot;tweet.&quot;</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Test Index</td>
+              <td style="width: 509px;">Checks whether&nbsp;the index exists in ElasticSearch. &nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Batch Size</td>
+              <td style="width: 509px;">Indicates the number of items in the batch. &nbsp;(If you set the batch size is set to one, it is not a bulk insert, but setting it to a higher number is.)</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Stop on Error</td>
+              <td style="width: 509px;">Stops processing if there is an error, such as a problem with adding the document or the bulk push to the index or if the JSON is not well-formed.&nbsp; If this option is not selected, and an error occurs, the row is not processed, but the
+                transformation keeps running so that other rows are processed.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Batch Timeout</td>
+              <td style="width: 509px;">Indicates how long batch should be processed before the batch times out, and processing ends.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">ID Field</td>
+              <td style="width: 509px;">Indicates the name of the ID field in the file.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Overwrite if exists</td>
+              <td style="width: 509px;">If the output file exists because this transformation was run before, allows the output to be overwritten.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Output Rows</td>
+              <td style="width: 509px;">Sends the rows that are successfully processed by ElasticSearch to the to the next step (or the output).&nbsp; If you've checked Stop on Error, the rows that were successful up until the time the error occurs is sent to the next step (or
+                the output).&nbsp; Otherwise, rows successfully processed by Elastic search rows are sent to the next step (or the output).</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">ID Output Field</td>
+              <td style="width: 509px;">Indicates the name if the ID field that is in the output.&nbsp; If this is left blank, the value in the ID Field is used instead.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">JSON Input</td>
+              <td style="width: 509px;">Indicates whether the input is a JSON file.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">JSON Field</td>
+              <td style="width: 509px;">Indicates the JSON node from which processing should begin.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Servers_Tab"></span> 
+        <h2 class="editable">
+          <a name="ServersTab"></a> Servers Tab</h2>
+        <p>
+          <a class="thumb" title="elasticsearch_bulk_insert_servers.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7931/elasticsearch_bulk_insert_servers.png">
+            <img alt="elasticsearch_bulk_insert_servers.png" class="internal default" style="width: 312px; height: 350px;" width="312px" height="350px" src="http://help.pentaho.com/@api/deki/files/7931/elasticsearch_bulk_insert_servers.png?size=bestfit&amp;width=312&amp;height=350&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 652px; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 116px;">Option</th>
+              <th style="width: 512px;">Description</th>
+            </tr>
+          </thead>
+          <tbody> </tbody>
+          <tbody>
+            <tr>
+              <td style="width: 116px;">#</td>
+              <td style="width: 512px;">Number of the server entry.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Address</td>
+              <td style="width: 512px;">IP address of the server&nbsp;you want to connect to.&nbsp;</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Port</td>
+              <td style="width: 512px;">Port number for the server you want to connect to.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Test Connection</td>
+              <td style="width: 512px;">Verifies that the connection can be made to the servers listed in this tab.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Fields_Tab"></span> 
+        <h2 class="editable">
+          <a name="FieldsTab"></a> Fields Tab</h2>
+        <p>
+          <a class="thumb" title="elasticsearch_bulk_insert_fields.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7929/elasticsearch_bulk_insert_fields.png">
+            <img alt="elasticsearch_bulk_insert_fields.png" class="internal default" style="width: 312px; height: 350px;" width="312px" height="350px" src="http://help.pentaho.com/@api/deki/files/7929/elasticsearch_bulk_insert_fields.png?size=bestfit&amp;width=312&amp;height=350&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 652px; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 116px;">Option</th>
+              <th style="width: 512px;">Description</th>
+            </tr>
+          </thead>
+          <tbody> </tbody>
+          <tbody>
+            <tr>
+              <td style="width: 116px;">#</td>
+              <td style="width: 512px;">Number of the fields entry.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Name</td>
+              <td style="width: 512px;">Name from the input.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Target Name</td>
+              <td style="width: 512px;">Output field name.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Get Fields</td>
+              <td style="width: 512px;">Retrieves the fields from the input.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Settings_Tab"></span> 
+        <h2 class="editable">
+          <a name="SettingsTab"></a> Settings Tab</h2>
+        <p>
+          <a class="thumb" title="elasticsearch_bulk_insert_settings.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7932/elasticsearch_bulk_insert_settings.png">
+            <img alt="elasticsearch_bulk_insert_settings.png" class="internal default" style="width: 312px; height: 350px;" width="312px" height="350px" src="http://help.pentaho.com/@api/deki/files/7932/elasticsearch_bulk_insert_settings.png?size=bestfit&amp;width=312&amp;height=350&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 652px; table-layout: fixed;" title="Pentaho Table">
+          <thead>
+            <tr>
+              <th style="width: 116px;">Option</th>
+              <th style="width: 512px;">Description</th>
+            </tr>
+          </thead>
+          <tbody> </tbody>
+          <tbody>
+            <tr>
+              <td style="width: 116px;">#</td>
+              <td style="width: 512px;">Number of the settings entry.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Setting</td>
+              <td style="width: 512px;">Name of&nbsp;the batch.</td>
+            </tr>
+            <tr>
+              <td style="width: 116px;">Value</td>
+              <td style="width: 512px;">Value for the batch.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="section_10" class="mt-page-section"><span id="Reference_Information"></span> 
+      <h1 class="editable">
+        <a name="ReferenceInformation"></a> Reference Information</h1>
+      <p>Elastic, which is the company that makes ElasticSearch, has&nbsp;has an API as well as user documentation that can give you more background on the fields in this step.</p>
+      <ul class="pentaho-list-unordered">
+        <li>ElasticSearch reference information can be found here:&nbsp;
+          <a class="link-https" title="https://www.elastic.co/guide/en/elasticsearch/reference/1.6/index.html" rel="external nofollow" href="https://www.elastic.co/guide/en/elasticsearch/reference/1.6/index.html"
+          target="_blank">https://www.elastic.co/guide/en/ElasticSearch/reference/1.6/index.html</a> .</li>
+        <li>The Bulk&nbsp;API is&nbsp;here:&nbsp;
+          <a class="link-https" title="https://www.elastic.co/guide/en/elasticsearch/reference/1.6/docs-bulk.html" rel="external nofollow" href="https://www.elastic.co/guide/en/elasticsearch/reference/1.6/docs-bulk.html"
+          target="_blank">https://www.elastic.co/guide/en/ElasticSearch/reference/1.6/docs-bulk.html</a> .</li>
+      </ul>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Description" rel="internal">Description</a>  </li>
+      <li> <a href="#Context" rel="internal">Context</a>  </li>
+      <li> <a href="#Prerequisites" rel="internal">Prerequisites</a>  </li>
+      <li>
+        <a href="#Options" rel="internal">Options</a> 
+        <ol>
+          <li> <a href="#General_Tab" rel="internal">General Tab</a>  </li>
+          <li> <a href="#Servers_Tab" rel="internal">Servers Tab</a>  </li>
+          <li> <a href="#Fields_Tab" rel="internal">Fields Tab</a>  </li>
+          <li> <a href="#Settings_Tab" rel="internal">Settings Tab</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Reference_Information" rel="internal">Reference Information</a>  </li>
+    </ol>
+  </body>
+</content>

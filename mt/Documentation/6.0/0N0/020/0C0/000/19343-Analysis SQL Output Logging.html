@@ -1,0 +1,25 @@
+<content type="text/html" title="Analysis SQL Output Logging">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Follow the directions below to turn on logging for SQL generation in the BA Server or Mondrian engine. If you are aware of other log4j classes that will assist you in configuration troubleshooting or performance-tuning, you can add them during
+            this process.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Stop the BA Server or standalone Mondrian engine.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Edit the <strong class="ph b">log4j.xml</strong>  file in the <span class="ph filepath">/WEB-INF/classes/</span>  directory inside of the deployed pentaho.war or Mondrian engine.</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  In some Mondrian implementations, this file is <strong class="ph b">log4j.properties</strong> . Substitute this filename accordingly if you do not see a log4j.xml file.</div>
+          </li>
+          <li class="li step"> <span class="ph cmd">Add the following line anywhere inside of the <strong class="ph b"></log4j:configuration></strong>  node (but not inside of other constituent node tags):</span>  <pre class="pre codeblock">log4j.logger.mondrian.sql=DEBUG</pre>            </li>
+          <li class="li step"> <span class="ph cmd">Save and close the file.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Start the BA Server or Mondrian engine.</span>  </li>
+        </ol>
+        <div class="section result">A significant amount of Analysis SQL query debugging information will now be available in your application server's logs. Some data about the segment cache plugin will also appear, but there are some other steps to take beyond this if you want
+          log data specific to the segment cache. Refer to
+          <a class="xref" title="Documentation/5.1/0N0/020/0C0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/0C0/010">Enabling Segment Cache Logging</a>  for more information.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,174 @@
+<content type="text/html" title="Install BA Version 5.1">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="pentaho-overview-hidden">
+            <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+              <h2 class="editable">Overview</h2>
+              <p>Explains how to install BA Version 5.1.</p>
+            </div>
+          </div>
+          <p>After you have
+            <a title="Create Upgrade Plan" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0T0/0V0/010">created an upgrade plan</a>,&nbsp;shut down BA Version 5.0.x, then install BA version 5.1.</p>
+          <div class="section" id="Shut Down Server">
+            <div id="section_2" class="mt-page-section"><span id="Shut_Down_BA_Server_Version_5.0.x"></span> 
+              <h2 class="editable">Shut Down BA Server Version 5.0.x</h2>
+              <p>Back up the BA Repository and stop all BA components, as well as the web application server.</p>
+              <ol class="pentaho-list-ordered">
+                <li>Stop all BA components.</li>
+                <li>Stop the BA Repository.</li>
+                <li>Stop the web application server.</li>
+                <li>Back up the BA Repository using the directions provided by your database vendor&nbsp;(PostgreSQL, MySQL, or Oracle).&nbsp;</li>
+                <li>Verify that the web application server has been stopped by doing one of the following.</li>
+              </ol>
+              <ul class="pentaho-list-unordered">
+                <li><strong class="ph b">If you are a Linux user</strong> &nbsp;run this command from a terminal window. &nbsp;</li>
+              </ul>
+              <p class="pentaho-note">If you have deployed the BA Server on JBoss, substitute <span class="filepath style-wrap">jboss </span> for <span class="filepath style-wrap">tomcat </span> in the following code.</p> <pre class="pre codeblock" style="font-size: 12px;">
+$>  ps -ef | grep tomcat</pre>
+              <ul class="pentaho-list-unordered">
+                <li class="p"><strong class="ph b">If you are a Windows user</strong> &nbsp;open the task manager and search for the&nbsp;<strong class="ph b">Tomcat6.exe</strong> &nbsp;or a JBoss process. If you are on Windows 7 or Windows 2008, you can access&nbsp;
+                  <span
+                  class="ph uicontrol">Services</span> &nbsp;and see if it shows as running or stopped. &nbsp;</li>
+              </ul>
+              <ol class="pentaho-list-ordered" start="6">
+                <li>If you installed the BA Server on Windows using the Installation Wizard, you need to stop the repository database, which runs as a Windows service.&nbsp; To do this, access the <strong>Windows Administrative Tools > Services Manager </strong> then
+                  stop the&nbsp;<strong class="ph b">Pentaho&nbsp;Solution Repository</strong> &nbsp;service.&nbsp;</li>
+              </ol>
+            </div>
+          </div>
+          <div class="section" id="Stop Repository Database Service">&nbsp;</div>
+          <div class="section" id="Install BA Server">
+            <div id="section_3" class="mt-page-section"><span id="Install_Version_5.1_of_the_BA_Server"></span> 
+              <h2 class="editable">Install Version 5.1 of the BA Server</h2>
+              <p>Install version 5.1 of the BA Server using the Wizard, Install with Your Own Repository, or Manual method.&nbsp; Use the same method you used to install version 5.0.x of the software.&nbsp; You can assign ports during installation.&nbsp;
+                Default ports are listed in the following table.</p>
+              <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" title="Pentaho Table">
+                <thead>
+                  <tr class="strow">
+                    <th class="stentry" colspan="1" rowspan="1" scope="col" valign="top"><strong>Component</strong> </th>
+                    <th class="stentry" colspan="1" rowspan="1" scope="col" valign="top"><strong>Start Up Port</strong> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="strow">
+                    <td class="stentry" colspan="1" rowspan="1" valign="top"><strong><strong class="ph b">PostgreSQL</strong> </strong> 
+                    </td>
+                    <td class="stentry" colspan="1" rowspan="1" valign="top">5432</td>
+                  </tr>
+                  <tr>
+                    <td class="stentry" colspan="1" valign="top"><strong>MySQL</strong> </td>
+                    <td class="stentry" colspan="1" valign="top">3306</td>
+                  </tr>
+                  <tr>
+                    <td class="stentry" colspan="1" valign="top"><strong>Oracle</strong> </td>
+                    <td class="stentry" colspan="1" valign="top">1521</td>
+                  </tr>
+                  <tr class="strow">
+                    <td class="stentry" colspan="1" rowspan="1" valign="top"><strong class="ph b">BA Server</strong> </td>
+                    <td class="stentry" colspan="1" rowspan="1" valign="top">8080</td>
+                  </tr>
+                  <tr class="strow">
+                    <td class="stentry" colspan="1" rowspan="1" valign="top"><strong class="ph b">Data Integration Server</strong> </td>
+                    <td class="stentry" colspan="1" rowspan="1" valign="top">9080</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="topic task nested1" id="b28aa234-f369-44e2-91d8-d4f7424b24eb__stop_old_server">
+            <div id="section_4" class="mt-page-section"><span id="Use_the_Wizard"></span> 
+              <h3 class="editable">Use the Wizard</h3>
+              <p>Use this method only if you used the Wizard to install 5.0.x.</p>
+              <div class="body taskbody">
+                <ol class="pentaho-list-ordered">
+                  <li class="li step">Back up your <span class="filepath style-wrap">/pentaho</span> &nbsp;directory.</li>
+                  <li class="li step">Rename the<span class="filepath style-wrap"> /pentaho&nbsp;</span> directory to&nbsp;<span class="filepath style-wrap">pentaho-old</span> .</li>
+                  <li class="li step">Follow the instructions in the
+                    <a title="Introduction to Pentaho BA Suite Wizard Installation" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0I0/000">Install All Components&nbsp;guide</a> . &nbsp;</li>
+                  <li class="li step">Stop the new PostgreSQL database.</li>
+                  <li class="li step">Stop the BA Server.</li>
+                  <li class="li step">Navigate to <span class="filepath style-wrap">system/jackrabbit/repository</span>  and delete everything under it.</li>
+                  <li class="li step">Switch the Postgres port to your old 5.0.x one OR backup all of the data from the old Postgres and restore it into the new one.</li>
+                  <li class="li step">Start the BA Server.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="topic task nested1" id="Install With Repository">
+          <div id="section_5" class="mt-page-section"><span id="Use_the_Install_with_Your_Own_Repository_Method"></span> 
+            <h3 class="editable">Use the Install with Your Own Repository Method&nbsp;</h3>
+            <div class="body taskbody">
+              <div class="section context">
+                <p>Use this method only if you used the Install with Your Own Repository&nbsp;method to install 5.0.x.&nbsp; (This method is also known as the Archive installation method.)</p>
+                <div class="body taskbody">
+                  <ol class="pentaho-list-ordered">
+                    <li class="li step">Back up your <span class="filepath style-wrap">/pentaho</span> &nbsp;directory.&nbsp;</li>
+                    <li class="li step">Rename the <span class="filepath style-wrap">/pentaho</span> &nbsp;directory to<span class="filepath style-wrap">&nbsp;pentaho-old</span> .</li>
+                    <li class="li step">Follow the instructions in the
+                      <a title="Documentation/5.1/0F0/0P0" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0P0">Install BA Server with Your Own Repository</a>  guide.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="Manual Method">
+        <div id="section_6" class="mt-page-section"><span id="Use_the_Manual_Method"></span> 
+          <h3 class="editable">Use the Manual Method</h3>
+          <div class="body taskbody">
+            <div class="section context">
+              <p>Use this method only if you used the manual method to install version 5.0.x of BA.</p>
+              <div class="body taskbody">
+                <ol class="pentaho-list-ordered">
+                  <li class="li step">Back up your <span class="filepath style-wrap">/pentaho</span>  directory and<span class="filepath style-wrap"> pentaho.war</span> .</li>
+                  <li class="li step">Rename the <span class="filepath style-wrap">/pentaho</span> &nbsp;directory to <span class="filepath style-wrap">pentaho-old</span> .</li>
+                  <li class="li step">Follow the instructions in the
+                    <a title="Use Manual BA Server Installation" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0K0">Use Manual BA Installation</a>  guide.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="section" id="cient_tools">
+        <div id="section_7" class="mt-page-section"><span id="Install_Version_5.1_of_the_Client_Tools"></span> 
+          <h2 class="editable">Install Version 5.1 of the Client Tools</h2>
+          <p>To upgrade the&nbsp;Pentaho&nbsp;client tools on user workstations, download and run the Wizard installer or install the individual client tool packages.&nbsp; When you install you must:</p>
+          <div class="p">
+            <ol class="pentaho-list-ordered">
+              <li>Rename or remove the old client tools.</li>
+              <li>Use the instructions in the
+                <a title="Install Only BA Tools" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0G0">Install Only BA Tools</a>  guide.</li>
+            </ol>
+          </div>
+          <p>The only&nbsp;Pentaho&nbsp;client tools that store user settings are Report Designer and&nbsp;Pentaho&nbsp;Data Integration (Spoon). When you upgrade these programs, the new instance detects the custom settings from the old instance and uses
+            them automatically.&nbsp; No settings or content files are stored in the<span class="filepath style-wrap">&nbsp;<span class="ph filepath">/pentaho/design-tools/report-designer/</span> &nbsp;</span> or<span class="filepath style-wrap">&nbsp;<span class="ph filepath">/pentaho/design-tools/data-integration/</span> directories</span> 
+            (or the subdirectories for any other client tools).&nbsp; Custom user settings are stored in these directories.</p>
+          <ul class="pentaho-list-unordered">
+            <li><strong>Report Designer</strong> :&nbsp; <span class="filepath style-wrap">$HOME/.pentaho</span> </li>
+            <li><strong>Spoon</strong> :&nbsp;<span class="filepath style-wrap">$HOME/.kettle</span> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Shut_Down_BA_Server_Version_5.0.x" rel="internal">Shut Down BA Server Version 5.0.x</a>  </li>
+      <li>
+        <a href="#Install_Version_5.1_of_the_BA_Server" rel="internal">Install Version 5.1 of the BA Server</a> 
+        <ol>
+          <li> <a href="#Use_the_Wizard" rel="internal">Use the Wizard</a>  </li>
+          <li> <a href="#Use_the_Install_with_Your_Own_Repository_Method" rel="internal">Use the Install with Your Own Repository Method&nbsp;</a>  </li>
+          <li> <a href="#Use_the_Manual_Method" rel="internal">Use the Manual Method</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Install_Version_5.1_of_the_Client_Tools" rel="internal">Install Version 5.1 of the Client Tools</a>  </li>
+    </ol>
+  </body>
+</content>

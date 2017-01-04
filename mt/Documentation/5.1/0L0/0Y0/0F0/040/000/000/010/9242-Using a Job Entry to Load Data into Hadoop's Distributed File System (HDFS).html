@@ -1,0 +1,80 @@
+<content type="text/html" title="Using a Job Entry to Load Data into Hadoop's Distributed File System (HDFS)">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">
+          <div class="p">In order to follow along with this tutorial, you will need
+            <ul class="ul">
+              <li class="li">Hadoop</li>
+              <li class="li">Pentaho Data Integration</li>
+            </ul>
+          </div>
+        </div>
+        <div class="section context">
+          <p class="p">You can use PDI jobs to put files into HDFS from many different sources. This tutorial describes how to create a PDI job to move a sample file into HDFS.</p>
+          <p class="p">If not already running, start Hadoop and PDI. Unzip the sample data files and put them in a convenient location:
+            <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/download/attachments/23530622/weblogs_rebuild.txt.zip">weblogs_rebuild.txt.zip</a> .</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__create_new_job_step1"><span class="ph cmd">Create a new Job by selecting <span class="ph uicontrol">File</span>  > <span class="ph uicontrol">New</span>  > <span class="ph uicontrol">Job</span> .</span> 
+          </li>
+          <li class="li step" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__create_new_job_step2"><span class="ph cmd">Add a Start job entry to the canvas. From the <span class="ph uicontrol">Design</span>  palette on the left, under the <span class="ph uicontrol">General</span>  folder, drag a <span class="ph uicontrol">Start</span>  job entry
+            onto the canvas. </span> 
+            <img alt="File:/loading_data_into_hdfs_step2.png" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_step2" src="File:loading_data_into_hdfs_step2.png"
+            />
+          </li>
+          <li class="li step" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__create_new_job_step3"><span class="ph cmd">Add a Hadoop Copy Files job entry to the canvas. From the <span class="ph uicontrol">Design</span>  palette, under the <span class="ph uicontrol">Big Data</span>  folder, drag a <span class="ph uicontrol">Hadoop Copy Files</span>             job entry onto the canvas.</span> 
+            <img alt="File:/loading_data_into_hdfs_step3.png" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_step3" src="File:loading_data_into_hdfs_step3.png"
+            />
+          </li>
+          <li class="li step" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__create_new_job_step4"><span class="ph cmd">Connect the two job entries by hovering over the <span class="ph uicontrol">Start</span>  entry and selecting the output connector
+            <img alt="File:/loading_data_into_hdfs_step4a.png" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_step4a"
+            src="File:loading_data_into_hdfs_step4a.png" />, then drag the connector arrow to the <span class="ph uicontrol">Hadoop Copy Files</span>  entry.</span> 
+            <img alt="File:/loading_data_into_hdfs_step4.png" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_step4"
+            src="File:loading_data_into_hdfs_step4.png" />
+          </li>
+          <li class="li step"><span class="ph cmd">Enter the source and destination information within the properties of the <span class="ph uicontrol">Hadoop Copy Files</span>  entry by double-clicking it. </span> 
+            <ol class="ol substeps" type="a">
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">File/Folder source(s)</span>, click <span class="ph uicontrol">Browse</span>  and navigate to the folder containing the downloaded sample file <span class="ph filepath">weblogs_rebuild.txt</span> .
+                </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">File/Folder destination(s)</span>, enter <code class="ph codeph">hdfs://<NAMENODE>:<PORT>/user/pdi/weblogs/raw</code>, where NAMENODE and PORT reflect your Hadoop destination. </span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">For <span class="ph uicontrol">Wildcard (RegExp)</span>, enter <code class="ph codeph">^.*\.txt</code>.</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Click <span class="ph uicontrol">Add</span>  to include the entries to the list of files to copy.</span> 
+              </li>
+              <li class="li substep"><span class="ph cmd">Check the <span class="ph uicontrol">Create destination folder</span>  option to ensure that the <span class="ph filepath">weblogs</span>  folder is created in HDFS the first time this job is executed. </span> 
+              </li>
+            </ol>
+            <p class="p">When you are done your window should look like this (your file paths may be different).</p>
+            <p class="p">
+              <img alt="File:/loading_data_into_hdfs_step5.png" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_step5" src="File:loading_data_into_hdfs_step5.png" />
+            </p>
+            <p class="p">Click <span class="ph uicontrol">OK</span>  to close the window.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Save the job by selecting <span class="ph uicontrol">Save as</span>  from the <span class="ph uicontrol">File</span>  menu. Enter <code class="ph codeph">load_hdfs.kjb</code> as the file name within a folder of your choice.
+            </span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Run the job by clicking the green Run button on the job toolbar <img alt="File:/loading_data_into_hdfs_result_run.png" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_result_run" src="File:loading_data_into_hdfs_result_run.png" />, or by selecting <span class="ph uicontrol">Action</span>             > <span class="ph uicontrol">Run</span>  from the menu. The <span class="ph uicontrol">Execute a job</span>  window opens. Click <span class="ph uicontrol">Launch</span> . </span> 
+            <p class="p">An <span class="ph uicontrol">Execution Results</span>  panel opens at the bottom of the Spoon interface and displays the progress of the job as it runs. After a few seconds the job finishes successfully.</p>
+            <p class="p">
+              <img alt="File:/loading_data_into_hdfs_step7.PNG" class="image" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__loading_data_into_hdfs_step7" src="File:loading_data_into_hdfs_step7.PNG" />
+            </p>
+            <p class="p">If any errors occurred the job entry that failed will be highlighted in red and you can use the <span class="ph uicontrol">Logging</span>  tab to view error messages.</p>
+          </li>
+          <li class="li step"><span class="ph cmd">Verify the data was loaded by querying Hadoop.</span> 
+            <ol class="ol substeps" id="d123df20-864e-4d97-84d5-18ef8f559d98__task_hadoop_loading_data_into_hdfs_orig__substeps_4cr_44v_zh" type="a">
+              <li class="li substep"><span class="ph cmd">From the command line, query Hadoop by entering this command.</span>  <pre class="pre codeblock">
+hadoop fs -ls /user/pdi/weblogs/raw</pre> </li>
+            </ol>
+          </li>
+        </ol>
+        <div class="section result">This statement is returned <pre class="pre codeblock">
+<strong class="ph b">-rwxrwxrwx 3 demo demo 77908174 2011-12-28 07:16 /user/pdi/weblogs/raw/weblog_raw.txt</strong> </pre> </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

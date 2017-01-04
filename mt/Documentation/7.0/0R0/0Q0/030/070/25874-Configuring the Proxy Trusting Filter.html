@@ -1,0 +1,35 @@
+<content type="text/html" title="Configuring the Proxy Trusting Filter">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>If you have set the Pentaho Server to run on a specific IP address or hostname other than the default 127.0.0.1, you must modify the trusted proxy to match that address or hostname for Pentaho plugins to run as expected. Additionally, if you have
+        applications that access Pentaho Server resources, such as REST APIs, you must add that application's IP address so that the Pentaho Server will accept those requests.</p>
+      <ol class="pentaho-list-ordered">
+        <li class="li step">Stop the Pentaho Server.</li>
+        <li class="li step">Open <span class="filepath style-wrap">pentaho-server/tomcat/webapps/pentaho/WEB-INF/web.xml</span>  and search for <span class="filepath style-wrap">TrustedIpAddrs</span> .
+          <p class="pentaho-note">The <span class="filepath style-wrap">param-value</span>  immediately below <span class="filepath style-wrap">TrustedIpAddrs </span> is a comma-separated list of IP addresses that should be trusted.</p>
+        </li>
+        <li class="li step">Add the IP address of the host machine. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <filter-class>org.pentaho.platform.web.http.filters.ProxyTrustingFilter</filter-class>
+        <init-param>
+            <param-name>TrustedIpAddrs</param-name>
+            <param-value>127.0.0.1</param-value>
+            <description>Comma separated list of IP addresses of a trusted hosts.</description>
+        </init-param>
+</filter></pre> </li>
+        <li class="li step">Start the Pentaho Server.</li>
+      </ol>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

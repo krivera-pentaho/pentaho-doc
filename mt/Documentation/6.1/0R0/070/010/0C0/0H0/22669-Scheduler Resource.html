@@ -1,0 +1,2059 @@
+<content type="text/html" title="Scheduler Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>The SchedulerResource service provides the means to create, read, update, delete and list schedules and blockout periods. Also provides the ability to control the status of schedules and scheduler.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__scheduler_blockout_add.html">/scheduler/blockout/add</a>  </li>
+              <li> <a href="#path__scheduler_blockout_blockoutjobs.html">/scheduler/blockout/blockoutjobs</a>  </li>
+              <li> <a href="#path__scheduler_blockout_blockstatus.html">/scheduler/blockout/blockstatus</a>  </li>
+              <li> <a href="#path__scheduler_blockout_hasblockouts.html">/scheduler/blockout/hasblockouts</a>  </li>
+              <li> <a href="#path__scheduler_blockout_shouldFireNow.html">/scheduler/blockout/shouldFireNow</a>  </li>
+              <li> <a href="#path__scheduler_blockout_update.html">/scheduler/blockout/update</a>  </li>
+              <li> <a href="#path__scheduler_blockout_willFire.html">/scheduler/blockout/willFire</a>  </li>
+              <li> <a href="#path__scheduler_canSchedule.html">/scheduler/canSchedule</a>  </li>
+              <li> <a href="#path__scheduler_generatedContentForSchedule.html">/scheduler/generatedContentForSchedule</a>  </li>
+              <li> <a href="#path__scheduler_getContentCleanerJob.html">/scheduler/getContentCleanerJob</a>  </li>
+              <li> <a href="#path__scheduler_getJobs.html">/scheduler/getJobs</a>  </li>
+              <li> <a href="#path__scheduler_isScheduleAllowed.html">/scheduler/isScheduleAllowed</a>  </li>
+              <li> <a href="#path__scheduler_job.html">/scheduler/job</a>  </li>
+              <li> <a href="#path__scheduler_jobinfo.html">/scheduler/jobinfo</a>  </li>
+              <li> <a href="#path__scheduler_jobState.html">/scheduler/jobState</a>  </li>
+              <li> <a href="#path__scheduler_pause.html">/scheduler/pause</a>  </li>
+              <li> <a href="#path__scheduler_pauseJob.html">/scheduler/pauseJob</a>  </li>
+              <li> <a href="#path__scheduler_removeJob.html">/scheduler/removeJob</a>  </li>
+              <li> <a href="#path__scheduler_resumeJob.html">/scheduler/resumeJob</a>  </li>
+              <li> <a href="#path__scheduler_shutdown.html">/scheduler/shutdown</a>  </li>
+              <li> <a href="#path__scheduler_start.html">/scheduler/start</a>  </li>
+              <li> <a href="#path__scheduler_state.html">/scheduler/state</a>  </li>
+              <li> <a href="#path__scheduler_triggerNow.html">/scheduler/triggerNow</a>  </li>
+            </ul>
+            <a name="path__scheduler_blockout_add.html"></a> 
+            <div id="section_2" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2Fadd"></span> 
+              <h1 class="editable">/scheduler/blockout/add</h1>
+              <a name="POST"></a> 
+              <div id="section_3" class="mt-page-section"><span id="POST"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Creates a new blockout for scheduled jobs.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/blockout/add</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobScheduleRequest>
+<jobName>DAILY-1820438815:admin:7740000</jobName>
+<complexJobTrigger>
+<uiPassParam>DAILY</uiPassParam>
+<daysOfWeek>1</daysOfWeek>
+<daysOfWeek>2</daysOfWeek>
+<daysOfWeek>3</daysOfWeek>
+<daysOfWeek>4</daysOfWeek>
+<daysOfWeek>5</daysOfWeek>
+<startTime>2014-08-19T10:51:00.000-04:00</startTime>
+<endTime />
+</complexJobTrigger>
+<inputFile></inputFile>
+<outputFile></outputFile>
+<duration>7740000</duration>
+<timeZone>America/New_York</timeZone>
+</jobScheduleRequest></pre>
+                <div id="section_4" class="mt-page-section"><span id="Request_Body"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/030" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/030">jobScheduleRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobScheduleRequest object defining the blockout job.</p>
+                </div>
+                <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Response object which contains the ID of the blockout which was created.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">admin	BlockoutAction	1410786491209</pre> </div>
+                <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successful operation.</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not authorized to create blockout.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_blockout_blockoutjobs.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_7" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2Fblockoutjobs"></span> 
+              <h1 class="editable">/scheduler/blockout/blockoutjobs</h1>
+              <a name="GET"></a> 
+              <div id="section_8" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Get all the blockout jobs in the system.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/blockout/blockoutjobs</p>
+                <div id="section_9" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Response object that contains a list of blockout jobs.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobs>
+<job>
+<groupName>admin</groupName>
+<jobId>admin	BlockoutAction	1408457558636</jobId>
+<jobName>BlockoutAction</jobName>
+<jobParams>
+<jobParams>
+<name>TIME_ZONE_PARAM</name>
+<value>America/New_York</value>
+</jobParams>
+<jobParams>
+<name>DURATION_PARAM</name>
+<value>10080000</value>
+</jobParams>
+<jobParams>
+<name>uiPassParam</name>
+<value>DAILY</value>
+</jobParams>
+<jobParams>
+<name>user_locale</name>
+<value>en_US</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionUser</name>
+<value>admin</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionClass</name>
+<value>org.pentaho.platform.scheduler2.blockout.BlockoutAction</value>
+</jobParams>
+<jobParams>
+<name>lineage-id</name>
+<value>0989726c-3247-4864-bc79-8e2a1dc60c58</value>
+</jobParams>
+</jobParams>
+<jobTrigger xsi:type=&quot;complexJobTrigger&quot;>
+<cronString>0 12 10 ? * 2,3,4,5,6 *</cronString>
+<duration>10080000</duration>
+<startTime>2014-08-19T10:12:00-04:00</startTime>
+<uiPassParam>DAILY</uiPassParam>
+<dayOfMonthRecurrences />
+<dayOfWeekRecurrences>
+<recurrenceList>
+<values>2</values>
+<values>3</values>
+<values>4</values>
+<values>5</values>
+<values>6</values>
+</recurrenceList>
+</dayOfWeekRecurrences>
+<hourlyRecurrences>
+<recurrenceList>
+<values>10</values>
+</recurrenceList>
+</hourlyRecurrences>
+<minuteRecurrences>
+<recurrenceList>
+<values>12</values>
+</recurrenceList>
+</minuteRecurrences>
+<monthlyRecurrences />
+<secondRecurrences>
+<recurrenceList>
+<values>0</values>
+</recurrenceList>
+</secondRecurrences>
+<yearlyRecurrences />
+</jobTrigger>
+<nextRun>2014-08-20T10:12:00-04:00</nextRun>
+<state>NORMAL</state>
+<userName>admin</userName>
+</job>
+</jobs></pre> </div>
+                <div id="section_10" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved blockout jobs.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_blockout_blockstatus.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_11" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2Fblockstatus"></span> 
+              <h1 class="editable">/scheduler/blockout/blockstatus</h1>
+              <a name="POST"></a> 
+              <div id="section_12" class="mt-page-section"><span id="POST_2"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Check the status of the selected blockout schedule.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/blockout/blockstatus</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobScheduleRequest>
+<jobName>DAILY-1820438815:admin:7740000</jobName>
+<complexJobTrigger>
+<uiPassParam>DAILY</uiPassParam>
+<daysOfWeek>1</daysOfWeek>
+<daysOfWeek>2</daysOfWeek>
+<daysOfWeek>3</daysOfWeek>
+<daysOfWeek>4</daysOfWeek>
+<daysOfWeek>5</daysOfWeek>
+<startTime>2014-08-19T10:51:00.000-04:00</startTime>
+<endTime />
+</complexJobTrigger>
+<inputFile></inputFile>
+<outputFile></outputFile>
+<duration>7740000</duration>
+<timeZone>America/New_York</timeZone>
+</jobScheduleRequest></pre>
+                <div id="section_13" class="mt-page-section"><span id="Request_Body_2"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/030" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/030">jobScheduleRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>The payload containing the definition of the blockout.</p>
+                </div>
+                <div id="section_14" class="mt-page-section"><span id="Response_Body_3"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Response object which contains a BlockStatusProxy which contains totallyBlocked and partiallyBlocked flags.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><blockStatusProxy>
+<partiallyBlocked>true</partiallyBlocked>
+<totallyBlocked>true</totallyBlocked>
+</blockStatusProxy></pre> </div>
+                <div id="section_15" class="mt-page-section"><span id="Status_Codes_3"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully got the blockout status.</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not authorized to get the blockout status.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_blockout_hasblockouts.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_16" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2Fhasblockouts"></span> 
+              <h1 class="editable">/scheduler/blockout/hasblockouts</h1>
+              <a name="GET"></a> 
+              <div id="section_17" class="mt-page-section"><span id="GET_2"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Checks if there are blockouts in the system.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/blockout/hasblockouts</p>
+                <div id="section_18" class="mt-page-section"><span id="Response_Body_4"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>true or false whether there are blackouts or not.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">true</pre> </div>
+                <div id="section_19" class="mt-page-section"><span id="Status_Codes_4"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully determined whether or not the system contains blockouts.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_blockout_shouldFireNow.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_20" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2FshouldFireNow"></span> 
+              <h1 class="editable">/scheduler/blockout/shouldFireNow</h1>
+              <a name="GET"></a> 
+              <div id="section_21" class="mt-page-section"><span id="GET_3"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Checks if the selected blockout schedule should be fired now.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/blockout/shouldFireNow</p>
+                <div id="section_22" class="mt-page-section"><span id="Response_Body_5"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>true or false whether or not the blockout should fire now.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">true</pre> </div>
+                <div id="section_23" class="mt-page-section"><span id="Status_Codes_5"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successful operation.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_blockout_update.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_24" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2Fupdate"></span> 
+              <h1 class="editable">/scheduler/blockout/update</h1>
+              <a name="POST"></a> 
+              <div id="section_25" class="mt-page-section"><span id="POST_3"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Update an existing blockout.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/blockout/update?jobid=admin%09BlockoutAction%091410786491209</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobScheduleRequest>
+<jobName>DAILY-1820438815:admin:7740000</jobName>
+<complexJobTrigger>
+<uiPassParam>DAILY</uiPassParam>
+<daysOfWeek>1</daysOfWeek>
+<daysOfWeek>2</daysOfWeek>
+<daysOfWeek>3</daysOfWeek>
+<daysOfWeek>4</daysOfWeek>
+<daysOfWeek>5</daysOfWeek>
+<startTime>2012-01-12T10:51:00.000-04:00</startTime>
+<endTime />
+</complexJobTrigger>
+<inputFile></inputFile>
+<outputFile></outputFile>
+<duration>7740000</duration>
+<timeZone>America/New_York</timeZone>
+</jobScheduleRequest></pre>
+                <div id="section_26" class="mt-page-section"><span id="Parameters"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>jobid</td>
+                        <td>The jobId of the blockout we are editing.</td>
+                        <td>query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_27" class="mt-page-section"><span id="Request_Body_3"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>The payload containing the definition of the blockout.</p>
+                </div>
+                <div id="section_28" class="mt-page-section"><span id="Response_Body_6"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Response object which contains the ID of the blockout which was created.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">admin	BlockoutAction	1410786491503</pre> </div>
+                <div id="section_29" class="mt-page-section"><span id="Status_Codes_6"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successful operation.</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not authorized to update blockout.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_blockout_willFire.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_30" class="mt-page-section"><span id=".2Fscheduler.2Fblockout.2FwillFire"></span> 
+              <h1 class="editable">/scheduler/blockout/willFire</h1>
+              <a name="POST"></a> 
+              <div id="section_31" class="mt-page-section"><span id="POST_4"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Checks if the selected blockout schedule will be fired.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/blockout/willFire</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobScheduleRequest>
+<jobName>DAILY-1820438815:admin:7740000</jobName>
+<complexJobTrigger>
+<uiPassParam>DAILY</uiPassParam>
+<daysOfWeek>1</daysOfWeek>
+<daysOfWeek>2</daysOfWeek>
+<daysOfWeek>3</daysOfWeek>
+<daysOfWeek>4</daysOfWeek>
+<daysOfWeek>5</daysOfWeek>
+<startTime>2014-08-19T10:51:00.000-04:00</startTime>
+<endTime />
+</complexJobTrigger>
+<inputFile></inputFile>
+<outputFile></outputFile>
+<duration>7740000</duration>
+<timeZone>America/New_York</timeZone>
+</jobScheduleRequest></pre>
+                <div id="section_32" class="mt-page-section"><span id="Request_Body_4"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/030" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/030">jobScheduleRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>The payload containing the definition of the blockout.</p>
+                </div>
+                <div id="section_33" class="mt-page-section"><span id="Response_Body_7"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>true or false indicating whether or not the blockout will fire.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">false</pre> </div>
+                <div id="section_34" class="mt-page-section"><span id="Status_Codes_7"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successful operation.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>An error occurred while determining blockouts being fired.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_canSchedule.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_35" class="mt-page-section"><span id=".2Fscheduler.2FcanSchedule"></span> 
+              <h1 class="editable">/scheduler/canSchedule</h1>
+              <a name="GET"></a> 
+              <div id="section_36" class="mt-page-section"><span id="GET_4"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Checks whether the current user has authority to schedule any content in the platform.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/canSchedule</p>
+                <div id="section_37" class="mt-page-section"><span id="Response_Body_8"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>true or false. true indicates scheduling is allowed and false indicates scheduling is not allowed for the user.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">true</pre> </div>
+                <div id="section_38" class="mt-page-section"><span id="Status_Codes_8"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successful retrieved the scheduling permission.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Unable to retrieve the scheduling permission.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_generatedContentForSchedule.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_39" class="mt-page-section"><span id=".2Fscheduler.2FgeneratedContentForSchedule"></span> 
+              <h1 class="editable">/scheduler/generatedContentForSchedule</h1>
+              <a name="GET"></a> 
+              <div id="section_40" class="mt-page-section"><span id="GET_5"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Retrieve the list of execute content by lineage id.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/generatedContentForSchedule?lineageId=:public:Steel%20Wheels:Inventory%20List%20(report).prpt</p>
+                <div id="section_41" class="mt-page-section"><span id="Parameters_2"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>lineageId</td>
+                        <td>the path for the file.</td>
+                        <td>query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_42" class="mt-page-section"><span id="Response_Body_9"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of RepositoryFileDto objects.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><List>
+<repositoryFileDto>
+<createdDate>1402911997019</createdDate>
+<fileSize>3461</fileSize>
+<folder>false</folder>
+<hidden>false</hidden>
+<id>ff11ac89-7eda-4c03-aab1-e27f9048fd38</id>
+<lastModifiedDate>1406647160536</lastModifiedDate>
+<locale>en</locale>
+<localePropertiesMapEntries>
+<localeMapDto>
+<locale>default</locale>
+<properties>
+<stringKeyStringValueDto>
+<key>file.title</key>
+<value>myFile</value>
+</stringKeyStringValueDto>
+<stringKeyStringValueDto>
+<key>jcr:primaryType</key>
+<value>nt:unstructured</value>
+</stringKeyStringValueDto>
+<stringKeyStringValueDto>
+<key>title</key>
+<value>myFile</value>
+</stringKeyStringValueDto>
+<stringKeyStringValueDto>
+<key>file.description</key>
+<value>myFile Description</value>
+</stringKeyStringValueDto>
+</properties>
+</localeMapDto>
+</localePropertiesMapEntries>
+<locked>false</locked>
+<name>myFile.prpt</name></name>
+<originalParentFolderPath>/public/admin</originalParentFolderPath>
+<ownerType>-1</ownerType>
+<path>/public/admin/ff11ac89-7eda-4c03-aab1-e27f9048fd38</path>
+<title>myFile</title>
+<versionId>1.9</versionId>
+<versioned>true</versioned>
+</repositoryFileAclDto>
+</List></pre> </div>
+                <div id="section_43" class="mt-page-section"><span id="Status_Codes_9"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully got the generated content for schedule</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_getContentCleanerJob.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_44" class="mt-page-section"><span id=".2Fscheduler.2FgetContentCleanerJob"></span> 
+              <h1 class="editable">/scheduler/getContentCleanerJob</h1>
+              <a name="GET"></a> 
+              <div id="section_45" class="mt-page-section"><span id="GET_6"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Get the scheduled job created by the system for deleting generated files.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/getContentCleanerJob</p>
+                <div id="section_46" class="mt-page-section"><span id="Response_Body_10"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/010">job</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Job object containing the definition of the content cleaner job.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><job>
+<groupName>admin</groupName>
+<jobId>admin	GeneratedContentCleaner	1408377444383</jobId>
+<jobName>GeneratedContentCleaner</jobName>
+<jobParams>
+<jobParams>
+<name>uiPassParam</name>
+<value>DAILY</value>
+</jobParams>
+<jobParams>
+<name>age</name>
+<value>15552000</value>
+</jobParams>
+<jobParams>
+<name>user_locale</name>
+<value>en_US</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionUser</name>
+<value>admin</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionClass</name>
+<value>org.pentaho.platform.admin.GeneratedContentCleaner</value>
+</jobParams>
+<jobParams>
+<name>lineage-id</name>
+<value>c3cfbad4-2e34-4dbd-8071-a2f3c7e8fab9</value>
+</jobParams>
+</jobParams>
+<jobTrigger xsi:type=&quot;simpleJobTrigger&quot;>
+<duration>-1</duration>
+<startTime>2014-08-18T11:57:00-04:00</startTime>
+<uiPassParam>DAILY</uiPassParam>
+<repeatCount>-1</repeatCount>
+<repeatInterval>86400</repeatInterval>
+</jobTrigger>
+<lastRun>2014-08-18T11:57:00-04:00</lastRun>
+<nextRun>2014-08-19T11:57:00-04:00</nextRun>
+<state>NORMAL</state>
+<userName>admin</userName>
+</job></pre> </div>
+                <div id="section_47" class="mt-page-section"><span id="Status_Codes_10"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Content cleaner job successfully retrieved.</td>
+                      </tr>
+                      <tr>
+                        <td>204</td>
+                        <td>No content cleaner job exists.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_getJobs.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_48" class="mt-page-section"><span id=".2Fscheduler.2FgetJobs"></span> 
+              <h1 class="editable">/scheduler/getJobs</h1>
+              <a name="GET"></a> 
+              <div id="section_49" class="mt-page-section"><span id="GET_7"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Retrieve the all the scheduled job(s) visible to the current users.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/getJobs</p>
+                <div id="section_50" class="mt-page-section"><span id="Response_Body_11"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of jobs that are visible to the current users.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobs>
+<job>
+<groupName>admin</groupName>
+<jobId>admin	PentahoSystemVersionCheck	1408369303507</jobId>
+<jobName>PentahoSystemVersionCheck</jobName>
+<jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionUser</name>
+<value>admin</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionClass</name>
+<value>org.pentaho.platform.scheduler2.versionchecker.VersionCheckerAction</value>
+</jobParams>
+<jobParams>
+<name>lineage-id</name>
+<value>1986cc90-cf87-43f6-8924-9d6e443e7d5d</value>
+</jobParams>
+<jobParams>
+<name>versionRequestFlags</name>
+<value>0</value>
+</jobParams>
+</jobParams>
+<jobTrigger xsi:type=&quot;simpleJobTrigger&quot;>
+<duration>-1</duration>
+<startTime>2014-08-18T09:41:43.506-04:00</startTime>
+<repeatCount>-1</repeatCount>
+<repeatInterval>86400</repeatInterval>
+</jobTrigger>
+<lastRun>2014-08-18T11:37:31.412-04:00</lastRun>
+<nextRun>2014-08-19T09:41:43.506-04:00</nextRun>
+<state>NORMAL</state>
+<userName>admin</userName>
+</job>
+<job>
+<groupName>admin</groupName>
+<jobId>admin	UpdateAuditData	1408373019115</jobId>
+<jobName>UpdateAuditData</jobName>
+<jobParams>
+<jobParams>
+<name>autoCreateUniqueFilename</name>
+<value>false</value>
+</jobParams>
+<jobParams>
+<name>uiPassParam</name>
+<value>MINUTES</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-StreamProvider</name>
+<value>input file = /public/pentaho-operations-mart/update_audit_mart_data/UpdateAuditData.xaction:outputFile = /public/pentaho-operations-mart/generated_logs/UpdateAuditData.*</value>
+</jobParams>
+<jobParams>
+<name>user_locale</name>
+<value>en_US</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionUser</name>
+<value>admin</value>
+</jobParams>
+<jobParams>
+<name>ActionAdapterQuartzJob-ActionId</name>
+<value>xaction.backgroundExecution</value>
+</jobParams>
+<jobParams>
+<name>lineage-id</name>
+<value>1f2402c4-0a70-40e4-b428-0d328f504cb3</value>
+</jobParams>
+</jobParams>
+<jobTrigger xsi:type=&quot;simpleJobTrigger&quot;>
+<duration>-1</duration>
+<startTime>2014-07-14T12:47:00-04:00</startTime>
+<uiPassParam>MINUTES</uiPassParam>
+<repeatCount>-1</repeatCount>
+<repeatInterval>1800</repeatInterval>
+</jobTrigger>
+<lastRun>2014-08-18T12:47:00-04:00</lastRun>
+<nextRun>2014-08-18T13:17:00-04:00</nextRun>
+<state>NORMAL</state>
+<userName>admin</userName>
+</job>
+</jobs></pre> </div>
+                <div id="section_51" class="mt-page-section"><span id="Status_Codes_11"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Jobs retrieved successfully.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Error while retrieving jobs.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_isScheduleAllowed.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_52" class="mt-page-section"><span id=".2Fscheduler.2FisScheduleAllowed"></span> 
+              <h1 class="editable">/scheduler/isScheduleAllowed</h1>
+              <a name="GET"></a> 
+              <div id="section_53" class="mt-page-section"><span id="GET_8"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Checks whether the current user may schedule a repository file in the platform.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/isScheduleAllowed?id=b5f806b9-9f72-4814-b1e0-aa9e0ece7e1a</p>
+                <div id="section_54" class="mt-page-section"><span id="Parameters_3"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>id</td>
+                        <td>The repository file ID of the content to checked.</td>
+                        <td>query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_55" class="mt-page-section"><span id="Response_Body_12"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>true or false. true indicates scheduling is allowed and false indicates scheduling is not allowed for the file.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">true</pre> </div>
+                <div id="section_56" class="mt-page-section"><span id="Status_Codes_12"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved scheduling ability of repository file.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid repository file id.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_job.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_57" class="mt-page-section"><span id=".2Fscheduler.2Fjob"></span> 
+              <h1 class="editable">/scheduler/job</h1>
+              <a name="POST"></a> 
+              <div id="section_58" class="mt-page-section"><span id="POST_5"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Creates a new scheduled job.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/job</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobScheduleRequest>
+<jobName>JobName</jobName>
+<simpleJobTrigger>
+<uiPassParam>MINUTES</uiPassParam>
+<repeatInterval>1800</repeatInterval>
+<repeatCount>-1</repeatCount>
+<startTime>2014-08-14T11:46:00.000-04:00</startTime>
+<endTime />
+</simpleJobTrigger>
+<inputFile>/public/Steel Wheels/Top Customers (report).prpt</inputFile>
+<outputFile>/public/output</outputFile>
+<jobParameters>
+<name>ParameterName</name>
+<type>string</type>
+<stringValue>false</stringValue>
+</jobParameters>
+</jobScheduleRequest></pre>
+                <div id="section_59" class="mt-page-section"><span id="Request_Body_5"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/030" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/030">jobScheduleRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobScheduleRequest object to define the parameters of the job being created.</p>
+                </div>
+                <div id="section_60" class="mt-page-section"><span id="Response_Body_13"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object with the created jobId.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">admin	JobName	1410786491777</pre> </div>
+                <div id="section_61" class="mt-page-section"><span id="Status_Codes_13"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Schedule created successfully.</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not allowed to create schedules.</td>
+                      </tr>
+                      <tr>
+                        <td>403</td>
+                        <td>Cannot create schedules for the specified file.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>An error occurred while creating a schedule.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_jobinfo.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_62" class="mt-page-section"><span id=".2Fscheduler.2Fjobinfo"></span> 
+              <h1 class="editable">/scheduler/jobinfo</h1>
+              <a name="GET"></a> 
+              <div id="section_63" class="mt-page-section"><span id="GET_9"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Return the information for a specified job.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/jobinfo?jobId=admin%09JobName%091410786491777</p>
+                <div id="section_64" class="mt-page-section"><span id="Parameters_4"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>jobId</td>
+                        <td>The jobId of the job for which we are requesting information.</td>
+                        <td>query</td>
+                      </tr>
+                      <tr>
+                        <td>asCronString</td>
+                        <td>Cron string (Unused)</td>
+                        <td>query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_65" class="mt-page-section"><span id="Response_Body_14"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/010">job</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Job object containing the info for the specified job.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>
+<job>
+   <jobId>admin    JobName    1410786491777</jobId>
+   <jobName>JobName</jobName>
+   <jobParams>
+      <jobParams>
+         <name>uiPassParam</name>
+         <value>MINUTES</value>
+      </jobParams>
+      <jobParams>
+         <name>ActionAdapterQuartzJob-StreamProvider</name>
+         <value>input file = /public/Steel Wheels/Top Customers (report).prpt:outputFile = /home/admin/JobName.*</value>
+      </jobParams>
+      <jobParams>
+         <name>user_locale</name>
+         <value>en_US</value>
+      </jobParams>
+      <jobParams>
+         <name>ActionAdapterQuartzJob-ActionUser</name>
+         <value>admin</value>
+      </jobParams>
+      <jobParams>
+         <name>ActionAdapterQuartzJob-ActionId</name>
+         <value>prpt.backgroundExecution</value>
+      </jobParams>
+      <jobParams>
+         <name>ParameterName</name>
+         <value>false</value>
+      </jobParams>
+      <jobParams>
+         <name>lineage-id</name>
+         <value>5212a120-3294-49e8-9c5d-c755b9766c43</value>
+      </jobParams>
+   </jobParams>
+   <jobTrigger xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:type=&quot;simpleJobTrigger&quot;>
+      <duration>-1</duration>
+      <startTime>2014-08-14T11:46:00-04:00</startTime>
+      <uiPassParam>MINUTES</uiPassParam>
+      <repeatCount>-1</repeatCount>
+      <repeatInterval>1800</repeatInterval>
+   </jobTrigger>
+   <nextRun>2014-08-14T11:46:00-04:00</nextRun>
+   <state>NORMAL</state>
+   <userName>admin</userName>
+</job></pre> </div>
+                <div id="section_66" class="mt-page-section"><span id="Status_Codes_14"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the information for the requested job.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid jobId.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_jobState.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_67" class="mt-page-section"><span id=".2Fscheduler.2FjobState"></span> 
+              <h1 class="editable">/scheduler/jobState</h1>
+              <a name="POST"></a> 
+              <div id="section_68" class="mt-page-section"><span id="POST_6"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Checks the state of the selected scheduled job.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/jobState</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobRequest>
+<jobId>admin	JobName	1410786491777</jobId>
+</jobRequest></pre>
+                <div id="section_69" class="mt-page-section"><span id="Request_Body_6"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/020">jobRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobRequest object containing the jobId.</p>
+                </div>
+                <div id="section_70" class="mt-page-section"><span id="Response_Body_15"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduled job.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">NORMAL</pre> </div>
+                <div id="section_71" class="mt-page-section"><span id="Status_Codes_15"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the state of the requested job.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid jobId.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_pause.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_72" class="mt-page-section"><span id=".2Fscheduler.2Fpause"></span> 
+              <h1 class="editable">/scheduler/pause</h1>
+              <a name="POST"></a> 
+              <div id="section_73" class="mt-page-section"><span id="POST_7"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Pause the scheduler from a running state.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/pause</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This POST body does not contain data.</pre>
+                <div id="section_74" class="mt-page-section"><span id="Response_Body_16"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduler.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PAUSED</pre> </div>
+                <div id="section_75" class="mt-page-section"><span id="Status_Codes_16"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully paused the server.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>An error occurred when pausing the scheduler.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_pauseJob.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_76" class="mt-page-section"><span id=".2Fscheduler.2FpauseJob"></span> 
+              <h1 class="editable">/scheduler/pauseJob</h1>
+              <a name="POST"></a> 
+              <div id="section_77" class="mt-page-section"><span id="POST_8"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Pause the specified scheduled job.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/pauseJob</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobRequest>
+<jobId>admin	JobName	1410786491777</jobId>
+</jobRequest></pre>
+                <div id="section_78" class="mt-page-section"><span id="Request_Body_7"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobRequest object containing the jobId.</p>
+                </div>
+                <div id="section_79" class="mt-page-section"><span id="Response_Body_17"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduled job.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PAUSED</pre> </div>
+                <div id="section_80" class="mt-page-section"><span id="Status_Codes_17"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully paused the job.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid jobId.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_removeJob.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_81" class="mt-page-section"><span id=".2Fscheduler.2FremoveJob"></span> 
+              <h1 class="editable">/scheduler/removeJob</h1>
+              <a name="DELETE"></a> 
+              <div id="section_82" class="mt-page-section"><span id="DELETE"></span> 
+                <h2 class="editable">DELETE</h2>
+                <p>Delete the specified scheduled job from the platform.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> DELETE pentaho/api/scheduler/removeJob</p>
+                <br /> <strong>DELETE data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobRequest>
+<jobId>admin	BlockoutAction	1410786491503</jobId>
+</jobRequest></pre>
+                <div id="section_83" class="mt-page-section"><span id="Request_Body_8"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobRequest object containing the jobId.</p>
+                </div>
+                <div id="section_84" class="mt-page-section"><span id="Response_Body_18"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduled job.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">REMOVED</pre> </div>
+                <div id="section_85" class="mt-page-section"><span id="Status_Codes_18"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully removed the job.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid jobId.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_resumeJob.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_86" class="mt-page-section"><span id=".2Fscheduler.2FresumeJob"></span> 
+              <h1 class="editable">/scheduler/resumeJob</h1>
+              <a name="POST"></a> 
+              <div id="section_87" class="mt-page-section"><span id="POST_9"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Resume the specified scheduled job.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/resumeJob</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobRequest>
+<jobId>admin	JobName	1410786491777</jobId>
+</jobRequest></pre>
+                <div id="section_88" class="mt-page-section"><span id="Request_Body_9"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/020">jobRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobRequest object containing the jobId.</p>
+                </div>
+                <div id="section_89" class="mt-page-section"><span id="Response_Body_19"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduled job.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">NORMAL</pre> </div>
+                <div id="section_90" class="mt-page-section"><span id="Status_Codes_19"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully resumed the job.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid jobId.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_shutdown.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_91" class="mt-page-section"><span id=".2Fscheduler.2Fshutdown"></span> 
+              <h1 class="editable">/scheduler/shutdown</h1>
+              <a name="POST"></a> 
+              <div id="section_92" class="mt-page-section"><span id="POST_10"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Shuts down the scheduler.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/shutdown</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This POST body does not contain data.</pre>
+                <div id="section_93" class="mt-page-section"><span id="Response_Body_20"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduler.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PAUSED</pre> </div>
+                <div id="section_94" class="mt-page-section"><span id="Status_Codes_20"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully shut down the server.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>An error occurred when shutting down the scheduler.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_start.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_95" class="mt-page-section"><span id=".2Fscheduler.2Fstart"></span> 
+              <h1 class="editable">/scheduler/start</h1>
+              <a name="POST"></a> 
+              <div id="section_96" class="mt-page-section"><span id="POST_11"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Resume the scheduler from a paused state.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/start</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This POST body does not contain data.</pre>
+                <div id="section_97" class="mt-page-section"><span id="Response_Body_21"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A jax-rs Response object containing the status of the scheduler.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">RUNNING</pre> </div>
+                <div id="section_98" class="mt-page-section"><span id="Status_Codes_21"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully started the server.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>An error occurred when resuming the scheduler.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_state.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_99" class="mt-page-section"><span id=".2Fscheduler.2Fstate"></span> 
+              <h1 class="editable">/scheduler/state</h1>
+              <a name="GET"></a> 
+              <div id="section_100" class="mt-page-section"><span id="GET_10"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Returns the state of the scheduler with the value of RUNNING or PAUSED.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/api/scheduler/state</p>
+                <div id="section_101" class="mt-page-section"><span id="Response_Body_22"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>status of the scheduler as RUNNING or PAUSED.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">RUNNING</pre> </div>
+                <div id="section_102" class="mt-page-section"><span id="Status_Codes_22"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the state of the scheduler.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>An error occurred when getting the state of the scheduler.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <a name="path__scheduler_triggerNow.html"></a> 
+                </div>
+              </div>
+            </div>
+            <div id="section_103" class="mt-page-section"><span id=".2Fscheduler.2FtriggerNow"></span> 
+              <h1 class="editable">/scheduler/triggerNow</h1>
+              <a name="POST"></a> 
+              <div id="section_104" class="mt-page-section"><span id="POST_12"></span> 
+                <h2 class="editable">POST</h2>
+                <p>Execute a previously scheduled job.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> POST pentaho/api/scheduler/triggerNow</p>
+                <br /> <strong>POST data:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><jobRequest>
+<jobId>admin	JobName	1410786491777</jobId>
+</jobRequest></pre>
+                <div id="section_105" class="mt-page-section"><span id="Request_Body_10"></span> 
+                  <h3 class="editable">Request Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0C0/0H0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/070/010/0C0/0H0/020">jobRequest</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A JobRequest object containing the jobId.</p>
+                </div>
+                <div id="section_106" class="mt-page-section"><span id="Response_Body_23"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A Response object indicating the status of the scheduler.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">NORMAL</pre> </div>
+                <div id="section_107" class="mt-page-section"><span id="Status_Codes_23"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Job triggered successfully.</td>
+                      </tr>
+                      <tr>
+                        <td>400</td>
+                        <td>Invalid input.</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Invalid jobId.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> 
+              <br /> Generated by
+              <a class="external" rel="external nofollow" href="http://enunciate.codehaus.org" target="_blank">Enunciate</a> .</p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2Fadd" rel="internal">/scheduler/blockout/add</a> 
+        <ol>
+          <li>
+            <a href="#POST" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2Fblockoutjobs" rel="internal">/scheduler/blockout/blockoutjobs</a> 
+        <ol>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2Fblockstatus" rel="internal">/scheduler/blockout/blockstatus</a> 
+        <ol>
+          <li>
+            <a href="#POST_2" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_2" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2Fhasblockouts" rel="internal">/scheduler/blockout/hasblockouts</a> 
+        <ol>
+          <li>
+            <a href="#GET_2" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2FshouldFireNow" rel="internal">/scheduler/blockout/shouldFireNow</a> 
+        <ol>
+          <li>
+            <a href="#GET_3" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_5" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_5" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2Fupdate" rel="internal">/scheduler/blockout/update</a> 
+        <ol>
+          <li>
+            <a href="#POST_3" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_3" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_6" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_6" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fblockout.2FwillFire" rel="internal">/scheduler/blockout/willFire</a> 
+        <ol>
+          <li>
+            <a href="#POST_4" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_4" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_7" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_7" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FcanSchedule" rel="internal">/scheduler/canSchedule</a> 
+        <ol>
+          <li>
+            <a href="#GET_4" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_8" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_8" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FgeneratedContentForSchedule" rel="internal">/scheduler/generatedContentForSchedule</a> 
+        <ol>
+          <li>
+            <a href="#GET_5" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_9" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_9" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FgetContentCleanerJob" rel="internal">/scheduler/getContentCleanerJob</a> 
+        <ol>
+          <li>
+            <a href="#GET_6" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_10" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_10" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FgetJobs" rel="internal">/scheduler/getJobs</a> 
+        <ol>
+          <li>
+            <a href="#GET_7" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_11" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_11" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FisScheduleAllowed" rel="internal">/scheduler/isScheduleAllowed</a> 
+        <ol>
+          <li>
+            <a href="#GET_8" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_12" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_12" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fjob" rel="internal">/scheduler/job</a> 
+        <ol>
+          <li>
+            <a href="#POST_5" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_5" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_13" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_13" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fjobinfo" rel="internal">/scheduler/jobinfo</a> 
+        <ol>
+          <li>
+            <a href="#GET_9" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters_4" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_14" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_14" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FjobState" rel="internal">/scheduler/jobState</a> 
+        <ol>
+          <li>
+            <a href="#POST_6" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_6" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_15" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_15" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fpause" rel="internal">/scheduler/pause</a> 
+        <ol>
+          <li>
+            <a href="#POST_7" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Response_Body_16" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_16" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FpauseJob" rel="internal">/scheduler/pauseJob</a> 
+        <ol>
+          <li>
+            <a href="#POST_8" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_7" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_17" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_17" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FremoveJob" rel="internal">/scheduler/removeJob</a> 
+        <ol>
+          <li>
+            <a href="#DELETE" rel="internal">DELETE</a> 
+            <ol>
+              <li> <a href="#Request_Body_8" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_18" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_18" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FresumeJob" rel="internal">/scheduler/resumeJob</a> 
+        <ol>
+          <li>
+            <a href="#POST_9" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_9" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_19" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_19" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fshutdown" rel="internal">/scheduler/shutdown</a> 
+        <ol>
+          <li>
+            <a href="#POST_10" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Response_Body_20" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_20" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fstart" rel="internal">/scheduler/start</a> 
+        <ol>
+          <li>
+            <a href="#POST_11" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Response_Body_21" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_21" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2Fstate" rel="internal">/scheduler/state</a> 
+        <ol>
+          <li>
+            <a href="#GET_10" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body_22" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_22" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fscheduler.2FtriggerNow" rel="internal">/scheduler/triggerNow</a> 
+        <ol>
+          <li>
+            <a href="#POST_12" rel="internal">POST</a> 
+            <ol>
+              <li> <a href="#Request_Body_10" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_23" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_23" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,34 @@
+<content type="text/html" title="Restrict OLAP Schemas Per User">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">To enable user-level access restrictions for each published analysis schema in the Pentaho User Console, follow the instructions below.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  There is a different process for restricting OLAP schemas per role. See
+            <a class="xref" title="Documentation/5.1/0N0/020/080/010" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/020/080/010">Mondrian Role Mapping in the BA Server</a>  for instructions on role mapping.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Log into the Pentaho User Console as the administrator user.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Create new a solution directory for the user you want to provide a private analysis schema for.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Change the access permissions on the new user directory so that only the specified user has access to it.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Copy the target schema to the private directory that you just created.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Rename the copied schema such that it reflects the user account that now owns it.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Refresh the solution repository.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Add data source entries for each personalized schema copy you created, using the Data Source Wizard to edit the data source.</span>  <pre class="pre codeblock"><Catalog name=&quot;Suzy&quot;>
+    <DataSourceInfo>Provider=mondrian;DataSource=SampleData</DataSourceInfo>
+    <Definition>solution:suzy/suzy.mondrian.xml</Definition>
+</Catalog>
+<Catalog name=&quot;Tiffany&quot;>
+    <DataSourceInfo>Provider=mondrian;DataSource=SampleData</DataSourceInfo>
+    <Definition>solution:tiffany/tiffany.mondrian.xml</Definition>
+</Catalog></pre> </li>
+          <li class="li step"> <span class="ph cmd">Edit the <span class="ph filepath">/pentaho/server/biserver-ee/pentaho-solutions/system/pentaho.xml</span>  file and add a <strong class="ph b">,xml</strong>  to the end of the <strong class="ph b">acl-files</strong>  list.</span> 
+            <pre class="pre codeblock"><acl-files>xaction,url,prpt,xdash,xcdf,xanalyzer,xanalyzer,xml</acl-files></pre> </li>
+          <li class="li step"> <span class="ph cmd">Restart the BA Server.</span>  </li>
+        </ol>
+        <div class="section result">The schema copies you created are now only available to the users you specified.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

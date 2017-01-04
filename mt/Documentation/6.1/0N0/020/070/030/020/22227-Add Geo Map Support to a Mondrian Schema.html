@@ -1,0 +1,45 @@
+<content type="text/html" title="Add Geo Map Support to a Mondrian Schema">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">The Geo Map visualization in Analyzer requires both a Geo Service that provides coordinate data (delivered through a BA Server pentaho-geo plugin), and special Mondrian schema annotations and member properties.</p>
+        <p class="p">Only the levels marked with Geographical roles (via annotations) can be added to a Geo Map visualization in Analyzer. During the rendering process, the visualization will call the pentaho-geo plugin in the BA Server to look up coordinates that
+          correspond with the level.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Annotations"></span> 
+            <h2 class="editable">Annotations</h2>
+            <p class="p">First, find all levels that describe location data, then add the appropriate annotations as shown and explained below:</p> <pre class="pre codeblock"><Level name=&quot;CITY&quot; column=&quot;CITY&quot; type=&quot;String&quot; uniqueMembers=&quot;false&quot;>
+  <Annotations>
+    <Annotation name=&quot;Data.Role&quot;>Geography</Annotation>
+    <Annotation name=&quot;Geo.Role&quot;>city</Annotation>
+  </Annotations>
+</Level></pre>
+            <p class="p"><strong class="ph b">Data.Role</strong> : Indicates the type of level. Presently, the only valid data role type is <strong class="ph b">Geography</strong> .</p>
+            <p class="p"><strong class="ph b">Geo.Role</strong> : Specifies the geographical classification (city, state, zip, etc.). While there are built-in types used in the Data Source Wizard and PDI modelers, the values are arbitrary. You could specify a &quot;city&quot;
+              type and, as long as the service provdes data for this classification, it will work.</p>
+            <div class="note note"><span class="notetitle">Note:</span>  In the above example, the <strong class="ph b">city</strong>  role retrieves centroid coordinates.</div>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Member_properties"></span> 
+            <h2 class="editable">Member properties</h2>
+            <p class="p">In addition to retrieving coordinates from the Geo Service, the <strong class="ph b">location</strong>  Geo.Role value defines a level with member properties supplying <strong class="ph b">Latitude</strong>  and <strong class="ph b">Longitude</strong>               values. Levels that are tagged with <strong class="ph b">location</strong>  must also provide two member properties with the exact names of <strong class="ph b">latitude</strong>  and <strong class="ph b">longitude</strong>  that point to the
+              column in the database which contains these values for the level.</p> <pre class="pre codeblock"><Level name=&quot;LatTest&quot; column=&quot;CUSTOMERNUMBER&quot; type=&quot;Numeric&quot; uniqueMembers=&quot;false&quot;>
+  <Annotations>
+    <Annotation name=&quot;Data.Role&quot;>Geography</Annotation>
+    <Annotation name=&quot;Geo.Role&quot;>location</Annotation>
+  </Annotations>
+  <Property name=&quot;Latitude&quot; column=&quot;CUSTLAT&quot; type=&quot;Numeric&quot; />
+  <Property name=&quot;Longitude&quot; column=&quot;CUSTLON&quot; type=&quot;Numeric&quot;/>
+</Level></pre> </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Annotations" rel="internal">Annotations</a>  </li>
+      <li> <a href="#Member_properties" rel="internal">Member properties</a>  </li>
+    </ol>
+  </body>
+</content>

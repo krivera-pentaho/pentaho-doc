@@ -1,0 +1,18 @@
+<content type="text/html" title="Required Properties">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">All physical and some business objects in the metadata model have a set of required properties. These properties are set automatically on creation of the object, and are not removable (although you can change their value). The purpose for required
+          properties is disallow users from getting into a predicament where they have removed a property that is integral to the SQL generation process. For example, if a physical table did not have a Target Table property set, the SQL generator will
+          cause errors, because it cannot access the correct physical table to query. </p>
+        <p class="p">Using the previous example, when you set a parent concept on the physical table, and the parent concept has a Target Table property, the physical table does not recognize the parent concept's value for Target Table. This is because the physical
+          table already has a Target Table property as part of it's self concept, and the self concept always overrides the parent concept. And since you cannot remove a required property, the parent concept's Target Table will never be recognized at
+          the physical level. </p>
+        <p class="p">So how do you override a physical object's required property? You set a parent concept at the business model or business view level. Since the inherited properties are override-able, the parent concept at the business level wins. </p>
+        <p class="p">All physical metadata objects, the business categories and the business model have required properties. You can see what's required for each by referring to
+          <a class="xref" title="Documentation/5.1/0N0/110/0C0/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/110/0C0/020">Required Properties per Business Object</a> .</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

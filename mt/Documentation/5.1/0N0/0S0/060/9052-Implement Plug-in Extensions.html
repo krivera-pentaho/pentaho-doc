@@ -1,0 +1,323 @@
+<content type="text/html" title="Implement Plug-in Extensions">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Sometimes Analyzer for MongoDB's schema language is not flexible enough, or the MDX language is not powerful enough, to solve the problem at hand. What you want to do is add a little of your own Java code into the application, and a plug-in is
+          a way to do this.</p>
+        <p class="p">Each of these extensions is technically a Service Provider Interface (SPI); in short, a Java interface which you write code to implement, and which will be called at runtime. You also need to register an extension&mdash;usually somewhere in your
+          <code class="ph codeph">schema.xml</code> file&mdash;and ensure that it appears on the classpath.</p>
+        <p class="p">Plug-ins include user-defined functions; cell, member and property formatters; and dynamic schema processors. Other extensions include Dynamic datasource XMLA servlet.</p>
+        <p class="p">Some plug-ins, such as user-defined function, member formatter, property formatter, and cell formatter, can be implemented in a scripting language such as JavaScript. In this case, you do not need to write a Java class; you just enclose the script
+          code within a Script element in the schema file. Extensions implemented in scripting languages do not generally perform as well as extensions implemented in Java, but they are much more convenient because you do not need to compile any code.
+          Just modify the script code in the schema file and reload the schema. The shorter code-debug-fix cycle allows you to develop your application much faster. Once you have implemented the plug-in in script, if performance is still a concern, you
+          can translate your plug-in into Java.</p>
+      </div>
+      <div class="topic concept nested1" id="9ff7da43-24d9-4140-9518-e154f885c506__concept_user_defined_function">
+        <div id="section_1" class="mt-page-section"><span id="User-defined_Function"></span> 
+          <h2 class="editable">User-defined Function</h2>
+          <div class="body conbody">
+            <p class="p">A user-defined function must have a public constructor and implement the <code class="ph codeph">mondrian.spi.UserDefinedFunction</code> interface.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">package com.example;
+import mondrian.olap.*;
+import mondrian.olap.type.*;
+import mondrian.spi.UserDefinedFunction;
+/**
+ * A simple user-defined function which adds one to its argument.
+ */
+public class PlusOneUdf implements UserDefinedFunction {
+    // public constructor
+    public PlusOneUdf() {
+    }
+    public String getName() {
+        return &quot;PlusOne&quot;;
+    }
+    public String getDescription() {
+        return &quot;Returns its argument plus one&quot;;
+    }
+    public Syntax getSyntax() {
+        return Syntax.Function;
+    }
+    public Type getReturnType(Type[] parameterTypes) {
+        return new NumericType();
+    }
+    public Type[] getParameterTypes() {
+        return new Type[] {new NumericType()};
+    }
+    public Object execute(Evaluator evaluator, Exp[] arguments) {
+        final Object argValue = arguments[0].evaluateScalar(evaluator);
+        if (argValue instanceof Number) {
+            return new Double(((Number) argValue).doubleValue() + 1);
+        } else {
+            // Argument might be a RuntimeException indicating that
+            // the cache does not yet have the required cell value. The
+            // function will be called again when the cache is loaded.
+            return null;
+        }
+    }
+    public String[] getReservedWords() {
+        return null;
+    }
+}</pre> </div>
+            <div class="mt-clear" style="page-break-after: always;"><span style="display: none;">&nbsp;</span> </div>
+            <p class="p">Declare it in your schema.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema ...>
+...
+<UserDefinedFunction name=&quot;PlusOne&quot; className=&quot;com.example.PlusOneUdf&quot;/>
+</Schema></pre> </div>
+            <p class="p">Then, use it in any MDX statement.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">WITH MEMBER [Measures].[Unit Sales Plus One] 
+    AS 'PlusOne([Measures].[Unit Sales])'
+SELECT
+    {[Measures].[Unit Sales]} ON COLUMNS,
+    {[Gender].MEMBERS} ON ROWS
+FROM [Sales]</pre> </div>
+            <p class="p">If a user-defined function has a public constructor with one string argument, Analyzer for MongoDB will pass in the function's name. Why? This allows you to define two or more user-defined functions using the same class.</p>
+            <div class="p">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">package com.example;
+import mondrian.olap.*;
+import mondrian.olap.type.*;
+import mondrian.spi.UserDefinedFunction;
+/**
+ * A user-defined function which either adds one to or 
+ * subtracts one from its argument.
+ */
+public class PlusOrMinusOneUdf implements UserDefinedFunction {
+    private final name;
+    private final isPlus;
+    // public constructor with one argument
+    public PlusOneUdf(String name) {
+        this.name = name;
+        if (name.equals(&quot;PlusOne&quot;)) {
+            isPlus = true;
+        } else if (name.equals(&quot;MinusOne&quot;)) {
+            isPlus = false;
+        } else {
+            throw new IllegalArgumentException(&quot;Unexpected name &quot; + name);
+        }
+    }
+    public String getName() {
+        return name;
+    }
+    public String getDescription() {
+        return &quot;Returns its argument plus or minus one&quot;;
+    }
+    public Syntax getSyntax() {
+        return Syntax.Function;
+    }
+    public Type getReturnType(Type[] parameterTypes) {
+        return new NumericType();
+    }
+    public Type[] getParameterTypes() {
+        return new Type[] {new NumericType()};
+    }
+    public Object execute(Evaluator evaluator, Exp[] arguments) {
+        final Object argValue = arguments[0].evaluateScalar(evaluator);
+        if (argValue instanceof Number) {
+            if (isPlus) {
+                return new Double(((Number) argValue).doubleValue() + 1);
+            } else {
+                return new Double(((Number) argValue).doubleValue() - 1);
+            }
+        } else {
+            // Argument might be a RuntimeException indicating that
+            // the cache does not yet have the required cell value. The
+            // function will be called again when the cache is loaded.
+            return null;
+        }
+    }
+    public String[] getReservedWords() {
+        return null;
+    }
+}</pre> </div>
+            <p class="p">Register the two functions in your schema.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema ...>
+...
+<UserDefinedFunction name=&quot;PlusOne&quot; className=&quot;com.example.PlusOrMinusOneUdf&quot;/>
+<UserDefinedFunction name=&quot;MinusOne&quot; className=&quot;com.example.PlusOrMinusOneUdf&quot;/>
+</Schema></pre> </div>
+            <p class="p">If you are tired of writing duplicate user-defined function declarations in schema files, you can pack your user-defined function implementation classes into a jar file with a embedded <code class="ph codeph">META-INF/services/mondrian.spi.UserDefinedFunction</code>              resource file. This resource file contains class names of implementations of interface <code class="ph codeph">mondrian.spi.UserDefinedFunction</code>, one name per line.</p>
+            <p class="p">For more details, you may look into <code class="ph codeph">src/main/META-INF/services/mondrian.spi.UserDefinedFunction</code> in the source distribution and the Service Provider section of the specification of JAR files. User-defined functions
+              declared by this means are available to all schemas in the JVM.</p>
+            <p class="p"><strong>Caution:</strong>  you cannot define more than one user-defined function implementations in one class when you declare user-defined functions in this way. One function will be loaded for each class, and given the name that the
+              <code
+              class="ph codeph">getName()</code> method returns.</p>
+            <p class="p">User-defined functions can also be implemented in a scripting language, such as JavaScript. These functions may not perform quite as well as Java UDFs or built-in functions, but they are a lot more convenient to implement.</p>
+            <p class="p">To define a UDF in script, use the Script element and include within it the following functions.</p>
+            <div class="p">
+              <ul class="ul" id="9ff7da43-24d9-4140-9518-e154f885c506__concept_user_defined_function__ul_ugz_ybm_vm">
+                <li class="li"><code class="ph codeph">getName()</code>&mdash;optional; defaults to the name attribute on the <code class="ph codeph">UserDefinedFunction</code> element</li>
+                <li class="li"><code class="ph codeph">getDescription()</code>&mdash;optional; defaults to the name</li>
+                <li class="li"><code class="ph codeph">getReservedWords()</code>&mdash;optional; returns the empty list</li>
+                <li class="li"><code class="ph codeph">getSyntax()</code>&mdash;optional; defaults to <code class="ph codeph">mondrian.olap.Syntax.Function</code></li>
+                <li class="li"><code class="ph codeph">getParameterTypes()</code>&mdash;similar to the meanings in the <code class="ph codeph">UserDefinedFunction</code> SPI</li>
+                <li class="li"><code class="ph codeph">getReturnType(parameterTypes)</code>&mdash;optional; returns list of <code class="ph codeph">parameterTypes</code></li>
+                <li class="li"><code class="ph codeph">execute(evaluator, arguments)</code>&mdash;similar to the meanings in the <code class="ph codeph">UserDefinedFunction</code> SPI</li>
+              </ul>
+            </div>
+            <div class="mt-clear" style="page-break-after: always;"><span style="display: none;">&nbsp;</span> </div>
+            <p class="p">Here is an example of the factorial function as a JavaScript UDF.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><UserDefinedFunction name=&quot;Factorial&quot;>
+<Script language=&quot;JavaScript&quot;><![CDATA[
+function getParameterTypes() {
+return new Array(new mondrian.olap.type.NumericType());
+}
+function getReturnType(parameterTypes) {
+return new mondrian.olap.type.NumericType();
+}
+function execute(evaluator, arguments) {
+var n = arguments[0].evaluateScalar(evaluator);
+return factorial(n);
+}
+function factorial(n) {
+return n <= 1 ? 1 : n * factorial(n - 1);
+}
+]]></Script>
+</UserDefinedFunction></pre> </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9ff7da43-24d9-4140-9518-e154f885c506__concept_cell_formatter">
+        <div id="section_2" class="mt-page-section"><span id="Cell_Formatter"></span> 
+          <h2 class="editable">Cell Formatter</h2>
+          <div class="body conbody">
+            <p class="p">A cell formatter modifies the behavior of <code class="ph codeph">Cell.getFormattedValue()</code>. The class must implement the <code class="ph codeph">mondrian.spi.CellFormatter</code> interface, and is specified like this.</p>
+            <div class="p">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Measure name=&quot;name&quot;>
+<CellFormatter className=&quot;com.example.MyCellFormatter&quot;/>
+</Measure></pre> </div>
+            <p class="p">You can specify a formatter in a scripting language such as JavaScript, using the Script element.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Measure name=&quot;name&quot;>
+<CellFormatter>
+<Script language=&quot;JavaScript&quot;><![CDATA[
+]]></Script>
+</CellFormatter>
+</Measure></pre> </div>
+            <p class="p">The script has available a value variable, corresponding to the parameter of the <code class="ph codeph">mondrian.spi.CellFormatter.formatCell(Object value)</code> method. The code fragment can have multiple statements, but must end in a return
+              statement.</p>
+            <p class="p">For a calculated member that belongs to a cube, you can also use the <code class="ph codeph">CellFormatter</code> element.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMember name=&quot;name&quot; dimension=&quot;dimension&quot;>
+<Formula>
+[Measures].[Unit Sales] * 2
+</Formula>
+<CellFormatter>
+<Script language=&quot;JavaScript&quot;><![CDATA[
+var s = value.toString();
+while (s.length() < 20) {
+s = &quot;0&quot; + s;
+}
+return s;
+]]></Script>
+</CellFormatter>
+</Measure></pre> </div>
+            <p class="p">You can also define a formatter by setting the <code class="ph codeph">CELL_FORMATTER</code> property of the member to the name of the formatter class.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedMember name=&quot;name&quot; formatter=&quot;com.example.MyCellFormatter&quot;>
+<CalculatedMemberProperty name=&quot;CELL_FORMATTER&quot; value=&quot;com.example.MyCellFormatter&quot;/>
+</CalculatedMember></pre> </div>
+            <p class="p">For a calculated measure defined in the <code class="ph codeph">WITH MEMBER</code> clause of an MDX query, you can set the same property in the MDX to achieve the same effect.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">WITH MEMBER [Measures].[Foo]
+  AS '[Measures].[Unit Sales] * 2',
+   CELL_FORMATTER='com.example.MyCellFormatter'
+SELECT {[Measures].[Unit Sales], [Measures].[Foo]} ON COLUMNS,
+    {[Store].Children} ON ROWS
+FROM [Sales]</pre> </div>
+            <p class="p">To define a scripted formatter, use the <code class="ph codeph">CELL_FORMATTER_SCRIPT</code> and <code class="ph codeph">CELL_FORMATTER_SCRIPT_LANGUAGE</code> properties.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">WITH MEMBER [Measures].[Foo]
+  AS '[Measures].[Unit Sales] * 2',
+   CELL_FORMATTER_SCRIPT_LANGUAGE='JavaScript',
+   CELL_FORMATTER_SCRIPT='var s = value.toString(); while (s.length() < 20) s = &quot;0&quot; + s; return s;'
+SELECT {[Measures].[Unit Sales], [Measures].[Foo]} ON COLUMNS,
+    {[Store].Children} ON ROWS
+FROM [Sales]</pre> </div>
+            <p class="p">The cell formatter property is ignored if a member does not belong to the <code class="ph codeph">[Measures]</code> dimension.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9ff7da43-24d9-4140-9518-e154f885c506__concept_member_formatter">
+        <div id="section_3" class="mt-page-section"><span id="Member_Formatter"></span> 
+          <h2 class="editable">Member Formatter</h2>
+          <div class="body conbody">
+            <p class="p">A member formatter modifies the behavior of <code class="ph codeph">Member.getCaption()</code>. The class must implement the <code class="ph codeph">mondrian.spi.MemberFormatter</code> interface, and is specified like this.</p>
+            <div class="p">
+            <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Level name=&quot;name&quot; column=&quot;column&quot;>
+<MemberFormatter className=&quot;com.example.MyMemberFormatter&quot;/>
+</Level></pre> </div>
+            <p class="p">You can specify a formatter in a scripting language such as JavaScript, using the Script element.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Level name=&quot;name&quot; column=&quot;column&quot;>
+<MemberFormatter>
+<Script language=&quot;JavaScript&quot;>
+return member.getName().toUpperCase();
+</Script>
+</MemberFormatter>
+</Level></pre> </div>
+            <p class="p">The script has available a member variable, corresponding to the parameter of the <code class="ph codeph">mondrian.spi.MemberFormatter.formatMember(Member member)</code> method. The code fragment can have multiple statements, but must end
+              in a return statement.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9ff7da43-24d9-4140-9518-e154f885c506__concept_property_formatter">
+        <div id="section_4" class="mt-page-section"><span id="Property_Formatter"></span> 
+          <h2 class="editable">Property Formatter</h2>
+          <div class="body conbody">
+            <p class="p">A property formatter modifies the behavior of <code class="ph codeph">Property.getPropertyFormattedValue()</code>. The class must implement the <code class="ph codeph">mondrian.spi.PropertyFormatter</code> interface, and is specified like
+              this.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Attribute name=&quot;My Attribute&quot; column=&quot;attributeColumn&quot; uniqueMembers=&quot;true&quot;>
+<Property name=&quot;My Property&quot; column=&quot;propColumn&quot;>
+<PropertyFormatter className=&quot;com.example.MyPropertyFormatter&quot;/>
+</Property
+<Attribute/></pre> </div>
+            <p class="p">You can specify a formatter in a scripting language such as JavaScript, using the Script element.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Level name=&quot;name&quot; column=&quot;column&quot;>
+<Property name=&quot;MyProp&quot; column=&quot;PropColumn&quot;>
+<PropertyFormatter>
+<Script language=&quot;JavaScript&quot;>
+return member.getName().toUpperCase();
+</Script>
+</PropertyFormatter>
+</Property>
+</Level></pre> </div>
+            <p class="p">The script has available member, <code class="ph codeph">propertyName</code> and <code class="ph codeph">propertyValue</code> variables, corresponding to the parameters of the <code class="ph codeph">mondrian.spi.PropertyFormatter.formatProperty(Member member, String propertyName, Object propertyValue)</code>              method. The code fragment can have multiple statements, but must end in a <code class="ph codeph">return</code> statement.</p>
+          </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="9ff7da43-24d9-4140-9518-e154f885c506__concept_dynamic_schema_processor">
+        <div id="section_5" class="mt-page-section"><span id="Dynamic_Schema_Processor"></span> 
+          <h2 class="editable">Dynamic Schema Processor</h2>
+          <div class="body conbody">
+            <p class="p">A dynamic schema processor implements the <code class="ph codeph">mondrian.spi.DynamicSchemaProcessor</code> interface. It is specified as part of the connection string.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Jdbc=jdbc:odbc:MondrianFoodMart; JdbcUser=ziggy; 
+JdbcPassword=stardust; 
+DynamicSchemaProcessor=com.example.MySchemaProcessor</pre> </div>
+            <p class="p">The effect is that when reading the contents of the schema from a URL, Analyzer for MongoDB turns to the schema processor rather than Java's default URL handler. This gives the schema reader the opportunity to run a schema through a filter,
+              or even generate an entire schema on the fly.</p>
+            <p class="p">When <code class="ph codeph">DynamicSchemaProcessor</code> is specified, schema would be processed and reloaded on every ROLAP connection request. Property <code class="ph codeph">UseContentChecksum</code> should be used along with a schema
+              processor to enable caching of the schema.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">DataSource=java:/jdbc/MyWarehouse; 
+DynamicSchemaProcessor=com.example.MySchemaProcessor; 
+UseContentChecksum=true</pre> </div>
+            <p class="p">In this case, once loaded, schema would be cached until it changes. If schema content changes, it is be reloaded. The newly loaded schema is regarded as a different schema, and will start with empty caches.</p>
+            <p class="p">Dynamic schemas are a very powerful construct. As you shall see, an important application for them is internationalization.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#User-defined_Function" rel="internal">User-defined Function</a>  </li>
+      <li> <a href="#Cell_Formatter" rel="internal">Cell Formatter</a>  </li>
+      <li> <a href="#Member_Formatter" rel="internal">Member Formatter</a>  </li>
+      <li> <a href="#Property_Formatter" rel="internal">Property Formatter</a>  </li>
+      <li> <a href="#Dynamic_Schema_Processor" rel="internal">Dynamic Schema Processor</a>  </li>
+    </ol>
+  </body>
+</content>

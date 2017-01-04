@@ -1,0 +1,148 @@
+<content type="text/html" title="Running a Transformation">
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Explains how to run a transformation.</p>
+      </div>
+    </div>
+    <div class="body">
+      <p class="p">When you are ready to run your transformation, you can:</p>
+      <div class="body taskbody">
+        <ul class="pentaho-list-unordered">
+          <li>Click the <strong>Run </strong> icon on the toolbar.</li>
+          <li>Select <strong>Run </strong> from the <strong>Action </strong> menu.</li>
+          <li>Press <strong>F9</strong> .</li>
+        </ul>
+        <p>When you do any of these actions, the <strong>Run Options </strong> window appears.</p>
+        <p align="center">
+          <img alt="Run Options Window for Transformations" class="internal default" style="width: 653px; height: 670px;" width="653px" height="670px" src="http://help.pentaho.com/@api/deki/files/8988/ssPDIDBoxTransformationRunOptions.PNG?size=bestfit&amp;width=653&amp;height=670&amp;revision=1"
+          />
+        </p>
+        <p>In the <strong>Run Options </strong> window, you can specify whether to run the transformation locally, on a remote server, or in a clustered environment.&nbsp; You can also specify logging and other options, or experiment by passing temporary
+          values for defined parameters and variables during each iterative run.</p>
+        <p><strong>Always show dialog on run</strong>  is set by default. You can deselect this option if you want to use the same run options every time you execute your transformation.&nbsp;After you have selected to not <strong>Always show dialog on run</strong>,
+          you can access it again through the dropdown menu next to the <strong>Run</strong>  icon in the toolbar, through the <strong>Action</strong>  main menu,&nbsp;or by pressing <strong>F8</strong> .</p>
+        <div id="section_2" class="mt-page-section"><span id="Environment_Type"></span> 
+          <h2 class="editable">Environment Type</h2>
+          <p>Some ETL activities are lightweight, such as loading in a small text file to write out to a database or filtering a few rows to trim down your results. For these types of lightweight ETL activities, you can simply run your transformation locally
+            in Spoon. Other ETL activities are more demanding, containing many steps calling other steps or a network of transformation modules. For these activities, you can set up a separate Data Integration (DI) Server dedicated for running transformations.
+            For even greater scalability or if you need to reduce your execution times, you can cluster an environment of master and slaves servers for running your transformations. Such clustered environments might contain parallel processing of big
+            data.</p>
+          <p>Choose an <strong>Environment Type</strong>  based on your execution scenario:</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <th class="pentaho-table-column-subheader" style="width: 144px; height: 17px;" title="Pentaho column sub-header">Environment Type</th>
+                <th class="pentaho-table-column-subheader" style="width: 479px; height: 17px;" title="Pentaho column sub-header">Description</th>
+              </tr>
+              <tr>
+                <td><strong>Local</strong> </td>
+                <td>Runs on your local machine.</td>
+              </tr>
+              <tr>
+                <td><strong>Server</strong> </td>
+                <td>Runs on a Data Integration (DI) Server. A Carte server environment must be set up for this option to be available.
+                  <a title="Documentation/6.1/0L0/0Y0/060" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/060">Use Carte Clusters to Run Transformations and Jobs</a>  describes how to set up this environment.
+                  <ul class="pentaho-list-unordered">
+                    <li><strong>Server </strong> &ndash; Choose the DI Server to run your transformation. The list shows the available Carte server environments.</li>
+                    <li><strong>Send resources to this server</strong>  &ndash; Send your transformation to the specified server before running it if you want the transformation to run locally on the server. Any related resources, such as other referenced
+                      files, are also included in the information sent to the server.</li>
+                  </ul> Settings (such as variables defined in the <span style="font-family: courier new,courier,monospace;">kettle.properties</span>  file) used to run your transformation are sent from your local environment to your DI Server for execution.
+                  If you want to run your transformation with the settings defined on the server,
+                  <a title="Documentation/6.1/0L0/0Y0/050" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/050">Use the Schedule Perspective to Schedule Transformations and Jobs</a> .</td>
+              </tr>
+              <tr>
+                <td><strong>Clustered</strong> </td>
+                <td>Runs in a clustered environment. When you set up a clustered environment, you establish master and slave servers to run your file. A clustered environment must already be set up for this option to be available.
+                  <a title="Documentation/6.1/0L0/0Y0/060/060"
+                  rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/060/060">Execute Transformations and Jobs on a Carte Cluster</a>  describes how to set up this environment.
+                  <ul>
+                    <li><strong>Show Transformations</strong>  &ndash; Another transformation is generated when you run your transformation in a clustered environment. Select this option to show this generated transformation upon execution.</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_3" class="mt-page-section"><span id="Options"></span> 
+          <h2 class="editable">Options</h2>
+          <p>Errors, warnings, and other information generated as the transformation runs are stored in logs.&nbsp; You can specify how much information is in a log and whether the log is cleared each time through the <strong>Options </strong> section of
+            this window.&nbsp; You can also enable safe mode and specify whether PDI should gather performance metrics.&nbsp;
+            <a title="Documentation/6.1/0P0/0U0/0A0" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/0U0/0A0">Logging and Monitoring Operations</a> &nbsp;describes the logging methods available in PDI.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <th class="pentaho-table-column-subheader" style="width: 144px; height: 17px;" title="Pentaho column sub-header">Option</th>
+                <th class="pentaho-table-column-subheader" style="width: 479px; height: 17px;" title="Pentaho column sub-header">Description</th>
+              </tr>
+              <tr>
+                <td><strong>Clear log before running</strong> </td>
+                <td>Indicates whether to clear all your logs before you run your transformation. If your log is large, you might need to clear it before the next execution to conserve space.</td>
+              </tr>
+              <tr>
+                <td><strong>Log level</strong> </td>
+                <td>Specifies how much logging is needed. You can log from <strong>Nothing </strong> all the way to <strong>Rowlevel</strong> .
+                  <ul class="pentaho-list-unordered">
+                    <li><strong>Nothing </strong> &ndash; No logging occurs</li>
+                    <li><strong>Error </strong> &ndash; Only errors are logged</li>
+                    <li><strong>Minimal </strong> &ndash; Only use minimal logging</li>
+                    <li><strong>Basic </strong> &ndash; This is the default level</li>
+                    <li><strong>Detailed </strong> &ndash; Give detailed logging output</li>
+                    <li><strong>Debug </strong> &ndash; For debugging purposes, very detailed output</li>
+                    <li><strong>Rowlevel </strong> &ndash; Logging at a row level, which generates a lot of log data</li>
+                  </ul>
+                  <p><strong>Debug</strong>  and <strong>Rowlevel</strong> &nbsp;logging levels contain information you may consider too sensitive to be shown. Please consider the sensitivity of your data when selecting&nbsp;these logging&nbsp;levels.</p>
+                  <p>
+                    <a title="Documentation/6.1/0P0/000/080" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/080">Performance Monitoring and Logging</a>  describes how best to use these logging methods.</p>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Enable safe mode</strong> </td>
+                <td>Checks every row passed through your transformation and ensure all layouts are identical. If a row does not have the same layout as the first row, an error is generated and reported.</td>
+              </tr>
+              <tr>
+                <td><strong>Gather performance metrics</strong> </td>
+                <td>Monitors the performance of your&nbsp;transformation execution through these metrics.
+                  <a title="Documentation/6.1/0L0/0Y0/030/060/000/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030/060/000/000">Using Performance Graphs</a>  shows how to visually analyze these metrics.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Parameters_and_Variables"></span> 
+          <h2 class="editable">Parameters and Variables</h2>
+          <p>You can temporarily modify parameters and variables for each execution of your&nbsp;transformation to experimentally determine their best values. The values you enter into these tables are only used when you run the transformation from the <strong>Run Options</strong>             window.&nbsp; The values you originally defined for these parameters and variables are not permanently changed by the values you specify in these tables.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <th class="pentaho-table-column-subheader" style="width: 144px; height: 17px;" title="Pentaho column sub-header">Value Type</th>
+                <th class="pentaho-table-column-subheader" style="width: 479px; height: 17px;" title="Pentaho column sub-header">Description</th>
+              </tr>
+              <tr>
+                <td><strong><a title="Documentation/6.1/0L0/0Y0/030/050/010" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030/050/010">Parameters</a> </strong> </td>
+                <td>Set parameter values pertaining to your transformation during runtime. A parameter is a local variable. The parameters you define while creating your transformation are shown in the table under the <strong>Parameters </strong> tab.
+                  <ul>
+                    <li><strong><a title="Documentation/6.1/0L0/0Y0/030/050/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030/050/000">Arguments</a> </strong>  &ndash; Set argument values passed to your transformation through the
+                      <strong>Arguments</strong>  dialog.</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><strong><a title="Documentation/6.1/0L0/0Y0/030/050/020" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/0Y0/030/050/020">Variables</a> </strong> </td>
+                <td>Set values for user-defined and environment variables pertaining to your transformation during runtime.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Environment_Type" rel="internal">Environment Type</a>  </li>
+      <li> <a href="#Options" rel="internal">Options</a>  </li>
+      <li> <a href="#Parameters_and_Variables" rel="internal">Parameters and Variables</a>  </li>
+    </ol>
+  </body>
+</content>

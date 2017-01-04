@@ -1,0 +1,1414 @@
+<content type="text/html" title="Users and Roles for Pentaho Security">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div> </div>
+    <p>This group of REST APIs&nbsp;allows you to work with Pentaho Security users and roles&nbsp;in the Business Analytics&nbsp;platform. You will be able to create or delete&nbsp;users or roles, assign roles to users, list members or roles, assign permissions
+      to roles, or change user passwords.&nbsp;</p>
+    <p class="pentaho-note">Our REST APIs typically follow this pattern. Substitute each generic parameter with your custom parameter:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">[server path]/[rest path]/[query parameter]</pre>
+    <p><strong><span style="font-size:24px;"><font color="#005ca7">Users</font></span> </strong> </p>
+    <p>The REST&nbsp;APIs listed in this section are used to manage Pentaho Security&nbsp;Users.&nbsp;</p>
+    <div id="section_1" class="mt-page-section"><span id="Create_a_user"></span> 
+      <h2 class="editable">Create a user</h2>
+      <p>Creates a new user with a specified name and password. This request is encapsulated inside a user object that has <span class="filepath style-wrap">userName</span>  and <span class="filepath style-wrap">password</span>  values. The user is created
+        without
+        <a title="https://help.pentaho.com/Documentation/6.0/0R0/070/010/0D0/0O0#Assign_a_role_to_a_user" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070/010/0D0/0O0#Assign_a_role_to_a_user">assigned roles</a>, which must be assigned separately.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_2" class="mt-page-section"><span id="Available_Methods"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/createUser</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_3" class="mt-page-section"><span id="Parameters"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 50px;">user</td>
+                <td style="width: 195px;">Object used to pass along a <span class="filepath style-wrap">userName </span> and <span class="filepath style-wrap">password</span> .</td>
+                <td style="width: 43px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Request_Body"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p><span>A user is an object the system uses to pass along a <span class="filepath style-wrap">userName</span>  and <span class="filepath style-wrap">password </span> in this&nbsp;format:&nbsp;</span> 
+          </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Luke
+password</pre>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 56px;">user</td>
+                <td align="right" style="width: 114px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response object containing the status code of the operation.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 68px;">(custom)</td>
+                <td style="width: 104px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 44px;">200</td>
+                <td style="width: 330px;">Successfully created new user.</td>
+              </tr>
+              <tr>
+                <td style="width: 44px;">400</td>
+                <td style="width: 330px;">Provided data has invalid format.</td>
+              </tr>
+              <tr>
+                <td style="width: 44px;">403</td>
+                <td style="width: 330px;"><span>Only users with administrative privileges can access this method.</span> </td>
+              </tr>
+              <tr>
+                <td style="width: 44px;">412</td>
+                <td style="width: 330px;">Unable to create user.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_7" class="mt-page-section"><span id="Delete_a_user_or_users"></span> 
+      <h2 class="editable">Delete a user or users</h2>
+      <p>Delete user(s) from the platform using a query parameter that takes a list of tab-separated user names.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_8" class="mt-page-section"><span id="Available_Methods_2"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/deleteUsers?userNames=user1%09user2%09</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_9" class="mt-page-section"><span id="Parameters_2"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 50px;">userNames</td>
+                <td style="width: 195px;">(List of tab (\t) separated user names)</td>
+                <td style="width: 43px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_10" class="mt-page-section"><span id="Request_Body_2"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Response_Body_2"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response object containing the status code of the operation.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 83px;">(custom)</td>
+                <td style="width: 89px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Status_Codes_2"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 76px;">200</td>
+                <td style="width: 421px;">Successfully deleted the list of users.</td>
+              </tr>
+              <tr>
+                <td style="width: 76px;">403</td>
+                <td style="width: 421px;">Only users with administrative privileges can access this method</td>
+              </tr>
+              <tr>
+                <td style="width: 76px;">500</td>
+                <td style="width: 421px;">Internal server error prevented the system from properly retrieving either the user or roles.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_13" class="mt-page-section"><span id="Change_user_password"></span> 
+      <h2 class="editable">Change user password</h2>
+      <p>Allows a user to change their password. The information is encapsulated in a <span class="filepath style-wrap">ChangeUserPassword </span> object that contains these fields:&nbsp;<span class="filepath style-wrap">userName</span>, <span class="filepath style-wrap">newPassword</span>,
+        <span class="filepath style-wrap">oldPassword</span> .<span style="color:#FF0000;">&nbsp;</span> </p>
+      <div id="section_14" class="mt-page-section"><span id="Available_Methods_3"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/user</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_15" class="mt-page-section"><span id="Parameters_3"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Name</th>
+                <th style="width: 300px;">Description</th>
+                <th style="width: 108px;">type</th>
+              </tr>
+              <tr>
+                <td style="width: 50px;">ChangePasswordUser</td>
+                <td style="width: 195px;">Encapsulates the fields required for a user to update their password. The object requires the name of the user whose password is being changed, the old password, and the new password.</td>
+                <td style="width: 43px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_16" class="mt-page-section"><span id="Request_Body_3"></span> 
+          <h4 class="editable">Request Body</h4> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Luke
+newPassword
+oldPassword</pre>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 109px;">
+                  <p>ChangePasswordUser</p>
+                </td>
+                <td align="right" style="width: 136px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_17" class="mt-page-section"><span id="Response_Body_3"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response object containing the status code of the operation.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 77px;">(custom)</td>
+                <td align="right" style="width: 95px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_18" class="mt-page-section"><span id="Status_Codes_3"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 101px;">200</td>
+                <td style="width: 165px;">Successfully changed password.</td>
+              </tr>
+              <tr>
+                <td style="width: 101px;">400</td>
+                <td style="width: 165px;">Provided data has invalid format.</td>
+              </tr>
+              <tr>
+                <td style="width: 101px;">403</td>
+                <td style="width: 165px;">Provided user name or password is incorrect.</td>
+              </tr>
+              <tr>
+                <td style="width: 101px;">412</td>
+                <td style="width: 165px;">An error occurred in the platform.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_19" class="mt-page-section"><span id="Get_list_of_users"></span> 
+      <h2 class="editable">Get list of users</h2>
+      <p>Returns the list of users in the platform's repository.</p>
+      <div id="section_20" class="mt-page-section"><span id="Available_Methods_4"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>GET</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userroledao/users</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_21" class="mt-page-section"><span id="Parameters_4"></span> 
+          <h4 class="editable">Parameters</h4>
+          <p>There are no specific parameters for this operation.</p>
+        </div>
+        <div id="section_22" class="mt-page-section"><span id="Request_Body_4"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;<span style="color:#FF0000;">&nbsp;</span> </p>
+        </div>
+        <div id="section_23" class="mt-page-section"><span id="Response_Body_4"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response is a list of users in the platform.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 81px;">userList</td>
+                <td align="right" style="width: 127px;">application/xml
+                  <br /> application/json</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><userlist>
+<users>suzy</users>
+<users>pat</users>
+<users>tiffany</users>
+<users>admin</users>
+</userlist></pre> </div>
+        <div id="section_24" class="mt-page-section"><span id="Status_Codes_4"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 43px;">200</td>
+                <td style="width: 362px;">Successfully returned the list of users.</td>
+              </tr>
+              <tr>
+                <td style="width: 43px;">500</td>
+                <td style="width: 362px;">An error occurred in the platform while trying to access the list of users.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_25" class="mt-page-section"><span id="Get_roles_for_a_user"></span> 
+      <h2 class="editable">Get roles for a user</h2>
+      <p>Gets a list of&nbsp;roles for the given user.&nbsp;</p>
+      <div id="section_26" class="mt-page-section"><span id="Available_Methods_5"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>GET</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userroledao/userRoles?userName=suzy</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_27" class="mt-page-section"><span id="Parameters_5"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 74px;">userName</td>
+                <td style="width: 118px;">The username to get the roles for.</td>
+                <td style="width: 70px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_28" class="mt-page-section"><span id="Request_Body_5"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_29" class="mt-page-section"><span id="Response_Body_5"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response body is a list containing the roles for the given user.&nbsp;</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?><roleList><roles>Power User</roles></roleList></pre>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 112px;">roleList</td>
+                <td align="right" style="width: 31px;">application/xml
+                  <br /> application/json</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_30" class="mt-page-section"><span id="Status_Codes_5"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 53px;">200</td>
+                <td style="width: 176px;">Successfully retrieved the list of roles.</td>
+              </tr>
+              <tr>
+                <td style="width: 53px;">500</td>
+                <td style="width: 176px;">Invalid user parameter.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_31" class="mt-page-section"><span id="Assign_a_role_to_a_user"></span> 
+      <h2 class="editable">Assign a role to a user</h2>
+      <p>Appends existing roles to an existing user passed to the system through query parameters.</p>
+      <p>If the user name exists but the role name is invalid, the call will return 200. This means that&nbsp;the call itself was successful and able to find the user, but added no new roles to it. This prevents the call from failing in the instance of a
+        set of other valid roles, with a single invalid role among them.&nbsp;</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_32" class="mt-page-section"><span id="Available_Methods_6"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/assignRoleToUser?userName=admin&amp;roleNames=power%20user%09cto%09</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_33" class="mt-page-section"><span id="Parameters_6"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 71px;">userName</td>
+                <td style="width: 354px;">The username that the list of roles will be appended to</td>
+                <td style="width: 51px;">query</td>
+              </tr>
+              <tr>
+                <td style="width: 71px;">roleNames</td>
+                <td style="width: 354px;">Rolenames must be associated to existing roles in a tab (\t) separated list</td>
+                <td style="width: 51px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_34" class="mt-page-section"><span id="Request_Body_6"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_35" class="mt-page-section"><span id="Response_Body_6"></span> 
+          <h4 class="editable">Response Body</h4>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 90px;">Element</th>
+                <th scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 57px;">(custom)</td>
+                <td style="width: 115px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_36" class="mt-page-section"><span id="Status_Codes_6"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 69px;">200</td>
+                <td style="width: 428px;">Successfully append the roles to the user.</td>
+              </tr>
+              <tr>
+                <td style="width: 69px;">403</td>
+                <td style="width: 428px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+              <tr>
+                <td style="width: 69px;">500</td>
+                <td style="width: 428px;">Internal server error prevented the system from properly retrieving either the user or roles.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_37" class="mt-page-section"><span id="Remove_a_role_from_a_user"></span> 
+      <h2 class="editable">Remove a role from a user</h2>
+      <p>Removes selected roles from an existing user passed to the system through query parameters.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_38" class="mt-page-section"><span id="Available_Methods_7"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/removeRoleFromUser?userName=admin&amp;roleNames=Business%20User%09Power%20User%09</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_39" class="mt-page-section"><span id="Parameters_7"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 94px;">userName</td>
+                <td style="width: 323px;">The username that the list of roles will be removed from.</td>
+                <td style="width: 62px;">query</td>
+              </tr>
+              <tr>
+                <td style="width: 94px;">roleNames</td>
+                <td style="width: 323px;">Rolenames must be associated to existing roles in a tab (\t) separated list.</td>
+                <td style="width: 62px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_40" class="mt-page-section"><span id="Request_Body_7"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_41" class="mt-page-section"><span id="Response_Body_7"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response object containing the status code of the operation.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th scope="col" style="text-align: center; width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 113px;">(custom)</td>
+                <td style="width: 59px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_42" class="mt-page-section"><span id="Status_Codes_7"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 52px;">200</td>
+                <td style="width: 445px;">Successfully removed the roles from the user.</td>
+              </tr>
+              <tr>
+                <td style="width: 52px;">403</td>
+                <td style="width: 445px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+              <tr>
+                <td style="width: 52px;">500</td>
+                <td style="width: 445px;">Internal server error prevented the system from properly retrieving either the user or roles.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong><span style="font-size:24px;"><font color="#005ca7">Roles</font></span> </strong> </p>
+          <p><span>The REST&nbsp;APIs listed in this section are used to manage Pentaho Security Roles.&nbsp;</span> </p>
+        </div>
+      </div>
+    </div>
+    <div id="section_43" class="mt-page-section"><span id="Create_a_role"></span> 
+      <h2 class="editable">Create a role</h2>
+      <p>Creates a new Role that does not have any permissions assigned to it.
+        <a title="https://help.pentaho.com/Documentation/6.0/0R0/070/010/0D0/0O0#Assign_permissions_to_a_role" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070/010/0D0/0O0#Assign_permissions_to_a_role">Permissions</a>  must be assigned after creating the role.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_44" class="mt-page-section"><span id="Available_Methods_8"></span> 
+        <h3 class="editable">Available Methods&nbsp;</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 375px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/createRole?roleName=rName</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_45" class="mt-page-section"><span id="Parameters_8"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 56px;">roleName</td>
+                <td style="width: 220px;">Name of the new role to create in the system.</td>
+                <td style="width: 45px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_46" class="mt-page-section"><span id="Request_Body_8"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_47" class="mt-page-section"><span id="Response_Body_8"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p><span>Response containing the result of the operation.</span> </p>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Element</th>
+                <th style="width: 400px;">Media Types</th>
+              </tr>
+              <tr>
+                <td align="right" style="width: 59px;">(custom)</td>
+                <td style="width: 113px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_48" class="mt-page-section"><span id="Status_Codes_8"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 43px;">200</td>
+                <td style="width: 331px;">Successfully created new role.</td>
+              </tr>
+              <tr>
+                <td style="width: 43px;">400</td>
+                <td style="width: 331px;">Provided data has invalid format.</td>
+              </tr>
+              <tr>
+                <td style="width: 43px;">403</td>
+                <td style="width: 331px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+              <tr>
+                <td style="width: 43px;">412</td>
+                <td style="width: 331px;">Unable to create role objects.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_49" class="mt-page-section"><span id="Delete_a_role_or_roles"></span> 
+      <h2 class="editable">Delete a role or roles</h2>
+      <p>Delete a role or roles&nbsp;from the platform.&nbsp;</p>
+      <p class="pentaho-note">This&nbsp;endpoint is&nbsp;only available to users with administrative privileges.</p>
+      <div id="section_50" class="mt-page-section"><span id="Available_Methods_9"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT pentaho/api/userroledao/deleteRoles?roleNames=role1%09</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_51" class="mt-page-section"><span id="Parameters_9"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 75px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 70px;">roleNames</td>
+                <td style="width: 263px;">List of tab (\t) separated role names, must be valid roles.</td>
+                <td style="width: 52px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_52" class="mt-page-section"><span id="Request_Body_9"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_53" class="mt-page-section"><span id="Response_Body_9"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response containing the result of the operation.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 83px;">(custom)</td>
+                <td align="right" style="width: 89px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_54" class="mt-page-section"><span id="Status_Codes_9"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 52px;">200</td>
+                <td style="width: 322px;">Successfully deleted the list of roles.</td>
+              </tr>
+              <tr>
+                <td style="width: 52px;">403</td>
+                <td style="width: 322px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+              <tr>
+                <td style="width: 52px;">500</td>
+                <td style="width: 322px;">The system was unable to delete the roles passed in.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_55" class="mt-page-section"><span id="Get_a_list_of_roles"></span> 
+      <h2 class="editable">Get a list of roles</h2>
+      <p>Returns the list of roles in the platform's repository.&nbsp;</p>
+      <div id="section_56" class="mt-page-section"><span id="Available_Methods_10"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>GET</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userroledao/roles</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_57" class="mt-page-section"><span id="Parameters_10"></span> 
+          <h4 class="editable">Parameters</h4>
+          <p>There are no specific parameters for this operation.</p>
+        </div>
+        <div id="section_58" class="mt-page-section"><span id="Request_Body_10"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.&nbsp;</p>
+        </div>
+        <div id="section_59" class="mt-page-section"><span id="Response_Body_10"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>List of roles in the platform.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?><roleList><roles>Administrator</roles><roles>Power User</roles><roles>Report Author</roles><roles>Business Analyst</roles></roleList>></pre>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 77px;">roleList</td>
+                <td align="right" style="width: 48px;">application/xml
+                  <br /> application/json</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_60" class="mt-page-section"><span id="Status_Codes_10"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 58px;">200</td>
+                <td style="width: 235px;">Successfully retrieved the list of roles.</td>
+              </tr>
+              <tr>
+                <td style="width: 58px;">500</td>
+                <td style="width: 235px;">The system was not able to return the list of roles.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_61" class="mt-page-section"><span id="List_members_of_a_role"></span> 
+      <h2 class="editable">List members of a role</h2>
+      <p>Retrieves list of users for the selected role. The role must be a valid role in the system.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_62" class="mt-page-section"><span id="Available_Methods_11"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 90px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>GET</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userroledao/roleMembers?roleName=Power%20User</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_63" class="mt-page-section"><span id="Parameters_11"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 102px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 75px;">Type</th>
+              </tr>
+              <tr>
+                <td style="width: 61px;">roleName</td>
+                <td style="width: 245px;">The role name to get the list of users associated with it.</td>
+                <td style="width: 67px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_64" class="mt-page-section"><span id="Request_Body_11"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no request body&nbsp;for this operation.</p>
+        </div>
+        <div id="section_65" class="mt-page-section"><span id="Response_Body_11"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>List of users for the selected role.</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;yes&quot;?><userList><users>suzy</users><users>admin</users></userList></pre>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 90px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 61px;">userList</td>
+                <td align="right" style="width: 64px;">application/xml
+                  <br /> application/json</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_66" class="mt-page-section"><span id="Status_Codes_11"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 90px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 39px;">200</td>
+                <td style="width: 335px;">Successfully retrieved the list of Users.</td>
+              </tr>
+              <tr>
+                <td style="width: 39px;">403</td>
+                <td style="width: 335px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+              <tr>
+                <td style="width: 39px;">500</td>
+                <td style="width: 335px;">The system was not able to return the list of users.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_67" class="mt-page-section"><span id="Assign_permissions_to_a_role"></span> 
+      <h2 class="editable">Assign permissions to a role</h2>
+      <p>Associate a particular role to a list of physical permissions available in the system. Setting the physical permissions to the roles is a way to add and delete permissions from the role. Any permissions the role had before that are not on this list
+        will be deleted. Any permissions on this list that were not previously assigned will now be assigned.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_68" class="mt-page-section"><span id="Available_Methods_12"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 108px;">HTTP Verb</th>
+              <th style="width: 400px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>PUT</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">PUT /pentaho/api/userroledao/roleAssignments</pre> </td>
+            </tr>
+          </tbody>
+        </table> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><systemRolesMap>
+<assignments>
+<roleName>Report Author</roleName>
+<logicalRoles>org.pentaho.scheduler.manage</logicalRoles>
+<logicalRoles>org.pentaho.repository.read</logicalRoles>
+<logicalRoles>org.pentaho.security.publish</logicalRoles>
+<logicalRoles>org.pentaho.repository.create</logicalRoles>
+<logicalRoles>org.pentaho.repository.execute</logicalRoles>
+</assignments>
+</systemRolesMap></pre>
+        <div id="section_69" class="mt-page-section"><span id="Parameters_12"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">type</th>
+              </tr>
+              <tr>
+                <td style="width: 49px;">roleAssignments</td>
+                <td style="width: 537px;">Built from the Request payload, an example of the role assignments exists in the example request.</td>
+                <td style="width: 77px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_70" class="mt-page-section"><span id="Request_Body_12"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>Built from the Request payload, an example of the role assignments exists in the example request.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 108px;">Element</th>
+                <th align="right" scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="width: 143px;">logicalRoleAssignments</td>
+                <td align="right" style="width: 65px;">application/xml
+                  <br /> application/json</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_71" class="mt-page-section"><span id="Response_Body_12"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>Response code determining the success of the operation.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 108px;">Element</th>
+                <th scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 98px;">(custom)</td>
+                <td style="width: 118px;">*/*
+                  <br /> application/xml
+                  <br /> application/octet-stream</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_72" class="mt-page-section"><span id="Status_Codes_12"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 36px;">200</td>
+                <td style="width: 338px;">Successfully applied the logical role assignment.</td>
+              </tr>
+              <tr>
+                <td style="width: 36px;">403</td>
+                <td style="width: 338px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="section_73" class="mt-page-section"><span id="List_permissions_for_roles"></span> 
+      <h2 class="editable">List permissions for roles</h2>
+      <p>Retrieves the list of roles in the platform and the mapping for operation permissions, along with a list of operation permissions. The logical role name mapping is determined by the locale. If the locale is empty, the system will use the default
+        locale of &quot;en&quot;.</p>
+      <p class="pentaho-note">This&nbsp;endpoint&nbsp;is only available to users with administrative privileges.</p>
+      <div id="section_74" class="mt-page-section"><span id="Available_Methods_13"></span> 
+        <h3 class="editable">Available Methods</h3>
+        <table class="pentaho-table">
+          <tbody>
+            <tr>
+              <th style="width: 108px;">HTTP Verb</th>
+              <th style="width: 370px;">Example Request</th>
+            </tr>
+            <tr>
+              <td style="width: 51px;">
+                <p>GET</p>
+              </td>
+              <td style="width: 422px;"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">GET pentaho/api/userroledao/logicalRoleMap?locale=en</pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <div id="section_75" class="mt-page-section"><span id="Parameters_13"></span> 
+          <h4 class="editable">Parameters</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Name</th>
+                <th style="width: 325px;">Description</th>
+                <th style="width: 108px;">type</th>
+              </tr>
+              <tr>
+                <td style="width: 49px;">locale</td>
+                <td style="width: 537px;">The locale parameter is optional and determines the localized role name for a physical permission in the system roles map.</td>
+                <td style="width: 77px;">query</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="section_76" class="mt-page-section"><span id="Request_Body_13"></span> 
+          <h4 class="editable">Request Body</h4>
+          <p>There is no specific request body for this operation.</p>
+        </div>
+        <div id="section_77" class="mt-page-section"><span id="Response_Body_13"></span> 
+          <h4 class="editable">Response Body</h4>
+          <p>A role mapping for the current system. Each assignment contains the immutable flag and roles for immutable assignments cannot be edited. This is useful for roles such as administrator, who should never lose the administrative privilege. Logical
+            roles in the assignment are the physical permissions currently mapped to the role. The role name is the name of the role that can be assigned to users. The system roles map also includes a list of all physical permissions in the system along
+            with their localized role name. The localized role name is based on the local passed into the call, defaulting to &quot;en&quot;. These are the physical permissions that can be used to create roles.</p>
+          <table class="pentaho-table" title="Pentaho Table">
+            <thead>
+              <tr>
+                <th align="right" scope="col" style="width: 108px;">Element</th>
+                <th scope="col" style="width: 400px;">Media Types</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="right" style="width: 113px;">systemRolesMap</td>
+                <td style="width: 60px;">application/xml
+                  <br /> application/json</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><systemRolesMap>
+<assignments>
+<immutable>false</immutable>
+<logicalRoles>org.pentaho.scheduler.manage</logicalRoles>
+<logicalRoles>org.pentaho.security.publish</logicalRoles>
+<logicalRoles>org.pentaho.repository.create</logicalRoles>
+<logicalRoles>org.pentaho.repository.execute</logicalRoles>
+<roleName>Power User</roleName>
+</assignments>
+<assignments>
+<immutable>true</immutable>
+<logicalRoles>org.pentaho.repository.execute</logicalRoles>
+<logicalRoles>
+org.pentaho.platform.dataaccess.datasource.security.manage
+</logicalRoles>
+<logicalRoles>org.pentaho.repository.read</logicalRoles>
+<logicalRoles>org.pentaho.repository.create</logicalRoles>
+<logicalRoles>org.pentaho.scheduler.manage</logicalRoles>
+<logicalRoles>org.pentaho.security.administerSecurity</logicalRoles>
+<logicalRoles>org.pentaho.security.publish</logicalRoles>
+<roleName>Administrator</roleName>
+</assignments>
+<localizedRoleNames>
+<localizedName>Administer Security</localizedName>
+<roleName>org.pentaho.security.administerSecurity</roleName>
+</localizedRoleNames>
+<localizedRoleNames>
+<localizedName>Schedule Content</localizedName>
+<roleName>org.pentaho.scheduler.manage</roleName>
+</localizedRoleNames>
+<localizedRoleNames>
+<localizedName>Read Content</localizedName>
+<roleName>org.pentaho.repository.read</roleName>
+</localizedRoleNames>
+<localizedRoleNames>
+<localizedName>Publish Content</localizedName>
+<roleName>org.pentaho.security.publish</roleName>
+</localizedRoleNames>
+<localizedRoleNames>
+<localizedName>Create Content</localizedName>
+<roleName>org.pentaho.repository.create</roleName>
+</localizedRoleNames>
+<localizedRoleNames>
+<localizedName>Execute</localizedName>
+<roleName>org.pentaho.repository.execute</roleName>
+</localizedRoleNames>
+<localizedRoleNames>
+<localizedName>Manage Data Sources</localizedName>
+<roleName>
+org.pentaho.platform.dataaccess.datasource.security.manage
+</roleName>
+</localizedRoleNames>
+</systemRolesMap></pre> </div>
+        <div id="section_78" class="mt-page-section"><span id="Status_Codes_13"></span> 
+          <h4 class="editable">Status Codes</h4>
+          <table class="pentaho-table">
+            <tbody>
+              <tr>
+                <th style="width: 108px;">Code</th>
+                <th style="width: 400px;">Description</th>
+              </tr>
+              <tr>
+                <td style="width: 65px;">403</td>
+                <td style="width: 309px;">Only users with administrative privileges can access this method.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Create_a_user" rel="internal">Create a user</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Delete_a_user_or_users" rel="internal">Delete a user or users</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_2" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_2" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Change_user_password" rel="internal">Change user password</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_3" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_3" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Get_list_of_users" rel="internal">Get list of users</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_4" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_4" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_4" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Get_roles_for_a_user" rel="internal">Get roles for a user</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_5" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_5" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_5" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_5" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_5" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Assign_a_role_to_a_user" rel="internal">Assign a role to a user</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_6" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_6" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_6" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_6" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_6" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Remove_a_role_from_a_user" rel="internal">Remove a role from a user</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_7" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_7" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_7" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_7" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_7" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Create_a_role" rel="internal">Create a role</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_8" rel="internal">Available Methods&nbsp;</a> 
+            <ol>
+              <li> <a href="#Parameters_8" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_8" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_8" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_8" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Delete_a_role_or_roles" rel="internal">Delete a role or roles</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_9" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_9" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_9" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_9" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_9" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Get_a_list_of_roles" rel="internal">Get a list of roles</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_10" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_10" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_10" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_10" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_10" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#List_members_of_a_role" rel="internal">List members of a role</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_11" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_11" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_11" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_11" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_11" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Assign_permissions_to_a_role" rel="internal">Assign permissions to a role</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_12" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_12" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_12" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_12" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_12" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#List_permissions_for_roles" rel="internal">List permissions for roles</a> 
+        <ol>
+          <li>
+            <a href="#Available_Methods_13" rel="internal">Available Methods</a> 
+            <ol>
+              <li> <a href="#Parameters_13" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Request_Body_13" rel="internal">Request Body</a>  </li>
+              <li> <a href="#Response_Body_13" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_13" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

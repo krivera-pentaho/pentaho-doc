@@ -1,0 +1,37 @@
+<content type="text/html" title="Enable Extra LDAP Security Logging">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>If you need yet more LDAP-related security details in <strong class="ph b">pentaho.log</strong>, or if you are specifically having difficulty with LDAP authentication configuration, follow the below process to set up verbose logging.</p>
+    <p>These instructions are for testing and pre-production only. User names and passwords will be displayed in the log file in plain text.</p>
+    <ol class="pentaho-list-ordered">
+      <li class="li step"><span class="ph cmd"><a title="https://help.pentaho.com/Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/000">Stop the BA Server</a> .</span> </li>
+      <li class="li step">Go to the <span class="filepath style-wrap">/pentaho/server/biserver-ee/pentaho-solutions/system</span>  directory and open the <span class="filepath style-wrap">applicationContext-spring-security-ldap.xml</span>  file with a text editor.</li>
+      <li>Locate the bean declaration for <span class="filepath style-wrap">DefaultLdapAuthenticationProvider </span> and replace the <span class="filepath style-wrap">constructor-arg</span>  bean with the new bean as shown below.
+        <br /> <strong>Old Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><constructor-arg>
+<ref bean=&quot;authenticator&quot; />
+</constructor-arg></pre> <strong>New Bean:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><constructor-arg>
+<ref bean=&quot;ldapAuthenticatorProxy&quot; />
+</constructor-arg></pre> </li>
+      <li class="li step">In the same directory, locate and open the <span class="filepath style-wrap"><span class="ph filepath">pentaho-spring-beans.xml</span>  </span> file.</li>
+      <li class="li step">Add the following import line to the list of files: <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><import resource=&quot;applicationContext-logging.xml&quot; /></pre> </li>
+      <li class="li step">Save and close the file.</li>
+      <li class="li step">Locate the <span class="filepath style-wrap">/biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes</span>  directory and open the <span class="filepath style-wrap">log4j.xml</span>  file with any text editor.</li>
+      <li class="li step">Add this category to the <span class="filepath style-wrap">log4j.xml</span>  file. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><category name=&quot;org.springframework.security.providers&quot;>
+<priority value=&quot;DEBUG&quot;/>
+</category></pre> </li>
+      <li class="li step">Save and close the file, then
+        <a title="https://help.pentaho.com/Documentation/5.1/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0H0/060/010/000">start the BA Server</a> .</li>
+    </ol>
+    <p>You will now have verbose LDAP-specific log messages in <strong class="ph b">pentaho.log</strong>  that include login credentials for every user that tries to log in.</p>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

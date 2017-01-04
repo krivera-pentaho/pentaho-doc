@@ -1,0 +1,52 @@
+<content type="text/html" title="Use the Kettle Translator">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="note warning"><span class="warningtitle">Warning:</span>  This procedure involves downloading and compiling source code. The program you build will not be covered by standard Pentaho support agreements. If you want to translate message bundles without compiling
+            from source, you can simply search for messages_en_US.properties files within the data-integration-client directory (including all of the JARs therein), as explained in
+            <a class="xref" title="Documentation/5.1/080/020/010" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0R0/080/020/010">Design Tool Localization</a> . Properties files can be inserted into JARs without invalidating your support agreement; you can also override those JARs with directories in the PDI classpath.</div>
+          <p class="p">Pentaho Data Integration has thousands of translatable strings. Because there are so many, and the number of strings increases with each new step and entry, Pentaho provides a graphical translation tool to make the process easier.</p>
+          <p class="p">Before commencing a translation project, check to make sure the target language isn't already available. PDI already has complete or partially-complete translations for the following locales:</p>
+          <ul class="ul">
+            <li class="li">en_US</li>
+            <li class="li">it_IT</li>
+            <li class="li">fr_FR</li>
+            <li class="li">ja_JP</li>
+            <li class="li">es_AR</li>
+            <li class="li">ko_KR</li>
+            <li class="li">zh_CN</li>
+            <li class="li">de_DE</li>
+            <li class="li">es_ES</li>
+            <li class="li">pt_BR</li>
+            <li class="li">nl_NL</li>
+            <li class="li">pt_PT</li>
+          </ul>
+          <p class="p">Additionally, there are certain translation rules and guidelines for some languages. You may need to search for the current rules and guidelines for the language you are using.</p>
+          <p class="p">To use the translation tool, follow the below directions.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Check out the PDI source code for the release you are creating localized message bundles for.</span>  The project root is:
+            <a class="xref link-https" target="_blank" rel="external nofollow" href="https://github.com/pentaho/pentaho-kettle">https://github.com/pentaho/pentaho-kettle</a> .</li>
+          <li class="li step"><span class="ph cmd">Run the translator tool (<strong class="ph b">Translator.bat</strong>  on Windows; <strong class="ph b">translator.sh</strong>  on Linux) in the root directory of the PDI source code that you checked out.</span>  The translator
+            GUI will come up.</li>
+          <li class="li step"><span class="ph cmd">In the upper left pane, select (or create) the locale to translate into.</span> </li>
+          <li class="li step"><span class="ph cmd">In the large left pane, select the package name to work on.</span>  Packages are color coded. Light grey means there are between 1 and 5 missing keys; dark grey means there are 6-10; yellow means 11-25; orange means 26-50;
+            and red packages have more than 50 keys that are missing translations for the selected locale. Once you select a package, the translatable keys list will populate.</li>
+          <li class="li step"><span class="ph cmd">Select a key from the <strong class="ph b">Todo list:</strong>  pane in the middle of the window.</span> </li>
+          <li class="li step"><span class="ph cmd">Type in the translated text in the <strong class="ph b">Translation:</strong>  pane on the right, then click <strong class="ph b">Apply</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">When you've completed your translation effort, click <strong class="ph b">Save</strong> .</span> </li>
+          <li class="li step"><span class="ph cmd">If you intend to contribute your translations back to the Kettle project, you can commit them back to the source tree, or you can click the <strong class="ph b">Zip</strong>  button in the translator interface to collect all of the new translated message files into a single zip archive. You can email this archive to the Kettle project lead at <strong class="ph b"><a rel="freeklink" href="mailto:mcasters@pentaho.org" title="mailto:mcasters@pentaho.org" class="link-mailto">mcasters@pentaho.org</a> </strong> </span> 
+            <div class="note note"><span class="notetitle">Note:</span>  Pentaho Data Integration is open source software, and represents the contributions of many people. The project maintainers ask that you contribute back any localized message bundles that you create.</div>
+          </li>
+          <li class="li step"><span class="ph cmd">In order to use PDI with these translated messages, you must recompile it from the source you checked out.</span>  <pre class="pre codeblock">
+ant -f build.xml clean targz</pre> </li>
+        </ol>
+        <div class="section result">If you've translated all of the available keys, then PDI should be entirely localized for your target language. Any untranslated keys will fall back to its superset language (messages_fr_FR.properties will fall back to messages_FR.properties),
+          and as a last resort, to <strong class="ph b">messages_en_US.properties</strong> .</div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

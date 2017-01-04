@@ -1,0 +1,331 @@
+<content type="text/html" title="Upgrade Pentaho Servers and Design Tools">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <p>Explains how to update the BA and DI Servers as well as the Design Tools.</p>
+    </div>
+    <p>The upgrade process has been streamlined for Pentaho 6.0.&nbsp;To keep it simple, the&nbsp;process is similar&nbsp;whether you are installing the entire Pentaho Business Analytics (BA) suite or the Data Integration (DI) pieces only.</p>
+    <div id="section_1"
+    class="mt-page-section"><span id="Upgrade_the_Pentaho_Business_Analytics_Server"></span> 
+      <h2 class="editable">Upgrade the Pentaho&nbsp;Business Analytics Server</h2>
+      <p>After you finish the prerequisite&nbsp;tasks located in&nbsp;
+        <a title="Prepare Your Pentaho Server for Upgrade" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0T0/010/020">Prepare Your Pentaho&nbsp;Server&nbsp;for Upgrade</a>, there are five tasks that you will need to complete in order to&nbsp;upgrade to Pentaho 6.0 successfully.</p>
+      <p>These sections&nbsp;will guide you through the remaining steps of the Pentaho BA upgrade process:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Backup Your BA Server Configuration and Solutions Files</li>
+        <li>Install&nbsp;Pentaho Business&nbsp;Analytics 6.0</li>
+        <li>Restore Your BA Server Configuration and Solutions Files</li>
+        <li>Test Your BA Server</li>
+        <li>Update&nbsp;Your Pentaho&nbsp;BA Client Tools</li>
+      </ul>
+      <div id="section_2" class="mt-page-section"><span id="Step_1:_Backup_Your_BA_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 1:&nbsp;Backup Your BA Server&nbsp;Configuration and Solutions Files</h3>
+        <p>The backup&nbsp;utility copies&nbsp;your Pentaho configuration and solutions files, then stores the created&nbsp;<span class="filepath style-wrap">.zip</span>  files in your user's home directory. You will need to
+          <a title="Merge Custom Configuration Settings for 6.0"
+          rel="internal" href="http://help.pentaho.com/Documentation/6.0/0T0/010/030/Merge_Custom_Configuration_Settings_for_6.0">merge&nbsp;your customizations</a>  if&nbsp;you have previously customized any&nbsp;of these things: <strong>server.xml</strong>, <strong>startup </strong> and <strong>shutdown scripts</strong>, or <strong>system listeners</strong> . We recommend
+          making complete backups of your Quartz, Hibernate, and Jackrabbit databases before continuing with the upgrade process.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Stop the
+            <a title="Documentation/6.0/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/060/010/000">BA Server</a> .</li>
+          <li>Connect to the&nbsp;<span class="filepath style-wrap">cmd&nbsp;</span> line terminal for the BA Server.</li>
+          <li>At the prompt, run the correct BAServer<span class="filepath style-wrap">ConfigAndSolutionsBackup</span>  utility for your operating system.&nbsp;
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+            title="Pentaho Table">
+              <thead> </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p><em><strong>Windows</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsBackup &quot;C:\Program Files\pentaho\server\biserver-ee&quot;</pre> </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><em><strong>Linux</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./BAServerConfigAndSolutionsBackup.sh /opt/custom software/pentaho/server/biserver-ee</pre> </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ol>
+        <p>The next step is to install a new instance of the&nbsp;Pentaho 6.0 software.&nbsp;</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Step_2:_Install_Pentaho_Business_Analytics_6.0"></span> 
+        <h3 class="editable">Step 2: Install&nbsp;Pentaho&nbsp;Business Analytics&nbsp;6.0</h3>
+        <p>A fresh archive installation of the&nbsp;
+          <a class="link-https" title="https://support.pentaho.com/hc/en-us" rel="external nofollow" href="https://support.pentaho.com/hc/en-us" target="_blank">Pentaho&nbsp;BA 6.0 package</a> &nbsp;is needed as part of&nbsp;the upgrade process, after you have finished the upgrade prerequisites and backed up your Pentaho&nbsp;BA&nbsp;configuration and solutions files.&nbsp; You'll need this in order
+          to get all of the required&nbsp;
+          <a title="Documentation/6.0/0C0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0C0">updates</a> .</p>
+        <p>Next, do these tasks from the Prepare Your Environment section of the
+          <a title="Prepare Environment" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0P0/020"> archive installation</a>  guides.&nbsp;Make sure that you leave&nbsp;your Pentaho&nbsp;5.x instance &quot;as is&quot; and unpack&nbsp;Pentaho 6.0 into a new directory.&nbsp;</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table"
+        style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td>
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 475px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0A0#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0A0#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0A0#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0A0#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 475px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0B0#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0B0#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0B0#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0P0/020/0B0#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>If you are using custom port numbers and a custom fully-qualified URL, there are some updates for 6.0 that you should be aware of.
+          <a title="https://help.pentaho.com/Documentation/6.0/0P0/000/050#Change_the_Port_Numbers_for_the_BA_Server" rel="internal"
+          href="http://help.pentaho.com/Documentation/6.0/0P0/000/050#Change_the_Port_Numbers_for_the_BA_Server">Change the Port Numbers for the BA Server</a>  has information and steps for how to do both of these things in Pentaho 6.0.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Step_3:_Restore_Your_BA_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 3: Restore Your BA Server Configuration and Solutions Files</h3>
+        <p><span>After you have unpacked your Pentaho&nbsp;6.0 bundle, restore your Pentaho files&nbsp;to your 6.0 instance using the restore utility tool.&nbsp;</span> </p>
+        <p>If you do not wish to upload or replace your current sample data, it is recommended that you rename the files located in the <span class="filepath style-wrap">pentaho-solutions/system/default-content</span>  directory prior to restarting the server.
+          These files may include <span class="filepath style-wrap">pentaho-operations-mart-etl</span>, <span class="filepath style-wrap">pentaho-operations-mart-operations</span>, <span class="filepath style-wrap">plugin-samples-zip</span>, and
+          <span
+          class="filepath style-wrap">samples-zip</span> .</p>
+        <ol class="pentaho-list-ordered">
+          <li>Log in to your 6.0 BA Server and open a command prompt.</li>
+          <li>In the prompt, run the BAServer<span class="filepath style-wrap">ConfigAndSolutionsRestore</span> <span class="filepath style-wrap">&nbsp;</span> utility to restore your data from the&nbsp;.zip files located in your user&nbsp;home folder.&nbsp;
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+              <thead> </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p><em><strong>Windows</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">BAServerConfigAndSolutionsRestore &quot;C:\Program Files\pentaho\server\biserver-ee&quot;</pre> </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><em><strong>Linux</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./BAServerConfigAndSolutionsRestore.sh /opt/home/pentaho/server/biserver-ee</pre> </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ol>
+        <ol class="pentaho-list-ordered" start="3">
+          <li> <a title="Documentation/6.0/0H0/060/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/060/010/000">Restart the BA Server</a> .&nbsp; </li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Step_4:_Test_Your_BA_Server"></span> 
+        <h3 class="editable">Step 4: Test Your BA Server</h3>
+        <p>The last thing that you will need to do before testing is to clear the cache from your web browser.&nbsp;</p>
+        <p><span style="line-height: 1.5;">Here are some of the things that you might want to do&nbsp;to verify that your content has been restored to the BA Server:</span> </p>
+        <ul class="pentaho-list-unordered">
+          <li>Navigate to the your Pentaho&nbsp;URL&nbsp;and make sure the login screen appears.</li>
+          <li>Log into PUC and verify that you can run your old BA content.</li>
+          <li>Verify that your schedules exist and are working properly.</li>
+          <li>Make sure that your&nbsp;Pentaho plugins are installed and functional:
+            <ul>
+              <li>Open a report that requires no user prompts and a parameterized report.</li>
+              <li>Create a test report for Interactive Reporting and one for Analyzer, as appropriate.</li>
+              <li>Open a dashboard in Dashboard Designer.</li>
+              <li>Publish a report in Report Designer.</li>
+              <li>Publish an analysis schema from Spoon.</li>
+            </ul>
+          </li>
+          <li>Check your application server log.&nbsp;</li>
+        </ul>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Step_5:_Update_Your_Pentaho_BA_Design_Tools"></span> 
+        <h3 class="editable">Step 5: Update Your&nbsp;Pentaho&nbsp;BA&nbsp;Design&nbsp;Tools</h3>
+        <p>The Pentaho BA design tools are stand-alone tools&nbsp;and are easily updated on your workstations.&nbsp;</p>
+        <ol class="pentaho-list-ordered">
+          <li> <a title="https://help.pentaho.com/Documentation/6.0/0H0/060/020/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/060/020/000">Stop the design tool</a>, if it is currently&nbsp;running. </li>
+          <li>Move the old design tool out of the&nbsp;Pentaho&nbsp;folder structure to a temporary folder.</li>
+          <li>Copy the new version of the design tool into the&nbsp;Pentaho&nbsp;folder structure.</li>
+          <li>Restart your design tool.</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_7" class="mt-page-section"><span id="Upgrade_the_Pentaho_Data_Integration_Server"></span> 
+      <h2 class="editable">Upgrade the&nbsp;Pentaho Data Integration Server</h2>
+      <p>After you finish the prerequisite&nbsp;tasks located in&nbsp;
+        <a href="/Documentation/6.0/0T0/010/020" rel="internal" title="Prepare Your Pentaho Server for Upgrade">Prepare Your Pentaho&nbsp;Server&nbsp;for Upgrade</a>,&nbsp;there are five tasks that you will need to complete in order to&nbsp;upgrade to Pentaho 6.0 successfully.</p>
+      <p>These sections&nbsp;will guide you through the remaining steps of the Pentaho&nbsp;DI&nbsp;upgrade process:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Backup Your DI Server Configuration and Solutions Files</li>
+        <li>Install&nbsp;Pentaho&nbsp;Data Integration&nbsp;6.0&nbsp;</li>
+        <li>Restore Your DI Server Configuration and Solutions Files</li>
+        <li>Test Your DI Server</li>
+        <li>Update&nbsp;Your Pentaho&nbsp;DI Client Tool</li>
+      </ul>
+      <div id="section_8" class="mt-page-section"><span id="Step_1:_Backup_Your_DI_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 1:&nbsp;Backup Your DI Server&nbsp;Configuration and Solutions Files</h3>
+        <p>The backup&nbsp;utility copies&nbsp;your Pentaho configuration and solutions files, then stores the created&nbsp;<span class="filepath style-wrap">.zip</span> &nbsp;files in your user's home directory.&nbsp;You will need to
+          <a title="Merge Custom Configuration Settings for 6.0"
+          rel="internal" href="http://help.pentaho.com/Documentation/6.0/0T0/010/030/Merge_Custom_Configuration_Settings_for_6.0">merge&nbsp;your customizations</a>  if&nbsp;you have previously customized any&nbsp;of these things: <strong>server.xml</strong>, <strong>startup </strong> and <strong>shutdown scripts</strong>, or <strong>system listeners</strong> . We recommend
+          making complete backups of your Quartz, Hibernate, and Jackrabbit databases before continuing with the upgrade process.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Stop your
+            <a title="Documentation/6.0/0H0/070/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/010/000">DI Server</a> .</li>
+          <li>Connect to the cmd line terminal for the DI Server.&nbsp;</li>
+          <li>At the prompt, run the DIServer<span class="filepath style-wrap">ConfigAndSolutionsBackup</span>  utility for your operating system.
+            <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;"
+            title="Pentaho Table">
+              <thead> </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p><em><strong>Windows</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">DIServerConfigAndSolutionsBackup &quot;C:\Program Files\pentaho\server\data-integration-server&quot;</pre> </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><em><strong>Linux</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./DIServerConfigAndSolutionsBackup.sh /opt/custom software/pentaho/server/data-integration-server</pre> </td>
+                </tr>
+              </tbody>
+            </table>
+          </li>
+        </ol>
+        <p>The next step is to install a new instance of Pentaho&nbsp;DI 6.0 software.</p>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Step_2:_Install_Pentaho_Data_Integration_6.0"></span> 
+        <h3 class="editable">Step 2:&nbsp;Install&nbsp;Pentaho Data Integration 6.0&nbsp;</h3>
+        <p>A fresh archive installation of the&nbsp;
+          <a class="link-https" title="https://support.pentaho.com/hc/en-us" rel="external nofollow" href="https://support.pentaho.com/hc/en-us" target="_blank">Pentaho&nbsp;DI&nbsp;6.0 package</a> &nbsp;is needed as part of&nbsp;the upgrade process, after you have finished the upgrade prerequisites and backed up your Pentaho&nbsp;DI configuration and solutions files.&nbsp; You'll need this in order
+          to get all of the required&nbsp;
+          <a title="Documentation/6.0/0C0" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0C0">updates</a> .</p>
+        <p>Next, do these tasks from the Prepare Your Environment section of the
+          <a title="Prepare Your Environment" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0O0/030">archive installation</a>  guides.&nbsp;Make sure that you leave&nbsp;your Pentaho&nbsp;5.x instance &quot;as is&quot; and unpack&nbsp;Pentaho 6.0 into a new directory.&nbsp;</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table"
+        style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <td>
+                <p><em><strong>Windows</strong> </em> </p>
+              </td>
+              <td style="width: 475px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0O0/030/010#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0O0/030/010#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0O0/030/010#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0O0/030/010#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p><em><strong>Linux</strong> </em> </p>
+              </td>
+              <td style="width: 475px;">
+                <ul class="pentaho-list-unordered">
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0O0/030/020#Install_Java" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0O0/030/020#Install_Java">Install Java&nbsp;</a>  </li>
+                  <li> <a title="https://help.pentaho.com/Documentation/6.0/0F0/0O0/030/020#Set_Environment_Variables" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0F0/0O0/030/020#Set_Environment_Variables">Set Environment Variables</a>  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p><span>If you are using custom port numbers and a custom fully-qualified URL, there are some updates for 6.0 that you should be aware of. <a href="/Documentation/6.0/0P0/0U0/080#Change_the_DI_Server_URL" rel="internal" title="https://help.pentaho.com/Documentation/6.0/0P0/0U0/080#Change_the_DI_Server_URL">Changing Ports and URLs</a>  has information and steps for how to do both of these things for the DI Server&nbsp;in Pentaho 6.0.</span> </p>
+      </div>
+      <div id="section_10" class="mt-page-section"><span id="Step_3:_Restore_Your_DI_Server_Configuration_and_Solutions_Files"></span> 
+        <h3 class="editable">Step 3: Restore Your DI Server Configuration and Solutions Files</h3>
+        <p><span>After you have unpacked your Pentaho&nbsp;6.0 bundle,&nbsp;</span> restore your custom data to your 6.0 instance.&nbsp;</p>
+        <p>If you do not wish to upload or replace your current sample data, it is recommended that you rename the files located in the <span class="filepath style-wrap">pentaho-solutions/system/default-content</span>  directory prior to restarting the server.
+          These files may include <span class="filepath style-wrap">pentaho-operations-mart-etl</span>, <span class="filepath style-wrap">pentaho-operations-mart-operations</span>, <span class="filepath style-wrap">plugin-samples-zip</span>, and
+          <span
+          class="filepath style-wrap">samples-zip</span> .</p>
+        <ol class="pentaho-list-ordered">
+          <li>Log in to your 6.0 DI Server and open a command prompt.</li>
+          <li>In the prompt, run the DIServer<span class="filepath style-wrap">ConfigAndSolutionsRestore</span> <span class="filepath style-wrap">&nbsp;</span> utility to restore your data from the&nbsp;.zip files in your user&nbsp;home folder.&nbsp;
+            <table
+            border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+              <thead> </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p><em><strong>Windows</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">DIServerConfigAndSolutionsRestore &quot;C:\Program Files\pentaho\server\data-integration-server&quot;</pre> </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p><em><strong>Linux</strong> </em> </p>
+                  </td>
+                  <td style="width: 475px;"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">./DIServerConfigAndSolutionsRestore.sh /opt/custom software/pentaho/server/data-integration-server</pre> </td>
+                </tr>
+              </tbody>
+              </table>
+          </li>
+        </ol>
+        <ol class="pentaho-list-ordered" start="3">
+          <li> <a title="https://help.pentaho.com/Documentation/6.0/0H0/070/010/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/010/000">Restart the DI Server</a> . </li>
+        </ol>
+      </div>
+      <div id="section_11" class="mt-page-section"><span id="Step_4:_Test_Your_New_DI_Server"></span> 
+        <h3 class="editable">Step 4:&nbsp;Test Your New DI Server</h3>
+        <p class="p">The last thing that you will need to do before testing is to clear the cache from your web browser.&nbsp;</p>
+        <p>Make sure that the DI Server and Spoon are running, then use this list to verify that your content has been restored to the DI Server.</p>
+        <ul class="ul">
+          <li class="li">Open old jobs and transformations and ensure that they execute properly.</li>
+          <li class="li">Create a new job, transformation, and/or Agile BI analysis schema and save it as you normally would.</li>
+          <li class="li">Schedule a job or transformation and ensure that the schedule executes properly.</li>
+          <li class="li">Ensure that existing schedules are still valid.</li>
+          <li class="li">If you are using an enterprise repository, share a job or transformation between PDI users and verify that both can access it.</li>
+          <li class="li">Physically restart the server and ensure that the DI Server are automatically started as services.</li>
+        </ul>
+      </div>
+      <div id="section_12" class="mt-page-section"><span id="Step_5:_Update_Your_Pentaho_DI_Client_Tool"></span> 
+        <h3 class="editable">Step 5:&nbsp;Update Your&nbsp;Pentaho DI&nbsp;Client&nbsp;Tool</h3>
+        <p>The Pentaho DI&nbsp;client&nbsp;tool, Spoon, is&nbsp;easily updated on your workstations.</p>
+        <ol class="pentaho-list-ordered">
+          <li> <a title="Documentation/6.0/0H0/070/020/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0H0/070/020/000">Stop Spoon</a>, if it is currently&nbsp;running. </li>
+          <li>Move the old design tool out of the&nbsp;Pentaho&nbsp;folder structure to a temporary folder.</li>
+          <li>Copy the new version of the design tool into the&nbsp;Pentaho&nbsp;folder structure.</li>
+          <li>Restart your design tool.</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Upgrade_the_Pentaho_Business_Analytics_Server" rel="internal">Upgrade the Pentaho&nbsp;Business Analytics Server</a> 
+        <ol>
+          <li> <a href="#Step_1:_Backup_Your_BA_Server_Configuration_and_Solutions_Files" rel="internal">Step 1:&nbsp;Backup Your BA Server&nbsp;Configuration and Solutions Files</a>  </li>
+          <li> <a href="#Step_2:_Install_Pentaho_Business_Analytics_6.0" rel="internal">Step 2: Install&nbsp;Pentaho&nbsp;Business Analytics&nbsp;6.0</a>  </li>
+          <li> <a href="#Step_3:_Restore_Your_BA_Server_Configuration_and_Solutions_Files" rel="internal">Step 3: Restore Your BA Server Configuration and Solutions Files</a>  </li>
+          <li> <a href="#Step_4:_Test_Your_BA_Server" rel="internal">Step 4: Test Your BA Server</a>  </li>
+          <li> <a href="#Step_5:_Update_Your_Pentaho_BA_Design_Tools" rel="internal">Step 5: Update Your&nbsp;Pentaho&nbsp;BA&nbsp;Design&nbsp;Tools</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Upgrade_the_Pentaho_Data_Integration_Server" rel="internal">Upgrade the&nbsp;Pentaho Data Integration Server</a> 
+        <ol>
+          <li> <a href="#Step_1:_Backup_Your_DI_Server_Configuration_and_Solutions_Files" rel="internal">Step 1:&nbsp;Backup Your DI Server&nbsp;Configuration and Solutions Files</a>  </li>
+          <li> <a href="#Step_2:_Install_Pentaho_Data_Integration_6.0" rel="internal">Step 2:&nbsp;Install&nbsp;Pentaho Data Integration 6.0&nbsp;</a>  </li>
+          <li> <a href="#Step_3:_Restore_Your_DI_Server_Configuration_and_Solutions_Files" rel="internal">Step 3: Restore Your DI Server Configuration and Solutions Files</a>  </li>
+          <li> <a href="#Step_4:_Test_Your_New_DI_Server" rel="internal">Step 4:&nbsp;Test Your New DI Server</a>  </li>
+          <li> <a href="#Step_5:_Update_Your_Pentaho_DI_Client_Tool" rel="internal">Step 5:&nbsp;Update Your&nbsp;Pentaho DI&nbsp;Client&nbsp;Tool</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

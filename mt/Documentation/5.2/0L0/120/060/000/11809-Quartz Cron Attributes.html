@@ -1,0 +1,67 @@
+<content type="text/html" title="Quartz Cron Attributes">
+  <body>
+    <div>
+      <div class="body refbody">
+        <p>The Quartz cron engine supports a seven-attribute time declaration with many possible values. The number format is the same for every expression, even if the values are different -- it must be listed as seconds, minutes, hours, day of month, month,
+          day of week, then the year. A space separates each attribute.</p>
+        <p>These are the possible values for each attribute: 0 to 59 for seconds and minutes, 0 to 23 for hours, 1 to 31 for days, 1 to 12 for months, 1 to 7 for day of week, and a four-digit year. Alternatively, you can use three-letter values for the day
+          of week (MON, TUE, WED, THU, FRI, SAT, SUN), and three-letter values for the month (JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC).</p>
+        <div class="section">
+          <p>An asterisk (*) indicates <em class="ph i">all values</em>, so an asterisk in the minute field would mean that the report runs once every minute. You can specify a range of values with the - (dash) operator, and you can specify multiple individual
+            values with a comma. If you need to excuse a value in the day of month and day of week field from a cron job, you can use the question mark (?) character to indicate that this value doesn't matter. If you need to split values, you can do so
+            with the slash (/) character -- this operator literally means &quot;every,&quot; so */15 would mean &quot;Every 15.&quot; In the day of month field, you can use the # character to indicate a certain instance of a day of the month, for instance
+            the second Friday of the month would be 6#2. Lastly, you can use a capital L in the day of month and day of week field to indicate &quot;Last,&quot; as in the last day of the week. A capital C in either of these fields means &quot;Calendar,&quot;
+            and combined with a number means that the report should execute a the interval indicated by the C number according to the loaded calendar. A capital W in the day of month attribute means &quot;Weekday,&quot; which only encompasses Monday through
+            Friday. Most of these values can be combined to create unusual cron schedules.</p>
+          <div class="p">
+            <div class="tablenoborder">
+              <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+                <thead align="left" class="thead">
+                  <tr class="row">
+                    <th class="entry" id="f0a93a54-d899-4a3f-8d5d-f29b3caabfde__d79951e34" valign="top">Attribute</th>
+                    <th class="entry" id="f0a93a54-d899-4a3f-8d5d-f29b3caabfde__d79951e37" valign="top">Conditionals and Operators</th>
+                  </tr>
+                  <tr class="row">
+                    <th class="entry" id="f0a93a54-d899-4a3f-8d5d-f29b3caabfde__d79951e43" valign="top">Seconds</th>
+                    <th class="entry" id="f0a93a54-d899-4a3f-8d5d-f29b3caabfde__d79951e46" valign="top">, - * /</th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">Minutes</td>
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">, - * /</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">Hours</td>
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">, - * /</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">Day of month</td>
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">, - * ? / L W C</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">Month</td>
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">, - * /</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">Day of week</td>
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">, - * ? / L C #</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">Year</td>
+                    <td class="entry" headers="d79951e34 d79951e37 d79951e43 d79951e46 " valign="top">, - * /</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="example">
+          <p>Here is how you would execute a report at 10:15 AM on every last Friday of every month during the years 2008, 2009, 2010, 2011, 2012, and 2013.</p> <pre class="pre codeblock">
+0 15 10 ? * 6L 2008-2013</pre> </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

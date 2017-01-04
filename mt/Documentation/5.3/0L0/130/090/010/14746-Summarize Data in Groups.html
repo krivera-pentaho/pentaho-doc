@@ -1,0 +1,44 @@
+<content type="text/html" title="Summarize Data in Groups">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">It's possible to sort data by multiple fields by creating groups. Follow this process to summarize data in groups:</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Double-click on your data source to open the query configuration dialog.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Reorder your query so that the fields you want to sort by are listed at the beginning of your SELECT statement.</span>  If you use the SQL Query Designer to do this, you can simply drag and drop the columns in your SELECT
+            section to change their order; if you use the query window, you can carefully copy and paste the columns to reorder them. </li>
+          <li class="li step"> <span class="ph cmd">Copy the same columns you reordered in the SELECT section into the ORDER BY section, in the same order you specified previously.</span>  <pre class="pre codeblock">SELECT
+    `PRODUCTS`.`PRODUCTLINE`,
+    `PRODUCTS`.`PRODUCTVENDOR`,
+    `PRODUCTS`.`PRODUCTNAME`,
+    `PRODUCTS`.`PRODUCTCODE`,
+    `PRODUCTS`.`PRODUCTSCALE`,
+    `PRODUCTS`.`PRODUCTSCALE`, 
+    `PRODUCTS`.`PRODUCTDESCRIPTION`,
+    `PRODUCTS`.`QUANTITYINSTOCK`,
+    `PRODUCTS`.`BUYPRICE`,
+    `PRODUCTS`.`MSRP`
+FROM
+    `PRODUCTS`
+ORDER BY
+    `PRODUCTS`.`PRODUCTLINE` ASC,
+    `PRODUCTS`.`PRODUCTVENDOR` ASC,
+    `PRODUCTS`.`PRODUCTNAME` ASC</pre> </li>
+          <li class="li step"> <span class="ph cmd">Save the query and close the configuration window.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Right-click the <strong class="ph b">Groups</strong>  category in the Structure pane, and select <strong class="ph b">Add Group</strong>  from the context menu.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Type in a name for this group in the <strong class="ph b">Name</strong>  field.</span>  </li>
+          <li class="li step"> <span class="ph cmd">In the <strong class="ph b">Available Fields</strong>  area on the left, select each row you want to add to the group, then click the arrow button to move it to the <strong class="ph b">Selected Fields</strong>  area on the right.</span>             </li>
+          <li class="li step"> <span class="ph cmd">Select the <strong class="ph b">Data</strong>  pane, then click <strong class="ph b">Add Function</strong> .</span>  </li>
+          <li class="li step"> <span class="ph cmd">Double-click the <strong class="ph b">Sum</strong>  function category, then select <strong class="ph b">Sum</strong>, then click <strong class="ph b">Add</strong> .</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select the newly created <strong class="ph b">TotalGroupSumFunction</strong>  item in the <strong class="ph b">Functions</strong>  list, then click on the <strong class="ph b">Reset on Group Name</strong>  property in the lower right pane.</span>             </li>
+          <li class="li step"> <span class="ph cmd">Click the <strong class="ph b">[...]</strong>  button, select the group you just created in the list, then click <strong class="ph b">OK</strong> .</span>  </li>
+        </ol>
+        <div class="section result">You now have the proper Report Designer configuration to create a report with data sorted in groups. You can test this by adding text and number fields to your group and details bands, connecting them to the columns and functions you defined earlier,
+          and previewing your report.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

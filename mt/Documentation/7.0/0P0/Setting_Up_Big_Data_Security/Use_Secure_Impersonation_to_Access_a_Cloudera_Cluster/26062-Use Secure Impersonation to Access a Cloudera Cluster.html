@@ -1,0 +1,211 @@
+<content type="text/html" title="Use Secure Impersonation to Access a Cloudera Cluster">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>This article explains how to configure the Pentaho Server to connect to a Cloudera Hadoop 5.7 cluster to use secure impersonation. For an overview of secure impersonation, refer to
+      <a title="Setting Up Big Data Security" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security">Setting Up Big Data Security</a> . The following sections will guide you through the setup and configuration process:</p>
+    <ul>
+      <li>Prerequisites</li>
+      <li>Parameter Configuration</li>
+      <li>Configuring MapReduce Jobs (Windows-only)</li>
+      <li>Connecting to a Cloudera Impala Database</li>
+    </ul>
+    <div id="section_1" class="mt-page-section"><span id="Prerequisites"></span> 
+      <h2 class="editable">Prerequisites</h2>
+      <p>The following requirements must be met to use secure impersonation:</p>
+      <ul>
+        <li>The cluster must be secured with Kerberos, and the&nbsp;Kerberos server used by the cluster must be accessible to the Pentaho Server.</li>
+        <li>The Pentaho computer must have Kerberos installed and configured as explained in
+          <a title="Set Up Kerberos for Pentaho" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho">Set Up Kerberos for Pentaho</a> .</li>
+      </ul>
+      <p class="pentaho-note">If your system has version 8 of the Java Runtime Environment (JRE) or the Java Developer's Kit (JDK) installed, you will not need to install the Kerberos client, since it is included in the Java installation. You will need to modify the Kerberos
+        configuration file,&nbsp;<span class="mt-font-courier-new">krb5.conf</span>, as specified in the&nbsp;
+        <a title="Set Up Kerberos for Pentaho" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho">Set Up Kerberos for Pentaho</a> &nbsp;topic.</p>
+      <ul>
+        <li>Pentaho shims for&nbsp;client and server must be configured for each component as explained in&nbsp;
+          <a target="_blank" title="Set up Pentaho to Connect to a Cloudera Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_Cloudera_Cluster#Edit_config.properties_(Secured_Clusters)">Set up Pentaho to Connect to a Cloudera Cluster</a> .</li>
+      </ul>
+      <p class="pentaho-note">Follow the instructions below for editing the <span class="mt-font-courier-new">config.properties</span>  file below instead of the instructions in the Edit config.properties (Secured Clusters) section of the
+        <a target="_blank" title="Set up Pentaho to Connect to a Cloudera Cluster"
+        rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_Cloudera_Cluster#Edit_config.properties_(Secured_Clusters)">Set up Pentaho to Connect to a Cloudera </a> 
+        <a target="_blank" title="Set up Pentaho to Connect to a Cloudera Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_Cloudera_Cluster#Edit_config.properties_(Secured_Clusters)">Cluster </a> article.</p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Parameter_Configuration"></span> 
+      <h2 class="editable">Parameter Configuration</h2>
+      <p>The mapping types value in the <code>config.properties</code> file turns secure impersonation on or off. The mapping types supported by the Pentaho Server are <strong>disabled</strong>  and <strong>simple. </strong> When set to <strong>disabled</strong>         or left blank, the Pentaho Server does not use authentication. When set to <strong>simple,</strong>  the Pentaho users can connect to the Hadoop cluster as a proxy user. To configure the cluster for secure impersonation, stop the Pentaho Server
+        and complete the following steps:</p>
+      <ol>
+        <li>Navigate to the&nbsp;<span class="mt-font-courier-new">pentaho-server\pentaho-solutions\system\kettle\plugins\pentaho-big-data-plugin\hadoop-configurations\</span> <code>chd57&nbsp; </code>folder and open the&nbsp;<code>config.properties</code>          file with a text editor.</li>
+        <li>Modify the <span class="mt-font-courier-new">config.properties</span>  file with the values in the table below. If you have key-value pairs in your existing <code>config.properties</code> file that are not security related, merge those settings
+          into the file.</li>
+      </ol>
+      <table class="pentaho-table" title="Pentaho Table">
+        <tbody>
+          <tr>
+            <th class="confluenceTh">Parameter</th>
+            <th class="confluenceTh">Value</th>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.kerberos.principal</td>
+            <td class="confluenceTd">&#8203;
+              <a class="link-mailto" href="mailto:exampleUser@EXAMPLE.COM" rel="freeklink" title="mailto:exampleUser@EXAMPLE.COM">exampleUser@EXAMPLE.COM</a> 
+            </td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.kerberos.keytabLocation</td>
+            <td class="confluenceTd">Set the Kerberos keytab. You only need to set the password or the keytab, not both.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.kerberos.password</td>
+            <td class="confluenceTd">Set the Kerberos password.&nbsp; You only need to set the password or the keytab, not both.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.mapping.impersonation.type</td>
+            <td class="confluenceTd">simple</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.mapping.server.credentials.kerberos.principal</td>
+            <td class="confluenceTd">
+              <a class="link-mailto" href="mailto:exampleUser@EXAMPLE.COM" rel="freeklink" title="mailto:exampleUser@EXAMPLE.COM">exampleUser@EXAMPLE.COM</a> 
+            </td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.mapping.server.credentials.kerberos.keytabLocation</td>
+            <td class="confluenceTd">You only need to set the password or the keytab, not both.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd">pentaho.authentication.default.mapping.server.credentials.kerberos.password</td>
+            <td class="confluenceTd">You only need to set the password or the keytab, not both.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd"><span class="filepath style-wrap">pentaho.oozie.proxy.user</span> </td>
+            <td class="confluenceTd">Add the proxy user's name if you plan to access the Oozie service through a proxy.&nbsp; Otherwise, leave it set to <span class="filepath style-wrap">oozie</span> .</td>
+          </tr>
+        </tbody>
+      </table>
+      <ol start="3">
+        <li>Save and close the <code>config.properties</code> file.</li>
+        <li>Copy the <code>config.properties</code> file to the following folders:
+          <p><code>design-tools/report-designer/plugins/pentaho-big-data-plugin/hadoop-configurations/cdh57/config.properties<br /> design-tools/metadata-editor/plugins/pentaho-big-data-plugin/hadoop-configurations/cdh57/config.properties<br /> design-tools/data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/cdh57/config.properties</code></p>
+        </li>
+        <li>Restart the Pentaho Server.</li>
+      </ol>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Configuring_MapReduce_Jobs"></span> 
+      <h2 class="editable">Configuring MapReduce Jobs</h2>
+      <p><span style="font-family:open sans light,sans-serif;"><span style="font-size:12.0pt;">For Windows systems you must modify the </span> </span>  <code>mapred-site.xml</code> files to run MapReduce jobs with secure impersonation. Complete the following
+        steps to modify the files:</p>
+      <ol>
+        <li><span style="font-family:open sans light,sans-serif;"><span style="font-size:12.0pt;">Navigate to the <code>design-tools\data-integration\plugins\pentaho-big-data-plugin\hadoop-configurations\</code><code>cdh57</code> folder and open the <code>mapred-site.xml</code></span> </span> 
+          file with a text editor.</li>
+        <li><span style="font-family:open sans light,sans-serif;"><span style="font-size:12.0pt;">Navigate to the </span> </span> <code>pentaho-server\pentaho-solutions\system\kettle\plugins\pentaho-big-data-plugin\hadoop-configurations\cdh57</code> folder
+          <span style="font-family:open sans light,sans-serif;"><span style="font-size:12.0pt;">and open the <code>mapred-site.xml</code></span> </span>  file with a text editor.</li>
+        <li>Add the following two properties to the two <code>mapred-site.xml</code> files:</li>
+      </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property>
+    <name>mapreduce.app-submission.cross-platform</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+  </property></pre>
+      <ol start="4">
+        <li>Save and close the files.</li>
+      </ol>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Connecting_to_a_Cloudera_Impala_Database"></span> 
+      <h2 class="editable">Connecting to a Cloudera Impala Database</h2>
+      <p>Complete the following steps to connect to a secure Cloudera Impala database:</p>
+      <ol>
+        <li>Download the Cloudera Impala JDBC driver for your operating system from the Cloudera web site
+          <a class="external" target="_blank" title="http://www.cloudera.com/downloads/connectors/impala/jdbc/2-5-29.html" rel="external nofollow" href="http://www.cloudera.com/downloads/connectors/impala/jdbc/2-5-29.html">http://www.cloudera.com/downloads/connectors/impala/jdbc/2-5-29.html. </a> 
+        </li>
+      </ol>
+      <p class="pentaho-note">Secure impersonation with Impala is only supported with the Cloudera Impala JDBC driver. You may have to create an account with Cloudera to download the driver file.</p>
+      <ol start="2">
+        <li>Extract the <span class="mt-font-courier-new">ImpalaJDBC41.jar</span>  file from the downloaded zip file into the folder <span class="mt-font-courier-new">pentaho-server/pentaho-solution/system/kettle/plugins/pentaho-big-data-plugin/hadoop-configurations/cdh57/lib</span> .
+          The <span class="mt-font-courier-new">ImpalaJDBC41.jar</span>  file is the only file to extract from the downloaded file.</li>
+        <li>Connect to a secure CDH cluster. If you have not set up a secure cluster, complete the procedure in the article
+          <a target="_blank" title="Set up Pentaho to Connect to a Cloudera Cluster" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Set_Up_Pentaho_to_Connect_to_a_Cloudera_Cluster">Set up Pentaho to Connect to a Cloudera Cluster</a>  to set up a secure cluster.</li>
+        <li> <a target="_blank" title="Access the PDI Client" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0H0/Access_the_PDI_Client">Start the PDI Client</a>  (Spoon) and choose&nbsp;<strong>File </strong> > <strong>New </strong> > <strong>Transformation</strong>  to add a new transformation. </li>
+        <li>Click the <strong>View</strong>  tab, then right-click <strong>Database Connections </strong> and choose <strong>New</strong> .</li>
+        <li>In the Database Connection dialog box&nbsp;enter the values from the following table:</li>
+      </ol>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 473px;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 232px;">Field</th>
+            <th scope="col" style="width: 229px;">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 232px;">Connection Name text box</td>
+            <td style="width: 229px;">User-defined name</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Connection Type pane</td>
+            <td style="width: 229px;">Cloudera Impala</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Host Name text box</td>
+            <td style="width: 229px;">Hostname</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Database Name text box</td>
+            <td style="width: 229px;">default</td>
+          </tr>
+          <tr>
+            <td style="width: 232px;">Port Number text box</td>
+            <td style="width: 229px;">21050</td>
+          </tr>
+        </tbody>
+      </table>
+      <ol start="7">
+        <li>Click <strong>Options </strong> in the left pane of the Database Connection dialog box and enter the parameter values as shown in the following table:</li>
+      </ol>
+      <table class="pentaho-table" style="width: 637px;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th class="confluenceTh" scope="col" style="width: 203px;">Parameter</th>
+            <th class="confluenceTh" scope="col" style="width: 421px;">&nbsp;Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="confluenceTd" style="width: 203px;">KrbHostFQDN</td>
+            <td class="confluenceTd" style="width: 421px;">The fully qualified domain name of the Impala host.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd" style="width: 203px;">KrbServiceName</td>
+            <td class="confluenceTd" style="width: 421px;">The service principal name of the Impala server.</td>
+          </tr>
+          <tr>
+            <td class="confluenceTd" colspan="1" style="width: 203px;">KrbRealm</td>
+            <td class="confluenceTd" colspan="1" style="width: 421px;">The Kerberos realm used by the cluster.</td>
+          </tr>
+        </tbody>
+      </table>
+      <ol start="8">
+        <li>Click <strong>Test </strong>  <span class="ph cmd">when your settings are entered. </span>  A success message appears if everything was entered correctly.</li>
+      </ol>
+      <p>Once you have saved your changes in the repository, you can run your transformation from the Pentaho Server. Secure impersonation from the PDI Client is not currently supported.</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Prerequisites" rel="internal">Prerequisites</a>  </li>
+      <li> <a href="#Parameter_Configuration" rel="internal">Parameter Configuration</a>  </li>
+      <li> <a href="#Configuring_MapReduce_Jobs" rel="internal">Configuring MapReduce Jobs</a>  </li>
+      <li> <a href="#Connecting_to_a_Cloudera_Impala_Database" rel="internal">Connecting to a Cloudera Impala Database</a>  </li>
+    </ol>
+  </body>
+</content>

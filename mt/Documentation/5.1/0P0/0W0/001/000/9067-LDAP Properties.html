@@ -1,0 +1,187 @@
+<content type="text/html" title="LDAP Properties">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">You can manually configure LDAP values by editing the <span class="ph filepath">/pentaho-solutions/system/applicationContext-security-ldap.properties</span>  file in the DI Server directory.</div>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Connection_Information_(Context)"></span> 
+            <h2 class="editable">Connection Information (Context)</h2>
+            <p class="p">These entries define the connection to the LDAP server and the user/password used to perform directory searches against it.</p>
+          </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e33" valign="bottom" width="24.121779859484775%">LDAP Property</th>
+              <th align="left" class="stentry propvaluehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e36" valign="bottom" width="23.419203747072597%">Purpose</th>
+              <th align="left" class="stentry propdeschd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e39" valign="bottom" width="52.459016393442624%">Example</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e33" valign="top" width="24.121779859484775%">contextSource.providerUrl</td>
+              <td class="stentry propvalue" headers="d71100e36" valign="top" width="23.419203747072597%">LDAP connection URL</td>
+              <td class="stentry propdesc" headers="d71100e39" valign="top" width="52.459016393442624%">contextSource.providerUrl=
+                <a rel="freeklink" href="ldap://holly:389/DC=Valyant,DC=local" title="ldap://holly:389/DC=Valyant,DC=local" class="external">ldap://holly:389/DC=Valyant,DC=local</a> 
+              </td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e33" valign="top" width="24.121779859484775%">contextSource.userDn</td>
+              <td class="stentry propvalue" headers="d71100e36" valign="top" width="23.419203747072597%">Distinguished name of a user with read access to directory</td>
+              <td class="stentry propdesc" headers="d71100e39" valign="top" width="52.459016393442624%">contextSource.userDn=CN=Administrator,CN=Users,DC= Valyant,DC=local</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e33" valign="top" width="24.121779859484775%">contextSource.password</td>
+              <td class="stentry propvalue" headers="d71100e36" valign="top" width="23.419203747072597%">Password for the specified user</td>
+              <td class="stentry propdesc" headers="d71100e39" valign="top" width="52.459016393442624%">contextSource.password=secret</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Users"></span> 
+            <h2 class="editable">Users</h2>
+            <p class="p">These options control how the LDAP server is searched for usernames that are entered in the Pentaho login dialog box.</p>
+            <p class="p">The <code class="ph codeph">{0}</code> token is replaced by the username from the login dialog.</p>
+            <p class="p">The example above defines <code class="ph codeph">DC=Valyant,DC=local</code> in <code class="ph codeph">contextSource.providerURL</code>. Given that definition, you would not need to repeat that in <code class="ph codeph">userSearch.searchBase</code>              below because it is appended automatically to the defined value here.</p>
+          </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e111" valign="bottom" width="22.22222222222222%">LDAP Property</th>
+              <th align="left" class="stentry propvaluehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e114" valign="bottom" width="36.22222222222222%">Purpose</th>
+              <th align="left" class="stentry propdeschd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e117" valign="bottom" width="41.55555555555556%">Example</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e111" valign="top" width="22.22222222222222%">userSearch.searchBase</td>
+              <td class="stentry propvalue" headers="d71100e114" valign="top" width="36.22222222222222%">Base (by username) for user searches</td>
+              <td class="stentry propdesc" headers="d71100e117" valign="top" width="41.55555555555556%">userSearch.searchBase=CN=Users</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e111" valign="top" width="22.22222222222222%">userSearch.searchFilter</td>
+              <td class="stentry propvalue" headers="d71100e114" valign="top" width="36.22222222222222%">Filter (by username) for user searches. The attribute you specify here must contain the value that you want your users to log into Pentaho with. Active Directory usernames are represented by <code class="ph codeph">sAMAccountName</code>;
+                full names are represented by <code class="ph codeph">displayName</code>.</td>
+              <td class="stentry propdesc" headers="d71100e117" valign="top" width="41.55555555555556%">userSearch.searchFilter= (sAMAccountName={0})</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Populator"></span> 
+            <h2 class="editable">Populator</h2>
+            <p class="p">The populator matches fully distinguished user names from <code class="ph codeph">userSearch</code> to distinguished role names for roles those users belong to.</p>
+            <p class="p">The <code class="ph codeph">{0}</code> token will be replaced with the user DN found during a user search; the <code class="ph codeph">{1}</code> token is replaced with the username entered in the login screen.</p>
+          </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e178" valign="bottom" width="33.64779874213836%">LDAP Property</th>
+              <th align="left" class="stentry propvaluehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e181" valign="bottom" width="31.44654088050314%">Purpose</th>
+              <th align="left" class="stentry propdeschd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e184" valign="bottom" width="34.90566037735849%">Example</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e178" valign="top" width="33.64779874213836%">populator.convertToUpperCase</td>
+              <td class="stentry propvalue" headers="d71100e181" valign="top" width="31.44654088050314%">Indicates whether or not retrieved role names are converted to uppercase</td>
+              <td class="stentry propdesc" headers="d71100e184" valign="top" width="34.90566037735849%">populator.convertToUpperCase=false</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e178" valign="top" width="33.64779874213836%">populator.groupRoleAttribute</td>
+              <td class="stentry propvalue" headers="d71100e181" valign="top" width="31.44654088050314%">The attribute to get role names from</td>
+              <td class="stentry propdesc" headers="d71100e184" valign="top" width="34.90566037735849%">populator.groupRoleAttribute=cn</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e178" valign="top" width="33.64779874213836%">populator.groupSearchBase</td>
+              <td class="stentry propvalue" headers="d71100e181" valign="top" width="31.44654088050314%">Base (by user DN or username) for role searches.</td>
+              <td class="stentry propdesc" headers="d71100e184" valign="top" width="34.90566037735849%">populator.groupSearchBase=ou= Pentaho</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e178" valign="top" width="33.64779874213836%">populator.groupSearchFilter</td>
+              <td class="stentry propvalue" headers="d71100e181" valign="top" width="31.44654088050314%">The special nested group filter for Active Directory is shown in the example; this will not work with non-MSAD directory servers.</td>
+              <td class="stentry propdesc" headers="d71100e184" valign="top" width="34.90566037735849%">populator.groupSearchFilter= (memberof:1.2.840.113556.1.4.1941:= ({0}))</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e178" valign="top" width="33.64779874213836%">populator.rolePrefix</td>
+              <td class="stentry propvalue" headers="d71100e181" valign="top" width="31.44654088050314%">A prefix to add to the beginning of the role name found in the group role attribute; the value can be an empty string.</td>
+              <td class="stentry propdesc" headers="d71100e184" valign="top" width="34.90566037735849%">populator.rolePrefix=</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e178" valign="top" width="33.64779874213836%">populator.searchSubtree</td>
+              <td class="stentry propvalue" headers="d71100e181" valign="top" width="31.44654088050314%">Indicates whether or not the search must include the current object and all children. If set to <span class="ph filepath">false</span>, the search must include the current object only.</td>
+              <td class="stentry propdesc" headers="d71100e184"
+              valign="top" width="34.90566037735849%">populator.searchSubtree=true</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section">
+          <div id="section_4" class="mt-page-section"><span id="All_Authorites_Search"></span> 
+            <h2 class="editable">All Authorites Search</h2>
+            <p class="p">These entries populate roles that appear in the <span class="ph uicontrol">Admin</span>  tab . These should be similar or identical to the Populator entries.</p>
+          </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e281" valign="bottom" width="34.285714285714285%">LDAP Property</th>
+              <th align="left" class="stentry propvaluehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e284" valign="bottom" width="31.746031746031743%">Purpose</th>
+              <th align="left" class="stentry propdeschd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e287" valign="bottom" width="33.96825396825397%">Example</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e281" valign="top" width="34.285714285714285%">allAuthoritiesSearch.roleAttribute</td>
+              <td class="stentry propvalue" headers="d71100e284" valign="top" width="31.746031746031743%">The attribute used for role values</td>
+              <td class="stentry propdesc" headers="d71100e287" valign="top" width="33.96825396825397%">allAuthoritiesSearch.roleAttribute=cn</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e281" valign="top" width="34.285714285714285%">allAuthoritiesSearch.searchBase</td>
+              <td class="stentry propvalue" headers="d71100e284" valign="top" width="31.746031746031743%">Base for <code class="ph codeph">all roles</code> searches</td>
+              <td class="stentry propdesc" headers="d71100e287" valign="top" width="33.96825396825397%">allAuthoritiesSearch.searchBase=ou= Pentaho</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e281" valign="top" width="34.285714285714285%">allAuthoritiesSearch.searchFilter</td>
+              <td class="stentry propvalue" headers="d71100e284" valign="top" width="31.746031746031743%">Filter for <code class="ph codeph">all roles</code> searches. Active Directory requires that the <code class="ph codeph">objectClass</code> value be set to <code class="ph codeph">group</code>.</td>
+              <td class="stentry propdesc" headers="d71100e287"
+              valign="top" width="33.96825396825397%">allAuthoritiesSearch.searchFilter= (objectClass=group)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section">
+          <div id="section_5" class="mt-page-section"><span id="All_User_Name_Search"></span> 
+            <h2 class="editable">All User Name Search</h2>
+            <p class="p">These entries populate the users that appear on the <span class="ph uicontrol">Admin</span>  tab and can <em class="ph i">only</em>  be set manually in the <span class="ph filepath">/pentaho-solutions/system/applicationContext-security-ldap.properties</span>               file. These entities are not made available in the User Console.</p>
+          </div>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="pentaho-table" summary="" title="Pentaho Table">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e362" valign="bottom" width="34.492753623188406%">LDAP Property</th>
+              <th align="left" class="stentry propvaluehd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e365" valign="bottom" width="28.985507246376812%">Purpose</th>
+              <th align="left" class="stentry propdeschd" id="0dccdff3-56bf-4746-a5be-bbbc4e60ec71__d71100e368" valign="bottom" width="36.52173913043478%">Example</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e362" valign="top" width="34.492753623188406%">allUsernamesSearch.usernameAttribute</td>
+              <td class="stentry propvalue" headers="d71100e365" valign="top" width="28.985507246376812%">The attribute used for user values</td>
+              <td class="stentry propdesc" headers="d71100e368" valign="top" width="36.52173913043478%">allUsernamesSearch. usernameAttribute=sAMAccountName</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e362" valign="top" width="34.492753623188406%">allUsernamesSearch.searchBase</td>
+              <td class="stentry propvalue" headers="d71100e365" valign="top" width="28.985507246376812%">Base for &quot;all users&quot; searches</td>
+              <td class="stentry propdesc" headers="d71100e368" valign="top" width="36.52173913043478%">allUsernamesSearch.searchBase= CN=users</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d71100e362" valign="top" width="34.492753623188406%">allUsernamesSearch.searchFilter</td>
+              <td class="stentry propvalue" headers="d71100e365" valign="top" width="28.985507246376812%">Filter for &quot;all users&quot; searches</td>
+              <td class="stentry propdesc" headers="d71100e368" valign="top" width="36.52173913043478%">allUsernamesSearch.searchFilter= objectClass=person</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Connection_Information_(Context)" rel="internal">Connection Information (Context)</a>  </li>
+      <li> <a href="#Users" rel="internal">Users</a>  </li>
+      <li> <a href="#Populator" rel="internal">Populator</a>  </li>
+      <li> <a href="#All_Authorites_Search" rel="internal">All Authorites Search</a>  </li>
+      <li> <a href="#All_User_Name_Search" rel="internal">All User Name Search</a>  </li>
+    </ol>
+  </body>
+</content>

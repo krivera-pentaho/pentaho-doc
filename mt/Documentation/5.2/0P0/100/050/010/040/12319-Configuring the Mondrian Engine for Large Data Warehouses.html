@@ -1,0 +1,68 @@
+<content type="text/html" title="Configuring the Mondrian Engine for Large Data Warehouses">
+  <body>
+    <div>
+      <p>There are several <strong class="ph b">mondrian.properties</strong>  options that control how the Analysis engine interacts with large data warehouse volumes in conjunction with Pentaho Analyzer:</p>
+      <ul class="pentaho-list-unordered">
+        <li class="li">mondrian.result.limit=5000000</li>
+        <li class="li">mondrian.rolap.iterationLimit=5000000</li>
+        <li class="li">mondrian.rolap.queryTimeout=300</li>
+        <li class="li">mondrian.native.crossjoin.enable=true</li>
+        <li class="li">mondrian.native.topcount.enable=true</li>
+        <li class="li">mondrian.native.filter.enable=true</li>
+        <li class="li">mondrian.native.nonempty.enable=true</li>
+        <li class="li">mondrian.rolap.maxConstraints=1000</li>
+        <li class="li">mondrian.native.ExpandNonNative=true</li>
+        <li class="li">mondrian.expCache.enable=true</li>
+      </ul>
+      <p>Below are explanations for each property.</p>
+      <div id="section_1" class="mt-page-section"><span id="mondrian.result.limit"></span> 
+        <h2 class="editable">mondrian.result.limit</h2>
+        <p>Controls the largest cross join size that Mondrian will handle in-memory. Ideally, no queries should involve large cross joins in-memory; instead, they should be handled by the database.</p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="mondrian.rolap.iterationLimit"></span> 
+        <h2 class="editable">mondrian.rolap.iterationLimit</h2>
+        <p>This is similar to <strong class="ph b">mondrian.result.limit</strong>, except this applies to calculating aggregates in-memory such as SUM, MAX, AGGREGATE, etc. This should be set to the same value as mondrian.result.limit.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="mondrian.rolap.queryTimeout"></span> 
+        <h2 class="editable">mondrian.rolap.queryTimeout</h2>
+        <p>If any query runs past this number of seconds, then the query is immediately cancelled. The total sum of all SQL statements to process a single MDX statement must be less than this timeout. Setting this to zero disables query timeout, which is
+          not recommended because runaway queries can deprive system resources from other necessary processes.</p>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="mondrian.native.crossjoin.enable"></span> 
+        <h2 class="editable">mondrian.native.crossjoin.enable</h2>
+        <p>If this is set to <strong class="ph b">true</strong>, when Mondrian needs to cross join multiple dimensions in a report, if the cross join is non-empty, meaning a fact table relationship has been defined, then the join operation is done using
+          SQL. The resultant SQL query returns only combined dimension members that actually have fact data. This reduces the amount of tuples that need to be processed and is critical for performance on high-cardinality dimensions.</p>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="mondrian.native.topcount.enable"></span> 
+        <h2 class="editable">mondrian.native.topcount.enable</h2>
+        <p>If set to <strong class="ph b">true</strong>, when fetching the first set of records for the filter dialog, Mondrian will only read that set of records into memory. If set to <strong class="ph b">false</strong>, all records from the dimension
+          level will be read into memory.</p>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="mondrian.native.nonempty.enable"></span> 
+        <h2 class="editable">mondrian.native.nonempty.enable</h2>
+        <p>If set to <strong class="ph b">true</strong>, Mondrian will validate each member in the MDX via SQL. If set to <strong class="ph b">false</strong>, Mondrian will traverse from parent to child tokens in the member. For high-cardinality dimensions,
+          this must be enabled to avoid reading all members into cache.</p>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="mondrian.rolap.maxConstraints"></span> 
+        <h2 class="editable">mondrian.rolap.maxConstraints</h2>
+        <p>This should be set to the largest number of values that the data warehouse database supports in an IN list.</p>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="mondrian.native.ExpandNonNative"></span> 
+        <h2 class="editable">mondrian.native.ExpandNonNative</h2>
+        <p>Works in conjunction with native evaluation of cross joins. If set to <strong class="ph b">true</strong>, Mondrian will expand cross join inputs to simple member lists that are candidates for pushdown.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#mondrian.result.limit" rel="internal">mondrian.result.limit</a>  </li>
+      <li> <a href="#mondrian.rolap.iterationLimit" rel="internal">mondrian.rolap.iterationLimit</a>  </li>
+      <li> <a href="#mondrian.rolap.queryTimeout" rel="internal">mondrian.rolap.queryTimeout</a>  </li>
+      <li> <a href="#mondrian.native.crossjoin.enable" rel="internal">mondrian.native.crossjoin.enable</a>  </li>
+      <li> <a href="#mondrian.native.topcount.enable" rel="internal">mondrian.native.topcount.enable</a>  </li>
+      <li> <a href="#mondrian.native.nonempty.enable" rel="internal">mondrian.native.nonempty.enable</a>  </li>
+      <li> <a href="#mondrian.rolap.maxConstraints" rel="internal">mondrian.rolap.maxConstraints</a>  </li>
+      <li> <a href="#mondrian.native.ExpandNonNative" rel="internal">mondrian.native.ExpandNonNative</a>  </li>
+    </ol>
+  </body>
+</content>

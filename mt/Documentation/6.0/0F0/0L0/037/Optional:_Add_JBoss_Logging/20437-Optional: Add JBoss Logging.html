@@ -1,0 +1,102 @@
+<content type="text/html" title="Optional: Add JBoss Logging">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <p>You can add Pentaho application level logging to the JBoss logging subsystem.</p>
+    <ol class="pentaho-list-ordered">
+      <li class="li step">Open the <span class="ph filepath">standalone.xml</span>  file in the <span class="ph filepath"><your jboss directory>/standalone/configuration</span>  directory.</li>
+      <li class="li step">Under the <span class="ph filepath"></extensions></span>  tag add this code. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><system-properties>
+      <property name=&quot;org.jboss.as.logging.per-deployment&quot; value=&quot;false&quot;/>
+  </system-properties></pre> </li>
+      <li class="li step">Find the <span class="ph filepath"><console-handler ...></span>  or <span class="ph filepath"><file-handler ...></span>  sections and add the following two handlers. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><console-handler name=&quot;PENTAHOCONSOLE&quot;>
+<level name=&quot;ALL&quot;/>
+</console-handler>
+   <file-handler name=&quot;PENTAHOFILE&quot;>
+    <file relative-to=&quot;jboss.server.log.dir&quot; path=&quot;pentaho.log&quot;/>
+    <append value=&quot;false&quot;/>
+</file-handler></pre> </li>
+      <li class="li step">Under the file handlers section, there is a section containing handler&nbsp;tags. Configure the <span class="ph filepath"><span class="filepath style-wrap">root-logger</span> &nbsp;</span> handler to use these handlers. <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><handler name=&quot;PENTAHOCONSOLE&quot;/>
+<handler name=&quot;PENTAHOFILE&quot;/></pre> </li>
+      <li class="li step">Add the following loggers above <span class="ph filepath"><root-logger>.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><logger category=&quot;org.hybernate&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;net.sf.ehcache&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+   </logger>
+<logger category=&quot;org.quartz&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+</handlers>
+</logger>
+    <logger category=&quot;org.springframework&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+        <handlers>
+            <handler name=&quot;PENTAHOFILE&quot;/>
+            <handler name=&quot;PENTAHOCONSOLE&quot;/>
+        </handlers>
+</logger>
+<logger category=&quot;org.springframework.security&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;com.pentaho&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.jfree.JCommon&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;org.apache.jackrabbit.core.security.authentication.AbstractLoginModule&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;ERROR&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger>
+<logger category=&quot;RepositoryImportLog&quot; use-parent-handlers=&quot;false&quot;>
+    <level name=&quot;INFO&quot;/>
+    <handlers>
+        <handler name=&quot;PENTAHOFILE&quot;/>
+        <handler name=&quot;PENTAHOCONSOLE&quot;/>
+    </handlers>
+</logger></pre> </li>
+      <li class="li step">Save and close the file.</li>
+    </ol>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

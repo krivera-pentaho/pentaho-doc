@@ -1,0 +1,370 @@
+<content type="text/html" title="Verify DI Systems Migration">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to verify that the migration occurred correctly.</p>
+        </div>
+      </div>
+      <p>After you have
+        <a title="Import Data to 5.x.x DI Server" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0T0/050/060">imported the data into the 5.x.x system</a>, verify that migration and the other parts of the migration process occurred properly.&nbsp;</p>
+      <div class="topic task nested1" id="start_old_server">
+        <div id="section_2" class="mt-page-section"><span id="Start_4.4.x_Version_of_the_Server"></span> 
+          <h2 class="editable">Start 4.4.x Version of the Server</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Start the 4.4.x version of the server. Wait for the server to start up completely before proceeding to the next task.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="start_new_server">
+        <div id="section_3" class="mt-page-section"><span id="Start_5.x.x_Version_of_the_Server"></span> 
+          <h2 class="editable">Start 5.x.x Version of the Server</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Start the 5.x.x version of the server. As the server starts, watch the web application server log carefully and note any errors that might have occured. Resolve any port conflict issues as necessary.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="checklists">
+        <div id="section_4" class="mt-page-section"><span id="Verification_Checklists"></span> 
+          <h2 class="editable">Verification Checklists</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Verification largely consists of using the checklists to compare the differences between the 5.x.x and 4.4.x systems. To make this task easier, it is recommended that you view both systems simultaneously so that you can accurately identify
+                differences.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="overall">
+            <div id="section_5" class="mt-page-section"><span id="Overall_System"></span> 
+              <h3 class="editable">Overall System</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">Ensure that the 5.x.x version of the DI Server is working properly by using the following checklist.</p>
+                  <ul class="ul">
+                    <li class="li">Did the DI Server start properly? Were you able to log in as admin without issues or problems?</li>
+                    <li class="li">Did the web application server log have any errors or anomalies?</li>
+                    <li class="li">If you have configured the DI Server as a service, is it starting and stopping properly?</li>
+                    <li class="li">Manually stop and restart the DI Server. Did it stop and restart properly?</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="users_roles">
+            <div id="section_6" class="mt-page-section"><span id="Users_and_Roles"></span> 
+              <h3 class="editable">Users and Roles</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">To verify that user and role data have been migrated properly, do these things.</p>
+                </div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Start the 5.x.x version of Spoon if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Start the 4.4.x version of Spoon if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Work through the following checklist for each repository that you want to check.</span> 
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="users_roles__user_roles_checklist" rules="all" summary="">
+                        <caption><span class="tablecap">Table 1. User and Roles Verification Checklist</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th align="center" class="entry" colspan="1" id="d85815e174" rowspan="1" valign="top" width="33.66336633663366%">Verification Item</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e177" rowspan="1" valign="top" width="33.003300330033%">Suggested Verification Approach</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e180" rowspan="1" valign="top" width="33.33333333333333%">
+                              <p class="p">Expected Result/Notes</p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e174" rowspan="1" valign="top" width="33.66336633663366%">Do the active user accounts in the 4.4.x system appear in the 5.x.x system?</td>
+                            <td class="entry" colspan="1" headers="d85815e177" rowspan="1" valign="top" width="33.003300330033%">Compare the names of users in the 4.4.x and 5.x.x systems.
+                              <ul class="ul" id="users_roles__ul_ghv_v1x_jl">
+                                <li class="li">5.x.x System: Review the <span class="ph uicontrol">Security</span>  tab in the <span class="ph uicontrol">Enterprise Repository</span>  page in Spoon.</li>
+                                <li class="li">4.4.x System: Review the <span class="ph uicontrol">Security</span>  tab in the <span class="ph uicontrol">Enterprise Repository</span>  page in Spoon.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e180" rowspan="1" valign="top" width="33.33333333333333%">The active user accounts from the 4.4.x version of the system should appear in the 5.x.x system. Note that inactive accounts are not migrated.</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e174" rowspan="1" valign="top" width="33.66336633663366%">Do the roles in the 4.4.x system appear in the 5.x.x system?</td>
+                            <td class="entry" colspan="1" headers="d85815e177" rowspan="1" valign="top" width="33.003300330033%">Compare the roles in the 4.4.x and 5.x.x systems.
+                              <ul class="ul" id="users_roles__ul_khv_v1x_jl">
+                                <li class="li">5.x.x System: Review the <span class="ph uicontrol">Security</span>  tab in the <span class="ph uicontrol">Enterprise</span>  page in Spoon.</li>
+                                <li class="li">4.4.x System: Review the <span class="ph uicontrol">Security</span>  tab in the <span class="ph uicontrol">Enterprise</span>  page in Spoon.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e180" rowspan="1" valign="top" width="33.33333333333333%">The roles from the 4.4.x version of the system should appear in the 5.x.x system. If some roles are missing, you might need to manually recreate them.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="connections">
+            <div id="section_7" class="mt-page-section"><span id="Connections"></span> 
+              <h3 class="editable">Connections</h3>
+              <div class="body taskbody">
+                <div class="section context">To verify that connections were migrated properly, do these things.</div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Start the 5.x.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Start the 4.4.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Verify the items in the checklist.</span> 
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="connections__Solution_content_verification" rules="all" summary="">
+                        <caption><span class="tablecap">Table 2. Connections Verification Checklist</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th align="center" class="entry" colspan="1" id="d85815e310" rowspan="1" valign="top" width="33.66336633663366%">Verification Item</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e313" rowspan="1" valign="top" width="33.003300330033%">How to Check</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e316" rowspan="1" valign="top" width="33.33333333333333%">
+                              <p class="p">Expected Result/Notes</p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e310" rowspan="1" valign="top" width="33.66336633663366%">Did the connections that you created in the previous version of Spoon migrate properly to the 5.x.x version? Check the numbers and types of connections.</td>
+                            <td class="entry" colspan="1" headers="d85815e313" rowspan="1" valign="top"
+                            width="33.003300330033%">
+                              <ul class="ul" id="connections__ul_s2l_gjj_xk">
+                                <li class="li">5.x.x System: Review <span class="ph uicontrol">Connections</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                                <li class="li">4.4.x System: Review <span class="ph uicontrol">Connections</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e316" rowspan="1" valign="top" width="33.33333333333333%">Connections migrated properly.</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e310" rowspan="1" valign="top" width="33.66336633663366%">Is the information for each connection correct?</td>
+                            <td class="entry" colspan="1" headers="d85815e313" rowspan="1" valign="top" width="33.003300330033%">
+                              <ul class="ul" id="connections__ul_vfs_g2z_xk">
+                                <li class="li">5.x.x System: For each connection, open the <strong class="ph b">Database Connection</strong>  window and click the <strong class="ph b">Test</strong>  button.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e316" rowspan="1" valign="top" width="33.33333333333333%">You can connect to the source. If not, adjust settings.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="connection2">
+            <div id="section_8" class="mt-page-section"><span id="Transformations_and_Jobs"></span> 
+              <h3 class="editable">Transformations and Jobs</h3>
+              <div class="body taskbody">
+                <div class="section context">To verify that transformations and jobs were migrated properly, do these things.</div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Start the 5.x.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Start the 4.4.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Verify the items in the checklist.</span> 
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="connection2__connection_verification" rules="all" summary="">
+                        <caption><span class="tablecap">Table 3. Transformations and Jobs Verification Checklist</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th align="center" class="entry" colspan="1" id="d85815e440" rowspan="1" valign="top" width="33.66336633663366%">Verification Item</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e443" rowspan="1" valign="top" width="33.003300330033%">How to Check</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e446" rowspan="1" valign="top" width="33.33333333333333%">
+                              <p class="p">Expected Result/Notes</p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e440" rowspan="1" valign="top" width="33.66336633663366%">Did folders that were in the previous version of the server migrate to the 5.x.x version of the server?</td>
+                            <td class="entry" colspan="1" headers="d85815e443" rowspan="1" valign="top" width="33.003300330033%">
+                              <ul class="ul" id="connection2__2">
+                                <li class="li">5.x.x System: Review <span class="ph uicontrol">Browse</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                                <li class="li">4.4.x System: Review <span class="ph uicontrol">Browse</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e446" rowspan="1" valign="top" width="33.33333333333333%">Folders migrated properly.</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e440" rowspan="1" valign="top" width="33.66336633663366%">Did transformations that were in the previous version of the server migrate to the 5.x.x version of the server?</td>
+                            <td class="entry" colspan="1" headers="d85815e443" rowspan="1" valign="top" width="33.003300330033%">
+                              <ul class="ul" id="connection2__ul_dkh_dpx_jl">
+                                <li class="li">5.x.x System: Review <span class="ph uicontrol">Browse</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                                <li class="li">4.4.x System: Review <span class="ph uicontrol">Browse</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e446" rowspan="1" valign="top" width="33.33333333333333%">Transformations migrated properly.</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e440" rowspan="1" valign="top" width="33.66336633663366%">Did jobs that were in the previous version of the server migrate to the 5.x.x version of the server?</td>
+                            <td class="entry" colspan="1" headers="d85815e443" rowspan="1" valign="top" width="33.003300330033%">
+                              <ul class="ul" id="connection2__ul_xn4_dpx_jl">
+                                <li class="li">5.x.x System: Review <span class="ph uicontrol">Browse</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                                <li class="li">4.4.x System: Review <span class="ph uicontrol">Browse</span>  tab in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e446" rowspan="1" valign="top" width="33.33333333333333%">Jobs migrated properly.</td>
+                          </tr>
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e440" rowspan="1" valign="top" width="33.66336633663366%">Are transformations and jobs running properly?</td>
+                            <td class="entry" colspan="1" headers="d85815e443" rowspan="1" valign="top" width="33.003300330033%">5.x.x System: Run transformations and jobs.</td>
+                            <td class="entry" colspan="1" headers="d85815e446" rowspan="1" valign="top" width="33.33333333333333%">Be careful when running transformations. Do not run one that will make permanent changes to the data.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="jobs_transforms">
+            <div id="section_9" class="mt-page-section"><span id="Schedules"></span> 
+              <h3 class="editable">Schedules</h3>
+              <div class="body taskbody">
+                <div class="section context">To verify that schedules were migrated properly, do these things.</div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Start the 5.x.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Start the 4.4.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Verify the items in the checklist.</span> 
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="jobs_transforms__jobs_transformation_verification" rules="all" summary="">
+                        <caption><span class="tablecap">Table 4. Schedules Verification Checklist</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th align="center" class="entry" colspan="1" id="d85815e623" rowspan="1" valign="top" width="33.66336633663366%">Verification Item</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e626" rowspan="1" valign="top" width="33.003300330033%">How to Check</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e629" rowspan="1" valign="top" width="33.33333333333333%">
+                              <p class="p">Expected Result/Notes</p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e623" rowspan="1" valign="top" width="33.66336633663366%">Did the schedules that you created in the previous version of Spoon migrate properly to the 5.x.x version?</td>
+                            <td class="entry" colspan="1" headers="d85815e626" rowspan="1" valign="top" width="33.003300330033%">
+                              <ul class="ul" id="jobs_transforms__ul_s2l_gjj_xk">
+                                <li class="li">5.x.x System: Review schedule information in the <strong class="ph b">Spoon</strong>  window.</li>
+                                <li class="li">4.4.x System: Review the schedule in the <strong class="ph b">Spoon</strong>  window.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e629" rowspan="1" valign="top" width="33.33333333333333%">Schedules are migrated properly.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="slaves_partitions_clusters">
+            <div id="section_10" class="mt-page-section"><span id="Slaves.2C_Partitions.2C_and_Clusters"></span> 
+              <h3 class="editable">Slaves, Partitions, and Clusters</h3>
+              <div class="body taskbody">
+                <div class="section context">To verify that slave, partition, and cluster data were migrated properly, do these things.</div>
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Start the 5.x.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Start the 4.4.x version of Spoon, if you have not already done so.</span> </li>
+                  <li class="li step"><span class="ph cmd">Verify the items in the checklist.</span> 
+                    <div class="tablenoborder">
+                      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="slaves_partitions_clusters__Solution_content_verification" rules="all" summary="">
+                        <caption><span class="tablecap">Table 5. Slaves, Partitions, and Clusters Verification Checklist</span> </caption>
+                        <thead align="left" class="thead">
+                          <tr class="row">
+                            <th align="center" class="entry" colspan="1" id="d85815e722" rowspan="1" valign="top" width="33.66336633663366%">Verification Item</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e725" rowspan="1" valign="top" width="33.003300330033%">How to Check</th>
+                            <th align="center" class="entry" colspan="1" id="d85815e728" rowspan="1" valign="top" width="33.33333333333333%">
+                              <p class="p">Expected Result/Notes</p>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="tbody">
+                          <tr class="row">
+                            <td class="entry" colspan="1" headers="d85815e722" rowspan="1" valign="top" width="33.66336633663366%">Did the slave servers, clusters, and partitions that you created in the previous version of Spoon migrate properly to the 5.x.x version?</td>
+                            <td class="entry" colspan="1" headers="d85815e725" rowspan="1" valign="top" width="33.003300330033%">
+                              <ul class="ul" id="slaves_partitions_clusters__ul_s2l_gjj_xk">
+                                <li class="li">5.x.x System: Review <span class="ph uicontrol">Slaves</span>, <strong class="ph b">Partitions</strong>, and <strong class="ph b">Clusters</strong>  tabs in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                                <li class="li">4.4.x System: Review <span class="ph uicontrol">Slaves</span>, <strong class="ph b">Partitions</strong>, and <strong class="ph b">Clusters</strong>  tabs in the <strong class="ph b">Repository explorer</strong>  window.</li>
+                              </ul>
+                            </td>
+                            <td class="entry" colspan="1" headers="d85815e728" rowspan="1" valign="top" width="33.33333333333333%">Servers, clusters, and partitions are all migrated properly.</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="System_configuration">
+            <div id="section_11" class="mt-page-section"><span id="System_Configuration"></span> 
+              <h3 class="editable">System Configuration</h3>
+              <div class="body taskbody">
+                <div class="section context">
+                  <p class="p">To ensure that system configuration settings were migrated properly, use the following checklist.</p>
+                  <div class="tablenoborder">
+                    <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="System_configuration__system_configuration_checklist" rules="all" summary="">
+                      <caption><span class="tablecap">Table 6. System Configuration Settings Verification Checklist</span> </caption>
+                      <thead align="left" class="thead">
+                        <tr class="row">
+                          <th align="center" class="entry" colspan="1" id="d85815e820" rowspan="1" valign="top" width="33.66336633663366%">Verification Item</th>
+                          <th align="center" class="entry" colspan="1" id="d85815e823" rowspan="1" valign="top" width="33.003300330033%">How to Check</th>
+                          <th align="center" class="entry" colspan="1" id="d85815e826" rowspan="1" valign="top" width="33.33333333333333%">
+                            <p class="p">Expected Result/Notes</p>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody class="tbody">
+                        <tr class="row">
+                          <td class="entry" colspan="1" headers="d85815e820" rowspan="1" valign="top" width="33.66336633663366%">Verify that the server base URL, fully qualified server URL, and the locale language in the 5.x.x server match what they were in the 4.4.x server.</td>
+                          <td class="entry" colspan="1" headers="d85815e823" rowspan="1" valign="top"
+                          width="33.003300330033%">
+                            <ul class="ul" id="System_configuration__ul_ss2_zlz_xk">
+                              <li class="li">5.x.x System: Check the <span class="ph filepath">web.xml</span>  file.</li>
+                              <li class="li">4.4.x System: Check the <span class="ph filepath">web.xml</span>  file.</li>
+                            </ul>
+                          </td>
+                          <td class="entry" colspan="1" headers="d85815e826" rowspan="1" valign="top" width="33.33333333333333%">If you have customized the 4.4.x system with servlets, filters, context parameters or in other ways, you will need to copy these things into the 5.x.x <span class="ph filepath">web.xml</span>  file.</td>
+                        </tr>
+                        <tr class="row">
+                          <td class="entry" colspan="1" headers="d85815e820" rowspan="1" valign="top" width="33.66336633663366%">Compare the settings in these files: <span class="ph filepath">context.xml, log4j.xml, logging.properties, slave-server-config.xml, applicationContext-security-ldap.properties, pentaho.xml</span> </td>
+                          <td class="entry" colspan="1"
+                          headers="d85815e823" rowspan="1" valign="top" width="33.003300330033%">Use a file difference tool to compare the files in the 4.4.x and 5.x.x systems.</td>
+                          <td class="entry" colspan="1" headers="d85815e826" rowspan="1" valign="top" width="33.33333333333333%">Review the differences between the two files. If customized changes were made, they should have migrated properly. If not, you will need to manually migrate them. If you update the <span class="ph filepath">context.xml</span>                             file, you will need to delete the <span class="ph filepath">pentaho.xml</span>  that is in the <span class="ph filepath">tomcat\conf\Catalina</span>  directory before you start the DI Server again for the changes to take effect.</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Start_4.4.x_Version_of_the_Server" rel="internal">Start 4.4.x Version of the Server</a>  </li>
+      <li> <a href="#Start_5.x.x_Version_of_the_Server" rel="internal">Start 5.x.x Version of the Server</a>  </li>
+      <li>
+        <a href="#Verification_Checklists" rel="internal">Verification Checklists</a> 
+        <ol>
+          <li> <a href="#Overall_System" rel="internal">Overall System</a>  </li>
+          <li> <a href="#Users_and_Roles" rel="internal">Users and Roles</a>  </li>
+          <li> <a href="#Connections" rel="internal">Connections</a>  </li>
+          <li> <a href="#Transformations_and_Jobs" rel="internal">Transformations and Jobs</a>  </li>
+          <li> <a href="#Schedules" rel="internal">Schedules</a>  </li>
+          <li> <a href="#Slaves.2C_Partitions.2C_and_Clusters" rel="internal">Slaves, Partitions, and Clusters</a>  </li>
+          <li> <a href="#System_Configuration" rel="internal">System Configuration</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

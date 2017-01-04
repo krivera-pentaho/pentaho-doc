@@ -1,0 +1,73 @@
+<content type="text/html" title="App Endpoints for SDR Forms">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <p>These are a few API endpoints that you can also use to run the app. To perform a command, alter this example to match your parameters:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://{host}/pentaho/plugin/{pluginID}/api/{command}</pre>
+      <p>Here are a couple of examples using some parameters:</p>
+      <p><strong>Genre Selector API:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/pentaho/plugin/SDR/api/genre</pre>
+      <p><strong>Example Response: </strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{&quot;metadata&quot;:[{&quot;colIndex&quot;:0,&quot;colType&quot;:&quot;String&quot;,&quot;colName&quot;:&quot;GenreID&quot;},{&quot;colIndex&quot;:1,&quot;colType&quot;:&quot;String&quot;,&quot;colName&quot;:&quot;Genre&quot;}],&quot;queryInfo&quot;:{&quot;totalRows&quot;:18},&quot;resultset&quot;:[[&quot;Action&quot;,&quot;Action&quot;],[&quot;Adventure&quot;,&quot;Adventure&quot;],[&quot;Animation&quot;,&quot;Animation&quot;],[&quot;Childrens&quot;,&quot;Childrens&quot;],[&quot;Comedy&quot;,&quot;Comedy&quot;],[&quot;Crime&quot;,&quot;Crime&quot;],[&quot;Documentary&quot;,&quot;Documentary&quot;],[&quot;Drama&quot;,&quot;Drama&quot;],[&quot;Fantasy&quot;,&quot;Fantasy&quot;],[&quot;Film-Noir&quot;,&quot;Film-Noir&quot;],[&quot;Horror&quot;,&quot;Horror&quot;],[&quot;Musical&quot;,&quot;Musical&quot;],[&quot;Mystery&quot;,&quot;Mystery&quot;],[&quot;Romance&quot;,&quot;Romance&quot;],[&quot;Sci-Fi&quot;,&quot;Sci-Fi&quot;],[&quot;Thriller&quot;,&quot;Thriller&quot;],[&quot;War&quot;,&quot;War&quot;],[&quot;Western&quot;,&quot;Western&quot;]]}</pre>
+      <p><strong>Gender Selector API: </strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/pentaho/plugin/SDR/api/gender</pre>
+      <p><strong>Example Response: </strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{&quot;metadata&quot;:[{&quot;colIndex&quot;:0,&quot;colType&quot;:&quot;String&quot;,&quot;colName&quot;:&quot;GenderID&quot;},{&quot;colIndex&quot;:1,&quot;colType&quot;:&quot;String&quot;,&quot;colName&quot;:&quot;Gender&quot;}],&quot;queryInfo&quot;:{&quot;totalRows&quot;:2},&quot;resultset&quot;:[[&quot;M&quot;,&quot;Male&quot;],[&quot;F&quot;,&quot;Female&quot;]]}</pre>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%" title="Pentaho Table">
+        <caption>List of App Endpoint Parameters</caption>
+        <thead>
+          <tr>
+            <th scope="col" style="width: 167px;">Endpoint</th>
+            <th scope="col" style="width: 375px;">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="width: 167px;">genre</td>
+            <td style="width: 507px;">Populates the options for the <strong>genre </strong> selector.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">gender</td>
+            <td style="width: 507px;">Populates the options for the <strong>gender </strong> selector.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">occupation</td>
+            <td style="width: 507px;">Populates the options for the <strong>occupation </strong> selector.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">income</td>
+            <td style="width: 507px;">Populates the options for the <strong>income </strong> selector.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">firstdate</td>
+            <td style="width: 507px;">Returns the limit dates for the data to be processed.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">data_source_name</td>
+            <td style="width: 507px;">Returns the names of all data sources available on the server.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">latest_requests</td>
+            <td style="width: 507px;">Returns the latest 10 requests made in a table, instead of inside of a popup.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">sdr_data</td>
+            <td style="width: 507px;">Processes the request and returns the status of the data.</td>
+          </tr>
+          <tr>
+            <td style="width: 167px;">refresh</td>
+            <td style="width: 507px;">Refreshes the kettle and dashboard elements to reflect any saved changes. Clears the cache for all kettle endpoints.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>A larger number of API endpoints can be found in the
+        <a title="Documentation/5.4/0R0/070" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070">Pentaho Developer's Center</a> .</p>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

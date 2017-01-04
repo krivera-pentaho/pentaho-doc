@@ -1,0 +1,67 @@
+<content type="text/html" title="Logging in Job Entries">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p>A job entry interacts with the PDI logging system by using the logging methods inherited from <code class="ph codeph">JobEntryBase</code>.&nbsp;</p>
+        <div class="p">
+          <p>These methods are used to issue log lines to the PDI logging system on different severity levels. Multi-argument versions of the methods are available to do some basic formatting, which is equivalent to a call to
+            <a class="xref external" target="_blank"
+            rel="external nofollow" href="http://docs.oracle.com/javase/6/docs/api/java/text/MessageFormat.html#format%28java.lang.String,%20java.lang.Object...%29"><code class="ph codeph">MessageFormat.format(message, arguments)</code></a> .</p>
+          <ul class="ul">
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public void logMinimal()</code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public void logBasic() </code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public void logDetailed()</code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public void logDebug() </code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public void logRowlevel()</code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public void logError() </code></span> </li>
+          </ul>
+          <p>These methods query the logging level. They are often used to guard sections of code, that should only be executed with elevated logging settings.</p>
+          <ul class="ul">
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public boolean isBasic()</code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public boolean isDetailed()</code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public boolean isDebug()</code></span> </li>
+            <li class="li"><span class="filepath style-wrap"><code class="ph codeph">public boolean isRowLevel()</code></span> </li>
+          </ul>
+        </div>
+        <p class="p">Job entries should log the this information at specified levels:</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="93eb7c8f-ac55-4319-9d31-74a5777c50b8__logging_job_entries_Rows__table_jb3_cb3_nh" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="93eb7c8f-ac55-4319-9d31-74a5777c50b8__d22733e114" valign="top" width="20%"><strong class="ph b">Log Level</strong> </th>
+                <th class="entry" id="93eb7c8f-ac55-4319-9d31-74a5777c50b8__d22733e120" valign="top" width="80%"><strong class="ph b">Log Information Content</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d22733e114 " valign="top" width="20%">Minimal</td>
+                <td class="entry" headers="d22733e120 " valign="top" width="80%">Only information that is interesting at a very high-level, for example Job Started or Ended jobs. Individual job entries do not log anything at this level.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d22733e114 " valign="top" width="20%">Basic</td>
+                <td class="entry" headers="d22733e120 " valign="top" width="80%">Information that may be interesting to you during regular ETL operation</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d22733e114 " valign="top" width="20%">Detailed</td>
+                <td class="entry" headers="d22733e120 " valign="top" width="80%">Prepared SQL or other query statements, resource allocation and initialization like opening files or connections</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d22733e114 " valign="top" width="20%">Debug</td>
+                <td class="entry" headers="d22733e120 " valign="top" width="80%">Anything that may be useful in debugging job entries</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d22733e114 " valign="top" width="20%">Row Level</td>
+                <td class="entry" headers="d22733e120 " valign="top" width="80%">Anything that may be helpful in debugging problems at the level of individual rows and values</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d22733e114 " valign="top" width="20%">Error</td>
+                <td class="entry" headers="d22733e120 " valign="top" width="80%">Fatal errors that abort the job</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

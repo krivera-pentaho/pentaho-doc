@@ -1,0 +1,43 @@
+<content type="text/html" title="Switch to Memcached">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">In order to complete this procedure, you must have your own pre-configured Memcached instance. You should have also installed the Analysis Enterprise Edition package to your BA Server or standalone Mondrian engine.</div>
+        <div class="section context">
+          <p class="p">If you already use the Memcached cache framework in your organization and would like to hook it up to the Pentaho Analysis OLAP engine, follow the directions below to switch from the default Infinispan cache framework configuration.</p>
+          <div
+          class="cautiontitle">CAUTION:</div>
+        <div class="note caution">Pentaho and Mondrian developers recommend against using Memcached. You are almost certain to have better performance with Infinispan.</div>
+      </div>
+      <ol class="ol steps">
+        <li class="li step"> <span class="ph cmd">If the BA Server or standalone Mondrian engine are running, shut them down now.</span>  </li>
+        <li class="li step"> <span class="ph cmd">If you performed a default install of the Pentaho Analysis Enterprise Edition package, then you should have all of the required JARs installed to the BA or Mondrian server. If you aren't sure, verify now that the following JARs are present in the <span class="ph filepath">/WEB-INF/lib/</span>           directory inside of your deployed pentaho.war or Mondrian engine:</span> 
+          <ul class="ul">
+            <li class="li">pentaho-analysis-ee</li>
+            <li class="li">commons-lang</li>
+            <li class="li">commons-io</li>
+            <li class="li">commons-codec</li>
+            <li class="li">pentaho-ee-dsc-core</li>
+            <li class="li">memcached</li>
+          </ul>
+        </li>
+        <li class="li step"> <span class="ph cmd">Edit the <strong class="ph b">pentaho-analysis-config.xml</strong>  in the <span class="ph filepath">/WEB-INF/classes/</span>  directory inside the deployed pentaho.war or Mondrian engine, and change the value of <strong class="ph b">SEGMENT_CACHE_IMPL</strong>           to match the class name referenced below:</span>  <pre class="pre codeblock"><entry key=&quot;SEGMENT_CACHE_IMPL&quot;>com.pentaho.&#8203;analysis.segmentcache.&#8203;impl.memcached.&#8203;MemcachedSegmentCache</entry></pre> </li>
+        <li class="li step"> <span class="ph cmd">Edit the <strong class="ph b">memcached-config.xml</strong>  in the <span class="ph filepath">/WEB-INF/classes/</span>  directory inside the deployed pentaho.war or Mondrian engine, and change the values of <strong class="ph b">SALT</strong>,
+          <strong class="ph b">SERVERS</strong>, and <strong class="ph b">WEIGHT</strong>  to match your preference:</span>  <pre class="pre codeblock">
+                    <entry key=&quot;SALT&quot;>YOUR SECRET SALT VALUE HERE</entry>
+                    <entry key=&quot;SERVERS&quot;>192.168.0.1:1642,192.168.0.2:1642</entry>
+                    <entry key=&quot;WEIGHTS&quot;>1,1</entry></pre> </li>
+      </ol>
+      <div class="section result">Your Pentaho Analysis Enterprise Edition instance is now configured to use Memcached for OLAP segment caching.</div>
+    </div>
+    <div class="related-links">
+      <ul class="ullinks">
+        <li class="link ulchildlink"><strong><a title="Documentation/5.1/0P0/100/050/010/000/030/000/000" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/100/050/010/000/030/000/000">Memcached Configuration Options</a> </strong> 
+          <br />
+        </li>
+      </ul>
+    </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

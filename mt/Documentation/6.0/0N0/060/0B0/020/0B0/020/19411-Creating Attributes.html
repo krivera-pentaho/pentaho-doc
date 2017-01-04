@@ -1,0 +1,116 @@
+<content type="text/html" title="Creating Attributes">
+  <body>
+    <div>
+      <p style="visibility: visible;">An <strong>attribute</strong>  is used to create a single level hierarchy, using either a field or existing hierarchy level. As part of the Annotate Stream step, you can create an attribute or series of attributes to further refine your data model.</p>
+      <div class="mt-page-section" id="section_2">
+        <div id="section_1" class="mt-page-section"><span id="To_Create_an_Attribute_on_a_Field"></span> 
+          <h5 class="editable">To Create an Attribute on a Field</h5>
+          <p>These steps guide you through creating an attribute using the
+            <a title="Annotate Stream Step" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/060/0B0/020/0B0">Annotate</a> 
+            <a href="/Draft_Content/Virginia/Work_with_the_Streamlined_Data_Refinery/0B0/020/0B0" rel="internal" title="Annotate Stream (step)"> </a> 
+            <a title="Annotate Stream Step" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0N0/060/0B0/020/0B0">Stream</a>  step.</p>
+          <ol class="pentaho-list-ordered">
+            <li>If you haven't done so already, complete steps 1-7 in
+              <a href="/Documentation/6.0/0N0/060/0B0/020/0B0#Using_the_Annotate_Stream_Step" rel="internal" title="Annotate Stream (step)"> Using the Annotate Stream Step</a> .</li>
+            <li>Select <strong>Create Attribute </strong> from the Actions menu. The Name - Value table auto-populates with a list of annotation properties for the attribute.
+              <img alt="CreateAttributeSDR.png" class="internal default" style="width: 647px; height: 470px;"
+              width="647px" height="470px" src="http://help.pentaho.com/@api/deki/files/6975/CreateAttributeSDR.png?size=bestfit&amp;width=647&amp;height=470&amp;revision=1" />
+              <p style="text-align: center; visibility: visible;">&nbsp;</p>
+            </li>
+            <li>Enter or edit the value for each annotation component.
+              <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 150px;">Property</th>
+                    <th scope="col" style="width: 475px;">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="width: 172px;">Attribute Name</td>
+                    <td style="width: 502px;">Enter a name for your attribute. This is a required field.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Time Level Type</td>
+                    <td style="width: 502px;">For time level attributes, specify a time level type from the drop-down menu. Options may include:
+                      <ul class="pentaho-list-unordered">
+                        <li>TimeYears</li>
+                        <li>TimeHalfYears</li>
+                        <li>TimeQuarters</li>
+                        <li>TimeMonths</li>
+                        <li>TimeWeeks</li>
+                        <li>TimeDays</li>
+                        <li>TimeHours</li>
+                        <li>TimeMinutes</li>
+                        <li>TimeSeconds</li>
+                      </ul> This is a required field for Time Level attributes.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Time Source Format</td>
+                    <td style="width: 502px;">For time level attributes, specify a time format for the attribute to appear in. Options are dependent on the selected time level type. For example, if you select <strong>'TimeYears'</strong>  in the Time Level Type field, then you
+                      can only select <strong>'yyyy'</strong>  or <strong>'yy'</strong>  in the Time Source Format field. This is a required field for Time Level attributes.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Geo Type</td>
+                    <td style="width: 502px;">For geo attributes, specify the geo type from the drop-down menu. Options may include:
+                      <ul class="pentaho-list-unordered">
+                        <li>Lat_Long</li>
+                        <li>Country</li>
+                        <li>City</li>
+                        <li>State</li>
+                        <li>County</li>
+                        <li>Postal_Code</li>
+                        <li>Continent</li>
+                        <li>Territory</li>
+                      </ul> This is a required field for Geo Type attributes.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Ordinal Field</td>
+                    <td style="width: 502px;">Select a field to use for sorting members in ascending order. For example, months will display in chronological order, e.g. January, February, etc.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Description</td>
+                    <td style="width: 502px;">Enter a description for the attribute. This description is visible when a user mouses over an attribute in Analyzer.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Parent Attribute</td>
+                    <td style="width: 502px;">If you want to create multi-level hierarchies, select a parent attribute for the attribute you are creating. This relationship will display in the Summary column for the annotation on the Annotate Stream dialog box. For example, if
+                      you are working with 'Month', then you can select 'Year' as the parent attribute. Double-clicking 'Year' in the model displays Months.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Dimension</td>
+                    <td style="width: 502px;">Select an existing dimension or create a new dimension for the attribute. This is a required field.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Hierarchy</td>
+                    <td style="width: 502px;">Select an existing hierarchy or create a new hierarchy for the attribute. This field may be left blank.</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 172px;">Is Unique</td>
+                    <td style="width: 502px;">Set to <strong>'True'</strong>  when member names do not repeat under different parents. Setting this field to <strong>'True'</strong>  will optimize SQL generation in Mondrian. Set to <strong>'False'</strong>  when member names do not
+                      repeat under different parents.</td>
+                  </tr>
+                </tbody>
+              </table>
+              <ul>
+                <li><em>For all annotations</em>, enter the <strong>Attribute Name</strong>  and select the <strong>Dimension </strong> type. Optionally, you can enter an ordinal field, write a description, choose a hierarchy, and designate if the attribute
+                  'Is Unique'.</li>
+                <li><em>For Time Level attributes</em>, select a <strong>Time Level Type</strong>, a <strong>Time Source Format</strong>, and optionally set a parent attribute if you want to create a relationship between two time attributes.</li>
+              </ul>
+              <ul>
+                <li><em>For Geo attributes</em>, select a <strong>Geo Type</strong>  and optionally set a parent attribute if you want to create a relationship between two geo attributes.</li>
+              </ul>
+            </li>
+            <li>Use the <strong>Previous </strong> and <strong>Next </strong> buttons to navigate through the fields. When finished, click <strong>OK </strong> to add the attribute to the annotations list or <strong>Cancel </strong> to close the dialog box without
+              saving your annotations.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#To_Create_an_Attribute_on_a_Field" rel="internal">To Create an Attribute on a Field</a>  </li>
+    </ol>
+  </body>
+</content>

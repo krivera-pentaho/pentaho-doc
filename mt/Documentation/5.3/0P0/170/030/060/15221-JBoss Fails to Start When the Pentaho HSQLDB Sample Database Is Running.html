@@ -1,0 +1,11 @@
+<content type="text/html" title="JBoss Fails to Start When the Pentaho HSQLDB Sample Database Is Running">
+  <body>
+    <div>
+      <div class="body conbody">
+        <div class="note note"><span class="notetitle">Note:</span>  This problem can also manifest as the Pentaho sample database refusing to start when the BA Server is deployed to JBoss.</div>
+        <p class="p">The Pentaho-supplied HSQLDB sample database operates on the default HSQLDB port of 9001. JBoss has its own HSQLDB instance running on the same port; therefore, the port collision will prevent the JBoss version from starting, and cause the startup
+          process to halt. You can change the Pentaho sample database port by editing the <strong class="ph b">start_hypersonic</strong>  script and adding the <strong class="ph b">-port 9002</strong>  switch to the last line:</p> <pre class="pre codeblock">&quot;$_PENTAHO_JAVA&quot; -cp $THE_CLASSPATH org.hsqldb.Server -port 9002 -database.0 $DIR_REL/hsqldb/sampledata -dbname.0 sampledata -database.1 $DIR_REL/hsqldb/hibernate -dbname.1 hibernate -database.2 $DIR_REL/hsqldb/quartz -dbname.2 quartz</pre>        </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

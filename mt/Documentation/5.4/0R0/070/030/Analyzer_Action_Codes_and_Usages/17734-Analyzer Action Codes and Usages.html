@@ -1,0 +1,107 @@
+<content type="text/html" title="Analyzer Action Codes and Usages">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h1 class="editable">Overview</h1>
+        <p>Analyzer actions map to codes called <em>action codes</em> . Each action code can be used to trigger an action through the <span class="filepath style-wrap">onActionEvent</span>  call. Action events require an <em>action context</em>  along with
+          the action code. This context can be different for each of the actions codes. Each action code listed below includes the action context passed along with the action code and one or more use case examples.</p>
+        <div id="section_2" class="mt-page-section"><span id="Action_Codes"></span> 
+          <h3 class="editable">Action Codes</h3>
+          <p>The following action codes and action contexts are passed along to identify specific action events.</p>
+          <div id="section_3" class="mt-page-section"><span id="actionAddLevel"></span> 
+            <h2 class="editable">actionAddLevel</h2>
+            <p>This action code adds a level to a gembar when passed through <span class="filepath style-wrap">onActionEvent</span> . The action context passed along with the <span class="filepath style-wrap">actionAddLevel </span> code is a JSON object. The
+              key is formula and the value is the level's MDX.</p>
+            <p>The following is a use case example of executing listener code each time the <span class="filepath style-wrap">actionAddLevel</span>  is triggered.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// actionCtx = { formula : &quot;[Measures].[Quantity]&quot; };
+cv.api.event.registerActionEventListener(function(e, cv, actionCode, actionCtx) {
+  if(actionCode == &quot;actionAddLevel&quot;) {
+    // Execute listener code
+  }
+});</pre> </div>
+          <div id="section_4" class="mt-page-section"><span id="actionAddMeasure"></span> 
+            <h2 class="editable">actionAddMeasure</h2>
+            <p>This action code adds a measure to a gembar when passed through <span class="filepath style-wrap">onActionEvent</span> . The action context passed along with the <span class="filepath style-wrap">actionAddMeasure </span> code is a JSON object.
+              The key is formula and the value is the level's MDX.</p>
+            <p><span>The following is a</span> &nbsp;use case example of executing listener code each time <span class="filepath style-wrap">actionAddMeasure </span> is triggered.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// actionCtx = { formula : &quot;[Measures].[Quantity]&quot; };
+cv.api.event.registerActionEventListener(function(e, cv, actionCode, actionCtx) {
+  if(actionCode == &quot;actionAddMeasure&quot;) {
+    // Execute listener code
+  }
+});</pre> </div>
+          <div id="section_5" class="mt-page-section"><span id="actionMoveLevel"></span> 
+            <h2 class="editable">actionMoveLevel</h2>
+            <p>This action code moves levels between gembars when passed through <span class="filepath style-wrap">onActionEvent</span> . The action context passed along with the <span class="filepath style-wrap">actionMoveLevel </span> code is a JSON object.
+              The key is formula and the value is the level's MDX.</p>
+            <p><span>The following is a</span> &nbsp;use case example of executing listener code each time <span class="filepath style-wrap">actionMoveLevel </span> is triggered.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// actionCtx = { formula : &quot;[Markets].[State]&quot; };
+cv.api.event.registerActionEventListener(function(e, cv, actionCode, actionCtx) {
+  if(actionCode == &quot;actionMoveLevel&quot;) {
+    // Execute listener code
+  }
+});</pre> </div>
+          <div id="section_6" class="mt-page-section"><span id="actionMoveMeasure"></span> 
+            <h2 class="editable">actionMoveMeasure</h2>
+            <p>This action code moves measures between gembars when passed through <span class="filepath style-wrap">onActionEvent</span> . The action context passed along with the <span class="filepath style-wrap">actionAddMeasure </span> code is a JSON object.
+              The key is formula and the value is the level's MDX.</p>
+            <p><span>The following is a</span> &nbsp;use case example of executing listener code each time <span class="filepath style-wrap">the actionMoveMeasure</span>  is triggered.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// actionCtx = { formula : &quot;[Measures].[Quantity]&quot; };
+cv.api.event.registerActionEventListener(function(e, cv, actionCode, actionCtx) {
+  if(actionCode == &quot;actionMoveMeasure&quot;) {
+    // Execute listener code
+  }
+});</pre> </div>
+          <div id="section_7" class="mt-page-section"><span id="actionRemoveLevel"></span> 
+            <h2 class="editable">actionRemoveLevel</h2>
+            <p>This action code removes a level from a gembar when passed through <span class="filepath style-wrap">onActionEvent</span> . The action context passed along with the <span class="filepath style-wrap">actionRemoveLevel </span> code is a JSON object.
+              The key is formula and the value is the level's MDX.</p>
+            <p><span>The following is a</span> &nbsp;use case example of executing some listener code each time <span class="filepath style-wrap">actionRemoveLevel </span> is triggered.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// actionCtx = { formula : &quot;[Markets].[State]&quot; };
+cv.api.event.registerActionEventListener(function(e, cv, actionCode, actionCtx) {
+  if(actionCode == &quot;actionRemoveLevel&quot;) {
+    // Execute listener code
+  }
+});</pre> </div>
+          <div id="section_8" class="mt-page-section"><span id="actionRemoveMeasure"></span> 
+            <h2 class="editable">actionRemoveMeasure</h2>
+            <p>This action code removes a measure from a gembar when passed through <span class="filepath style-wrap">onActionEvent</span> . The action context passed along with the <span class="filepath style-wrap">actionRemoveMeasure </span> code is a JSON
+              object. The key is formula and the value is the level's MDX.</p>
+            <p><span>The following is a</span> &nbsp;use case example of executing some listener code each time <span class="filepath style-wrap">actionRemoveMeasure </span> is triggered:</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// actionCtx = { formula : &quot;[Measures].[Quantity]&quot; };
+cv.api.event.registerActionEventListener(function(e, cv, actionCode, actionCtx) {
+  if(actionCode == &quot;actionRemoveMeasure&quot;) {
+    // Execute listener code
+  }
+});</pre>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Overview" rel="internal">Overview</a> 
+        <ol>
+          <li>
+            <ol>
+              <li> <a href="#Action_Codes" rel="internal">Action Codes</a>  </li>
+            </ol>
+          </li>
+          <li> <a href="#actionAddLevel" rel="internal">actionAddLevel</a>  </li>
+          <li> <a href="#actionAddMeasure" rel="internal">actionAddMeasure</a>  </li>
+          <li> <a href="#actionMoveLevel" rel="internal">actionMoveLevel</a>  </li>
+          <li> <a href="#actionMoveMeasure" rel="internal">actionMoveMeasure</a>  </li>
+          <li> <a href="#actionRemoveLevel" rel="internal">actionRemoveLevel</a>  </li>
+          <li> <a href="#actionRemoveMeasure" rel="internal">actionRemoveMeasure</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

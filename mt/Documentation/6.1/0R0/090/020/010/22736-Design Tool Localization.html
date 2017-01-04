@@ -1,0 +1,101 @@
+<content type="text/html" title="Design Tool Localization">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <p>All of Pentaho's design tools can be translated to the extent that their text strings are abstracted to properties files. There are already a number of localized message bundles in some design tools (PDI in particular), though they may be incomplete.</p>
+      <p>The basic process for translating message bundles is to search for <strong class="ph b">messages.properties</strong>  files and create localized versions of them, following the standard Java localization naming convention as explained in
+        <a class="xref"
+        title="Use the Kettle Translator" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/090/020/020">Use the Kettle Translator</a> .</p>
+      <p>Once you've found the JARs containing the message bundles, create overrides for them by creating a <strong class="ph b">translations</strong>  directory and unpacking the messages.properties files from the JARs into it:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mkdir translation
+cd translation
+unzip ./lib/*.jar '*.properties'</pre>
+      <p>Then add that directory to the classpath by editing <strong class="ph b">launcher.properties</strong>, and edit or create a localized message bundle for each properties file you extracted.</p>
+      <p>The quickest and easiest ways to locate the appropriate JARs, add override directories, and create message bundles is explained for each design tool in the below sections.</p>
+      <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table"
+      style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <thead>
+          <tr>
+            <th scope="col">Design Tool</th>
+            <th scope="col">File Path and File Name</th>
+            <th scope="col">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Aggregation Designer</td>
+            <td>/aggregation-designer/lib/<strong>pentaho-*.jar</strong> </td>
+            <td>
+              <p><strong class="ph b">Modified launcher.properties classpath:</strong>  classpath=../translations:log4j.xml</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Pentaho Data Integration (Kettle)</td>
+            <td>/data-integration/lib/<strong>kettle-*.jar</strong> </td>
+            <td>
+              <p><strong class="ph b">launcher.properties classpath prefix:</strong>  classpath=../translations:</p>
+              <p>Note: The Kettle project has a translator tool to help facilitate large-scale localization efforts. To get it, check out the Kettle source code and run <strong class="ph b">translator.sh</strong>  or <strong class="ph b">Translator.bat</strong>                 and either check in the changes, or zip them and email the archive to a committer. See
+                <a class="xref" title="Use the Kettle Translator" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0R0/090/020/020">Use the Kettle Translator</a>  for more information.</p>
+            </td>
+          </tr>
+          <tr>
+            <td>Metadata Editor</td>
+            <td>
+              <p>/metadata-editor/lib/<strong>pentaho-metadata-editor*.jar</strong> </p>
+              <p>/metadata-editor/libext/pentaho/<strong>pentaho-*.jar</strong> </p>
+            </td>
+            <td>
+              <p>Edit the <strong class="ph b">metadata-editor</strong>  (.sh or .bat) script, and modify the <strong class="ph b">CLASSPATH</strong>  variable accordingly:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">CLASSPATH=./translations:</pre>              </td>
+          </tr>
+          <tr>
+            <td>Report Designer</td>
+            <td>
+              <p>/report-designer/lib/<strong>pentaho-reporting-*.jar</strong> </p>
+              <p>/report-designer/lib/<strong>report-design*.jar</strong> </p>
+            </td>
+            <td><strong class="ph b">launcher.properties classpath prefix:</strong>  classpath=translations:</td>
+          </tr>
+          <tr>
+            <td>Schema Workbench</td>
+            <td>
+              <p>/schema-workbench/lib/<strong>workbench.jar</strong> </p>
+              <p>/schema-workbench/lib/<strong>mondrian.jar</strong> </p>
+            </td>
+            <td>
+              <p>Edit the <strong class="ph b">workbench</strong>  (.sh or .bat) script, and locate the following line: <strong class="ph b">CP=&quot;${MONDRIAN_HOME}/lib/commons-collections.jar&quot;</strong> . Now create a new line directly below it and
+                paste this in:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">CP=&quot;${CP}${PS}${MONDRIAN_HOME}/translations&quot;</pre> </td>
+          </tr>
+          <tr>
+            <td>BA and DI Server</td>
+            <td>/biserver-ee/tomcat/webapps/pentaho/WEB-INF/lib/<strong>pentaho-bi-platform-*.jar</strong> </td>
+            <td>
+              <p>This process is described in much more detail in <em class="ph i">BA Server and Thin Client Message Bundles</em> . However, if you're following the same abbreviated procedure as above, here are the basics (minus the thin client plugins):</p>
+              <p><strong class="ph b">Search for:</strong> </p>
+              <p><strong class="ph b">Path to use as a classpath override (you don't have to declare it):</strong>  /biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes/</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <div id="section_1" class="mt-page-section"><span id=""></span> 
+        <h2 class="editable">&nbsp;</h2>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#" rel="internal">&nbsp;</a>  </li>
+    </ol>
+  </body>
+</content>

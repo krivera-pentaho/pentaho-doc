@@ -1,0 +1,96 @@
+<content type="text/html" title="Add a MongoDB Data Source">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You can define a MongoDB data source query, then display query results in a report. &nbsp;To do this, you must already have MongoDB database connection information, such as host name(s), port number(s) and authentication credentials.&nbsp; If
+          you do not have these things, contact your system administrator for help before you begin.</div>
+        <div class="section context">To establish a connection to a MongoDB data source, specify input options and queries, and view field information, complete these steps. (For additional details about what each of the fields within the tabs controls, see the MongoDB Input section
+          of
+          <a class="xref" title="Documentation/5.1/0L0/0Y0/000" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/000">Create DI Solutions</a> .</div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open the <span class="ph uicontrol">Pentaho Report Designer</span>  window and either create a report or open an existing one.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Select <span class="ph uicontrol">Data > Add Datasource > MongoDB</span>  from the menu.&nbsp; The <span class="ph uicontrol">MongoDB Data Source</span>  window appears.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Click <span class="ph uicontrol">Add New Query</span>  to name the MongoDB data source definition.&nbsp; Fields in the window become active.</span> 
+          </li>
+          <li class="li step"> <span class="ph cmd">Type the name of the query in the <strong class="ph b">Name</strong>  field.</span>  </li>
+          <li class="li step"> <span class="ph cmd">To configure the connection, complete these steps.</span> 
+            <ol type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">Enter the host name and port number for your MongoDB database. You can also specify a different port number for each host name by separating the host name and port number with a colon, and separating each combination of host name and port number with a comma like this: <code class="ph codeph">localhost1:27017,localhost2:27018</code>. If you specify the port in the <strong class="ph b">host</strong>  field, leave the <strong class="ph b">port</strong>  field empty.</span>                 </li>
+              <li class="li substep"> <span class="ph cmd">If you want to MongoDB to automatically sense and attempt to connect to available hosts, even if one is down, select the <span class="ph uicontrol">Use all replica set members checkbox</span> .</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Type the user name needed to access the MongoDB database in the <span class="ph uicontrol">User</span>  field, then type the password of the user in the <span class="ph uicontrol">Password</span>  field.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Indicate how long the database should wait before terminating the connection attempt.&nbsp; If you do not want the database to ever terminate the connection, leave the <span class="ph uicontrol">Connection timeout</span>                 field blank.&nbsp; Otherwise, enter a numerical value in milliseconds.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">In the <span class="ph uicontrol">Socket timeout</span>  field, indicate how long the database should wait for a write operation to occur before it terminates it.&nbsp; If you do not want the database to ever terminate
+                it, leave this field blank.</span> 
+              </li>
+            </ol>
+          </li>
+          <li class="li step"> <span class="ph cmd"> To query the MongoDB server for available databases and collections, click the<strong class="ph b"> Input Options</strong>  tab. You can also set the read preference and tag set specification, in this tab.&nbsp;</span> 
+            <ol
+            type="a" class="ol substeps">
+              <li class="li substep"> <span class="ph cmd">Click <span class="ph uicontrol">Get DBs</span>  to populate the drop-down menu with names of available databases then select the appropriate database, or enter the database name. </span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Click <span class="ph uicontrol">Get collections </span> to populate the drop-down menu with names of available
+                <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/reference/glossary/#term-collection">Mongo collections</a> . If an error message appears, check the host name and port numbers in the <span class="ph uicontrol">Configure connection</span>  tab. </span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Select a database from the <span class="ph uicontrol">Database</span>  drop down menu. </span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Click the <span class="ph uicontrol">Get Collections</span>  button, then select a collection from the <span class="ph uicontrol">Collection</span>  drop down menu.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">Indicate the read preference in the <span class="ph uicontrol">Read</span>  field.</span> 
+              </li>
+              <li class="li substep"> <span class="ph cmd">If you want to specify a tag set, click the<span class="ph uicontrol"> Get tags</span>  button.&nbsp; Tag sets that have been specified on the MongoDB database appear in the <span class="ph uicontrol">Tag Set </span> section
+                of the window.&nbsp; If you want to append tag sets together so that they are processed at one time, select the tag sets, then click the <span class="ph uicontrol">Join tags</span>  button. Click the <span class="ph uicontrol">Test tag sets</span>                 button to see a list of nodes that match the tag set criteria.</span> 
+              </li>
+        </ol>
+        </li>
+        <li class="li step"> <span class="ph cmd">Click the <span class="ph uicontrol">Query</span>  tab. You can forumulate a query using two different methods. You can either create the query as a JSON Query expression, or use the Aggregation Framework.&nbsp; The Aggregation
+          Framework is explained in detail in the MongoDB
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/core/aggregation/">Aggregation Framework documentation</a> .</span> 
+          <ol type="a" class="ol substeps" id="03ca3449-5fb3-4f6e-b722-7a86f312aaa7__task_mongodb_data_source__substeps_dhh_ln2_yk">
+            <li class="li substep"> <span class="ph cmd"><strong class="ph b">JSON Query Expression:</strong>  Using JSON Query Expressions is analogous to using the MongoDB <code class="ph codeph">find()</code> command documented on the <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/core/read-operations">http://docs.mongodb.org/manual/core/read-operations</a>  page.&nbsp; The query argument to find is entered in the <span class="ph uicontrol">Query expression (JSON)</span>               field.&nbsp; The projection argument is supplied in the <span class="ph uicontrol">Fields expression (JSON)</span>  text box.&nbsp; In order to use the JSON Query Expression mode, ensure that the <span class="ph uicontrol">Query is aggregation pipeline </span> checkbox
+              <em class="ph i">is not </em> selected. </span> 
+            </li>
+            <li class="li substep"> <span class="ph cmd"><span class="ph uicontrol">Aggregation Framework: </span>  To query MongoDB using the Aggregation Framework
+              <a class="xref external" target="_blank" rel="external nofollow" href="http://docs.mongodb.org/manual/core/aggregation/">http://docs.mongodb.org/manual/core/aggregation/</a>  click the <span class="ph uicontrol">Query is aggregation pipeline</span>  checkbox. Enter a sequence of pipeline operations in the <span class="ph uicontrol">Query expression (JSON)</span>               field.&nbsp; This mode uses the same syntax as the MongoDB <code class="ph codeph">aggregation()</code> command. </span> 
+            </li>
+          </ol>
+        </li>
+        <li class="li step"> <span class="ph cmd">Click the <span class="ph uicontrol">Fields</span>  tab to view the fields that are in the database and collection you specified. You can also edit field names that appear in Report Designer, edit the path to the field that
+          you want to include in the report, and make changes to the type.</span> 
+          <ol type="a" class="ol substeps" id="03ca3449-5fb3-4f6e-b722-7a86f312aaa7__task_mongodb_data_source__substeps_igl_g42_yk">
+            <li class="li substep"> <span class="ph cmd">Click the <span class="ph uicontrol">Get Fields</span>  button.&nbsp;&nbsp; Pentaho's Schema on Read functionality samples the documents in the collection to determine which fields are available what their data types are.
+              The fields are displayed.</span> 
+            </li>
+            <li class="li substep"> <span class="ph cmd">If desired, edit the names of the fields. The names are what the fields will be called in PDI (and Report Designer).</span>  </li>
+            <li class="li substep"> <span class="ph cmd">If desired, edit the path to the field in the MongoDB database. If an array was returned, you can specify the element in the array by indicating the number of the element in brackets, like this: <code class="ph codeph">$.myArrayElement[0]</code>. In this example, which is of a zero-based array, the content of the first field is returned.</span>               <strong class="ph b">Note:</strong>  If you want to return all of the items in an array, place an asterisk in the bracket, like this: <code class="ph codeph">$.myArrayElement[*]</code> </li>
+            <li class="li substep"> <span class="ph cmd">Edit the data type if necessary.</span>  </li>
+          </ol>
+        </li>
+        <li class="li step"> <span class="ph cmd">You can paramaterize both JSON Query Expressions and Aggregation Pipeline queries using simple string replacement. &nbsp;Parameters are specified using Pentaho Reporting's parameter syntax <code class="ph codeph">${param}</code> where <code class="ph codeph">param</code> is the name of the parameter containing the data that you want to replace the <code class="ph codeph">param name</code>. &nbsp;For example, if you have defined a report parameter named <code class="ph codeph">state</code>, that you want to use to select documents for that state, your query could look like this:&nbsp;&nbsp;<code class="ph codeph">{$match : { state : &quot;${State}&quot; }}</code>. &nbsp;So, if you set the <code class="ph codeph">state</code> parameter to <code class="ph codeph">FL</code> at runtime, the resulting query submitted to MongoDB would look like this:&nbsp;<code class="ph codeph">{$match : { state : &quot;FL&quot; }}</code> &nbsp; If the parameter name used in the <code class="ph codeph">${}</code> matches the name of existing parameter, the linkage between the parameter and the query are automatic. &nbsp;If you prefer to use a different name in the query, click the <span class="ph uicontrol">Edit Parameter</span>           button.</span> 
+          <ol type="a" class="ol substeps">
+            <li class="li substep"> <span class="ph cmd"> Click the <span class="ph uicontrol">Edit Parameter </span> button. </span> 
+            </li>
+            <li class="li substep"> <span class="ph cmd">In the <span class="ph uicontrol">Transformation Parameters </span> window, click the <span class="ph uicontrol">Add a New Parameter</span>  button to add a row to the table. </span> 
+            </li>
+            <li class="li substep"> <span class="ph cmd">In the DataRow Column choose the parameter you want to add from the drop down list.</span>  </li>
+            <li class="li substep"> <span class="ph cmd">Select the Transformation Parameter from the drop down list.</span>  </li>
+            <li class="li substep"> <span class="ph cmd">If desired, add a transformation argument by clicking the<span class="ph uicontrol"> Add a New Transformation Argument</span>  button and adding the argument in the row that appears.</span> 
+            </li>
+            <li class="li substep"> <span class="ph cmd">When complete, click <span class="ph uicontrol">OK</span> .</span> 
+            </li>
+          </ol>
+        </li>
+        <li class="li step"> <span class="ph cmd">Click <span class="ph uicontrol">Preview</span>  to test the connection and to see what the data will look like when it is brought into the report designer. When complete, click <span class="ph uicontrol">OK</span> .</span> 
+        </li>
+        </ol>
+        <div class="section result">Report Designer can now access your MongoDB data source. </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

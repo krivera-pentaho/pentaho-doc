@@ -1,0 +1,115 @@
+<content type="text/html" title="Add Parameters to Your Report">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">When you set parameters, users are prompted for a value or values when they run the report. The ability to provide parameters is an important part of creating a report.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">In the Report Designer, click <strong class="ph b">File</strong>  > <strong class="ph b">Open</strong>  to select the report you created.</span> </li>
+          <li class="li step"><span class="ph cmd">In the menubar go to <strong class="ph b">Data</strong>  > <strong class="ph b">Add Parameter</strong> . Alternatively, you can click the <strong>Master Report Parameter</strong>  icon&nbsp;under the <strong class="ph b">Data Tab</strong>  in the Report Designer workspace.</span>             The <strong class="ph b">Add Parameter</strong>  dialog box appears.</li>
+          <li class="li step"><span class="ph cmd">In the Add Parameter dialog box, type <strong class="ph b">enter_prodline</strong>  in the <strong class="ph b">Name</strong>  text field.</span> </li>
+          <li class="li step"><span class="ph cmd">Type <strong class="ph b">Select Line</strong>  in the <strong class="ph b">Label</strong>  text field.</span> </li>
+          <li class="li step"><span class="ph cmd">Next to <strong class="ph b">Display Type</strong>, select <strong class="ph b">Drop Down</strong>  so users can select a product line. </span> </li>
+          <li class="li step"><span class="ph cmd">Click&nbsp;the <strong>Edit</strong> &nbsp;icon to add a query that supplies the values, (motorcycles, cars, ships, and so on), from which users of the report must choose.</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  Click on <strong class="ph b">JDBC (SampleData - Memory)</strong>  under <strong class="ph b">Data Sources</strong>  if the Edit icon is disabled.</div> The JDBC Data Sources dialog box appears.</li>
+          <li
+          class="li step"><span class="ph cmd">Under <strong class="ph b">Connections</strong>, select <strong class="ph b">SampleData (Memory)</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Next to <strong class="ph b">Available Queries</strong>  click&nbsp;the <strong>Add</strong>  icon.</span>  A new query placeholder is added to the list (Query 2).</li>
+            <li class="li step"><span class="ph cmd">In the Query Name text field, type <strong class="ph b">prodlineList</strong> .</span> </li>
+            <li class="li step"><span class="ph cmd">Enter your SQL query in the <strong class="ph b">Query</strong>  box.</span>  You can copy and paste the required lines, (shown below) directly into the SQL statement or you can use the alternate steps in the table below.
+              <div class="note important"><span class="importanttitle">Important:</span>  Make sure to use curly brackets, (not parentheses), before and after <strong class="ph b">{</strong> enter_prodline<strong class="ph b">}</strong>  or the report will not display correctly.</div>
+              <pre class="pre codeblock">
+SELECT DISTINCT &quot;PRODUCTS&quot;.&quot;PRODUCTLINE&quot;
+                        FROM &quot;PRODUCTS&quot;
+</pre> </li>
+        </ol>
+        <p class="p li step" style="text-align: center;">
+          <img alt="36_parameters.PNG" class="internal default" style="width: 549px; height: 166px;" width="549px" height="166px" src="http://help.pentaho.com/@api/deki/files/8069/36_parameters.PNG?size=bestfit&amp;width=549&amp;height=166&amp;revision=1"
+          />
+        </p>
+        <p class="p li step">By entering these lines, report users see a prompt when they open the report in the Pentaho User Console that allows them to enter a product line. That way, they can examine orders by product line. If you do not add the lines, the report displays
+          orders for all product lines.</p>
+        <p class="li step">Alternatively, you can use the <strong class="ph b">SQL Query Designer</strong>  to build your query:</p>
+        <div class="tablenoborder li step">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="e06b637c-dd29-481d-877d-b130282fbd30__d102324e195" valign="top">Step</th>
+                <th class="entry" id="e06b637c-dd29-481d-877d-b130282fbd30__d102324e198" valign="top">Description</th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">1</td>
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">In the JDBC Data Source dialog box, click
+                  <img alt="File:/edit.png" class="image" src="File:edit.png" /> (the Edit icon on the right).</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">2</td>
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">In the SQL Query Designer, select the <strong class="ph b">PRODUCTS</strong>  table on the left.</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">3</td>
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">On the right, click <strong class="ph b">PRODUCTS</strong>  and choose <strong class="ph b">Deselect All</strong> .</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">4</td>
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">Right-click <strong class="ph b">SELECT</strong>  on the left and choose <strong class="ph b">Distinct</strong> .</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">5</td>
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">On the right, select <strong class="ph b">PRODUCTLINE</strong>  and click <strong class="ph b">Preview</strong> . The product line list appears. Click <strong class="ph b">Close</strong> .</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">6</td>
+                <td class="entry" headers="d102324e195 d102324e198 " valign="top">Click <strong class="ph b">OK</strong>  to exit the SQL Query Designer and go to Step 11.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ol class="ol steps" start="11">
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to exit <strong class="ph b">Data Source</strong>  dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">In the <strong class="ph b">Add Parameter</strong>  dialog box, under Data Sources, double-click <strong class="ph b">JDBC SampleData (Memory)</strong>  and select <strong class="ph b">prodlineList</strong> .</span> </li>
+          <li
+          class="li step"><span class="ph cmd">Next to <strong class="ph b">Value Type</strong>, select <strong class="ph b">String</strong> . </span> </li>
+            <li class="li step"><span class="ph cmd">Type a default value, for example, &quot;Motorcycles,&quot; in the <strong class="ph b">Default Value</strong>  text box. (Optional)</span> </li>
+        </ol>
+        <p class="li step" style="text-align: center;">
+          <img alt="rd_add_parameters_db.PNG" class="internal default" style="width: 550px; height: 306px;" width="550px" height="306px" src="http://help.pentaho.com/@api/deki/files/8071/rd_add_parameters_db.PNG?size=bestfit&amp;width=550&amp;height=306&amp;revision=1"
+          />
+        </p>
+        <ol class="ol steps" start="15">
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to exit the <strong class="ph b">Add Parameter</strong>  dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">Now that you've created a product line parameter, you must map it back to your query (Query 1). Under <strong class="ph b">Data</strong>, double-click <strong class="ph b">Query 1</strong> .</span> </li>
+        </ol>
+        <p class="li step" style="text-align: center;">
+          <a class="thumb" title="rd_36.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/8070/rd_36.PNG">
+            <img alt="rd_36.PNG" class="internal default" style="width: 250px; height: 249px;" width="250px" height="249px" src="http://help.pentaho.com/@api/deki/files/8070/rd_36.PNG?size=bestfit&amp;width=250&amp;height=249&amp;revision=1" />
+          </a> 
+        </p>
+        <ol class="ol steps" start="17">
+          <li class="li step"><span class="ph cmd">Right-click <strong class="ph b">PRODUCTLINE</strong>  and select <strong class="ph b">add where condition</strong> . </span>  The <strong class="ph b">condition.edit</strong>  dialog box appears.</li>
+          <li class="li step"><span class="ph cmd">Type <code class="ph codeph">${enter_prodline}</code> in the edit area and click <strong class="ph b">OK</strong> .</span> </li>
+        </ol>
+        <p class="li step" style="text-align: center;"><span class="ph cmd"><img alt="rd_condition_edit.PNG" class="internal default" style="width: 550px; height: 280px;" width="550px" height="280px" src="http://help.pentaho.com/@api/deki/files/8072/rd_condition_edit.PNG?size=bestfit&amp;width=550&amp;height=280&amp;revision=1" /></span> </p>
+        <ol class="ol steps" start="17">
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK</strong>  to exit the /SQL Query Designer.</span> </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">OK </strong> to exit the Data Source dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">Click&nbsp;the <strong>Preview</strong>  icon.</span> </li>
+        </ol>
+        <p class="li step" style="text-align: center;">
+          <a class="thumb" title="rd_product_lines_preview.PNG" rel="internal" href="http://help.pentaho.com/@api/deki/files/8073/rd_product_lines_preview.PNG">
+            <img alt="rd_product_lines_preview.PNG" class="internal default" style="width: 550px; height: 253px;" width="550px" height="253px" src="http://help.pentaho.com/@api/deki/files/8073/rd_product_lines_preview.PNG?size=bestfit&amp;width=550&amp;height=253&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <p class="li step">You should see your product line drop-down list.</p>
+        <ol class="ol steps" start="20">
+          <li class="li step"><span class="ph cmd">You are now ready to <a class="xref" title="Documentation/5.1/0L0/130/0G0/040" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/130/0G0/040">publish your report</a> .</span> </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

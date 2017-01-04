@@ -1,0 +1,162 @@
+<content type="text/html" title="Using Carte Clusters">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+  </head>
+  <body>
+    <p>Carte is a simple web server that allows you to run transformations and jobs remotely.&nbsp; It receives&nbsp;XML (using a small servlet) that contains the transformation to run and the execution configuration.&nbsp; It allows you to remotely monitor,
+      start and stop the transformations and jobs that run on the Carte server. &nbsp;</p>
+    <p class="p">You can set up an individual instance of Carte to operate as a standalone execution engine for a job or transformation. &nbsp;In Spoon&nbsp;you can define one or more Carte servers and send jobs and transformations to them. &nbsp;If you want to improve
+      PDI performance for resource-intensive transformations and jobs, use Carte cluster.</p>
+    <p class="pentaho-note">You can cluster the Pentaho Server to provide failover support. &nbsp; If you decide to use the Pentaho Server, you must enable the proxy trusting filter as explained in&nbsp;
+      <a class="xref" href="/Documentation/6.0/0P0/170/060/020/000" rel="internal"
+      title=" Run Scheduled Jobs on a Remote Carte Server"> Run Scheduled Jobs on a Remote Carte Server</a>, then set up your dynamic Carte slaves and define the Pentaho Server as the master.</p>
+    <div id="section_1" class="mt-page-section"><span id="Run_Transformations_and_Jobs_on_a_Carte_Cluster"></span> 
+      <h2 class="editable">Run Transformations and Jobs on a Carte Cluster</h2>
+      <p>There are two types of Carte clusters. &nbsp;&nbsp;<span class="ph b">Static Carte cluster</span> &nbsp;has&nbsp;a fixed schema that specifies one master node and two or more slave nodes.&nbsp;In a static cluster, you specify the&nbsp;nodes in a
+        cluster at design-time,&nbsp;<em>before&nbsp;</em> you run the transformation or job.</p>
+      <p>A D<span class="ph b">ynamic Carte cluster&nbsp;</span> has a schema that specifies one master node and a varying number of slave nodes. &nbsp;Unlike a static cluster, slave nodes are not known until runtime. &nbsp;Instead, you register the slave
+        nodes, then at runtime,&nbsp;PDI monitors the&nbsp;slave nodes every 30 seconds to see if it is available&nbsp;to perform transformation and job processing tasks.</p>
+      <p>Static clusters are a good choice for smaller environments where you don't have a lot of machines (virtual or real) to use for PDI transformations.&nbsp;&nbsp;<span>Dynamic clusters work well if nodes are added or removed often, such as in a cloud computing environment. Dynamic clustering is also&nbsp;more appropriate in environments where transformation performance is extremely important, or if there can potentially be multiple concurrent transformation executions.</span> </p>
+      <p><span><a rel="internal" href="http://help.pentaho.com/Documentation/7.0/0L0/0Y0/060/060">Learn about Carte Cluster Configuration and Settings here</a> .</span> </p>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Scheduled_Jobs_to_Run_on_a_Remote_Carte_Server"></span> 
+      <h2 class="editable">Scheduled Jobs to Run&nbsp;on a Remote Carte Server</h2>
+      <p>The following instructions are needed to schedule a job to run on a remote Carte server. Without making these configuration changes, you will be unable to remotely run scheduled jobs.</p>
+      <p class="pentaho-note">This process is also required for using the Pentaho Server as a load balancer in a dynamic Carte cluster.</p>
+      <ol class="ol steps">
+        <li class="li step"><span class="ph cmd">Stop the Pentaho Server and remote Carte server.</span> </li>
+        <li class="li step"><span class="ph cmd">Copy the <strong class="ph b">repositories.xml</strong>  file from the <span class="ph filepath">.kettle</span>  directory on your workstation to the same location on your Carte slave.</span>  Without this file, the Carte slave
+          will be unable to connect to the&nbsp;Pentaho Repository to retrieve PDI content.</li>
+        <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">/pentaho/server/pentaho-server/tomcat/webapps/pentaho/WEB-INF/web.xml</span>  file with a text editor.</span> 
+        </li>
+        <li class="li step"><span class="ph cmd">Find the <strong class="ph b">Proxy Trusting Filter</strong>  filter section, and add your Carte server's IP address to the <strong class="ph b">param-value</strong>  element.</span>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><filter>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <filter-class>org.pentaho.platform.web.http.filters.ProxyTrustingFilter</filter-class>
+    <init-param>
+      <param-name>TrustedIpAddrs</param-name>
+      <param-value>127.0.0.1,192.168.0.1</param-value>
+      <description>Comma separated list of IP addresses of a trusted hosts.</description>
+    </init-param>
+    <init-param>
+      <param-name>NewSessionPerRequest</param-name>
+      <param-value>true</param-value>
+      <description>true to never re-use an existing IPentahoSession in the HTTP session; needs to be true to work around code put in for BISERVER-2639</description>
+    </init-param>
+</filter></pre> </li>
+        <li class="li step"><span class="ph cmd">Uncomment the proxy trusting filter-mappings between the
+ <!-- begin trust --> and
+ <!-- end trust --> markers.</span>  <pre class="pre codeblock">
+
+  <!-- begin trust --> 
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/authorizationPolicy</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/roleBindingDao</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/userRoleListService</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/unifiedRepository</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/userRoleService</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/Scheduler</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>Proxy Trusting Filter</filter-name>
+    <url-pattern>/webservices/repositorySync</url-pattern>
+  </filter-mapping>
+
+  <!-- end trust --></pre> </li>
+        <li class="li step"><span class="ph cmd">Save and close the file, then edit the <strong class="ph b">carte.sh</strong>  or <strong class="ph b">Carte.bat</strong>  startup script on the machine that runs your Carte server.</span> </li>
+        <li class="li step"><span class="ph cmd">Add <strong class="ph b">-Dpentaho.repository.client.attemptTrust=true</strong>  to the <strong class="ph b">java</strong>  line at the bottom of the file.</span>  <pre class="pre codeblock">
+java $OPT -Dpentaho.repository.client.attemptTrust=true org.pentaho.di.www.Carte &quot;${1+$@}&quot;</pre> </li>
+        <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+        <li class="li step"><span class="ph cmd">Start your Carte server and Pentaho Server</span> </li>
+      </ol>
+      <p>You can now schedule a job to run on a remote Carte instance.</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Stop_Carte_from_the_Command_Line_Interface_or_URL"></span> 
+      <h2 class="editable">Stop&nbsp;Carte from the Command Line Interface or URL</h2>
+      <p>How to stop Carte either from the CLI or URL.</p>
+      <ol class="pentaho-list-ordered" id="8c804d61-55ec-4482-b01f-5f37de72f0ac__task_export_command_line__steps_gs4_thn_fj">
+        <li class="li step"><span class="ph cmd">Open the command line interface by clicking <strong><span class="ph uicontrol">Start</span>  </strong> and typing <strong><span class="ph uicontrol">cmd</span> </strong> . Press <strong><span class="ph uicontrol">Enter</span> </strong> .
+          </span> 
+        </li>
+        <li class="li step"><span class="ph cmd">In the command line interface, enter the location of the Carte server.</span> </li>
+        <li class="li step"><span class="ph cmd">Enter a space, then type the arguments for stopping the server. </span> </li>
+        <li class="li step"><span class="ph cmd">Press <strong>Enter </strong> after the arguments are typed.</span> </li>
+      </ol>
+      <p><strong>Arguments:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Carte <Interface address> <Port> [-s] [-p <arg>] [-u <arg>]</pre>
+      <p><strong>Example:</strong> </p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">Carte 127.0.0.1 8080 -s -p amidala4ever -u dvader</pre>
+      <p>You can also now use a URL to stop Carte:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">http://localhost:8080/kettle/stopCarte</pre>
+      <table border="1" cellpadding="1"
+      cellspacing="1" class="pentaho-table" style="width: 100%; table-layout: fixed;" title="Pentaho Table">
+        <caption>Parameters</caption>
+        <tbody>
+          <tr>
+            <th scope="col">Command</th>
+            <th scope="col">Description</th>
+            <th scope="col">Type</th>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:153px;" valign="top">-h, --help</td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:368px;" valign="top">Help text.</td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " valign="top">n/a</td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:153px;" valign="top">-p,--password
+              <arg>
+            </td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:368px;" valign="top">The administrator password. Required only if stopping the Carte server.</td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " valign="top">Alphanumeric</td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:153px;" valign="top">-s,--stop</td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:368px;" valign="top">Stop the running Carte server. This is only allowed when using the hostname/port form of the command.</td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " valign="top">Alphanumeric</td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:153px;" valign="top">-u,--username
+              <arg>
+            </td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " style="width:368px;" valign="top">The administrator user name. Required only if stopping the Carte server.</td>
+            <td class="entry" headers="d3947e811 d3947e814 d3947e817 d3947e820 " valign="top">Alphanumeric</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Run_Transformations_and_Jobs_from_the_Repository_on_the_Carte_Server"></span> 
+      <h2 class="editable">Run Transformations and&nbsp;Jobs from the Repository on the Carte Server</h2>
+      <p class="p">To run a job or transformation remotely on a Carte server, you first need to copy the local <span class="ph filepath">repositories.xml</span>  from the user's <span class="ph filepath">.kettle</span>  directory to the Carte server's <span class="ph filepath">$HOME/.kettle</span>         directory. The Carte service also looks for the <span class="ph filepath">repositories.xml</span>  file in the directory from which Carte was started.</p>
+      <p class="p">For more information about locating or changing the <span class="ph filepath">.kettle</span>  home directory, see
+        <a class="xref" title="Change the PDI Home Directory Location" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_the_Pentaho_Server/Change_the_PDI_Home_Directory_Location">Changing the Pentaho Data Integration Home Directory Location (.kettle folder)</a> .</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Run_Transformations_and_Jobs_on_a_Carte_Cluster" rel="internal">Run Transformations and Jobs on a Carte Cluster</a>  </li>
+      <li> <a href="#Scheduled_Jobs_to_Run_on_a_Remote_Carte_Server" rel="internal">Scheduled Jobs to Run&nbsp;on a Remote Carte Server</a>  </li>
+      <li> <a href="#Stop_Carte_from_the_Command_Line_Interface_or_URL" rel="internal">Stop&nbsp;Carte from the Command Line Interface or URL</a>  </li>
+      <li> <a href="#Run_Transformations_and_Jobs_from_the_Repository_on_the_Carte_Server" rel="internal">Run Transformations and&nbsp;Jobs from the Repository on the Carte Server</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,99 @@
+<content type="text/html" title="Create Relationships between Business Tables">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="p">Once you have all of your business tables created, you must create relationships between the tables so that the query generators and SQL generators that work with Pentaho Metadata can create the data queries correctly. This is similar to drawing
+            a relational diagram to show primary and foreign key relationships; however, relational links are not the only relationships that can be modeled. You can create a relationship between any two tables, link any two columns between them and dictate
+            what the relationship is (one to many, many to many, and so on). The important pieces of information to know before you try to create a relationship are:
+            <ul class="ul">
+              <li class="li">What two business tables would you like to associate with this relationship?</li>
+              <li class="li">What columns in the business tables identify the relationship?</li>
+              <li class="li">What type of relationship is it &mdash; one to one, one to many, many to one, and so on?</li>
+            </ul>
+          </div>
+          <p class="p">To create a new relationship between business tables in the navigation pane, first make sure that the model you want to add this relationship to is selected, and that the <strong class="ph b">Relationships</strong>  node is visible. </p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Right-click <strong class="ph b">Relationships</strong>  in the navigation pane.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select <strong class="ph b">New Relationship</strong> </span>  The <strong class="ph b">Relationship Properties</strong>  dialog box appears. </li>
+          <li class="li step"> <span class="ph cmd">Select a business table from the <strong class="ph b">From Table/Field</strong>  list. This is the first relationship</span>  </li>
+          <li class="li step"> <span class="ph cmd">Select a business table from the <strong class="ph b">To Table/Field</strong>  list. This steps sets up a relationship between two tables.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Now, specify the business columns (from the adjacent lists) from each business table that identify this relationship. If the business column names are similar, click <strong class="ph b">Guess Matching Fields</strong>  and let Pentaho Metadata Editor attempt to determine the columns for you. </span>             </li>
+          <li class="li step"> <span class="ph cmd">Define the relationship from the <strong class="ph b">Relationship</strong>  drop down list. The relationships that can be chosen are defined with examples:</span> 
+            <div class="tablenoborder">
+              <table cellpadding="4" cellspacing="0" summary="" class="table" frame="border" border="1" rules="all">
+                <thead class="thead" align="left">
+                  <tr class="row">
+                    <th class="entry" valign="top" id="1d859360-4783-4401-9308-b2bd67d57356__d14154e110"> <strong class="ph b">Relationship</strong>  </th>
+                    <th class="entry" valign="top" id="1d859360-4783-4401-9308-b2bd67d57356__d14154e116"> <strong class="ph b">Description</strong>  </th>
+                  </tr>
+                </thead>
+                <tbody class="tbody">
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">1:N</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">A <strong class="ph b">one-to-many</strong>  mandatory relationship is the most common relationship in databases. The primary key table contains only one record that relates to none, one, or many records in the related table. This relationship
+                      is similar to the one between you and one of your parents. You have one mother, but your mother may have several children. </td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">N:1</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">A <strong class="ph b">many-to-one</strong>  is opposite of one to many (1:N) relationship.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">1:1</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">In a <strong class="ph b">one-to-one</strong>  relationship, both tables are limited to one record only on either side of the relationship. Each primary key value relates to a single record, or no record, in the associated table. They
+                      are like spouses &mdash; you may be married, or not; however, if you are married, both you and your spouse can have only one partner. Most one-to-one relationships are forced by business rules. If you do not have a business rule,
+                      you can, in most cases, combine both tables into one table without breaking normalization rules.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">0:N</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">A <strong class="ph b">zero to many</strong>  optional relationship indicates that a person may have no phone, one phone, or many phones, and that the phone may not be &quot;owned,&quot; but can only be owned by a maximum of one person.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">N:0</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">Opposite of a zero to many relationship</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">0:1</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">A <strong class="ph b">zero to one</strong>  relationship might indicate that a person may be a programmer, but a programmer must be a person. It is assumed that the mandatory side of the relationship is the dominant.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">1:0</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">Opposite of a zero to one relationship</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">N:N</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">In a many to many relationship each record in both tables can relate to an unlimited number of records (or no records) in the other table. For example, if you have many siblings, your siblings also have many siblings. Many-to-many
+                      relationships must have a third table, referred to as an associate or linking table, because relational systems cannot accommodate the relationship directly.</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 "> <strong class="ph b">0:0</strong>  </td>
+                    <td class="entry" valign="top" headers="d14154e110 d14154e116 ">A <strong class="ph b">zero to zero</strong>  optional relationship indicates that a person may occupy one parking space, but that a person is not necessary to have a space and a space does not need to have a person.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">OK</strong>  when you are done.</span>  You should see a new relationship line drawn between the two tables on the Editor Graph, and the relationship represented in the navigation pane.
+            <p class="p">
+              <img alt="File:/11_pme_relationships.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/8154/11_pme_relationships.png?revision=1" /> </p>
+            <div class="note important"><span class="importanttitle">Important:</span>  Note that complex joins appear in the WHERE clause of the SQL statement, so currently any joining that takes place in the FROM clause of the SQL statement is not supported. An example of a complex
+              join might be TABLE_A.COL_A=TABLE_B.COL_A AND TABLE_A.COL_B=TABLE_B.COL_B. This represents a join of two tables based on two key columns versus a single join column. Also note, the complex join expression provided must use the names of the
+              physical tables and physical columns, not business tables and business column names.</div>
+          </li>
+        </ol>
+      </div>
+      <div class="related-links">
+        <ul class="ullinks">
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0N0/110/040/050/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0N0/110/040/050/000">Create Relationships Using the Editor Graph</a> </strong> 
+            <br />
+          </li>
+          <li class="link ulchildlink"><strong><a title="Documentation/5.1/0L0/130/050/020/000" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/130/050/020/000">Hadoop Hive-Specific SQL Limitations</a> </strong> 
+            <br />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

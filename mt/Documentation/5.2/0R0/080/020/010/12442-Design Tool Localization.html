@@ -1,0 +1,74 @@
+<content type="text/html" title="Design Tool Localization">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">All of Pentaho's design tools can be translated to the extent that their text strings are abstracted to properties files. There are already a number of localized message bundles in some design tools (PDI in particular), though they may be incomplete.</p>
+        <p class="p">The basic process for translating message bundles is to search for <strong class="ph b">messages.properties</strong>  files and create localized versions of them, following the standard Java localization naming convention as explained in
+          <a class="xref"
+          title="Documentation/5.1/0R0/080/020/020" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/020">Use the Kettle Translator</a> .</p>
+        <p class="p">Once you've found the JARs containing the message bundles, create overrides for them by creating a <strong class="ph b">translations</strong>  directory and unpacking the messages.properties files from the JARs into it:</p> <pre class="pre codeblock">mkdir translation
+cd translation
+unzip ./lib/*.jar '*.properties'</pre>
+        <p class="p">Then add that directory to the classpath by editing <strong class="ph b">launcher.properties</strong>, and edit or create a localized message bundle for each properties file you extracted.</p>
+        <p class="p">The quickest and easiest ways to locate the appropriate JARs, add override directories, and create message bundles is explained for each design tool in the below sections.</p>
+        <div class="section">
+          <div id="section_1" class="mt-page-section"><span id="Aggregation_Designer"></span> 
+            <h2 class="editable">Aggregation Designer</h2>
+            <p class="p"><strong class="ph b">Search for:</strong>  /aggregation-designer/lib/pentaho-*.jar</p>
+            <p class="p"><strong class="ph b">Path to launcher.properties:</strong>  /aggregation-designer/lib/</p>
+            <p class="p"><strong class="ph b">Modified launcher.properties classpath:</strong>  classpath=../translations:log4j.xml</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_2" class="mt-page-section"><span id="Data_Integration_(Kettle)"></span> 
+            <h2 class="editable">Data Integration (Kettle)</h2>
+            <p class="p"><strong class="ph b">Search for:</strong>  /data-integration/lib/kettle-*.jar</p>
+            <p class="p"><strong class="ph b">Path to launcher.properties:</strong>  /data-integration/launcher/</p>
+            <p class="p"><strong class="ph b">launcher.properties classpath prefix:</strong>  classpath=../translations:</p>
+            <div class="note note"><span class="notetitle">Note:</span>  The Kettle project has a translator tool to help facilitate large-scale localization efforts. To get it, check out the Kettle source code and run <strong class="ph b">translator.sh</strong>  or <strong class="ph b">Translator.bat</strong>               and either check in the changes, or zip them and email the archive to a committer. See
+              <a class="xref" title="Documentation/5.1/0R0/080/020/020" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0R0/080/020/020">Use the Kettle Translator</a>  for more information.</div>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_3" class="mt-page-section"><span id="Metadata_Editor"></span> 
+            <h2 class="editable">Metadata Editor</h2>
+            <p class="p"><strong class="ph b">Search for:</strong>  /metadata-editor/lib/pentaho-metadata-editor*.jar /metadata-editor/libext/pentaho/pentaho-*.jar</p>
+            <p class="p">Edit the <strong class="ph b">metadata-editor</strong>  (.sh or .bat) script, and modify the <strong class="ph b">CLASSPATH</strong>  variable accordingly:</p> <pre class="pre codeblock">CLASSPATH=./translations:</pre> </div>
+        </div>
+        <div class="section">
+          <div id="section_4" class="mt-page-section"><span id="Report_Designer"></span> 
+            <h2 class="editable">Report Designer</h2>
+            <p class="p"><strong class="ph b">Search for:</strong>  /report-designer/lib/pentaho-reporting-*.jar /report-designer/lib/report-design*.jar</p>
+            <p class="p"><strong class="ph b">Path to launcher.properties:</strong>  ./</p>
+            <p class="p"><strong class="ph b">launcher.properties classpath prefix:</strong>  classpath=translations:</p>
+          </div>
+        </div>
+        <div class="section">
+          <div id="section_5" class="mt-page-section"><span id="Schema_Workbench"></span> 
+            <h2 class="editable">Schema Workbench</h2>
+            <p class="p"><strong class="ph b">Search for:</strong>  /schema-workbench/lib/workbench.jar /schema-workbench/lib/mondrian.jar</p>
+            <p class="p">Edit the <strong class="ph b">workbench</strong>  (.sh or .bat) script, and locate the following line: <strong class="ph b">CP=&quot;${MONDRIAN_HOME}/lib/commons-collections.jar&quot;</strong> . Now create a new line directly below it and paste
+              this in:</p> <pre class="pre codeblock">CP=&quot;${CP}${PS}${MONDRIAN_HOME}/translations&quot;</pre> </div>
+        </div>
+        <div class="section">
+          <div id="section_6" class="mt-page-section"><span id="BA_Server_and_DI_Server"></span> 
+            <h2 class="editable">BA Server and DI Server</h2>
+            <p class="p">This process is described in much more detail in <em class="ph i">BA Server and Thin Client Message Bundles</em> . However, if you're following the same abbreviated procedure as above, here are the basics (minus the thin client plugins):</p>
+            <p class="p"><strong class="ph b">Search for:</strong>  /biserver-ee/tomcat/webapps/pentaho/WEB-INF/lib/pentaho-bi-platform-*.jar</p>
+            <p class="p"><strong class="ph b">Path to use as a classpath override (you don't have to declare it):</strong>  /biserver-ee/tomcat/webapps/pentaho/WEB-INF/classes/</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Aggregation_Designer" rel="internal">Aggregation Designer</a>  </li>
+      <li> <a href="#Data_Integration_(Kettle)" rel="internal">Data Integration (Kettle)</a>  </li>
+      <li> <a href="#Metadata_Editor" rel="internal">Metadata Editor</a>  </li>
+      <li> <a href="#Report_Designer" rel="internal">Report Designer</a>  </li>
+      <li> <a href="#Schema_Workbench" rel="internal">Schema Workbench</a>  </li>
+      <li> <a href="#BA_Server_and_DI_Server" rel="internal">BA Server and DI Server</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,1122 @@
+<content type="text/html" title="Set Up Pentaho to Connect to a Hortonworks Cluster">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div class="pentaho-overview-hidden">
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p><span class="mt-color-000000">These instructions explain how to configure Pentaho's HDP shim, so Pentaho can connect to a working Hortonworks Data Platform (HDP) cluster.</span> &nbsp;</p>
+      </div>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Before_You_Begin"></span> 
+      <h2 class="editable">Before You Begin</h2>
+      <p>Before you begin, you'll need to do a few things.</p>
+      <ol>
+        <li><strong>Verify Support</strong> 
+          <br /> Check the
+          <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000#Big_Data_Sources">Component Reference </a> to verify that your Pentaho version supports your version of the HDP cluster.
+          <br /> &nbsp;</li>
+        <li><strong>Set Up a HDP cluster</strong> 
+          <br /> Pentaho can connect to secured and unsecured HDP Clusters:
+          <ol>
+            <li>Configure a HDP cluster.&nbsp; See
+              <a class="external" title="http://docs.hortonworks.com/" rel="external nofollow" href="http://docs.hortonworks.com/" target="_blank">Hortonwork's documentation</a>  if you need help.</li>
+            <li>Install any required services and service client tools.</li>
+            <li>Test the cluster.
+              <br /> &nbsp;</li>
+          </ol>
+        </li>
+        <li><strong>Get Connection Information</strong> 
+          <br /> Get connection information for the cluster and services that you will use from your Hadoop Administrator, or from Ambari or other cluster management tools.
+          <br /> &nbsp;</li>
+        <li><strong>Add a YARN User to Superuser Group</strong> 
+          <br /> Add the YARN user on the cluster to the group defined by <span class="filepath style-wrap">dfs.permissions.superusergroup</span>  property. The <span class="filepath style-wrap">dfs.permissions.superusergroup</span>  property can be found in
+          <span class="filepath style-wrap">hdfs-site.xml</span>  file on your cluster or in the cluster management application.
+          <br /> &nbsp;</li>
+        <li><strong>Review the Version-Specific Notes Section</strong> 
+          <br /> Read the Version-Specific Notes section to review special configuration instructions for your version of HDP.</li>
+      </ol>
+      <p>If you are connecting to a <em>secured </em> HDP cluster there are a few additional&nbsp;things you need to do.</p>
+      <ol>
+        <li><strong>Secure the HDP with Kerberos</strong> 
+          <br /> Pentaho supports Kerberos authentication.&nbsp; You will need to:
+          <ol>
+            <li>Configure Kerberos security on the cluster, including the Kerberos Realm, Kerberos KDC, and Kerberos Administrative Server.</li>
+            <li>Configure the name, data, secondary name, job tracker, and task tracker nodes to accept remote connection requests.</li>
+            <li>Set up Kerberos for name, data, secondary name, job tracker, and task tracker nodes if you are have deployed Hadoop using an enterprise-level program.</li>
+            <li>Add the user account credential for each Spoon user that should have access to the Hadoop cluster to the Kerberos database.&nbsp; <span class="ph cmd">Make sure there is an operating system user account on<em class="ph i"> each node </em> in the Hadoop cluster for <em class="ph i">each user </em> that you want to add to the Kerberos database. Add operating system user accounts if necessary. Note that the user account UIDs <em class="ph i">must be greater</em>  than the minimum user ID value (<span class="ph filepath">min.user.id</span> ).
+              Usually, the minimum user ID value is set to 1000.</span> 
+              <br /> &nbsp;</li>
+          </ol>
+        </li>
+        <li><strong>Set up Kerberos on your Pentaho computers</strong> 
+          <br /> Instructions for how to do this appear in
+          <a title="Set Up Kerberos for Pentaho" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Setting_Up_Big_Data_Security/Set_Up_Kerberos_for_Pentaho">Set Up Kerberos for Pentaho</a> .</li>
+      </ol>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Edit_Configuration_Files_on_Clusters"></span> 
+      <h2 class="editable">Edit Configuration Files on Clusters</h2>
+      <p>Pentaho-specific edits to configuration files are the cluster are referenced in this section.</p>
+      <div id="section_4" class="mt-page-section"><span id="Oozie"></span> 
+        <h3 class="editable">Oozie</h3>
+        <p>By default, Oozie jobs are run by the Oozie user. &nbsp;But, if you use PDI to start an Oozie job, you must add the PDI user to the <span class="filepath style-wrap">oozie-site.xml </span> file <em>on the cluster</em>  so that the PDI&nbsp;user
+          can execute the program in&nbsp;proxy. If you plan to use the Oozie service complete these instructions:</p>
+        <ol class="pentaho-list-ordered">
+          <li>Open the <span class="filepath style-wrap">oozie-site.xml</span>  file on the cluster.</li>
+          <li><span>Add the following lines of the code to the <span class="filepath style-wrap">oozie-site.xml</span>  file on cluster, substituting <span class="filepath style-wrap"><your_pdi_user_name></span>  with the PDI User username, such as <span class="filepath style-wrap">jdoe</span> .</span> 
+          </li>
+        </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">1    <property>
+2    <name>oozie.service.ProxyUserService.proxyuser.<your_pdi_user_name>.groups</name>
+3    <value>*</value>
+4    </property>
+5    <property>
+6    <name>oozie.service.ProxyUserService.proxyuser.<your_pdi_user_name>.hosts</name>
+7    <value>*</value>
+8    </property></pre>
+        <ol class="pentaho-list-ordered" start="3">
+          <li>Save and close the file</li>
+        </ol>
+      </div>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Configure_Pentaho_Component_Shims"></span> 
+      <h2 class="editable">Configure Pentaho Component Shims</h2>
+      <p style="visibility: visible;">You must configure the shim in <em>each </em> of the following Pentaho components, on <em>each </em> computer from which Pentaho will be used to connect to the cluster:</p>
+      <ul class="pentaho-list-unordered">
+        <li>Spoon (PDI Client)</li>
+        <li>Pentaho Server, including Analyzer and Pentaho Interactive Reporting.</li>
+        <li>Pentaho Report Designer (PRD)</li>
+        <li>Pentaho Metadata Editor (PME)</li>
+      </ul>
+      <p style="visibility: visible;">As a best practice, configure the shim in Spoon <em>first</em> .&nbsp; Spoon has features that will help you test your configuration.&nbsp; Then,&nbsp; copy the tested Spoon configuration files to other components, making changes if necessary.&nbsp;</p>
+      <p style="visibility: visible;">You can also opt to go through these instructions for&nbsp;each Pentaho component, and not copy the shim files from Spoon.&nbsp; If you do not not plan to connect to the cluster from Spoon, you can configure the shim in another component first instead.&nbsp;
+        &nbsp;</p>
+      <div id="section_6" class="mt-page-section"><span id="Step_1:_Locate_the_Pentaho_Big_Data_Plugin_and_Shim_Directories"></span> 
+        <h3 class="editable">Step 1: Locate the Pentaho Big Data Plugin and Shim Directories</h3>
+        <p>Shims and other parts of the Pentaho Adaptive Big Data Layer are in the Pentaho Big Data Plugin directory.&nbsp; The path to this directory differs by component. You need to know the locations of this directory, in each component, to complete
+          shim configuration and testing tasks.</p>
+        <p class="pentaho-note"><span class="filepath style-wrap"><pentaho home></span>  is the directory where Pentaho is installed.</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" style="width: 1248px; table-layout: fixed;" title="Pentaho Table">
+          <tbody>
+            <tr>
+              <th style="width: 170px;">Components</th>
+              <th style="width: 1066px;">Location of Pentaho Big Data Plugin Directory</th>
+            </tr>
+            <tr>
+              <td style="width: 170px;">Spoon</td>
+              <td style="width: 1066px;"><span class="filepath style-wrap"><pentaho home>/design-tools/data-integration/plugins/pentaho-big-data-plugin</span> </td>
+            </tr>
+            <tr>
+              <td>Pentaho Server</td>
+              <td style="width: 1066px;"><span class="filepath style-wrap"><pentaho home>/server/pentaho-server/pentaho-solutions/system/kettle/plugins/pentaho-big-data-plugin</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 170px;">Pentaho Report Designer</td>
+              <td style="width: 1066px;"><span class="filepath style-wrap"><pentaho home>/design-tools/report-designer/plugins/pentaho-big-data-plugin</span> </td>
+            </tr>
+            <tr>
+              <td style="width: 170px;">Pentaho Metadata Editor</td>
+              <td style="width: 1066px;"><span class="filepath style-wrap"><pentaho home>/design-tools/metadata-editor/plugins/pentaho-big-data-plugin</span> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Shims are located in the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations </span> directory.&nbsp; Shim directory names consist of a&nbsp;three or four letter Hadoop Distribution abbreviation&nbsp;followed by the
+          Hadoop Distribution's version number.&nbsp; The version number does not contain a decimal point.&nbsp; For example, the shim directory named <strong>cdh54 </strong> is the shim for the CDH (Cloudera&nbsp;Distribution for Hadoop), version 5.4.&nbsp;
+          Here is a list of the shim directory abbreviations.</p>
+        <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="146" style="table-layout: fixed; width: 642px;" title="Pentaho Table" width="645">
+          <tbody>
+            <tr>
+              <th style="width: 171px;">Abbreviation</th>
+              <th style="width: 447px;">Shim</th>
+            </tr>
+            <tr>
+              <td style="width: 171px;">cdh</td>
+              <td style="width: 447px;">Cloudera's Distribution of Apache Hadoop</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">emr</td>
+              <td style="width: 447px;">Amazon Elastic Map Reduce</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">hdp</td>
+              <td style="width: 447px;">Hortonworks Data Platform</td>
+            </tr>
+            <tr>
+              <td style="width: 171px;">mapr</td>
+              <td style="width: 447px;">MapR</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_7" class="mt-page-section"><span id="Step_2:_Select_the_Correct_Shim"></span> 
+        <h3 class="editable">Step 2: Select the Correct Shim</h3>
+        <p>Although Pentaho often supports one or more versions of a Hadoop&nbsp;distribution, the download of the Pentaho Suite only contains the latest, supported, Pentaho-certified version of the shim.&nbsp; The other supported versions of shims can be
+          downloaded from&nbsp;the
+          <a title="Help and Support Resources" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Additional_Resources">Pentaho&nbsp;Customer Support Portal</a> .&nbsp;</p>
+        <p class="pentaho-note">Before you begin, verify that the shim you want is supported by
+          <a title="Components Reference" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0D0/160/000#Big_Data_Sources">your version of Pentaho shown in the Components Reference</a> .</p>
+        <ol class="pentaho-list-ordered">
+          <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations</span>  directory.&nbsp; Shim directories are listed there.&nbsp;</li>
+          <li>If the shim you want to use is already there, you can go to to Step 3: Copy the Configuration Files from Cluster to Shim.</li>
+          <li>Go to the&nbsp;Pentaho Customer Support Portal Knowledge Base's&nbsp;
+            <a class="link-https" title="https://pentaho.zendesk.com/forums/20413716-Downloads" rel="external nofollow" href="https://pentaho.zendesk.com/forums/20413716-Downloads" target="_blank">Downloads </a> page. &nbsp;You are prompted to log in if you have not done so already.</li>
+        </ol>
+        <p>&nbsp;
+          <a class="thumb" title="knowledge_base_downloads.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/10674/knowledge_base_downloads.png">
+            <img alt="knowledge_base_downloads.png" class="internal default" style="width: 350px; height: 227px;" width="350px" height="227px" src="http://help.pentaho.com/@api/deki/files/10674/knowledge_base_downloads.png?size=bestfit&amp;width=350&amp;height=227&amp;revision=1"
+            />
+          </a> 
+        </p>
+        <ol class="pentaho-list-ordered" start="4">
+          <li>Enter the name of the shim you want in the search box. &nbsp;Select the shim from the search results.</li>
+          <li>Read the instructions, then download the shim. &nbsp;You might need to scroll down to see the download link.</li>
+          <li>Unzip the downloaded shim package to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations</span>  directory.</li>
+        </ol>
+      </div>
+      <div id="section_8" class="mt-page-section"><span id="Step_3:_Copy_the_Configuration_Files_from_Cluster_to_Shim"></span> 
+        <h3 class="editable">Step 3: Copy the Configuration Files from Cluster to Shim</h3>
+        <p>Copying configuration files from the cluster to the shim helps keep key configuration settings in sync with the cluster and reduces configuration errors.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Back up the existing HDP shim files in the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory.&nbsp;</li>
+          <li>Copy the following configuration files from the HDP cluster to <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx&nbsp;</span> (overwriting the existing files):</li>
+        </ol>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">core-site.xml</span> </li>
+          <li><span class="filepath style-wrap">hbase-site.xml</span> </li>
+          <li><span class="filepath style-wrap">hdfs-site.xml</span> </li>
+          <li><span class="filepath style-wrap">hive-site.xml</span> </li>
+          <li><span class="filepath style-wrap">mapred-site.xml</span> </li>
+          <li><span class="filepath style-wrap">yarn-site.xml</span> </li>
+        </ul>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Step_4:_Edit_the_Shim_Configuration_Files"></span> 
+        <h3 class="editable">Step 4: Edit the Shim Configuration Files</h3>
+        <p>You need to verify or change authentication, Oozie, Hive, MapReduce, and YARN settings in these files:</p>
+        <ul class="pentaho-list-unordered">
+          <li><span class="filepath style-wrap">core-site.xml</span> </li>
+          <li><span class="filepath style-wrap">config.properties</span> </li>
+          <li><span class="filepath style-wrap">hbase-site.xml</span> </li>
+          <li><span class="filepath style-wrap">hive-site.xml</span> </li>
+          <li><span class="filepath style-wrap">mapred-site.xml</span> </li>
+          <li><span class="filepath style-wrap">yarn-site.xml</span> </li>
+        </ul>
+        <div id="section_10" class="mt-page-section"><span id="Verify_or_Edit_config.properties_(Unsecured_Clusters)"></span> 
+          <h4 class="editable">Verify or Edit config.properties (Unsecured Clusters)</h4>
+          <p>If you are connecting to an unsecure cluster, verify that these values are properly set.&nbsp; Set the Oozie proxy user if needed.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory and open config<span class="filepath style-wrap">.properties</span> .</li>
+            <li>Add the following values:</li>
+          </ol>
+          <table class="pentaho-table" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <th class="confluenceTh">Parameter</th>
+                <th class="confluenceTh">Values</th>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><span class="filepath style-wrap">authentication.superuser.provider</span> </td>
+                <td class="confluenceTd">&#8203;<span class="filepath style-wrap">NO_AUTH</span> </td>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><span class="filepath style-wrap">pentaho.oozie.proxy.user</span> </td>
+                <td class="confluenceTd">Add a proxy user's name to access the Oozie service through a proxy, otherwise, leave it set to <span class="filepath style-wrap">oozie</span> .</td>
+              </tr>
+              <tr>
+                <td class="confluenceTd">java.system.hdp.version</td>
+                <td class="confluenceTd">HDP Version.&nbsp; For HDP 2.2, this is 2.2.0.0-2041</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Edit_config.properties_(Secured_Clusters)"></span> 
+          <h4 class="editable">Edit config.properties (Secured Clusters)</h4>
+          <p>If you are connecting to a secure cluster, add Kerberos information to the <span class="filepath style-wrap">config.properties</span>  file.&nbsp; Set the Oozie proxy user if needed.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory and open the <span class="filepath style-wrap">config.properties</span>  file.</li>
+            <li>Add these values:</li>
+          </ol>
+          <table class="pentaho-table" title="Pentaho Table">
+            <tbody>
+              <tr>
+                <th class="confluenceTh">Parameter</th>
+                <th class="confluenceTh">Values</th>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><span class="filepath style-wrap">authentication.superuser.provider</span> </td>
+                <td class="confluenceTd">&#8203;<span class="filepath style-wrap">hdp-kerberos</span>  (This should be the same as the <code>authentication.kerberos.id</code>.)</td>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><code>authentication.kerberos.principal</code></td>
+                <td class="confluenceTd">Set the Kerberos principal.</td>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><code>authentication.kerberos.password</code></td>
+                <td class="confluenceTd">Set the Kerberos password.&nbsp; You only need to set the password or the keytab, not both.</td>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><code>authentication.kerberos.keytabLocation</code></td>
+                <td class="confluenceTd">Set the Kerberos keytab.&nbsp; You only need to set the password or the keytab, not both.</td>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><span class="filepath style-wrap">pentaho.oozie.proxy.user</span> </td>
+                <td class="confluenceTd">Add the proxy user's name if you plan to access the Oozie service through a proxy.&nbsp; Otherwise, leave it set to <span class="filepath style-wrap">oozie</span> .</td>
+              </tr>
+              <tr>
+                <td class="confluenceTd"><code>java.system.hdp.version</code></td>
+                <td class="confluenceTd">HDP Version.&nbsp; For HDP 2.2, this is 2.2.0.0-2041</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Edit_hbase-site.xml"></span> 
+          <h4 class="editable">Edit hbase-site.xml</h4>
+          <p>Edit the location of the temporary directory in the <code>hbase-site.xml</code> file to create an HBase local storage directory.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory and open the <span class="filepath style-wrap">hbase-site.xml</span>  file.</li>
+            <li>Add the following value:</li>
+          </ol>
+          <div class="table-wrap">
+            <table class="pentaho-table" style="width: 683px;" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="confluenceTh" style="width: 224px;">Parameter</th>
+                  <th class="confluenceTh" style="width: 436px;">Value</th>
+                </tr>
+                <tr>
+                  <td class="confluenceTd" style="width: 224px;"><code>hbase.tmp.dir</code></td>
+                  <td class="confluenceTd" style="width: 436px;">&nbsp;<code>/tmp/hadoop/hbase</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_13" class="mt-page-section"><span id="Edit_hive-site.xml"></span> 
+          <h4 class="editable">Edit hive-site.xml</h4>
+          <p>Verify that the following parameter is set in the hive-site.xml file:</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory and open the <span class="filepath style-wrap">hive-site.xml</span>  file.</li>
+            <li>Add the following value:</li>
+          </ol>
+          <div class="table-wrap">
+            <table class="pentaho-table" style="width: 683px;" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="confluenceTh" style="width: 224px;">Parameter</th>
+                  <th class="confluenceTh" style="width: 436px;">Value</th>
+                </tr>
+                <tr>
+                  <td class="confluenceTd" style="width: 224px;"><span class="filepath style-wrap">hive.metastore.uris</span> </td>
+                  <td class="confluenceTd" style="width: 436px;">Set this to the location of your hive metastore.&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_14" class="mt-page-section"><span id="Edit_mapred-site.xml"></span> 
+          <h4 class="editable">Edit mapred-site.xml</h4>
+          <p>Edit the&nbsp;<span class="filepath style-wrap">mapred-site.xml</span>  file to indicate where the job history logs are stored and to allow MapReduce jobs to run across platforms.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory and open the&nbsp; <span class="filepath style-wrap">mapred-site.xml</span>  file .</li>
+            <li>Add the following values:</li>
+          </ol>
+          <div class="table-wrap">
+            <table class="pentaho-table" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="confluenceTh" style="width: 200px;">Parameter</th>
+                  <th class="confluenceTh" style="width: 400px;">Value</th>
+                </tr>
+                <tr>
+                  <td class="confluenceTd" style="width: 192px;"><span class="filepath style-wrap">mapreduce.jobhistory.address</span> </td>
+                  <td class="confluenceTd" style="width: 1055px;">Set this to the place where job history logs are stored.&nbsp;</td>
+                </tr>
+                <tr>
+                  <td class="confluenceTd" style="width: 192px;">mapreduce.application.classpath</td>
+                  <td class="confluenceTd" style="width: 1055px;">
+                    <p>Add classpath information. Here is an example:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property>
+	<name>mapreduce.application.classpath</name>
+	<value>$PWD/mr-framework/hadoop/share/hadoop/mapreduce/*
+			:$PWD/mr-framework/hadoop/share/hadoop/mapreduce/lib/*
+			:$PWD/mr-framework/hadoop/share/hadoop/common/*:$PWD/mr-framework/hadoop/share/hadoop/common/lib/*
+			:$PWD/mr-framework/hadoop/share/hadoop/yarn/*:$PWD/mr-framework/hadoop/share/hadoop/yarn/lib/*
+			:$PWD/mr-framework/hadoop/share/hadoop/hdfs/*:$PWD/mr-framework/hadoop/share/hadoop/hdfs/lib/*
+			:/usr/hdp/${hdp.version}/hadoop/lib/hadoop-lzo-0.6.0.${hdp.version}.jar:/etc/hadoop/conf/secure
+	</value>
+</property></pre>
+                    <p>&nbsp;</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="confluenceTd" style="width: 192px;">mapreduce.application.framework.path</td>
+                  <td class="confluenceTd" style="width: 1055px;">
+                    <p>Set the framework path.&nbsp; Here is an example:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property>
+  <name>mapreduce.application.framework.path</name>
+  <value>/hdp/apps/${hdp.version}/mapreduce/mapreduce.tar.gz#mr-framework</value>
+</property></pre> </td>
+                </tr>
+              </tbody>
+            </table>
+            <ol class="pentaho-list-ordered" start="3">
+              <li>Add the following:</li>
+            </ol>
+            <table class="pentaho-table" title="Pentaho Table">
+              <tbody>
+                <tr>
+                  <th class="confluenceTh">Parameter</th>
+                  <th class="confluenceTh">Value</th>
+                </tr>
+                <tr>
+                  <td class="confluenceTd"><span class="filepath style-wrap">mapreduce.app-submission.cross-platform</span> </td>
+                  <td class="confluenceTd">Add this&nbsp;property to allow MapReduce jobs to run on either Windows client or Linux server platforms .
+                    <div class="code panel">
+                      <div class="codeContent panelContent"> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property>
+  <name>mapreduce.app-submission.cross-platform</name>
+  <value>true</value>
+</property></pre> </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <ol class="pentaho-list-ordered" start="4">
+              <li>Save and close the file.</li>
+            </ol>
+            <div id="section_15" class="mt-page-section"><span id="Edit_yarn-site.xml"></span> 
+              <h4 class="editable">Edit yarn-site.xml</h4>
+              <p>Verify that the following parameters are set in the <code>yarn-site.xml</code> file.</p>
+              <ol class="pentaho-list-ordered">
+                <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>  directory and open the<code> yarn-site.xml</code> file.</li>
+                <li>Add these values:</li>
+              </ol>
+              <div class="table-wrap">
+                <table class="pentaho-table" title="Pentaho Table">
+                  <thead>
+                    <tr>
+                      <th class="confluenceTh">Parameter</th>
+                      <th class="confluenceTh">Values</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="confluenceTd"><span class="filepath style-wrap">yarn.application.classpath</span> </td>
+                      <td class="confluenceTd">&#8203;Add the classpaths needed to run YARN applications.&nbsp; Use commas to separate multiple paths.&nbsp;
+                        <br /> <strong>Example:</strong>  <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><property> <name>yarn.application.classpath</name>
+ <value>$HADOOP_CONF_DIR,/usr/hdp/current/hadoop-client/*,
+/usr/hdp/current/hadoop-client/lib/*,/usr/hdp/current/hadoop-hdfs-client/*,
+/usr/hdp/current/hadoop-hdfs-client/lib/*,/usr/hdp/current/hadoop-yarn-client/*,
+/usr/hdp/current/hadoop-yarn-client/lib/*</value>
+ </property></pre> &nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td class="confluenceTd"><span class="filepath style-wrap">yarn.resourcemanager.hostname</span> </td>
+                      <td class="confluenceTd">Update the hostname in your environment or use the default: <span class="filepath style-wrap">sandbox.hortonworks.com</span> </td>
+                    </tr>
+                    <tr>
+                      <td class="confluenceTd"><span class="filepath style-wrap">yarn.resourcemanager.address</span> </td>
+                      <td class="confluenceTd">Update the hostname and port for your environment.</td>
+                    </tr>
+                    <tr>
+                      <td class="confluenceTd"><span class="filepath style-wrap">yarn.resourcemanager.admin.address</span> </td>
+                      <td class="confluenceTd">Update the hostname and port for your environment.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <ol class="pentaho-list-ordered" start="3">
+                  <li>Save and close the file.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="section_16" class="mt-page-section"><span id="Create_a_Connection_to_the_HDP_Cluster"></span> 
+      <h2 class="editable"><span>Create a Connection to 
+        <span class="mt-color-000000">the </span> </span> HDP Cluster
+      </h2>
+      <p style="visibility: visible;">Creating a connection to the cluster involves setting an active shim, then configuring and testing the connection to the cluster. Making a shim <em>active </em> means it is used by default when you access a cluster. When you initially install Pentaho,
+        no shim is active by default. You must choose a shim to make active before you can connect to a cluster. Only one shim can be active at a time. The way you make a shim active, as well as the way you configure and test the cluster connection differs
+        by Pentaho component.</p>
+      <div id="section_17" class="mt-page-section"><span id="Create_and_Test_a_Connection_to_the_Cluster_in_Spoon"></span> 
+        <h3 class="editable">Create and Test a Connection to the Cluster in Spoon</h3>
+        <p>Creating and testing a connection to the HDP cluster from Spoon involves two tasks:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Setting the active shim in Spoon</li>
+          <li>Configuring and testing the cluster connection</li>
+        </ul>
+        <div id="section_18" class="mt-page-section"><span id="Set_the_Active_Shim_in_Spoon"></span> 
+          <h4 class="editable">Set the Active Shim in Spoon</h4>
+          <p>Set the active shim when you want to connect to a Hadoop cluster the first time, or when you want to switch clusters.&nbsp; To set a shim as active, complete the following steps:</p>
+          <ol class="pentaho-list-ordered">
+            <li> <a href="/Documentation/6.1/0H0/070/010/020" rel="internal" title="https://help.pentaho.com/Documentation/6.0/0H0/070/010/020">Start Spoon</a> . </li>
+            <li>Select <strong>Hadoop Distribution... </strong> from the <strong>Tools </strong> menu.</li>
+          </ol>
+          <p>
+            <img alt="HadoopDistribution.png" class="internal default" style="width: 350px; height: 173px;" width="350px" height="173px" src="http://help.pentaho.com/@api/deki/files/7504/HadoopDistribution.png?size=bestfit&amp;width=350&amp;height=173&amp;revision=1"
+            />
+          </p>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>In the <strong>Hadoop Distribution</strong>  window, select the Hadoop distribution you want.</li>
+            <li>Click <strong>OK</strong> .</li>
+            <li>Stop, then restart Spoon.</li>
+          </ol>
+        </div>
+        <div id="section_19" class="mt-page-section"><span id="Configure_and_Test_the_Cluster_Connection"></span> 
+          <h4 class="editable">Configure and Test the Cluster Connection</h4>
+          <p>You must provide connection details for the cluster and services you will use, such as the hostname for HDFS or the URL for Oozie.&nbsp; Then, you can use a built-in tool to test your configuration to find and troubleshoot common configuration
+            issues, such as wrong hostnames and user permission errors.</p>
+          <p style="visibility: visible;">Connection settings are set in the <strong>Hadoop cluster</strong>  window.&nbsp; You can get to the settings from several places, but in these instructions, you will get the <strong>Hadoop cluster </strong> window from the <strong>View </strong> tab
+            in a transformation or job. Complete the following steps to configure and test a connection:</p>
+          <ol class="pentaho-list-ordered">
+            <li>In Spoon, create a new job or transformation or open an existing one.</li>
+            <li>Click the <strong>View</strong>  tab.</li>
+          </ol>
+          <p>
+            <a title="/@api/deki/files/7723/clusterss.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7723/clusterss.png">
+              <img alt="clusterss.png" class="internal default" style="width: 160px; height: 149px;" width="160px" height="149px" src="http://help.pentaho.com/@api/deki/files/7723/clusterss.png?size=bestfit&amp;width=160&amp;height=149&amp;revision=1" />
+            </a> 
+          </p>
+          <ol class="pentaho-list-ordered" start="3">
+            <li>Right-click the<strong>&nbsp;Hadoop cluster</strong>  folder, then click <strong>New</strong> .&nbsp; The <strong>Hadoop cluster</strong>  window appears. &nbsp;</li>
+          </ol>
+          <ol class="pentaho-list-ordered" start="4">
+            <li>Enter information in the <strong>Hadoop cluster</strong>  window.&nbsp; You can get this information from your Hadoop Administrator.</li>
+          </ol>
+          <p class="pentaho-note">As a best practice, use Kettle variables for each connection parameter value to mitigate risks associated with running jobs and transformations in environments that are disconnected from the repository.&nbsp;</p>
+          <p>
+            <a title="/@api/deki/files/7503/HadoopClusterWindow.png" rel="internal" href="http://help.pentaho.com/@api/deki/files/7503/HadoopClusterWindow.png">
+              <img alt="HadoopClusterWindow.png" class="internal default" height="393" width="271" src="http://help.pentaho.com/@api/deki/files/7503/HadoopClusterWindow.png?revision=1" />
+            </a> 
+          </p>
+          <table class="pentaho-table" height="457" title="Pentaho Table" width="605">
+            <tbody>
+              <tr>
+                <th style="width: 171px;">Option</th>
+                <th style="width: 400px;">Definition</th>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Cluster Name</td>
+                <td style="width: 503px;">Name that you assign the cluster connection.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Use MapR Client</td>
+                <td style="width: 503px;">Indicates that this connection is for a MapR cluster. &nbsp;If this box is checked, the fields in the HDFS and JobTracker sections are disabled because those parameters are not needed to configure MapR.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Hostname (in HDFS section)</td>
+                <td style="width: 503px;">Hostname for the HDFS node in your Hadoop cluster.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Port&nbsp;(in HDFS section)</td>
+                <td style="width: 503px;">Port for the HDFS node in your Hadoop cluster. &nbsp;</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Username&nbsp;(in HDFS section)</td>
+                <td style="width: 503px;">Username for the HDFS node.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Password&nbsp;(in HDFS section)</td>
+                <td style="width: 503px;">Password for the HDFS node.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Hostname (in JobTracker section)</td>
+                <td style="width: 503px;">Hostname for the JobTracker node in your Hadoop cluster. &nbsp;If you have a separate job tracker node, type in the hostname here. Otherwise use the HDFS hostname.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Port (in JobTracker section)</td>
+                <td style="width: 503px;">Port for the JobTracker in your Hadoop cluster. &nbsp;Job tracker port number; this cannot be the same as the HDFS port number.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Hostname (in ZooKeeper section)</td>
+                <td style="width: 503px;">Hostname for the ZooKeeper node in your Hadoop cluster.&nbsp; Supply this only if you want to connect to a ZooKeeper service.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">Port (in ZooKeeper section)</td>
+                <td style="width: 503px;">Port for the ZooKeeper node in your Hadoop cluster.&nbsp; Supply this only if you want to connect to a ZooKeeper service.</td>
+              </tr>
+              <tr>
+                <td style="width: 171px;">URL (in Oozie section)</td>
+                <td style="width: 503px;">Oozie client address.&nbsp; Supply this only if you want to connect to the Oozie service.</td>
+              </tr>
+            </tbody>
+          </table>
+          <ol class="pentaho-list-ordered" start="5">
+            <li>Click the&nbsp;<strong>Test&nbsp;</strong> button.&nbsp; Test results appear in the <strong>Hadoop Cluster Test </strong> window.&nbsp; If you have errors, see the Troubleshoot Cluster and Service Configuration Issues section below to resolve
+              the issues, then test again.</li>
+          </ol>
+          <p>
+            <a class="thumb" href="/@api/deki/files/7502/HadoopClusterTest.png" rel="internal" title="HadoopClusterTest.png">
+              <img alt="HadoopClusterTest.png" class="internal default" style="width: 325px; height: 350px;" width="325px" height="350px" src="http://help.pentaho.com/@api/deki/files/7502/HadoopClusterTest.png?size=bestfit&amp;width=325&amp;height=350&amp;revision=1"
+              />
+            </a> 
+          </p>
+          <ol class="pentaho-list-ordered" start="6">
+            <li>Click <strong>Close </strong> on the <strong>Hadoop Cluster Test </strong> window, then click <strong>OK </strong> to close the <strong>Hadoop cluster </strong> window.</li>
+          </ol>
+        </div>
+        <div id="section_20" class="mt-page-section"><span id="Copy_Spoon_Shim_Files_to_Other_Pentaho_Components"></span> 
+          <h4 class="editable">Copy Spoon Shim Files to Other Pentaho Components</h4>
+          <p>Once your connection has been properly configured on Spoon, copy configuration files to the shim directories in other Pentaho components. Copy the following configuration files from the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations/hdpxx</span>             directory to <span class="filepath style-wrap">pentaho-big-data-shim/hdpxx</span>  on the Pentaho Server, PRD, or PME:</p>
+          <ul class="pentaho-list-unordered">
+            <li><span class="filepath style-wrap">hbase-site.xml</span> </li>
+            <li><span class="filepath style-wrap">core-site.xml</span> </li>
+            <li><span class="filepath style-wrap">hdfs-site.xml</span> </li>
+            <li><span class="filepath style-wrap">hive-site.xml</span> </li>
+            <li><span class="filepath style-wrap">mapred-site.xml</span> </li>
+            <li><span class="filepath style-wrap">yarn-site.xml</span> </li>
+          </ul>
+        </div>
+      </div>
+      <div id="section_21" class="mt-page-section"><span id="Connect_Other_Pentaho_Components_to_the_Hortonworks_Cluster"></span> 
+        <h3 class="editable">Connect Other Pentaho Components to the Hortonworks Cluster</h3>
+        <p>These instructions explain how to create and test a connection to the cluster in the Pentaho Server, PRD, and PME. Creating and testing a connection to the cluster in Spoon involves two tasks:</p>
+        <ul class="pentaho-list-unordered">
+          <li>Setting the active shim on PRD, PME, and the Pentaho Server</li>
+          <li>Configuring and testing the cluster connections&nbsp;</li>
+        </ul>
+        <div id="section_22" class="mt-page-section"><span id="Set_the_Active_Shim_on_PRD.2C_PME.2C_and_the_Pentaho_Server"></span> 
+          <h4 class="editable">Set the Active Shim on PRD, PME, and the Pentaho Server</h4>
+          <p>Modify the <span class="filepath style-wrap">plugin.properties</span>  file to set the active shim for the Pentaho Server, PRD, and PME.</p>
+          <ol class="pentaho-list-ordered">
+            <li>Stop&nbsp;the component.</li>
+            <li>Locate the&nbsp;<span class="filepath style-wrap">pentaho-big-data-plugin</span>  directory for your component.&nbsp;</li>
+            <li>Navigate to the <span class="filepath style-wrap">hadoop-configurations</span>  directory.</li>
+            <li>Navigate to the <span class="filepath style-wrap">pentaho-big-data-plugin</span>  directory and open the&nbsp;<span class="filepath style-wrap">plugin.properties</span> &nbsp;file.</li>
+            <li>Set&nbsp;the&nbsp;<span class="filepath style-wrap">active.hadoop.configuration</span> &nbsp;property to the directory name of the shim you want to make active.&nbsp; Here is an example:</li>
+          </ol>
+          <div class="pentaho-code-block style-wrap">
+            <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">active.hadoop.configuation=hdp24</pre>
+          </div>
+          <ol class="pentaho-list-ordered" start="6">
+            <li>Save&nbsp;and close the&nbsp;<span class="filepath style-wrap">plugin.properties</span> &nbsp;file.</li>
+            <li>Restart the component.</li>
+          </ol>
+        </div>
+        <div id="section_23" class="mt-page-section"><span id="Create_and_Test_Connections"></span> 
+          <h4 class="editable">Create and Test Connections</h4>
+          <p>Connection tests appear in the following table.</p>
+          <table border="1" cellpadding="1" cellspacing="1" class="pentaho-table" height="146" style="table-layout: fixed; width: 722px;" title="Pentaho Table" width="654">
+            <tbody>
+              <tr>
+                <th style="width: 197px;">Component</th>
+                <th style="width: 515px;">Test</th>
+              </tr>
+              <tr>
+                <td style="width: 197px;">Pentaho Server for DI</td>
+                <td style="width: 515px;">
+                  <p>Create a transformation in Spoon and run it remotely.</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 197px;">Pentaho Server for BA</td>
+                <td style="width: 515px;">Create a connection to the cluster in the Data Source Wizard.</td>
+              </tr>
+              <tr>
+                <td style="width: 197px;">PME</td>
+                <td style="width: 515px;">Create a connection to the cluster in PME.</td>
+              </tr>
+              <tr>
+                <td style="width: 197px;">PRD</td>
+                <td style="width: 515px;">Create a connection to the cluster in PRD.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>&nbsp;</p>
+          <p>Once you've connected to the cluster and its services properly, provide connection information to users who need access to the cluster and its services.&nbsp; Those users can only obtain access from computers that have been properly configured
+            to connect to the cluster.</p>
+          <p>Here is what they need to connect:</p>
+          <ul class="pentaho-list-unordered">
+            <li>Hadoop Distribution and version of the cluster</li>
+            <li>HDFS, JobTracker, ZooKeeper, and Hive2/Impala Hostnames, IP addresses and port numbers</li>
+            <li>Oozie URL (if used)</li>
+            <li>Users also require the appropriate permissions to access the directories they need on HDFS.&nbsp; This typically includes their home directory and any other required directories.</li>
+          </ul>
+          <p>They might also need more information depending on the job entries, transformation steps, and services they use.&nbsp;
+            <a href="/Documentation/7.0/0L0/040/025/010" rel="internal" target="_blank" title="Hadoop Connection and Access Information List">Here's a more detailed list of information that your users might need from you</a> .</p>
+        </div>
+      </div>
+    </div>
+    <div id="section_24" class="mt-page-section"><span id="General_Notes"></span> 
+      <h2 class="editable">General Notes</h2>
+      <div id="section_25" class="mt-page-section"><span id="Set_Hive_Database_Connection_Parameters_(Secured_Clusters_Only)"></span> 
+        <h3 class="editable">Set Hive Database Connection Parameters (Secured Clusters Only)</h3>
+        <p>To access Hive, you need to set several database connection parameters from within Spoon.</p>
+        <ol>
+          <li>
+            <p>Verify the valid Kerberos principal values have been set to <span class="mt-font-courier-new">Hive.metastore.kerberos.principal</span>  and <span class="mt-font-courier-new">hive.server2.authentication.kerberos.principal</span>  in <span class="mt-font-courier-new">hive-site.xml</span> .</p>
+          </li>
+          <li>
+            <p>Start Spoon.</p>
+          </li>
+          <li>
+            <p>In Spoon, open the <strong>Database Connection</strong>  window.</p>
+          </li>
+          <li>
+            <p>Click <strong>Options</strong> .</p>
+          </li>
+          <li>
+            <p>Add the&nbsp;<span class="mt-font-courier-new">principal</span> &nbsp;parameter and set it to the values that you noted in the <span class="mt-font-courier-new">hive-site.xml</span>  file.&#8203; The <span class="mt-font-courier-new">principal</span>               typically looks like&nbsp; <code>hive/HiveServer2.pentaho.com@mydomain</code>.</p>
+          </li>
+          <li>
+            <p>Click <strong>OK</strong>  to close the window.</p>
+          </li>
+        </ol>
+      </div>
+      <div id="section_26" class="mt-page-section"><span id="Sqoop_.22Unsupported_major.minor_version.22_Error"></span> 
+        <h3 class="editable">Sqoop &quot;Unsupported major.minor version&quot; Error</h3>
+        <p>If you are using Pentaho 6.0 and the Java version on your cluster is older than the Java version that Pentaho uses, you must change Pentaho's JDK so it is the same major version as the JDK on the cluster. The JDK that you install for Pentaho must
+          meet the requirements in the
+          <a href="/Documentation/6.1/0D0/160/000#Java_Virtual_Machine" rel="internal" title="Components Reference">Supported Components</a>  matrix. To learn how to
+          <a href="/Documentation/6.1/0F0/0P0/020/0A0#Install_Java" rel="internal" title="Prepare Your Windows Environment for Installation">download and install the JDK read this article</a> .&nbsp;</p>
+      </div>
+    </div>
+    <div id="section_27" class="mt-page-section"><span id="Version-Specific_Notes"></span> 
+      <h2 class="editable">Version-Specific Notes</h2>
+      <p>The following notes are special topics for HDP.</p>
+      <div id="section_28" class="mt-page-section"><span id="HDP_2.5_Notes"></span> 
+        <h3 class="editable">HDP&nbsp;2.5 Notes</h3>
+        <p>The following note address issues with HDP&nbsp;2.5.</p>
+        <div id="section_29" class="mt-page-section"><span id="Sqoop_Support"></span> 
+          <h4 class="editable">Sqoop Support</h4>
+          <p>If you receive an error message stating&nbsp;<em>Generating splits for a textual index column allowed only in case of &quot;-Dorg.apache.sqoop.splitter.allow_text_splitter=true&quot; property passed as a parameter</em> &nbsp;while trying to use&nbsp;the
+            <strong>split-by</strong>  option to the <strong>Sqoop Import</strong>  job entry with the HDP 2.5 shim, perform the following steps to set the <code>org.apache.sqoop.splitter.allow_text_splitter</code> property to <code>true</code>:</p>
+          <ol>
+            <li>
+              <p>Open your KJB file that contains a <strong>Sqoop Import</strong>  entry in the PDI client (also known as Spoon).</p>
+            </li>
+            <li>
+              <p>Double-click the <strong>Sqoop Import</strong>  entry to access the <strong>Sqoop Import</strong>  property dialog box.</p>
+            </li>
+            <li>
+              <p>Click the <strong>Advanced Options</strong>  link in the lower left corner of the dialog box.</p>
+            </li>
+            <li>
+              <p>In the <strong>Custom</strong>  tab, add the <code>Dorg.apache.sqoop.splitter.allow_text_splitter</code> argument and set the value&nbsp;to <code>true</code>.</p>
+            </li>
+            <li>
+              <p>Click OK and save your KJB file.</p>
+            </li>
+          </ol>
+          <p>You should now be able to use the split-by option to the <strong>Sqoop Import</strong>  entry.</p>
+        </div>
+      </div>
+      <div id="section_30" class="mt-page-section"><span id="HDP_2.4_Notes"></span> 
+        <h3 class="editable">HDP 2.4 Notes</h3>
+        <p>The following notes address issues with HDP 2.4.</p>
+        <div id="section_31" class="mt-page-section"><span id="Simba_Spark_SQL_Driver_Support"></span> 
+          <h4 class="editable">Simba Spark SQL Driver Support</h4>
+          <p><strong>If you are using Pentaho 7.0 or later</strong>, the HDP 2.4 shim supports the Simba Spark SQL driver. You will need to download, install, and configure the driver to use Simba Spark SQL with the HDP 2.4 shim.</p>
+          <ol>
+            <li>Download the
+              <a class="external" target="_blank" title="http://www.simba.com/drivers/spark-jdbc-odbc/" rel="external nofollow" href="http://www.simba.com/drivers/spark-jdbc-odbc/">Simba Spark SQL driver</a> .</li>
+            <li>Extract the ZIP file, and then copy the following 3 files into the <code>lib/</code> directory of the HDP shim:</li>
+          </ol>
+          <ul>
+            <li><code>SparkJDBC41.jar</code></li>
+            <li><code>TCLIServiceClient.jar</code></li>
+            <li><code>QI.jar</code></li>
+          </ul>
+          <ol start="3">
+            <li>In the <strong>Database Connection</strong>  window, select <strong>SparkSQL</strong>  option. The default port for the Spark thrift server is <code>10015</code>.</li>
+            <li>
+              <p>For secure connections, set the following additional parameters on the JDBC URL through the <strong>Options</strong>  tab:</p>
+            </li>
+          </ol>
+          <ul>
+            <li>KrbServiceName</li>
+            <li>KrbHostFQDN</li>
+            <li>KrbRealm</li>
+          </ul>
+          <ol start="5">
+            <li>
+              <p>For unsecure connections, if your Spark SQL configuration specifies <code>hive.server2.authentication=NONE</code>, then make sure to include an appropriate <strong>User Name</strong>  in the <strong>Database Connection</strong>  window.&nbsp;
+                Otherwise, the connection is assumed to be NOSASL authentication, which will cause a connection failure after timeout.</p>
+            </li>
+            <li>
+              <p>Stop and restart the component.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div id="section_32" class="mt-page-section"><span id="HDP_2.3_Notes"></span> 
+        <h3 class="editable">HDP 2.3 Notes</h3>
+        <p>The following note addresses issues with HDP 2.3.</p>
+        <div id="section_33" class="mt-page-section"><span id="Pentaho_can_connect_to_HDP_2.3_cluster_using_the_HDP_2.2_or_HDP_2.3_shims"></span> 
+          <h4 class="editable">Pentaho can connect to HDP 2.3 cluster using the HDP 2.2 or HDP 2.3 shims</h4>
+          <p>You can use either the HDP 2.2 or HDP 2.3 shims to connect to a HDP 2.3 clusters:</p>
+          <ul class="pentaho-list-unordered">
+            <li>If you use the HDP 2.2 shim to connect to an HDP 2.3 cluster, only HDP 2.2 functionality is supported.&nbsp;</li>
+            <li>If you want to support HDP 2.3 functionality, use the HDP 2.3 shim to connect to the HDP 2.3 cluster instead.</li>
+          </ul>
+          <p>Shims can be downloaded from the Pentaho Support Portal.</p>
+        </div>
+      </div>
+    </div>
+    <div id="section_34" class="mt-page-section"><span id="Troubleshoot_Cluster_and_Service_Configuration_Issues"></span> 
+      <h2 class="editable">Troubleshoot Cluster and Service Configuration Issues</h2>
+      <p>The issues in this section explain how to resolve common configuration problems.&nbsp;</p>
+      <div id="section_35" class="mt-page-section"><span id="Shim_and_Configuration_Issues"></span> 
+        <h4 class="editable">Shim and Configuration Issues</h4>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 152px;">Symptoms</th>
+              <th style="width: 226px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 152px;">
+                <p>No shim</p>
+              </td>
+              <td style="width: 226px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Active shim was not selected.</li>
+                  <li>Shim was installed in the&nbsp; wrong place.</li>
+                  <li>Shim name was not entered correctly in the <span class="filepath style-wrap">plugin.properties</span>  file.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the plugin name that is in the <span class="filepath style-wrap">plugin.properties</span>  file <span class="mt-color-000000">matches the directory name in the <span class="filepath style-wrap">pentaho-big-data-plugin/hadoop-configurations</span>                     directory</span> .&nbsp;</li>
+                  <li>Make sure the shim is installed in the <span class="mt-color-000000">correct place</span> .</li>
+                  <li>Check the instructions for your Hadoop distribution in the
+                    <a href="/Documentation/6.1/0H0/070/030" rel="internal" title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article for more details on how to verify the plugin name and shim installation directory.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 152px;">Shim doesn't load</td>
+              <td style="width: 226px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Required licenses are not installed.</li>
+                  <li>You tried to load a shim that is not supported by your version of Pentaho.</li>
+                  <li>If you are using MapR, the client might not have been installed correctly.&nbsp;</li>
+                  <li>Configuration file changes were made incorrectly.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify the
+                    <a href="/Documentation/7.0/0P0/Managing_Pentaho_Licenses" rel="internal" title="Managing Pentaho Licenses">required licenses are installed</a>  and have not expired.</li>
+                  <li>Verify that the shim is supported by your version of Pentaho.
+                    <a href="/Documentation/6.1/0L0/0Y0/010" rel="internal" title="https://help.pentaho.com/Documentation/6.0/0L0/0Y0/010">Find your version of Pentaho</a>, then look for the corresponding
+                    <a href="/Documentation/6.1/0D0/160/000#Big_Data_Sources" rel="internal" title="Components Reference">Components Reference</a>  for more details.</li>
+                  <li>Verify that configuration file changes were made correctly.&nbsp; Contact your Hadoop Administrator or see the
+                    <a href="/Documentation/6.1/0H0/070/030" rel="internal" title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article.</li>
+                  <li>If you are connecting to MapR, verify that the client was properly installed.&nbsp; See MapR documentation for details.</li>
+                  <li>Restart Spoon, then test again.</li>
+                  <li>If this error continues to occur, files might be corrupted.&nbsp; Download a new copy of the shim from the Pentaho Customer Support Portal.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 152px;">The file system's URL does not match the URL in the configuration file.</td>
+              <td style="width: 226px;">Configuration files (<span class="filepath style-wrap">*-site.xml</span>  files) were not configured properly.&nbsp;</td>
+              <td>Verify that the configuration files were configured correctly.&nbsp; Verify that the <span class="filepath style-wrap">core-site.xml</span>  file is configured correctly.&nbsp; See the instructions for your Hadoop distribution in the
+                <a href="/Documentation/6.1/0H0/070/030"
+                rel="internal" title="Set Up Pentaho to Connect to an Apache Hadoop Cluster (DRAFT)">Set Up Pentaho to Connect to an Apache Hadoop Cluster</a>  article for details.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>&nbsp;</p>
+      </div>
+      <div id="section_36" class="mt-page-section"><span id="Connection_Problems"></span> 
+        <h4 class="editable">Connection Problems</h4>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Hostname incorrect or not resolving properly.</td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>No hostname has been specified.</li>
+                  <li>Hostname/IP Address is incorrect.</li>
+                  <li>Hostname is not resolving properly in the DNS.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the Hostname/IP address is correct.</li>
+                  <li>Check the DNS to make sure the Hostname is resolving properly.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Port name is incorrect.</td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>No port number has been specified.</li>
+                  <li>Port&nbsp; number is incorrect.</li>
+                  <li>Port number is not numeric.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the port number is correct.</li>
+                  <li>If you don't have a port number, determine whether your cluster has been enabled for high availability. If it has, then you do not need a port number.</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Can't connect.</td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall is a barrier to connecting.</li>
+                  <li>Other networking&nbsp;issues are occurring.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that a firewall is not impeding the connection and that there aren't other network issues.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_37" class="mt-page-section"><span id="Directory_Access_or_Permissions_Issues"></span> 
+        <h4 class="editable">Directory Access or Permissions Issues</h4>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 143px;">
+                <p>Can't access directory.</p>
+              </td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Authorization and/or authentication&nbsp;issues.</li>
+                  <li>Directory is not on the cluster.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Make sure the user has been granted read, write, and execute access to the directory.&nbsp;</li>
+                  <li>Ensure security settings for the cluster and shim allow access.</li>
+                  <li>Verify the hostname and port number are correct for the Hadoop File System's&nbsp;namenode.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">
+                <p>Can't create, read, update, or delete files or directories</p>
+              </td>
+              <td style="width: 180px;">
+                <p>Authorization and/or authentication&nbsp;issues.</p>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Make sure the user has been authorized execute&nbsp;access to the directory.&nbsp;</li>
+                  <li>Ensure security settings for the cluster and shim allow access.</li>
+                  <li>Verify that the hostname and port number are correct for the Hadoop File System's&nbsp;namenode.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="width: 143px;">Test file cannot be overwritten.&nbsp;</td>
+              <td style="width: 180px;">Pentaho test file is already in the directory.</td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>A file with the same name as the Pentaho test file is already in the directory.&nbsp; The test file is used to make sure that the user can create, write, and delete in the user's home directory.</li>
+                  <li>The test was run, but the file was not deleted.&nbsp; You will need to manually delete the test file.&nbsp; Check the log fo the test file name.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_38" class="mt-page-section"><span id="Oozie_Issues"></span> 
+        <h4 class="editable">Oozie Issues</h4>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 143px;">
+                <p>Can't connect to Oozie.</p>
+              </td>
+              <td style="width: 180px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall issue.</li>
+                  <li>Other networking&nbsp;issues.</li>
+                  <li>Oozie URL is incorrect.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that the Oozie URL was correctly entered.</li>
+                  <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_39" class="mt-page-section"><span id="ZooKeeper_Problems"></span> 
+        <h4 class="editable">ZooKeeper Problems</h4>
+        <table border="0" cellpadding="0" cellspacing="0" class="pentaho-table" title="Pentaho Table" width="715">
+          <tbody>
+            <tr>
+              <th style="width: 151px;">Symptoms</th>
+              <th style="width: 227px;">Common Causes</th>
+              <th>Common Resolutions</th>
+            </tr>
+            <tr>
+              <td style="width: 191px;">
+                <p>Can't connect to ZooKeeper .</p>
+              </td>
+              <td style="width: 193px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Firewall is hindering connection with the ZooKeeper service.</li>
+                  <li>Other networking&nbsp;issues.</li>
+                </ul>
+              </td>
+              <td style="width: 297px;">
+                <ul class="pentaho-list-unordered">
+                  <li>Verify that a firewall is not impeding the connection.&nbsp;</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>ZooKeeper hostname or port not found or doesn't resolve properly.&nbsp;&nbsp;</p>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Hostname/IP address and port number is missing or is incorrect.</li>
+                </ul>
+              </td>
+              <td>
+                <ul class="pentaho-list-unordered">
+                  <li>Try to connect to the ZooKeeper nodes using ping or another method.</li>
+                  <li>Verify that the Hostname/IP address and port numbers are correct.</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Before_You_Begin" rel="internal">Before You Begin</a>  </li>
+      <li>
+        <a href="#Edit_Configuration_Files_on_Clusters" rel="internal">Edit Configuration Files on Clusters</a> 
+        <ol>
+          <li> <a href="#Oozie" rel="internal">Oozie</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Configure_Pentaho_Component_Shims" rel="internal">Configure Pentaho Component Shims</a> 
+        <ol>
+          <li> <a href="#Step_1:_Locate_the_Pentaho_Big_Data_Plugin_and_Shim_Directories" rel="internal">Step 1: Locate the Pentaho Big Data Plugin and Shim Directories</a>  </li>
+          <li> <a href="#Step_2:_Select_the_Correct_Shim" rel="internal">Step 2: Select the Correct Shim</a>  </li>
+          <li> <a href="#Step_3:_Copy_the_Configuration_Files_from_Cluster_to_Shim" rel="internal">Step 3: Copy the Configuration Files from Cluster to Shim</a>  </li>
+          <li>
+            <a href="#Step_4:_Edit_the_Shim_Configuration_Files" rel="internal">Step 4: Edit the Shim Configuration Files</a> 
+            <ol>
+              <li> <a href="#Verify_or_Edit_config.properties_(Unsecured_Clusters)" rel="internal">Verify or Edit config.properties (Unsecured Clusters)</a>  </li>
+              <li> <a href="#Edit_config.properties_(Secured_Clusters)" rel="internal">Edit config.properties (Secured Clusters)</a>  </li>
+              <li> <a href="#Edit_hbase-site.xml" rel="internal">Edit hbase-site.xml</a>  </li>
+              <li> <a href="#Edit_hive-site.xml" rel="internal">Edit hive-site.xml</a>  </li>
+              <li> <a href="#Edit_mapred-site.xml" rel="internal">Edit mapred-site.xml</a>  </li>
+              <li> <a href="#Edit_yarn-site.xml" rel="internal">Edit yarn-site.xml</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Create_a_Connection_to_the_HDP_Cluster" rel="internal">Create a Connection to the HDP Cluster</a> 
+        <ol>
+          <li>
+            <a href="#Create_and_Test_a_Connection_to_the_Cluster_in_Spoon" rel="internal">Create and Test a Connection to the Cluster in Spoon</a> 
+            <ol>
+              <li> <a href="#Set_the_Active_Shim_in_Spoon" rel="internal">Set the Active Shim in Spoon</a>  </li>
+              <li> <a href="#Configure_and_Test_the_Cluster_Connection" rel="internal">Configure and Test the Cluster Connection</a>  </li>
+              <li> <a href="#Copy_Spoon_Shim_Files_to_Other_Pentaho_Components" rel="internal">Copy Spoon Shim Files to Other Pentaho Components</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Connect_Other_Pentaho_Components_to_the_Hortonworks_Cluster" rel="internal">Connect Other Pentaho Components to the Hortonworks Cluster</a> 
+            <ol>
+              <li> <a href="#Set_the_Active_Shim_on_PRD.2C_PME.2C_and_the_Pentaho_Server" rel="internal">Set the Active Shim on PRD, PME, and the Pentaho Server</a>  </li>
+              <li> <a href="#Create_and_Test_Connections" rel="internal">Create and Test Connections</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#General_Notes" rel="internal">General Notes</a> 
+        <ol>
+          <li> <a href="#Set_Hive_Database_Connection_Parameters_(Secured_Clusters_Only)" rel="internal">Set Hive Database Connection Parameters (Secured Clusters Only)</a>  </li>
+          <li> <a href="#Sqoop_.22Unsupported_major.minor_version.22_Error" rel="internal">Sqoop &quot;Unsupported major.minor version&quot; Error</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Version-Specific_Notes" rel="internal">Version-Specific Notes</a> 
+        <ol>
+          <li>
+            <a href="#HDP_2.5_Notes" rel="internal">HDP&nbsp;2.5 Notes</a> 
+            <ol>
+              <li> <a href="#Sqoop_Support" rel="internal">Sqoop Support</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#HDP_2.4_Notes" rel="internal">HDP 2.4 Notes</a> 
+            <ol>
+              <li> <a href="#Simba_Spark_SQL_Driver_Support" rel="internal">Simba Spark SQL Driver Support</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#HDP_2.3_Notes" rel="internal">HDP 2.3 Notes</a> 
+            <ol>
+              <li> <a href="#Pentaho_can_connect_to_HDP_2.3_cluster_using_the_HDP_2.2_or_HDP_2.3_shims" rel="internal">Pentaho can connect to HDP 2.3 cluster using the HDP 2.2 or HDP 2.3 shims</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Troubleshoot_Cluster_and_Service_Configuration_Issues" rel="internal">Troubleshoot Cluster and Service Configuration Issues</a> 
+        <ol>
+          <li> <a href="#Shim_and_Configuration_Issues" rel="internal">Shim and Configuration Issues</a>  </li>
+          <li> <a href="#Connection_Problems" rel="internal">Connection Problems</a>  </li>
+          <li> <a href="#Directory_Access_or_Permissions_Issues" rel="internal">Directory Access or Permissions Issues</a>  </li>
+          <li> <a href="#Oozie_Issues" rel="internal">Oozie Issues</a>  </li>
+          <li> <a href="#ZooKeeper_Problems" rel="internal">ZooKeeper Problems</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

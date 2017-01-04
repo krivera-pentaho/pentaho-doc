@@ -1,0 +1,346 @@
+<content type="text/html" title="Learn About Schema Structures">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A schema defines a multi-dimensional database, containing a logical model and a physical model. The logical model contains the constructs used to write queries in MDX language: cubes, measures, dimensions, attributes, hierarchies, levels, and
+          members. The physical model is a set of MongoDB collections that are the source of the data which is presented through the logical model. Each MongoDB collection should contain the data for an entire Cube, including all of the Facts and all
+          of the Dimensions.</p>
+        <p class="p">Analyzer for MongoDB schemas are represented in an XML file. An example schema, containing almost all of the constructs discussed here, is supplied as <code class="ph codeph">FoodMart.mongo.xml</code>.</p>
+        <p>The
+          <a class="external" title="http://mondrian.pentaho.com/documentation/configuration.php" rel="external nofollow" href="http://mondrian.pentaho.com/documentation/configuration.php" target="_blank">Mondrian Documentation</a>  has a complete reference for these properties. Please note that the Mondrian properties file for Analyzer on MongoDB is located in <span class="filepath style-wrap">...\pentaho-solutions\system\osgi\bundles</span>           and is called <span class="filepath style-wrap">mondrian.cfg</span> . This is different than the primary mondrian.properties file in ...\pentaho-solutions\system\mondrian. This essentially means that if you are configuring Mondrian settings for
+          both MongoDB connections as well as non-MongoDB connections, you should make sure to configure both properties files.</p>
+      </div>
+      <div class="topic concept nested1" id="193456f1-aa02-4566-9bd6-a9581cf5d35a__concept_structure_XML_schema">
+        <div id="section_1" class="mt-page-section"><span id="Schema_Structure_in_XML"></span> 
+          <h2 class="editable">Schema Structure in XML</h2>
+          <div class="body conbody">
+            <div class="p">
+              <p>The <code class="ph codeph"><Schema></code> element is the root element of every schema. For example:</p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Schema name=&quot;Rock Sales&quot; metamodelVersion=&quot;4.0&quot;></pre>              </div>
+            <p class="p">A schema has a name attribute and, optionally, a description. Currently, the only way to create a schema is to create it in an XML file in a text editor. The XML syntax is not too complicated, so this is not as difficult as it sounds, particularly
+              if you use the <code class="ph codeph">FoodMart</code> schema as a guiding example.</p>
+            <p class="p">The order of these XML elements is not important
+              <img alt="File:/kitteh_period.jpg" class="image internal" id="193456f1-aa02-4566-9bd6-a9581cf5d35a__concept_structure_XML_schema__image_mc2_xtz_1n" src="http://help.pentaho.com/@api/deki/files/1608/kitteh_period.jpg?revision=1"
+              /> For example, as long as it occurs as a child of a <code class="ph codeph"><Schema></code> element, a <code class="ph codeph"><UserDefinedFunction></code> element might occur after one <code class="ph codeph"><Cube></code> element and after
+              another.</p>
+            <p class="p">This table lists the content and the structures of a schema in XML.</p>
+            <p class="p">&nbsp;</p>
+            <div class="p">
+              <div class="tablenoborder">
+                <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="193456f1-aa02-4566-9bd6-a9581cf5d35a__concept_structure_XML_schema__table_sjp_bsy_qm" rules="all" summary="">
+                  <caption><span class="tablecap">Table 1. XML Schema Reference</span> </caption>
+                  <thead align="left" class="thead">
+                    <tr class="row">
+                      <th class="entry" id="193456f1-aa02-4566-9bd6-a9581cf5d35a__d9332e109" valign="top" width="50%">XML Schema Element</th>
+                      <th class="entry" id="193456f1-aa02-4566-9bd6-a9581cf5d35a__d9332e112" valign="top" width="50%">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody">
+                    <tr class="row">
+                      <td class="entry" colspan="2" headers="d9332e109 d9332e112 " valign="top"><strong class="ph b"><em class="ph i">Schema</em> </strong> </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Schema>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">The top-level collection of elements relating to a particular enterprise. Cubes belong to a Schema, as do Named Sets, Roles, User-defined functions, and Parameters.
+                        <p class="p">Dimensions and Named Sets may also be defined privately within a particular Cube.</p>
+                      </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" colspan="2" headers="d9332e109 d9332e112 " valign="top"><strong class="ph b"><em class="ph i">Physical Elements</em> </strong> </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <PhysicalSchema>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of table usages, linked via relationships, upon which the logical schema is constructed.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Table>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Defines a use of a table.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <ColumnDefs>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Holder for
+                        <ColumnDef> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <ColumnDef>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Definition of a column in an
+                        <InlineTable> dataset.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" colspan="2" headers="d9332e109 d9332e112 " valign="top"><strong class="ph b"><em class="ph i">Logical Elements</em> </strong> </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Cube>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A cube is a collection of dimensions and measures.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Dimensions>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <Dimension> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Dimension>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A collection of
+                        <Attribute> s that may be used to subdivide a multidimensional data set, some of them organized into
+                          <Hierarchy> structures.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Key>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Column or columns that are the key of an
+                        <Attribute> , in lieu of <code class="ph codeph">Attribute.keyColumn</code>.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Attributes>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A collection of
+                        <Attribute> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Attribute>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Data item in a
+                        <Dimension>.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Key>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Column or columns that are the key of an
+                        <Attribute>, in lieu of Attribute.keyColumn.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Column>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Defines a column in the table.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Name/> (as Key)</td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Column that holds the name of an
+                        <Attribute>, in lieu of Attribute.nameColumn.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Caption/> (as Key)</td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Column that holds the caption of an
+                        <Attribute>, in lieu of Attribute.captionColumn.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <OrderBy/> (as Key)</td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Column or columns that used to sort members of an
+                        <Attribute>, in lieu of Attribute.captionColumn.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Property>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Member property. The definition is against a hierarchy or level, but the property will be available to all members.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Hierarchies>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <Hierarchy> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Hierarchy>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <Attributes> organized into
+                          <Levels>.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Levels>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <Level> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Level/>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">
+                        <Level> of a
+                          <Hierarchy>.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <MeasureGroups>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <MeasureGroup> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <MeasureGroup>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <Measure>s that are stored in the same fact table.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Measures>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <Measure> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <DimensionLinks>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of links between a
+                        <MeasureGroup> and the
+                          <Dimensions>s of the
+                            <Cube>.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <FactLink/>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Declares that a Dimension is trivially linked to a MeasureGroup because its dimension table is the same as the fact table.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <CopyLink/>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Indicates dimension that is represented by key columns in the MeasureGroup's table.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <NoLink/>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Documents that a
+                        <Dimension> is not linked to the current
+                          <MeasureGroup>.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <CalculatedMembers>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <CalculatedMember> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <CalculatedMember>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A member whose value is derived using a formula, defined as part of a cube.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <NamedSets>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Collection of
+                        <NamedSet> elements.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <NamedSet>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A set whose value is derived using a formula, defined as part of a cube.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" colspan="2" headers="d9332e109 d9332e112 " valign="top"><strong class="ph b"><em class="ph i">Access control</em> </strong> </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Role>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">An access-control profile.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <SchemaGrant>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A set of rights to a schema.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <CubeGrant>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A set of rights to a cube.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <MemberGrant/>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A set of rights to a
+                        <Member> and its children.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Union>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Definition of a set of rights as the union of a set of
+                        <Role>s.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <RoleUsage/>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">A reference to a
+                        < Role> .</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" colspan="2" headers="d9332e109 d9332e112 " valign="top"><strong class="ph b"><em class="ph i">Extensions</em> </strong> </td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <UserDefinedFunction>
+                      </td>
+                      <td class="entry" headers="d9332e112 " valign="top" width="50%">Declares a user-defined function.</td>
+                    </tr>
+                    <tr class="row">
+                      <td class="entry" headers="d9332e109 " valign="top" width="50%">
+                        <Script>
+                          < /td> <td class="entry" headers="d9332e112 " valign="top" width="50%">Script fragment to implement an SPI such as user-defined function, member formatter, or cell formatter.</td > < /tr> <tr class="row"> <td class="entry" headers="d9332e109 " valign="top" width="50%"><Script/ > < /td> <td class="entry" headers="d9332e112 " valign="top" width="50%">Script fragment to implement an SPI such as user-defined function, member formatter, or cell formatter.</td > < /tr> <tr class="row"> <td class="entry" headers="d9332e109 " valign="top" width="50%"><MemberFormatter></td > < td class = "entry"
+                          headers = "d9332e112 "
+                          valign = "top"
+                          width = "50%" > Member formatter. < /td> </tr > < tr class = "row" > < td class = "entry"
+                          headers = "d9332e109 "
+                          valign = "top"
+                          width = "50%" > < PropertyFormatter > < /td> <td class="entry" headers="d9332e112 " valign="top" width="50%">Property formatter.</td > < /tr> <tr class="row"> <td class="entry" headers="d9332e109 " valign="top" width="50%"><CellFormatter></td > < td class = "entry"
+                          headers = "d9332e112 "
+                          valign = "top"
+                          width = "50%" > Cell formatter. < /td> </tr > < tr class = "row" > < td class = "entry"
+                          colspan = "2"
+                          headers = "d9332e109 d9332e112 "
+                          valign = "top" > < strong class = "ph b" > < em class = "ph i" > Miscellaneous < /em></strong > < /td> </tr > < tr class = "row" > < td class = "entry"
+                          headers = "d9332e109 "
+                          valign = "top"
+                          width = "50%" > < Parameter / > < /td> <td class="entry" headers="d9332e112 " valign="top" width="50%">Part of the definition of a Hierarchy; passed to a MemberReader, if present.</td > < /tr> <tr class="row"> <td class="entry" headers="d9332e109 " valign="top" width="50%"><CalculatedMemberProperty/ > < /td> <td class="entry" headers="d9332e112 " valign="top" width="50%">Property of a calculated member.</td > < /tr> </tbody > < /table> </div > < /div> </div > < /div></div > < /div></body > < body target = "toc" > < ol > < li > < a href = "#Schema_Structure_in_XML"
+                          rel = "internal" > Schema Structure in XML < /a></li > < /ol></body > < /content>

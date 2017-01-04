@@ -1,0 +1,461 @@
+<content type="text/html" title="Analysis Resource">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Methods for listing, download, upload, and removal of Analysis files or Mondrian schemas.</p>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Overview_2"></span> 
+        <h2 class="editable">Overview</h2>
+        <div class="container">
+          <div class="column first last span-20">
+            <p>This service allows for listing, download, upload, and removal of Analysis files or Mondrian schemas in the BA Platform.</p>
+            <p>The following resources are applicable:</p>
+            <ul class="pentaho-list-unordered">
+              <li> <a href="#path__data-access_api_datasource_analysis_catalog.html">/data-access/api/datasource/analysis/catalog</a>  </li>
+              <li> <a href="#path__data-access_api_datasource_analysis_catalog_-catalogId%20-.html">/data-access/api/datasource/analysis/catalog/{catalogId }</a>  </li>
+            </ul>
+            <a name="path__data-access_api_datasource_analysis_catalog.html"></a> 
+            <div id="section_3" class="mt-page-section"><span id=".2Fdata-access.2Fapi.2Fdatasource.2Fanalysis.2Fcatalog"></span> 
+              <h1 class="editable">/data-access/api/datasource/analysis/catalog</h1>
+              <a name="GET"></a> 
+              <div id="section_4" class="mt-page-section"><span id="GET"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Get a list of analysis data source ids.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/plugin/data-access/api/datasource/analysis/catalog</p>
+                <div id="section_5" class="mt-page-section"><span id="Response_Body"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>
+                          <a title="Documentation/5.2/0R0/070/010/0B0/AnalysisResource/0C0" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/070/010/0B0/0I0/0C0">List</a> 
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>application/xml
+                          <br /> application/json</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A list of catalog IDs.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;Item&quot;:[
+{
+&quot;@type&quot;:&quot;xs:string&quot;,
+&quot;$&quot;:&quot;SampleData&quot;
+},
+{
+&quot;@type&quot;:&quot;xs:string&quot;,
+&quot;$&quot;:&quot;SteelWheels&quot;
+},
+{
+&quot;@type&quot;:&quot;xs:string&quot;,
+&quot;$&quot;:&quot;pentaho_operations_mart&quot;
+}
+]
+}</pre> </div>
+                <div id="section_6" class="mt-page-section"><span id="Status_Codes"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully retrieved the list of analysis IDs</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  &nbsp; </div>
+              </div>
+            </div>
+            <div id="section_7" class="mt-page-section"><span id=".2Fdata-access.2Fapi.2Fdatasource.2Fanalysis.2Fcatalog.2F.7BcatalogId_.7D"></span> 
+              <h1 class="editable">/data-access/api/datasource/analysis/catalog/{catalogId }</h1>
+              <p>The following operations are supported on this resource:</p>
+              <ul>
+                <li> <a href="#GET">GET</a>  </li>
+                <li> <a href="#DELETE">DELETE</a>  </li>
+                <li> <a href="#PUT">PUT</a>  </li>
+              </ul>
+              &nbsp;
+              <div id="section_8" class="mt-page-section"><span id="GET_2"></span> 
+                <h2 class="editable">GET</h2>
+                <p>Download the analysis files for a given analysis id.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> GET pentaho/plugin/data-access/api/datasource/analysis/catalog/SampleSchema</p>
+                <div id="section_9" class="mt-page-section"><span id="Parameters"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>catalog</td>
+                        <td>String Id of the analysis data to retrieve.</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_10" class="mt-page-section"><span id="Response_Body_2"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>Response containing the analysis file data XML.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot;?>
+<Schema name=&quot;SampleData2&quot;>
+<Dimension name=&quot;Region&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Regions&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<Level name=&quot;Region&quot; column=&quot;REGION&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+<Dimension name=&quot;Department&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Departments&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<Level name=&quot;Department&quot; column=&quot;DEPARTMENT&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+<Dimension name=&quot;Positions&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Positions&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<Level name=&quot;Positions&quot; column=&quot;POSITIONTITLE&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+<Cube name=&quot;Quadrant Analysis&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<DimensionUsage name=&quot;Region&quot; source=&quot;Region&quot;/>
+<DimensionUsage name=&quot;Department&quot; source=&quot;Department&quot; />
+<DimensionUsage name=&quot;Positions&quot; source=&quot;Positions&quot; />
+<Measure name=&quot;Actual&quot; column=&quot;ACTUAL&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/>
+<Measure name=&quot;Budget&quot; column=&quot;BUDGET&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/>
+<Measure name=&quot;Variance&quot; column=&quot;VARIANCE&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/>
+</Cube>
+</Schema></pre> </div>
+                <div id="section_11" class="mt-page-section"><span id="Status_Codes_2"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully downloaded the analysis file</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>Unauthorized</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Unabled to download analysis file</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  &nbsp; </div>
+              </div>
+              <div id="section_12" class="mt-page-section"><span id="DELETE"></span> 
+                <h2 class="editable">DELETE</h2>
+                <p>Remove the analysis data for a given analysis ID.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> DELETE pentaho/plugin/data-access/api/datasource/analysis/catalog/{catalog}</p>
+                <div id="section_13" class="mt-page-section"><span id="Parameters_2"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>catalog</td>
+                        <td>ID of the analysis data to remove.</td>
+                        <td>path</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_14" class="mt-page-section"><span id="Response_Body_3"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>*/*
+                          <br /> application/xml
+                          <br /> application/octet-stream</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>A 200 response code representing the successful removal of the analysis datasource.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">This response does not contain data.</pre> </div>
+                <div id="section_15" class="mt-page-section"><span id="Status_Codes_3"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>200</td>
+                        <td>Successfully removed the analysis data</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>User is not authorized to delete the analysis datasource</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Unable to remove the analysis data.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  &nbsp; </div>
+              </div>
+              <div id="section_16" class="mt-page-section"><span id="PUT"></span> 
+                <h2 class="editable">PUT</h2>
+                <p>Import Analysis Schema.</p>
+                <p><strong>Example Request:</strong> 
+                  <br /> PUT pentaho/plugin/data-access/api/datasource/analysis/catalog/SampleSchema
+                  <br />
+                  <strong>PUT data:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><?xml version=&quot;1.0&quot;?>
+<Schema name=&quot;SampleData2&quot;>
+
+<!-- Shared dimensions -->
+<Dimension name=&quot;Region&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Regions&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<Level name=&quot;Region&quot; column=&quot;REGION&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+<Dimension name=&quot;Department&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Departments&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<Level name=&quot;Department&quot; column=&quot;DEPARTMENT&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+<Dimension name=&quot;Positions&quot;>
+<Hierarchy hasAll=&quot;true&quot; allMemberName=&quot;All Positions&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<Level name=&quot;Positions&quot; column=&quot;POSITIONTITLE&quot; uniqueMembers=&quot;true&quot;/>
+</Hierarchy>
+</Dimension>
+<Cube name=&quot;Quadrant Analysis&quot;>
+<Table name=&quot;QUADRANT_ACTUALS&quot;/>
+<DimensionUsage name=&quot;Region&quot; source=&quot;Region&quot;/>
+<DimensionUsage name=&quot;Department&quot; source=&quot;Department&quot; />
+<DimensionUsage name=&quot;Positions&quot; source=&quot;Positions&quot; />
+<Measure name=&quot;Actual&quot; column=&quot;ACTUAL&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/>
+<Measure name=&quot;Budget&quot; column=&quot;BUDGET&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/>
+<Measure name=&quot;Variance&quot; column=&quot;VARIANCE&quot; aggregator=&quot;sum&quot; formatString=&quot;#,###.00&quot;/>
+
+<!--    <CalculatedMember name=&quot;Variance Percent&quot; dimension=&quot;Measures&quot; formula=&quot;([Measures].[Variance]/[Measures].[Budget])*100&quot; /> -->
+</Cube>
+</Schema></pre>
+                <div id="section_17" class="mt-page-section"><span id="cURL_Script_Example:"></span> 
+                  <h3 class="editable">
+                    <strong>cURL Script Example:</strong> 
+                  </h3> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">curl -v -H &quot;Content-Type: multipart/form-data&quot; -X PUT -F uploadInput=@/Users/username/Downloads/SampleData2.mondrian.xml -F overwrite=true -F xmlaEnabledFlag=false -F parameters=&quot;Datasource=SampleData&quot; -u admin:password http://localhost:8080/yourdomain/plugin/data-access/api/datasource/analysis/catalog/SampleData2</pre>                  </div>
+                <div id="section_18" class="mt-page-section"><span id="Parameters_3"></span> 
+                  <h3 class="editable">Parameters</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>name</th>
+                        <th>description</th>
+                        <th>type</th>
+                      </tr>
+                      <tr>
+                        <td>catalogName</td>
+                        <td>The catalog name.</td>
+                        <td>path</td>
+                      </tr>
+                      <tr>
+                        <td>uploadInput</td>
+                        <td>A Mondrian schema XML file.</td>
+                        <td>formdata</td>
+                      </tr>
+                      <tr>
+                        <td>schemaFileInfo</td>
+                        <td>User selected name for the file. (optional)</td>
+                        <td>formdata</td>
+                      </tr>
+                      <tr>
+                        <td>origCatalogName</td>
+                        <td>The original catalog name. (optional)</td>
+                        <td>formdata</td>
+                      </tr>
+                      <tr>
+                        <td>datasourceName</td>
+                        <td>The datasource name. (not used)</td>
+                        <td>formdata</td>
+                      </tr>
+                      <tr>
+                        <td>overwrite</td>
+                        <td>Flag for overwriting existing version of the file. The values are true and false.</td>
+                        <td>formdata</td>
+                      </tr>
+                      <tr>
+                        <td>xmlaEnabledFlag</td>
+                        <td>Is XMLA enabled or not. The values are true and false.</td>
+                        <td>formdata</td>
+                      </tr>
+                      <tr>
+                        <td>parameters</td>
+                        <td>Import parameters.</td>
+                        <td>formdata</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div id="section_19" class="mt-page-section"><span id="Response_Body_4"></span> 
+                  <h3 class="editable">Response Body</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <td align="right">element:</td>
+                        <td>(custom)</td>
+                      </tr>
+                      <tr>
+                        <td align="right">media types:</td>
+                        <td>text/plain</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p>Response containing the success of the method.</p>
+                  <p><strong>Example Response:</strong> </p> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">200</pre> </div>
+                <div id="section_20" class="mt-page-section"><span id="Status_Codes_4"></span> 
+                  <h3 class="editable">Status Codes</h3>
+                  <table class="pentaho-table">
+                    <tbody>
+                      <tr>
+                        <th>code</th>
+                        <th>description</th>
+                      </tr>
+                      <tr>
+                        <td>409</td>
+                        <td>Content already exists (use overwrite flag to force)</td>
+                      </tr>
+                      <tr>
+                        <td>401</td>
+                        <td>Import failed because publish is prohibited</td>
+                      </tr>
+                      <tr>
+                        <td>500</td>
+                        <td>Unspecified general error has occurred</td>
+                      </tr>
+                      <tr>
+                        <td>412</td>
+                        <td>Analysis datasource import failed. Error code or message included in response entity</td>
+                      </tr>
+                      <tr>
+                        <td>403</td>
+                        <td>Access Control Forbidden</td>
+                      </tr>
+                      <tr>
+                        <td>201</td>
+                        <td>Indicates successful import</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <footer>
+            <p>Copyright &copy; <span>Pentaho.com</span> </p>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Overview_2" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#.2Fdata-access.2Fapi.2Fdatasource.2Fanalysis.2Fcatalog" rel="internal">/data-access/api/datasource/analysis/catalog</a> 
+        <ol>
+          <li>
+            <a href="#GET" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Response_Body" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#.2Fdata-access.2Fapi.2Fdatasource.2Fanalysis.2Fcatalog.2F.7BcatalogId_.7D" rel="internal">/data-access/api/datasource/analysis/catalog/{catalogId }</a> 
+        <ol>
+          <li>
+            <a href="#GET_2" rel="internal">GET</a> 
+            <ol>
+              <li> <a href="#Parameters" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_2" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_2" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#DELETE" rel="internal">DELETE</a> 
+            <ol>
+              <li> <a href="#Parameters_2" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_3" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_3" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#PUT" rel="internal">PUT</a> 
+            <ol>
+              <li> <a href="#cURL_Script_Example:" rel="internal">cURL Script Example:</a>  </li>
+              <li> <a href="#Parameters_3" rel="internal">Parameters</a>  </li>
+              <li> <a href="#Response_Body_4" rel="internal">Response Body</a>  </li>
+              <li> <a href="#Status_Codes_4" rel="internal">Status Codes</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

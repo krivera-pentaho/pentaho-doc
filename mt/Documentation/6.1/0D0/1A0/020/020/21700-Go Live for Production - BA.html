@@ -1,0 +1,287 @@
+<content type="text/html" title="Go Live for Production - BA">
+  <body>
+    <p>This section explains the process for moving Pentaho content and server settings among multiple BA Server instances. Typically this includes either two or three separate servers with identical configurations: One for BA content development, one for
+      testing and QA if desired, and one for production. We recommend that you work with a member of
+      <a class="xref external" rel="external nofollow" href="http://www.pentaho.com/services" target="_blank">Pentaho professional services</a>  to help with the preparation work for deployment to production.</p>
+    <div id="section_1" class="mt-page-section"><span id="Prepare_for_Going_Live"></span> 
+      <h2 class="editable">Prepare for Going Live</h2>
+      <p class="p">This section is divided into two parts; the first part serves as a checklist for setting up a BA Server, and the second consists of prerequisites that you must perform before going live with your production server. If you already have your BA production
+        server ready to go, skip ahead to the tasks listed in the
+        <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/1A0/020/020#121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__prereq_BA_live_checklist">Prerequisites for Go Live - Checklist for Production</a>  Server table.</p>
+      <p class="p">The <span class="ph uicontrol">BA Server Set Up Checklist</span>  helps you verify that the hardware and software requirements are met, get the software installed, and configure the BA Server and BA Design tools.</p>
+      <table border="1" cellpadding="4"
+      cellspacing="0" class="table" frame="border" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__table_dtz_qbr_2l" rules="all" summary="">
+        <caption><span class="tablecap">Table 1. BA Server Set Up Checklist </span> </caption>
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e104" valign="top" width="24.813895781637715%">Task</th>
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e107" valign="top" width="32.00992555831265%">Do This</th>
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e110" valign="top" width="43.17617866004962%">Notes</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d152674e104 " valign="top" width="24.813895781637715%"><strong class="ph b">Verify System Requirements</strong> </td>
+            <td class="entry" headers="d152674e107 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_nt1_5jz_hl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/000">Components Reference</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/160/010">JDBC Drivers Reference</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e110 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_skt_r5m_kl">
+                <li class="li">Acquired one or more servers that meet the requirements.</li>
+                <li class="li">Obtained the correct drivers for your system.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e104 " valign="top" width="24.813895781637715%"><strong class="ph b">Obtain Software and Install BA</strong> </td>
+            <td class="entry" headers="d152674e107 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_qg4_vjz_hl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0F0/0G0/030">Install Pentaho BA Suite</a> 
+                </li>
+                <li class="li">
+                  <a class="xref link-https" rel="external nofollow" href="https://support.pentaho.com/home" target="_blank">Download and Install the Latest Service Pack</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/010">Access the User Console</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e110 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_wwy_r5m_kl">
+                <li class="li">Installed the software.</li>
+                <li class="li">Installed the latest service pack.</li>
+                <li class="li">Accessed the User Console, toured the Administration page, and changed the default administrator password.</li>
+              </ul> If you need to, see the next segment to change the fully qualified URL for the BA Server.</td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e104 " valign="top" width="24.813895781637715%"><strong class="ph b">Change the BA Server Fully Qualified URL</strong> </td>
+            <td class="entry" headers="d152674e107 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_zw4_htj_sl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/030/000/020">Change the BA Server Fully Qualified URL</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e110 " valign="top" width="43.17617866004962%">If you are going to have many machines pointing to one server, make sure you change the fully qualified URL.
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_lx4_htj_sl">
+                <li class="li">Changed the URL and verified that you can connect to it.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e104 " valign="top" width="24.813895781637715%"><strong class="ph b">Configure the BA Server</strong> </td>
+            <td class="entry" headers="d152674e107 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_olx_xjz_hl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/020">Manage License Keys</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/030">Specify Data Connections for BA Server</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/050">Set Up an Email Server</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e110 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_vjb_s5m_kl">
+                <li class="li">Added all relevant Pentaho licenses.</li>
+                <li class="li">Set up your data connections.</li>
+                <li class="li">Configured an email server through the Administration page.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="p">This checklist guides you through the tasks you need to do to ensure a smooth transition from a development server to a live production server.</p>
+      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__prereq_BA_live_checklist"
+      rules="all" summary="">
+        <caption><span class="tablecap">Table 2. Prerequisites for Go Live - Checklist for Production Server</span> </caption>
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th align="center" class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e290" valign="top" width="24.813895781637715%">Task</th>
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e293" valign="top" width="32.00992555831265%">Do This</th>
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e296" valign="top" width="43.17617866004962%">Notes</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d152674e290 " valign="top" width="24.813895781637715%"><strong class="ph b">Perform a diff on BA config files</strong> </td>
+            <td class="entry" headers="d152674e293 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_unh_1hp_nl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0D0/1A0/020/020#121b80c5-37e5-4a46-a8d1-6941c86adc62__task_perf_diff">Perform a Diff on BA Configuration Files</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/100/090">Verify and Increase Memory Settings</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e296 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_z5l_jbp_nl">
+                <li class="li">Differences between configuration files are identified.</li>
+                <li class="li">Unified properties file is committed to version control.</li>
+                <li class="li">Memory settings have been increased as applicable.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e290 " valign="top" width="24.813895781637715%"><strong class="ph b">Verify Data Sources</strong> </td>
+            <td class="entry" headers="d152674e293 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_p3m_ghp_nl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/030">Specify Data Connections for BA Server</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/030/020">Define JNDI Connections for the BA Server</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e296 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_n3k_jbp_nl">
+                <li class="li">Make sure data sources are able to be promoted.</li>
+                <li class="li">Established JNDI sources as replacements if needed.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e290 " valign="top" width="24.813895781637715%"><strong class="ph b">Define Security </strong> </td>
+            <td class="entry" headers="d152674e293 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_i15_qhp_nl">
+                <li> <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/040">Define Security for the BA Server</a>  </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0H0/060/010/040/000">Use Pentaho Security</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/150/010">Define BA Server Advanced Security</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e296 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_mkn_php_nl">
+                <li class="li">Security is implemented.</li>
+                <li class="li">Users, roles, and permissions are defined.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e290 " valign="top" width="24.813895781637715%"><strong class="ph b">Upload Content</strong> </td>
+            <td class="entry" headers="d152674e293 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_um1_2lp_nl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/020">Upload and Download from the BA Repository</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e296 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_prereq_BA_intro__ul_ev3_jbp_nl">
+                <li class="li">Uploaded files and folders.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_2" class="mt-page-section"><span id="Perform_a_Diff_on_BA_Configuration_Files"></span> 
+      <h2 class="editable">Perform a Diff on BA Configuration Files</h2>
+      <p class="p">The most important BA Server configuration settings are stored in the <span class="ph filepath">/server/biserver-ee/pentaho-solutions/system/</span>  directory. There are also a few core settings inside of the Pentaho WAR archive deployed to your
+        application server, though they should not change at all after your initial server setup is complete.</p>
+      <p class="pentaho-caution">Do not change the names of any content files, data sources, solution directories, or other file names during the promotion process. Names should be set during solution development and strictly maintained throughout content promotion. Modifying file
+        names can result in complications with BA content that cannot be immediately detected, which will negatively impact your QA process.</p>
+      <p class="p">To be absolutely certain that you have all of the BA Server configuration files selected, you should diff the following directories in their entirety:</p>
+      <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_perf_diff__ul_gd5_2jq_ll">
+        <li class="li">/pentaho-solutions/system/</li>
+        <li class="li">/WEB-INF/ inside your deployed pentaho.war</li>
+        <li class="li">/META-INF/ inside your deployed pentaho.war</li>
+        <li class="li">For JBoss deployments, the PentahoHibernate-ds.xml and quartz-ds.xml files in the /server/default/deploy/ directory</li>
+      </ul>
+      <p class="pentaho-note">There are binaries inside of the plugin directories for Analyzer, Dashboard Designer, Interactive Reporting, and Community Dashboard Framework. While it may be useful to note any binary differences, which would indicate possible version differences
+        among BA Server or plugin deployments, in general you should be most concerned with XML configuration files and properties files. However, if you have done any plugin customization work, you will need to promote those changes as well.</p>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Move_Content_to_Production_Server"></span> 
+      <h2 class="editable">Move Content to Production Server</h2>
+      <p class="p">This checklist is a compilation of best practices for you to use to promote your BA Server settings, data sources, and content.</p>
+      <p class="p">Before you dive into going from a development server to your live production server, make sure that you have completed all of the tasks in the
+        <a title="Go Live for Production - BA" rel="internal" class="xref mt-self-link" href="http://help.pentaho.com/Documentation/6.1/0D0/1A0/020/020">Prerequisites</a>  checklist.</p>
+      <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+        <thead align="left" class="thead">
+          <tr class="row">
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e527" valign="top" width="24.813895781637715%">Task</th>
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e530" valign="top" width="32.00992555831265%">Do This</th>
+            <th class="entry" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__d152674e533" valign="top" width="43.17617866004962%">Notes</th>
+          </tr>
+        </thead>
+        <tbody class="tbody">
+          <tr class="row">
+            <td class="entry" headers="d152674e527 " valign="top" width="24.813895781637715%"><strong class="ph b">Download Content</strong> </td>
+            <td class="entry" headers="d152674e530 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_move_golive__ul_rhj_llg_pl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/020">Upload and Download from the BA Repository</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e533 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_move_golive__ul_a3j_llg_pl">
+                <li class="li">All desired content is moved to the production server.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="row">
+            <td class="entry" headers="d152674e527 " valign="top" width="24.813895781637715%"><strong class="ph b">Set Up Schedules and Blockout Times</strong> </td>
+            <td class="entry" headers="d152674e530 " valign="top" width="32.00992555831265%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_move_golive__ul_bdn_vhp_nl">
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/010">Manage Schedules</a> 
+                </li>
+                <li class="li">
+                  <a class="xref" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0/000/010#958ed6b5-403c-4810-a09e-8136759836c5__task_set_blockout_time">Prevent Scheduling by Setting Blockout Times</a> 
+                </li>
+              </ul>
+            </td>
+            <td class="entry" headers="d152674e533 " valign="top" width="43.17617866004962%">
+              <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_move_golive__ul_twf_jbp_nl">
+                <li class="li">Set up schedules for production server.</li>
+                <li class="li">Set up blockout times for server maintenance tasks.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Next_Steps"></span> 
+      <h2 class="editable">Next Steps</h2>
+      <div class="body taskbody">
+        <div class="section context">These resources will be helpful to you after your Production server is live.
+          <div class="p">
+            <ul class="ul" id="121b80c5-37e5-4a46-a8d1-6941c86adc62__task_next_golive__ul_cls_hjf_dk">
+              <li class="li">
+                <a class="xref external" title="Administer Pentaho Systems" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0P0">Fine-Tune Pentaho Systems</a>  - provides guidance on how to maintain and fine-tune your BA Server.</li>
+              <li class="li">
+                <a class="xref external" rel="external nofollow" href="http://www.pentaho.com/service/training" target="_blank">Pentaho Training and Education</a> 
+              </li>
+              <li class="li">
+                <a class="xref link-https" rel="external nofollow" href="https://support.pentaho.com/home" target="_blank">Pentaho Customer Support</a> &nbsp;- check with support for service packs.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Prepare_for_Going_Live" rel="internal">Prepare for Going Live</a>  </li>
+      <li> <a href="#Perform_a_Diff_on_BA_Configuration_Files" rel="internal">Perform a Diff on BA Configuration Files</a>  </li>
+      <li> <a href="#Move_Content_to_Production_Server" rel="internal">Move Content to Production Server</a>  </li>
+      <li> <a href="#Next_Steps" rel="internal">Next Steps</a>  </li>
+    </ol>
+  </body>
+</content>

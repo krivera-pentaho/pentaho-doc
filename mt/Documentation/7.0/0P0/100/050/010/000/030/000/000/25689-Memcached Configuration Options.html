@@ -1,0 +1,36 @@
+<content type="text/html" title="Memcached Configuration Options">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">
+          <p class="p">These properties control Memcached settings, and are set in the <code>memcached-config.xml</code>&nbsp;file in the <span class="ph filepath">/WEB-INF/classes/</span>  folder&nbsp;inside of your deployed pentaho.war or Mondrian engine.</p>
+          <p
+          class="pentaho-note">This is not a comprehensive list of the potential Memcached settings; the options explained below are the ones most critical to Memcached configuration for Pentaho Analysis.</p>
+        </div>
+        <table border="1" cellpadding="4" cellspacing="0" class="simpletable properties" summary="">
+          <tbody>
+            <tr class="sthead prophead">
+              <th align="left" class="stentry proptypehd" id="6b796a61-1c2f-410a-9c48-82ebada918ce__d24736e35" valign="bottom" width="NaN%">Property</th>
+              <th align="left" class="stentry propvaluehd" id="6b796a61-1c2f-410a-9c48-82ebada918ce__d24736e38" valign="bottom" width="NaN%">Purpose</th>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d24736e35" valign="top" width="NaN%">SERVERS</td>
+              <td class="stentry propvalue" headers="d24736e38" valign="top" width="NaN%">A comma-separated list of servers and port numbers representing the Memcached nodes usable by the plugin.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d24736e35" valign="top" width="NaN%">WEIGHTS</td>
+              <td class="stentry propvalue" headers="d24736e38" valign="top" width="NaN%">A comma-separated list of numbers representing the relative caching capacity of the servers defined in the SERVERS property. There must be exactly as many values of WEIGHTS as there are values of SERVERS. As an example, if the first server
+                has a capacity of 128 megabytes, and the second has a capacity of 256 megabytes, the correct values for the WEIGHTS property should be &quot;1,2&quot;, indicating that the first server has a relative size of half of the second one.</td>
+            </tr>
+            <tr class="strow property">
+              <td class="stentry proptype" headers="d24736e35" valign="top" width="NaN%">SALT</td>
+              <td class="stentry propvalue" headers="d24736e38" valign="top" width="NaN%">A secret key prefix to be used when saving and loading segment data from the Memcached nodes. This property must be the same for all Mondrian nodes that share their caches. If the SALT value is different from one node to the next, the nodes
+                will not be able to share their cache data.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

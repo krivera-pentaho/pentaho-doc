@@ -1,0 +1,31 @@
+<content type="text/html" title="Obtaining Logging Information">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">When you need more information about how transformations and jobs execute, you can view PDI log lines and text.</p>
+        <p class="p">PDI collects log lines in a central place. The class
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/KettleLogStore.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/KettleLogStore.html"><code class="ph codeph">org.pentaho.di.core.logging.KettleLogStore</code></a>  manages all log lines and provides methods for retrieving the log text for specific entities. To retrieve log text or log lines, supply the log channel id generated
+          by PDI during runtime. You can obtain the log channel id by calling <code class="ph codeph">getLogChannelId()</code>, which is part of
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/LoggingObjectInterface.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-core-5.3.0.0-javadoc/org/pentaho/di/core/logging/LoggingObjectInterface.html"><code class="ph codeph">LoggingObjectInterface</code></a> . Jobs, transformations, job entries, and transformation steps all implement this interface.&nbsp;</p>
+        <div class="p">
+          <p>For example, assuming the job variable is an instance of a running or completed job. This is how you retrieve its log lines:</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">LoggingBuffer appender = KettleLogStore.getAppender();
+String logText = appender.getBuffer(job.getLogChannelId(), false).toString();</pre> </div>
+        <p class="p">The main methods in the sample classes <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningJobs</code> and <code class="ph codeph">org.pentaho.di.sdk.samples.embedding.RunningTransformations</code> retrieve log information from
+          the executed job or transformation in this manner.</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

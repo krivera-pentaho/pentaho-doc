@@ -1,0 +1,31 @@
+<content type="text/html" title="Advanced SQL Output Parameterization">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">This procedure requires a <strong class="ph b">JDBC (Custom)</strong>  data source type. Establish this data source before continuing with the instructions below. You do not need to construct a query yet.</div>
+        <div class="section context">
+          <p class="p">You can add dynamic interactivity to a published report such that when a user executes or views it, he can specify how to constrain certain parts of the query data. This is called <strong class="ph b">parameterization</strong> . Follow the procedure
+            below to parameterize a report by creating a custom formula.</p>
+          <div class="note note"><span class="notetitle">Note:</span>  This option allows you to parameterize both structure and values. If you only need to parameterize values, see
+            <a class="xref" title="Documentation/5.1/0L0/130/0A0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/130/0A0/000">Simple SQL Output Parameterization</a>  instead.</div>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Open the report you want to parameterize.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Right-click the <strong class="ph b">Parameters</strong>  item in the Data pane, then select <strong class="ph b">Add Parameter...</strong>  from the context menu.</span>  The <strong class="ph b">Add Parameter</strong>  dialogue
+            will appear. </li>
+          <li class="li step"> <span class="ph cmd">Select or change the options according to the definitions specified in <a class="xref" title="Documentation/5.1/0L0/130/0A0/000" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0L0/130/0A0/000">Simple SQL Output Parameterization</a> .</span>             </li>
+          <li class="li step"> <span class="ph cmd">Go to the <strong class="ph b">Structure</strong>  pane, then select <strong class="ph b">Master Report</strong> .</span>  </li>
+          <li class="li step"> <span class="ph cmd">In the <strong class="ph b">Attributes</strong>  pane, click the round green <strong class="ph b">+</strong>  icon in the <strong class="ph b">name</strong>  field of the <strong class="ph b">Query</strong>  section.</span>             The <strong class="ph b">Expression</strong>  window will appear. </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">[...]</strong> .</span>  The Formula Editor will appear. </li>
+          <li class="li step"> <span class="ph cmd">In the <strong class="ph b">Formula</strong>  field, use a <strong class="ph b">SELECT DISTINCT</strong>  statement to parameterize the data structure with your previously defined parameter, as shown in the example below (<strong class="ph b">paramexample</strong>  is a placeholder for the name of the parameter you created earlier, <strong class="ph b">COL1</strong>  is the example name of the element in your report that will be parameterized, and <strong class="ph b">PRODUCTS</strong>  is an example table name in your database).</span> 
+            <div class="note note"><span class="notetitle">Note:</span>  The spaces after DISTINCT and before AS are extremely important. Do not omit them.</div> <pre class="pre codeblock">=&quot;SELECT DISTINCT &quot; &amp; [paramexample] &amp; &quot; AS COL1 FROM PRODUCTS&quot;</pre>            </li>
+          <li class="li step"> <span class="ph cmd">Click <strong class="ph b">OK</strong>  when you are done with the query, then click <strong class="ph b">Close</strong>  in the <strong class="ph b">Expression</strong>  window.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Add a field of the appropriate data type to your report, and name it according to the AS statement you defined in your query.</span>  In the example above, the name of the text field would be COL1. </li>
+          <li class="li step"> <span class="ph cmd">Publish or preview the report.</span>  </li>
+        </ol>
+        <div class="section result">When a user runs this report, he will be presented with an interactive field that specifies the source of the column you specified.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

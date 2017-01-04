@@ -1,0 +1,132 @@
+<content type="text/html" title="Analyzer Filters">
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>Filters are used to restrict or limit data in a report, building the report to show only the information you want to view.</p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Filter_Operators"></span> 
+        <h2 class="editable">
+          <span>Filter Operators</span> 
+        </h2>
+        <p><span>Within each dimension, you can have non-numeric and numeric filters.</span> </p>
+        <div id="section_3" class="mt-page-section"><span id="Non-Numeric_Filters"></span> 
+          <h3 class="editable"><span>
+            <span>Non-Numeric Filters</span> </span> 
+          </h3>
+          <p><span><span>Non-numeric filters include the following types:&nbsp;</span> </span> 
+          </p>
+          <ul class="pentaho-list-unordered">
+            <li><span><span><span>Include</span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>Exclude </span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>Contains</span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>Does Not Contain</span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>Before </span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>After</span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>Between </span> </span> 
+              </span> 
+            </li>
+            <li><span><span><span>All relative time filters such as 'Current Year' or '3 Years Ago'.</span> </span> 
+              </span> 
+            </li>
+          </ul>
+          <p><strong>Operator Ids:</strong> </p>
+          <ul class="pentaho-list-unordered">
+            <li>EQUAL</li>
+            <li>NOT_EQUAL</li>
+            <li>CONTAIN</li>
+            <li>NOT_CONTAIN</li>
+            <li>BEFORE</li>
+            <li>AFTER</li>
+            <li>BETWEEN</li>
+            <li>TIME_AGO</li>
+            <li>TIME_AHEAD</li>
+            <li>TIME_YAGO</li>
+            <li>TIME_RANGE_PREV</li>
+            <li>TIME_RANGE_NEXT</li>
+          </ul>
+        </div>
+        <div id="section_4" class="mt-page-section"><span id="Numeric_Filters"></span> 
+          <h3 class="editable">Numeric Filters</h3>
+          <p>Numeric filters include the following types:</p>
+          <ul class="pentaho-list-unordered">
+            <li>Top N</li>
+            <li>Greater Than/Less Than filters</li>
+          </ul>
+          <p><strong>Operartor Ids</strong> :</p>
+          <ul class="pentaho-list-unordered">
+            <li>LESS_THAN</li>
+            <li>GREATER_THAN</li>
+            <li>LESS_THAN_EQUAL</li>
+            <li>GREATER_THAN_EQUAL</li>
+            <li>EQUAL</li>
+            <li>NOT_EQUAL</li>
+            <li>BETWEEN</li>
+            <li><span>IS_NOT_EMPTY</span> </li>
+            <li><span>TOP </span> </li>
+            <li><span>BOTTOM</span> </li>
+            <li><span>TOP_BOTTOM</span> </li>
+          </ul>
+        </div>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Filter_Logic"></span> 
+        <h2 class="editable">Filter Logic</h2>
+        <p>Each dimension is filtered independently and the results are logically AND'd together.&nbsp;</p>
+        <p>Non-numeric filters are always applied before numeric filters and the two groups of filters are AND'd together. Within non-numeric filters, the following operators are OR'd together: Include, Contains, Before, After, Between and relative time
+          filters. These filters are then AND'd together with the Exclude and Does Not Contain operators.</p>
+        <p>Here's a visual representation:</p>
+        <blockquote>
+          <p>(
+            <br /> &nbsp; Include OR Contain OR Before OR After OR Between OR Any Time Filter
+            <br /> ) AND (
+            <br /> &nbsp; Exclude AND Not Contain
+            <br /> )</p>
+        </blockquote>
+        <p>The above filters are then AND'd with any numeric filters:</p>
+        <blockquote>
+          <p>AND (Top 10 AND Greater Than)</p>
+        </blockquote>
+        <p>Within a Contain or Not Contain operator, the individual expressions are OR'd together.</p>
+        <div id="section_6" class="mt-page-section"><span id="Related_Articles:"></span> 
+          <h3 class="editable">Related Articles:</h3>
+          <p>
+            <a title="Add Filters to an Analyzer Report" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/120/030/030">Add Filters to an Analyzer Report</a> 
+          </p>
+          <p>
+            <a title="Create Date Range Filters" rel="internal" href="http://help.pentaho.com/Documentation/6.1/0L0/120/030/030/000">Create Date Range Filters</a> 
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li>
+        <a href="#Filter_Operators" rel="internal">Filter Operators</a> 
+        <ol>
+          <li> <a href="#Non-Numeric_Filters" rel="internal">Non-Numeric Filters</a>  </li>
+          <li> <a href="#Numeric_Filters" rel="internal">Numeric Filters</a>  </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Filter_Logic" rel="internal">Filter Logic</a> 
+        <ol>
+          <li> <a href="#Related_Articles:" rel="internal">Related Articles:</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

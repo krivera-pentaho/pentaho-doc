@@ -1,0 +1,128 @@
+<content type="text/html" title="MQL Formula Syntax For Global Constraints">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">You can use all of the standard operators, and any of the following functions when defining a global constraint:</div>
+        <table cellpadding="4" cellspacing="0" summary="" border="1" class="simpletable properties">
+          <tr class="sthead prophead">
+            <th valign="bottom" align="left" class="stentry proptypehd" width="16.666666666666668%" id="cf3717cf-b314-4e6e-9d08-829f1063626b__d3988e23">Function Name</th>
+            <th valign="bottom" align="left" class="stentry propvaluehd" width="33.333333333333336%" id="cf3717cf-b314-4e6e-9d08-829f1063626b__d3988e26">Parameters</th>
+            <th valign="bottom" align="left" class="stentry propdeschd" width="50%" id="cf3717cf-b314-4e6e-9d08-829f1063626b__d3988e29">Description</th>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">OR</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">Two or more boolean expressions</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Returns <strong class="ph b">true</strong>  if one or more parameters are true</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">AND</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">Two or more boolean expressions</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Returns <strong class="ph b">true</strong>  if all parameters are true</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">LIKE</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">Two</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Compares a column to a regular expression, using <strong class="ph b">%</strong>  as a wild card</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">IN</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">Two or more</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Checks to see if the first parameter is in the following list of parameters</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">NOW</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">N/A</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">The current date</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">DATE</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">Three numeric parameters: Year, month, and day </td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">The specified date</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">DATEVALUE</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">One text parameter: year-month-day</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">The specified date</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">CASE</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">Two or more</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Evaluates the odd-numbered parameters, and returns the even numbered parameter values. If there are an odd number of parameters, the last parameter is returned if no other parameter evaluates to true.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">COALESCE</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">One or more</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Returns the first non-null parameter. If all are null, the message in the last parameter is returned.</td>
+          </tr>
+          <tr class="strow property">
+            <td valign="top" headers="d3988e23" class="stentry proptype" width="16.666666666666668%">DATEMATH</td>
+            <td valign="top" headers="d3988e26" class="stentry propvalue" width="33.333333333333336%">One expression</td>
+            <td valign="top" headers="d3988e29" class="stentry propdesc" width="50%">Returns a date value based on a DATEMATH expression (see related links below for a link to the DATEMATH Javadoc)</td>
+          </tr>
+        </table>
+        <div class="example">
+          <div id="section_1" class="mt-page-section"><span id="OR"></span> 
+            <h2 class="editable">OR</h2> <pre class="pre codeblock">OR( [BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME] = &quot;EuroCars&quot;;
+                [BT_CUSTOMERS.BC_CUSTOMERS_CREDITLIMIT] > 1000 ) </pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_2" class="mt-page-section"><span id="AND"></span> 
+            <h2 class="editable">AND</h2> <pre class="pre codeblock">AND( [BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME] = &quot;EuroCars&quot;;
+                [BT_CUSTOMERS.BC_CUSTOMERS_CREDITLIMIT] > 1000 ) </pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_3" class="mt-page-section"><span id="LIKE"></span> 
+            <h2 class="editable">LIKE</h2> <pre class="pre codeblock">LIKE([BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME]; &quot;%SMITH%&quot;) </pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_4" class="mt-page-section"><span id="IN"></span> 
+            <h2 class="editable">IN</h2> <pre class="pre codeblock">IN([BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME]; &quot;Adam Smith&quot;; &quot;Brian Jones&quot;)
+            </pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_5" class="mt-page-section"><span id="NOW"></span> 
+            <h2 class="editable">NOW</h2> <pre class="pre codeblock">NOW()</pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_6" class="mt-page-section"><span id="DATE"></span> 
+            <h2 class="editable">DATE</h2> <pre class="pre codeblock">DATE(2008;4;15) </pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_7" class="mt-page-section"><span id="DATEVALUE"></span> 
+            <h2 class="editable">DATEVALUE</h2> <pre class="pre codeblock">DATEVALUE(&quot;2008-04-15&quot;)</pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_8" class="mt-page-section"><span id="CASE"></span> 
+            <h2 class="editable">CASE</h2> <pre class="pre codeblock">CASE( [BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME] = &quot;EuroCars&quot;; &quot;European Cars&quot;;
+                [BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME] = &quot;AsiaCars&quot;; &quot;Asian Cars&quot;; &quot;Unknown Cars&quot;
+                )</pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_9" class="mt-page-section"><span id="COALESCE"></span> 
+            <h2 class="editable">COALESCE</h2> <pre class="pre codeblock">COALESCE( [BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERNAME];
+                [BT_CUSTOMERS.BC_CUSTOMERS_CUSTOMERID]; &quot;Customer is Null&quot; ) </pre> </div>
+        </div>
+        <div class="example">
+          <div id="section_10" class="mt-page-section"><span id="DATEMATH"></span> 
+            <h2 class="editable">DATEMATH</h2> <pre class="pre codeblock">DATEMATH(&quot;0:ME -1:DS&quot;)</pre>
+            <p class="p">This expression represents 00:00:00.000 on the day before the last day of the current month.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#OR" rel="internal">OR</a>  </li>
+      <li> <a href="#AND" rel="internal">AND</a>  </li>
+      <li> <a href="#LIKE" rel="internal">LIKE</a>  </li>
+      <li> <a href="#IN" rel="internal">IN</a>  </li>
+      <li> <a href="#NOW" rel="internal">NOW</a>  </li>
+      <li> <a href="#DATE" rel="internal">DATE</a>  </li>
+      <li> <a href="#DATEVALUE" rel="internal">DATEVALUE</a>  </li>
+      <li> <a href="#CASE" rel="internal">CASE</a>  </li>
+      <li> <a href="#COALESCE" rel="internal">COALESCE</a>  </li>
+      <li> <a href="#DATEMATH" rel="internal">DATEMATH</a>  </li>
+    </ol>
+  </body>
+</content>

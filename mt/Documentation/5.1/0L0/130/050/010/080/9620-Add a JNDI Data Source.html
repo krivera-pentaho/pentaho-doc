@@ -1,0 +1,24 @@
+<content type="text/html" title="Add a JNDI Data Source">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section prereq p">You should already have established a JNDI data connection in your application server before continuing.</div>
+        <div class="section context">Follow this procedure to establish a connection to a JNDI data source.</div>
+        <ol class="ol steps">
+          <li class="li step"> <span class="ph cmd">Quit Report Designer if it is currently running.</span>  </li>
+          <li class="li step"> <span class="ph cmd">Edit the <span class="ph filepath">.pentaho/simple-jndi/default.properties</span>  file.</span>  The <strong class="ph b">.pentaho</strong>  directory is in the home or user directory of the user account that runs Report Designer.
+            If you have multiple copies of Report Designer installed to multiple user accounts, each default.properties file will have to be edited. </li>
+          <li class="li step"> <span class="ph cmd">Add your JNDI connection information, beginning with the JNDI name on each line, as shown in the example below:</span>  <pre class="pre codeblock">SampleData/type=javax.sql.DataSource
+SampleData/driver=org.hsqldb.jdbcDriver
+SampleData/url=jdbc:hsqldb:hsql://localhost/sampledata
+SampleData/user=pentaho_user
+SampleData/password=password</pre> </li>
+          <li class="li step"> <span class="ph cmd">Save and close the file, then start Report Designer.</span>  </li>
+          <li class="li step"> <span class="ph cmd">To add this data source to a report, add a JDBC data source, choose <strong class="ph b">JNDI</strong>  as the connection type, and type in the JNDI name in the appropriate field.</span>  </li>
+        </ol>
+        <div class="section result">Report Designer can now access your JNDI data sources.</div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,30 @@
+<content type="text/html" title="Mondrian Log Analysis">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">To determine Analysis performance problems, you can view a&nbsp;log of&nbsp;the Analysis engine and your data warehouse database. This will&nbsp;reveal&nbsp;information about the infrastructure&nbsp;and the SQL and MDX queries involved in your
+          Analysis calculations. Your DBA should perform the initial database performance-tuning work by looking at the database logs, ensuring that&nbsp;statistics are up to date (access plans are computed and rational) and that your usage is profiled.
+          Make sure the aggregation levels are based on the top 50-80 common uses.</p>
+        <p class="p">Base all of your performance tuning on this data; it will tell you everything that&nbsp;you need to know about bottlenecks in your data structure.</p>
+        <p class="p">You can also determine the causes behind hanging queries in an Analyzer report by viewing Mondrian log information directly through the Analyzer interface:</p>
+        <ol class="ol">
+          <li class="li">Log into the BA Server as an administrator.</li>
+          <li class="li">Create or load an Analyzer report.</li>
+          <li class="li">Click the <strong>More actions and options</strong> &nbsp;icon&nbsp;in the report toolbar, and select&nbsp;<strong>Administration&nbsp;>&nbsp;Clear Cache.</strong>  Click <strong>Ok</strong> .&nbsp;&nbsp;</li>
+          <li class="li">Click the&nbsp;icon again&nbsp;and select&nbsp;<strong>Administration</strong> &nbsp;<strong>>&nbsp;XML</strong> . Click <strong>Ok</strong> .&nbsp;</li>
+          <li class="li">Click the&nbsp;icon again&nbsp;and select&nbsp;<strong>Administration&nbsp;>&nbsp;L</strong> <strong class="ph b">og</strong> .</li>
+        </ol>
+        <p class="p">A new browser tab will open with log information about the open report. You can refresh this page to see the query progress in real time. The following log entries are the most important to watch out for:</p>
+        <ul class="ul">
+          <li class="li">If each SQL query is reported twice. The first time is for Mondrian to get the first record and the second time is to retrieve all records</li>
+          <li class="li">SQL queries with high execution times</li>
+          <li class="li">SQL queries that return large volumes of data (more than 1000 rows)</li>
+          <li class="li">SQL queries that don't join tables</li>
+          <li class="li">SQL queries that don't include filters</li>
+          <li class="li">This log entry: <strong class="ph b">WARN mondrian.rolap.RolapUtil Unable to use native SQL evaluation for 'NonEmptyCrossJoin'; reason: arguments not supported</strong> . If you see this, try switching the <strong class="ph b">contains</strong>             filter into an <strong class="ph b">includes</strong>  filter, or make the contains filter more selective</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

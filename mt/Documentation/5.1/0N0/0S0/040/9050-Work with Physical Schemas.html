@@ -1,0 +1,172 @@
+<content type="text/html" title="Work with Physical Schemas">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">A physical schema defines a set of MongoDB collections. The physical model is the source of the data which is presented through the logical model. MongoDB allows each document in a collection to have a different schema. Analyzer for MongoDB requires
+          all the documents in your collection to be uniform. The details for working with physical schemas are covered here.</p>
+        <p class="p">Here is an example MongoDB document taken from the Foodmart database.</p>
+        <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;_id&quot; : ObjectId(&quot;527ab2396a65f6f4b153cee5&quot;),
+&quot;product_subcategory&quot; : &quot;Nuts&quot;,
+&quot;product_category&quot; : &quot;Specialty&quot;,
+&quot;product_department&quot; : &quot;Produce&quot;,
+&quot;product_family&quot; : &quot;Food&quot;,
+&quot;product_id&quot; : 195,
+&quot;product_class_id&quot; : 1,
+&quot;the_year&quot; : 1997,
+&quot;the_month&quot; : &quot;June&quot;,
+&quot;the_day&quot; : &quot;Sunday&quot;,
+&quot;quarter&quot; : &quot;Q2&quot;,
+&quot;country&quot; : &quot;USA&quot;,
+&quot;state_province&quot; : &quot;WA&quot;,
+&quot;city&quot; : &quot;Sedro Woolley&quot;,
+&quot;marital_status&quot; : &quot;S&quot;,
+&quot;gender&quot; : &quot;M&quot;,
+&quot;marital_status&quot; : &quot;S&quot;,
+&quot;store_sales&quot; : 1.77,
+&quot;store_cost&quot; : 0.5664,
+&quot;unit_sales&quot; : 1
+}</pre> </div>
+      </div>
+      <div class="topic concept nested1" id="10456895-cf4f-479c-8cf5-065de9763c04__concept_tables">
+        <div class="mt-clear" style="page-break-after: always;"><span style="display: none;">&nbsp;</span> </div>
+        <div id="section_1" class="mt-page-section"><span id="Tables"></span> 
+          <h2 class="editable">Tables</h2>
+          <div class="body conbody">
+            <p class="p">A table is a named use of a MongoDB Collection. Tables are declared using the <code class="ph codeph"><Table></code> element, as shown below.</p> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Table name=&quot;sales&quot;/></pre>            </div>
+        </div>
+      </div>
+      <div class="topic concept nested1" id="10456895-cf4f-479c-8cf5-065de9763c04__concept_columns">
+        <div id="section_2" class="mt-page-section"><span id="Columns"></span> 
+          <h2 class="editable">Columns</h2>
+          <div class="body conbody">
+            <p class="p">Inside a table, you must specify each attribute which will be used within your schema by defining <code class="ph codeph"><CalculatedColumnDef></code> elements.</p>
+            <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><Table name=&quot;sales&quot;>
+<ColumnDefs>
+<CalculatedColumnDef name=&quot;unit_sales&quot; type=&quot;Integer&quot;/>
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+              $unit_sales
+            </SQL>
+          </ExpressionView>
+</CalculatedColumnDef>
+<CalculatedColumnDef name=&quot;month_of_year&quot; type=&quot;String&quot;/>
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+              $month_of_year
+            </SQL>
+          </ExpressionView>
+</CalculatedColumnDef>
+<CalculatedColumnDef name=&quot;the_year&quot; type=&quot;Integer&quot;/>
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+              $the_year
+            </SQL>
+          </ExpressionView>
+</CalculatedColumnDef>
+         </ColumnDefs>
+</Table></pre> </div>
+            <p class="p">The <code class="ph codeph"><CalculatedColumnDef name=&quot;the_year&quot; type=&quot;Integer&quot;></code> declares that the sales table has a column called <code class="ph codeph">the_year</code> and that you want to use it as an integer.
+              This affects how the column is sorted, and affects the MDX type of expressions built from this column. &nbsp;The <code class="ph codeph"><ExpressionView></code> defines <code class="ph codeph">$the_year</code> as the MongoDB attribute to
+              use for the column. &nbsp;There is no requirement that the MongoDB attribute name match the <code class="ph codeph">CalculatedColumnDef</code> name, but in most cases that is a reasonable convention to follow.</p>
+          </div>
+          <div class="topic concept nested2" id="10456895-cf4f-479c-8cf5-065de9763c04__concept_nested_attributes">
+            <div id="section_3" class="mt-page-section"><span id="Nested_Attributes"></span> 
+              <h2 class="editable">Nested Attributes</h2>
+              <div class="body conbody">
+                <p class="p">Dot notation can be used to reference attributes that are nested within a MongoDB collection. &nbsp;For example, consider the following document, which groups related attributes under common parents:</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">{
+&quot;_id&quot; : ObjectId(&quot;527ab2396a65f6f4b153cee5&quot;),
+&ldquo;products&rdquo; : { &quot;product_subcategory&quot; : &quot;Nuts&quot;,
+ &quot;product_category&quot; : &quot;Specialty&quot;,
+  &quot;product_department&quot; : &quot;Produce&quot;,
+  &quot;product_family&quot; : &quot;Food&quot; },
+&ldquo;time&rdquo; : { &quot;the_year&quot; : 1997,
+  &quot;the_month&quot; : &quot;June&quot;,
+  &quot;the_day&quot; : &quot;Sunday&quot;,
+  &quot;quarter&quot; : &quot;Q2&quot;}
+}</pre> </div>
+                <p class="p">To define the <code class="ph codeph">quarter</code> column, use a <code class="ph codeph"><CalculatedColumnDef></code> element as above, specifying <code class="ph codeph">$time.quarter</code> as the referenced attribute under <code class="ph codeph"><ExpressionView></code>.</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedColumnDef name=&quot;quarter&quot; type=&quot;Integer&quot;/>
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+              $time.quarter
+            </SQL>
+          </ExpressionView>
+    </CalculatedColumnDef></pre> </div>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="10456895-cf4f-479c-8cf5-065de9763c04__concept_apply_mongo_framework">
+            <div id="section_4" class="mt-page-section"><span id="Apply_MongoDB_Aggregation_Framework_Operators"></span> 
+              <h2 class="editable">Apply MongoDB Aggregation Framework Operators</h2>
+              <div class="body conbody">
+                <p class="p">Valid string, arithmetic and conditional operators are permitted within <code class="ph codeph"><CalculatedColumnDef></code> elements. &nbsp;For example, to construct the <code class="ph codeph">full_name</code> column as the concatenation
+                  of <code class="ph codeph">$fname</code> and <code class="ph codeph">$lname</code>, use a definition like the following:</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedColumnDef name=&quot;full_name&quot; type=&quot;String&quot;/>
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+               {$concat : ['$fname', ' ', '$lname']}
+            </SQL>
+          </ExpressionView>
+    </CalculatedColumnDef></pre> </div>
+                <p class="p">The <code class="ph codeph">promotion_sales</code> calculation gives the <code class="ph codeph">store_sales</code> value when <code class="ph codeph">promotion_id</code> is not 0, and a value of 0 when <code class="ph codeph">promotion_id</code>                  equals 0. &nbsp;That can be expressed as:</p>
+                <div class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedColumnDef name=&quot;promotion_sales&quot; type=&quot;Numeric&quot; >
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+              {$cond : [{ $eq: ['$promotion_id', 0]}, 0, '$store_sales']}
+            </SQL>
+          </ExpressionView>
+        </CalculatedColumnDef></pre> </div>
+                <p class="p">The requirement is the expression must be valid within a MongoDB <code class="ph codeph">$project</code>. &nbsp;Note that complex or deeply nested expressions can have performance impact.</p>
+              </div>
+            </div>
+          </div>
+          <div class="topic concept nested2" id="10456895-cf4f-479c-8cf5-065de9763c04__concept_mongo_arrays">
+            <div id="section_5" class="mt-page-section"><span id="MongoDB_Arrays"></span> 
+              <h2 class="editable">MongoDB Arrays</h2>
+              <div class="body conbody">
+                <p class="p">MongoDB arrays can be referenced &nbsp;using square brackets. &nbsp;For example, to specify that the <code class="ph codeph">emails</code> array should be unwound, use <code class="ph codeph">$emails[*]</code> as shown below:</p>
+                <div
+                class="p"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><CalculatedColumnDef name=&quot;emails&quot; type=&quot;Integer&quot;/>
+          <ExpressionView >
+            <SQL dialect=&quot;generic&quot;>
+              $emails[*]
+            </SQL>
+          </ExpressionView>
+    </CalculatedColumnDef></pre> </div>
+              <div class="p">
+                <p>Use of arrays within a schema has some current limitations:</p>
+                <ol class="pentaho-list-ordered">
+                  <li class="li">Only one array attribute can be unwound.</li>
+                  <li class="li">Array ordinals (e.g. $emails[1]) are not supported.</li>
+                  <li class="li">Arrays which introduce many-to-many relationships can produce incorrect results. &nbsp;</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Tables" rel="internal">Tables</a>  </li>
+      <li> <a href="#Columns" rel="internal">Columns</a>  </li>
+      <li> <a href="#Nested_Attributes" rel="internal">Nested Attributes</a>  </li>
+      <li> <a href="#Apply_MongoDB_Aggregation_Framework_Operators" rel="internal">Apply MongoDB Aggregation Framework Operators</a>  </li>
+      <li> <a href="#MongoDB_Arrays" rel="internal">MongoDB Arrays</a>  </li>
+    </ol>
+  </body>
+</content>

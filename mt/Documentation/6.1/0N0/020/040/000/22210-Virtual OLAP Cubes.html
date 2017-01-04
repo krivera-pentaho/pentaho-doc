@@ -1,0 +1,62 @@
+<content type="text/html" title="Virtual OLAP Cubes">
+  <body>
+    <div>
+      <div class="body conbody">
+        <p class="p">Another name for a dimensional model is a <strong class="ph b">cube</strong> . Each cube represents one fact table and several dimensional tables. This model should be useful for reporting and analysis on the subject of the data in the fact table.
+          However, if you want to cross-reference this data with another cube -- if you need to analyze data across two or more cubes, or need to combine information from two fact tables on the same subject but with different granularity -- then you must
+          create a <strong class="ph b">virtual cube</strong> . The XML elements that compose a virtual cube are explained in detail below.</p>
+        <div class="note note"><span class="notetitle">Note:</span>  Virtual cubes cannot presently be created through Pentaho Data Integration's model perspective; you must use Schema Workbench instead.</div>
+        <p class="p">The <strong class="ph b"><CubeUsages></strong>  element specifies the cubes that are imported into the virtual cube. It holds
+          <CubeUsage> elements.</p>
+        <p class="p">The <strong class="ph b"><CubeUsage></strong>  element specifies the base cube that is imported into the virtual cube. Alternatively you can define a <strong class="ph b"><VirtualCubeMeasure></strong>  and use similar imports from the base cube
+          without defining a
+          <CubeUsage>.The <strong class="ph b">cubeName</strong>  attribute specifies the name of the base cube. The <strong class="ph b">ignoreUnrelatedDimensions</strong>  attribute determines whether or not the measures from this base cube will have non-joining
+            dimension members pushed to the top level member. This attribute is false by default because it is still experimental.</p>
+        <p class="p">The <strong class="ph b"><VirtualCubeDimension></strong>  element imports a dimension from one of the constituent cubes. If you do not specify the cubeName attribute, this means you are importing a shared dimension.</p>
+        <div class="note note"><span class="notetitle">Note:</span>  If a shared dimension is used more than once in a cube, there is no way to determine which usage of the shared dimension you intend to import.</div>
+        <p class="p">The <strong class="ph b"><VirtualCubeMeasure></strong>  element imports a measure from one of the constituent cubes. It is imported with the same name. If you want to create a formula or rename a measure as you import it, use the <strong class="ph b"><CalculatedMember></strong>           element instead.</p>
+        <p class="p">Virtual cubes are useful for situations where there are fact tables of different granularities (for instance, one Time fact table might be configured on a Day level, another at the Month level), or fact tables of different dimensionalities (for
+          instance one on Products, Time and Customer, another on Products, Time and Warehouse), and you need to present the results to users who don't know how the data is structured.</p>
+        <p class="p">Any common dimensions -- shared dimensions which are used by both constituent cubes -- are automatically synchronized. In this example, [Time] and [Products] are common dimensions. So if the context is ([Time].[2005].[Q2], [Products].[Productname].[P-51-D
+          Mustang]), measures from either cube will relate to this context.</p>
+        <p class="p">Dimensions which only belong to one cube are called <strong class="ph b">non-conforming dimensions</strong> . The [Gender] dimension is an example of this; it exists in the Sales cube, but not Warehouse. If the context is ([Gender].[F], [Time].[2005].[Q1]),
+          it makes sense to ask the value of the [Unit Sales] measure (which comes from the [Sales] cube) but not the [Units Ordered] measure (from [Warehouse]). In the context of [Gender].[F], [Units Ordered] has value NULL.</p>
+        <div class="example">
+        <pre class="pre codeblock"><VirtualCube name=&quot;Warehouse and Sales&quot;>
+    <CubeUsages>
+        <CubeUsage cubeName=&quot;Sales&quot; ignoreUnrelatedDimensions=&quot;true&quot;/>
+        <CubeUsage cubeName=&quot;Warehouse&quot;/>
+    </CubeUsages>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Customers&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Education Level&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Gender&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Marital Status&quot;/>
+    <VirtualCubeDimension name=&quot;Product&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Promotion Media&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Promotions&quot;/>
+    <VirtualCubeDimension name=&quot;Store&quot;/>
+    <VirtualCubeDimension name=&quot;Time&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Sales&quot; name=&quot;Yearly Income&quot;/>
+    <VirtualCubeDimension cubeName=&quot;Warehouse&quot; name=&quot;Warehouse&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Sales&quot; name=&quot;[Measures].[Sales Count]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Sales&quot; name=&quot;[Measures].[Store Cost]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Sales&quot; name=&quot;[Measures].[Store Sales]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Sales&quot; name=&quot;[Measures].[Unit Sales]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Sales&quot; name=&quot;[Measures].[Profit Growth]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Store Invoice]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Supply Time]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Units Ordered]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Units Shipped]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Warehouse Cost]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Warehouse Profit]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Warehouse Sales]&quot;/>
+    <VirtualCubeMeasure cubeName=&quot;Warehouse&quot; name=&quot;[Measures].[Average Warehouse Sale]&quot;/>
+    <CalculatedMember name=&quot;Profit Per Unit Shipped&quot; dimension=&quot;Measures&quot;>
+        <Formula>[Measures].[Profit] / [Measures].[Units Shipped]</Formula>
+    </CalculatedMember>
+</VirtualCube></pre> </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

@@ -1,0 +1,66 @@
+<content type="text/html" title="Create Jobs">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to create jobs.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <div class="p">Jobs are used to coordinate ETL activities such as:
+            <ul class="ul">
+              <li class="li">Defining the flow and dependencies for what order transformations should be run</li>
+              <li class="li">Preparing for execution by checking conditions such as, &quot;Is my source file available?,&quot; or &quot;Does a table exist?&quot;</li>
+              <li class="li">Performing bulk load database operations</li>
+              <li class="li">File Management such as posting or retrieving files using FTP, copying files and deleting files</li>
+              <li class="li">Sending success or failure notifications through email</li>
+            </ul>
+          </div>
+          <p class="p">For this exercise, imagine that an external system is responsible for placing your <strong class="ph b">sales_data.csv</strong>  input in its source location every Saturday night at 9 p.m. You want to create a job that will check to see that
+            the file has arrived and run your transformation to load the records into the database. In a subsequent exercise, you will schedule the job to be run every Sunday morning at 9 a.m.</p>
+          <p class="p">To complete this exercise, you must have completed the exercises in the
+            <a class="xref" title="Create Transformations" rel="internal" href="http://help.pentaho.com/Documentation/5.3/0J0/0C0/020">Create Transformations</a>  section.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">Go to <strong><span class="ph uicontrol">File</span>  > <span class="ph uicontrol">New</span>  > <span class="ph uicontrol">Job</span> </strong> .</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Expand the <strong class="ph b">General</strong>  folder and drag a <strong class="ph b">Start</strong>  job entry onto the graphical workspace. </span>  The <span class="ph uicontrol">Start</span>  job entry defines where the
+            execution will begin.</li>
+          <li class="li step"><span class="ph cmd">Expand the <strong><span class="ph uicontrol">Conditions</span>  </strong> folder and add a <strong><span class="ph uicontrol">File Exists</span> </strong>  job entry.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Draw a hop from the <strong><span class="ph uicontrol">Start</span>  </strong> job entry to the <strong><span class="ph uicontrol">File Exists</span> </strong>  job entry.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Double-click the <strong><span class="ph uicontrol">File Exists</span> </strong>  job entry to open its edit properties dialog box. Click <strong><span class="ph uicontrol">Browse</span>  </strong> and select the <span class="filepath style-wrap"><span class="ph uicontrol">sales_data.csv</span> </span> 
+            from the following location: <code class="ph codeph"> ...\design-tools\data-integration\samples\transformations\files</code>. </span>  Be sure to set the filter to CSV files to see the file.</li>
+          <li class="li step">Click&nbsp;<strong>OK&nbsp;</strong> to exit from the&nbsp;<strong>Open File&nbsp;</strong> window.</li>
+          <li class="li step">Click&nbsp;<strong>OK&nbsp;</strong> to exit from the&nbsp;<strong>Check if a file exists ...&nbsp;</strong> window.</li>
+          <li class="li step"><span class="ph cmd">In Spoon, expand the <strong class="ph b">General</strong>  folder and add a <strong class="ph b">Transformation</strong>  job entry.</span> </li>
+          <li class="li step"><span class="ph cmd">Draw a hop between the <strong class="ph b">File Exists </strong> and the <strong class="ph b">Transformation</strong>  job entries.</span> </li>
+          <li class="li step"><span class="ph cmd">Double-click the <strong class="ph b">Transformation</strong>  job entry to open its edit properties dialog box.</span> </li>
+          <li class="li step"><span class="ph cmd">Select the <strong class="ph b">Specify by name and directory</strong>  option. Click <strong><span class="ph uicontrol">Select a transformation to run from the current repository&nbsp;</span> </strong> button. &nbsp;The&nbsp;<strong>Select repository object&nbsp;</strong> window
+            opens.</span> 
+          </li>
+          <li class="li step"><span class="ph cmd">Expand the repository tree to find your sample transformation. Select it and click <strong class="ph b">OK</strong> .</span> 
+            <img alt="File:/pdi_select_transformation_for_job.png" class="image internal" id="77c7528f-1833-46fc-b2d2-70b712ff6c5b__task_pdi_bldg_job__image_aa6bf806-6862-4751-bb6c-931bc6a2faa1"
+            src="http://help.pentaho.com/@api/deki/files/3136/pdi_select_transformation_for_job.png?revision=1" />
+          </li>
+          <li class="li step"><span class="ph cmd">Save your job as <strong class="ph b">Sample Job</strong> .</span> 
+            <img alt="File:/pdi_job_example.png" class="image internal" id="77c7528f-1833-46fc-b2d2-70b712ff6c5b__task_pdi_bldg_job__image_604c3c4f-ecd1-4daf-a4cf-04c5c592d725"
+            src="http://help.pentaho.com/@api/deki/files/3134/pdi_job_example.png?revision=1" />
+          </li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Run Job</strong> . When the <strong class="ph b">Execute a Job</strong>  dialog box appears, choose <strong class="ph b">Local Execution</strong>  and click <strong class="ph b">Launch</strong> .</span>             &nbsp;The <strong class="ph b">Execution Results</strong>  panel should open showing you the job metrics and log information for the job execution.
+            <img alt="File:/pdi_run_job.png" class="image internal" id="77c7528f-1833-46fc-b2d2-70b712ff6c5b__task_pdi_bldg_job__image_f26ab86d-f126-401e-90cb-fd7a2a9366bf"
+            src="http://help.pentaho.com/@api/deki/files/3135/pdi_run_job.png?revision=1" />
+          </li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

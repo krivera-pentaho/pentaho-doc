@@ -1,0 +1,106 @@
+<content type="text/html" title="Set DI Version Control and Comment Tracking Options">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Learn how to turn version control and comment tracking on and off.</p>
+        </div>
+      </div>
+      <p>By default, PDI tracks versions and comments for jobs, transformations, and connection information when you save them. &nbsp;You can&nbsp;turn version control and comment tracking on or off by modifying the <span class="filepath style-wrap">repository.spring.properties</span>         text file.</p>
+      <div id="section_2" class="mt-page-section"><span id="Turn_Version_Control_Off"></span> 
+        <h2 class="editable">Turn&nbsp;Version Control Off</h2>
+        <p>To turn version control off, complete these steps. &nbsp;If you turn version control off, comment tracking is also turned off.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Exit from&nbsp;Spoon.</li>
+          <li>Stop the DI Server.</li>
+          <li>Open the&nbsp;<span class="filepath style-wrap">data-integration-server/pentaho-solution/systems/repository.spring.properties</span> &nbsp;file in a text editor.&nbsp;</li>
+          <li>Set <span class="filepath style-wrap">versioningEnabled</span>  to <span class="filepath style-wrap">false.</span> </li>
+        </ol>
+        <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=false</pre> </div>
+        <ol class="pentaho-list-ordered" start="5" style="list-style-type: decimal;">
+          <li>Save and close the file.</li>
+          <li>Start the DI Server.</li>
+          <li>Start Spoon.</li>
+          <li>To verify that version control is off, connect to the&nbsp;Pentaho Repository. &nbsp;In the <strong><span class="uicontrol style-wrap">Repository Explorer</span> </strong>  window in the <strong>Browse&nbsp;</strong> tab, click on a file. &nbsp;Note
+            that although you can see the <strong>Access Control&nbsp;</strong> &nbsp;the label, the&nbsp;<strong><span class="uicontrol style-wrap">Version History</span> </strong>  tab is hidden. &nbsp;</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Turn_Comment_Tracking_Off"></span> 
+        <h2 class="editable">Turn Comment Tracking Off</h2>
+        <p>To turn comment tracking&nbsp;off, complete these steps.</p>
+        <ol class="pentaho-list-ordered" start="1" style="list-style-type: decimal;">
+          <li>Exit from&nbsp;Spoon.</li>
+          <li>Stop the DI Server.</li>
+          <li>Open the&nbsp;<span class="filepath style-wrap">data-integration-server/pentaho-solution/systems/repository.spring.properties</span> &nbsp;file in a text editor.</li>
+          <li>Set <span class="filepath style-wrap">versioningEnabled</span>  to <span class="filepath style-wrap">true </span> and&nbsp;<span class="filepath style-wrap">versionCommentsEnabled&nbsp;</span> to&nbsp;<span class="filepath style-wrap">false.</span> </li>
+        </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=true
+versionCommentsEnabled=false</pre>
+        <ol class="pentaho-list-ordered" start="5" style="list-style-type: decimal;">
+          <li>Save and close the file.</li>
+          <li>Start the DI Server.</li>
+          <li>Start Spoon. &nbsp;</li>
+          <li>To verify that comment tracking is off, connect to the&nbsp;Pentaho Repository. &nbsp;In the <strong><span class="uicontrol style-wrap">Repository Explorer</span> </strong>  window in the <strong><span class="uicontrol style-wrap">Browse </span> </strong> tab,
+            click on a file. &nbsp;Note that the <strong><span class="uicontrol style-wrap">Version History</span> </strong>  tab appears, but that the <strong><span class="uicontrol style-wrap">Comment </span> </strong> field is hidden.<span style="color: rgb(0, 92, 167);">&nbsp;</span> &nbsp;Also
+            note that when you save a transformation, job, or connection information, you are no longer prompted to enter a comment.</li>
+        </ol>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Turn_Version_Control_On"></span> 
+        <h2 class="editable">Turn Version Control On</h2>
+        <p>To turn version control on, do these things.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Exit from&nbsp;Spoon.</li>
+          <li>Stop the DI Server.</li>
+          <li>Open the&nbsp;<span class="filepath style-wrap">data-integration-server/pentaho-solution/systems/repository.spring.properties</span> &nbsp;file in a text editor.</li>
+          <li>Set&nbsp;<span class="filepath style-wrap">versioningEnabled&nbsp;</span> to&nbsp;<span class="filepath style-wrap">true.</span> </li>
+        </ol>
+        <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=true</pre> </div>
+        <ol class="pentaho-list-ordered" start="5">
+          <li>If you want to also turn Comment Tracking, make sure to set <span class="filepath style-wrap">versionCommentsEnabled</span>  to <span class="filepath style-wrap">true</span> .&nbsp;</li>
+          <li>Save and close the file.</li>
+          <li>Start the DI Server.</li>
+          <li>Start Spoon. &nbsp;</li>
+          <li>To verify that Version Control is on, connect to the&nbsp;Pentaho Repository. &nbsp;In the&nbsp;<strong>Repository Explorer</strong> &nbsp;window in the&nbsp;<strong>Browse&nbsp;</strong> tab, click on a file. &nbsp;Note that the&nbsp;<strong>Version History</strong> &nbsp;tab
+            appears. When you save a transformation, job, or connection information, version control is applied.</li>
+        </ol>
+      </div>
+      <div id="section_5" class="mt-page-section"><span id="Turn_Comment_Tracking_On"></span> 
+        <h2 class="editable">Turn Comment Tracking On</h2>
+        <p>To turn comment tracking on, complete these steps.</p>
+        <ol class="pentaho-list-ordered">
+          <li>Exit from Spoon.</li>
+          <li>Stop the DI Server.</li>
+          <li>Open the&nbsp;<span class="filepath style-wrap">data-integration-server/pentaho-solution/systems/repository.spring.properties</span> &nbsp;file in a text editor.</li>
+          <li>Set&nbsp;<span class="filepath style-wrap">versioningEnabled</span> &nbsp;to&nbsp;<span class="filepath style-wrap">true&nbsp;</span> and&nbsp;<span class="filepath style-wrap">versionCommentsEnabled&nbsp;</span> to&nbsp;<span class="filepath style-wrap">true.</span> </li>
+        </ol>
+        <div class="pentaho-code-block style-wrap"> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">versioningEnabled=true
+versionCommentsEnabled=true</pre> </div>
+        <ol class="pentaho-list-ordered" start="5">
+          <li>Save and close the file.</li>
+          <li>Start the DI Server.</li>
+          <li>Start Spoon. &nbsp;</li>
+          <li>To verify that Comment Tracking&nbsp;is on, connect to the&nbsp;Pentaho Repository. &nbsp;In the <strong>Repository Explorer</strong>  window in the <strong>Browse </strong> tab, click on a file. Note that the <strong>Version History</strong>             tab appears with the <strong>Comments&nbsp;</strong> field. &nbsp;When you save a transformation, job, or connection information, you are prompted to enter a comment.&nbsp;</li>
+        </ol>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Turn_Version_Control_Off" rel="internal">Turn&nbsp;Version Control Off</a>  </li>
+      <li> <a href="#Turn_Comment_Tracking_Off" rel="internal">Turn Comment Tracking Off</a>  </li>
+      <li> <a href="#Turn_Version_Control_On" rel="internal">Turn Version Control On</a>  </li>
+      <li> <a href="#Turn_Comment_Tracking_On" rel="internal">Turn Comment Tracking On</a>  </li>
+    </ol>
+  </body>
+</content>

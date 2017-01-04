@@ -1,0 +1,94 @@
+<content type="text/html" title="Exporting Content from Solutions Repositories with Command-Line Tools">
+  <body>
+    <div>
+      <div class="body refbody">
+        <div class="section">
+          <p class="p">To export repository objects into XML format, using command-line tools instead of exporting repository configurations from within Spoon, use named parameters and command-line options when calling Kitchen or Pan from a command-line prompt.</p>
+          <p class="p">The following is an example command-line entry to execute an export job using Kitchen:</p> <pre class="pre codeblock">
+    call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb
+    &quot;/param:rep_name=PDI2000&quot; &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot;
+    &quot;/param:rep_folder=/public/dev&quot;
+    &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   </pre> </div>
+        <div class="section">
+          <table border="1" cellpadding="4" cellspacing="0" class="simpletable properties" summary="">
+            <tbody>
+              <tr class="sthead prophead">
+                <th align="left" class="stentry proptypehd" id="818585ab-e40c-411a-8001-f7489c4d3a78__d87852e32" valign="bottom" width="NaN%">
+                  <p class="p">Parameter</p>
+                </th>
+                <th align="left" class="stentry propvaluehd" id="818585ab-e40c-411a-8001-f7489c4d3a78__d87852e35" valign="bottom" width="NaN%">
+                  <p class="p">Description</p>
+                </th>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                  <p class="p"><span class="ph filepath">rep_folder</span> </p>
+                </td>
+                <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                  <p class="p">Repository Folder</p>
+                </td>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                  <p class="p"><span class="ph filepath">rep_name</span> </p>
+                </td>
+                <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                  <p class="p">Repository Name</p>
+                </td>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                  <p class="p"><span class="ph filepath">rep_password</span> </p>
+                </td>
+                <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                  <p class="p">Repository Password</p>
+                </td>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                  <p class="p"><span class="ph filepath">rep_user</span> </p>
+                </td>
+                <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                  <p class="p">Repository Username</p>
+                </td>
+              </tr>
+              <tr class="strow property">
+                <td class="stentry proptype" headers="d87852e32" valign="top" width="NaN%">
+                  <p class="p"><span class="ph filepath">target_filename</span> </p>
+                </td>
+                <td class="stentry propvalue" headers="d87852e35" valign="top" width="NaN%">
+                  <p class="p">Target Filename</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="section">
+          <p class="p">It is also possible to use obfuscated passwords with Encr, the command line tool for encrypting strings for storage/use by PDI. The following is an example command-line entry to execute a complete command-line call for the export in addition
+            to checking for errors:</p> <pre class="pre codeblock">
+   @echo off
+   ECHO This an example of a batch file calling the repository_export.kjb
+   
+   cd C:\Pentaho\pdi-ee-<filepath>--check--</filepath>{{contentVars.PDIvernum3}}>\data-integration
+   
+   call kitchen.bat /file:C:\Pentaho_samples\repository\repository_export.kjb &quot;/param:rep_name=PDI2000&quot;
+   &quot;/param:rep_user=admin&quot; &quot;/param:rep_password=password&quot; &quot;/param:rep_folder=/public/dev&quot;
+   &quot;/param:target_filename=C:\Pentaho_samples\repository\export\dev.xml&quot;
+   
+   if errorlevel 1 goto error
+   echo Export finished successful.
+   goto finished
+   
+   :error
+   echo ERROR: An error occurred during repository export.
+   :finished
+   REM Allow the user to read the message when testing, so having a pause
+   pause
+  </pre> </div>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

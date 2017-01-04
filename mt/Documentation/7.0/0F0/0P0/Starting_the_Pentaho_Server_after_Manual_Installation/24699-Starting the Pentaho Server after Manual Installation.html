@@ -1,0 +1,254 @@
+<content type="text/html" title="Starting the Pentaho Server after Manual Installation">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushXml.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushPlain.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJava.min.js"></script>
+  </head>
+  <body>
+    <p>How you start the&nbsp;Pentaho Server&nbsp;depends on your operating system, Windows or Linux.</p>
+    <div id="section_1" class="mt-page-section"><span id="Starting_the_Pentaho_Server_on_Windows"></span> 
+      <h2 class="editable"><span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">Starting the </span> <span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">Pentaho</span> 
+        <span class="mt-font-size-24" style="font-weight:600;line-height:1.2;"> Server on Windows</span> 
+      </h2>
+      <p>How you start the Pentaho Server on Windows depends on which of the following web application servers you installed:</p>
+      <div id="section_2" class="mt-page-section"><span id="Pentaho-Provided_Web_Application_Server"></span> 
+        <h3 class="editable">Pentaho-Provided Web Application Server</h3>
+        <p>If you installed the Pentaho-provided web application server, complete these steps to start the Pentaho Server on a Windows machine.</p>
+        <ol>
+          <li>Run the startup script for your web application server by launching the&nbsp;start-pentaho.bat&nbsp;file.</li>
+          <li>From a workstation, open a web browser and enter this URL:&nbsp;
+            <a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a>  to access the Pentaho User Console (PUC).</li>
+        </ol>
+        <p class="pentaho-note">If your server has&nbsp;a different&nbsp;hostname or&nbsp;port, replace <code>localhost</code> and <code>8080</code> with your specific values.&nbsp;&nbsp;&nbsp;</p>
+        <ol start="3">
+          <li>PUC will prompt you to install a license. License installation instructions are&nbsp;located&nbsp;in&nbsp;Manage Pentaho Licenses.</li>
+        </ol>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Your_Own_Web_Application_Server"></span> 
+        <h3 class="editable">Your Own Web Application Server</h3>
+        <p>If you installed your own web application server, complete these steps to start the Pentaho Server on a Windows machine.</p>
+        <div id="section_4" class="mt-page-section"><span id="Step_One:_Modify_Tomcat_Windows_Startup_Script"></span> 
+          <h4 class="editable">Step One: Modify Tomcat Windows&nbsp;Startup Script</h4>
+          <p>The Tomcat startup script must be modified to include the CATALINA_OPTS variable. CATALINA_OPTS indicates the amount of memory to allocate. It also indicates where Pentaho licenses are installed.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">
+              <p>Make sure the Tomcat web application server is not running by starting the Windows <strong>Task Manager</strong>  and looking for <strong>Tomcat</strong>  in the <strong>Applications </strong> tab. If the server is running, stop it.</p>
+            </li>
+            <li class="li step">Use a text editor to open the <span class="filepath style-wrap">s</span> <span class="ph filepath"><span class="filepath style-wrap">ta</span> rt-</span> <span class="filepath style-wrap">pentaho</span> <span class="ph filepath">.bat</span> &nbsp;file,
+              which is in the pentaho-server&nbsp;directory.</li>
+          </ol>
+          <ol class="pentaho-list-ordered" start="3">
+            <li class="li step">Add this line before the CATALINA_HOME section.&nbsp; <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">SET DI_HOME=%~dp0..\..\pentaho-solutions\system\kettle</pre> </li>
+            <li class="li step">Add the java option pentaho.installed.licenses.file to <span class="filepath style-wrap">CATALINA_OPTS</span> . You need to modify setting of <span class="filepath style-wrap">CATALINA_OPTS</span>  variable by adding the java option, such as
+              in the following example:</li>
+          </ol> <pre class="brush: plain; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">set CATALINA_OPTS=-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH% -DDI_HOME=%DI_HOME%</pre>
+          <ol class="pentaho-list-ordered" start="5">
+            <li class="li step">Save and close the file.</li>
+            <li class="li step">If you are using JBoss, go to Step Two. Otherwise, proceed to
+              <a title="Starting the Pentaho Server after Manual Installation" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0F0/0P0/Starting_the_Pentaho_Server_after_Manual_Installation#Step_Three:_Run_the_Startup_Script">
+              Step Three</a> .</li>
+          </ol>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="Step_Two:_Modify_the_JBoss_Startup_Script"></span> 
+          <h4 class="editable">Step Two: Modify the JBoss Startup Script</h4>
+          <p>If you installed your own JBoss web application server, the JBoss startup script must be modified to include the JAVA_OPTS variable. JAVA_OPTS indicates the amount of memory to allocate. It also indicates where Pentaho licenses are installed.
+            Specific instructions on how to modify the startup script depend on your operating system.</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">
+              <p>Make sure the JBoss web application server is not running by starting the Windows <strong>Task Manager</strong>  and looking for <strong class="ph b">JBoss</strong>  in the <strong>Applications </strong> tab. If the server is running, stop
+                it.</p>
+            </li>
+            <li class="li step">Use a text editor to open the <span class="ph filepath">standalone.conf.bat</span>  file, which is located in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+            <li class="li step">Use a text editor to open the <span class="filepath style-wrap">standalone.bat</span>  file.</li>
+          </ol>
+          <ol class="pentaho-list-ordered" start="4">
+            <li class="li step">Locate<span class="filepath style-wrap"> &quot;x%JBOSS_HOME%&quot; == &quot;x&quot; &nbsp;(</span>  and copy this text above it:</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">pushd &quot;%DIRNAME%..\..&quot;
+set &quot;INSTALL_HOME=%CD%&quot;
+popd
+SET DI_HOME=%INSTALL_HOME%\pentaho-solutions\system\kettle</pre>
+          <ol class="pentaho-list-ordered" start="5">
+            <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+          </ol>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Step_Three:_Run_the_Startup_Script"></span> 
+          <h4 class="editable">Step Three: Run the Startup Script</h4>
+          <ol>
+            <li>If you installed your own web application server, run the startup script for this server by launching one of the following files:</li>
+          </ol>
+          <ul class="pentaho-list-unordered" id="2d8e865f-3c8e-43a7-b273-07de6cd7c30b__install_starting_servers__ul_jjb_vsr_zk">
+            <li class="li">
+              <p><strong class="ph b">Windows Tomcat:</strong>  Launch the <span class="ph filepath">startup.bat</span>  file. The startup.bat file is in the Tomcat <span class="ph filepath">bin</span>  directory.</p>
+            </li>
+            <li class="li"><strong class="ph b">Windows JBoss:</strong>  Launch the <span class="ph filepath">standalone.bat</span>  file. The startup.bat file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+          </ul>
+          <ol start="2">
+            <li>From a workstation, open a web browser and enter this URL:&nbsp;
+              <a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a>  to access the Pentaho User Console (PUC).</li>
+          </ol>
+          <p class="pentaho-note">If your server has&nbsp;a different&nbsp;hostname or&nbsp;port, replace <code>localhost</code> and <code>8080</code> with your specific values.&nbsp;&nbsp;&nbsp;</p>
+          <ol start="3">
+            <li>PUC will prompt you to install a license. License installation instructions are&nbsp;located&nbsp;in&nbsp;Manage Pentaho Licenses.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div id="section_7" class="mt-page-section"><span id="Starting_the_Pentaho_Server_on_Linux"></span> 
+      <h2 class="editable"><span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">Starting the </span> <span class="mt-font-size-24" style="font-weight:600;line-height:1.2;">Pentaho</span> 
+        <span class="mt-font-size-24" style="font-weight:600;line-height:1.2;"> Server on Linux</span> 
+      </h2>
+      <p>How you start the Pentaho Server on Linux depends on which of the following web application servers you installed:</p>
+      <div id="section_8" class="mt-page-section"><span id="Pentaho-Provided_Web_Application_Server_2"></span> 
+        <h3 class="editable">Pentaho-Provided Web Application Server</h3>
+        <p>If you installed the Pentaho-provided web application server, complete these steps to start the Pentaho Server on a Linux machine.</p>
+        <ol>
+          <li>Run the startup script for your web application server by launching the&nbsp;<span class="mt-font-courier-new">start-pentaho.sh</span> &nbsp;file.</li>
+          <li>From a workstation, open a web browser and enter this URL:&nbsp;
+            <a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a>  to access the Pentaho User Console (PUC).</li>
+        </ol>
+        <p class="pentaho-note">If your server has&nbsp;a different&nbsp;hostname or&nbsp;port, replace <code>localhost</code> and <code>8080</code> with your specific values.&nbsp;&nbsp;&nbsp;</p>
+        <ol start="3">
+          <li>PUC will prompt you to install a license. License installation instructions are&nbsp;located&nbsp;in&nbsp;Manage Pentaho Licenses.</li>
+        </ol>
+      </div>
+      <div id="section_9" class="mt-page-section"><span id="Your_Own_Web_Application_Server_2"></span> 
+        <h3 class="editable">Your Own Web Application Server</h3>
+        <p>If you installed your own&nbsp;web application server, complete these steps to start the Pentaho Server on a Linux machine.</p>
+        <div id="section_10" class="mt-page-section"><span id="Step_One:_Modify_the_Tomcat_Linux_Startup_Script"></span> 
+          <h4 class="editable">Step One:&nbsp;Modify&nbsp;the Tomcat Linux Startup Script</h4>
+          <p>The Tomcat startup script must be modified to include the <span class="ph filepath">CATALINA_OPTS</span>  variable. <span class="ph filepath">CATALINA_OPTS</span>  indicates the amount of memory to allocate. It also indicates where Pentaho licenses
+            are installed.&nbsp;</p>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">
+              <p>Make sure the Tomcat web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <span class="ph filepath">ps -A</span>  at the prompt. If the server is running, stop it.</p>
+            </li>
+            <li class="li step">Use a text editor to open the <span class="ph filepath">startup.sh</span>  file, which is in the <span class="filepath style-wrap">pentaho/server/pentaho-server/tomcat/bin</span>  directory.</li>
+            <li class="li step">Locate the <span class="filepath style-wrap">#Check that target executable exists</span>  line and add this code&nbsp;above it.</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">DI_HOME=<your pentaho directory>/pentaho-solutions/system/kettle</pre>
+          <ol class="pentaho-list-ordered" start="4">
+            <li class="li step">Add the java option pentaho.installed.licenses.file to CATALINA_OPTS. You need to modify setting of
+              <br /> CATALINA_OPTS variable at the end of the file by adding the java option. &nbsp;See the following example.</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH -DDI_HOME=$DI_HOME&quot;</pre>
+          <ol class="pentaho-list-ordered" start="5">
+            <li class="li step">Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_11" class="mt-page-section"><span id="Step_Two:_Modify_the_JBoss_Linux_Startup_Script"></span> 
+          <h4 class="editable">Step Two:&nbsp;Modify&nbsp;the JBoss Linux Startup Script</h4>
+          <p>The JBoss startup script must be modified to include the <span class="filepath">JAVA_OPTS</span>  variable. <span class="filepath">JAVA_OPTS</span>  indicates the amount of memory to allocate. It also indicates where Pentaho licenses are installed.
+            Specific instructions on how to modify the startup script depend on your operating system.</p>
+          <ol>
+            <li class="li step">
+              <p>Make sure the JBoss web application server is not running by opening a <strong>Terminal</strong>  window and typing <span class="ph filepath">ps -A</span>  at the prompt. If the server is running, stop it.</p>
+            </li>
+            <li class="li step">Use a text editor to open the <span class="ph filepath">standalone.conf</span>  file. The file is located in the <span class="ph filepath">bin</span>  subdirectory of your JBoss home directory.</li>
+            <li class="li step">Modify the <span class="ph filepath">Xms</span>  memory settings in the <span class="ph filepath">JAVA_OPTS</span>  line to be at least 4096 MB or more, if you have the resources and are concerned with performance. Change the <span class="ph filepath">Xmx</span>               value to at least 6144 MB.</li>
+            <li class="li step">Add the following options to the <span class="ph filepath">JAVA_OPTS</span>  line:<span class="filepath style-wrap">&nbsp;</span> 
+              <div class="filepath style-wrap"> <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">-Djava.awt.headless=true -Djava.io.tmpdir=/tmp/ -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH</pre>                </div>
+            </li>
+            <li>Specify the option to pass to the Java VM, as shown below.&nbsp; <pre class="brush: java; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "># Specify options to pass to the Java VM.
+    if [ &quot;x$JAVA_OPTS&quot; = &quot;x&quot; ]; then
+        JAVA_OPTS=&quot;-Xms4096m \
+        -Xmx6144m \
+        -XX:MaxPermSize=256m \
+        -DDI_HOME=$DI_HOME
+        -Dsun.rmi.dgc.client.gcInterval=3600000 \
+        -Dsun.rmi.dgc.server.gcInterval=3600000 \
+        <b>-Djava.awt.headless=true \
+        -Djava.io.tmpdir=/tmp/ \
+        -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH</pre> </li>
+          </ol>
+          <p class="pentaho-note">You may need to adjust these settings for your environment. For instance, if you do not have a <span class="ph filepath">/tmp/</span>  directory, you may want to change that setting to <span class="ph filepath">/var/tmp/</span>  or some other
+            location.</p>
+          <ol class="pentaho-list-ordered" start="6">
+            <li class="li step">Save and close the file.</li>
+            <li>Locate the <span class="filepath style-wrap">bin</span>  subdirectory in the JBoss home directory and open the <span class="filepath style-wrap">standalone.sh</span>  file with a text editor.&nbsp;</li>
+            <li>Find the section for&nbsp;<span class="filepath style-wrap"># Setup JBOSS_HOME</span>  and add this after it.</li>
+          </ol> <pre class="brush: xml; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">INSTALL_HOME==`cd &quot;$DIRNAME/../..&quot;; pwd`
+DI_HOME=$INSTALL_HOME/pentaho-solutions/system/kettle</pre>
+          <ol class="pentaho-list-ordered" start="9">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_12" class="mt-page-section"><span id="Step_Three:_Start_the_Pentaho_Server"></span> 
+          <h4 class="editable">Step Three:&nbsp;Start the Pentaho&nbsp;Server</h4>
+          <ol class="pentaho-list-ordered">
+            <li class="li step">
+              <p>Run the startup script for your web application server by launching one these files.</p>
+              <div class="p">
+                <ul>
+                  <li class="li">
+                    <p><strong class="ph b">Linux Tomcat:</strong>  Launch the <span class="ph filepath"><span class="filepath style-wrap">startup.sh</span>  </span> file. The file is in the Tomcat <span class="ph filepath">bin</span>  directory.</p>
+                  </li>
+                  <li class="li"><strong class="ph b">Linux JBoss:</strong>  Launch the <span class="filepath style-wrap"><span class="ph filepath">standalone.sh</span> </span>  file. The file is in the JBoss <span class="ph filepath">bin</span>  directory.</li>
+                </ul>
+              </div>
+            </li>
+            <li>From a workstation, open a web browser and enter this URL:&nbsp;
+              <a class="external" href="http://localhost:8080/pentaho" rel="freeklink" title="http://localhost:8080/pentaho">http://localhost:8080/pentaho</a>  to access the Pentaho User Console (PUC).</li>
+          </ol>
+          <p class="pentaho-note"><span id="cke_bm_287C" style="display:none;">&nbsp;</span> If your server has&nbsp;a different&nbsp;hostname or&nbsp;port, replace <code>localhost</code> and <code>8080</code> with your specific values.&nbsp;&nbsp;&nbsp;</p>
+          <ol class="pentaho-list-ordered"
+          start="3">
+            <li>PUC will prompt you to install a license. License installation instructions are&nbsp;located&nbsp;in&nbsp;Manage Pentaho Licenses.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div id="section_13" class="mt-page-section"><span id="Problems_Starting_the_Pentaho_Server"></span> 
+      <h2 class="editable">Problems Starting the Pentaho Server</h2>
+      <p>Be sure that you have installed the correct license to start the Pentaho Server.&nbsp; License installation instructions are&nbsp;located&nbsp;in
+        <a class="xref" title="Managing Pentaho Licenses" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0P0/Managing_Pentaho_Licenses">Managing Pentaho Licenses</a> .</p>
+      <div id="section_14" class="mt-page-section"><span id="Other_Issues.3F"></span> 
+        <h3 class="editable">Other Issues?</h3>
+        <p>Visit our
+          <a title="Troubleshooting" rel="internal" href="http://help.pentaho.com/Documentation/7.0/Troubleshooting">Troubleshooting Guide</a>  for help.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#Starting_the_Pentaho_Server_on_Windows" rel="internal">Starting the Pentaho Server on Windows</a> 
+        <ol>
+          <li> <a href="#Pentaho-Provided_Web_Application_Server" rel="internal">Pentaho-Provided Web Application Server</a>  </li>
+          <li>
+            <a href="#Your_Own_Web_Application_Server" rel="internal">Your Own Web Application Server</a> 
+            <ol>
+              <li> <a href="#Step_One:_Modify_Tomcat_Windows_Startup_Script" rel="internal">Step One: Modify Tomcat Windows&nbsp;Startup Script</a>  </li>
+              <li> <a href="#Step_Two:_Modify_the_JBoss_Startup_Script" rel="internal">Step Two: Modify the JBoss Startup Script</a>  </li>
+              <li> <a href="#Step_Three:_Run_the_Startup_Script" rel="internal">Step Three: Run the Startup Script</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Starting_the_Pentaho_Server_on_Linux" rel="internal">Starting the Pentaho Server on Linux</a> 
+        <ol>
+          <li> <a href="#Pentaho-Provided_Web_Application_Server_2" rel="internal">Pentaho-Provided Web Application Server</a>  </li>
+          <li>
+            <a href="#Your_Own_Web_Application_Server_2" rel="internal">Your Own Web Application Server</a> 
+            <ol>
+              <li> <a href="#Step_One:_Modify_the_Tomcat_Linux_Startup_Script" rel="internal">Step One:&nbsp;Modify&nbsp;the Tomcat Linux Startup Script</a>  </li>
+              <li> <a href="#Step_Two:_Modify_the_JBoss_Linux_Startup_Script" rel="internal">Step Two:&nbsp;Modify&nbsp;the JBoss Linux Startup Script</a>  </li>
+              <li> <a href="#Step_Three:_Start_the_Pentaho_Server" rel="internal">Step Three:&nbsp;Start the Pentaho&nbsp;Server</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Problems_Starting_the_Pentaho_Server" rel="internal">Problems Starting the Pentaho Server</a> 
+        <ol>
+          <li> <a href="#Other_Issues.3F" rel="internal">Other Issues?</a>  </li>
+        </ol>
+      </li>
+    </ol>
+  </body>
+</content>

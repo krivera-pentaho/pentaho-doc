@@ -1,0 +1,107 @@
+<content type="text/html" title="Introduction to Analyzer JavaScript APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+        <h2 class="editable">Overview</h2>
+        <p>We have exposed a new set of APIs to give OEMs more control over Analyzer when working in an embedded fashion. These APIs allow for more fine-grained interaction with the Analyzer viewer, reports, and data.</p>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="How_to_Access_the_APIs"></span> 
+        <h2 class="editable">How to Access the APIs</h2>
+        <p>You can access the APIs using several methods.</p>
+      </div>
+      <div id="section_3" class="mt-page-section"><span id="Analyzer_within_Pentaho_User_Console_(Embedded_in_an_iFrame_with_the_Same_Domain)"></span> 
+        <h2 class="editable">Analyzer within Pentaho User Console (Embedded in an iFrame with the Same Domain)</h2>
+        <p>While using Analyzer inside of PUC, you can execute your custom API code in two ways: &nbsp;placing the code directly in the parent frame or by including the code within an external resource file.</p>
+        <div id="section_4" class="mt-page-section"><span id="Within_Parent_Frame"></span> 
+          <h4 id="AnalyzerExternalJavascriptAPI-WithinParentFrame" class="editable">Within Parent Frame</h4>
+          <p>Inside of the parent html file, add the following script block. It will be executed for each Analyzer report that is either opened or created when Analyzer is initialized.</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><script type=&quot;text/javascript&quot;>
+  window.onAnalyzerReady = function(api, frameId) {
+      // Perform Analyzer API actions
+  };
+</script></pre>
+          <p class="pentaho-note"><span><span class="diff-html-added">Since the <span class="filepath style-wrap">onAnalyzerReady</span>  code is executed when Analyzer is initialized, <span class="filepath style-wrap">api.event.registerInitListener</span>  is not available from
+            within this code block.</span> 
+            </span> 
+          </p>
+        </div>
+        <div id="section_5" class="mt-page-section"><span id="As_External_Resource"></span> 
+          <h4 class="editable">As External Resource</h4>
+          <p>Additionally, you can achieve the same result by including your custom javascript as an external resource. The only difference is that you do not have to use the &quot;onAnalyzerReady&quot; function since Analyzer is already loading this file
+            at the appropriate time. Inside of your own <span class="filepath style-wrap">plugin.xml</span>  file,&nbsp;add a path to your&nbsp;custom javascript file, which will be executed when Analyzer is loading:</p>
+          <table class="wysiwyg-macro">
+            <tbody>
+              <tr>
+                <td class="wysiwyg-macro-body"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><file context=&quot;analyzer&quot;>path/to/your/javascript/ExternalFile.js</file></pre> </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>See
+            <a title="https://help.pentaho.com/Documentation/5.4/0R0/090/040/000" rel="internal" href="http://help.pentaho.com/Documentation/5.4/0R0/090/040/000">Create a Pentaho BA Server Plug-in</a>  for more details about creating your own <span class="filepath style-wrap">plugin.xml</span>  file.</p>
+          <p>The same code that is in the first javascript block is the same, but without using the &quot;onAnalyzerReady&quot; function. Instead, you will require the API using RequireJS</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">require([ &quot;analyzer/cv_api&quot; ], function(api) {
+  api.event.registerInitListener(function(e, cv) {
+    // Perform Analyzer API actions
+  });
+});</pre> </div>
+      </div>
+      <div id="section_6" class="mt-page-section"><span id="Analyzer_Embedded_in_an_iFrame_on_a_Different_Domain"></span> 
+        <h2 class="editable">Analyzer Embedded in an iFrame on a Different Domain</h2>
+        <p>The APIs are exposed in the global scope of each Analyzer iFrame. The Analyzer iFrame looks for an <span class="filepath style-wrap">onAnalyzerReady </span> function attached to the parent window. Due to cross-site scripting issues, you must configure
+          the iFrame in which Analyzer is embedded. You can do this by adding an external resource file to any plugin's <span class="filepath style-wrap">plugin.xml</span>  file. It is common to use the <span class="filepath style-wrap">default-plugin</span>           for adding such scripts. It is is located in <span class="filepath style-wrap">pentaho-solutions/system/default-plugin/</span> .</p>
+        <p>Inside of the <span class="filepath style-wrap">plugin.xml</span>  file, you will add a path to your own javascript file which will be executed when Analyzer is loading.</p>
+        <p><strong>Plugin.xml:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><file context=&quot;analyzer&quot;>path/to/your/global/javascript/GlobalFile.js</file></pre>
+        <p>Inside of your external javascript file, you must set a custom domain property on the window of the Analyzer iFrame.</p>
+        <p><strong>ExternalFile.js:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">// iFrame source = &quot;http://example.company.org:8080/pentaho/api/repos/xanalyzer/editor&quot;
+window.customDomain = &quot;company.org&quot;;</pre>
+        <p>Additionally, you must set the <span class="filepath style-wrap">document.domain</span>  inside of the parent page or frame where you will be embedding Analyzer. When you are embedding the Analyzer iFrame into your page, you can bind an <span class="filepath style-wrap">onAnalyzerReady</span>           function to the window. Analyzer will automatically look for this function and execute the function once the API has been loaded and made available.</p>
+        <p><strong>www.company.org/index.html:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; "><html>
+  <head>
+    <script type=&quot;text/javascript&quot;>
+	  document.domain = &quot;company.org&quot;
+      window.onAnalyzerReady = function(api, frameId) {
+        // Perform Analyzer API actions
+      };
+    </script>
+  </head>
+  <body>
+    <iframe id=&quot;analyzer-frame&quot; src=&quot;http://example.company.org:8080/pentaho/api/repos/xanalyzer/editor&quot;></iframe>
+  </body>
+</html></pre>
+        <p>When Analyzer loads, you will have access to the API&nbsp;and the <span class="filepath style-wrap">frameId</span>  of which frame is calling your code, so that you can customize each frame appropriately. Analyzer executes the <span class="filepath style-wrap">onAnalyzerReady&nbsp;</span> code
+          for each frame located in the page, therefore, the <span style="font-family: courier new,courier,monospace;">frameId</span>  will be different for each frame, and the API&nbsp;you receive will be related to that frame.&nbsp;</p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">window.onAnalyzerReady = function(api, frameId) {
+  // Perform Analyzer API actions
+};</pre>
+        <p><strong>Example:</strong> </p> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">//Example calls into namespaced functions
+api.report.setLayoutFields(&quot;test&rdquo;);
+api.report.getLayoutFields();</pre> </div>
+      <div id="section_7" class="mt-page-section"><span id="Direct_URL"></span> 
+        <h2 class="editable">Direct URL</h2>
+        <p>To access the API when Analyzer is loaded directly by its URL, you will need to use the &quot;As External Resource&quot; approach, seen above.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#How_to_Access_the_APIs" rel="internal">How to Access the APIs</a>  </li>
+      <li>
+        <a href="#Analyzer_within_Pentaho_User_Console_(Embedded_in_an_iFrame_with_the_Same_Domain)" rel="internal">Analyzer within Pentaho User Console (Embedded in an iFrame with the Same Domain)</a> 
+        <ol>
+          <li> <a href="#Within_Parent_Frame" rel="internal">Within Parent Frame</a>  </li>
+          <li> <a href="#As_External_Resource" rel="internal">As External Resource</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Analyzer_Embedded_in_an_iFrame_on_a_Different_Domain" rel="internal">Analyzer Embedded in an iFrame on a Different Domain</a>  </li>
+      <li> <a href="#Direct_URL" rel="internal">Direct URL</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,28 @@
+<content type="text/html" title="Increase Memory Limits on Linux with a Graphical Install">
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">By default, Tomcat has a relatively low memory allotment. This can cause out-of-memory errors in the Pentaho Server from time to time. To avoid errors, increase the memory allocation so you can start the Pentaho&nbsp;Server automatically.</p>
+          <p class="pentaho-note">These instructions apply if you installed the&nbsp;Pentaho software&nbsp;graphically (as opposed to manually) and are Linux&nbsp;users.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step">
+            <p><span class="ph cmd">Go to <span class="ph filepath">/pentaho/server/pentaho-server/tomcat/bin/&nbsp;</span> directory and run the <span class="ph filepath">./shutdown.sh</span>  command to stop the appropriate server.</span> 
+            </p>
+          </li>
+          <li class="li step"><span class="ph cmd">Change the directory to <code>pentaho-server/tomcat/scripts</code>.</span> </li>
+          <li class="li step"><span class="ph cmd">Edit the <code>ctl.sh</code>&nbsp;file.</span> </li>
+          <li class="li step"><span class="ph cmd">Locate the line under start tomcat, which looks like the following code: <code class="ph codeph">export JAVA OPTS=&quot;-Dpentaho.installed.licenses.file=/opt/pentaho/.installedLicenses.xml -Xms128m Xmx768m -XX-MaxPermSize=256m -Dsun.rmi.dyc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000&quot;</code></span> </li>
+          <li class="li step"><span class="ph cmd">Set the memory to a minimum of <code>4096 M</code>&nbsp;and a maximum of <code>6144 M</code>, depending on your computer's memory capabilities.</span> </li>
+          <li class="li step"><span class="ph cmd">Start the Tomcat server or service.</span> </li>
+        </ol>
+        <p>Your Tomcat server now has increased minimum and maximum memory limits.</p>
+        <p>You can adjust the&nbsp;<code>JvmMx</code>&nbsp;number (a parameter that specifies the maximum memory&nbsp;limit for the&nbsp;Java virtual machine) to a higher number, if you prefer.&nbsp;However, a problem occurs when there is not enough contiguous
+          memory available to assign to the&nbsp;Java virtual machine&nbsp;(JVM), which appears&nbsp;to happen more often on Microsoft Windows at lower thresholds. If the JVM&nbsp;refuses to start with increased limits, then you will have to add more
+          RAM to your system, stop some memory-intensive services, or lower the maximum memory limit allocation.</p>
+      </div>
+    </div>
+  </body>
+  <body target="toc"><em>No headers</em> </body>
+</content>

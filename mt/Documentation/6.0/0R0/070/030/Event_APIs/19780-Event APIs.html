@@ -1,0 +1,606 @@
+<content type="text/html" title="Event APIs">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushJScript.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+  </head>
+  <body>
+    <div>
+      <div id="section_1" class="mt-page-section"><span id="api.event_Class"></span> 
+        <h2 class="editable">api.event Class</h2>
+        <p>The event system definition for api class. Contains all necessary calls for creating and registering Events</p>
+        <div id="section_2" class="mt-page-section"><span id="Methods"></span> 
+          <h3 class="editable">Methods</h3>
+          <div class="method item" id="method_registerActionEventListener">
+            <div id="section_3" class="mt-page-section"><span id="registerActionEventListener_(listener)__Event"></span> 
+              <h2 class="editable">registerActionEventListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs after report actions and before refresh report. For more information, see
+                  <a href="/Documentation/5.4/0R0/070/030/040" rel="internal" title="Analyzer Event Registration">Analyzer Event Registration</a> .</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed after report actions and before refresh report.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerActionEventListener(function(e, api, actionCode, actionCtx) {
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerBuildMenuListener">
+            <div id="section_4" class="mt-page-section"><span id="registerBuildMenuListener_(listener)__Event"></span> 
+              <h2 class="editable">registerBuildMenuListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs before showing any of the menus in Analyzer.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which runs before showing any of the menus in Analyzer.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerBuildMenuListener(function(e, api, menuId, menu, x, y){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerChartDoubleClickListener">
+            <div id="section_5" class="mt-page-section"><span id="registerChartDoubleClickListener_(listener)__Event"></span> 
+              <h2 class="editable">registerChartDoubleClickListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="description">
+                <p>Registers a listener which runs when double-clicking on a chart item in Analyzer.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when double-clicking a chart item.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerChartDoubleClickListener(function(e, api, ctx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerChartSelectItemsListener">
+            <div id="section_6" class="mt-page-section"><span id="registerChartSelectItemsListener_(listener)_Event"></span> 
+              <h2 class="editable">registerChartSelectItemsListener <span class="paren">(</span> listener<span class="paren">)</span> &nbsp;<span class="returns-inline">
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when a user selects a chart data point or lassos a collection of data points. The listener can also run when the user clears chart items by clicking on the selected chart item or by clicking the Clear Selections
+                  button.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when a user selects a chart data point or lassos a collection of data points.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerChartSelectItemsListener(function(e, api, ctx[]){
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerDragEventListener">
+            <div id="section_7" class="mt-page-section"><span id="registerDragEventListener_(listener)__Event"></span> 
+              <h2 class="editable">registerDragEventListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when a user starts dragging an object in the report area, layout panel, or available fields.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed after a drag has occurred.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="returns-description">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerDragEventListener(function(e, api, formula){
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerDropEventListener">
+            <div id="section_8" class="mt-page-section"><span id="registerDropEventListener_(listener)__Event"></span> 
+              <h2 class="editable">registerDropEventListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs after a drop has occurred in the report area, filter area, trash can, or layout panel.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed after a drop has occurred.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerDropEventListener(function(e, api, formula, dropClass){
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerInitListener">
+            <div id="section_9" class="mt-page-section"><span id="registerInitListener_(listener)"></span> 
+              <h2 class="editable">registerInitListener <span class="paren">(l</span> istener
+                <span class="paren">)</span> 
+              </h2>
+              <div class="description">
+                <p>Registers a listener which runs during the initialization of Analyzer. For more information, see
+                  <a title="Analyzer Event Registration" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070/030/040">Analyzer Event Registration</a> .</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed during the initialization.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li>
+                    <p>Event</p>
+                  </li>
+                </ul>
+                <p style="margin-left: 40px;">This is the object which allows you to remove the listener after registration.</p>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerInitListener( function( e, cv ) ) {
+  //Perform Action on cv.api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerPostExecutionListener">
+            <div id="section_10" class="mt-page-section"><span id="registerPostExecutionListener_(listener)__Event"></span> 
+              <h2 class="editable">registerPostExecutionListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which is called after the report has completely finished executing in Mondrian and the server has returned with either an HTML or JSON result, depending on the visualization type.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is called after the report has completely finished executing.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerPostExecutionListener(function(e, api, message){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerPreExecutionListener">
+            <div id="section_11" class="mt-page-section"><span id="registerPreExecutionListener_(listener)__Event"></span> 
+              <h2 class="editable">registerPreExecutionListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which is called just before the browser sends the report XML to the server for processing.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which runs before a report is run.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerPreExecutionListener(function(e, api){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerRenderListener">
+            <div id="section_12" class="mt-page-section"><span id="registerRenderListener_(listener)__Event"></span> 
+              <h2 class="editable">registerRenderListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs after the UI has drawn the visualization. For more information, see
+                  <a href="/Documentation/5.4/0R0/070/030/040" rel="internal" title="Analyzer Event Registration">Analyzer Event Registration</a> .</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed after the UI has drawn the visualization.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerRenderListener(function(e, api, reportArea) {
+  //Perform Action on api.*
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerTableClickListener">
+            <div id="section_13" class="mt-page-section"><span id="registerTableClickListener_(listener)__Event"></span> 
+              <h2 class="editable">registerTableClickListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when clicking on a table cell in Analyzer. For more information, see
+                  <a href="/Draft_Content/API_Doc_Holding_Area/Analyzer_External_JavaScript_APIs_--_Copied_from_5.3/040" rel="internal" title="Analyzer Event Registration">Analyzer Event Registration</a> 
+                  <a title="Analyzer Event Registration" rel="internal" href="http://help.pentaho.com/Documentation/6.0/0R0/070/030/040">.</a> 
+                </p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when clicking on a table cell in Analyzer.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerTableClickListener(function(e, api, td, ctx, filterCtx) {
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerTableContextMenuListener">
+            <div id="section_14" class="mt-page-section"><span id="registerTableContextMenuListener_(listener)__Event"></span> 
+              <h2 class="editable">registerTableContextMenuListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when a context menu is open on a table cell in Analyzer. For more information, see
+                  <a href="/Documentation/5.4/0R0/070/030/040" rel="internal" title="Analyzer Event Registration">Analyzer Event Registration</a> .</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when a context menu is open on a table cell in Analyzer.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerTableContextMenuListener(function(e, api, td, ctx, filterCtx) {
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerTableDoubleClickListener">
+            <div id="section_15" class="mt-page-section"><span id="registerTableDoubleClickListener_(listener)__Event"></span> 
+              <h2 class="editable">registerTableDoubleClickListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when double-clicking on a table cell in Analyzer.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when double-clicking on a table cell.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerTableDoubleClickListener(function(e, api, td, ctx, filterCtx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerTableMouseMoveListener">
+            <div id="section_16" class="mt-page-section"><span id="registerTableMouseMoveListener_(listener)__Event"></span> 
+              <h2 class="editable">registerTableMouseMoveListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when a user moves the mouse cursor across any table cell in Analyzer.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when a user moves the mouse cursor across any table cell in Analyzer.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerTableMouseMoveListener(function(e, api, td, ctx, filterCtx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="method item" id="method_registerTableMouseOverListener">
+            <div id="section_17" class="mt-page-section"><span id="registerTableMouseOverListener_(listener)__Event"></span> 
+              <h2 class="editable">registerTableMouseOverListener <span class="paren">(</span> listener<span class="paren">)</span>  <span class="returns-inline"> 
+                <span class="type">Event</span>  </span> 
+              </h2>
+              <div class="meta">
+                <p>Registers a listener which runs when a user positions the mouse cursor over any table cell in Analyzer.</p>
+              </div>
+              <div class="params">
+                <p><strong>Parameters:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li class="param"><code class="param-name">listener</code> <span class="type">(<a class="crosslink link-https" target="_blank" rel="external nofollow" href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function">Function</a> )</span> 
+                    <div class="param-description">
+                      <p>This is the listener function which is executed when a user positions the mouse cursor over any table cell in Analyzer.</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="returns">
+                <p><strong>Returns:</strong> </p>
+                <ul class="pentaho-list-unordered">
+                  <li><span class="type">Event</span> 
+                    <p>This is the object which allows you to remove the listener after registration.</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="example">
+                <p><strong>Example:</strong> </p>
+                <div class="example-content"> <pre class="brush: jscript; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">api.event.registerTableMouseOverListener(function(e, api, td, ctx, filterCtx){
+  //Perform Action on api.*
+  e.preventDefault();
+  e.stopImmediatePropagation();
+});</pre> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li>
+        <a href="#api.event_Class" rel="internal">api.event Class</a> 
+        <ol>
+          <li> <a href="#Methods" rel="internal">Methods</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#registerActionEventListener_(listener)__Event" rel="internal">registerActionEventListener (listener) Event </a>  </li>
+      <li> <a href="#registerBuildMenuListener_(listener)__Event" rel="internal">registerBuildMenuListener (listener) Event </a>  </li>
+      <li> <a href="#registerChartDoubleClickListener_(listener)__Event" rel="internal">registerChartDoubleClickListener (listener) Event </a>  </li>
+      <li> <a href="#registerChartSelectItemsListener_(listener)_Event" rel="internal">registerChartSelectItemsListener (listener)&nbsp;Event </a>  </li>
+      <li> <a href="#registerDragEventListener_(listener)__Event" rel="internal">registerDragEventListener (listener) Event </a>  </li>
+      <li> <a href="#registerDropEventListener_(listener)__Event" rel="internal">registerDropEventListener (listener) Event </a>  </li>
+      <li> <a href="#registerInitListener_(listener)" rel="internal">registerInitListener (listener)</a>  </li>
+      <li> <a href="#registerPostExecutionListener_(listener)__Event" rel="internal">registerPostExecutionListener (listener) Event </a>  </li>
+      <li> <a href="#registerPreExecutionListener_(listener)__Event" rel="internal">registerPreExecutionListener (listener) Event </a>  </li>
+      <li> <a href="#registerRenderListener_(listener)__Event" rel="internal">registerRenderListener (listener) Event </a>  </li>
+      <li> <a href="#registerTableClickListener_(listener)__Event" rel="internal">registerTableClickListener (listener) Event </a>  </li>
+      <li> <a href="#registerTableContextMenuListener_(listener)__Event" rel="internal">registerTableContextMenuListener (listener) Event </a>  </li>
+      <li> <a href="#registerTableDoubleClickListener_(listener)__Event" rel="internal">registerTableDoubleClickListener (listener) Event </a>  </li>
+      <li> <a href="#registerTableMouseMoveListener_(listener)__Event" rel="internal">registerTableMouseMoveListener (listener) Event </a>  </li>
+      <li> <a href="#registerTableMouseOverListener_(listener)__Event" rel="internal">registerTableMouseOverListener (listener) Event </a>  </li>
+    </ol>
+  </body>
+</content>

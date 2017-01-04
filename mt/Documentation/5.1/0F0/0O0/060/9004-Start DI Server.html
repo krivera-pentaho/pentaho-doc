@@ -1,0 +1,144 @@
+<content type="text/html" title="Start DI Server">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to start the DI Server.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">
+            <img alt="Image of the DI Server installation steps." class="image internal" src="http://help.pentaho.com/@api/deki/files/1591/grDiArchiveInstallStartDiServer.png?revision=1" />
+          </p>
+          <p class="p">After you've complete the tasks in the
+            <a class="xref" title="Documentation/5.1/0F0/0O0/020" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/020">Prepare Environment</a>,
+            <a class="xref" title="Documentation/5.1/0F0/0O0/030" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/030">Initialize Repository</a>, and
+            <a class="xref" title="Documentation/5.1/0F0/0O0/050" rel="internal" href="http://help.pentaho.com/Documentation/5.1/0F0/0O0/050">Specify Connections</a>  steps, you can now install license keys and start the DI Server.</p>
+        </div>
+      </div>
+      <div class="topic task nested1" id="4dd39ddd-f250-42d6-9777-9bf84834475b__archive_license">
+        <div id="section_2" class="mt-page-section"><span id="Install_License_Keys_Using_the_Command_Line_Interface"></span> 
+          <h2 class="editable">Install License Keys Using the Command Line Interface</h2>
+          <div class="body taskbody" id="4dd39ddd-f250-42d6-9777-9bf84834475b__d114e8">
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Download the .lic file you want to install.</span> </li>
+              <li class="li step"><span class="ph cmd">Copy your .lic files to the DI Server.</span> </li>
+              <li class="li step"><span class="ph cmd">Navigate to the <span class="ph filepath">licenses</span>  directory.</span>  pdi/pdi-ee/data-integration/licenses</li>
+              <li class="li step"><span class="ph cmd">Run the license installation script.</span> 
+                <ol class="ol substeps" type="a">
+                  <li class="li substep"><span class="ph cmd"><strong class="ph b">For Linux:</strong>  Run <span class="ph filepath">install_license.sh</span>  with the install switch and the location and name of your .lic file as a parameter. You can specify multiple .lic files
+                    separated by spaces. Be sure to use backslashes to escape any spaces in the path or file name.</span>  <span class="ph filepath">install_license.sh install /home/dvader/downloads/Pentaho\ DI\ Enterprise\ Edition.lic</span> </li>
+                  <li
+                  class="li substep"><span class="ph cmd"><strong class="ph b">For Windows:</strong>  Run <span class="ph filepath">install_license.bat</span>  with the install switch and the location and name of your license file as a parameter.</span>  <span class="ph filepath">install_license.bat install &quot;C:\Users\dvader\Downloads\Pentaho DI Enterprise Edition.lic</span> &quot;</li>
+              </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="4dd39ddd-f250-42d6-9777-9bf84834475b__archive_manual_tomcat_startup_scripts">
+        <div id="section_3" class="mt-page-section"><span id="Modify_Tomcat_Startup_Script"></span> 
+          <h2 class="editable">Modify Tomcat Startup Script</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">The Tomcat startup script must be modified to include the <code class="ph codeph">CATALINA_OPTS</code> variable. <code class="ph codeph">CATALINA_OPTS</code> indicates the amount of memory to allocate. It also indicates where Pentaho licenses
+                are installed. Specific instructions on how to modify the startup script depend on your operating system.</p>
+            </div>
+          </div>
+          <div class="topic task nested2" id="4dd39ddd-f250-42d6-9777-9bf84834475b__d123e109">
+            <div id="section_4" class="mt-page-section"><span id="Modify_the_Tomcat_Windows_Startup_Script"></span> 
+              <h3 class="editable">Modify the Tomcat Windows Startup Script</h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Make sure the Tomcat web application server is not running by starting the Windows <span class="ph uicontrol">Task Manager</span>  and looking for <strong class="ph b">Tomcat</strong>  in the <span class="ph uicontrol">Applications </span> tab.
+                    If the server is running, stop it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">startup.bat</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line directly before the <code class="ph codeph">call &quot;%EXECUTABLE%&quot; start %CMD_LINE_ARGS%</code> line, which is located near the end of the file.</span>  <code class="ph codeph">set CATALINA_OPTS=-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=%PENTAHO_INSTALLED_LICENSE_PATH%</code></li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="topic task nested2" id="4dd39ddd-f250-42d6-9777-9bf84834475b__d123e175">
+            <div id="section_5" class="mt-page-section"><span id="Modifying_the_Tomcat_Linux_Startup_Script"></span> 
+              <h3 class="editable">Modifying the Tomcat Linux Startup Script</h3>
+              <div class="body taskbody">
+                <ol class="ol steps">
+                  <li class="li step"><span class="ph cmd">Make sure the Tomcat web application server is not running by opening a <span class="ph uicontrol">Terminal</span>  window and typing <code class="ph codeph">ps -A</code> at the prompt. If the server is running, stop
+                    it.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Use a text editor to open the <span class="ph filepath">startup.sh</span>  file, which is in the <span class="ph filepath">bin</span>  subdirectory of the Tomcat home directory.</span> 
+                  </li>
+                  <li class="li step"><span class="ph cmd">Add this line directly before the <code class="ph codeph">exec &quot;$PRGDIR&quot;/&quot;$EXECUTABLE&quot; start &quot;$@&quot;</code> line near the end of the file.</span>  <code class="ph codeph">export CATALINA_OPTS=&quot;-Xms4096m -Xmx6144m -XX:MaxPermSize=256m -Dsun.rmi.dgc.client.gcInterval=3600000 -Dsun.rmi.dgc.server.gcInterval=3600000 -Dpentaho.installed.licenses.file=$PENTAHO_INSTALLED_LICENSE_PATH&quot;</code></li>
+                  <li class="li step"><span class="ph cmd">Save and close the file.</span> </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="4dd39ddd-f250-42d6-9777-9bf84834475b__starting_installation_windows">
+        <div id="section_6" class="mt-page-section"><span id="Windows_Pentaho_Archive_Installation"></span> 
+          <h2 class="editable">Windows Pentaho Archive Installation</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">If you used the Archive Installation, we provide individual control scripts to start and stop the DI server, and DI repository. Here is where you can find the individual control scripts.</p>
+              <p class="p"><strong class="ph b">DI Repository</strong> </p>
+              <ul class="ul">
+                <li class="li">The Archive Installation enables you to install PostgreSQL, MySQL, or Oracle as the solution repository. Consult the third-party documentation for the RDBMS to find more information about starting and stopping.
+                  <p class="p">The solution repository must be started before the DI Server.</p>
+                </li>
+              </ul>
+              <p class="p"><strong class="ph b">DI Server</strong> </p>
+              <ul class="ul">
+                <li class="li"><span class="ph filepath">/pentaho/server/data-integration-server</span> </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="4dd39ddd-f250-42d6-9777-9bf84834475b__starting_installation_linux">
+        <div id="section_7" class="mt-page-section"><span id="Linux_and_Macintosh_OS_Pentaho_Installation_Wizard"></span> 
+          <h2 class="editable">Linux and Macintosh OS Pentaho Installation Wizard</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">When you ran the Installation Wizard on Linux, the DI Server was deployed in an included Apache Tomcat application server. You can control the Tomcat server using the start and stop scripts that come with the Pentaho installation. This script
+                is also used as an easy way to start and stop the DI Server and the PostgreSQL repository. You can find this script at <span class="ph filepath">/pentaho/ctlscript.sh</span> .</p>
+              <p class="p">Here is a list of the script arguments you can use with the <code class="ph codeph">data-integration-server</code> service.</p> <strong class="ph b">Arguments</strong> 
+              <ul class="ul">
+                <li class="li">start</li>
+                <li class="li">stop</li>
+                <li class="li">restart</li>
+                <li class="li">status</li>
+                <li class="li">help</li>
+              </ul>
+            </div>
+            <div class="example"> <pre class="pre codeblock">
+<code class="ph codeph">./ctlscript.sh start data-integration-server</code></pre> <pre class="pre codeblock">
+<code class="ph codeph">./ctlscript.sh status data-integration-server</code></pre> <pre class="pre codeblock">
+<code class="ph codeph">./ctlscript.sh help</code></pre> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+      <li> <a href="#Install_License_Keys_Using_the_Command_Line_Interface" rel="internal">Install License Keys Using the Command Line Interface</a>  </li>
+      <li>
+        <a href="#Modify_Tomcat_Startup_Script" rel="internal">Modify Tomcat Startup Script</a> 
+        <ol>
+          <li> <a href="#Modify_the_Tomcat_Windows_Startup_Script" rel="internal">Modify the Tomcat Windows Startup Script</a>  </li>
+          <li> <a href="#Modifying_the_Tomcat_Linux_Startup_Script" rel="internal">Modifying the Tomcat Linux Startup Script</a>  </li>
+        </ol>
+      </li>
+      <li> <a href="#Windows_Pentaho_Archive_Installation" rel="internal">Windows Pentaho Archive Installation</a>  </li>
+      <li> <a href="#Linux_and_Macintosh_OS_Pentaho_Installation_Wizard" rel="internal">Linux and Macintosh OS Pentaho Installation Wizard</a>  </li>
+    </ol>
+  </body>
+</content>

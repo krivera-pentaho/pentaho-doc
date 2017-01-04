@@ -1,0 +1,102 @@
+<content type="text/html" title="Run Your Transformation">
+  <body>
+    <div>
+      <div class="pentaho-overview-hidden">
+        <div id="section_1" class="mt-page-section"><span id="Overview"></span> 
+          <h2 class="editable">Overview</h2>
+          <p>Explains how to run your transformation.</p>
+        </div>
+      </div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">Pentaho Data Integration provides a number of deployment options depending on the needs of your ETL project in terms of performance, batch load window, and your other needs. The three most common approaches are:</p>
+          <div class="tablenoborder">
+            <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+              <tbody class="tbody">
+                <tr class="row">
+                  <td class="entry" valign="top"><strong class="ph b">Local execution</strong> </td>
+                  <td class="entry" valign="top">Allows you to execute a transformation or job from within the Spoon design environment on your local machine. This is ideal for designing and testing transformations or lightweight ETL activities</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top"><strong class="ph b">Execute remotely</strong> </td>
+                  <td class="entry" valign="top">For more demanding ETL activities, consider setting up a dedicated Enterprise Edition Data Integration Server and using the Execute remotely option in the run dialog. The Enterprise Edition Data Integration Server also enables you to
+                    schedule execution in the future or on a recurring basis.</td>
+                </tr>
+                <tr class="row">
+                  <td class="entry" valign="top"><strong class="ph b">Execute clustered</strong> </td>
+                  <td class="entry" valign="top">For even greater scalability or as an option to reduce your execution times, Pentaho Data Integration also supports the notion of clustered execution allowing you to distribute the load across a number of data integration servers.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="p">This final part of the creating a transformation exercise focuses exclusively on the local execution option.</p>
+        </div>
+        <ol class="ol steps">
+          <li class="li step"><span class="ph cmd">In the <strong>Spoon&nbsp;</strong> &nbsp;window, select&nbsp;<strong>Action > Run This Transformation</strong> .</span> </li>
+          <li class="li step">The <strong class="ph b">Execute a transformation</strong>  window appears. You can run a transformation locally, remotely, or in a clustered environment. For the purposes of this exercise, keep the default as&nbsp;<strong class="ph b">Local Execution</strong> .</li>
+          <li class="li step"><span class="ph cmd">Click <strong class="ph b">Launch</strong> .</span>  The transformation executes. Upon running the transformation, the <strong class="ph b">Execution Results</strong>  panel opens below the canvas.
+            <p class="p">
+              <img alt="File:/pdi_execution_resutls.png" class="image internal" id="79b77406-fc56-4db2-98a7-4b4f5d73c97d__task_pdi_running_the_transformation__image_28a50413-1fbd-44e7-a0e9-71b652d4e1f0" src="http://help.pentaho.com/@api/deki/files/1437/pdi_execution_resutls.png?revision=1"
+              />
+            </p>
+            <p class="p">&nbsp;</p>
+          </li>
+          <li class="li step">
+            <p class="p">The <strong>Execution Results</strong> &nbsp;section of the window contains several different tabs that help you to see how the transformation executed, pinpoint errors, and monitor performance.</p>
+          </li>
+        </ol>
+        <ul class="ol steps">
+          <li class="li step">
+            <p class="p"><strong class="ph b">Step Metrics</strong> &nbsp;tab provides statistics for each step in your transformation including how many records were read, written, caused an error, processing speed (rows per second) and more. &nbsp;This tab also indicates
+              whether an error occured in a transformation step. &nbsp;We did not intentionally put any errors in this tutorial so it should run correctly. &nbsp;But, if a mistake had occured, steps that caused the transformation to fail would be highlighed
+              in red. &nbsp;In the example below, the&nbsp;<strong class="ph b">Lookup Missing Zips</strong> &nbsp;step caused an error.</p>
+          </li>
+        </ul>
+        <p class="p li step">&#8203;
+          <img alt="File:/pdi_execution_resutls_error.png" class="image internal" id="79b77406-fc56-4db2-98a7-4b4f5d73c97d__task_pdi_running_the_transformation__image_08869c3b-20d2-4229-a0a3-7291bbcbfeb0" src="http://help.pentaho.com/@api/deki/files/1438/pdi_execution_resutls_error.png?revision=1"
+          />
+        </p>
+        <p class="p li step">&nbsp;</p>
+        <ul>
+          <li class="p li step">The <strong class="ph b">Logging</strong>  tab displays the logging details for the most recent execution of the transformation. It also allows you to drill deeper to determine where errors occur. &nbsp;Error lines are highlighted in red. &nbsp;In
+            the example below, the&nbsp;<strong class="ph b">Lookup Missing Zips</strong> &nbsp;step caused an error because it attempted to lookup values on a field called&nbsp;<strong>POSTALCODE2</strong>, which did not exist in the lookup stream.&nbsp;</li>
+        </ul>
+        <p class="p li step">
+          <img alt="File:/pdi_execution_resutls_logging.png" class="image internal" id="79b77406-fc56-4db2-98a7-4b4f5d73c97d__task_pdi_running_the_transformation__image_c2839664-87d7-44f2-8892-9cd965d038e9" src="http://help.pentaho.com/@api/deki/files/1439/pdi_execution_resutls_logging.png?revision=1"
+          />
+        </p>
+        <p class="p li step">&nbsp;</p>
+        <ul>
+          <li class="p li step">The&nbsp;<strong class="ph b">Execution History</strong> &nbsp;tab provides you access to the Step Metrics and log information from previous executions of the transformation. This feature works only if you have configured your transformation
+            to log to a database through the Logging tab of the Transformation Settings dialog. For more information on configuring logging or viewing the execution history, see&nbsp;
+            <a class="xref" title="Documentation/5.1/0L0/0Y0/000" rel="internal"
+            href="http://help.pentaho.com/Documentation/5.1/0L0/0Y0/000">Create DI Solutions</a> .</li>
+          <li class="p li step">The <strong class="ph b">Performance Graph</strong>  allows you to analyze the performance of steps based on a variety of metrics including how many records were read, written, caused an error, processing speed (rows per second) and more. &nbsp;Like
+            the Execution History, this feature requires you to configure your transformation to log to a database through the <strong>Logging </strong> tab of the <strong>Transformation Settings</strong>  dialog box.</li>
+        </ul>
+        <p class="p li step">
+          <img alt="File:/pdi_execution_resutls_performance.png" class="image internal" src="http://help.pentaho.com/@api/deki/files/1440/pdi_execution_resutls_performance.png?revision=1" />
+        </p>
+        <p class="p li step">&nbsp;</p>
+        <ul>
+          <li class="p li step">The <strong class="ph b">Metrics tab</strong>  allows you to see a Gantt charter after the transformation or job has run. This shows you information such as how long it takes to connect to a database, how much time is spent executing a SQL query,
+            or how long it takes to load a transformation.</li>
+        </ul>
+        <p class="p li step">
+          <img alt="File:/ssSpoonExecutionResultsMetricsTab.png" class="image internal" id="79b77406-fc56-4db2-98a7-4b4f5d73c97d__task_pdi_running_the_transformation__image_n5n_ky4_fl" src="http://help.pentaho.com/@api/deki/files/1441/ssSpoonExecutionResultsMetricsTab.png?revision=1"
+          />
+        </p>
+        <ul>
+          <li class="p li step">The <strong>Preview Data </strong> tab displays a preview of the data.</li>
+        </ul>
+        <p class="p li step">&nbsp;</p>
+      </div>
+      <div class="related-links">&nbsp;</div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Overview" rel="internal">Overview</a>  </li>
+    </ol>
+  </body>
+</content>

@@ -1,0 +1,309 @@
+<content type="text/html" title="Creating Partitioner Plugins">
+  <body>
+    <div class="body conbody">
+      <p class="p">PDI uses partitioner plugins for its partitioning feature. Each partitioner plugin implements a specific partitioning method.&nbsp;</p>
+      <br />
+      <img alt="File:/screenshot_mod_partitioning.png" class="image internal" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__creating_partioner_plugins__image_pp3_jg3_nh" src="http://help.pentaho.com/@api/deki/files/11656/screenshot_mod_partitioning.png?revision=1"
+      />
+      <p class="p">For most applications, the Remainder of Division partitioner works well. On the rare occasion that an application would benefit from an additional partitioning method, this section explains how to implement them.</p>
+      <p class="p">This section explains the architecture and programming concepts for creating your own partitioner plugin. We recommended you open and refer to the
+        <a class="xref" title="Sample Partitioner Plugin" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/030/030">
+        sample partitioner plugin sources</a>  while following these instructions.</p>
+      <p class="p">A partitioner plugin integrates with PDI by implementing two distinct Java interfaces. Each interface represents a set of responsibilities performed by a PDI partitioner. Each of the interfaces has a base class that implements the bulk of the interface
+        in order to simplify plugin development.</p>
+      <div class="tablenoborder">
+        <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+          <thead align="left" class="thead">
+            <tr class="row">
+              <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e54" valign="top" width="35%"><strong class="ph b">Package</strong> </th>
+              <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e60" valign="top" width="25%"><strong class="ph b">Interface</strong> </th>
+              <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e66" valign="top" width="20%"><strong class="ph b">Base Class</strong> </th>
+              <th class="entry" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__d15939e72" valign="top" width="20%"><strong class="ph b">Main Responsibilities</strong> </th>
+            </tr>
+          </thead>
+          <tbody class="tbody">
+            <tr class="row">
+              <td class="entry" headers="d15939e54 " valign="top" width="35%"><code class="ph codeph">org.pentaho.di.trans </code></td>
+              <td class="entry" headers="d15939e60 " valign="top" width="25%"><code class="ph codeph">Partitioner</code></td>
+              <td class="entry" headers="d15939e66 " valign="top" width="20%"><code class="ph codeph">BasePartitioner</code></td>
+              <td class="entry" headers="d15939e72 " valign="top" width="20%">
+                <ul class="ul">
+                  <li class="li">Maintain partitioner settings</li>
+                  <li class="li">Serialize partitioner enumerations</li>
+                  <li class="li">Provide access to dialog class</li>
+                  <li class="li">Assign rows to partitions during runtime</li>
+                </ul>
+              </td>
+            </tr>
+            <tr class="row">
+              <td class="entry" headers="d15939e54 " valign="top" width="35%"><code class="ph codeph">org.pentaho.di.ui.trans.step</code></td>
+              <td class="entry" headers="d15939e60 " valign="top" width="25%"><code class="ph codeph">StepDialogInterface</code></td>
+              <td class="entry" headers="d15939e66 " valign="top" width="20%"><code class="ph codeph">BaseStepDialog</code></td>
+              <td class="entry" headers="d15939e72 " valign="top" width="20%">
+                <ul class="ul" id="99907181-e0bd-4e40-a960-0b50f9ecfc1d__creating_partioner_plugins__ul_lgm_dsx_qh">
+                  <li class="li">Partitioner settings dialog</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="section_1" class="mt-page-section"><span id="Implementing_the_Partitioner_Interface"></span> 
+        <h2 class="editable">Implementing the Partitioner Interface&nbsp;</h2>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Partitioner.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/Partitioner.html"><code class="ph codeph">org.pentaho.di.trans.Partitioner</code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class&nbsp;</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/BasePartitioner.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/BasePartitioner.html"><code class="ph codeph">org.pentaho.di.trans.BasePartitioner</code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><code class="ph codeph">Partitioner</code> is the main Java interface that a plugin implements.</p>
+        <p class="p"><strong class="ph b">Keep Track of Partitioner Settings</strong> </p>
+        <p class="p">The implementing class keeps track of partitioner settings using private fields with corresponding <code class="ph codeph">get</code> and <code class="ph codeph">set</code> methods. The <code class="ph codeph">dialog</code> class implementing
+          <code class="ph codeph">PartionerDialogInterface</code> is using these methods to copy the user supplied configuration in and out of the dialog.</p>
+        <p class="p"><code class="ph codeph">public Object clone()</code></p>
+        <p class="p">This method is called when a step containing partitioning configuration is duplicated in Spoon. It needs to return a deep copy of this partitioner object. It is essential that the implementing class creates proper deep copies if the configuration
+          is stored in modifiable objects, such as lists or custom helper objects. The copy is created by calling <code class="ph codeph">super.clone(</code>) and deep-copying any fields the partitioner may have declared.</p>
+        <p class="p"><code class="ph codeph">public Partitioner getInstance()</code></p>
+        <p class="p">This method is required to return a new instance of the partitioner class, with the plugin id and plugin description inherited from the instance upon which this method is called.</p>
+        <p class="p"><strong class="ph b">Serialize Partitioner Settings</strong> </p>
+        <p class="p">The plugin serializes its settings to both XML and a PDI repository.</p>
+        <p class="p"><code class="ph codeph">public String getXML()</code></p>
+        <p class="p">This method is called by PDI whenever the plugin needs to serialize its settings to XML. It is called when saving a transformation in Spoon. The method returns an XML string containing the serialized settings. The string contains a series of XML
+          tags, one tag per setting. The helper class <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code> constructs the XML string.</p>
+        <p class="p"><code class="ph codeph">public void loadXML()</code></p>
+        <p class="p">This method is called by PDI whenever a plugin reads its settings from XML. The XML node containing the plugin settings is passed in as an argument. Again, the helper class <code class="ph codeph">org.pentaho.di.core.xml.XMLHandler</code> is used
+          to read the settings from the XML node.</p>
+        <p class="p"><code class="ph codeph">public void saveRep()</code></p>
+        <p class="p">This method is called by PDI whenever a plugin saves its settings to a PDI repository. The repository object passed in as the first argument provides a convenient set of methods for serializing settings. The transformation id and step id passed
+          in are used as identifiers when calling the repository serialization methods.</p>
+        <p class="p"><code class="ph codeph">public void readRep()</code></p>
+        <p class="p">This method is called by PDI whenever a plugin needs to read its configuration from a PDI repository. The step id given in the arguments should be used as the identifier when using the repositories serialization methods.</p>
+        <p class="p">When developing plugins, make sure the serialization code is in synch with the settings available from the partitioner plugin dialog. When testing a partitioned step in Spoon, PDI internally saves and loads a copy of the transformation before
+          it is executed.&nbsp;</p>
+        <p class="p"><strong class="ph b">Provide the Name of the Dialog Class</strong> </p>
+        <p class="p">PDI needs to know which class will take care of the settings dialog for the plugin. The interface method <code class="ph codeph">getDialogClassName()</code> must return the name of the class implementing the <code class="ph codeph">StepDialogInterface</code>          for the partitioner.&nbsp;</p>
+        <p class="p"><strong class="ph b">Partition Incoming Rows During Runtime</strong> </p>
+        <p class="p">The class implementing <code class="ph codeph">Partitioner</code> executes the actual logic that distributes the rows to available partitions.</p>
+        <p class="p"><code class="ph codeph">public int getPartition() </code></p>
+        <p class="p">This method is called with the row structure and the actual row as arguments. It returns the partition to which this row is sent. The total number of partitions is available in the inherited field <code class="ph codeph">nrPartitions</code> and
+          the return value is between zero (0, inclusive) and <code class="ph codeph">nrPartitions</code> (exclusive).</p>
+        <p class="p"><strong class="ph b">Interface with the PDI plugin system</strong> </p>
+        <p class="p">In order for PDI to recognize the plugin, the class implementing the <code class="ph codeph">Partitioner</code> interface must also be annotated with the Java annotation
+          <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/core/annotations/PartitionerPlugin.html"
+          rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/core/annotations/PartitionerPlugin.html"><code class="ph codeph">org.pentaho.di.core.annotations.PartitionerPlugin</code></a> .</p>
+        <p class="p">Supply these annotation attributes:</p>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="3c9fbcc9-6915-44a1-ad7e-2190fcaaee87__implementing_partitioner_interface__table_fyd_lh3_nh" rules="all" summary="">
+            <thead align="left" class="thead">
+              <tr class="row">
+                <th class="entry" id="3c9fbcc9-6915-44a1-ad7e-2190fcaaee87__d20685e247" valign="top" width="25%"><strong class="ph b">Attribute</strong> </th>
+                <th class="entry" id="3c9fbcc9-6915-44a1-ad7e-2190fcaaee87__d20685e253" valign="top" width="75%"><strong class="ph b">Description</strong> </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">id </code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">A globally unique ID for the plugin</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">name</code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">A short label for the plugin</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">description</code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">A longer description for the plugin</td>
+              </tr>
+              <tr class="row">
+                <td class="entry" headers="d20685e247 " valign="top" width="25%"><code class="ph codeph">i18nPackageName</code></td>
+                <td class="entry" headers="d20685e253 " valign="top" width="75%">If the <code class="ph codeph">i18nPackageName</code> attribute is supplied in the annotation attributes, the values of name and description are interpreted as <code class="ph codeph">i18n</code> keys. The keys may be supplied in the extended
+                  form&nbsp; <code class="ph codeph">i18n:<packagename></code> key to specify a package that is different from the default package given in the <code class="ph codeph">i18nPackageName</code> attribute.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="section_2" class="mt-page-section"><span id="Implementing_the_Partitioner_Settings_Dialog_Box"></span> 
+        <h2 class="editable">Implementing the Partitioner Settings Dialog Box</h2>
+        <div class="tablenoborder">
+          <table border="1" cellpadding="4" cellspacing="0" class="table" frame="border" id="e1119cca-50c2-468a-a795-75a29e7bf47e__implementing_partitioner_settings_dialog__table_ohz_gh3_nh" rules="all" summary="">
+            <tbody class="tbody">
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Java Interface</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDialogInterface.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/step/StepDialogInterface.html"><code class="ph codeph">org.pentaho.di.trans.step.StepDialogInterface</code> </a> 
+                </td>
+              </tr>
+              <tr class="row">
+                <td class="entry" valign="top" width="25%"><strong class="ph b">Base class</strong> </td>
+                <td class="entry" valign="top" width="75%">
+                  <a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-ui-swt-5.3.0.0-javadoc/org/pentaho/di/ui/trans/step/BaseStepDialog.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-ui-swt-5.3.0.0-javadoc/org/pentaho/di/ui/trans/step/BaseStepDialog.html"><code class="ph codeph">org.pentaho.di.ui.trans.step.BaseStepDialog</code> </a> 
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="p"><code class="ph codeph">StepDialogInterface</code> is the Java interface that implements the settings dialog of a partitioner plugin.</p>
+        <p class="p"><strong class="ph b">Maintain the Dialog for Partitioner Settings</strong> </p>
+        <p class="p">The <code class="ph codeph">dialog</code> class is responsible for constructing and opening the settings dialog for the partitioner. When you open the partitioning settings in Spoon, the system instantiates the <code class="ph codeph">dialog</code>          class passing in a <code class="ph codeph">StepPartitioningMeta</code> object. Retrieve the <code class="ph codeph">Partitioner</code> object by calling <code class="ph codeph">getPartitioner()</code> and call the <code class="ph codeph">open()</code>          method on the dialog.
+          <a class="xref external" target="_blank" rel="external nofollow" href="http://www.eclipse.org/swt/">SWT</a>  is the native windowing environment of Spoon and the framework used for implementing dialogs.&nbsp;</p>
+        <p class="p"><code class="ph codeph">public String open()</code></p>
+        <p class="p">This method returns only after the dialog has been confirmed or cancelled. The method must conform to these rules.&nbsp;</p>
+        <ul class="ul">
+          <li class="li">If the dialog is confirmed
+            <ul class="ul">
+              <li class="li">The <code class="ph codeph">Partition</code> object must be updated to reflect the new settings</li>
+              <li class="li">If you changed any settings, the <code class="ph codeph">StepPartitioningMeta</code> object Changed flag must be set to <code class="ph codeph">true</code></li>
+              <li class="li"><code class="ph codeph">open()</code> returns the name of the step to which the partitioning is applied&mdash;use the <code class="ph codeph">stepname</code> field inherited from <code class="ph codeph">BaseStepDialog</code></li>
+            </ul>
+          </li>
+          <li class="li">If the dialog is cancelled
+            <ul class="ul">
+              <li class="li">The <code class="ph codeph">Partition</code> object must not be changed</li>
+              <li class="li">The <code class="ph codeph">StepPartitioningMeta</code> object Changed flag must be set to the value it had at the time the dialog opened</li>
+              <li class="li"><code class="ph codeph">open()</code> must return <code class="ph codeph">null</code></li>
+            </ul>
+          </li>
+        </ul>
+        <p class="p">The <code class="ph codeph">StepPartitioningMeta</code> object has an internal Changed flag that is accessible using <code class="ph codeph">hasChanged()</code> and <code class="ph codeph">setChanged()</code>. Spoon decides whether the transformation
+          has unsaved changes based on the Changed flag, so it is important for the dialog to set the flag appropriately.&nbsp;</p>
+        <p class="p">The
+          <a class="xref" title="Sample Partitioner Plugin" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/010/030/030">sample Partitioner plugin project</a>  has an implementation of the dialog class that is consistent with the these rules and is a good basis for creating your own dialogs.&nbsp;</p>
+      </div>
+    </div>
+    <div id="section_3" class="mt-page-section"><span id="Deploying_Partitioner_Plugins"></span> 
+      <h2 class="editable">Deploying Partitioner Plugins</h2>
+      <p class="p">To deploy your plugin, follow the following steps.</p>
+      <ol class="pentaho-list-ordered" id="8d540af8-1d18-486a-9420-3130f5d24c21__deploying_partitioner_plugins__ol_wqj_5rz_dk">
+        <li class="li">Create a jar file containing your plugin class(es)</li>
+        <li class="li">Create a new folder, give it a meaningful name, and place your jar file inside the folder</li>
+        <li class="li">Place the plugin folder you just created in a specific location for PDI to find. Depending on how you use PDI, you need to copy the plugin folder to one or more locations as per the following list.
+          <div class="p">
+            <ul class="ul" id="8d540af8-1d18-486a-9420-3130f5d24c21__deploying_partitioner_plugins__ul_brj_5rz_dk" style="list-style-type: disc;">
+              <li class="li">
+                <p class="p"><strong>Deploying to Spoon or Carte:</strong> </p>
+                <ol>
+                  <li class="li">
+                    <p class="p">Copy the plugin folder into this location:&nbsp;<span class="ph filepath">design-tools/data-integration/plugins/steps</span> </p>
+                  </li>
+                  <li class="li">
+                    <p class="p">Restart Spoon. After restarting Spoon, the new database type is available from the PDI database dialog.</p>
+                  </li>
+                </ol>
+              </li>
+              <li class="li">
+                <p class="p"><strong>Deploying to Pentaho Server for&nbsp;Data Integration:</strong> </p>
+                <ol>
+                  <li class="li">
+                    <p class="p">Copy the plugin folder to this location:&nbsp;<span class="ph filepath">server/pentaho-server/pentaho-solutions/system/kettle/plugins/steps</span> </p>
+                  </li>
+                  <li class="li">
+                    <p class="p">Restart the server. After restarting the&nbsp;Pentaho&nbsp;Server, the plugin is available to the server.</p>
+                  </li>
+                </ol>
+              </li>
+              <li class="li">
+                <p class="p"><strong>Deploying to Pentaho Server for&nbsp;Business Analytics:</strong> </p>
+                <ol>
+                  <li class="li">
+                    <p class="p">Copy the plugin folder to this location:&nbsp;<span class="ph filepath">server/pentaho-server/pentaho-solutions/system/kettle/plugins/steps</span> </p>
+                  </li>
+                  <li class="li">
+                    <p class="p">Restart the server. After restarting the Pentaho Server, the plugin is available to the server.</p>
+                  </li>
+                </ol>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div id="section_4" class="mt-page-section"><span id="Sample_Partitioner_Plugin"></span> 
+      <h2 class="editable">Sample Partitioner Plugin</h2>
+      <p class="p">The sample Partitioner plugin project is designed to show a minimal functional implementation of a partitioner plugin that you can use as a basis to develop your own custom plugins.</p>
+      <p class="p">The sample Partitioner plugin distributes rows to partitions based on the value of a string field, or more precisely the string length. The sample shows a partitioner executing on five partitions, assigning longer strings to higher partition numbers.&nbsp;</p>
+      <p class="p">Follow these steps in order to build and deploy the sample plugin.</p>
+      <div class="p">
+        <ol class="pentaho-list-ordered" id="d7d16256-594d-4683-a50d-a1dccf1380f2__sample_partitioner_plugin__ol_mnp_zpq_ck">
+          <li class="li">Obtain the Sample Plugin Source
+            <p class="p">The plugin source is available in the
+              <a class="xref" title="Get Started" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/000">download package</a> . Download the package and unzip it. The partitioner plugin resides in the <span class="ph filepath">kettle-sdk-partitioner-plugin</span>  folder.</p>
+          </li>
+          <li class="li">Configure the Build
+            <p class="p">Open <span class="ph filepath">kettle-sdk-partitioner-plugin/build/build.properties</span>  and set the <code class="ph codeph">kettle-dir</code> property to the base directory of your PDI&nbsp;installation.</p>
+          </li>
+          <li class="li">Build and Deploy
+            <p class="p">You may choose to build and deploy the plugin from the command line, or work with the Eclipse IDE instead. Both options are described below.</p>
+            <div class="p">
+              <ul class="ul" id="d7d16256-594d-4683-a50d-a1dccf1380f2__sample_partitioner_plugin__ul_plt_hqq_ck">
+                <li class="li">
+                  <p class="p">Build and Deploy From the Command Line</p>
+                  <p class="p">The plugin is built using
+                    <a class="xref external" target="_blank" rel="external nofollow" href="http://ant.apache.org/">Apache Ant</a> . Build and deploy the plugin from the command line by invoking the install target from the build directory.&nbsp;</p> <pre class="pre codeblock">
+kettle-sdk-partitioner-plugin $ cd build
+build $ ant install</pre>
+                  <p class="p">The install target compiles the source, creates a <span class="ph filepath">jar</span>  file, creates a plugin folder, and copies the plugin folder into the <span class="ph filepath">plugins/steps</span>  directory of your PDI installation.</p>
+                </li>
+                <li class="li">
+                  <p class="p">Build and Deploy From Eclipse</p>
+                  <p class="p">Import the plugin sources into Eclipse:</p>
+                  <ol class="ol" id="d7d16256-594d-4683-a50d-a1dccf1380f2__sample_partitioner_plugin__ol_h4p_zpq_ck" type="a">
+                    <li class="li">From the menu, select <span class="ph uicontrol">File</span>  > <span class="ph uicontrol"> Import</span>  > <span class="ph uicontrol">Existing Projects Into Worksapace</span> .</li>
+                    <li class="li">Browse to the <span class="ph filepath">kettle-sdk-partitioner-plugin</span>  folder and choose the project to be imported.&nbsp;</li>
+                  </ol>
+                  <div class="p">To build and install the plugin, follow these steps:
+                    <ol class="ol" type="a">
+                      <li class="li">Open the Ant view in Eclipse by selecting <span class="ph uicontrol">Window</span>  > <span class="ph uicontrol">Show View</span>  from the main menu and select <span class="ph uicontrol">Ant</span> .
+                        <p class="p">You may have to select <span class="ph uicontrol">Other</span>  > <span class="ph uicontrol">Ant</span>  if you have not used the Ant view before.</p>
+                      </li>
+                      <li class="li">Drag the file <span class="ph filepath">build/build.xml</span>  from your project into the Ant view, and execute the install target by double-clicking it.</li>
+                      <li class="li">After the plugin has been deployed, restart Spoon.</li>
+                    </ol>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="li">You can test the new plugin using the transformation from the <span class="ph filepath">demo_transform</span>  folder.</li>
+        </ol>
+      </div>
+      <p>
+        <img alt="" class="internal default" style="width: 800px; height: 777px;" width="800px" height="777px" src="http://help.pentaho.com/@api/deki/files/8268/screenshot_partitioning2.png?size=bestfit&amp;width=800&amp;height=777&amp;revision=1" />
+      </p>
+    </div>
+    <div id="section_5" class="mt-page-section"><span id="Exploring_Existing_Partitioners"></span> 
+      <h2 class="editable">Exploring Existing Partitioners</h2>
+      <p class="p">
+        <a class="xref external" title="Get Started" rel="internal" href="http://help.pentaho.com/Documentation/7.0/0R0/0V0/000">PDI sources</a>  are useful if you want to investigate the implementation of the standard modulo partitioner. The main class is available as <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/ModPartitioner.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-engine-5.3.0.0-javadoc/org/pentaho/di/trans/ModPartitioner.html">org.pentaho.di.trans.ModPartitioner</a> </code>.
+        The corresponding <code class="ph codeph">dialog</code> class in located in <code class="ph codeph"><a class="xref external" target="_blank" title="http://javadoc.pentaho.com/kettle530/kettle-ui-swt-5.3.0.0-javadoc/org/pentaho/di/ui/trans/dialog/ModPartitionerDialog.html" rel="external nofollow" href="http://javadoc.pentaho.com/kettle530/kettle-ui-swt-5.3.0.0-javadoc/org/pentaho/di/ui/trans/dialog/ModPartitionerDialog.html">org.pentaho.di.ui.trans.dialog.ModPartitionerDialog</a> </code>.</p>
+    </div>
+    <div id="section_6" class="mt-page-section"><span id="Additional_Reading"></span> 
+      <h2 class="editable">
+        <strong class="ph b">Additional Reading</strong> 
+      </h2>
+      <p class="p">A complete explanation of partitioning in Kettle, including sample transformations, is available here
+        <a class="xref external" target="_blank" rel="external nofollow" href="http://type-exit.org/adventures-with-open-source-bi/2011/09/partitioning-in-kettle/">http://type-exit.org/adventures-with-open-source-bi/2011/09/partitioning-in-kettle/</a> .</p>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Implementing_the_Partitioner_Interface" rel="internal">Implementing the Partitioner Interface&nbsp;</a>  </li>
+      <li> <a href="#Implementing_the_Partitioner_Settings_Dialog_Box" rel="internal">Implementing the Partitioner Settings Dialog Box</a>  </li>
+      <li> <a href="#Deploying_Partitioner_Plugins" rel="internal">Deploying Partitioner Plugins</a>  </li>
+      <li> <a href="#Sample_Partitioner_Plugin" rel="internal">Sample Partitioner Plugin</a>  </li>
+      <li> <a href="#Exploring_Existing_Partitioners" rel="internal">Exploring Existing Partitioners</a>  </li>
+      <li> <a href="#Additional_Reading" rel="internal">Additional Reading</a>  </li>
+    </ol>
+  </body>
+</content>

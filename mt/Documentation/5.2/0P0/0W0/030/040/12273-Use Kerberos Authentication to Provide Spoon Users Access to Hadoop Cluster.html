@@ -1,0 +1,707 @@
+<content type="text/html" title="Use Kerberos Authentication to Provide Spoon Users Access to Hadoop Cluster">
+  <head>
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.css" />
+    <link type="text/css" rel="stylesheet" href="http://help.pentaho.com/@cdn/deki/syntax2/out/shThemeCedar.min.css" />
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shCore.min.js"></script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushBash.min.js"></script>
+    <script type="text/javascript">
+      /*<![CDATA[*/
+      SyntaxHighlighter.all(); /*]]>*/
+    </script>
+    <script type="text/javascript" src="http://help.pentaho.com/@cdn/deki/syntax2/out/shBrushSql.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <div class="body taskbody">
+        <div class="section context">
+          <p class="p">If you use Kerberos to authenticate access to your Hadoop cluster, with a little extra configuration, you can also use Kerberos to authenticate Spoon users who attempt the access the cluster through a step in the transformation. When a user
+            attempts to run a transformation that contains a step that connects to a Hadoop cluster to perform a function, the user's account credential is matched against the credentials in the Kerberos administrative database on the Hadoop cluster.&nbsp;
+            If the credentials match, the Kerberos Key Distribution Center (KDC) grants an authorization ticket and access is granted. If not, the user is not authentication and the step does not run.</p>
+          <p class="p">To set up Kerberos authentication to provide Spoon users with access to the Hadoop cluster, you will need to perform four sets of tasks.</p>
+          <ul class="ul" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_hadoop__ul_lht_pzb_2m">
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__prerequisites" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__prerequisites">Complete Cluster and Client-Node Prerequisites</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_userID" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_userID">Add Users To Kerberos Database on Hadoop Cluster</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_boot_time" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_boot_time">Set Up Kerberos Administrative Server and KDC to Start When the Server Starts</a> 
+            </li>
+            <li class="li">
+              <a class="xref" href="#">Configure your Hadoop Cluster</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client">Configure Spoon Client Side Nodes</a> 
+            </li>
+            <li class="li">
+              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_launch_pdi" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_launch_pdi">Test Authentication from within Spoon</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="topic task nested1" id="dcdedc56-0097-4923-9bcf-33918f480daf__prerequisites">
+        <div id="section_1" class="mt-page-section"><span id="Complete_Cluster_and_Client-Node_Prerequisites"></span> 
+          <h2 class="editable">Complete Cluster and Client-Node Prerequisites</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Make sure that you have completed the following tasks before you move to the next section.</p>
+              <div class="p">
+                <ul class="ul" id="dcdedc56-0097-4923-9bcf-33918f480daf__prerequisites__ul_kgy_tyx_zl">
+                  <li class="li">Install a Hadoop cluster on one or more Linux servers. The cluster should be running one of the versions of Hadoop listed in the
+                    <a class="xref external" target="_blank" rel="external nofollow" href="http://wiki.pentaho.com/display/BAD/Configuring+Pentaho+for+your+Hadoop+Distro+and+Version">Configuring Pentaho for your Hadoop Distro and Version</a>  section of the Pentaho Big Data wiki.</li>
+                  <li class="li">Configure the Hadoop cluster with a Kerberos Realm, Kerberos KDC, and Kerberos Administrative Server.</li>
+                  <li class="li">Make sure the Hadoop cluster, including the name node, data nodes, secondary name node, job tracker, and task tracker nodes have been configured to accept remote connection requests.</li>
+                  <li class="li">Make sure the Kerberos clients have been set up for all data, task tracker, name, and job tracker nodes if you are have deployed Hadoop using an enterprise-level program.</li>
+                  <li class="li">Install the current version of Spoon on each client machine.</li>
+                  <li class="li">Make sure each client machine can use a hostname to access the Hadoop cluster. You should also test to ensure that IP addresses resolve to hostnames using both forward and reverse lookups.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_userID">
+        <div id="section_2" class="mt-page-section"><span id="Add_Users_to_Kerberos_Database_on_Hadoop_Cluster"></span> 
+          <h2 class="editable">Add Users to Kerberos Database on Hadoop Cluster</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">Add the user account credential for each Spoon user that should have access to the Hadoop cluster to the Kerberos database. You only need to do this once.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">Log in as root (or a privileged user), to the server that hosts the Kerberos database.</span> </li>
+              <li class="li step"><span class="ph cmd">Make sure there is an operating system user account on<em class="ph i"> each node </em> in the Hadoop cluster for <em class="ph i">each user </em> that you want to add to the Kerberos database. Add operating system user accounts if necessary. Note that the user account UIDs <em class="ph i">must be greater</em>  than the minimum user ID value (<span class="ph filepath">min.user.id</span> ).
+                Usually, the minimum user ID value is set to 1000.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Add user identification to the Kerberos database by completing these steps. </span> 
+                <ol class="ol substeps" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_userID__substeps_ohd_tlx_2m" type="a">
+                  <li class="li substep"><span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  window, then add the account username to the Kerberos database, like this. The name should match the operating system user account that you verified (or added) in
+                    the previous step. If successful, a message appears indicating that the user has been created.</span>  <pre class="pre codeblock">
+root@kdc1:~# kadmin.local -q &quot;addprinc <username>&quot;
+...
+Principal &quot;<user name>@DEV.LOCAL&quot; created.</pre> </li>
+                  <li class="li substep"><span class="ph cmd">Repeat for each user you want to add to the database.</span> </li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="topic task nested1" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_server_boot_time">
+        <div id="section_3" class="mt-page-section"><span id="Set_Up_Kerberos_Administrative_Server_and_KDC_to_Start_When_Server_Starts"></span> 
+          <h2 class="editable">Set Up Kerberos Administrative Server and KDC to Start When Server Starts</h2>
+          <div class="body taskbody">
+            <div class="section context">
+              <p class="p">It is a good practice to start the Kerberos Administrative Server and the KDC when the server boots. One way to do this is to set them up to run as a service. This is an optional, but recommended step.</p>
+            </div>
+            <ol class="ol steps">
+              <li class="li step"><span class="ph cmd">If you have not done so already, log into the server that contains the Kerberos Administrative Server and the KDC.</span> </li>
+              <li class="li step"><span class="ph cmd">Set the Kerberos Administrative Server to run as a service when the system starts. By default, the name of the Kerberos Administrative Server is <span class="ph filepath">kadmin</span> . If you do not know how to do this,
+                check the documentation for your operating system.</span> 
+              </li>
+              <li class="li step"><span class="ph cmd">Set the KDC to run as a service when the system starts. By default, the name of the KDC is <span class="ph filepath">krb5kdc</span> . </span> 
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div id="section_4" class="mt-page-section"><span id="Make_HDP-Specific_Configurations"></span> 
+        <h2 class="editable">Make&nbsp;HDP-Specific Configurations</h2>
+        <p>If you are using HDP, you might require additional configuration changes depending on your environment.&nbsp; Before you complete the steps in this section, review the installation and configuration documentation at the HDP documentation website:
+          <a rel="freeklink" href="http://docs.hortonworks.com/" title="http://docs.hortonworks.com/" class="external">http://docs.hortonworks.com/</a> .</p>
+        <p class="pentaho-note">The instructions in this section are for configuring a test server only.&nbsp; Adjust the following instructions to meet the needs of your HDP test and production environments.</p>
+        <p>HDP-specific configuration changes are divided into two groups.</p>
+        <ul class="pentaho-list-unordered">
+          <li>Edit HDP Cluster-Side Configuration Files</li>
+          <li>Set Access Permissions</li>
+        </ul>
+        <div id="section_5" class="mt-page-section"><span id="Edit_HDP_Cluster-Side_Configuration_Files"></span> 
+          <h3 class="editable">Edit HDP Cluster-Side Configuration Files</h3>
+          <p>Three files should be edited on the cluster: core-site.xml, hdfs-site.xml, and oozie.xml.</p>
+        </div>
+        <div id="section_6" class="mt-page-section"><span id="Edit_core-site.xml"></span> 
+          <h3 class="editable">Edit core-site.xml</h3>
+          <p>Edit the core-site.xml file to specify the appropriate hosts and groups for various proxy users.&nbsp; To edit the file do the</p>
+          <ol class="pentaho-list-ordered">
+            <li>On the cluster, open the <span class="filepath style-wrap">core-site.xml </span> file in a text editor.&nbsp; By default, it is in the<span class="filepath style-wrap"> $HADOOP_CONF_DIR</span> .</li>
+            <li>Set the host and group for&nbsp;proxyusers using the following example as a guide.&nbsp;</li>
+          </ol>
+          <ul class="pentaho-list-unordered">
+            <li><span class="filepath style-wrap">hadoop.proxyuser.{username of proxyuser such as hive or oozie)}.hosts=FQHN of the hadoop manager node (by default)</span> </li>
+            <li><span class="filepath style-wrap">hadoop.proxyuser.{username of proxyuser such as hive or oozie)}.groups=users(by default)</span> </li>
+          </ul>
+          <p>Here is an example.&nbsp; Modify the <span class="filepath style-wrap">samplehost</span>, <span class="filepath style-wrap">samplecompany</span>, and <span class="filepath style-wrap">samplegroup </span> values to match your environment.&nbsp;
+            Note that not all of the properties might be needed.&nbsp; Also, note that the kinit_user should already be added to any groups that you specify.</p> <pre>
+<property>
+  <name>hadoop.proxyuser.root.hosts</name>
+  <value>samplehost.samplecompany.com</value>
+</property>
+<property>
+  <name>hadoop.proxyuser.falcon.hosts</name>
+  <value>samplehost.samplecompany.com</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.hive.hosts</name>
+   <value>samplehost.samplecompany.com</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.HTTP.hosts</name>
+   <value>samplehost.samplecompany.com</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.oozie.hosts</name>
+   <value>samplehost.samplecompany.com</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.hcat.hosts</name>
+   <value>samplehost.samplecompany.com</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.root.groups</name>
+   <value>samplegroup</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.oozie.groups</name>
+   <value>samplegroup</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.HTTP.groups</name>
+   <value>samplegroup</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.falcon.groups</name>
+   <value>samplegroup</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.hcat.groups</name>
+   <value>samplegroup</value>
+</property>
+<property>
+   <name>hadoop.proxyuser.hive.groups</name>
+   <value>samplegroup</value>
+</property>
+</pre>
+          <ol class="pentaho-list-ordered" start="3" style="list-style-type: decimal;">
+            <li>Save and close the file.</li>
+          </ol>
+        </div>
+        <div id="section_7" class="mt-page-section"><span id="Edit_hdfs-site.xml"></span> 
+          <h3 class="editable">Edit hdfs-site.xml</h3>
+          <p>To edit the <span class="filepath style-wrap">hdfs-site.xml</span>  file, complete these steps.</p>
+          <ol class="pentaho-list-ordered">
+            <li>On the cluster, open the <span class="filepath style-wrap">hdfs-site.xml</span>  file with a text editor.&nbsp; By default it is in the <span class="filepath style-wrap">$HADOOP_CONF_DIR</span> .</li>
+            <li>Set the <span class="filepath style-wrap">dfs.nfs.exports.allowed.hosts</span>  property's value to read and write, like this (note the space between the asterisk &quot;<span class="filepath style-wrap">*</span> &quot; and the &quot;<span class="filepath style-wrap">rw</span> &quot;
+              in the following code snippet):</li>
+          </ol> <pre>
+<property>
+      <name>dfs.nfs.exports.allowed.hosts</name>
+      <value>* rw</value>
+    </property>
+</pre>
+          <ol class="pentaho-list-ordered" start="3" style="list-style-type: decimal;">
+            <li>Save and close the file.</li>
+          </ol>
+          <div id="section_8" class="mt-page-section"><span id="Edit_oozie-site.xml"></span> 
+            <h4 class="editable">Edit oozie-site.xml</h4>
+            <p>To edit the <span class="filepath style-wrap">oozie-site.xml</span>  file, complete these steps.</p>
+            <ol class="pentaho-list-ordered">
+              <li>On the cluster, open the <span class="filepath style-wrap">oozie-site.xml</span>  file in a text editor.&nbsp; By default, it is located in the <span class="filepath style-wrap">$OOZIE_CONF_DIR</span> .</li>
+              <li>Set the hosts and groups for&nbsp;proxyusers using the following example as a guide.&nbsp;</li>
+            </ol> <pre>
+<property>
+<name>hadoop.proxyuser.oozie.hosts</name>
+<value>samplehost.samplecompany.com</value>
+</property>
+<property>
+<name>hadoop.proxyuser.oozie.group</name>
+<value>samplegroup</value>
+</property>
+<property>
+<name>hadoop.proxyuser.{kinit_user}.hosts</name>
+<value>samplehost.samplecompany.com</value>
+</property>
+<property>
+<name>hadoop.proxyuser.{kinit_user}.group</name>
+<value>samplegroup</value>
+</property>
+<property>
+oozie.service.ProxyUserService.proxyuser.{kinit_user}.hosts</name>
+      <value>samplehost.samplecompany.com</value>
+    </property>
+<property>
+oozie.service.ProxyUserService.proxyuser.{kinit_user}.group</name>
+      <value>samplegroup</value>
+    </property>
+</pre>
+            <ol class="pentaho-list-ordered" start="3" style="list-style-type: decimal;">
+              <li>Save, then close the file.</li>
+            </ol>
+          </div>
+        </div>
+        <div id="section_9" class="mt-page-section"><span id="Set_Access_Permissions"></span> 
+          <h3 class="editable">Set Access Permissions</h3>
+          <p>Access permissions must be granted to allow the knit_user access to the appropriate file systems.&nbsp; The examples in this section are specific to test servers only.&nbsp; Increase security by modifying the instructions and parameters are
+            required for your organization.</p>
+          <div id="section_10" class="mt-page-section"><span id="Grant_kinit_user_Access_to_Hadoop_File_System"></span> 
+            <h4 class="editable">Grant kinit_user Access to Hadoop File System</h4>
+            <p>Ensure that the kinit_user has permission to access the hadoop file system and any other directories where access is required.</p>
+            <p>In a terminal window or shell tool, enter a chmod command to grant the kinit_user access to the appropriate directories, like this:</p> <pre class="brush: bash; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">hadoop fs -chmod -R 777 /user/{kinit_user}</pre>
+            <p class="pentaho-note">To make this more secure, use a different value than 777.</p>
+          </div>
+          <div id="section_11" class="mt-page-section"><span id="Edit_YARN_ACL.2C_Logs.2C_and_Timeline_Server_Settings"></span> 
+            <h4 class="editable">Edit YARN ACL, Logs, and Timeline Server Settings</h4>
+            <p>To edit this settings, complete these steps.</p>
+            <ol class="pentaho-list-ordered">
+              <li>In the YARN resource manager, set the yarn.acle.enable to either true or false, as needed.&nbsp;</li>
+              <li>Set the yarn.admin.acl to *</li>
+              <li>Set yarn-log-aggregation-enable to false.</li>
+              <li>Set yarn.timeline-service.enabled to false.</li>
+              <li>Save and close the resource manager file.</li>
+            </ol>
+          </div>
+          <div id="section_12" class="mt-page-section"><span id="Grant_Privileges_to_Hive_Mysql_database"></span> 
+            <h4 class="editable">Grant Privileges to Hive Mysql database</h4>
+            <p>In a shell or terminal window on the Hadoop cluster, enter the following.</p> <pre class="brush: sql; collapse: false; first-line: 1; gutter: true; ruler: false; toolbar: true; wrap-lines: true; ">mysql
+grant all privileges on *.* to 'hive'@'ip of the kettle client host' with grant option; //this should be done for all client hosts or could be specified '%' to allow all this connection from all hosts
+exit;
+hive
+GRANT ALL ON DATABASE default TO USER {kinit_user} WITH GRANT OPTION; //instead of 'default' could be other databases</pre> </div>
+          <div id="section_13" class="mt-page-section"><span id="Edit_the_Hive-Site.xml_to_Grant_Owner_Authorization_For_Tables"></span> 
+            <h4 class="editable">Edit the Hive-Site.xml to Grant Owner Authorization For Tables</h4>
+            <p>To edit the hive-site.xml file, do these things.</p>
+            <ol class="pentaho-list-ordered">
+              <li>Open the hive-site.xml file in a text editor.</li>
+              <li>Set the hive.security.authorization.createable.owner.grants property to ALL.</li>
+              <li>Save and close the file.</li>
+            </ol>
+          </div>
+          <div id="section_14" class="mt-page-section"><span id="Grant_HBASE_privileges"></span> 
+            <h4 class="editable">Grant HBASE privileges</h4>
+            <p>To grant HBASE privileges, in a shell or terminal window, type the following:</p> <pre>
+hbase shell
+grant '{kinit_user}','RWXCA'
+</pre> </div>
+          <div id="section_15" class="mt-page-section"><span id=""></span> 
+            <h4 class="editable">&nbsp;</h4>
+            <p>&nbsp;</p>
+            <div class="topic task nested1" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client">
+              <div id="section_16" class="mt-page-section"><span id="Configure_Spoon_Client-Side_Nodes"></span> 
+                <h2 class="editable">Configure Spoon Client-Side Nodes</h2>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <div class="p">After you have added users to the database and configured the Kerberos admin and KDC to start when the server starts, you are ready to configure each client-side node from which a user might access the Hadoop cluster. Client-side nodes
+                      should each have a copy of Spoon already installed. Client-side configuration differs based on your operating system.
+                      <ul class="ul" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client__ul_fh2_hmc_zl">
+                        <li class="li">
+                          <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux">Configure Linux and Mac Client Nodes</a> 
+                        </li>
+                        <li class="li">
+                          <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_window" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_window">Configure Windows Client Nodes</a> 
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="topic task nested2" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux">
+                  <div id="section_17" class="mt-page-section"><span id="Configure_Linux_and_Mac_Client_Nodes"></span> 
+                    <h3 class="editable">Configure Linux and Mac Client Nodes</h3>
+                    <div class="body taskbody">
+                      <div class="section context">
+                        <div class="p">To configure Linux client nodes, complete these tasks.
+                          <ul class="ul" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux__ul_lmf_lmc_zl">
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_JCE" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_JCE">Install JCE on Linux and Mac Clients</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_hadoopdistro" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_hadoopdistro">Configure PDI for Hadoop Distribution and Version on Linux and Mac Clients</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_client" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_client">Download and Install Kerberos on Linux and Mac Clients</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_config_file" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" href="#">Synchronize Clock on Linux and Mac Clients</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberosticket" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberosticket">Obtain Kerberos Ticket on Linux and Mac Clients</a> 
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_JCE">
+                      <div id="section_18" class="mt-page-section"><span id="Install_JCE_on_Linux_and_Mac_Clients"></span> 
+                        <h4 class="editable">Install JCE on Linux and Mac Clients</h4>
+                        <div class="body taskbody">
+                          <div class="section context">This step is optional. The KDC configuration includes an AES-256 encryption setting. If you want to use this encryption strength, you will need to install the Java Cryptographic Extension (JCE) files.</div>
+                          <ol class="ol steps">
+                            <li class="li step"><span class="ph cmd">Download the Java Cryptographic Extension (JCE) for the <a class="xref" title="JDBC Drivers Reference" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0D0/160/010">currently supported version of Java</a>  from the <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html">Oracle site</a> . </span> </li>
+                            <li class="li step"><span class="ph cmd">Read the installation instructions that are included with the download.</span> </li>
+                            <li class="li step"><span class="ph cmd">Copy the JCE jars to the <span class="ph filepath">java/lib/security</span>  directory where PDI is installed on the Linux client machine. </span> 
+                            </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_hadoopdistro">
+                      <div id="section_19" class="mt-page-section"><span id="Configure_PDI_for_Hadoop_Distribution_and_Version_on_Linux_and_Mac_Clients"></span> 
+                        <h4 class="editable">Configure PDI for Hadoop Distribution and Version on Linux and Mac Clients</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">To configure DI to connect to the Hadoop cluster, you'll need to copy Hadoop configuration files from the cluster's <strong class="ph b">name</strong>  node to the appropriate place in the <span class="ph filepath">hadoop-configurations</span>                               subdirectory.</p>
+                          </div>
+                          <ol class="ol steps">
+                            <li class="li step"><span class="ph cmd">Back up the <span class="ph filepath">core-site.xml</span>, <span class="ph filepath">hdfs-site.xml</span>, and <span class="ph filepath">mapred-site.xml</span>  files that are in the <span class="ph filepath">design-tools/data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/<directory of the shim that is in your plugin.properties file></span> .</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Copy the <span class="ph filepath">core-site.xml</span>, <span class="ph filepath">hdfs-site.xml</span>, and <span class="ph filepath">mapred-site.xml</span>  from the cluster's name node to this directory
+                              on each client: <span class="ph filepath">design-tools/data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/<directory of the shim that is in your plugin.properties file></span> .</span>  <span class="ph uicontrol">Note:</span>                               If you made configuration changes to the core-site.xml, hdfs-site.xml, or mapred-site.xml files previously, you will need to make those changes again. Reference your backed up copies of the files if needed.</li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_client">
+                      <div id="section_20" class="mt-page-section"><span id="Download_and_Install_Kerberos_Client_on_Linux_and_Mac_Clients"></span> 
+                        <h4 class="editable">Download and Install Kerberos Client on Linux and Mac Clients</h4>
+                        <div class="body taskbody">
+                          <div class="section context">Download and install a Kerberos client. Check your operating system's documentation for further details on how to do this.</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_config_file">
+                      <div id="section_21" class="mt-page-section"><span id="Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Linux_and_Mac_Clients"></span> 
+                        <h4 class="editable">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux and Mac Clients</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">Modify the Kerberos configuration file to reflect your Realm, KDC, and Admin Server.</p>
+                          </div>
+                          <ol class="ol steps">
+                            <li class="li step"><span class="ph cmd">Open the <span class="ph filepath">krb5.conf</span>  file. By default this file is located in <span class="ph filepath">/etc/krb5.conf</span>, but it might appear somewhere else on your system.</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Add your Realm, KDC, and Admin Server information. The information in-between the carats <strong class="ph b">< ></strong>  indicates where you should modify the code to match your specific environment.</span>                               <pre class="pre codeblock">
+[libdefaults]
+       default_realm = <correct default realm name>
+	clockskew = 300
+	v4_instance_resolve = false
+	v4_name_convert = {
+		host = {
+			rcmd = host
+			ftp = ftp
+		}
+		plain = {
+			something = something-else
+		}
+	}
+	
+[realms]
+	<correct default realm name>= {
+		kdc=<KDC IP Address, or resolvable Hostname>
+		admin_server=< Admin Server IP Address, or resolvable Hostname>
+	}
+	MY.REALM = {
+		kdc = MY.COMPUTER 
+	}
+	OTHER.REALM = {
+		v4_instance_convert = {
+			kerberos = kerberos
+			computer = computer.some.other.domain
+		}
+	}
+[domain_realm]
+	.my.domain = MY.REALM </pre> </li>
+                            <li class="li step"><span class="ph cmd">Save and close the configuration file.</span> </li>
+                            <li class="li step"><span class="ph cmd">Restart the computer.</span> </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__id_xcx_xjw_dm">
+                      <div id="section_22" class="mt-page-section"><span id="Synchronize_Clock_on_Linux_and_Mac_Clients"></span> 
+                        <h4 class="editable">Synchronize Clock on Linux and Mac Clients</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">Synchronize the clock on the Linux client with the clock on the Hadoop cluster. This is important because if the clocks are too far apart, then when authentication is attempted, Kerberos will not consider the tickets that are
+                              granted to be valid and the user will not be authenticated. The times on the Linux client clock and the Hadoop cluster clock must not be greater than the range you entered for the <span class="ph filepath">clockskew</span>                               variable in <span class="ph filepath">krb5.conf</span>  file when you completed the steps in the
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_config_file"
+                              rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux Client</a>  task.</p>
+                            <p class="p">Consult your operating system's documentation for information on how to properly set your clock.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_linux_kerberosticket">
+                      <div id="section_23" class="mt-page-section"><span id="Obtain_Kerberos_Ticket_on_Linux_and_Mac_Clients"></span> 
+                        <h4 class="editable">Obtain Kerberos Ticket on Linux and Mac Clients</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">To obtain a Kerberos ticket, complete these steps.</p>
+                          </div>
+                          <ol class="ol steps">
+                            <li class="li step"><span class="ph cmd">Open a <span class="ph uicontrol">Terminal</span>  window and type <span class="ph filepath">kinit</span>  at the prompt.</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">When prompted for a password, enter it.</span> </li>
+                            <li class="li step"><span class="ph cmd">The prompt appears again. To ensure that the Kerberos ticket was granted, type <span class="ph filepath">klist</span>  at the prompt.</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Authentication information appears.</span> </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="topic task nested2" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_window">
+                  <div id="section_24" class="mt-page-section"><span id="Configure_Windows_Client_Nodes"></span> 
+                    <h3 class="editable">Configure Windows Client Nodes</h3>
+                    <div class="body taskbody">
+                      <div class="section context">
+                        <div class="p">To configure Windows client nodes, complete these tasks.
+                          <ul class="ul" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_window__ul_m1v_vmc_zl">
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_JCE" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_JCE">Install JCE on Windows Client</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_hadoopdistro" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_hadoopdistro">Configure PDI for Hadoop Distribution and Version on Windows Client</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_client" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_client">Download and Install Kerberos on Windows Client</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_clock" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_clock">Synchronize Clock on Windows Client</a> 
+                            </li>
+                            <li class="li">
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberosticket" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberosticket">Obtain Kerberos Ticket on Windows Client</a> 
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_JCE">
+                      <div id="section_25" class="mt-page-section"><span id="Install_JCE_on_Windows_Client"></span> 
+                        <h4 class="editable">Install JCE on Windows Client</h4>
+                        <div class="body taskbody">
+                          <div class="section context">This step is optional. The KDC configuration includes an AES-256 encryption setting. If you want to use this encryption strength, you will need to install the Java Cryptographic Extension (JCE) files.</div>
+                          <ol class="ol steps"
+                          id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_JCE__steps_ag2_rlw_dm">
+                            <li class="li step"><span class="ph cmd">Download the Java Cryptographic Extension (JCE) for the <a class="xref" title="https://help.pentaho.com/Documentation/5.1/0D0/160/010" rel="internal" href="http://help.pentaho.com/Documentation/5.2/0D0/160/010">currently supported version of Java</a>  from the <a class="xref external" target="_blank" rel="external nofollow" href="http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html">Oracle site</a> . </span> </li>
+                            <li class="li step"><span class="ph cmd">Read the installation instructions that are included with the download.</span> </li>
+                            <li class="li step"><span class="ph cmd">Copy the JCE jars to the <span class="ph filepath">java\lib\security</span>  directory where PDI is installed. </span> 
+                            </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_hadoopdistro">
+                      <div id="section_26" class="mt-page-section"><span id="Configure_PDI_for_Hadoop_Distribution_and_Version_on_Windows_Client"></span> 
+                        <h4 class="editable">Configure PDI for Hadoop Distribution and Version on Windows Client</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">To configure PDI to connect to the Hadoop cluster, you'll need to copy Hadoop configuration files from the cluster's <strong class="ph b">name</strong>  node to the appropriate place in the <span class="ph filepath">hadoop-configurations</span>                               subdirectory.</p>
+                          </div>
+                          <ol class="ol steps" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_hadoopdistro__steps_xd4_tlw_dm">
+                            <li class="li step"><span class="ph cmd">Back up the <span class="ph filepath">core-site.xml</span>, <span class="ph filepath">hdfs-site.xml</span>, and <span class="ph filepath">mapred-site.xml</span>  files that are in the <span class="ph filepath">design-tools/data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/<directory of the shim that is in your plugin.properties file></span> .</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Copy the <span class="ph filepath">core-site.xml</span>, <span class="ph filepath">hdfs-site.xml</span>, and <span class="ph filepath">mapred-site.xml</span>  from the cluster's name node to this directory
+                              on each client: <span class="ph filepath">design-tools/data-integration/plugins/pentaho-big-data-plugin/hadoop-configurations/<directory of the shim that is in your plugin.properties file></span> .</span>  <span class="ph uicontrol">Note:</span>                               If you made configuration changes to the core-site.xml, hdfs-site.xml, or mapred-site.xml files previously, you will need to make those changes again. Reference your backed up copies of the files if necessary.</li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_client">
+                      <div id="section_27" class="mt-page-section"><span id="Download_and_Install_Kerberos_Client_on_Windows_Client"></span> 
+                        <h4 class="editable">Download and Install Kerberos Client on Windows Client</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">Download and install a Kerberos client. We recommend that you use the Heimdal implementation of Kerberos, which can be found here:
+                              <a class="xref link-https" target="_blank" rel="external nofollow" href="https://www.secure-endpoints.com/heimdal/">https://www.secure-endpoints.com/heimdal/</a> .</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file">
+                      <div id="section_28" class="mt-page-section"><span id="Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Windows_Client"></span> 
+                        <h4 class="editable">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows Client</h4>
+                        <div class="body taskbody">
+                          <div class="section context">You will need to modify the Kerberos configuration file to reflect the appropriate realm, KDC, and Admin Server.</div>
+                          <ol class="ol steps">
+                            <li class="li step"><span class="ph cmd">Open the krb5.conf file. By default this file is located in <span class="ph filepath">c:\ProgramData\Kerberos</span> . This location might be different on your system.</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Add the appropriate realm, KDC, and Admin Server information. An example of where to add the data appears below.</span>  <pre class="pre codeblock">
+[libdefaults]
+       default_realm = <correct default realm name>
+	clockskew = 300
+	v4_instance_resolve = false
+	v4_name_convert = {
+		host = {
+			rcmd = host
+			ftp = ftp
+		}
+		plain = {
+			something = something-else
+		}
+	}
+	
+[realms]
+	<correct default realm name>= {
+		kdc=<KDC IP Address, or resolvable Hostname>
+		admin_server=< Admin Server IP Address, or resolvable Hostname>
+	}
+	MY.REALM = {
+		kdc = MY.COMPUTER 
+	}
+	OTHER.REALM = {
+		v4_instance_convert = {
+			kerberos = kerberos
+			computer = computer.some.other.domain
+		}
+	}
+[domain_realm]
+	.my.domain = MY.REALM </pre> </li>
+                            <li class="li step"><span class="ph cmd">Save and close the configuration file. </span> </li>
+                            <li class="li step"><span class="ph cmd">Make a copy of the configuration file and place it in the <span class="ph filepath">c:\Windows</span>  directory. Rename the file <span class="ph filepath">krb5.ini</span> .</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Restart the computer.</span> </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_clock">
+                      <div id="section_29" class="mt-page-section"><span id="Synchronize_Clock_on_Windows_Client"></span> 
+                        <h4 class="editable">Synchronize Clock on Windows Client</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">Synchronize the clock on the Windows client with the clock on the Hadoop cluster. This is important because if the clocks are too far apart, then when authentication is attempted, Kerberos will not consider the tickets that
+                              are granted to be valid and the user will not be authenticated. The times on the Windows client clock and the Hadoop cluster clock must not be greater than the range you entered for the <span class="ph filepath">clockskew</span>                               variable in <span class="ph filepath">krb5.conf</span>  file when you completed the steps in the
+                              <a class="xref" title="Documentation/5.1/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file"
+                              rel="internal" href="http://help.pentaho.com/Documentation/5.2/0P0/0W0/030/040#dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberos_config_file">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows Client</a>  task.</p>
+                            <p class="p">Consult your operating system's documentation for information on how to properly set your clock.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="topic task nested3" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberosticket">
+                      <div id="section_30" class="mt-page-section"><span id="Obtain_Kerberos_Ticket_on_Windows_Client"></span> 
+                        <h4 class="editable">Obtain Kerberos Ticket on Windows Client</h4>
+                        <div class="body taskbody">
+                          <div class="section context">
+                            <p class="p">To obtain a Kerberos ticket, complete these steps.</p>
+                          </div>
+                          <ol class="ol steps" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_configure_client_windows_kerberosticket__steps_y33_ngg_1m">
+                            <li class="li step"><span class="ph cmd">Open a <span class="ph uicontrol">Command Prompt</span>  window and type <span class="ph filepath">kinit</span>  at the prompt.</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">When prompted for a password, enter it.</span> </li>
+                            <li class="li step"><span class="ph cmd">The prompt appears again. To ensure that the Kerberos ticket was granted, type <span class="ph filepath">klist</span>  at the prompt.</span> 
+                            </li>
+                            <li class="li step"><span class="ph cmd">Authentication information appears.</span> </li>
+                          </ol>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="topic task nested1" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_launch_pdi">
+              <div id="section_31" class="mt-page-section"><span id="Test_Authentication_from_Within_Spoon"></span> 
+                <h2 class="editable">Test Authentication from Within Spoon</h2>
+                <div class="body taskbody">
+                  <div class="section context">
+                    <p class="p">To test the authentication from within Spoon, run a transformation that contains a step that connects to a Hadoop cluster. For these instructions to work properly, you should have read and write access to the your home directory on
+                      the Hadoop cluster.</p>
+                  </div>
+                  <ol class="ol steps" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_launch_pdi__steps_h4j_b2g_1m">
+                    <li class="li step"><span class="ph cmd">Start Spoon.</span> </li>
+                    <li class="li step"><span class="ph cmd">Open an existing transformation that contains a step to connect to the Hadoop cluster. If you don't have one, consider creating something like this. </span> 
+                      <ol class="ol substeps" id="dcdedc56-0097-4923-9bcf-33918f480daf__task_kerberos_launch_pdi__substeps_o4j_b2g_1m"
+                      type="a">
+                        <li class="li substep"><span class="ph cmd">Create a new transformation.</span> </li>
+                        <li class="li substep"><span class="ph cmd">Drag the <span class="ph uicontrol">Generate Rows</span>  step to the canvas, open the step, indicate a limit (the number of rows you want to generate), then put in field information, such as the name of the
+                          field, type, and a value.</span> 
+                        </li>
+                        <li class="li substep"><span class="ph cmd">Click <span class="ph uicontrol">Preview</span>  to ensure that data generates, then click the <span class="ph uicontrol">Close</span>  button to save the step.</span> 
+                        </li>
+                        <li class="li substep"><span class="ph cmd">Drag a <span class="ph uicontrol">Hadoop File Output</span>  step onto the canvas, then draw a hop between the <span class="ph uicontrol">Generate Rows</span>  and <span class="ph uicontrol">Hadoop File Output</span>                           steps.</span> 
+                        </li>
+                        <li class="li substep"><span class="ph cmd">In the <span class="ph uicontrol">Filename</span>  field, indicate the path to the file that will contain the output of the <span class="ph uicontrol">Generate Rows</span>  step. The path should be on the Hadoop
+                          cluster. Make sure that you indicate an extension such as <span class="ph filepath">txt</span>  and that you want to create a parent directory and that you want to add filenames to the result. </span> 
+                        </li>
+                        <li class="li substep"><span class="ph cmd">Click the <span class="ph uicontrol">OK</span>  button then save the transformation.</span> 
+                        </li>
+                      </ol>
+                    </li>
+                    <li class="li step"><span class="ph cmd">Run the transformation. If there are errors correct them.</span> </li>
+                    <li class="li step"><span class="ph cmd">When complete, open a <span class="ph uicontrol">Terminal</span>  window and view the results of the output file on the Hadoop filesystem. For example, if you saved your file to a file named <span class="ph filepath">test.txt</span>,
+                      you could type a command like this:</span>  <pre class="pre codeblock">
+hadoop fs -cat /user/pentaho-user/test/test.txt</pre> </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <body target="toc">
+    <ol>
+      <li> <a href="#Complete_Cluster_and_Client-Node_Prerequisites" rel="internal">Complete Cluster and Client-Node Prerequisites</a>  </li>
+      <li> <a href="#Add_Users_to_Kerberos_Database_on_Hadoop_Cluster" rel="internal">Add Users to Kerberos Database on Hadoop Cluster</a>  </li>
+      <li> <a href="#Set_Up_Kerberos_Administrative_Server_and_KDC_to_Start_When_Server_Starts" rel="internal">Set Up Kerberos Administrative Server and KDC to Start When Server Starts</a>  </li>
+      <li>
+        <a href="#Make_HDP-Specific_Configurations" rel="internal">Make&nbsp;HDP-Specific Configurations</a> 
+        <ol>
+          <li> <a href="#Edit_HDP_Cluster-Side_Configuration_Files" rel="internal">Edit HDP Cluster-Side Configuration Files</a>  </li>
+          <li> <a href="#Edit_core-site.xml" rel="internal">Edit core-site.xml</a>  </li>
+          <li>
+            <a href="#Edit_hdfs-site.xml" rel="internal">Edit hdfs-site.xml</a> 
+            <ol>
+              <li> <a href="#Edit_oozie-site.xml" rel="internal">Edit oozie-site.xml</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Set_Access_Permissions" rel="internal">Set Access Permissions</a> 
+            <ol>
+              <li> <a href="#Grant_kinit_user_Access_to_Hadoop_File_System" rel="internal">Grant kinit_user Access to Hadoop File System</a>  </li>
+              <li> <a href="#Edit_YARN_ACL.2C_Logs.2C_and_Timeline_Server_Settings" rel="internal">Edit YARN ACL, Logs, and Timeline Server Settings</a>  </li>
+              <li> <a href="#Grant_Privileges_to_Hive_Mysql_database" rel="internal">Grant Privileges to Hive Mysql database</a>  </li>
+              <li> <a href="#Edit_the_Hive-Site.xml_to_Grant_Owner_Authorization_For_Tables" rel="internal">Edit the Hive-Site.xml to Grant Owner Authorization For Tables</a>  </li>
+              <li> <a href="#Grant_HBASE_privileges" rel="internal">Grant HBASE privileges</a>  </li>
+              <li> <a href="#" rel="internal">&nbsp;</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <a href="#Configure_Spoon_Client-Side_Nodes" rel="internal">Configure Spoon Client-Side Nodes</a> 
+        <ol>
+          <li>
+            <a href="#Configure_Linux_and_Mac_Client_Nodes" rel="internal">Configure Linux and Mac Client Nodes</a> 
+            <ol>
+              <li> <a href="#Install_JCE_on_Linux_and_Mac_Clients" rel="internal">Install JCE on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Configure_PDI_for_Hadoop_Distribution_and_Version_on_Linux_and_Mac_Clients" rel="internal">Configure PDI for Hadoop Distribution and Version on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Download_and_Install_Kerberos_Client_on_Linux_and_Mac_Clients" rel="internal">Download and Install Kerberos Client on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Linux_and_Mac_Clients" rel="internal">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Synchronize_Clock_on_Linux_and_Mac_Clients" rel="internal">Synchronize Clock on Linux and Mac Clients</a>  </li>
+              <li> <a href="#Obtain_Kerberos_Ticket_on_Linux_and_Mac_Clients" rel="internal">Obtain Kerberos Ticket on Linux and Mac Clients</a>  </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#Configure_Windows_Client_Nodes" rel="internal">Configure Windows Client Nodes</a> 
+            <ol>
+              <li> <a href="#Install_JCE_on_Windows_Client" rel="internal">Install JCE on Windows Client</a>  </li>
+              <li> <a href="#Configure_PDI_for_Hadoop_Distribution_and_Version_on_Windows_Client" rel="internal">Configure PDI for Hadoop Distribution and Version on Windows Client</a>  </li>
+              <li> <a href="#Download_and_Install_Kerberos_Client_on_Windows_Client" rel="internal">Download and Install Kerberos Client on Windows Client</a>  </li>
+              <li> <a href="#Modify_Kerberos_Configuration_File_to_Reflect_Realm.2C_KDC.2C_and_Admin_Server_on_Windows_Client" rel="internal">Modify Kerberos Configuration File to Reflect Realm, KDC, and Admin Server on Windows Client</a>  </li>
+              <li> <a href="#Synchronize_Clock_on_Windows_Client" rel="internal">Synchronize Clock on Windows Client</a>  </li>
+              <li> <a href="#Obtain_Kerberos_Ticket_on_Windows_Client" rel="internal">Obtain Kerberos Ticket on Windows Client</a>  </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+      <li> <a href="#Test_Authentication_from_Within_Spoon" rel="internal">Test Authentication from Within Spoon</a>  </li>
+    </ol>
+  </body>
+</content>
