@@ -9,7 +9,7 @@ var parser = require('xml2json');
 var main = function() {
   getSiteMap(function(pages) {
     saveHierarchy(pages, function() {
-      console.log("all files saved");
+      // On Success
     });
   });
 }
@@ -32,7 +32,7 @@ var saveHierarchy = function(pages, oncomplete) {
     var requestSent = savePage(data.id, "mt/" + data.path.$t, data.id + "-" + data.title,
       function() { // success
         var percent = parseInt(((pagesLength - saveQueue.length)/ pagesLength)*100); 
-        console.log(percent + "% complete saving");
+        writeProgress("Writing Files", percent);
         if (queuedRequests == 0 && saveQueue.length == 0 && oncomplete) {
           oncomplete();
         } else {
@@ -84,7 +84,7 @@ var savePage = function(pageId, path, filename, success, failure) {
         .replace(/&gt;/g,">");
 
       // Cleanup html
-      fs.writeFile(filename + ".html", pretty(data), function(err) {
+      fs.writeFile(file, pretty(data), function(err) {
         if(err) {
           if (failure) {
             failure(err)
@@ -178,19 +178,23 @@ var httpGet = function(hostname, path, success, failure) {
 }
 
 var makePath = function(path, success) {
-  process.chdir(__dirname); // Revert to root location
-
   var folders = path.split("/");
   var dir = "";
   for (var i = 0; i < folders.length; i++) {
-    var folder = folders[i]; 
+    var folder = folders[i];
     if (folder.length > 0) {
-      if (!fs.existsSync(folder)) { // make dir if it does not exist
-        fs.mkdirSync(folder);
+      dir += folder + "/";
+      if (!fs.existsSync(dir)) { // make dir if it does not exist
+        fs.mkdirSync(dir);
       }
-      process.chdir(folder);
     }
   }
+}
+
+var writeProgress = function(msg, percent) {
+  process.stdout.clearLine();
+  process.stdout.cursorTo(0);
+  process.stdout.write(msg + " ( " + percent + "% )" );
 }
 
 main();
