@@ -75,7 +75,9 @@ var savePage = function(pageId, path, filename, success, failure) {
     function (data) {
       path = (path.startsWith("./") ? "" : "./" ) + path;
       makePath(path);
-      filename = filename.replace(/\//g, "-"); // remove "/" from filename
+      filename = filename
+        .replace(/\//g, "-") // replace "/" with "-"
+        .replace(/:/g, ""); // replace ":" with ""
       var file = path + (path.endsWith("/") ? "" : "/") + filename + ".html";
 
       data = data
