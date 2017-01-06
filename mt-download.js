@@ -83,7 +83,8 @@ var savePage = function(pageId, path, filename, success, failure) {
       data = data
         .replace(/&amp;/g, "&")
         .replace(/&lt;/g, "<")
-        .replace(/&gt;/g,">");
+        .replace(/&gt;/g,">")
+        .replace(/&quot;/g, '"');
 
       // Cleanup html
       fs.writeFile(file, pretty(data), function(err) {
