@@ -7,19 +7,43 @@ var readabilityKey = "readability";
 var sentenceInfoKey = "sentence-info";
 var verbTypesKey = "verb-types";
 var sentenceBeginningsKey = "sentence-beginnings";
+var categoryKeys = [readabilityKey, sentenceInfoKey, verbTypesKey, sentenceBeginningsKey];
 
-var filenamesLength = -1;
+var logDir = "./bin/logs/";
+var date = new Date();
+
 var main = function() {
   var filenames = [];
   findPages("./mt", function(filename) {
     filenames.push(filename);
   });
 
-  filenamesLength = filenames.length;
+  var filenamesLength = filenames.length;
 
-  getReports(filenames, 0, {}, function(reports) {
-    writeReports(reports);
-  });
+  /* Make Dirs */
+  logDir = logDir + date.toDateString() + "-" + date.toTimeString();
+  var dirs = logDir.split("/"), dir = "";
+  for (var i in dirs) {
+    dir = path.resolve(dir, dirs[i]);
+    if (!fs.existsSync(dir)) { // make dir if it does not exist
+      fs.mkdirSync(dir);
+    }
+  }
+
+  getReports(filenames, 0,
+    function onreport(filename, report, i) {
+      var percent = parseInt(((i + 1) / filenamesLength)*100); 
+      writeProgress("Writing Reports: ", percent);
+      for (var j in categoryKeys) {
+        writeReport(filename, categoryKeys[j], report);
+      }
+    },
+    function oncomplete() {
+      console.log("");
+      for (var i in csvStreams) { // End Stream
+        csvStreams[i].end();
+      }
+    });
 }
 
 var writeProgress = function(msg, percent) {
@@ -32,57 +56,49 @@ var writeProgress = function(msg, percent) {
   }
 }
 
-var writeReports = function(reports) {
-  console.log("\nWriting Reports");
-  
-  writeReport(readabilityKey, reports);
-  writeReport(sentenceInfoKey, reports);
-  writeReport(verbTypesKey, reports);
-  writeReport(sentenceBeginningsKey, reports);
-}
+var csvStreams = {};
+var writeReport = function(filename, categoryName, report) {
+  var csvStream = csvStreams[categoryName];
+  if (!csvStream) {
+    var csvFilename = path.resolve(logDir, "text-analysis-" + categoryName + ".csv");
 
-var writeReport = function(categoryName, reports) {
-  var filename = "text-analysis-" + categoryName + ".csv";
-  console.log("\nWriting " + filename);
-
-  var csvStream = csv.createWriteStream({headers: true}),
-      writableStream = fs.createWriteStream(filename);
-  
-  writableStream.on("finish", function(){
-    console.log("DONE!");
-  });
-  
-  csvStream.pipe(writableStream);
-  for (var filename in reports) {
-    var category = reports[filename][categoryName];
-    for (var attribute in category) {
-      csvStream.write({
-        File: filename,
-        Attribute: attribute,
-        Value: category[attribute]
-      });
-    }      
+    csvStream = csv.createWriteStream({headers: true});
+    var writableStream = fs.createWriteStream(csvFilename);
+    
+    writableStream.on("finish", function(){
+      console.log("done writing " + csvFilename);
+    });
+    
+    csvStream.pipe(writableStream);
+    csvStreams[categoryName] = csvStream;
   }
-  csvStream.end();
+
+  var category = report[categoryName];
+  for (var attribute in category) {
+    csvStream.write({
+      File: filename,
+      Attribute: attribute,
+      Value: category[attribute]
+    });
+  }
+
+  return csvStream;
 }
 
-var getReports = function(filenames, i, reports, oncomplete) {
+var getReports = function(filenames, i, onreport, oncomplete) {
   if (i >= filenames.length) {
-    oncomplete(reports);
+    oncomplete();
     return;
   }
   
   var filename = filenames[i];
   getReport("\"" + filename + "\"", function(report) {
-    var percent = parseInt((i / filenamesLength)*100); 
-    writeProgress("Building Reports: ", percent);
-    // console.log("Building Reports: " + percent + "%");
     filename = filename
       .replace(/[\W\w]+\//g, "")
       .replace(/\.html/g, "");
-    reports[filename] = report;
+    onreport(filename, report, i);
     
-    getReports(filenames, ++i, reports, oncomplete);
+    getReports(filenames, ++i, onreport, oncomplete);
   });
 }
 
